@@ -29,11 +29,19 @@ LEGACY_FR_SONGS_DB_PATH = (
 LEGACY_FR_CONFIG_PATH = (
     ROOT / "collectors" / "spotify" / "charts" / "fr" / "tools" / "scripts" / "config.py"
 )
+# Local Apple Music export — genre_names is Apple's own catalog classification
+# (present on every song entry across global/country/genre/ts_top_songs charts),
+# a stronger signal than crowd-sourced Last.fm tags. No network calls.
+APPLE_MUSIC_JSON_CANDIDATES = [
+    ROOT / "runtime" / "exports" / "web" / "site" / "data" / "applemusic.json",
+    ROOT / "website" / "site" / "data" / "applemusic.json",
+]
 
 TRACK_ID_RE = re.compile(r"track/([A-Za-z0-9]+)")
 DEFAULT_ARTIST = "Taylor Swift"
 _LEGACY_FR_DB: dict[str, Any] | None = None
 _GENRE_OVERRIDES: dict[str, list[str]] | None = None
+_APPLE_MUSIC_INDEX: dict[str, list[str]] | None = None
 
 SOURCE_WEIGHTS = {
     "legacy_fr": 1.0,
@@ -41,6 +49,7 @@ SOURCE_WEIGHTS = {
     "musicbrainz": 1.0,
     "theaudiodb": 0.9,
     "discogs": 1.0,
+    "apple_music": 1.2,
 }
 
 CANONICAL_GENRES = {
@@ -205,28 +214,27 @@ def display_title(track: dict[str, Any]) -> str:
     return str(track.get("base_title") or track.get("title_clean") or track.get("title") or "").strip()
 
 
-def lastfm_title_variants(track: dict[str, Any]) -> list[str]:
-    candidates = [
-        str(track.get("base_title") or ""),
-        str(track.get("title_clean") or ""),
-        str(track.get("title") or ""),
-        display_title(track),
-    ]
+def _strip_version_suffix(value: str) -> str:
+    cleaned = value
+    cleaned = re.sub(r"\s+\(Taylor's Version\)", "", cleaned, flags=re.I)
+    cleaned = re.sub(r"\s+\(.*?From The Vault.*?\)", "", cleaned, flags=re.I)
+    cleaned = re.sub(r"\s+\(feat\..*?\)", "", cleaned, flags=re.I)
+    cleaned = re.sub(r"\s+\(featuring .*?\)", "", cleaned, flags=re.I)
+    cleaned = re.sub(r"\s+-\s+Taylor's Version.*$", "", cleaned, flags=re.I)
+    cleaned = re.sub(r"\s+-\s+.*?version.*$", "", cleaned, flags=re.I)
+    cleaned = re.sub(r"\s+-\s+.*?remix.*$", "", cleaned, flags=re.I)
+    cleaned = re.sub(r"\s+-\s+.*?live.*$", "", cleaned, flags=re.I)
+    return cleaned
+
+
+def title_variants(*raw_candidates: str) -> list[str]:
     variants: list[str] = []
     seen: set[str] = set()
-    for candidate in candidates:
+    for candidate in raw_candidates:
         value = re.sub(r"\s+", " ", candidate or "").strip()
         if not value:
             continue
-        cleaned = value
-        cleaned = re.sub(r"\s+\(Taylor's Version\)", "", cleaned, flags=re.I)
-        cleaned = re.sub(r"\s+\(.*?From The Vault.*?\)", "", cleaned, flags=re.I)
-        cleaned = re.sub(r"\s+\(feat\..*?\)", "", cleaned, flags=re.I)
-        cleaned = re.sub(r"\s+\(featuring .*?\)", "", cleaned, flags=re.I)
-        cleaned = re.sub(r"\s+-\s+Taylor's Version.*$", "", cleaned, flags=re.I)
-        cleaned = re.sub(r"\s+-\s+.*?version.*$", "", cleaned, flags=re.I)
-        cleaned = re.sub(r"\s+-\s+.*?remix.*$", "", cleaned, flags=re.I)
-        cleaned = re.sub(r"\s+-\s+.*?live.*$", "", cleaned, flags=re.I)
+        cleaned = _strip_version_suffix(value)
         for variant in (value, cleaned):
             variant = re.sub(r"\s+", " ", variant).strip(" -")
             key = clean_text(variant)
@@ -234,6 +242,15 @@ def lastfm_title_variants(track: dict[str, Any]) -> list[str]:
                 variants.append(variant)
                 seen.add(key)
     return variants
+
+
+def lastfm_title_variants(track: dict[str, Any]) -> list[str]:
+    return title_variants(
+        str(track.get("base_title") or ""),
+        str(track.get("title_clean") or ""),
+        str(track.get("title") or ""),
+        display_title(track),
+    )
 
 
 def display_artist(track: dict[str, Any]) -> str:
@@ -538,12 +555,83 @@ def fetch_discogs(client: ApiClient, artist: str, title: str) -> SourceResult:
     return SourceResult(normalize_tags(raw), raw)
 
 
+def _apple_music_entries(payload: dict[str, Any]) -> list[dict[str, Any]]:
+    entries: list[dict[str, Any]] = []
+    entries.extend(payload.get("ts_top_songs", {}).get("entries") or [])
+    entries.extend(payload.get("global_chart", {}).get("entries") or [])
+    for country_entries in (payload.get("country_charts", {}).get("countries") or {}).values():
+        if isinstance(country_entries, list):
+            entries.extend(country_entries)
+    for genre_map in (payload.get("genre_charts", {}).get("by_country") or {}).values():
+        if isinstance(genre_map, dict):
+            for genre_entries in genre_map.values():
+                if isinstance(genre_entries, list):
+                    entries.extend(genre_entries)
+    return entries
+
+
+def load_apple_music_index() -> dict[str, list[str]]:
+    """clean_text(title variant) -> union of raw Apple Music genre_names seen for it.
+
+    Built once from the local Apple Music export (no network call) — genre_names
+    is Apple's own catalog classification, e.g. a song charting on the France
+    Country genre chart carries "Country" here. Broadest single surface is
+    ts_top_songs (composite, ~full catalog); other surfaces only add coverage
+    for anything ts_top_songs might miss.
+    """
+    global _APPLE_MUSIC_INDEX
+    if _APPLE_MUSIC_INDEX is not None:
+        return _APPLE_MUSIC_INDEX
+
+    index: dict[str, list[str]] = {}
+    payload: dict[str, Any] | None = None
+    for path in APPLE_MUSIC_JSON_CANDIDATES:
+        if path.exists():
+            try:
+                payload = read_json(path)
+            except Exception:
+                payload = None
+            if payload:
+                break
+
+    if isinstance(payload, dict):
+        for entry in _apple_music_entries(payload):
+            if not isinstance(entry, dict):
+                continue
+            genre_names = [str(g) for g in entry.get("genre_names") or [] if g]
+            if not genre_names:
+                continue
+            song_name = str(entry.get("song_name") or "").strip()
+            if not song_name:
+                continue
+            for variant in title_variants(song_name):
+                key = clean_text(variant)
+                bucket = index.setdefault(key, [])
+                for genre in genre_names:
+                    if genre not in bucket:
+                        bucket.append(genre)
+
+    _APPLE_MUSIC_INDEX = index
+    return index
+
+
+def fetch_apple_music(client: ApiClient, artist: str, title: str) -> SourceResult:
+    del client, artist
+    index = load_apple_music_index()
+    for variant in title_variants(title):
+        raw = index.get(clean_text(variant))
+        if raw:
+            return SourceResult(normalize_tags(raw), raw)
+    return SourceResult([], [])
+
+
 FETCHERS = {
     "legacy_fr": fetch_legacy_fr,
     "lastfm": fetch_lastfm,
     "musicbrainz": fetch_musicbrainz,
     "theaudiodb": fetch_theaudiodb,
     "discogs": fetch_discogs,
+    "apple_music": fetch_apple_music,
 }
 
 
@@ -782,7 +870,7 @@ def run(args: argparse.Namespace) -> int:
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
-        description="Enrich song genre tags from the first valid Last.fm genres, with manual overrides."
+        description="Enrich song genre tags from configurable sources (Last.fm, local Apple Music export, ...), with manual overrides."
     )
     parser.add_argument("--apply", action="store_true", help="Write genre fields into db/discography JSON files.")
     parser.add_argument("--track", help="Only process tracks whose title or Spotify track ID contains this value.")
@@ -794,7 +882,7 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument(
         "--sources",
-        default="lastfm",
+        default="lastfm,apple_music",
         help="Comma-separated source list.",
     )
     parser.add_argument("--cache-path", type=Path, default=CACHE_PATH)

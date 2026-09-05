@@ -26,7 +26,9 @@
           "song_family": "welcome_to_new_york",
           "version_tag": "taylors_version__alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273904445d70d04eb24d6bb79ac",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "4WUepByoeqcedHoYhSNHRt"
+          ],
           "release_date": "2023-10-26T00:00:00Z",
           "genres": [
             "pop",
@@ -50,14 +52,14 @@
             "lastfm": [
               "pop",
               "synthpop",
-              "female vocalists",
               "electropop",
+              "female vocalists",
               "new york",
               "love at first listen",
               "New York City",
-              "taylor swift",
-              "NYC",
-              "synth-pop"
+              "ryan tedder",
+              "synth-pop",
+              "NYC"
             ]
           },
           "genre_query_titles": {
@@ -76,7 +78,13 @@
             "album_track": "high:section_or_display_section",
             "taylor_version": "high:title_or_section",
             "alternate_version": "medium:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "taylors_version",
+          "tags": [],
+          "tsm_song_id": "dfdd",
+          "tsm_album_id": "8xq"
         },
         {
           "title": "Blank Space (Taylor's Version)",
@@ -96,23 +104,43 @@
           "song_family": "blank_space",
           "version_tag": "taylors_version__alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273904445d70d04eb24d6bb79ac",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "0108kcWLnn2HlH2kedi1gn"
+          ],
           "release_date": "2023-10-26T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
+          "genres": [
+            "pop",
+            "electropop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "electropop": 2.0
+          },
           "genre_sources": {
-            "lastfm": []
+            "lastfm": [
+              "pop",
+              "electropop"
+            ]
           },
           "genre_raw_sources": {
-            "lastfm": []
+            "lastfm": [
+              "pop",
+              "love at first listen",
+              "2014",
+              "female vocalists",
+              "best of 2014",
+              "electropop",
+              "taylor swift",
+              "10s",
+              "2010s",
+              "max martin"
+            ]
           },
           "genre_query_titles": {
             "lastfm": "Blank Space"
           },
-          "genre_errors": {
-            "lastfm": "LASTFM_API_KEY missing"
-          },
+          "genre_errors": {},
           "genre_canonical_key": "family:blank_space",
           "filter_tags": [
             "solo",
@@ -125,7 +153,13 @@
             "album_track": "high:section_or_display_section",
             "taylor_version": "high:title_or_section",
             "alternate_version": "medium:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "taylors_version",
+          "tags": [],
+          "tsm_song_id": "pxm7",
+          "tsm_album_id": "8xq"
         },
         {
           "title": "Style (Taylor's Version)",
@@ -145,7 +179,9 @@
           "song_family": "style",
           "version_tag": "taylors_version__alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273904445d70d04eb24d6bb79ac",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "3Vpk1hfMAQme8VJ0SNRSkd"
+          ],
           "release_date": "2023-10-26T00:00:00Z",
           "genres": [
             "pop",
@@ -169,14 +205,14 @@
             "lastfm": [
               "pop",
               "synthpop",
-              "taylor swift",
               "love at first listen",
+              "taylor swift",
               "1989",
               "pop rock",
               "female vocalists",
               "max martin",
-              "Funk-Pop",
-              "2015"
+              "2015",
+              "Funk-Pop"
             ]
           },
           "genre_query_titles": {
@@ -195,7 +231,13 @@
             "album_track": "high:section_or_display_section",
             "taylor_version": "high:title_or_section",
             "alternate_version": "medium:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "taylors_version",
+          "tags": [],
+          "tsm_song_id": "7ovr",
+          "tsm_album_id": "8xq"
         },
         {
           "title": "Out Of The Woods (Taylor's Version)",
@@ -215,24 +257,26 @@
           "song_family": "out_of_the_woods",
           "version_tag": "taylors_version__alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273904445d70d04eb24d6bb79ac",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "1OcSfkeCg9hRC2sFKB4IMJ"
+          ],
           "release_date": "2023-10-26T00:00:00Z",
           "genres": [
             "pop",
             "synth-pop",
-            "pop rock"
+            "electropop"
           ],
           "genre_status": "auto",
           "genre_scores": {
             "pop": 3.0,
             "synth-pop": 2.0,
-            "pop rock": 1.0
+            "electropop": 1.0
           },
           "genre_sources": {
             "lastfm": [
               "pop",
               "synth-pop",
-              "pop rock"
+              "electropop"
             ]
           },
           "genre_raw_sources": {
@@ -245,8 +289,8 @@
               "taylor swift",
               "amazing",
               "synth-pop",
-              "2014",
-              "pop rock"
+              "electropop",
+              "indietronica"
             ]
           },
           "genre_query_titles": {
@@ -265,7 +309,13 @@
             "album_track": "high:section_or_display_section",
             "taylor_version": "high:title_or_section",
             "alternate_version": "medium:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "taylors_version",
+          "tags": [],
+          "tsm_song_id": "e31g",
+          "tsm_album_id": "8xq"
         },
         {
           "title": "All You Had To Do Was Stay (Taylor's Version)",
@@ -285,7 +335,9 @@
           "song_family": "all_you_had_to_do_was_stay",
           "version_tag": "taylors_version__alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273904445d70d04eb24d6bb79ac",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "2k0ZEeAqzvYMcx9Qt5aClQ"
+          ],
           "release_date": "2023-10-26T00:00:00Z",
           "genres": [],
           "genre_status": "missing",
@@ -310,7 +362,13 @@
             "album_track": "high:section_or_display_section",
             "taylor_version": "high:title_or_section",
             "alternate_version": "medium:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "taylors_version",
+          "tags": [],
+          "tsm_song_id": "0tf0",
+          "tsm_album_id": "8xq"
         },
         {
           "title": "Shake It Off (Taylor's Version)",
@@ -330,7 +388,9 @@
           "song_family": "shake_it_off",
           "version_tag": "taylors_version__alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273904445d70d04eb24d6bb79ac",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "50yNTF0Od55qnHLxYsA5Pw"
+          ],
           "release_date": "2023-10-26T00:00:00Z",
           "genres": [
             "pop"
@@ -374,7 +434,13 @@
             "album_track": "high:section_or_display_section",
             "taylor_version": "high:title_or_section",
             "alternate_version": "medium:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "taylors_version",
+          "tags": [],
+          "tsm_song_id": "wex1",
+          "tsm_album_id": "8xq"
         },
         {
           "title": "I Wish You Would (Taylor's Version)",
@@ -394,7 +460,9 @@
           "song_family": "i_wish_you_would",
           "version_tag": "taylors_version__alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273904445d70d04eb24d6bb79ac",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "3FxJDucHWdw6caWTKO5b23"
+          ],
           "release_date": "2023-10-26T00:00:00Z",
           "genres": [],
           "genre_status": "missing",
@@ -419,7 +487,13 @@
             "album_track": "high:section_or_display_section",
             "taylor_version": "high:title_or_section",
             "alternate_version": "medium:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "taylors_version",
+          "tags": [],
+          "tsm_song_id": "bk4n",
+          "tsm_album_id": "8xq"
         },
         {
           "title": "Bad Blood (Taylor's Version)",
@@ -439,23 +513,22 @@
           "song_family": "bad_blood",
           "version_tag": "taylors_version__alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273904445d70d04eb24d6bb79ac",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "7oZONwFiFIErZcXAtTu7FY"
+          ],
           "release_date": "2023-10-26T00:00:00Z",
           "genres": [
             "pop",
-            "synth-pop",
             "singer-songwriter"
           ],
           "genre_status": "auto",
           "genre_scores": {
             "pop": 3.0,
-            "synth-pop": 2.0,
-            "singer-songwriter": 1.0
+            "singer-songwriter": 2.0
           },
           "genre_sources": {
             "lastfm": [
               "pop",
-              "synth-pop",
               "singer-songwriter"
             ]
           },
@@ -466,9 +539,9 @@
               "love at first listen",
               "taylor swift",
               "2015",
-              "synthpop",
+              "max martin",
               "singer-songwriter",
-              "shade",
+              "katy perry",
               "BAD BLOOD",
               "2010s"
             ]
@@ -489,7 +562,13 @@
             "album_track": "high:section_or_display_section",
             "taylor_version": "high:title_or_section",
             "alternate_version": "medium:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "taylors_version",
+          "tags": [],
+          "tsm_song_id": "htjw",
+          "tsm_album_id": "8xq"
         },
         {
           "title": "Wildest Dreams (Taylor's Version)",
@@ -509,8 +588,11 @@
           "song_family": "wildest_dreams",
           "version_tag": "taylors_version__alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273904445d70d04eb24d6bb79ac",
-          "historical_track_ids": [],
-          "release_date": "2023-10-26T00:00:00Z",
+          "historical_track_ids": [
+            "1Ov37jtRQ2YNAe8HzfczkL",
+            "27exgla7YBw9DUNNcTIpjy"
+          ],
+          "release_date": "2021-09-17T00:00:00Z",
           "genres": [
             "pop",
             "dream pop",
@@ -559,7 +641,13 @@
             "album_track": "high:section_or_display_section",
             "taylor_version": "high:title_or_section",
             "alternate_version": "medium:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "taylors_version",
+          "tags": [],
+          "tsm_song_id": "rv14",
+          "tsm_album_id": "8xq"
         },
         {
           "title": "How You Get The Girl (Taylor's Version)",
@@ -579,8 +667,10 @@
           "song_family": "how_you_get_the_girl",
           "version_tag": "taylors_version__alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273dc2bacae1dca83d26e2b1949",
-          "historical_track_ids": [],
-          "release_date": "2023-10-27T00:00:00Z",
+          "historical_track_ids": [
+            "75W3SngKzTuoQ94uLf3y82"
+          ],
+          "release_date": "2023-10-26T00:00:00Z",
           "genres": [],
           "genre_status": "missing",
           "genre_scores": {},
@@ -604,7 +694,13 @@
             "album_track": "high:section_or_display_section",
             "taylor_version": "high:title_or_section",
             "alternate_version": "medium:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "taylors_version",
+          "tags": [],
+          "tsm_song_id": "db8r",
+          "tsm_album_id": "8xq"
         },
         {
           "title": "This Love (Taylor's Version)",
@@ -624,8 +720,11 @@
           "song_family": "this_love",
           "version_tag": "taylors_version__alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273dc2bacae1dca83d26e2b1949",
-          "historical_track_ids": [],
-          "release_date": "2023-10-27T00:00:00Z",
+          "historical_track_ids": [
+            "4d1CG5ei1E2vGbvmgf5KKv",
+            "5QVVjX0ZItqlVpEuVCM9Yg"
+          ],
+          "release_date": "2022-05-06T00:00:00Z",
           "genres": [],
           "genre_status": "missing",
           "genre_scores": {},
@@ -649,7 +748,13 @@
             "album_track": "high:section_or_display_section",
             "taylor_version": "high:title_or_section",
             "alternate_version": "medium:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "taylors_version",
+          "tags": [],
+          "tsm_song_id": "v5a9",
+          "tsm_album_id": "8xq"
         },
         {
           "title": "I Know Places (Taylor's Version)",
@@ -669,8 +774,10 @@
           "song_family": "i_know_places",
           "version_tag": "taylors_version__alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273dc2bacae1dca83d26e2b1949",
-          "historical_track_ids": [],
-          "release_date": "2023-10-27T00:00:00Z",
+          "historical_track_ids": [
+            "2f0GI2ZLUtbGqFx8t2Gk6A"
+          ],
+          "release_date": "2023-10-26T00:00:00Z",
           "genres": [],
           "genre_status": "missing",
           "genre_scores": {},
@@ -694,7 +801,13 @@
             "album_track": "high:section_or_display_section",
             "taylor_version": "high:title_or_section",
             "alternate_version": "medium:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "taylors_version",
+          "tags": [],
+          "tsm_song_id": "gcni",
+          "tsm_album_id": "8xq"
         },
         {
           "title": "Clean (Taylor's Version)",
@@ -714,8 +827,10 @@
           "song_family": "clean",
           "version_tag": "taylors_version__alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273dc2bacae1dca83d26e2b1949",
-          "historical_track_ids": [],
-          "release_date": "2023-10-27T00:00:00Z",
+          "historical_track_ids": [
+            "2ByBBvpR9b7IynvRmnG7kG"
+          ],
+          "release_date": "2023-10-26T00:00:00Z",
           "genres": [],
           "genre_status": "missing",
           "genre_scores": {},
@@ -739,7 +854,13 @@
             "album_track": "high:section_or_display_section",
             "taylor_version": "high:title_or_section",
             "alternate_version": "medium:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "taylors_version",
+          "tags": [],
+          "tsm_song_id": "e29n",
+          "tsm_album_id": "8xq"
         },
         {
           "title": "Wonderland (Taylor's Version)",
@@ -759,8 +880,10 @@
           "song_family": "wonderland",
           "version_tag": "taylors_version__alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273dc2bacae1dca83d26e2b1949",
-          "historical_track_ids": [],
-          "release_date": "2023-10-27T00:00:00Z",
+          "historical_track_ids": [
+            "2ve0kuaWUCt4Zx8x4bf1MR"
+          ],
+          "release_date": "2023-10-26T00:00:00Z",
           "genres": [],
           "genre_status": "missing",
           "genre_scores": {},
@@ -784,7 +907,13 @@
             "album_track": "high:section_or_display_section",
             "taylor_version": "high:title_or_section",
             "alternate_version": "medium:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "taylors_version",
+          "tags": [],
+          "tsm_song_id": "n3cl",
+          "tsm_album_id": "8xq"
         },
         {
           "title": "You Are In Love (Taylor's Version)",
@@ -804,8 +933,10 @@
           "song_family": "you_are_in_love",
           "version_tag": "taylors_version__alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273dc2bacae1dca83d26e2b1949",
-          "historical_track_ids": [],
-          "release_date": "2023-10-27T00:00:00Z",
+          "historical_track_ids": [
+            "4UwqOWDpdeIDVQDuKT6iza"
+          ],
+          "release_date": "2023-10-26T00:00:00Z",
           "genres": [],
           "genre_status": "missing",
           "genre_scores": {},
@@ -829,7 +960,13 @@
             "album_track": "high:section_or_display_section",
             "taylor_version": "high:title_or_section",
             "alternate_version": "medium:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "taylors_version",
+          "tags": [],
+          "tsm_song_id": "m0em",
+          "tsm_album_id": "8xq"
         },
         {
           "title": "New Romantics (Taylor's Version)",
@@ -849,8 +986,10 @@
           "song_family": "new_romantics",
           "version_tag": "taylors_version__alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273dc2bacae1dca83d26e2b1949",
-          "historical_track_ids": [],
-          "release_date": "2023-10-27T00:00:00Z",
+          "historical_track_ids": [
+            "2vPMoMDXxu9uX1igWZmXSG"
+          ],
+          "release_date": "2023-10-26T00:00:00Z",
           "genres": [
             "pop",
             "synth-pop"
@@ -872,8 +1011,8 @@
               "why on earth is this just a bonus track",
               "love at first listen",
               "synthpop",
-              "female vocalists",
               "fave fave fave",
+              "female vocalists",
               "fode essa buceta",
               "max martin",
               "2014",
@@ -896,7 +1035,13 @@
             "album_track": "high:section_or_display_section",
             "taylor_version": "high:title_or_section",
             "alternate_version": "medium:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "taylors_version",
+          "tags": [],
+          "tsm_song_id": "yh86",
+          "tsm_album_id": "8xq"
         },
         {
           "title": "\"Slut!\" (Taylor's Version) (From The Vault)",
@@ -916,7 +1061,9 @@
           "song_family": "slut",
           "version_tag": "vault__taylors_version__standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273dc2bacae1dca83d26e2b1949",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "71BqAINEnezjQfxE4VuJfq"
+          ],
           "release_date": "2023-10-27T00:00:00Z",
           "genres": [
             "synth-pop",
@@ -966,7 +1113,13 @@
             "album_track": "high:section_or_display_section",
             "taylor_version": "high:title_or_section",
             "from_the_vault": "high:title_section_or_edition"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "from_the_vault",
+          "tags": [],
+          "tsm_song_id": "ulga",
+          "tsm_album_id": "8xq"
         },
         {
           "title": "Say Don't Go (Taylor's Version) (From The Vault)",
@@ -986,8 +1139,10 @@
           "song_family": "say_don_t_go",
           "version_tag": "vault__taylors_version__standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273dc2bacae1dca83d26e2b1949",
-          "historical_track_ids": [],
-          "release_date": "2023-10-27T00:00:00Z",
+          "historical_track_ids": [
+            "4NioO5R9sHEZh4cGzMHyNt"
+          ],
+          "release_date": "2023-10-26T00:00:00Z",
           "genres": [
             "pop",
             "synth-pop",
@@ -1038,7 +1193,13 @@
             "standalone": "medium:section_or_type",
             "taylor_version": "high:title_or_section",
             "from_the_vault": "high:title_section_or_edition"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "from_the_vault",
+          "tags": [],
+          "tsm_song_id": "4e5z",
+          "tsm_album_id": "8xq"
         },
         {
           "title": "Now That We Don't Talk (Taylor's Version) (From The Vault)",
@@ -1058,8 +1219,10 @@
           "song_family": "now_that_we_don_t_talk",
           "version_tag": "vault__taylors_version__standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273dc2bacae1dca83d26e2b1949",
-          "historical_track_ids": [],
-          "release_date": "2023-10-27T00:00:00Z",
+          "historical_track_ids": [
+            "5KD6AEm19QnMbfWpfoOHMl"
+          ],
+          "release_date": "2023-10-26T00:00:00Z",
           "genres": [
             "pop",
             "synth-pop",
@@ -1110,7 +1273,13 @@
             "standalone": "medium:section_or_type",
             "taylor_version": "high:title_or_section",
             "from_the_vault": "high:title_section_or_edition"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "from_the_vault",
+          "tags": [],
+          "tsm_song_id": "6t90",
+          "tsm_album_id": "8xq"
         },
         {
           "title": "Suburban Legends (Taylor's Version) (From The Vault)",
@@ -1130,8 +1299,10 @@
           "song_family": "suburban_legends",
           "version_tag": "vault__taylors_version__standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273dc2bacae1dca83d26e2b1949",
-          "historical_track_ids": [],
-          "release_date": "2023-10-27T00:00:00Z",
+          "historical_track_ids": [
+            "6T0sEnqjmHISIKwFETeeiP"
+          ],
+          "release_date": "2023-10-26T00:00:00Z",
           "genres": [
             "synth-pop",
             "alternative"
@@ -1179,7 +1350,13 @@
             "standalone": "medium:section_or_type",
             "taylor_version": "high:title_or_section",
             "from_the_vault": "high:title_section_or_edition"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "from_the_vault",
+          "tags": [],
+          "tsm_song_id": "8zx5",
+          "tsm_album_id": "8xq"
         },
         {
           "title": "Is It Over Now? (Taylor's Version) (From The Vault)",
@@ -1199,8 +1376,10 @@
           "song_family": "is_it_over_now",
           "version_tag": "vault__taylors_version__standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273dc2bacae1dca83d26e2b1949",
-          "historical_track_ids": [],
-          "release_date": "2023-10-27T00:00:00Z",
+          "historical_track_ids": [
+            "1Iq8oo9XkmmvCQiGOfORiz"
+          ],
+          "release_date": "2023-10-26T00:00:00Z",
           "genres": [
             "pop",
             "synth-pop",
@@ -1251,7 +1430,13 @@
             "standalone": "medium:section_or_type",
             "taylor_version": "high:title_or_section",
             "from_the_vault": "high:title_section_or_edition"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "from_the_vault",
+          "tags": [],
+          "tsm_song_id": "lq9l",
+          "tsm_album_id": "8xq"
         }
       ]
     },
@@ -1285,19 +1470,16 @@
           "release_date": "2023-10-27T00:00:00Z",
           "genres": [
             "pop",
-            "synth-pop",
             "singer-songwriter"
           ],
           "genre_status": "auto",
           "genre_scores": {
             "pop": 3.0,
-            "synth-pop": 2.0,
-            "singer-songwriter": 1.0
+            "singer-songwriter": 2.0
           },
           "genre_sources": {
             "lastfm": [
               "pop",
-              "synth-pop",
               "singer-songwriter"
             ]
           },
@@ -1308,9 +1490,9 @@
               "love at first listen",
               "taylor swift",
               "2015",
-              "synthpop",
+              "max martin",
               "singer-songwriter",
-              "shade",
+              "katy perry",
               "BAD BLOOD",
               "2010s"
             ]
@@ -1327,7 +1509,13 @@
           "filter_tag_sources": {
             "collab": "high:artists_or_featured_artists",
             "taylor_version": "high:title_or_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "taylors_version_deluxe",
+          "tags": [],
+          "tsm_song_id": "htjw",
+          "tsm_album_id": "8xq"
         }
       ]
     }

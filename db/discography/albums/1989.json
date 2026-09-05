@@ -33,39 +33,49 @@
           ],
           "release_date": "2014-01-01T00:00:00Z",
           "genres": [
-            "pop",
-            "synth-pop",
-            "electropop"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "pop": 3.0,
-            "synth-pop": 2.0,
-            "electropop": 1.0
+            "electropop": 1.0,
+            "pop": 2.2,
+            "synth-pop": 1.0
           },
           "genre_sources": {
             "lastfm": [
               "pop",
               "synth-pop",
               "electropop"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
             "lastfm": [
               "pop",
               "synthpop",
-              "female vocalists",
               "electropop",
+              "female vocalists",
               "new york",
               "love at first listen",
               "New York City",
-              "taylor swift",
-              "NYC",
-              "synth-pop"
+              "ryan tedder",
+              "synth-pop",
+              "NYC"
+            ],
+            "apple_music": [
+              "国际流行",
+              "音乐",
+              "Pop",
+              "Music",
+              "ポップ",
+              "ミュージック"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "Welcome To New York"
+            "lastfm": "Welcome To New York",
+            "apple_music": "Welcome To New York"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:welcome_to_new_york",
@@ -107,21 +117,50 @@
             "1p80LdxRV74UKvL8gnD7ky"
           ],
           "release_date": "2014-01-01T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
+          "genres": [
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "electropop": 1.0,
+            "pop": 2.2
+          },
           "genre_sources": {
-            "lastfm": []
+            "lastfm": [
+              "pop",
+              "electropop"
+            ],
+            "apple_music": [
+              "pop"
+            ]
           },
           "genre_raw_sources": {
-            "lastfm": []
+            "lastfm": [
+              "pop",
+              "love at first listen",
+              "2014",
+              "female vocalists",
+              "best of 2014",
+              "electropop",
+              "taylor swift",
+              "10s",
+              "2010s",
+              "max martin"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "ポップ",
+              "ミュージック",
+              "Música",
+              "Musik"
+            ]
           },
           "genre_query_titles": {
-            "lastfm": "Blank Space"
+            "lastfm": "Blank Space",
+            "apple_music": "Blank Space"
           },
-          "genre_errors": {
-            "lastfm": "LASTFM_API_KEY missing"
-          },
+          "genre_errors": {},
           "genre_canonical_key": "family:blank_space",
           "filter_tags": [
             "solo",
@@ -162,39 +201,48 @@
           ],
           "release_date": "2014-01-01T00:00:00Z",
           "genres": [
-            "pop",
-            "synth-pop",
-            "pop rock"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "pop": 3.0,
-            "synth-pop": 2.0,
-            "pop rock": 1.0
+            "pop": 2.2,
+            "pop rock": 1.0,
+            "synth-pop": 1.0
           },
           "genre_sources": {
             "lastfm": [
               "pop",
               "synth-pop",
               "pop rock"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
             "lastfm": [
               "pop",
               "synthpop",
-              "taylor swift",
               "love at first listen",
+              "taylor swift",
               "1989",
               "pop rock",
               "female vocalists",
               "max martin",
-              "Funk-Pop",
-              "2015"
+              "2015",
+              "Funk-Pop"
+            ],
+            "apple_music": [
+              "Pop",
+              "Música",
+              "Music",
+              "ポップ",
+              "ミュージック"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "Style"
+            "lastfm": "Style",
+            "apple_music": "Style"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:style",
@@ -237,21 +285,22 @@
           ],
           "release_date": "2014-01-01T00:00:00Z",
           "genres": [
-            "pop",
-            "synth-pop",
-            "pop rock"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "pop": 3.0,
-            "synth-pop": 2.0,
-            "pop rock": 1.0
+            "electropop": 1.0,
+            "pop": 2.2,
+            "synth-pop": 1.0
           },
           "genre_sources": {
             "lastfm": [
               "pop",
               "synth-pop",
-              "pop rock"
+              "electropop"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
@@ -264,12 +313,19 @@
               "taylor swift",
               "amazing",
               "synth-pop",
-              "2014",
-              "pop rock"
+              "electropop",
+              "indietronica"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "ポップ",
+              "ミュージック"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "Out Of The Woods"
+            "lastfm": "Out Of The Woods",
+            "apple_music": "Out Of The Woods"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:out_of_the_woods",
@@ -312,16 +368,31 @@
             "0dAb8TY433dl3ZfXYCLE19"
           ],
           "release_date": "2014-01-01T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
+          "genres": [
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 1.2
+          },
           "genre_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "pop"
+            ]
           },
           "genre_raw_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "ポップ",
+              "ミュージック"
+            ]
           },
-          "genre_query_titles": {},
+          "genre_query_titles": {
+            "apple_music": "All You Had To Do Was Stay"
+          },
           "genre_errors": {},
           "genre_canonical_key": "family:all_you_had_to_do_was_stay",
           "filter_tags": [
@@ -367,29 +438,39 @@
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "pop": 3.0
+            "pop": 2.2
           },
           "genre_sources": {
             "lastfm": [
+              "pop"
+            ],
+            "apple_music": [
               "pop"
             ]
           },
           "genre_raw_sources": {
             "lastfm": [
               "pop",
-              "2014",
               "haters gonna hate",
+              "2014",
               "taylor swift",
               "love at first listen",
               "dance",
-              "happy",
-              "1989",
+              "female vocalists",
+              "best of 2014",
               "shake it off",
-              "best of 2014"
+              "1989"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "ポップ",
+              "ミュージック"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "Shake It Off"
+            "lastfm": "Shake It Off",
+            "apple_music": "Shake It Off"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:shake_it_off",
@@ -432,16 +513,31 @@
             "3wmN11qXGL0HyPojvEE1D9"
           ],
           "release_date": "2014-01-01T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
+          "genres": [
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 1.2
+          },
           "genre_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "pop"
+            ]
           },
           "genre_raw_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "ポップ",
+              "ミュージック"
+            ]
           },
-          "genre_query_titles": {},
+          "genre_query_titles": {
+            "apple_music": "I Wish You Would"
+          },
           "genre_errors": {},
           "genre_canonical_key": "family:i_wish_you_would",
           "filter_tags": [
@@ -485,21 +581,20 @@
           ],
           "release_date": "2014-01-01T00:00:00Z",
           "genres": [
-            "pop",
-            "synth-pop",
-            "singer-songwriter"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "pop": 3.0,
-            "synth-pop": 2.0,
+            "pop": 2.2,
             "singer-songwriter": 1.0
           },
           "genre_sources": {
             "lastfm": [
               "pop",
-              "synth-pop",
               "singer-songwriter"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
@@ -509,15 +604,22 @@
               "love at first listen",
               "taylor swift",
               "2015",
-              "synthpop",
+              "max martin",
               "singer-songwriter",
-              "shade",
+              "katy perry",
               "BAD BLOOD",
               "2010s"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "ポップ",
+              "ミュージック"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "Bad Blood"
+            "lastfm": "Bad Blood",
+            "apple_music": "Bad Blood"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:bad_blood",
@@ -561,14 +663,12 @@
           ],
           "release_date": "2014-01-01T00:00:00Z",
           "genres": [
-            "pop",
-            "dream pop",
-            "synth-pop"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "pop": 3.0,
-            "dream pop": 2.0,
+            "dream pop": 1.0,
+            "pop": 2.2,
             "synth-pop": 1.0
           },
           "genre_sources": {
@@ -576,6 +676,9 @@
               "pop",
               "dream pop",
               "synth-pop"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
@@ -590,10 +693,18 @@
               "singer-songwriter",
               "taylor swift",
               "epic"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "ポップ",
+              "ミュージック",
+              "Música"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "Wildest Dreams"
+            "lastfm": "Wildest Dreams",
+            "apple_music": "Wildest Dreams"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:wildest_dreams",
@@ -635,16 +746,31 @@
             "4dYUOfmWna6DFccnz732n8"
           ],
           "release_date": "2014-01-01T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
+          "genres": [
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 1.2
+          },
           "genre_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "pop"
+            ]
           },
           "genre_raw_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "ポップ",
+              "ミュージック"
+            ]
           },
-          "genre_query_titles": {},
+          "genre_query_titles": {
+            "apple_music": "How You Get The Girl"
+          },
           "genre_errors": {},
           "genre_canonical_key": "family:how_you_get_the_girl",
           "filter_tags": [
@@ -685,16 +811,33 @@
             "3oKMl2tJv4fdidkXUYMI5x"
           ],
           "release_date": "2014-01-01T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
+          "genres": [
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 1.2
+          },
           "genre_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "pop"
+            ]
           },
           "genre_raw_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Поп",
+              "Музыка",
+              "ポップ",
+              "ミュージック"
+            ]
           },
-          "genre_query_titles": {},
+          "genre_query_titles": {
+            "apple_music": "This Love"
+          },
           "genre_errors": {},
           "genre_canonical_key": "family:this_love",
           "filter_tags": [
@@ -736,16 +879,33 @@
             "3jBMHD19RZdAqG9iFQh7xc"
           ],
           "release_date": "2014-01-01T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
+          "genres": [
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 1.2
+          },
           "genre_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "pop"
+            ]
           },
           "genre_raw_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Поп",
+              "Музыка",
+              "ポップ",
+              "ミュージック"
+            ]
           },
-          "genre_query_titles": {},
+          "genre_query_titles": {
+            "apple_music": "I Know Places"
+          },
           "genre_errors": {},
           "genre_canonical_key": "family:i_know_places",
           "filter_tags": [
@@ -786,16 +946,31 @@
             "06WgOCf0LV2h4keYXDRnuh"
           ],
           "release_date": "2014-01-01T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
+          "genres": [
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 1.2
+          },
           "genre_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "pop"
+            ]
           },
           "genre_raw_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "ポップ",
+              "ミュージック"
+            ]
           },
-          "genre_query_titles": {},
+          "genre_query_titles": {
+            "apple_music": "Clean"
+          },
           "genre_errors": {},
           "genre_canonical_key": "family:clean",
           "filter_tags": [
@@ -835,16 +1010,33 @@
             "6RvRzl1YJTDnUvdOtV21IK"
           ],
           "release_date": "2014-01-01T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
+          "genres": [
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 1.2
+          },
           "genre_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "pop"
+            ]
           },
           "genre_raw_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Поп",
+              "Музыка",
+              "ポップ",
+              "ミュージック"
+            ]
           },
-          "genre_query_titles": {},
+          "genre_query_titles": {
+            "apple_music": "Wonderland"
+          },
           "genre_errors": {},
           "genre_canonical_key": "family:wonderland",
           "filter_tags": [
@@ -884,16 +1076,29 @@
             "2KrOAg6FftbjgSKdd2a4rS"
           ],
           "release_date": "2014-01-01T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
+          "genres": [
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 1.2
+          },
           "genre_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "pop"
+            ]
           },
           "genre_raw_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music"
+            ]
           },
-          "genre_query_titles": {},
+          "genre_query_titles": {
+            "apple_music": "You Are In Love"
+          },
           "genre_errors": {},
           "genre_canonical_key": "family:you_are_in_love",
           "filter_tags": [
@@ -934,18 +1139,20 @@
           ],
           "release_date": "2014-01-01T00:00:00Z",
           "genres": [
-            "pop",
-            "synth-pop"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "pop": 3.0,
-            "synth-pop": 2.0
+            "pop": 2.2,
+            "synth-pop": 1.0
           },
           "genre_sources": {
             "lastfm": [
               "pop",
               "synth-pop"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
@@ -954,16 +1161,23 @@
               "why on earth is this just a bonus track",
               "love at first listen",
               "synthpop",
-              "female vocalists",
               "fave fave fave",
+              "female vocalists",
               "fode essa buceta",
               "max martin",
               "2014",
               "taylor swift"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "ポップ",
+              "ミュージック"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "New Romantics"
+            "lastfm": "New Romantics",
+            "apple_music": "New Romantics"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:new_romantics",
@@ -1013,21 +1227,20 @@
           "historical_track_ids": [],
           "release_date": "2015-05-17T00:00:00Z",
           "genres": [
-            "pop",
-            "synth-pop",
-            "singer-songwriter"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "pop": 3.0,
-            "synth-pop": 2.0,
+            "pop": 2.2,
             "singer-songwriter": 1.0
           },
           "genre_sources": {
             "lastfm": [
               "pop",
-              "synth-pop",
               "singer-songwriter"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
@@ -1037,15 +1250,22 @@
               "love at first listen",
               "taylor swift",
               "2015",
-              "synthpop",
+              "max martin",
               "singer-songwriter",
-              "shade",
+              "katy perry",
               "BAD BLOOD",
               "2010s"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "ポップ",
+              "ミュージック"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "Bad Blood"
+            "lastfm": "Bad Blood",
+            "apple_music": "Bad Blood"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:bad_blood",
@@ -1096,10 +1316,12 @@
           "genre_status": "missing",
           "genre_scores": {},
           "genre_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": []
           },
           "genre_raw_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": []
           },
           "genre_query_titles": {},
           "genre_errors": {},
@@ -1160,22 +1382,51 @@
             "0U3H1C9aasrSUBugEOfh1r"
           ],
           "release_date": "2015-02-01T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
+          "genres": [
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "electropop": 1.0,
+            "pop": 2.2
+          },
           "genre_sources": {
-            "lastfm": []
+            "lastfm": [
+              "pop",
+              "electropop"
+            ],
+            "apple_music": [
+              "pop"
+            ]
           },
           "genre_raw_sources": {
-            "lastfm": []
+            "lastfm": [
+              "pop",
+              "love at first listen",
+              "2014",
+              "female vocalists",
+              "best of 2014",
+              "electropop",
+              "taylor swift",
+              "10s",
+              "2010s",
+              "max martin"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "ポップ",
+              "ミュージック",
+              "Música",
+              "Musik"
+            ]
           },
           "genre_query_titles": {
-            "lastfm": "Blank Space - Karaoke Version"
+            "lastfm": "Blank Space",
+            "apple_music": "Blank Space"
           },
-          "genre_errors": {
-            "lastfm": "LASTFM_API_KEY missing"
-          },
-          "genre_canonical_key": "family:blank_space_karaoke_version",
+          "genre_errors": {},
+          "genre_canonical_key": "family:blank_space",
           "filter_tags": [
             "solo",
             "standalone",
@@ -1222,32 +1473,42 @@
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "pop": 3.0
+            "pop": 2.2
           },
           "genre_sources": {
             "lastfm": [
+              "pop"
+            ],
+            "apple_music": [
               "pop"
             ]
           },
           "genre_raw_sources": {
             "lastfm": [
               "pop",
-              "2014",
               "haters gonna hate",
+              "2014",
               "taylor swift",
               "love at first listen",
               "dance",
-              "happy",
-              "1989",
+              "female vocalists",
+              "best of 2014",
               "shake it off",
-              "best of 2014"
+              "1989"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "ポップ",
+              "ミュージック"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "Shake It Off"
+            "lastfm": "Shake It Off",
+            "apple_music": "Shake It Off"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:shake_it_off_karaoke_version",
+          "genre_canonical_key": "family:shake_it_off",
           "filter_tags": [
             "solo",
             "standalone",
@@ -1290,42 +1551,51 @@
           ],
           "release_date": "2015-02-01T00:00:00Z",
           "genres": [
-            "pop",
-            "synth-pop",
-            "pop rock"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "pop": 3.0,
-            "synth-pop": 2.0,
-            "pop rock": 1.0
+            "pop": 2.2,
+            "pop rock": 1.0,
+            "synth-pop": 1.0
           },
           "genre_sources": {
             "lastfm": [
               "pop",
               "synth-pop",
               "pop rock"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
             "lastfm": [
               "pop",
               "synthpop",
-              "taylor swift",
               "love at first listen",
+              "taylor swift",
               "1989",
               "pop rock",
               "female vocalists",
               "max martin",
-              "Funk-Pop",
-              "2015"
+              "2015",
+              "Funk-Pop"
+            ],
+            "apple_music": [
+              "Pop",
+              "Música",
+              "Music",
+              "ポップ",
+              "ミュージック"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "Style"
+            "lastfm": "Style",
+            "apple_music": "Style"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:style_karaoke_version",
+          "genre_canonical_key": "family:style",
           "filter_tags": [
             "solo",
             "standalone",
@@ -1368,10 +1638,12 @@
           "genre_status": "missing",
           "genre_scores": {},
           "genre_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": []
           },
           "genre_raw_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": []
           },
           "genre_query_titles": {},
           "genre_errors": {},
@@ -1425,7 +1697,50 @@
           "extra_type": "commentary",
           "tags": [],
           "tsm_song_id": "htjw",
-          "tsm_album_id": "lhq"
+          "tsm_album_id": "lhq",
+          "genres": [
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 2.2,
+            "singer-songwriter": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "singer-songwriter"
+            ],
+            "apple_music": [
+              "pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "Chupa essa Katy perry",
+              "love at first listen",
+              "taylor swift",
+              "2015",
+              "max martin",
+              "singer-songwriter",
+              "katy perry",
+              "BAD BLOOD",
+              "2010s"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "ポップ",
+              "ミュージック"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Bad Blood",
+            "apple_music": "Bad Blood"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:bad_blood"
         },
         {
           "title": "All You Had To Do Was Stay - Karaoke Version",
@@ -1462,7 +1777,34 @@
           "extra_type": "karaoke",
           "tags": [],
           "tsm_song_id": "0tf0",
-          "tsm_album_id": "lhq"
+          "tsm_album_id": "lhq",
+          "genres": [
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 1.2
+          },
+          "genre_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "ポップ",
+              "ミュージック"
+            ]
+          },
+          "genre_query_titles": {
+            "apple_music": "All You Had To Do Was Stay"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:all_you_had_to_do_was_stay"
         },
         {
           "title": "Blank Space - Commentary",
@@ -1497,7 +1839,52 @@
           "extra_type": "commentary",
           "tags": [],
           "tsm_song_id": "pxm7",
-          "tsm_album_id": "lhq"
+          "tsm_album_id": "lhq",
+          "genres": [
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "electropop": 1.0,
+            "pop": 2.2
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "electropop"
+            ],
+            "apple_music": [
+              "pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "love at first listen",
+              "2014",
+              "female vocalists",
+              "best of 2014",
+              "electropop",
+              "taylor swift",
+              "10s",
+              "2010s",
+              "max martin"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "ポップ",
+              "ミュージック",
+              "Música",
+              "Musik"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Blank Space",
+            "apple_music": "Blank Space"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:blank_space"
         },
         {
           "title": "Clean - Commentary",
@@ -1532,7 +1919,34 @@
           "extra_type": "commentary",
           "tags": [],
           "tsm_song_id": "e29n",
-          "tsm_album_id": "lhq"
+          "tsm_album_id": "lhq",
+          "genres": [
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 1.2
+          },
+          "genre_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "ポップ",
+              "ミュージック"
+            ]
+          },
+          "genre_query_titles": {
+            "apple_music": "Clean"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:clean"
         },
         {
           "title": "How You Get The Girl - Commentary",
@@ -1567,7 +1981,34 @@
           "extra_type": "commentary",
           "tags": [],
           "tsm_song_id": "db8r",
-          "tsm_album_id": "lhq"
+          "tsm_album_id": "lhq",
+          "genres": [
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 1.2
+          },
+          "genre_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "ポップ",
+              "ミュージック"
+            ]
+          },
+          "genre_query_titles": {
+            "apple_music": "How You Get The Girl"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:how_you_get_the_girl"
         },
         {
           "title": "How You Get The Girl - Karaoke Version",
@@ -1604,7 +2045,34 @@
           "extra_type": "karaoke",
           "tags": [],
           "tsm_song_id": "db8r",
-          "tsm_album_id": "lhq"
+          "tsm_album_id": "lhq",
+          "genres": [
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 1.2
+          },
+          "genre_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "ポップ",
+              "ミュージック"
+            ]
+          },
+          "genre_query_titles": {
+            "apple_music": "How You Get The Girl"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:how_you_get_the_girl"
         },
         {
           "title": "I Know Places - Commentary",
@@ -1639,7 +2107,36 @@
           "extra_type": "commentary",
           "tags": [],
           "tsm_song_id": "gcni",
-          "tsm_album_id": "lhq"
+          "tsm_album_id": "lhq",
+          "genres": [
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 1.2
+          },
+          "genre_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Поп",
+              "Музыка",
+              "ポップ",
+              "ミュージック"
+            ]
+          },
+          "genre_query_titles": {
+            "apple_music": "I Know Places"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:i_know_places"
         },
         {
           "title": "I Know Places - Karaoke Version",
@@ -1676,7 +2173,36 @@
           "extra_type": "karaoke",
           "tags": [],
           "tsm_song_id": "gcni",
-          "tsm_album_id": "lhq"
+          "tsm_album_id": "lhq",
+          "genres": [
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 1.2
+          },
+          "genre_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Поп",
+              "Музыка",
+              "ポップ",
+              "ミュージック"
+            ]
+          },
+          "genre_query_titles": {
+            "apple_music": "I Know Places"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:i_know_places"
         },
         {
           "title": "I Wish You Would - Commentary",
@@ -1711,7 +2237,34 @@
           "extra_type": "commentary",
           "tags": [],
           "tsm_song_id": "bk4n",
-          "tsm_album_id": "lhq"
+          "tsm_album_id": "lhq",
+          "genres": [
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 1.2
+          },
+          "genre_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "ポップ",
+              "ミュージック"
+            ]
+          },
+          "genre_query_titles": {
+            "apple_music": "I Wish You Would"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:i_wish_you_would"
         },
         {
           "title": "I Wish You Would - Karaoke Version",
@@ -1748,7 +2301,34 @@
           "extra_type": "karaoke",
           "tags": [],
           "tsm_song_id": "bk4n",
-          "tsm_album_id": "lhq"
+          "tsm_album_id": "lhq",
+          "genres": [
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 1.2
+          },
+          "genre_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "ポップ",
+              "ミュージック"
+            ]
+          },
+          "genre_query_titles": {
+            "apple_music": "I Wish You Would"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:i_wish_you_would"
         },
         {
           "title": "New Romantics - Karaoke Version",
@@ -1783,7 +2363,50 @@
           "extra_type": "karaoke",
           "tags": [],
           "tsm_song_id": "yh86",
-          "tsm_album_id": "lhq"
+          "tsm_album_id": "lhq",
+          "genres": [
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 2.2,
+            "synth-pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "synth-pop"
+            ],
+            "apple_music": [
+              "pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "why on earth is this just a bonus track",
+              "love at first listen",
+              "synthpop",
+              "fave fave fave",
+              "female vocalists",
+              "fode essa buceta",
+              "max martin",
+              "2014",
+              "taylor swift"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "ポップ",
+              "ミュージック"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "New Romantics",
+            "apple_music": "New Romantics"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:new_romantics"
         },
         {
           "title": "Out Of The Woods - Commentary",
@@ -1818,7 +2441,52 @@
           "extra_type": "commentary",
           "tags": [],
           "tsm_song_id": "e31g",
-          "tsm_album_id": "lhq"
+          "tsm_album_id": "lhq",
+          "genres": [
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "electropop": 1.0,
+            "pop": 2.2,
+            "synth-pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "synth-pop",
+              "electropop"
+            ],
+            "apple_music": [
+              "pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "love at first listen",
+              "synthpop",
+              "female vocalists",
+              "1989",
+              "taylor swift",
+              "amazing",
+              "synth-pop",
+              "electropop",
+              "indietronica"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "ポップ",
+              "ミュージック"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Out Of The Woods",
+            "apple_music": "Out Of The Woods"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:out_of_the_woods"
         },
         {
           "title": "Out Of The Woods - Karaoke Version",
@@ -1855,7 +2523,52 @@
           "extra_type": "karaoke",
           "tags": [],
           "tsm_song_id": "e31g",
-          "tsm_album_id": "lhq"
+          "tsm_album_id": "lhq",
+          "genres": [
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "electropop": 1.0,
+            "pop": 2.2,
+            "synth-pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "synth-pop",
+              "electropop"
+            ],
+            "apple_music": [
+              "pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "love at first listen",
+              "synthpop",
+              "female vocalists",
+              "1989",
+              "taylor swift",
+              "amazing",
+              "synth-pop",
+              "electropop",
+              "indietronica"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "ポップ",
+              "ミュージック"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Out Of The Woods",
+            "apple_music": "Out Of The Woods"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:out_of_the_woods"
         },
         {
           "title": "Style - Commentary",
@@ -1890,7 +2603,53 @@
           "extra_type": "commentary",
           "tags": [],
           "tsm_song_id": "7ovr",
-          "tsm_album_id": "lhq"
+          "tsm_album_id": "lhq",
+          "genres": [
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 2.2,
+            "pop rock": 1.0,
+            "synth-pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "synth-pop",
+              "pop rock"
+            ],
+            "apple_music": [
+              "pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "synthpop",
+              "love at first listen",
+              "taylor swift",
+              "1989",
+              "pop rock",
+              "female vocalists",
+              "max martin",
+              "2015",
+              "Funk-Pop"
+            ],
+            "apple_music": [
+              "Pop",
+              "Música",
+              "Music",
+              "ポップ",
+              "ミュージック"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Style",
+            "apple_music": "Style"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:style"
         },
         {
           "title": "This Love - Commentary",
@@ -1925,7 +2684,36 @@
           "extra_type": "commentary",
           "tags": [],
           "tsm_song_id": "v5a9",
-          "tsm_album_id": "lhq"
+          "tsm_album_id": "lhq",
+          "genres": [
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 1.2
+          },
+          "genre_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Поп",
+              "Музыка",
+              "ポップ",
+              "ミュージック"
+            ]
+          },
+          "genre_query_titles": {
+            "apple_music": "This Love"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:this_love"
         },
         {
           "title": "This Love - Karaoke Version",
@@ -1962,7 +2750,36 @@
           "extra_type": "karaoke",
           "tags": [],
           "tsm_song_id": "v5a9",
-          "tsm_album_id": "lhq"
+          "tsm_album_id": "lhq",
+          "genres": [
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 1.2
+          },
+          "genre_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Поп",
+              "Музыка",
+              "ポップ",
+              "ミュージック"
+            ]
+          },
+          "genre_query_titles": {
+            "apple_music": "This Love"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:this_love"
         },
         {
           "title": "Welcome to New York - Commentary",
@@ -1997,7 +2814,54 @@
           "extra_type": "commentary",
           "tags": [],
           "tsm_song_id": "dfdd",
-          "tsm_album_id": "lhq"
+          "tsm_album_id": "lhq",
+          "genres": [
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "electropop": 1.0,
+            "pop": 2.2,
+            "synth-pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "synth-pop",
+              "electropop"
+            ],
+            "apple_music": [
+              "pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "synthpop",
+              "electropop",
+              "female vocalists",
+              "new york",
+              "love at first listen",
+              "New York City",
+              "ryan tedder",
+              "synth-pop",
+              "NYC"
+            ],
+            "apple_music": [
+              "国际流行",
+              "音乐",
+              "Pop",
+              "Music",
+              "ポップ",
+              "ミュージック"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Welcome To New York",
+            "apple_music": "Welcome To New York"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:welcome_to_new_york"
         },
         {
           "title": "Welcome To New York - Karaoke Version",
@@ -2034,7 +2898,54 @@
           "extra_type": "karaoke",
           "tags": [],
           "tsm_song_id": "dfdd",
-          "tsm_album_id": "lhq"
+          "tsm_album_id": "lhq",
+          "genres": [
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "electropop": 1.0,
+            "pop": 2.2,
+            "synth-pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "synth-pop",
+              "electropop"
+            ],
+            "apple_music": [
+              "pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "synthpop",
+              "electropop",
+              "female vocalists",
+              "new york",
+              "love at first listen",
+              "New York City",
+              "ryan tedder",
+              "synth-pop",
+              "NYC"
+            ],
+            "apple_music": [
+              "国际流行",
+              "音乐",
+              "Pop",
+              "Music",
+              "ポップ",
+              "ミュージック"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Welcome To New York",
+            "apple_music": "Welcome To New York"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:welcome_to_new_york"
         },
         {
           "title": "Wildest Dreams - Commentary",
@@ -2069,7 +2980,53 @@
           "extra_type": "commentary",
           "tags": [],
           "tsm_song_id": "rv14",
-          "tsm_album_id": "lhq"
+          "tsm_album_id": "lhq",
+          "genres": [
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "dream pop": 1.0,
+            "pop": 2.2,
+            "synth-pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "dream pop",
+              "synth-pop"
+            ],
+            "apple_music": [
+              "pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "dream pop",
+              "max martin",
+              "love at first listen",
+              "lana del rey -ish",
+              "synthpop",
+              "10s",
+              "singer-songwriter",
+              "taylor swift",
+              "epic"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "ポップ",
+              "ミュージック",
+              "Música"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Wildest Dreams",
+            "apple_music": "Wildest Dreams"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:wildest_dreams"
         },
         {
           "title": "Wildest Dreams - Karaoke Version",
@@ -2106,7 +3063,53 @@
           "extra_type": "karaoke",
           "tags": [],
           "tsm_song_id": "rv14",
-          "tsm_album_id": "lhq"
+          "tsm_album_id": "lhq",
+          "genres": [
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "dream pop": 1.0,
+            "pop": 2.2,
+            "synth-pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "dream pop",
+              "synth-pop"
+            ],
+            "apple_music": [
+              "pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "dream pop",
+              "max martin",
+              "love at first listen",
+              "lana del rey -ish",
+              "synthpop",
+              "10s",
+              "singer-songwriter",
+              "taylor swift",
+              "epic"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "ポップ",
+              "ミュージック",
+              "Música"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Wildest Dreams",
+            "apple_music": "Wildest Dreams"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:wildest_dreams"
         },
         {
           "title": "Wonderland - Karaoke Version",
@@ -2141,7 +3144,36 @@
           "extra_type": "karaoke",
           "tags": [],
           "tsm_song_id": "n3cl",
-          "tsm_album_id": "lhq"
+          "tsm_album_id": "lhq",
+          "genres": [
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 1.2
+          },
+          "genre_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Поп",
+              "Музыка",
+              "ポップ",
+              "ミュージック"
+            ]
+          },
+          "genre_query_titles": {
+            "apple_music": "Wonderland"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:wonderland"
         },
         {
           "title": "You Are In Love - Karaoke Version",
@@ -2176,7 +3208,32 @@
           "extra_type": "karaoke",
           "tags": [],
           "tsm_song_id": "m0em",
-          "tsm_album_id": "lhq"
+          "tsm_album_id": "lhq",
+          "genres": [
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 1.2
+          },
+          "genre_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music"
+            ]
+          },
+          "genre_query_titles": {
+            "apple_music": "You Are In Love"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:you_are_in_love"
         },
         {
           "title": "Shake It Off - Commentary",
@@ -2211,7 +3268,48 @@
           "extra_type": "commentary",
           "tags": [],
           "tsm_song_id": "6kvx",
-          "tsm_album_id": "lhq"
+          "tsm_album_id": "lhq",
+          "genres": [
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 2.2
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop"
+            ],
+            "apple_music": [
+              "pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "haters gonna hate",
+              "2014",
+              "taylor swift",
+              "love at first listen",
+              "dance",
+              "female vocalists",
+              "best of 2014",
+              "shake it off",
+              "1989"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "ポップ",
+              "ミュージック"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Shake it Off",
+            "apple_music": "Shake it Off"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:shake_it_off_chartsnapshot_external_0bj1bAho"
         },
         {
           "title": "Shake It Off - Cover",
@@ -2246,7 +3344,48 @@
           "extra_type": "other",
           "tags": [],
           "tsm_song_id": "i4ge",
-          "tsm_album_id": "lhq"
+          "tsm_album_id": "lhq",
+          "genres": [
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 2.2
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop"
+            ],
+            "apple_music": [
+              "pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "haters gonna hate",
+              "2014",
+              "taylor swift",
+              "love at first listen",
+              "dance",
+              "female vocalists",
+              "best of 2014",
+              "shake it off",
+              "1989"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "ポップ",
+              "ミュージック"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Shake It Off",
+            "apple_music": "Shake It Off"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:shake_it_off_chartsnapshot_external_5luKF6M5"
         },
         {
           "title": "Shake it Off (Noteservice Wind Ensemble)",
@@ -2283,7 +3422,48 @@
           "extra_type": "other",
           "category": "other",
           "tsm_song_id": "6kvx",
-          "tsm_album_id": "lhq"
+          "tsm_album_id": "lhq",
+          "genres": [
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 2.2
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop"
+            ],
+            "apple_music": [
+              "pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "haters gonna hate",
+              "2014",
+              "taylor swift",
+              "love at first listen",
+              "dance",
+              "female vocalists",
+              "best of 2014",
+              "shake it off",
+              "1989"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "ポップ",
+              "ミュージック"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Shake it Off",
+            "apple_music": "Shake it Off"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:shake_it_off_chartsnapshot_external_0bj1bAho"
         },
         {
           "title": "Shake It Off (Best Work Edition)",
@@ -2319,7 +3499,48 @@
           "tags": [],
           "extra_type": "instrumental",
           "tsm_song_id": "mx5r",
-          "tsm_album_id": "lhq"
+          "tsm_album_id": "lhq",
+          "genres": [
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 2.2
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop"
+            ],
+            "apple_music": [
+              "pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "haters gonna hate",
+              "2014",
+              "taylor swift",
+              "love at first listen",
+              "dance",
+              "female vocalists",
+              "best of 2014",
+              "shake it off",
+              "1989"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "ポップ",
+              "ミュージック"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Shake It Off",
+            "apple_music": "Shake It Off"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:shake_it_off_chartsnapshot_external_5VqtAFyt"
         },
         {
           "title": "Shake It Off/Lebedik un Freylach (Arr. ZRI for Mixed Ensemble)",
@@ -2354,7 +3575,21 @@
           "extra_type": "other",
           "tags": [],
           "tsm_song_id": "tu0w",
-          "tsm_album_id": "lhq"
+          "tsm_album_id": "lhq",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": [],
+            "apple_music": []
+          },
+          "genre_raw_sources": {
+            "lastfm": [],
+            "apple_music": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:shake_it_off_lebedik_un_freylach_arr_zri_for_mixed_ensemble_chartsnapshot_external_41AEhaPZ"
         }
       ]
     },
@@ -2385,22 +3620,51 @@
             "4e6QU4gpfZj9xxcK856RgG"
           ],
           "release_date": "2014-01-01T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
+          "genres": [
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "electropop": 1.0,
+            "pop": 2.2
+          },
           "genre_sources": {
-            "lastfm": []
+            "lastfm": [
+              "pop",
+              "electropop"
+            ],
+            "apple_music": [
+              "pop"
+            ]
           },
           "genre_raw_sources": {
-            "lastfm": []
+            "lastfm": [
+              "pop",
+              "love at first listen",
+              "2014",
+              "female vocalists",
+              "best of 2014",
+              "electropop",
+              "taylor swift",
+              "10s",
+              "2010s",
+              "max martin"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "ポップ",
+              "ミュージック",
+              "Música",
+              "Musik"
+            ]
           },
           "genre_query_titles": {
-            "lastfm": "Blank Space - Voice Memo"
+            "lastfm": "Blank Space",
+            "apple_music": "Blank Space"
           },
-          "genre_errors": {
-            "lastfm": "LASTFM_API_KEY missing"
-          },
-          "genre_canonical_key": "family:blank_space_voice_memo",
+          "genre_errors": {},
+          "genre_canonical_key": "family:blank_space",
           "filter_tags": [
             "solo",
             "standalone",
@@ -2440,18 +3704,35 @@
             "4FoV729rw7IhoKlMZW5K5V"
           ],
           "release_date": "2014-01-01T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
+          "genres": [
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 1.2
+          },
           "genre_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "pop"
+            ]
           },
           "genre_raw_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Поп",
+              "Музыка",
+              "ポップ",
+              "ミュージック"
+            ]
           },
-          "genre_query_titles": {},
+          "genre_query_titles": {
+            "apple_music": "I Know Places"
+          },
           "genre_errors": {},
-          "genre_canonical_key": "family:i_know_places_voice_memo",
+          "genre_canonical_key": "family:i_know_places",
           "filter_tags": [
             "solo",
             "standalone",
@@ -2491,18 +3772,33 @@
             "4eTXfpHxhxVofrBUjAhPMg"
           ],
           "release_date": "2014-01-01T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
+          "genres": [
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 1.2
+          },
           "genre_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "pop"
+            ]
           },
           "genre_raw_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "ポップ",
+              "ミュージック"
+            ]
           },
-          "genre_query_titles": {},
+          "genre_query_titles": {
+            "apple_music": "I Wish You Would"
+          },
           "genre_errors": {},
-          "genre_canonical_key": "family:i_wish_you_would_voice_memo",
+          "genre_canonical_key": "family:i_wish_you_would",
           "filter_tags": [
             "solo",
             "standalone",
@@ -2548,14 +3844,12 @@
           "historical_track_ids": [],
           "release_date": "2015-01-01T00:00:00Z",
           "genres": [
-            "pop",
-            "dream pop",
-            "synth-pop"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "pop": 3.0,
-            "dream pop": 2.0,
+            "dream pop": 1.0,
+            "pop": 2.2,
             "synth-pop": 1.0
           },
           "genre_sources": {
@@ -2563,6 +3857,9 @@
               "pop",
               "dream pop",
               "synth-pop"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
@@ -2577,10 +3874,18 @@
               "singer-songwriter",
               "taylor swift",
               "epic"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "ポップ",
+              "ミュージック",
+              "Música"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "Wildest Dreams"
+            "lastfm": "Wildest Dreams",
+            "apple_music": "Wildest Dreams"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:wildest_dreams",

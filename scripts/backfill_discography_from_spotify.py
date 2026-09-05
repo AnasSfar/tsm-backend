@@ -509,6 +509,18 @@ def choose_existing_canonical(locations: list[TrackLocation]) -> TrackLocation:
     return sorted(locations, key=score)[0]
 
 
+def build_id_index(locations: list["TrackLocation"]) -> dict[str, "TrackLocation"]:
+    by_id: dict[str, TrackLocation] = {}
+    for loc in locations:
+        current_id = extract_track_id(loc.track.get("url") or loc.track.get("spotify_url"))
+        if current_id:
+            by_id[current_id] = loc
+    for loc in locations:
+        for historical_id in loc.track.get("historical_track_ids") or []:
+            by_id.setdefault(historical_id, loc)
+    return by_id
+
+
 def merge_historical_track_ids(target: dict[str, Any], ids: list[str]) -> bool:
     before = list(target.get("historical_track_ids") or [])
     target_id = extract_track_id(target.get("url") or target.get("spotify_url"))
@@ -1028,7 +1040,7 @@ def run_backfill(
         for loc in locations
         if track_is_present(loc.section, loc.track)
     ]
-    by_id = {extract_track_id(loc.track.get("url") or loc.track.get("spotify_url")): loc for loc in locations}
+    by_id = build_id_index(locations)
     by_title: dict[str, list[TrackLocation]] = defaultdict(list)
     by_dedupe_identity: dict[tuple[str, str, str, int], list[TrackLocation]] = defaultdict(list)
     for loc in locations:
@@ -1103,7 +1115,7 @@ def run_backfill(
             for loc in locations
             if track_is_present(loc.section, loc.track)
         ]
-        by_id = {extract_track_id(loc.track.get("url") or loc.track.get("spotify_url")): loc for loc in locations}
+        by_id = build_id_index(locations)
         by_title = defaultdict(list)
         by_dedupe_identity = defaultdict(list)
         for loc in locations:

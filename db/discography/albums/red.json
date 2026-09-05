@@ -31,16 +31,53 @@
             "5zyCYmiaVE5y26EZuwZbsw"
           ],
           "release_date": "2012-10-22T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
+          "genres": [
+            "country",
+            "country pop",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "country pop": 1.2,
+            "pop": 1.2,
+            "rock": 1.2
+          },
           "genre_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "pop",
+              "country",
+              "rock",
+              "country pop"
+            ]
           },
           "genre_raw_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "カントリー",
+              "ミュージック",
+              "Country",
+              "Rock",
+              "Contemporary Country",
+              "Teen Pop",
+              "Honky Tonk",
+              "Кантри",
+              "Музыка",
+              "Música",
+              "Country contemporáneo",
+              "Pop adolescente",
+              "乡村",
+              "音乐",
+              "摇滚",
+              "国际流行"
+            ]
           },
-          "genre_query_titles": {},
+          "genre_query_titles": {
+            "apple_music": "State Of Grace"
+          },
           "genre_errors": {},
           "genre_canonical_key": "family:state_of_grace",
           "filter_tags": [
@@ -80,16 +117,61 @@
             "1RvQQGwaPipiNgz8RXAKA8"
           ],
           "release_date": "2012-10-22T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
+          "genres": [
+            "country",
+            "country pop",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "country pop": 1.2,
+            "pop": 1.2,
+            "rock": 1.2
+          },
           "genre_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "pop",
+              "country",
+              "rock",
+              "country pop"
+            ]
           },
           "genre_raw_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Country",
+              "Rock",
+              "Contemporary Country",
+              "Teen Pop",
+              "Honky Tonk",
+              "カントリー",
+              "ミュージック",
+              "Кантри",
+              "Музыка",
+              "Música",
+              "Country contemporáneo",
+              "Pop adolescente",
+              "乡村",
+              "音乐",
+              "摇滚",
+              "国际流行",
+              "컨트리",
+              "음악",
+              "록",
+              "컨템포러리 컨트리",
+              "팝",
+              "틴 팝",
+              "홍키 통크",
+              "Teen pop"
+            ]
           },
-          "genre_query_titles": {},
+          "genre_query_titles": {
+            "apple_music": "Red"
+          },
           "genre_errors": {},
           "genre_canonical_key": "family:red",
           "filter_tags": [
@@ -129,16 +211,51 @@
             "0XfOV7qY3834QpFVwOb6CC"
           ],
           "release_date": "2012-10-22T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
+          "genres": [
+            "country",
+            "country pop",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "country pop": 1.2,
+            "pop": 1.2,
+            "rock": 1.2
+          },
           "genre_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "pop",
+              "country",
+              "rock",
+              "country pop"
+            ]
           },
           "genre_raw_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Country",
+              "Rock",
+              "Contemporary Country",
+              "Teen Pop",
+              "Honky Tonk",
+              "カントリー",
+              "ミュージック",
+              "乡村",
+              "音乐",
+              "摇滚",
+              "国际流行",
+              "Música",
+              "Country contemporáneo",
+              "Pop adolescente"
+            ]
           },
-          "genre_query_titles": {},
+          "genre_query_titles": {
+            "apple_music": "Treacherous"
+          },
           "genre_errors": {},
           "genre_canonical_key": "family:treacherous",
           "filter_tags": [
@@ -181,39 +298,87 @@
           ],
           "release_date": "2012-10-22T00:00:00Z",
           "genres": [
-            "pop",
-            "dance-pop",
-            "electropop"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "pop": 3.0,
-            "dance-pop": 2.0,
-            "electropop": 1.0
+            "country": 1.2,
+            "country pop": 1.2,
+            "dance-pop": 1.0,
+            "pop": 2.2,
+            "pop rock": 1.0,
+            "rock": 1.2
           },
           "genre_sources": {
             "lastfm": [
               "pop",
               "dance-pop",
-              "electropop"
+              "pop rock"
+            ],
+            "apple_music": [
+              "pop",
+              "country",
+              "rock",
+              "country pop"
             ]
           },
           "genre_raw_sources": {
             "lastfm": [
               "pop",
               "dance-pop",
-              "electropop",
               "pop rock",
+              "electropop",
               "dubstep",
               "teen pop",
               "melodic dubstep",
-              "rock",
-              "heartland rock",
-              "contemporary folk"
+              "julia mofada",
+              "contemporary folk",
+              "rock"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Country",
+              "Musique",
+              "Rock",
+              "Country contemporaine",
+              "Pop ado",
+              "Honky tonk",
+              "カントリー",
+              "ミュージック",
+              "Contemporary Country",
+              "Teen Pop",
+              "Honky Tonk",
+              "Música",
+              "Country contemporáneo",
+              "Pop adolescente",
+              "乡村",
+              "音乐",
+              "摇滚",
+              "国际流行",
+              "Musica",
+              "Country contemporaneo",
+              "Teen pop",
+              "Honky-tonk",
+              "컨트리",
+              "음악",
+              "록",
+              "컨템포러리 컨트리",
+              "팝",
+              "틴 팝",
+              "홍키 통크",
+              "Muziek",
+              "Hedendaagse country",
+              "Tienerpop",
+              "Country contemporânea",
+              "Musik",
+              "Modern country",
+              "Tonårspop"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "I Knew You Were Trouble (Taylor's Version)"
+            "lastfm": "I Knew You Were Trouble (Taylor's Version)",
+            "apple_music": "I Knew You Were Trouble"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:i_knew_you_were_trouble",
@@ -254,16 +419,60 @@
             "1q3RiD1tIWUpGsNFADMlvl"
           ],
           "release_date": "2012-10-22T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
+          "genres": [
+            "country",
+            "country pop",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "country pop": 1.2,
+            "pop": 1.2,
+            "rock": 1.2
+          },
           "genre_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "pop",
+              "country",
+              "rock",
+              "country pop"
+            ]
           },
           "genre_raw_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Country",
+              "Rock",
+              "Contemporary Country",
+              "Teen Pop",
+              "Honky Tonk",
+              "カントリー",
+              "ミュージック",
+              "Кантри",
+              "Музыка",
+              "Música",
+              "Country contemporáneo",
+              "Pop adolescente",
+              "乡村",
+              "音乐",
+              "摇滚",
+              "国际流行",
+              "컨트리",
+              "음악",
+              "록",
+              "컨템포러리 컨트리",
+              "팝",
+              "틴 팝",
+              "홍키 통크"
+            ]
           },
-          "genre_query_titles": {},
+          "genre_query_titles": {
+            "apple_music": "All Too Well"
+          },
           "genre_errors": {},
           "genre_canonical_key": "family:all_too_well",
           "filter_tags": [
@@ -305,21 +514,28 @@
           ],
           "release_date": "2012-10-22T00:00:00Z",
           "genres": [
-            "pop",
             "country",
-            "dance-pop"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "pop": 3.0,
-            "country": 2.0,
-            "dance-pop": 1.0
+            "country": 2.2,
+            "country pop": 1.2,
+            "dance-pop": 1.0,
+            "pop": 2.2,
+            "rock": 1.2
           },
           "genre_sources": {
             "lastfm": [
               "pop",
               "country",
               "dance-pop"
+            ],
+            "apple_music": [
+              "pop",
+              "country",
+              "rock",
+              "country pop"
             ]
           },
           "genre_raw_sources": {
@@ -328,16 +544,53 @@
               "country",
               "taylor swift",
               "love at first listen",
-              "female vocalists",
               "dance-pop",
+              "female vocalists",
               "catchy",
               "shameless fun",
               "bubblegum pop",
               "country pop"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Country",
+              "Rock",
+              "Contemporary Country",
+              "Teen Pop",
+              "Honky Tonk",
+              "カントリー",
+              "ミュージック",
+              "Кантри",
+              "Музыка",
+              "Música",
+              "Country contemporáneo",
+              "Pop adolescente",
+              "Musique",
+              "Country contemporaine",
+              "Pop ado",
+              "Honky tonk",
+              "乡村",
+              "音乐",
+              "摇滚",
+              "国际流行",
+              "Musica",
+              "Country contemporaneo",
+              "Teen pop",
+              "Honky-tonk",
+              "컨트리",
+              "음악",
+              "록",
+              "컨템포러리 컨트리",
+              "팝",
+              "틴 팝",
+              "홍키 통크",
+              "Country contemporânea"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "22"
+            "lastfm": "22",
+            "apple_music": "22"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:22",
@@ -379,16 +632,51 @@
             "31pEV5lPJi7btskZoUr2yu"
           ],
           "release_date": "2012-10-22T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
+          "genres": [
+            "country",
+            "country pop",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "country pop": 1.2,
+            "pop": 1.2,
+            "rock": 1.2
+          },
           "genre_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "pop",
+              "country",
+              "rock",
+              "country pop"
+            ]
           },
           "genre_raw_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "カントリー",
+              "ミュージック",
+              "Country",
+              "Rock",
+              "Contemporary Country",
+              "Teen Pop",
+              "Honky Tonk",
+              "乡村",
+              "音乐",
+              "摇滚",
+              "国际流行",
+              "Música",
+              "Country contemporáneo",
+              "Pop adolescente"
+            ]
           },
-          "genre_query_titles": {},
+          "genre_query_titles": {
+            "apple_music": "I Almost Do"
+          },
           "genre_errors": {},
           "genre_canonical_key": "family:i_almost_do",
           "filter_tags": [
@@ -430,20 +718,27 @@
           ],
           "release_date": "2012-10-22T00:00:00Z",
           "genres": [
-            "pop",
             "country",
-            "country pop"
+            "country pop",
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "pop": 3.0,
-            "country": 2.0,
-            "country pop": 1.0
+            "country": 2.2,
+            "country pop": 2.2,
+            "pop": 2.2,
+            "rock": 1.2
           },
           "genre_sources": {
             "lastfm": [
               "pop",
               "country",
+              "country pop"
+            ],
+            "apple_music": [
+              "pop",
+              "country",
+              "rock",
               "country pop"
             ]
           },
@@ -459,10 +754,47 @@
               "best of 2012",
               "Love",
               "catchy"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Country",
+              "Rock",
+              "Contemporary Country",
+              "Teen Pop",
+              "Honky Tonk",
+              "カントリー",
+              "ミュージック",
+              "Кантри",
+              "Музыка",
+              "Música",
+              "Country contemporáneo",
+              "Pop adolescente",
+              "Musique",
+              "Country contemporaine",
+              "Pop ado",
+              "Honky tonk",
+              "乡村",
+              "音乐",
+              "摇滚",
+              "国际流行",
+              "Musica",
+              "Country contemporaneo",
+              "Teen pop",
+              "Honky-tonk",
+              "컨트리",
+              "음악",
+              "록",
+              "컨템포러리 컨트리",
+              "팝",
+              "틴 팝",
+              "홍키 통크",
+              "Country contemporânea"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "We Are Never Ever Getting Back Together"
+            "lastfm": "We Are Never Ever Getting Back Together",
+            "apple_music": "We Are Never Ever Getting Back Together"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:we_are_never_ever_getting_back_together",
@@ -504,16 +836,48 @@
             "1x0J8LFX23d5h1zzuzZorc"
           ],
           "release_date": "2012-10-22T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
+          "genres": [
+            "country",
+            "country pop",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "country pop": 1.2,
+            "pop": 1.2,
+            "rock": 1.2
+          },
           "genre_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "pop",
+              "country",
+              "rock",
+              "country pop"
+            ]
           },
           "genre_raw_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "カントリー",
+              "ミュージック",
+              "Country",
+              "Rock",
+              "Contemporary Country",
+              "Teen Pop",
+              "Honky Tonk",
+              "乡村",
+              "音乐",
+              "摇滚",
+              "国际流行"
+            ]
           },
-          "genre_query_titles": {},
+          "genre_query_titles": {
+            "apple_music": "Stay Stay Stay"
+          },
           "genre_errors": {},
           "genre_canonical_key": "family:stay_stay_stay",
           "filter_tags": [
@@ -554,16 +918,49 @@
             "3n9mzjgAzjyKawvbHzciXF"
           ],
           "release_date": "2012-10-22T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
+          "genres": [
+            "country",
+            "country pop",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "country pop": 1.2,
+            "pop": 1.2,
+            "rock": 1.2
+          },
           "genre_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "country",
+              "rock",
+              "country pop",
+              "pop"
+            ]
           },
           "genre_raw_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "Country",
+              "Music",
+              "Rock",
+              "Contemporary Country",
+              "Pop",
+              "Teen Pop",
+              "Honky Tonk",
+              "乡村",
+              "音乐",
+              "摇滚",
+              "国际流行",
+              "Música",
+              "Country contemporáneo",
+              "Pop adolescente"
+            ]
           },
-          "genre_query_titles": {},
+          "genre_query_titles": {
+            "apple_music": "The Last Time"
+          },
           "genre_errors": {},
           "genre_canonical_key": "family:the_last_time",
           "filter_tags": [
@@ -603,16 +1000,51 @@
             "1fGsZsIkQkOspfsT24nQP6"
           ],
           "release_date": "2012-10-22T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
+          "genres": [
+            "country",
+            "country pop",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "country pop": 1.2,
+            "pop": 1.2,
+            "rock": 1.2
+          },
           "genre_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "pop",
+              "country",
+              "rock",
+              "country pop"
+            ]
           },
           "genre_raw_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "カントリー",
+              "ミュージック",
+              "Country",
+              "Música",
+              "Rock",
+              "Country contemporáneo",
+              "Pop adolescente",
+              "Honky Tonk",
+              "乡村",
+              "音乐",
+              "摇滚",
+              "Contemporary Country",
+              "国际流行",
+              "Teen Pop"
+            ]
           },
-          "genre_query_titles": {},
+          "genre_query_titles": {
+            "apple_music": "Holy Ground"
+          },
           "genre_errors": {},
           "genre_canonical_key": "family:holy_ground",
           "filter_tags": [
@@ -653,16 +1085,49 @@
             "6LKjHhOW1az75pCQ9XJJtF"
           ],
           "release_date": "2012-10-22T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
+          "genres": [
+            "country",
+            "country pop",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "country pop": 1.2,
+            "pop": 1.2,
+            "rock": 1.2
+          },
           "genre_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "pop",
+              "country",
+              "rock",
+              "country pop"
+            ]
           },
           "genre_raw_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Musique",
+              "Country",
+              "Music",
+              "Rock",
+              "Contemporary Country",
+              "Teen Pop",
+              "Honky Tonk",
+              "Кантри",
+              "Музыка",
+              "乡村",
+              "音乐",
+              "摇滚",
+              "国际流行"
+            ]
           },
-          "genre_query_titles": {},
+          "genre_query_titles": {
+            "apple_music": "Sad Beautiful Tragic"
+          },
           "genre_errors": {},
           "genre_canonical_key": "family:sad_beautiful_tragic",
           "filter_tags": [
@@ -702,16 +1167,49 @@
             "2X2J0BhxaLTmnxO4pPUhSd"
           ],
           "release_date": "2012-10-22T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
+          "genres": [
+            "country",
+            "country pop",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "country pop": 1.2,
+            "pop": 1.2,
+            "rock": 1.2
+          },
           "genre_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "pop",
+              "country",
+              "rock",
+              "country pop"
+            ]
           },
           "genre_raw_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Country",
+              "Rock",
+              "Contemporary Country",
+              "Teen Pop",
+              "Honky Tonk",
+              "乡村",
+              "音乐",
+              "摇滚",
+              "国际流行",
+              "Música",
+              "Country contemporáneo",
+              "Pop adolescente"
+            ]
           },
-          "genre_query_titles": {},
+          "genre_query_titles": {
+            "apple_music": "The Lucky One"
+          },
           "genre_errors": {},
           "genre_canonical_key": "family:the_lucky_one",
           "filter_tags": [
@@ -753,16 +1251,65 @@
             "3an4u3iZSy63ygYcWslJ5f"
           ],
           "release_date": "2012-10-22T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
+          "genres": [
+            "country",
+            "country pop",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "country pop": 1.2,
+            "pop": 1.2,
+            "rock": 1.2
+          },
           "genre_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "country",
+              "rock",
+              "country pop",
+              "pop"
+            ]
           },
           "genre_raw_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "Country",
+              "Music",
+              "Rock",
+              "Contemporary Country",
+              "Pop",
+              "Teen Pop",
+              "Honky Tonk",
+              "カントリー",
+              "ミュージック",
+              "Кантри",
+              "Музыка",
+              "Música",
+              "Country contemporáneo",
+              "Pop adolescente",
+              "乡村",
+              "音乐",
+              "摇滚",
+              "国际流行",
+              "Musica",
+              "Country contemporaneo",
+              "Teen pop",
+              "Honky-tonk",
+              "컨트리",
+              "음악",
+              "록",
+              "컨템포러리 컨트리",
+              "팝",
+              "틴 팝",
+              "홍키 통크",
+              "Country contemporânea"
+            ]
           },
-          "genre_query_titles": {},
+          "genre_query_titles": {
+            "apple_music": "Everything Has Changed"
+          },
           "genre_errors": {},
           "genre_canonical_key": "family:everything_has_changed",
           "filter_tags": [
@@ -803,16 +1350,48 @@
             "7MecVsMj22MneZt7kVFaCr"
           ],
           "release_date": "2012-10-22T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
+          "genres": [
+            "country",
+            "country pop",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "country pop": 1.2,
+            "pop": 1.2,
+            "rock": 1.2
+          },
           "genre_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "pop",
+              "country",
+              "rock",
+              "country pop"
+            ]
           },
           "genre_raw_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "カントリー",
+              "ミュージック",
+              "Country",
+              "Rock",
+              "Contemporary Country",
+              "Teen Pop",
+              "Honky Tonk",
+              "乡村",
+              "音乐",
+              "摇滚",
+              "国际流行"
+            ]
           },
-          "genre_query_titles": {},
+          "genre_query_titles": {
+            "apple_music": "Starlight"
+          },
           "genre_errors": {},
           "genre_canonical_key": "family:starlight",
           "filter_tags": [
@@ -852,16 +1431,40 @@
             "0L4YCNRfXAoTvdpWeH2RGj"
           ],
           "release_date": "2012-10-22T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
+          "genres": [
+            "country",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "pop": 1.2
+          },
           "genre_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "pop",
+              "country"
+            ]
           },
           "genre_raw_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Country",
+              "Música",
+              "乡村",
+              "音乐",
+              "컨트리",
+              "음악",
+              "Country contemporáneo",
+              "Honky Tonk"
+            ]
           },
-          "genre_query_titles": {},
+          "genre_query_titles": {
+            "apple_music": "Begin Again"
+          },
           "genre_errors": {},
           "genre_canonical_key": "family:begin_again",
           "filter_tags": [
@@ -901,16 +1504,35 @@
             "1n8rB9AhxiAvVP1E2c3yOd"
           ],
           "release_date": "2012-10-22T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
+          "genres": [
+            "country",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "pop": 1.2
+          },
           "genre_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "pop",
+              "country"
+            ]
           },
           "genre_raw_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Country",
+              "乡村",
+              "音乐"
+            ]
           },
-          "genre_query_titles": {},
+          "genre_query_titles": {
+            "apple_music": "Come Back...Be Here"
+          },
           "genre_errors": {},
           "genre_canonical_key": "family:come_back_be_here",
           "filter_tags": [
@@ -950,16 +1572,29 @@
             "6VFpuI0DDmbC5UyWZQ4IRY"
           ],
           "release_date": "2012-10-22T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
+          "genres": [
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 1.2
+          },
           "genre_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "pop"
+            ]
           },
           "genre_raw_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music"
+            ]
           },
-          "genre_query_titles": {},
+          "genre_query_titles": {
+            "apple_music": "Girl At Home"
+          },
           "genre_errors": {},
           "genre_canonical_key": "family:girl_at_home",
           "filter_tags": [
@@ -1011,7 +1646,88 @@
           "release_edition": "standard",
           "tags": [],
           "tsm_song_id": "raks",
-          "tsm_album_id": "5wp"
+          "tsm_album_id": "5wp",
+          "genres": [
+            "country",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 2.2,
+            "country pop": 1.2,
+            "dance-pop": 1.0,
+            "pop": 2.2,
+            "rock": 1.2
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "country",
+              "dance-pop"
+            ],
+            "apple_music": [
+              "pop",
+              "country",
+              "rock",
+              "country pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "country",
+              "taylor swift",
+              "love at first listen",
+              "dance-pop",
+              "female vocalists",
+              "catchy",
+              "shameless fun",
+              "bubblegum pop",
+              "country pop"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Country",
+              "Rock",
+              "Contemporary Country",
+              "Teen Pop",
+              "Honky Tonk",
+              "カントリー",
+              "ミュージック",
+              "Кантри",
+              "Музыка",
+              "Música",
+              "Country contemporáneo",
+              "Pop adolescente",
+              "Musique",
+              "Country contemporaine",
+              "Pop ado",
+              "Honky tonk",
+              "乡村",
+              "音乐",
+              "摇滚",
+              "国际流行",
+              "Musica",
+              "Country contemporaneo",
+              "Teen pop",
+              "Honky-tonk",
+              "컨트리",
+              "음악",
+              "록",
+              "컨템포러리 컨트리",
+              "팝",
+              "틴 팝",
+              "홍키 통크",
+              "Country contemporânea"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "22",
+            "apple_music": "22"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:22"
         },
         {
           "title": "All Too Well - Karaoke Version",
@@ -1047,7 +1763,63 @@
           "release_edition": "standard",
           "tags": [],
           "tsm_song_id": "4ty3",
-          "tsm_album_id": "5wp"
+          "tsm_album_id": "5wp",
+          "genres": [
+            "country",
+            "country pop",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "country pop": 1.2,
+            "pop": 1.2,
+            "rock": 1.2
+          },
+          "genre_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "pop",
+              "country",
+              "rock",
+              "country pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Country",
+              "Rock",
+              "Contemporary Country",
+              "Teen Pop",
+              "Honky Tonk",
+              "カントリー",
+              "ミュージック",
+              "Кантри",
+              "Музыка",
+              "Música",
+              "Country contemporáneo",
+              "Pop adolescente",
+              "乡村",
+              "音乐",
+              "摇滚",
+              "国际流行",
+              "컨트리",
+              "음악",
+              "록",
+              "컨템포러리 컨트리",
+              "팝",
+              "틴 팝",
+              "홍키 통크"
+            ]
+          },
+          "genre_query_titles": {
+            "apple_music": "All Too Well"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:all_too_well"
         },
         {
           "title": "Begin Again - Karaoke Version",
@@ -1083,7 +1855,43 @@
           "release_edition": "standard",
           "tags": [],
           "tsm_song_id": "xx5b",
-          "tsm_album_id": "5wp"
+          "tsm_album_id": "5wp",
+          "genres": [
+            "country",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "pop": 1.2
+          },
+          "genre_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "pop",
+              "country"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Country",
+              "Música",
+              "乡村",
+              "音乐",
+              "컨트리",
+              "음악",
+              "Country contemporáneo",
+              "Honky Tonk"
+            ]
+          },
+          "genre_query_titles": {
+            "apple_music": "Begin Again"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:begin_again"
         },
         {
           "title": "Everything Has Changed - Karaoke Version",
@@ -1122,7 +1930,68 @@
           "release_edition": "standard",
           "tags": [],
           "tsm_song_id": "o7zx",
-          "tsm_album_id": "5wp"
+          "tsm_album_id": "5wp",
+          "genres": [
+            "country",
+            "country pop",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "country pop": 1.2,
+            "pop": 1.2,
+            "rock": 1.2
+          },
+          "genre_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "country",
+              "rock",
+              "country pop",
+              "pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "Country",
+              "Music",
+              "Rock",
+              "Contemporary Country",
+              "Pop",
+              "Teen Pop",
+              "Honky Tonk",
+              "カントリー",
+              "ミュージック",
+              "Кантри",
+              "Музыка",
+              "Música",
+              "Country contemporáneo",
+              "Pop adolescente",
+              "乡村",
+              "音乐",
+              "摇滚",
+              "国际流行",
+              "Musica",
+              "Country contemporaneo",
+              "Teen pop",
+              "Honky-tonk",
+              "컨트리",
+              "음악",
+              "록",
+              "컨템포러리 컨트리",
+              "팝",
+              "틴 팝",
+              "홍키 통크",
+              "Country contemporânea"
+            ]
+          },
+          "genre_query_titles": {
+            "apple_music": "Everything Has Changed"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:everything_has_changed"
         },
         {
           "title": "Holy Ground - Karaoke Version",
@@ -1158,7 +2027,54 @@
           "release_edition": "standard",
           "tags": [],
           "tsm_song_id": "8gra",
-          "tsm_album_id": "5wp"
+          "tsm_album_id": "5wp",
+          "genres": [
+            "country",
+            "country pop",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "country pop": 1.2,
+            "pop": 1.2,
+            "rock": 1.2
+          },
+          "genre_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "pop",
+              "country",
+              "rock",
+              "country pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "カントリー",
+              "ミュージック",
+              "Country",
+              "Música",
+              "Rock",
+              "Country contemporáneo",
+              "Pop adolescente",
+              "Honky Tonk",
+              "乡村",
+              "音乐",
+              "摇滚",
+              "Contemporary Country",
+              "国际流行",
+              "Teen Pop"
+            ]
+          },
+          "genre_query_titles": {
+            "apple_music": "Holy Ground"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:holy_ground"
         },
         {
           "title": "I Almost Do - Karaoke Version",
@@ -1194,7 +2110,54 @@
           "release_edition": "standard",
           "tags": [],
           "tsm_song_id": "he2j",
-          "tsm_album_id": "5wp"
+          "tsm_album_id": "5wp",
+          "genres": [
+            "country",
+            "country pop",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "country pop": 1.2,
+            "pop": 1.2,
+            "rock": 1.2
+          },
+          "genre_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "pop",
+              "country",
+              "rock",
+              "country pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "カントリー",
+              "ミュージック",
+              "Country",
+              "Rock",
+              "Contemporary Country",
+              "Teen Pop",
+              "Honky Tonk",
+              "乡村",
+              "音乐",
+              "摇滚",
+              "国际流行",
+              "Música",
+              "Country contemporáneo",
+              "Pop adolescente"
+            ]
+          },
+          "genre_query_titles": {
+            "apple_music": "I Almost Do"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:i_almost_do"
         },
         {
           "title": "I Knew You Were Trouble. - Karaoke Version",
@@ -1230,7 +2193,92 @@
           "release_edition": "standard",
           "tags": [],
           "tsm_song_id": "v0ia",
-          "tsm_album_id": "5wp"
+          "tsm_album_id": "5wp",
+          "genres": [
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "country pop": 1.2,
+            "dance-pop": 1.0,
+            "pop": 2.2,
+            "pop rock": 1.0,
+            "rock": 1.2
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "dance-pop",
+              "pop rock"
+            ],
+            "apple_music": [
+              "pop",
+              "country",
+              "rock",
+              "country pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "dance-pop",
+              "pop rock",
+              "electropop",
+              "dubstep",
+              "teen pop",
+              "melodic dubstep",
+              "julia mofada",
+              "contemporary folk",
+              "rock"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Country",
+              "Musique",
+              "Rock",
+              "Country contemporaine",
+              "Pop ado",
+              "Honky tonk",
+              "カントリー",
+              "ミュージック",
+              "Contemporary Country",
+              "Teen Pop",
+              "Honky Tonk",
+              "Música",
+              "Country contemporáneo",
+              "Pop adolescente",
+              "乡村",
+              "音乐",
+              "摇滚",
+              "国际流行",
+              "Musica",
+              "Country contemporaneo",
+              "Teen pop",
+              "Honky-tonk",
+              "컨트리",
+              "음악",
+              "록",
+              "컨템포러리 컨트리",
+              "팝",
+              "틴 팝",
+              "홍키 통크",
+              "Muziek",
+              "Hedendaagse country",
+              "Tienerpop",
+              "Country contemporânea",
+              "Musik",
+              "Modern country",
+              "Tonårspop"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "I Knew You Were Trouble (Taylor's Version)",
+            "apple_music": "I Knew You Were Trouble"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:i_knew_you_were_trouble"
         },
         {
           "title": "Red - Karaoke Version",
@@ -1266,7 +2314,64 @@
           "release_edition": "standard",
           "tags": [],
           "tsm_song_id": "x1ho",
-          "tsm_album_id": "5wp"
+          "tsm_album_id": "5wp",
+          "genres": [
+            "country",
+            "country pop",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "country pop": 1.2,
+            "pop": 1.2,
+            "rock": 1.2
+          },
+          "genre_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "pop",
+              "country",
+              "rock",
+              "country pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Country",
+              "Rock",
+              "Contemporary Country",
+              "Teen Pop",
+              "Honky Tonk",
+              "カントリー",
+              "ミュージック",
+              "Кантри",
+              "Музыка",
+              "Música",
+              "Country contemporáneo",
+              "Pop adolescente",
+              "乡村",
+              "音乐",
+              "摇滚",
+              "国际流行",
+              "컨트리",
+              "음악",
+              "록",
+              "컨템포러리 컨트리",
+              "팝",
+              "틴 팝",
+              "홍키 통크",
+              "Teen pop"
+            ]
+          },
+          "genre_query_titles": {
+            "apple_music": "Red"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:red"
         },
         {
           "title": "Sad Beautiful Tragic - Karaoke Version",
@@ -1302,7 +2407,52 @@
           "release_edition": "standard",
           "tags": [],
           "tsm_song_id": "0qnt",
-          "tsm_album_id": "5wp"
+          "tsm_album_id": "5wp",
+          "genres": [
+            "country",
+            "country pop",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "country pop": 1.2,
+            "pop": 1.2,
+            "rock": 1.2
+          },
+          "genre_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "pop",
+              "country",
+              "rock",
+              "country pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Musique",
+              "Country",
+              "Music",
+              "Rock",
+              "Contemporary Country",
+              "Teen Pop",
+              "Honky Tonk",
+              "Кантри",
+              "Музыка",
+              "乡村",
+              "音乐",
+              "摇滚",
+              "国际流行"
+            ]
+          },
+          "genre_query_titles": {
+            "apple_music": "Sad Beautiful Tragic"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:sad_beautiful_tragic"
         },
         {
           "title": "Starlight - Karaoke Version",
@@ -1338,7 +2488,51 @@
           "release_edition": "standard",
           "tags": [],
           "tsm_song_id": "btg7",
-          "tsm_album_id": "5wp"
+          "tsm_album_id": "5wp",
+          "genres": [
+            "country",
+            "country pop",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "country pop": 1.2,
+            "pop": 1.2,
+            "rock": 1.2
+          },
+          "genre_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "pop",
+              "country",
+              "rock",
+              "country pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "カントリー",
+              "ミュージック",
+              "Country",
+              "Rock",
+              "Contemporary Country",
+              "Teen Pop",
+              "Honky Tonk",
+              "乡村",
+              "音乐",
+              "摇滚",
+              "国际流行"
+            ]
+          },
+          "genre_query_titles": {
+            "apple_music": "Starlight"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:starlight"
         },
         {
           "title": "State Of Grace - Karaoke Version",
@@ -1374,7 +2568,56 @@
           "release_edition": "standard",
           "tags": [],
           "tsm_song_id": "m16s",
-          "tsm_album_id": "5wp"
+          "tsm_album_id": "5wp",
+          "genres": [
+            "country",
+            "country pop",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "country pop": 1.2,
+            "pop": 1.2,
+            "rock": 1.2
+          },
+          "genre_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "pop",
+              "country",
+              "rock",
+              "country pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "カントリー",
+              "ミュージック",
+              "Country",
+              "Rock",
+              "Contemporary Country",
+              "Teen Pop",
+              "Honky Tonk",
+              "Кантри",
+              "Музыка",
+              "Música",
+              "Country contemporáneo",
+              "Pop adolescente",
+              "乡村",
+              "音乐",
+              "摇滚",
+              "国际流行"
+            ]
+          },
+          "genre_query_titles": {
+            "apple_music": "State Of Grace"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:state_of_grace"
         },
         {
           "title": "Stay Stay Stay - Karaoke Version",
@@ -1410,7 +2653,51 @@
           "release_edition": "standard",
           "tags": [],
           "tsm_song_id": "l3w9",
-          "tsm_album_id": "5wp"
+          "tsm_album_id": "5wp",
+          "genres": [
+            "country",
+            "country pop",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "country pop": 1.2,
+            "pop": 1.2,
+            "rock": 1.2
+          },
+          "genre_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "pop",
+              "country",
+              "rock",
+              "country pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "カントリー",
+              "ミュージック",
+              "Country",
+              "Rock",
+              "Contemporary Country",
+              "Teen Pop",
+              "Honky Tonk",
+              "乡村",
+              "音乐",
+              "摇滚",
+              "国际流行"
+            ]
+          },
+          "genre_query_titles": {
+            "apple_music": "Stay Stay Stay"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:stay_stay_stay"
         },
         {
           "title": "The Lucky One - Karaoke Version",
@@ -1446,7 +2733,52 @@
           "release_edition": "standard",
           "tags": [],
           "tsm_song_id": "pt39",
-          "tsm_album_id": "5wp"
+          "tsm_album_id": "5wp",
+          "genres": [
+            "country",
+            "country pop",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "country pop": 1.2,
+            "pop": 1.2,
+            "rock": 1.2
+          },
+          "genre_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "pop",
+              "country",
+              "rock",
+              "country pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Country",
+              "Rock",
+              "Contemporary Country",
+              "Teen Pop",
+              "Honky Tonk",
+              "乡村",
+              "音乐",
+              "摇滚",
+              "国际流行",
+              "Música",
+              "Country contemporáneo",
+              "Pop adolescente"
+            ]
+          },
+          "genre_query_titles": {
+            "apple_music": "The Lucky One"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:the_lucky_one"
         },
         {
           "title": "Treacherous - Karaoke Version",
@@ -1482,7 +2814,54 @@
           "release_edition": "standard",
           "tags": [],
           "tsm_song_id": "xx8h",
-          "tsm_album_id": "5wp"
+          "tsm_album_id": "5wp",
+          "genres": [
+            "country",
+            "country pop",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "country pop": 1.2,
+            "pop": 1.2,
+            "rock": 1.2
+          },
+          "genre_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "pop",
+              "country",
+              "rock",
+              "country pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Country",
+              "Rock",
+              "Contemporary Country",
+              "Teen Pop",
+              "Honky Tonk",
+              "カントリー",
+              "ミュージック",
+              "乡村",
+              "音乐",
+              "摇滚",
+              "国际流行",
+              "Música",
+              "Country contemporáneo",
+              "Pop adolescente"
+            ]
+          },
+          "genre_query_titles": {
+            "apple_music": "Treacherous"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:treacherous"
         },
         {
           "title": "We Are Never Ever Getting Back Together - Karaoke Version",
@@ -1518,7 +2897,88 @@
           "release_edition": "standard",
           "tags": [],
           "tsm_song_id": "6b2t",
-          "tsm_album_id": "5wp"
+          "tsm_album_id": "5wp",
+          "genres": [
+            "country",
+            "country pop",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 2.2,
+            "country pop": 2.2,
+            "pop": 2.2,
+            "rock": 1.2
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "country",
+              "country pop"
+            ],
+            "apple_music": [
+              "pop",
+              "country",
+              "rock",
+              "country pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "country",
+              "country pop",
+              "taylor swift",
+              "female vocalists",
+              "red",
+              "2012",
+              "best of 2012",
+              "Love",
+              "catchy"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Country",
+              "Rock",
+              "Contemporary Country",
+              "Teen Pop",
+              "Honky Tonk",
+              "カントリー",
+              "ミュージック",
+              "Кантри",
+              "Музыка",
+              "Música",
+              "Country contemporáneo",
+              "Pop adolescente",
+              "Musique",
+              "Country contemporaine",
+              "Pop ado",
+              "Honky tonk",
+              "乡村",
+              "音乐",
+              "摇滚",
+              "国际流行",
+              "Musica",
+              "Country contemporaneo",
+              "Teen pop",
+              "Honky-tonk",
+              "컨트리",
+              "음악",
+              "록",
+              "컨템포러리 컨트리",
+              "팝",
+              "틴 팝",
+              "홍키 통크",
+              "Country contemporânea"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "We Are Never Ever Getting Back Together",
+            "apple_music": "We Are Never Ever Getting Back Together"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:we_are_never_ever_getting_back_together"
         },
         {
           "title": "Ronan",
@@ -1541,16 +3001,29 @@
           "display_era": "Red",
           "historical_track_ids": [],
           "release_date": "2012-09-08T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
+          "genres": [
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 1.2
+          },
           "genre_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "pop"
+            ]
           },
           "genre_raw_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music"
+            ]
           },
-          "genre_query_titles": {},
+          "genre_query_titles": {
+            "apple_music": "Ronan"
+          },
           "genre_errors": {},
           "genre_canonical_key": "family:ronan",
           "filter_tags": [
@@ -1604,16 +3077,60 @@
           "display_era": "Red",
           "historical_track_ids": [],
           "release_date": "2022-06-11T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
+          "genres": [
+            "country",
+            "country pop",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "country pop": 1.2,
+            "pop": 1.2,
+            "rock": 1.2
+          },
           "genre_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "pop",
+              "country",
+              "rock",
+              "country pop"
+            ]
           },
           "genre_raw_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Country",
+              "Rock",
+              "Contemporary Country",
+              "Teen Pop",
+              "Honky Tonk",
+              "カントリー",
+              "ミュージック",
+              "Кантри",
+              "Музыка",
+              "Música",
+              "Country contemporáneo",
+              "Pop adolescente",
+              "乡村",
+              "音乐",
+              "摇滚",
+              "国际流行",
+              "컨트리",
+              "음악",
+              "록",
+              "컨템포러리 컨트리",
+              "팝",
+              "틴 팝",
+              "홍키 통크"
+            ]
           },
-          "genre_query_titles": {},
+          "genre_query_titles": {
+            "apple_music": "All Too Well"
+          },
           "genre_errors": {},
           "genre_canonical_key": "family:all_too_well",
           "filter_tags": [
@@ -1655,16 +3172,60 @@
           "display_era": "Red",
           "historical_track_ids": [],
           "release_date": "2021-11-18T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
+          "genres": [
+            "country",
+            "country pop",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "country pop": 1.2,
+            "pop": 1.2,
+            "rock": 1.2
+          },
           "genre_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "pop",
+              "country",
+              "rock",
+              "country pop"
+            ]
           },
           "genre_raw_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Country",
+              "Rock",
+              "Contemporary Country",
+              "Teen Pop",
+              "Honky Tonk",
+              "カントリー",
+              "ミュージック",
+              "Кантри",
+              "Музыка",
+              "Música",
+              "Country contemporáneo",
+              "Pop adolescente",
+              "乡村",
+              "音乐",
+              "摇滚",
+              "国际流行",
+              "컨트리",
+              "음악",
+              "록",
+              "컨템포러리 컨트리",
+              "팝",
+              "틴 팝",
+              "홍키 통크"
+            ]
           },
-          "genre_query_titles": {},
+          "genre_query_titles": {
+            "apple_music": "All Too Well"
+          },
           "genre_errors": {},
           "genre_canonical_key": "family:all_too_well",
           "filter_tags": [
@@ -1720,14 +3281,16 @@
           "genre_status": "missing",
           "genre_scores": {},
           "genre_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": []
           },
           "genre_raw_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": []
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:safe_sound_from_the_hunger_games_soundtrack",
+          "genre_canonical_key": "family:safe_and_sound",
           "filter_tags": [
             "solo",
             "standalone",
@@ -1784,10 +3347,12 @@
           "genre_status": "missing",
           "genre_scores": {},
           "genre_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": []
           },
           "genre_raw_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": []
           },
           "genre_query_titles": {},
           "genre_errors": {},
@@ -1834,16 +3399,61 @@
           "image_url": "https://i.scdn.co/image/ab67616d0000b273a7613d346501b828b56a0bc3",
           "historical_track_ids": [],
           "release_date": "2012-10-22T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
+          "genres": [
+            "country",
+            "country pop",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "country pop": 1.2,
+            "pop": 1.2,
+            "rock": 1.2
+          },
           "genre_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "pop",
+              "country",
+              "rock",
+              "country pop"
+            ]
           },
           "genre_raw_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Country",
+              "Rock",
+              "Contemporary Country",
+              "Teen Pop",
+              "Honky Tonk",
+              "カントリー",
+              "ミュージック",
+              "Кантри",
+              "Музыка",
+              "Música",
+              "Country contemporáneo",
+              "Pop adolescente",
+              "乡村",
+              "音乐",
+              "摇滚",
+              "国际流行",
+              "컨트리",
+              "음악",
+              "록",
+              "컨템포러리 컨트리",
+              "팝",
+              "틴 팝",
+              "홍키 통크",
+              "Teen pop"
+            ]
           },
-          "genre_query_titles": {},
+          "genre_query_titles": {
+            "apple_music": "Red"
+          },
           "genre_errors": {},
           "genre_canonical_key": "family:red",
           "filter_tags": [
@@ -1888,16 +3498,51 @@
           "image_url": "https://i.scdn.co/image/ab67616d0000b273a7613d346501b828b56a0bc3",
           "historical_track_ids": [],
           "release_date": "2012-10-22T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
+          "genres": [
+            "country",
+            "country pop",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "country pop": 1.2,
+            "pop": 1.2,
+            "rock": 1.2
+          },
           "genre_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "pop",
+              "country",
+              "rock",
+              "country pop"
+            ]
           },
           "genre_raw_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Country",
+              "Rock",
+              "Contemporary Country",
+              "Teen Pop",
+              "Honky Tonk",
+              "カントリー",
+              "ミュージック",
+              "乡村",
+              "音乐",
+              "摇滚",
+              "国际流行",
+              "Música",
+              "Country contemporáneo",
+              "Pop adolescente"
+            ]
           },
-          "genre_query_titles": {},
+          "genre_query_titles": {
+            "apple_music": "Treacherous"
+          },
           "genre_errors": {},
           "genre_canonical_key": "family:treacherous",
           "filter_tags": [
@@ -1944,16 +3589,53 @@
             "5mfDBWY7ncZFm7ykmFTG4i"
           ],
           "release_date": "2012-10-22T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
+          "genres": [
+            "country",
+            "country pop",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "country pop": 1.2,
+            "pop": 1.2,
+            "rock": 1.2
+          },
           "genre_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "pop",
+              "country",
+              "rock",
+              "country pop"
+            ]
           },
           "genre_raw_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "カントリー",
+              "ミュージック",
+              "Country",
+              "Rock",
+              "Contemporary Country",
+              "Teen Pop",
+              "Honky Tonk",
+              "Кантри",
+              "Музыка",
+              "Música",
+              "Country contemporáneo",
+              "Pop adolescente",
+              "乡村",
+              "音乐",
+              "摇滚",
+              "国际流行"
+            ]
           },
-          "genre_query_titles": {},
+          "genre_query_titles": {
+            "apple_music": "State Of Grace"
+          },
           "genre_errors": {},
           "genre_canonical_key": "family:state_of_grace",
           "filter_tags": [
@@ -2007,16 +3689,33 @@
             "4qTAwKJQ68gmnrnfPD3vlO"
           ],
           "release_date": "2012-10-22T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
+          "genres": [
+            "country",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "pop": 1.2
+          },
           "genre_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "pop",
+              "country"
+            ]
           },
           "genre_raw_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Country"
+            ]
           },
-          "genre_query_titles": {},
+          "genre_query_titles": {
+            "apple_music": "The Moment I Knew"
+          },
           "genre_errors": {},
           "genre_canonical_key": "family:the_moment_i_knew",
           "filter_tags": [
@@ -2058,18 +3757,51 @@
             "2mz69DJOIt4b1xxfxiJbBy"
           ],
           "release_date": "2012-10-22T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
+          "genres": [
+            "country",
+            "country pop",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "country pop": 1.2,
+            "pop": 1.2,
+            "rock": 1.2
+          },
           "genre_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "country",
+              "rock",
+              "country pop",
+              "pop"
+            ]
           },
           "genre_raw_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "Country",
+              "Music",
+              "Rock",
+              "Contemporary Country",
+              "Pop",
+              "Teen Pop",
+              "Honky Tonk",
+              "乡村",
+              "音乐",
+              "摇滚",
+              "国际流行",
+              "Música",
+              "Country contemporáneo",
+              "Pop adolescente"
+            ]
           },
-          "genre_query_titles": {},
+          "genre_query_titles": {
+            "apple_music": "The Last Time"
+          },
           "genre_errors": {},
-          "genre_canonical_key": "family:the_last_time_karaoke_version",
+          "genre_canonical_key": "family:the_last_time",
           "filter_tags": [
             "solo",
             "standalone",
@@ -2121,7 +3853,88 @@
           "extra_type": "commentary",
           "tags": [],
           "tsm_song_id": "raks",
-          "tsm_album_id": "5wp"
+          "tsm_album_id": "5wp",
+          "genres": [
+            "country",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 2.2,
+            "country pop": 1.2,
+            "dance-pop": 1.0,
+            "pop": 2.2,
+            "rock": 1.2
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "country",
+              "dance-pop"
+            ],
+            "apple_music": [
+              "pop",
+              "country",
+              "rock",
+              "country pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "country",
+              "taylor swift",
+              "love at first listen",
+              "dance-pop",
+              "female vocalists",
+              "catchy",
+              "shameless fun",
+              "bubblegum pop",
+              "country pop"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Country",
+              "Rock",
+              "Contemporary Country",
+              "Teen Pop",
+              "Honky Tonk",
+              "カントリー",
+              "ミュージック",
+              "Кантри",
+              "Музыка",
+              "Música",
+              "Country contemporáneo",
+              "Pop adolescente",
+              "Musique",
+              "Country contemporaine",
+              "Pop ado",
+              "Honky tonk",
+              "乡村",
+              "音乐",
+              "摇滚",
+              "国际流行",
+              "Musica",
+              "Country contemporaneo",
+              "Teen pop",
+              "Honky-tonk",
+              "컨트리",
+              "음악",
+              "록",
+              "컨템포러리 컨트리",
+              "팝",
+              "틴 팝",
+              "홍키 통크",
+              "Country contemporânea"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "22",
+            "apple_music": "22"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:22"
         },
         {
           "title": "A Perfectly Good Heart - Instrumental w/ BG vocals",
@@ -2156,7 +3969,41 @@
           "extra_type": "instrumental",
           "tags": [],
           "tsm_song_id": "yf70",
-          "tsm_album_id": "5wp"
+          "tsm_album_id": "5wp",
+          "genres": [
+            "country",
+            "country pop",
+            "rock"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "country pop": 1.2,
+            "rock": 1.2
+          },
+          "genre_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "country",
+              "rock",
+              "country pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "Country",
+              "Music",
+              "Rock",
+              "Contemporary Country",
+              "Honky Tonk"
+            ]
+          },
+          "genre_query_titles": {
+            "apple_music": "A Perfectly Good Heart"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:a_perfectly_good_heart"
         },
         {
           "title": "All You Had To Do Was Stay - Commentary",
@@ -2191,7 +4038,34 @@
           "extra_type": "commentary",
           "tags": [],
           "tsm_song_id": "0tf0",
-          "tsm_album_id": "5wp"
+          "tsm_album_id": "5wp",
+          "genres": [
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 1.2
+          },
+          "genre_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "ポップ",
+              "ミュージック"
+            ]
+          },
+          "genre_query_titles": {
+            "apple_music": "All You Had To Do Was Stay"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:all_you_had_to_do_was_stay"
         },
         {
           "title": "Change - Instrumental with BGV",
@@ -2228,7 +4102,50 @@
           "extra_type": "instrumental",
           "tags": [],
           "tsm_song_id": "qzwm",
-          "tsm_album_id": "5wp"
+          "tsm_album_id": "5wp",
+          "genres": [
+            "country",
+            "country pop",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "country pop": 1.2,
+            "pop": 1.2,
+            "rock": 1.2
+          },
+          "genre_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "country",
+              "pop",
+              "rock",
+              "country pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "Country",
+              "Music",
+              "Música",
+              "乡村",
+              "音乐",
+              "Pop",
+              "Adult Contemporary",
+              "Honky Tonk",
+              "Rock",
+              "Contemporary Country",
+              "Contemporáneo para adultos",
+              "Country contemporáneo"
+            ]
+          },
+          "genre_query_titles": {
+            "apple_music": "Change"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:change"
         },
         {
           "title": "All Too Well - Commentary",
@@ -2263,7 +4180,63 @@
           "extra_type": "commentary",
           "tags": [],
           "tsm_song_id": "4ty3",
-          "tsm_album_id": "5wp"
+          "tsm_album_id": "5wp",
+          "genres": [
+            "country",
+            "country pop",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "country pop": 1.2,
+            "pop": 1.2,
+            "rock": 1.2
+          },
+          "genre_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "pop",
+              "country",
+              "rock",
+              "country pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Country",
+              "Rock",
+              "Contemporary Country",
+              "Teen Pop",
+              "Honky Tonk",
+              "カントリー",
+              "ミュージック",
+              "Кантри",
+              "Музыка",
+              "Música",
+              "Country contemporáneo",
+              "Pop adolescente",
+              "乡村",
+              "音乐",
+              "摇滚",
+              "国际流行",
+              "컨트리",
+              "음악",
+              "록",
+              "컨템포러리 컨트리",
+              "팝",
+              "틴 팝",
+              "홍키 통크"
+            ]
+          },
+          "genre_query_titles": {
+            "apple_music": "All Too Well"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:all_too_well"
         },
         {
           "title": "Everything Has Changed - Commentary",
@@ -2298,7 +4271,68 @@
           "extra_type": "commentary",
           "tags": [],
           "tsm_song_id": "o7zx",
-          "tsm_album_id": "5wp"
+          "tsm_album_id": "5wp",
+          "genres": [
+            "country",
+            "country pop",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "country pop": 1.2,
+            "pop": 1.2,
+            "rock": 1.2
+          },
+          "genre_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "country",
+              "rock",
+              "country pop",
+              "pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "Country",
+              "Music",
+              "Rock",
+              "Contemporary Country",
+              "Pop",
+              "Teen Pop",
+              "Honky Tonk",
+              "カントリー",
+              "ミュージック",
+              "Кантри",
+              "Музыка",
+              "Música",
+              "Country contemporáneo",
+              "Pop adolescente",
+              "乡村",
+              "音乐",
+              "摇滚",
+              "国际流行",
+              "Musica",
+              "Country contemporaneo",
+              "Teen pop",
+              "Honky-tonk",
+              "컨트리",
+              "음악",
+              "록",
+              "컨템포러리 컨트리",
+              "팝",
+              "틴 팝",
+              "홍키 통크",
+              "Country contemporânea"
+            ]
+          },
+          "genre_query_titles": {
+            "apple_music": "Everything Has Changed"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:everything_has_changed"
         },
         {
           "title": "Holy Ground - Commentary",
@@ -2333,7 +4367,54 @@
           "extra_type": "commentary",
           "tags": [],
           "tsm_song_id": "8gra",
-          "tsm_album_id": "5wp"
+          "tsm_album_id": "5wp",
+          "genres": [
+            "country",
+            "country pop",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "country pop": 1.2,
+            "pop": 1.2,
+            "rock": 1.2
+          },
+          "genre_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "pop",
+              "country",
+              "rock",
+              "country pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "カントリー",
+              "ミュージック",
+              "Country",
+              "Música",
+              "Rock",
+              "Country contemporáneo",
+              "Pop adolescente",
+              "Honky Tonk",
+              "乡村",
+              "音乐",
+              "摇滚",
+              "Contemporary Country",
+              "国际流行",
+              "Teen Pop"
+            ]
+          },
+          "genre_query_titles": {
+            "apple_music": "Holy Ground"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:holy_ground"
         },
         {
           "title": "I Almost Do - Commentary",
@@ -2368,7 +4449,54 @@
           "extra_type": "commentary",
           "tags": [],
           "tsm_song_id": "he2j",
-          "tsm_album_id": "5wp"
+          "tsm_album_id": "5wp",
+          "genres": [
+            "country",
+            "country pop",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "country pop": 1.2,
+            "pop": 1.2,
+            "rock": 1.2
+          },
+          "genre_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "pop",
+              "country",
+              "rock",
+              "country pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "カントリー",
+              "ミュージック",
+              "Country",
+              "Rock",
+              "Contemporary Country",
+              "Teen Pop",
+              "Honky Tonk",
+              "乡村",
+              "音乐",
+              "摇滚",
+              "国际流行",
+              "Música",
+              "Country contemporáneo",
+              "Pop adolescente"
+            ]
+          },
+          "genre_query_titles": {
+            "apple_music": "I Almost Do"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:i_almost_do"
         },
         {
           "title": "I Knew You Were Trouble. - Commentary",
@@ -2403,7 +4531,92 @@
           "extra_type": "commentary",
           "tags": [],
           "tsm_song_id": "v0ia",
-          "tsm_album_id": "5wp"
+          "tsm_album_id": "5wp",
+          "genres": [
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "country pop": 1.2,
+            "dance-pop": 1.0,
+            "pop": 2.2,
+            "pop rock": 1.0,
+            "rock": 1.2
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "dance-pop",
+              "pop rock"
+            ],
+            "apple_music": [
+              "pop",
+              "country",
+              "rock",
+              "country pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "dance-pop",
+              "pop rock",
+              "electropop",
+              "dubstep",
+              "teen pop",
+              "melodic dubstep",
+              "julia mofada",
+              "contemporary folk",
+              "rock"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Country",
+              "Musique",
+              "Rock",
+              "Country contemporaine",
+              "Pop ado",
+              "Honky tonk",
+              "カントリー",
+              "ミュージック",
+              "Contemporary Country",
+              "Teen Pop",
+              "Honky Tonk",
+              "Música",
+              "Country contemporáneo",
+              "Pop adolescente",
+              "乡村",
+              "音乐",
+              "摇滚",
+              "国际流行",
+              "Musica",
+              "Country contemporaneo",
+              "Teen pop",
+              "Honky-tonk",
+              "컨트리",
+              "음악",
+              "록",
+              "컨템포러리 컨트리",
+              "팝",
+              "틴 팝",
+              "홍키 통크",
+              "Muziek",
+              "Hedendaagse country",
+              "Tienerpop",
+              "Country contemporânea",
+              "Musik",
+              "Modern country",
+              "Tonårspop"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "I Knew You Were Trouble (Taylor's Version)",
+            "apple_music": "I Knew You Were Trouble"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:i_knew_you_were_trouble"
         },
         {
           "title": "Red - Commentary",
@@ -2438,7 +4651,64 @@
           "extra_type": "commentary",
           "tags": [],
           "tsm_song_id": "x1ho",
-          "tsm_album_id": "5wp"
+          "tsm_album_id": "5wp",
+          "genres": [
+            "country",
+            "country pop",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "country pop": 1.2,
+            "pop": 1.2,
+            "rock": 1.2
+          },
+          "genre_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "pop",
+              "country",
+              "rock",
+              "country pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Country",
+              "Rock",
+              "Contemporary Country",
+              "Teen Pop",
+              "Honky Tonk",
+              "カントリー",
+              "ミュージック",
+              "Кантри",
+              "Музыка",
+              "Música",
+              "Country contemporáneo",
+              "Pop adolescente",
+              "乡村",
+              "音乐",
+              "摇滚",
+              "国际流行",
+              "컨트리",
+              "음악",
+              "록",
+              "컨템포러리 컨트리",
+              "팝",
+              "틴 팝",
+              "홍키 통크",
+              "Teen pop"
+            ]
+          },
+          "genre_query_titles": {
+            "apple_music": "Red"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:red"
         },
         {
           "title": "Sad Beautiful Tragic - Commentary",
@@ -2473,7 +4743,52 @@
           "extra_type": "commentary",
           "tags": [],
           "tsm_song_id": "0qnt",
-          "tsm_album_id": "5wp"
+          "tsm_album_id": "5wp",
+          "genres": [
+            "country",
+            "country pop",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "country pop": 1.2,
+            "pop": 1.2,
+            "rock": 1.2
+          },
+          "genre_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "pop",
+              "country",
+              "rock",
+              "country pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Musique",
+              "Country",
+              "Music",
+              "Rock",
+              "Contemporary Country",
+              "Teen Pop",
+              "Honky Tonk",
+              "Кантри",
+              "Музыка",
+              "乡村",
+              "音乐",
+              "摇滚",
+              "国际流行"
+            ]
+          },
+          "genre_query_titles": {
+            "apple_music": "Sad Beautiful Tragic"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:sad_beautiful_tragic"
         },
         {
           "title": "Starlight - Commentary",
@@ -2508,7 +4823,51 @@
           "extra_type": "commentary",
           "tags": [],
           "tsm_song_id": "btg7",
-          "tsm_album_id": "5wp"
+          "tsm_album_id": "5wp",
+          "genres": [
+            "country",
+            "country pop",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "country pop": 1.2,
+            "pop": 1.2,
+            "rock": 1.2
+          },
+          "genre_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "pop",
+              "country",
+              "rock",
+              "country pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "カントリー",
+              "ミュージック",
+              "Country",
+              "Rock",
+              "Contemporary Country",
+              "Teen Pop",
+              "Honky Tonk",
+              "乡村",
+              "音乐",
+              "摇滚",
+              "国际流行"
+            ]
+          },
+          "genre_query_titles": {
+            "apple_music": "Starlight"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:starlight"
         },
         {
           "title": "State Of Grace - Commentary",
@@ -2543,7 +4902,56 @@
           "extra_type": "commentary",
           "tags": [],
           "tsm_song_id": "m16s",
-          "tsm_album_id": "5wp"
+          "tsm_album_id": "5wp",
+          "genres": [
+            "country",
+            "country pop",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "country pop": 1.2,
+            "pop": 1.2,
+            "rock": 1.2
+          },
+          "genre_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "pop",
+              "country",
+              "rock",
+              "country pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "カントリー",
+              "ミュージック",
+              "Country",
+              "Rock",
+              "Contemporary Country",
+              "Teen Pop",
+              "Honky Tonk",
+              "Кантри",
+              "Музыка",
+              "Música",
+              "Country contemporáneo",
+              "Pop adolescente",
+              "乡村",
+              "音乐",
+              "摇滚",
+              "国际流行"
+            ]
+          },
+          "genre_query_titles": {
+            "apple_music": "State Of Grace"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:state_of_grace"
         },
         {
           "title": "Stay Stay Stay - Commentary",
@@ -2578,7 +4986,51 @@
           "extra_type": "commentary",
           "tags": [],
           "tsm_song_id": "l3w9",
-          "tsm_album_id": "5wp"
+          "tsm_album_id": "5wp",
+          "genres": [
+            "country",
+            "country pop",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "country pop": 1.2,
+            "pop": 1.2,
+            "rock": 1.2
+          },
+          "genre_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "pop",
+              "country",
+              "rock",
+              "country pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "カントリー",
+              "ミュージック",
+              "Country",
+              "Rock",
+              "Contemporary Country",
+              "Teen Pop",
+              "Honky Tonk",
+              "乡村",
+              "音乐",
+              "摇滚",
+              "国际流行"
+            ]
+          },
+          "genre_query_titles": {
+            "apple_music": "Stay Stay Stay"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:stay_stay_stay"
         },
         {
           "title": "The Last Time - Commentary",
@@ -2613,7 +5065,52 @@
           "extra_type": "commentary",
           "tags": [],
           "tsm_song_id": "bhuw",
-          "tsm_album_id": "5wp"
+          "tsm_album_id": "5wp",
+          "genres": [
+            "country",
+            "country pop",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "country pop": 1.2,
+            "pop": 1.2,
+            "rock": 1.2
+          },
+          "genre_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "country",
+              "rock",
+              "country pop",
+              "pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "Country",
+              "Music",
+              "Rock",
+              "Contemporary Country",
+              "Pop",
+              "Teen Pop",
+              "Honky Tonk",
+              "乡村",
+              "音乐",
+              "摇滚",
+              "国际流行",
+              "Música",
+              "Country contemporáneo",
+              "Pop adolescente"
+            ]
+          },
+          "genre_query_titles": {
+            "apple_music": "The Last Time"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:the_last_time"
         },
         {
           "title": "The Lucky One - Commentary",
@@ -2648,7 +5145,52 @@
           "extra_type": "commentary",
           "tags": [],
           "tsm_song_id": "pt39",
-          "tsm_album_id": "5wp"
+          "tsm_album_id": "5wp",
+          "genres": [
+            "country",
+            "country pop",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "country pop": 1.2,
+            "pop": 1.2,
+            "rock": 1.2
+          },
+          "genre_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "pop",
+              "country",
+              "rock",
+              "country pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Country",
+              "Rock",
+              "Contemporary Country",
+              "Teen Pop",
+              "Honky Tonk",
+              "乡村",
+              "音乐",
+              "摇滚",
+              "国际流行",
+              "Música",
+              "Country contemporáneo",
+              "Pop adolescente"
+            ]
+          },
+          "genre_query_titles": {
+            "apple_music": "The Lucky One"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:the_lucky_one"
         },
         {
           "title": "Treacherous - Commentary",
@@ -2683,7 +5225,54 @@
           "extra_type": "commentary",
           "tags": [],
           "tsm_song_id": "xx8h",
-          "tsm_album_id": "5wp"
+          "tsm_album_id": "5wp",
+          "genres": [
+            "country",
+            "country pop",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "country pop": 1.2,
+            "pop": 1.2,
+            "rock": 1.2
+          },
+          "genre_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "pop",
+              "country",
+              "rock",
+              "country pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Country",
+              "Rock",
+              "Contemporary Country",
+              "Teen Pop",
+              "Honky Tonk",
+              "カントリー",
+              "ミュージック",
+              "乡村",
+              "音乐",
+              "摇滚",
+              "国际流行",
+              "Música",
+              "Country contemporáneo",
+              "Pop adolescente"
+            ]
+          },
+          "genre_query_titles": {
+            "apple_music": "Treacherous"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:treacherous"
         },
         {
           "title": "Message In A Bottle (Feat Max G Remix) (Taylor's Version)",
@@ -2705,16 +5294,29 @@
           "image_url": "https://image-cdn-fa.spotifycdn.com/image/ab67616d0000b273e53252ce47982a3d555a6b3b",
           "historical_track_ids": [],
           "release_date": "2022-01-21T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
+          "genres": [
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 1.2
+          },
           "genre_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "pop"
+            ]
           },
           "genre_raw_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music"
+            ]
           },
-          "genre_query_titles": {},
+          "genre_query_titles": {
+            "apple_music": "Message In A Bottle (Fat Max G Remix) (Taylor's Version)"
+          },
           "genre_errors": {},
           "genre_canonical_key": "family:message_in_a_bottle_fat_max_g_remix_taylors_version",
           "filter_tags": [
@@ -2763,7 +5365,64 @@
           "tags": [],
           "chart_extra": true,
           "tsm_song_id": "x1ho",
-          "tsm_album_id": "5wp"
+          "tsm_album_id": "5wp",
+          "genres": [
+            "country",
+            "country pop",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "country pop": 1.2,
+            "pop": 1.2,
+            "rock": 1.2
+          },
+          "genre_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "pop",
+              "country",
+              "rock",
+              "country pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Country",
+              "Rock",
+              "Contemporary Country",
+              "Teen Pop",
+              "Honky Tonk",
+              "カントリー",
+              "ミュージック",
+              "Кантри",
+              "Музыка",
+              "Música",
+              "Country contemporáneo",
+              "Pop adolescente",
+              "乡村",
+              "音乐",
+              "摇滚",
+              "国际流行",
+              "컨트리",
+              "음악",
+              "록",
+              "컨템포러리 컨트리",
+              "팝",
+              "틴 팝",
+              "홍키 통크",
+              "Teen pop"
+            ]
+          },
+          "genre_query_titles": {
+            "apple_music": "Red"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:red"
         },
         {
           "title": "We Are Never Ever Getting Back Together - Commentary",
@@ -2798,7 +5457,88 @@
           "extra_type": "commentary",
           "tags": [],
           "tsm_song_id": "nd1o",
-          "tsm_album_id": "5wp"
+          "tsm_album_id": "5wp",
+          "genres": [
+            "country",
+            "country pop",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 2.2,
+            "country pop": 2.2,
+            "pop": 2.2,
+            "rock": 1.2
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "country",
+              "country pop"
+            ],
+            "apple_music": [
+              "pop",
+              "country",
+              "rock",
+              "country pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "country",
+              "country pop",
+              "taylor swift",
+              "female vocalists",
+              "red",
+              "2012",
+              "best of 2012",
+              "Love",
+              "catchy"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Country",
+              "Rock",
+              "Contemporary Country",
+              "Teen Pop",
+              "Honky Tonk",
+              "カントリー",
+              "ミュージック",
+              "Кантри",
+              "Музыка",
+              "Música",
+              "Country contemporáneo",
+              "Pop adolescente",
+              "Musique",
+              "Country contemporaine",
+              "Pop ado",
+              "Honky tonk",
+              "乡村",
+              "音乐",
+              "摇滚",
+              "国际流行",
+              "Musica",
+              "Country contemporaneo",
+              "Teen pop",
+              "Honky-tonk",
+              "컨트리",
+              "음악",
+              "록",
+              "컨템포러리 컨트리",
+              "팝",
+              "틴 팝",
+              "홍키 통크",
+              "Country contemporânea"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "We Are Never Ever Getting Back Together",
+            "apple_music": "We Are Never Ever Getting Back Together"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:we_are_never_ever_getting_back_together_chartsnapshot_external_6U1sV6To"
         },
         {
           "title": "I Knew You Were Trouble. - Instrumental With Background Vocals",
@@ -2833,7 +5573,92 @@
           "extra_type": "instrumental",
           "tags": [],
           "tsm_song_id": "kzbl",
-          "tsm_album_id": "5wp"
+          "tsm_album_id": "5wp",
+          "genres": [
+            "country",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 2.2,
+            "country pop": 1.2,
+            "pop": 2.2,
+            "pop rock": 1.0,
+            "rock": 1.2
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "country",
+              "pop rock"
+            ],
+            "apple_music": [
+              "pop",
+              "country",
+              "rock",
+              "country pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "dubstep",
+              "country",
+              "countrystep",
+              "best of 2012",
+              "max martin",
+              "2012",
+              "pop rock",
+              "female vocalists",
+              "melodic dubstep"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Country",
+              "Musique",
+              "Rock",
+              "Country contemporaine",
+              "Pop ado",
+              "Honky tonk",
+              "カントリー",
+              "ミュージック",
+              "Contemporary Country",
+              "Teen Pop",
+              "Honky Tonk",
+              "Música",
+              "Country contemporáneo",
+              "Pop adolescente",
+              "乡村",
+              "音乐",
+              "摇滚",
+              "国际流行",
+              "Musica",
+              "Country contemporaneo",
+              "Teen pop",
+              "Honky-tonk",
+              "컨트리",
+              "음악",
+              "록",
+              "컨템포러리 컨트리",
+              "팝",
+              "틴 팝",
+              "홍키 통크",
+              "Muziek",
+              "Hedendaagse country",
+              "Tienerpop",
+              "Country contemporânea",
+              "Musik",
+              "Modern country",
+              "Tonårspop"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "I Knew You Were Trouble.",
+            "apple_music": "I Knew You Were Trouble."
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:i_knew_you_were_trouble_chartsnapshot_external_1MDcFu6z"
         },
         {
           "title": "All Too Well - Instrumental With Background Vocals",
@@ -2868,7 +5693,63 @@
           "extra_type": "instrumental",
           "tags": [],
           "tsm_song_id": "fn0u",
-          "tsm_album_id": "5wp"
+          "tsm_album_id": "5wp",
+          "genres": [
+            "country",
+            "country pop",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "country pop": 1.2,
+            "pop": 1.2,
+            "rock": 1.2
+          },
+          "genre_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "pop",
+              "country",
+              "rock",
+              "country pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Country",
+              "Rock",
+              "Contemporary Country",
+              "Teen Pop",
+              "Honky Tonk",
+              "カントリー",
+              "ミュージック",
+              "Кантри",
+              "Музыка",
+              "Música",
+              "Country contemporáneo",
+              "Pop adolescente",
+              "乡村",
+              "音乐",
+              "摇滚",
+              "国际流行",
+              "컨트리",
+              "음악",
+              "록",
+              "컨템포러리 컨트리",
+              "팝",
+              "틴 팝",
+              "홍키 통크"
+            ]
+          },
+          "genre_query_titles": {
+            "apple_music": "All Too Well"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:all_too_well_chartsnapshot_external_4foqCyc6"
         },
         {
           "title": "We Are Never Ever Getting Back Together - Instrumental With Background Vocals",
@@ -2903,7 +5784,88 @@
           "extra_type": "instrumental",
           "tags": [],
           "tsm_song_id": "wuk0",
-          "tsm_album_id": "5wp"
+          "tsm_album_id": "5wp",
+          "genres": [
+            "country",
+            "country pop",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 2.2,
+            "country pop": 2.2,
+            "pop": 2.2,
+            "rock": 1.2
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "country",
+              "country pop"
+            ],
+            "apple_music": [
+              "pop",
+              "country",
+              "rock",
+              "country pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "country",
+              "country pop",
+              "taylor swift",
+              "female vocalists",
+              "red",
+              "2012",
+              "best of 2012",
+              "Love",
+              "catchy"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Country",
+              "Rock",
+              "Contemporary Country",
+              "Teen Pop",
+              "Honky Tonk",
+              "カントリー",
+              "ミュージック",
+              "Кантри",
+              "Музыка",
+              "Música",
+              "Country contemporáneo",
+              "Pop adolescente",
+              "Musique",
+              "Country contemporaine",
+              "Pop ado",
+              "Honky tonk",
+              "乡村",
+              "音乐",
+              "摇滚",
+              "国际流行",
+              "Musica",
+              "Country contemporaneo",
+              "Teen pop",
+              "Honky-tonk",
+              "컨트리",
+              "음악",
+              "록",
+              "컨템포러리 컨트리",
+              "팝",
+              "틴 팝",
+              "홍키 통크",
+              "Country contemporânea"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "We Are Never Ever Getting Back Together",
+            "apple_music": "We Are Never Ever Getting Back Together"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:we_are_never_ever_getting_back_together_chartsnapshot_external_46GNHUdB"
         },
         {
           "title": "Red - Instrumental With Background Vocals",
@@ -2938,7 +5900,64 @@
           "extra_type": "instrumental",
           "tags": [],
           "tsm_song_id": "tu5u",
-          "tsm_album_id": "5wp"
+          "tsm_album_id": "5wp",
+          "genres": [
+            "country",
+            "country pop",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "country pop": 1.2,
+            "pop": 1.2,
+            "rock": 1.2
+          },
+          "genre_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "pop",
+              "country",
+              "rock",
+              "country pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Country",
+              "Rock",
+              "Contemporary Country",
+              "Teen Pop",
+              "Honky Tonk",
+              "カントリー",
+              "ミュージック",
+              "Кантри",
+              "Музыка",
+              "Música",
+              "Country contemporáneo",
+              "Pop adolescente",
+              "乡村",
+              "音乐",
+              "摇滚",
+              "国际流行",
+              "컨트리",
+              "음악",
+              "록",
+              "컨템포러리 컨트리",
+              "팝",
+              "틴 팝",
+              "홍키 통크",
+              "Teen pop"
+            ]
+          },
+          "genre_query_titles": {
+            "apple_music": "Red"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:red_chartsnapshot_external_3lHGtCM2"
         },
         {
           "title": "22 - Instrumental With Background Vocals",
@@ -2973,7 +5992,88 @@
           "extra_type": "instrumental",
           "tags": [],
           "tsm_song_id": "v0ss",
-          "tsm_album_id": "5wp"
+          "tsm_album_id": "5wp",
+          "genres": [
+            "country",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 2.2,
+            "country pop": 1.2,
+            "dance-pop": 1.0,
+            "pop": 2.2,
+            "rock": 1.2
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "country",
+              "dance-pop"
+            ],
+            "apple_music": [
+              "pop",
+              "country",
+              "rock",
+              "country pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "country",
+              "taylor swift",
+              "love at first listen",
+              "dance-pop",
+              "female vocalists",
+              "catchy",
+              "shameless fun",
+              "bubblegum pop",
+              "country pop"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Country",
+              "Rock",
+              "Contemporary Country",
+              "Teen Pop",
+              "Honky Tonk",
+              "カントリー",
+              "ミュージック",
+              "Кантри",
+              "Музыка",
+              "Música",
+              "Country contemporáneo",
+              "Pop adolescente",
+              "Musique",
+              "Country contemporaine",
+              "Pop ado",
+              "Honky tonk",
+              "乡村",
+              "音乐",
+              "摇滚",
+              "国际流行",
+              "Musica",
+              "Country contemporaneo",
+              "Teen pop",
+              "Honky-tonk",
+              "컨트리",
+              "음악",
+              "록",
+              "컨템포러리 컨트리",
+              "팝",
+              "틴 팝",
+              "홍키 통크",
+              "Country contemporânea"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "22",
+            "apple_music": "22"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:22_chartsnapshot_external_2Cyfahse"
         },
         {
           "title": "Holy Ground - Instrumental With Background Vocals",
@@ -3008,7 +6108,54 @@
           "extra_type": "instrumental",
           "tags": [],
           "tsm_song_id": "5teo",
-          "tsm_album_id": "5wp"
+          "tsm_album_id": "5wp",
+          "genres": [
+            "country",
+            "country pop",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "country pop": 1.2,
+            "pop": 1.2,
+            "rock": 1.2
+          },
+          "genre_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "pop",
+              "country",
+              "rock",
+              "country pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "カントリー",
+              "ミュージック",
+              "Country",
+              "Música",
+              "Rock",
+              "Country contemporáneo",
+              "Pop adolescente",
+              "Honky Tonk",
+              "乡村",
+              "音乐",
+              "摇滚",
+              "Contemporary Country",
+              "国际流行",
+              "Teen Pop"
+            ]
+          },
+          "genre_query_titles": {
+            "apple_music": "Holy Ground"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:holy_ground_chartsnapshot_external_6jHHWbAR"
         },
         {
           "title": "The Lucky One - Instrumental With Background Vocals",
@@ -3043,7 +6190,52 @@
           "extra_type": "instrumental",
           "tags": [],
           "tsm_song_id": "omw5",
-          "tsm_album_id": "5wp"
+          "tsm_album_id": "5wp",
+          "genres": [
+            "country",
+            "country pop",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "country pop": 1.2,
+            "pop": 1.2,
+            "rock": 1.2
+          },
+          "genre_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "pop",
+              "country",
+              "rock",
+              "country pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Country",
+              "Rock",
+              "Contemporary Country",
+              "Teen Pop",
+              "Honky Tonk",
+              "乡村",
+              "音乐",
+              "摇滚",
+              "国际流行",
+              "Música",
+              "Country contemporáneo",
+              "Pop adolescente"
+            ]
+          },
+          "genre_query_titles": {
+            "apple_music": "The Lucky One"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:the_lucky_one_chartsnapshot_external_0PPT0FWj"
         },
         {
           "title": "Sad Beautiful Tragic - Instrumental With Background Vocals",
@@ -3078,7 +6270,52 @@
           "extra_type": "instrumental",
           "tags": [],
           "tsm_song_id": "adx1",
-          "tsm_album_id": "5wp"
+          "tsm_album_id": "5wp",
+          "genres": [
+            "country",
+            "country pop",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "country pop": 1.2,
+            "pop": 1.2,
+            "rock": 1.2
+          },
+          "genre_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "pop",
+              "country",
+              "rock",
+              "country pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Musique",
+              "Country",
+              "Music",
+              "Rock",
+              "Contemporary Country",
+              "Teen Pop",
+              "Honky Tonk",
+              "Кантри",
+              "Музыка",
+              "乡村",
+              "音乐",
+              "摇滚",
+              "国际流行"
+            ]
+          },
+          "genre_query_titles": {
+            "apple_music": "Sad Beautiful Tragic"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:sad_beautiful_tragic_chartsnapshot_external_5XSPL0XM"
         },
         {
           "title": "We Are Never Ever Getting Back Together (BestWork Edition)",
@@ -3114,7 +6351,88 @@
           "tags": [],
           "extra_type": "instrumental",
           "tsm_song_id": "nd1o",
-          "tsm_album_id": "5wp"
+          "tsm_album_id": "5wp",
+          "genres": [
+            "country",
+            "country pop",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 2.2,
+            "country pop": 2.2,
+            "pop": 2.2,
+            "rock": 1.2
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "country",
+              "country pop"
+            ],
+            "apple_music": [
+              "pop",
+              "country",
+              "rock",
+              "country pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "country",
+              "country pop",
+              "taylor swift",
+              "female vocalists",
+              "red",
+              "2012",
+              "best of 2012",
+              "Love",
+              "catchy"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Country",
+              "Rock",
+              "Contemporary Country",
+              "Teen Pop",
+              "Honky Tonk",
+              "カントリー",
+              "ミュージック",
+              "Кантри",
+              "Музыка",
+              "Música",
+              "Country contemporáneo",
+              "Pop adolescente",
+              "Musique",
+              "Country contemporaine",
+              "Pop ado",
+              "Honky tonk",
+              "乡村",
+              "音乐",
+              "摇滚",
+              "国际流行",
+              "Musica",
+              "Country contemporaneo",
+              "Teen pop",
+              "Honky-tonk",
+              "컨트리",
+              "음악",
+              "록",
+              "컨템포러리 컨트리",
+              "팝",
+              "틴 팝",
+              "홍키 통크",
+              "Country contemporânea"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "We Are Never Ever Getting Back Together",
+            "apple_music": "We Are Never Ever Getting Back Together"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:we_are_never_ever_getting_back_together_chartsnapshot_external_6U1sV6To"
         },
         {
           "title": "Everything Has Changed - Instrumental With Background Vocals",
@@ -3149,7 +6467,68 @@
           "extra_type": "instrumental",
           "tags": [],
           "tsm_song_id": "ve8c",
-          "tsm_album_id": "5wp"
+          "tsm_album_id": "5wp",
+          "genres": [
+            "country",
+            "country pop",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "country pop": 1.2,
+            "pop": 1.2,
+            "rock": 1.2
+          },
+          "genre_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "country",
+              "rock",
+              "country pop",
+              "pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "Country",
+              "Music",
+              "Rock",
+              "Contemporary Country",
+              "Pop",
+              "Teen Pop",
+              "Honky Tonk",
+              "カントリー",
+              "ミュージック",
+              "Кантри",
+              "Музыка",
+              "Música",
+              "Country contemporáneo",
+              "Pop adolescente",
+              "乡村",
+              "音乐",
+              "摇滚",
+              "国际流行",
+              "Musica",
+              "Country contemporaneo",
+              "Teen pop",
+              "Honky-tonk",
+              "컨트리",
+              "음악",
+              "록",
+              "컨템포러리 컨트리",
+              "팝",
+              "틴 팝",
+              "홍키 통크",
+              "Country contemporânea"
+            ]
+          },
+          "genre_query_titles": {
+            "apple_music": "Everything Has Changed"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:everything_has_changed_chartsnapshot_external_5cXTESo2"
         },
         {
           "title": "State Of Grace - Instrumental With Background Vocals",
@@ -3184,7 +6563,56 @@
           "extra_type": "instrumental",
           "tags": [],
           "tsm_song_id": "hj9a",
-          "tsm_album_id": "5wp"
+          "tsm_album_id": "5wp",
+          "genres": [
+            "country",
+            "country pop",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "country pop": 1.2,
+            "pop": 1.2,
+            "rock": 1.2
+          },
+          "genre_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "pop",
+              "country",
+              "rock",
+              "country pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "カントリー",
+              "ミュージック",
+              "Country",
+              "Rock",
+              "Contemporary Country",
+              "Teen Pop",
+              "Honky Tonk",
+              "Кантри",
+              "Музыка",
+              "Música",
+              "Country contemporáneo",
+              "Pop adolescente",
+              "乡村",
+              "音乐",
+              "摇滚",
+              "国际流行"
+            ]
+          },
+          "genre_query_titles": {
+            "apple_music": "State Of Grace"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:state_of_grace_chartsnapshot_external_4pvmbMjy"
         },
         {
           "title": "Begin Again - Instrumental With Background Vocals",
@@ -3219,7 +6647,43 @@
           "extra_type": "instrumental",
           "tags": [],
           "tsm_song_id": "ye65",
-          "tsm_album_id": "5wp"
+          "tsm_album_id": "5wp",
+          "genres": [
+            "country",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "pop": 1.2
+          },
+          "genre_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "pop",
+              "country"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Country",
+              "Música",
+              "乡村",
+              "音乐",
+              "컨트리",
+              "음악",
+              "Country contemporáneo",
+              "Honky Tonk"
+            ]
+          },
+          "genre_query_titles": {
+            "apple_music": "Begin Again"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:begin_again_chartsnapshot_external_4qYZFWPH"
         },
         {
           "title": "I Almost Do - Instrumental With Background Vocals",
@@ -3254,7 +6718,54 @@
           "extra_type": "instrumental",
           "tags": [],
           "tsm_song_id": "snwm",
-          "tsm_album_id": "5wp"
+          "tsm_album_id": "5wp",
+          "genres": [
+            "country",
+            "country pop",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "country pop": 1.2,
+            "pop": 1.2,
+            "rock": 1.2
+          },
+          "genre_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "pop",
+              "country",
+              "rock",
+              "country pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "カントリー",
+              "ミュージック",
+              "Country",
+              "Rock",
+              "Contemporary Country",
+              "Teen Pop",
+              "Honky Tonk",
+              "乡村",
+              "音乐",
+              "摇滚",
+              "国际流行",
+              "Música",
+              "Country contemporáneo",
+              "Pop adolescente"
+            ]
+          },
+          "genre_query_titles": {
+            "apple_music": "I Almost Do"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:i_almost_do_chartsnapshot_external_1B6UHn92"
         },
         {
           "title": "Stay Stay Stay - Instrumental With Background Vocals",
@@ -3289,7 +6800,51 @@
           "extra_type": "instrumental",
           "tags": [],
           "tsm_song_id": "ogox",
-          "tsm_album_id": "5wp"
+          "tsm_album_id": "5wp",
+          "genres": [
+            "country",
+            "country pop",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "country pop": 1.2,
+            "pop": 1.2,
+            "rock": 1.2
+          },
+          "genre_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "pop",
+              "country",
+              "rock",
+              "country pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "カントリー",
+              "ミュージック",
+              "Country",
+              "Rock",
+              "Contemporary Country",
+              "Teen Pop",
+              "Honky Tonk",
+              "乡村",
+              "音乐",
+              "摇滚",
+              "国际流行"
+            ]
+          },
+          "genre_query_titles": {
+            "apple_music": "Stay Stay Stay"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:stay_stay_stay_chartsnapshot_external_6HCWHsGF"
         },
         {
           "title": "Treacherous - Instrumental With Background Vocals",
@@ -3324,7 +6879,54 @@
           "extra_type": "instrumental",
           "tags": [],
           "tsm_song_id": "tpj8",
-          "tsm_album_id": "5wp"
+          "tsm_album_id": "5wp",
+          "genres": [
+            "country",
+            "country pop",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "country pop": 1.2,
+            "pop": 1.2,
+            "rock": 1.2
+          },
+          "genre_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "pop",
+              "country",
+              "rock",
+              "country pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Country",
+              "Rock",
+              "Contemporary Country",
+              "Teen Pop",
+              "Honky Tonk",
+              "カントリー",
+              "ミュージック",
+              "乡村",
+              "音乐",
+              "摇滚",
+              "国际流行",
+              "Música",
+              "Country contemporáneo",
+              "Pop adolescente"
+            ]
+          },
+          "genre_query_titles": {
+            "apple_music": "Treacherous"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:treacherous_chartsnapshot_external_1TSPz0XU"
         },
         {
           "title": "Babe (from reputation Stadium Tour Surprise Song Playlist)",
@@ -3352,10 +6954,12 @@
           "genre_status": "missing",
           "genre_scores": {},
           "genre_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": []
           },
           "genre_raw_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": []
           },
           "genre_query_titles": {},
           "genre_errors": {},

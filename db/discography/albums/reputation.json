@@ -33,18 +33,20 @@
           ],
           "release_date": "2017-11-10T00:00:00Z",
           "genres": [
-            "pop",
-            "electropop"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "pop": 3.0,
-            "electropop": 2.0
+            "electropop": 1.0,
+            "pop": 2.2
           },
           "genre_sources": {
             "lastfm": [
               "pop",
               "electropop"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
@@ -52,17 +54,22 @@
               "pop",
               "electropop",
               "2017",
-              "industrial",
               "pop rap",
               "EDM",
               "industrial pop",
-              "reputation",
+              "industrial",
+              "Hip-Hop",
               "electronic",
-              "Hip-Hop"
+              "reputation"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "...Ready For It?"
+            "lastfm": "...Ready For It?",
+            "apple_music": "...Ready For It?"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:ready_for_it",
@@ -104,36 +111,43 @@
           ],
           "release_date": "2017-11-10T00:00:00Z",
           "genres": [
-            "pop",
-            "electropop"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "pop": 3.0,
-            "electropop": 2.0
+            "electropop": 1.0,
+            "pop": 2.2
           },
           "genre_sources": {
             "lastfm": [
               "pop",
               "electropop"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
             "lastfm": [
               "pop",
               "rnb",
-              "pop rap",
               "future",
+              "pop rap",
               "Ed Sheeran",
-              "rap",
               "power pop",
+              "rap",
               "Hip-Hop",
               "female vocalist",
               "electropop"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "End Game"
+            "lastfm": "End Game",
+            "apple_music": "End Game"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:end_game",
@@ -176,21 +190,22 @@
           ],
           "release_date": "2017-11-10T00:00:00Z",
           "genres": [
-            "pop",
-            "electropop",
-            "dance-pop"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "pop": 3.0,
-            "electropop": 2.0,
-            "dance-pop": 1.0
+            "dance-pop": 1.0,
+            "electropop": 1.0,
+            "pop": 2.2
           },
           "genre_sources": {
             "lastfm": [
               "pop",
               "electropop",
               "dance-pop"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
@@ -200,15 +215,20 @@
               "EDM",
               "electropop",
               "taylor swift",
-              "Grunge",
               "electro-trap",
+              "Grunge",
               "dance-pop",
-              "love at first listen",
-              "electronic"
+              "electronic",
+              "love at first listen"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "I Did Something Bad"
+            "lastfm": "I Did Something Bad",
+            "apple_music": "I Did Something Bad"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:i_did_something_bad",
@@ -249,16 +269,29 @@
             "0OnfGJsCc1m9utfUYqid6O"
           ],
           "release_date": "2017-11-10T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
+          "genres": [
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 1.2
+          },
           "genre_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "pop"
+            ]
           },
           "genre_raw_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music"
+            ]
           },
-          "genre_query_titles": {},
+          "genre_query_titles": {
+            "apple_music": "Don't Blame Me"
+          },
           "genre_errors": {},
           "genre_canonical_key": "family:don_t_blame_me",
           "filter_tags": [
@@ -300,14 +333,12 @@
           ],
           "release_date": "2017-11-10T00:00:00Z",
           "genres": [
-            "pop",
-            "electropop",
-            "synth-pop"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "pop": 3.0,
-            "electropop": 2.0,
+            "electropop": 1.0,
+            "pop": 2.2,
             "synth-pop": 1.0
           },
           "genre_sources": {
@@ -315,6 +346,9 @@
               "pop",
               "electropop",
               "synth-pop"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
@@ -322,17 +356,23 @@
               "pop",
               "electropop",
               "taylor swift",
+              "synthpop",
               "tropical house",
               "reputation",
-              "synthpop",
               "synth-pop",
               "delicate",
-              "female vocalists",
-              "slow"
+              "alt-pop",
+              "dance-pop"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Música"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "Delicate"
+            "lastfm": "Delicate",
+            "apple_music": "Delicate"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:delicate",
@@ -377,21 +417,22 @@
           ],
           "release_date": "2017-11-10T00:00:00Z",
           "genres": [
-            "pop",
-            "electropop",
-            "dance-pop"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "pop": 3.0,
-            "electropop": 2.0,
-            "dance-pop": 1.0
+            "dance-pop": 1.0,
+            "electropop": 1.0,
+            "pop": 2.2
           },
           "genre_sources": {
             "lastfm": [
               "pop",
               "electropop",
               "dance-pop"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
@@ -406,10 +447,16 @@
               "best of 2017",
               "dance-pop",
               "shade"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Música"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "Look What You Made Me Do"
+            "lastfm": "Look What You Made Me Do",
+            "apple_music": "Look What You Made Me Do"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:look_what_you_made_me_do",
@@ -452,18 +499,20 @@
           ],
           "release_date": "2017-11-09T00:00:00Z",
           "genres": [
-            "pop",
-            "electropop"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "pop": 3.0,
-            "electropop": 2.0
+            "electropop": 1.0,
+            "pop": 2.2
           },
           "genre_sources": {
             "lastfm": [
               "pop",
               "electropop"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
@@ -472,16 +521,21 @@
               "electropop",
               "trap",
               "sexy",
-              "rnb",
               "female vocalist",
               "electronic",
-              "taylor swift",
+              "rnb",
               "female vocalists",
+              "taylor swift",
               "max martin"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "So It Goes..."
+            "lastfm": "So It Goes...",
+            "apple_music": "So It Goes..."
           },
           "genre_errors": {},
           "genre_canonical_key": "family:so_it_goes",
@@ -526,14 +580,12 @@
           ],
           "release_date": "2017-11-10T00:00:00Z",
           "genres": [
-            "pop",
-            "electropop",
-            "singer-songwriter"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "pop": 3.0,
-            "electropop": 2.0,
+            "electropop": 1.0,
+            "pop": 2.2,
             "singer-songwriter": 1.0
           },
           "genre_sources": {
@@ -541,6 +593,9 @@
               "pop",
               "electropop",
               "singer-songwriter"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
@@ -552,13 +607,18 @@
               "best of 2017",
               "female vocalists",
               "singer-songwriter",
-              "Joshua Bassett",
               "synthpop",
-              "electronic"
+              "dance-pop",
+              "julia mofada"
+            ],
+            "apple_music": [
+              "Pop",
+              "Musique"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "Gorgeous"
+            "lastfm": "Gorgeous",
+            "apple_music": "Gorgeous"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:gorgeous",
@@ -600,21 +660,22 @@
           ],
           "release_date": "2017-11-10T00:00:00Z",
           "genres": [
-            "pop",
-            "synth-pop",
-            "electropop"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "pop": 3.0,
-            "synth-pop": 2.0,
-            "electropop": 1.0
+            "electropop": 1.0,
+            "pop": 2.2,
+            "synth-pop": 1.0
           },
           "genre_sources": {
             "lastfm": [
               "pop",
               "synth-pop",
               "electropop"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
@@ -623,16 +684,21 @@
               "synthpop",
               "electropop",
               "female vocalist",
-              "taylor swift",
               "synth-pop",
               "love at first listen",
+              "taylor swift",
+              "electronic",
               "female vocalists",
-              "dance pop",
-              "2017"
+              "Masterpiece"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "Getaway Car"
+            "lastfm": "Getaway Car",
+            "apple_music": "Getaway Car"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:getaway_car",
@@ -675,14 +741,12 @@
           ],
           "release_date": "2017-11-10T00:00:00Z",
           "genres": [
-            "pop",
-            "electropop",
-            "synth-pop"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "pop": 3.0,
-            "electropop": 2.0,
+            "electropop": 1.0,
+            "pop": 2.2,
             "synth-pop": 1.0
           },
           "genre_sources": {
@@ -690,24 +754,32 @@
               "pop",
               "electropop",
               "synth-pop"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
             "lastfm": [
               "pop",
               "electropop",
-              "dance",
               "Love",
+              "dance",
               "female vocalist",
               "synthpop",
               "electronic",
+              "julia mofada",
               "trap",
-              "female vocalists",
-              "puta"
+              "female vocalists"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "King Of My Heart"
+            "lastfm": "King Of My Heart",
+            "apple_music": "King Of My Heart"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:king_of_my_heart",
@@ -750,17 +822,21 @@
           ],
           "release_date": "2017-11-10T00:00:00Z",
           "genres": [
-            "electropop",
             "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "electropop": 3.0,
-            "pop": 2.0
+            "electropop": 1.0,
+            "pop": 2.2,
+            "synth-pop": 1.0
           },
           "genre_sources": {
             "lastfm": [
               "electropop",
+              "pop",
+              "synth-pop"
+            ],
+            "apple_music": [
               "pop"
             ]
           },
@@ -771,15 +847,20 @@
               "future bass",
               "dance",
               "Drum and bass",
-              "taylor swift",
               "electronic",
-              "female vocalist",
-              "contemporary rnb",
-              "love at first listen"
+              "taylor swift",
+              "synthpop",
+              "dance-pop",
+              "contemporary rnb"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "Dancing With Our Hands Tied"
+            "lastfm": "Dancing With Our Hands Tied",
+            "apple_music": "Dancing With Our Hands Tied"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:dancing_with_our_hands_tied",
@@ -822,21 +903,22 @@
           ],
           "release_date": "2017-11-10T00:00:00Z",
           "genres": [
-            "pop",
-            "synth-pop",
-            "alternative"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "pop": 3.0,
-            "synth-pop": 2.0,
-            "alternative": 1.0
+            "alternative": 1.0,
+            "pop": 2.2,
+            "synth-pop": 1.0
           },
           "genre_sources": {
             "lastfm": [
               "pop",
-              "synth-pop",
-              "alternative"
+              "alternative",
+              "synth-pop"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
@@ -845,16 +927,21 @@
               "rnb",
               "sexy",
               "female vocalist",
-              "female vocalists",
-              "synth-pop",
               "alt-pop",
-              "taylor swift",
+              "synth-pop",
+              "female vocalists",
+              "julia mofada",
               "electro-rnb",
-              "contemporary rnb"
+              "taylor swift"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "Dress"
+            "lastfm": "Dress",
+            "apple_music": "Dress"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:dress",
@@ -896,39 +983,43 @@
           ],
           "release_date": "2017-11-10T00:00:00Z",
           "genres": [
-            "pop",
-            "electropop",
-            "dance-pop"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "pop": 3.0,
-            "electropop": 2.0,
-            "dance-pop": 1.0
+            "electropop": 1.0,
+            "pop": 2.2
           },
           "genre_sources": {
             "lastfm": [
-              "pop",
               "electropop",
-              "dance-pop"
+              "pop"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
             "lastfm": [
-              "pop",
               "electropop",
+              "pop",
               "dance",
               "electronic",
-              "bubblegum pop",
               "Kanye West",
-              "dance pop",
-              "shade",
+              "bubblegum pop",
+              "contemporary rnb",
+              "electronic dance music",
               "trap",
-              "contemporary rnb"
+              "shade"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "This Is Why We Can't Have Nice Things"
+            "lastfm": "This Is Why We Can't Have Nice Things",
+            "apple_music": "This Is Why We Can't Have Nice Things"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:this_is_why_we_can_t_have_nice_things",
@@ -971,14 +1062,12 @@
           ],
           "release_date": "2017-11-10T00:00:00Z",
           "genres": [
-            "pop",
-            "electropop",
-            "synth-pop"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "pop": 3.0,
-            "electropop": 2.0,
+            "electropop": 1.0,
+            "pop": 2.2,
             "synth-pop": 1.0
           },
           "genre_sources": {
@@ -986,6 +1075,9 @@
               "pop",
               "electropop",
               "synth-pop"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
@@ -993,17 +1085,22 @@
               "pop",
               "electropop",
               "reputation",
-              "rnb",
-              "taylor swift",
-              "synth-pop",
               "synthpop",
-              "dream pop",
+              "rnb",
+              "synth-pop",
+              "trap",
+              "taylor swift",
               "female vocalist",
-              "reputacao"
+              "julia mofada"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "Call It What You Want"
+            "lastfm": "Call It What You Want",
+            "apple_music": "Call It What You Want"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:call_it_what_you_want",
@@ -1044,16 +1141,33 @@
             "79bxjfUDHCwCe7JR4glr8r"
           ],
           "release_date": "2017-11-10T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
+          "genres": [
+            "country",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "pop": 1.2
+          },
           "genre_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "pop",
+              "country"
+            ]
           },
           "genre_raw_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Country"
+            ]
           },
-          "genre_query_titles": {},
+          "genre_query_titles": {
+            "apple_music": "New Year's Day"
+          },
           "genre_errors": {},
           "genre_canonical_key": "family:new_year_s_day",
           "filter_tags": [
@@ -1102,18 +1216,33 @@
             "3NdDpSvN911VPGivFlV5d0"
           ],
           "release_date": "2017-11-09T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
+          "genres": [
+            "soundtrack"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "soundtrack": 1.2
+          },
           "genre_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "soundtrack"
+            ]
           },
           "genre_raw_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "Soundtrack",
+              "Music",
+              "Bande originale",
+              "Musique"
+            ]
           },
-          "genre_query_titles": {},
+          "genre_query_titles": {
+            "apple_music": "I Don't Wanna Live Forever (Fifty Shades Darker)"
+          },
           "genre_errors": {},
-          "genre_canonical_key": "family:i_don_t_wanna_live_forever_fifty_shades_darker",
+          "genre_canonical_key": "family:i_don_t_wanna_live_forever",
           "filter_tags": [
             "collab",
             "soundtrack",
@@ -1162,10 +1291,12 @@
           "genre_status": "missing",
           "genre_scores": {},
           "genre_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": []
           },
           "genre_raw_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": []
           },
           "genre_query_titles": {},
           "genre_errors": {},
@@ -1216,18 +1347,20 @@
           "historical_track_ids": [],
           "release_date": "2017-12-01T00:00:00Z",
           "genres": [
-            "pop",
-            "electropop"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "pop": 3.0,
-            "electropop": 2.0
+            "electropop": 1.0,
+            "pop": 2.2
           },
           "genre_sources": {
             "lastfm": [
               "pop",
               "electropop"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
@@ -1235,17 +1368,22 @@
               "pop",
               "electropop",
               "2017",
-              "industrial",
               "pop rap",
               "EDM",
               "industrial pop",
-              "reputation",
+              "industrial",
+              "Hip-Hop",
               "electronic",
-              "Hip-Hop"
+              "reputation"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "...Ready For It?"
+            "lastfm": "...Ready For It?",
+            "apple_music": "...Ready For It? - BloodPopÃ‚Â® Remix"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:ready_for_it_bloodpopa_remix",
@@ -1300,7 +1438,48 @@
           "extra_type": "commentary",
           "tags": [],
           "tsm_song_id": "8v26",
-          "tsm_album_id": "j2z"
+          "tsm_album_id": "j2z",
+          "genres": [
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "electropop": 1.0,
+            "pop": 2.2
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "electropop"
+            ],
+            "apple_music": [
+              "pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "rnb",
+              "future",
+              "pop rap",
+              "Ed Sheeran",
+              "power pop",
+              "rap",
+              "Hip-Hop",
+              "female vocalist",
+              "electropop"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "End Game",
+            "apple_music": "End Game"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:end_game"
         },
         {
           "title": "Getaway Car - Commentary",
@@ -1335,7 +1514,50 @@
           "extra_type": "commentary",
           "tags": [],
           "tsm_song_id": "92k8",
-          "tsm_album_id": "j2z"
+          "tsm_album_id": "j2z",
+          "genres": [
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "electropop": 1.0,
+            "pop": 2.2,
+            "synth-pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "synth-pop",
+              "electropop"
+            ],
+            "apple_music": [
+              "pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "synthpop",
+              "electropop",
+              "female vocalist",
+              "synth-pop",
+              "love at first listen",
+              "taylor swift",
+              "electronic",
+              "female vocalists",
+              "Masterpiece"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Getaway Car",
+            "apple_music": "Getaway Car"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:getaway_car"
         },
         {
           "title": "Gorgeous - Commentary",
@@ -1370,7 +1592,50 @@
           "extra_type": "commentary",
           "tags": [],
           "tsm_song_id": "mlbj",
-          "tsm_album_id": "j2z"
+          "tsm_album_id": "j2z",
+          "genres": [
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "electropop": 1.0,
+            "pop": 2.2,
+            "singer-songwriter": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "electropop",
+              "singer-songwriter"
+            ],
+            "apple_music": [
+              "pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "taylor swift",
+              "electropop",
+              "reputation",
+              "best of 2017",
+              "female vocalists",
+              "singer-songwriter",
+              "synthpop",
+              "dance-pop",
+              "julia mofada"
+            ],
+            "apple_music": [
+              "Pop",
+              "Musique"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Gorgeous",
+            "apple_music": "Gorgeous"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:gorgeous"
         },
         {
           "title": "I Did Something Bad - Commentary",
@@ -1405,7 +1670,50 @@
           "extra_type": "commentary",
           "tags": [],
           "tsm_song_id": "29g1",
-          "tsm_album_id": "j2z"
+          "tsm_album_id": "j2z",
+          "genres": [
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "dance-pop": 1.0,
+            "electropop": 1.0,
+            "pop": 2.2
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "electropop",
+              "dance-pop"
+            ],
+            "apple_music": [
+              "pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "dubstep",
+              "EDM",
+              "electropop",
+              "taylor swift",
+              "electro-trap",
+              "Grunge",
+              "dance-pop",
+              "electronic",
+              "love at first listen"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "I Did Something Bad",
+            "apple_music": "I Did Something Bad"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:i_did_something_bad"
         },
         {
           "title": "King Of My Heart - Commentary",
@@ -1440,7 +1748,50 @@
           "extra_type": "commentary",
           "tags": [],
           "tsm_song_id": "azul",
-          "tsm_album_id": "j2z"
+          "tsm_album_id": "j2z",
+          "genres": [
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "electropop": 1.0,
+            "pop": 2.2,
+            "synth-pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "electropop",
+              "synth-pop"
+            ],
+            "apple_music": [
+              "pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "electropop",
+              "Love",
+              "dance",
+              "female vocalist",
+              "synthpop",
+              "electronic",
+              "julia mofada",
+              "trap",
+              "female vocalists"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "King Of My Heart",
+            "apple_music": "King Of My Heart"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:king_of_my_heart"
         },
         {
           "title": "Look What You Made Me Do - Commentary",
@@ -1475,7 +1826,51 @@
           "extra_type": "commentary",
           "tags": [],
           "tsm_song_id": "tlau",
-          "tsm_album_id": "j2z"
+          "tsm_album_id": "j2z",
+          "genres": [
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "dance-pop": 1.0,
+            "electropop": 1.0,
+            "pop": 2.2
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "electropop",
+              "dance-pop"
+            ],
+            "apple_music": [
+              "pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "electropop",
+              "dance",
+              "Electroclash",
+              "reputation",
+              "2017",
+              "taylor swift",
+              "best of 2017",
+              "dance-pop",
+              "shade"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Música"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Look What You Made Me Do",
+            "apple_music": "Look What You Made Me Do"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:look_what_you_made_me_do"
         },
         {
           "title": "New Year's Day - Commentary",
@@ -1510,7 +1905,36 @@
           "extra_type": "commentary",
           "tags": [],
           "tsm_song_id": "nw5a",
-          "tsm_album_id": "j2z"
+          "tsm_album_id": "j2z",
+          "genres": [
+            "country",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "pop": 1.2
+          },
+          "genre_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "pop",
+              "country"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Country"
+            ]
+          },
+          "genre_query_titles": {
+            "apple_music": "New Year's Day"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:new_year_s_day"
         },
         {
           "title": "So It Goes… - Commentary",
@@ -1545,7 +1969,48 @@
           "extra_type": "commentary",
           "tags": [],
           "tsm_song_id": "x89j",
-          "tsm_album_id": "j2z"
+          "tsm_album_id": "j2z",
+          "genres": [
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "electropop": 1.0,
+            "pop": 2.2
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "electropop"
+            ],
+            "apple_music": [
+              "pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "electropop",
+              "trap",
+              "sexy",
+              "female vocalist",
+              "electronic",
+              "rnb",
+              "female vocalists",
+              "taylor swift",
+              "max martin"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "So It Goes...",
+            "apple_music": "So It Goes..."
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:so_it_goes"
         },
         {
           "title": "This Is Why We Can't Have Nice Things - Commentary",
@@ -1580,7 +2045,48 @@
           "extra_type": "commentary",
           "tags": [],
           "tsm_song_id": "1qa7",
-          "tsm_album_id": "j2z"
+          "tsm_album_id": "j2z",
+          "genres": [
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "electropop": 1.0,
+            "pop": 2.2
+          },
+          "genre_sources": {
+            "lastfm": [
+              "electropop",
+              "pop"
+            ],
+            "apple_music": [
+              "pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "electropop",
+              "pop",
+              "dance",
+              "electronic",
+              "Kanye West",
+              "bubblegum pop",
+              "contemporary rnb",
+              "electronic dance music",
+              "trap",
+              "shade"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "This Is Why We Can't Have Nice Things",
+            "apple_music": "This Is Why We Can't Have Nice Things"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:this_is_why_we_can_t_have_nice_things"
         },
         {
           "title": "…Ready For It? - Commentary",
@@ -1615,7 +2121,48 @@
           "extra_type": "commentary",
           "tags": [],
           "tsm_song_id": "tmvv",
-          "tsm_album_id": "j2z"
+          "tsm_album_id": "j2z",
+          "genres": [
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "electropop": 1.0,
+            "pop": 2.2
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "electropop"
+            ],
+            "apple_music": [
+              "pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "electropop",
+              "2017",
+              "pop rap",
+              "EDM",
+              "industrial pop",
+              "industrial",
+              "Hip-Hop",
+              "electronic",
+              "reputation"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "...Ready For It?",
+            "apple_music": "...Ready For It?"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:ready_for_it"
         },
         {
           "title": "Delicate - Acoustic Cover",
@@ -1650,7 +2197,51 @@
           "extra_type": "acoustic",
           "tags": [],
           "tsm_song_id": "oaa8",
-          "tsm_album_id": "j2z"
+          "tsm_album_id": "j2z",
+          "genres": [
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "electropop": 1.0,
+            "pop": 2.2,
+            "synth-pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "electropop",
+              "synth-pop"
+            ],
+            "apple_music": [
+              "pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "electropop",
+              "taylor swift",
+              "synthpop",
+              "tropical house",
+              "reputation",
+              "synth-pop",
+              "delicate",
+              "alt-pop",
+              "dance-pop"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Música"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Delicate",
+            "apple_music": "Delicate"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:delicate"
         },
         {
           "title": "Call It What You Want - Commentary",
@@ -1685,7 +2276,50 @@
           "extra_type": "commentary",
           "tags": [],
           "tsm_song_id": "td0u",
-          "tsm_album_id": "j2z"
+          "tsm_album_id": "j2z",
+          "genres": [
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "electropop": 1.0,
+            "pop": 2.2,
+            "synth-pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "electropop",
+              "synth-pop"
+            ],
+            "apple_music": [
+              "pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "electropop",
+              "reputation",
+              "synthpop",
+              "rnb",
+              "synth-pop",
+              "trap",
+              "taylor swift",
+              "female vocalist",
+              "julia mofada"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Call It What You Want",
+            "apple_music": "Call It What You Want"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:call_it_what_you_want"
         },
         {
           "title": "Dress - Commentary",
@@ -1720,7 +2354,50 @@
           "extra_type": "commentary",
           "tags": [],
           "tsm_song_id": "16lp",
-          "tsm_album_id": "j2z"
+          "tsm_album_id": "j2z",
+          "genres": [
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "alternative": 1.0,
+            "pop": 2.2,
+            "synth-pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "alternative",
+              "synth-pop"
+            ],
+            "apple_music": [
+              "pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "rnb",
+              "sexy",
+              "female vocalist",
+              "alt-pop",
+              "synth-pop",
+              "female vocalists",
+              "julia mofada",
+              "electro-rnb",
+              "taylor swift"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Dress",
+            "apple_music": "Dress"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:dress"
         }
       ]
     },
@@ -1750,18 +2427,20 @@
           "historical_track_ids": [],
           "release_date": "2018-03-09T00:00:00Z",
           "genres": [
-            "pop",
-            "electropop"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "pop": 3.0,
-            "electropop": 2.0
+            "electropop": 1.0,
+            "pop": 2.2
           },
           "genre_sources": {
             "lastfm": [
               "pop",
               "electropop"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
@@ -1769,17 +2448,22 @@
               "pop",
               "electropop",
               "2017",
-              "industrial",
               "pop rap",
               "EDM",
               "industrial pop",
-              "reputation",
+              "industrial",
+              "Hip-Hop",
               "electronic",
-              "Hip-Hop"
+              "reputation"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "...Ready For It?"
+            "lastfm": "...Ready For It?",
+            "apple_music": "...Ready For It?"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:ready_for_it",
@@ -1821,14 +2505,12 @@
           "historical_track_ids": [],
           "release_date": "2018-03-09T00:00:00Z",
           "genres": [
-            "pop",
-            "electropop",
-            "synth-pop"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "pop": 3.0,
-            "electropop": 2.0,
+            "electropop": 1.0,
+            "pop": 2.2,
             "synth-pop": 1.0
           },
           "genre_sources": {
@@ -1836,6 +2518,9 @@
               "pop",
               "electropop",
               "synth-pop"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
@@ -1843,17 +2528,22 @@
               "pop",
               "electropop",
               "reputation",
-              "rnb",
-              "taylor swift",
-              "synth-pop",
               "synthpop",
-              "dream pop",
+              "rnb",
+              "synth-pop",
+              "trap",
+              "taylor swift",
               "female vocalist",
-              "reputacao"
+              "julia mofada"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "Call It What You Want"
+            "lastfm": "Call It What You Want",
+            "apple_music": "Call It What You Want"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:call_it_what_you_want",
@@ -1895,17 +2585,21 @@
           "historical_track_ids": [],
           "release_date": "2018-03-09T00:00:00Z",
           "genres": [
-            "electropop",
             "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "electropop": 3.0,
-            "pop": 2.0
+            "electropop": 1.0,
+            "pop": 2.2,
+            "synth-pop": 1.0
           },
           "genre_sources": {
             "lastfm": [
               "electropop",
+              "pop",
+              "synth-pop"
+            ],
+            "apple_music": [
               "pop"
             ]
           },
@@ -1916,15 +2610,20 @@
               "future bass",
               "dance",
               "Drum and bass",
-              "taylor swift",
               "electronic",
-              "female vocalist",
-              "contemporary rnb",
-              "love at first listen"
+              "taylor swift",
+              "synthpop",
+              "dance-pop",
+              "contemporary rnb"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "Dancing With Our Hands Tied"
+            "lastfm": "Dancing With Our Hands Tied",
+            "apple_music": "Dancing With Our Hands Tied"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:dancing_with_our_hands_tied",
@@ -1966,14 +2665,12 @@
           "historical_track_ids": [],
           "release_date": "2018-03-09T00:00:00Z",
           "genres": [
-            "pop",
-            "electropop",
-            "synth-pop"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "pop": 3.0,
-            "electropop": 2.0,
+            "electropop": 1.0,
+            "pop": 2.2,
             "synth-pop": 1.0
           },
           "genre_sources": {
@@ -1981,6 +2678,9 @@
               "pop",
               "electropop",
               "synth-pop"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
@@ -1988,17 +2688,23 @@
               "pop",
               "electropop",
               "taylor swift",
+              "synthpop",
               "tropical house",
               "reputation",
-              "synthpop",
               "synth-pop",
               "delicate",
-              "female vocalists",
-              "slow"
+              "alt-pop",
+              "dance-pop"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Música"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "Delicate"
+            "lastfm": "Delicate",
+            "apple_music": "Delicate"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:delicate",
@@ -2039,16 +2745,29 @@
           "image_url": "https://i.scdn.co/image/ab67616d0000b27305fd6906725e3f12544c2d04",
           "historical_track_ids": [],
           "release_date": "2018-03-09T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
+          "genres": [
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 1.2
+          },
           "genre_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "pop"
+            ]
           },
           "genre_raw_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music"
+            ]
           },
-          "genre_query_titles": {},
+          "genre_query_titles": {
+            "apple_music": "Don't Blame Me"
+          },
           "genre_errors": {},
           "genre_canonical_key": "family:don_t_blame_me",
           "filter_tags": [
@@ -2089,21 +2808,22 @@
           "historical_track_ids": [],
           "release_date": "2018-03-09T00:00:00Z",
           "genres": [
-            "pop",
-            "synth-pop",
-            "alternative"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "pop": 3.0,
-            "synth-pop": 2.0,
-            "alternative": 1.0
+            "alternative": 1.0,
+            "pop": 2.2,
+            "synth-pop": 1.0
           },
           "genre_sources": {
             "lastfm": [
               "pop",
-              "synth-pop",
-              "alternative"
+              "alternative",
+              "synth-pop"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
@@ -2112,16 +2832,21 @@
               "rnb",
               "sexy",
               "female vocalist",
-              "female vocalists",
-              "synth-pop",
               "alt-pop",
-              "taylor swift",
+              "synth-pop",
+              "female vocalists",
+              "julia mofada",
               "electro-rnb",
-              "contemporary rnb"
+              "taylor swift"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "Dress"
+            "lastfm": "Dress",
+            "apple_music": "Dress"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:dress",
@@ -2163,36 +2888,43 @@
           "historical_track_ids": [],
           "release_date": "2018-03-09T00:00:00Z",
           "genres": [
-            "pop",
-            "electropop"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "pop": 3.0,
-            "electropop": 2.0
+            "electropop": 1.0,
+            "pop": 2.2
           },
           "genre_sources": {
             "lastfm": [
               "pop",
               "electropop"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
             "lastfm": [
               "pop",
               "rnb",
-              "pop rap",
               "future",
+              "pop rap",
               "Ed Sheeran",
-              "rap",
               "power pop",
+              "rap",
               "Hip-Hop",
               "female vocalist",
               "electropop"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "End Game"
+            "lastfm": "End Game",
+            "apple_music": "End Game"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:end_game",
@@ -2234,21 +2966,22 @@
           "historical_track_ids": [],
           "release_date": "2018-03-09T00:00:00Z",
           "genres": [
-            "pop",
-            "synth-pop",
-            "electropop"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "pop": 3.0,
-            "synth-pop": 2.0,
-            "electropop": 1.0
+            "electropop": 1.0,
+            "pop": 2.2,
+            "synth-pop": 1.0
           },
           "genre_sources": {
             "lastfm": [
               "pop",
               "synth-pop",
               "electropop"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
@@ -2257,16 +2990,21 @@
               "synthpop",
               "electropop",
               "female vocalist",
-              "taylor swift",
               "synth-pop",
               "love at first listen",
+              "taylor swift",
+              "electronic",
               "female vocalists",
-              "dance pop",
-              "2017"
+              "Masterpiece"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "Getaway Car"
+            "lastfm": "Getaway Car",
+            "apple_music": "Getaway Car"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:getaway_car",
@@ -2308,14 +3046,12 @@
           "historical_track_ids": [],
           "release_date": "2018-03-09T00:00:00Z",
           "genres": [
-            "pop",
-            "electropop",
-            "singer-songwriter"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "pop": 3.0,
-            "electropop": 2.0,
+            "electropop": 1.0,
+            "pop": 2.2,
             "singer-songwriter": 1.0
           },
           "genre_sources": {
@@ -2323,6 +3059,9 @@
               "pop",
               "electropop",
               "singer-songwriter"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
@@ -2334,13 +3073,18 @@
               "best of 2017",
               "female vocalists",
               "singer-songwriter",
-              "Joshua Bassett",
               "synthpop",
-              "electronic"
+              "dance-pop",
+              "julia mofada"
+            ],
+            "apple_music": [
+              "Pop",
+              "Musique"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "Gorgeous"
+            "lastfm": "Gorgeous",
+            "apple_music": "Gorgeous"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:gorgeous",
@@ -2382,21 +3126,22 @@
           "historical_track_ids": [],
           "release_date": "2018-03-09T00:00:00Z",
           "genres": [
-            "pop",
-            "electropop",
-            "dance-pop"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "pop": 3.0,
-            "electropop": 2.0,
-            "dance-pop": 1.0
+            "dance-pop": 1.0,
+            "electropop": 1.0,
+            "pop": 2.2
           },
           "genre_sources": {
             "lastfm": [
               "pop",
               "electropop",
               "dance-pop"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
@@ -2406,15 +3151,20 @@
               "EDM",
               "electropop",
               "taylor swift",
-              "Grunge",
               "electro-trap",
+              "Grunge",
               "dance-pop",
-              "love at first listen",
-              "electronic"
+              "electronic",
+              "love at first listen"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "I Did Something Bad"
+            "lastfm": "I Did Something Bad",
+            "apple_music": "I Did Something Bad"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:i_did_something_bad",
@@ -2456,14 +3206,12 @@
           "historical_track_ids": [],
           "release_date": "2018-03-09T00:00:00Z",
           "genres": [
-            "pop",
-            "electropop",
-            "synth-pop"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "pop": 3.0,
-            "electropop": 2.0,
+            "electropop": 1.0,
+            "pop": 2.2,
             "synth-pop": 1.0
           },
           "genre_sources": {
@@ -2471,24 +3219,32 @@
               "pop",
               "electropop",
               "synth-pop"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
             "lastfm": [
               "pop",
               "electropop",
-              "dance",
               "Love",
+              "dance",
               "female vocalist",
               "synthpop",
               "electronic",
+              "julia mofada",
               "trap",
-              "female vocalists",
-              "puta"
+              "female vocalists"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "King Of My Heart"
+            "lastfm": "King Of My Heart",
+            "apple_music": "King Of My Heart"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:king_of_my_heart",
@@ -2530,21 +3286,22 @@
           "historical_track_ids": [],
           "release_date": "2018-03-09T00:00:00Z",
           "genres": [
-            "pop",
-            "electropop",
-            "dance-pop"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "pop": 3.0,
-            "electropop": 2.0,
-            "dance-pop": 1.0
+            "dance-pop": 1.0,
+            "electropop": 1.0,
+            "pop": 2.2
           },
           "genre_sources": {
             "lastfm": [
               "pop",
               "electropop",
               "dance-pop"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
@@ -2559,10 +3316,16 @@
               "best of 2017",
               "dance-pop",
               "shade"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Música"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "Look What You Made Me Do"
+            "lastfm": "Look What You Made Me Do",
+            "apple_music": "Look What You Made Me Do"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:look_what_you_made_me_do",
@@ -2603,16 +3366,33 @@
           "image_url": "https://i.scdn.co/image/ab67616d0000b27305fd6906725e3f12544c2d04",
           "historical_track_ids": [],
           "release_date": "2018-03-09T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
+          "genres": [
+            "country",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "pop": 1.2
+          },
           "genre_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "pop",
+              "country"
+            ]
           },
           "genre_raw_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Country"
+            ]
           },
-          "genre_query_titles": {},
+          "genre_query_titles": {
+            "apple_music": "New Year's Day"
+          },
           "genre_errors": {},
           "genre_canonical_key": "family:new_year_s_day",
           "filter_tags": [
@@ -2653,18 +3433,20 @@
           "historical_track_ids": [],
           "release_date": "2018-03-09T00:00:00Z",
           "genres": [
-            "pop",
-            "electropop"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "pop": 3.0,
-            "electropop": 2.0
+            "electropop": 1.0,
+            "pop": 2.2
           },
           "genre_sources": {
             "lastfm": [
               "pop",
               "electropop"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
@@ -2673,16 +3455,21 @@
               "electropop",
               "trap",
               "sexy",
-              "rnb",
               "female vocalist",
               "electronic",
-              "taylor swift",
+              "rnb",
               "female vocalists",
+              "taylor swift",
               "max martin"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "So It Goes..."
+            "lastfm": "So It Goes...",
+            "apple_music": "So It Goes..."
           },
           "genre_errors": {},
           "genre_canonical_key": "family:so_it_goes",
@@ -2724,39 +3511,43 @@
           "historical_track_ids": [],
           "release_date": "2018-03-09T00:00:00Z",
           "genres": [
-            "pop",
-            "electropop",
-            "dance-pop"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "pop": 3.0,
-            "electropop": 2.0,
-            "dance-pop": 1.0
+            "electropop": 1.0,
+            "pop": 2.2
           },
           "genre_sources": {
             "lastfm": [
-              "pop",
               "electropop",
-              "dance-pop"
+              "pop"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
             "lastfm": [
-              "pop",
               "electropop",
+              "pop",
               "dance",
               "electronic",
-              "bubblegum pop",
               "Kanye West",
-              "dance pop",
-              "shade",
+              "bubblegum pop",
+              "contemporary rnb",
+              "electronic dance music",
               "trap",
-              "contemporary rnb"
+              "shade"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "This Is Why We Can't Have Nice Things"
+            "lastfm": "This Is Why We Can't Have Nice Things",
+            "apple_music": "This Is Why We Can't Have Nice Things"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:this_is_why_we_can_t_have_nice_things",
@@ -2805,18 +3596,20 @@
           "historical_track_ids": [],
           "release_date": "2017-12-01T00:00:00Z",
           "genres": [
-            "pop",
-            "electropop"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "pop": 3.0,
-            "electropop": 2.0
+            "electropop": 1.0,
+            "pop": 2.2
           },
           "genre_sources": {
             "lastfm": [
               "pop",
               "electropop"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
@@ -2824,17 +3617,22 @@
               "pop",
               "electropop",
               "2017",
-              "industrial",
               "pop rap",
               "EDM",
               "industrial pop",
-              "reputation",
+              "industrial",
+              "Hip-Hop",
               "electronic",
-              "Hip-Hop"
+              "reputation"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "...Ready For It?"
+            "lastfm": "...Ready For It?",
+            "apple_music": "...Ready For It?"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:ready_for_it",
@@ -2876,14 +3674,12 @@
           "historical_track_ids": [],
           "release_date": "2018-06-08T00:00:00Z",
           "genres": [
-            "pop",
-            "electropop",
-            "synth-pop"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "pop": 3.0,
-            "electropop": 2.0,
+            "electropop": 1.0,
+            "pop": 2.2,
             "synth-pop": 1.0
           },
           "genre_sources": {
@@ -2891,6 +3687,9 @@
               "pop",
               "electropop",
               "synth-pop"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
@@ -2898,17 +3697,23 @@
               "pop",
               "electropop",
               "taylor swift",
+              "synthpop",
               "tropical house",
               "reputation",
-              "synthpop",
               "synth-pop",
               "delicate",
-              "female vocalists",
-              "slow"
+              "alt-pop",
+              "dance-pop"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Música"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "Delicate"
+            "lastfm": "Delicate",
+            "apple_music": "Delicate"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:delicate",
@@ -2951,10 +3756,12 @@
           "genre_status": "missing",
           "genre_scores": {},
           "genre_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": []
           },
           "genre_raw_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": []
           },
           "genre_query_titles": {},
           "genre_errors": {},
@@ -2998,10 +3805,12 @@
           "genre_status": "missing",
           "genre_scores": {},
           "genre_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": []
           },
           "genre_raw_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": []
           },
           "genre_query_titles": {},
           "genre_errors": {},

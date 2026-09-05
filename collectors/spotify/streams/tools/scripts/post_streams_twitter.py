@@ -29,6 +29,7 @@ from twitter.text import streams_update_tweet
 from core.data_paths import update_streams_dir
 
 import generate_streams_image
+import post_best_day_since_twitter as bds_post
 from post_locks import mark_posted, should_skip_post
 
 
@@ -88,6 +89,20 @@ def main():
     for image_path in image_paths:
         print(f"Image: {image_path}")
 
+    # Best-day-since recap + per-era recap cards ride as replies in this same
+    # thread (decision 2026-09-04), instead of posting standalone later in
+    # finalize. A failure building them must never block the Top Songs post
+    # itself; finalize's "best-day-since recap (fallback)" step (--limit 0)
+    # covers the standalone case if this thread post fails outright.
+    try:
+        recap_posts, era_groups, has_global_recap = bds_post.build_recap_thread_posts(target_date)
+    except Exception as exc:
+        print(f"Best-day-since recap unavailable, posting Top Songs alone: {exc}")
+        recap_posts, era_groups, has_global_recap = [], [], False
+    thread_posts += recap_posts
+    for tweet_text, images in recap_posts:
+        print(f"Recap thread post ({len(images)} image(s)): {tweet_text}")
+
     if no_post:
         print("Twitter post skipped (--no-post).")
         return
@@ -99,6 +114,8 @@ def main():
         sys.exit(1)
 
     mark_posted(posted_lock)
+    if era_groups or has_global_recap:
+        bds_post.mark_recap_thread_posted(target_date, era_groups, has_global_recap)
     print(f"Posted successfully for {target_date}.")
 
 

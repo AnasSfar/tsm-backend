@@ -20,11 +20,12 @@ Source de vérité : `tsm-frontend/frontend/src/styles/STYLE.md`. Ce condensé s
 - Sous-dossiers `ttpd/` et `showgirl/` = mondes séparés, ne pas y importer les conventions globales.
 
 ## Look & feel
-- Glassmorphism (surfaces translucides + `--glass-blur`), police **Inter** ; décoratives cantonnées : Bebas Neue, DM Sans, TT Modernoir, ACsteelfish — **pas de nouvelle font**.
+- Glassmorphism (surfaces translucides + `--glass-blur`), police **Inter** partout hors titres ; décoratives hors système de titres : TT Modernoir (Topbar), ACsteelfish (`@font-face` dans `variables.css`) — **pas de nouvelle font** sans demande explicite.
+- **Titres de section thémés** (`--album-title-font`) : chaque thème force sa propre police décorative (10 Google Fonts chargées dans `index.html` — Archivo, Bebas Neue, Cormorant Garamond, DM Sans, IM Fell DW Pica, Libre Caslon Text, Permanent Marker, Satisfy, Style Script, UnifrakturMaguntia) sur une liste fixe d'une trentaine de sélecteurs `h2`/`.xxx-title` dans `themes.css` (`body[data-theme^="theme-"] :is(...)`, malgré le nom "album-title" ça couvre tous les titres de section). Nouveau titre de section à thémer → l'ajouter à cette liste, pas de règle éparpillée. Détail : `STYLE.md` §5.
 - Or = rang #1 (`--gold-1/2/3`) ; deltas : vert hausse / rouge baisse / NEW / RE ; hovers courts.
 
 ## Thèmes
-- Ajouter un thème = **4 endroits** : bloc light + bloc dark dans `themes.css`, entrée `ALL_THEME_OPTIONS` dans `utils/anniversaries.js`, allow-list `THEMES` dans `api/routes/site_settings.py`.
+- Ajouter un thème = **4 endroits** : bloc light + bloc dark dans `themes.css`, entrée `ALL_THEME_OPTIONS` dans `utils/anniversaries.js`, allow-list `THEMES` dans `api/routes/site_settings.py`. **+ 1 si nouvelle police de titre** : `<link>` Google Fonts dans `index.html`.
 - `theme-custom` = injecté au runtime (`utils/customTheme.js`), jamais statique. ⚠️ Piège de cascade : le bloc light injecté arrive après le scaffold dark de `variables.css` à spécificité égale → le bloc dark injecté doit redéfinir **tous** les tokens.
 
 ## Modules partagés à réutiliser (ne pas dupliquer)

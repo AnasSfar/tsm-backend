@@ -218,13 +218,17 @@ def _is_chart_extra(section: dict, track: dict) -> bool:
     )
 
 
+def _counts_in_album_total(track: dict) -> bool:
+    return _as_bool(track.get("on_album")) is not False
+
+
 def load_album_track_ids() -> set[str]:
-    """Returns track IDs from album files only, excluding chart_extra tracks."""
+    """Returns track IDs from album files only, excluding chart_extra/non-album tracks."""
     sections = load_album_sections_flat()
     ids = set()
     for section in sections:
         for track in section.get("tracks", []):
-            if _is_chart_extra(section, track):
+            if _is_chart_extra(section, track) or not _counts_in_album_total(track):
                 continue
             url = (track.get("url") or track.get("spotify_url") or "").strip()
             tid = extract_track_id(url)
@@ -233,14 +237,14 @@ def load_album_track_ids() -> set[str]:
     return ids
 
 def load_album_track_ids_for_album(album_name: str) -> set[str]:
-    """Returns track IDs from one album, excluding chart_extra tracks."""
+    """Returns track IDs from one album, excluding chart_extra/non-album tracks."""
     sections = load_album_sections_flat()
     ids = set()
     for section in sections:
         if section.get("album") != album_name:
             continue
         for track in section.get("tracks", []):
-            if _is_chart_extra(section, track):
+            if _is_chart_extra(section, track) or not _counts_in_album_total(track):
                 continue
             tid = extract_track_id(track.get("url") or track.get("spotify_url") or "")
             if tid:
@@ -1149,6 +1153,7 @@ def load_tracks_from_discography(active_track_ids: set[str] | None = None) -> li
                 "primary_artist": primary_artist,
                 "release_date": track.get("release_date") or None,
                 "chart_extra": _is_chart_extra(section, track),
+                "on_album": _counts_in_album_total(track),
                 "chartsnapshot_only": bool(
                     track.get("chartsnapshot_source_album")
                     or "_chartsnapshot_external_" in str(track.get("song_family") or "")

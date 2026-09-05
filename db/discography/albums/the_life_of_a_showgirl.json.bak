@@ -83,7 +83,12 @@
           "release_edition": "standard",
           "tags": [],
           "tsm_song_id": "0zpp",
-          "tsm_album_id": "va1"
+          "tsm_album_id": "va1",
+          "version_tags": [
+            "standalone"
+          ],
+          "catalog_category": "standard",
+          "music_track": true
         },
         {
           "title": "Elizabeth Taylor",
@@ -110,29 +115,35 @@
           ],
           "release_date": "2026-03-31T00:00:00Z",
           "genres": [
-            "pop"
+            "pop",
+            "pop rock",
+            "electropop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "pop": 3.0
+            "pop": 3.0,
+            "pop rock": 2.0,
+            "electropop": 1.0
           },
           "genre_sources": {
             "lastfm": [
-              "pop"
+              "pop",
+              "pop rock",
+              "electropop"
             ]
           },
           "genre_raw_sources": {
             "lastfm": [
               "pop",
               "baroque pop",
+              "taylor swift",
               "Who put Katy Perry?",
-              "soty",
-              "Sabrina Carpenter",
+              "pop rock",
+              "electropop",
               "halsey",
-              "Olivia Rodrigo",
-              "Ed Sheeran",
               "katseye",
-              "Jorge Rivera-Herrans"
+              "Jorge Rivera-Herrans",
+              "Sabrina Carpenter"
             ]
           },
           "genre_query_titles": {
@@ -233,7 +244,12 @@
           "release_edition": "standard",
           "tags": [],
           "tsm_song_id": "gkk0",
-          "tsm_album_id": "va1"
+          "tsm_album_id": "va1",
+          "version_tags": [
+            "standalone"
+          ],
+          "catalog_category": "standard",
+          "music_track": true
         },
         {
           "title": "Father Figure",
@@ -305,7 +321,12 @@
           "release_edition": "standard",
           "tags": [],
           "tsm_song_id": "70rb",
-          "tsm_album_id": "va1"
+          "tsm_album_id": "va1",
+          "version_tags": [
+            "standard"
+          ],
+          "catalog_category": "standard",
+          "music_track": true
         },
         {
           "title": "Eldest Daughter",
@@ -378,7 +399,12 @@
           "release_edition": "standard",
           "tags": [],
           "tsm_song_id": "2xed",
-          "tsm_album_id": "va1"
+          "tsm_album_id": "va1",
+          "version_tags": [
+            "standard"
+          ],
+          "catalog_category": "standard",
+          "music_track": true
         },
         {
           "title": "Ruin The Friendship",
@@ -453,7 +479,12 @@
           "release_edition": "standard",
           "tags": [],
           "tsm_song_id": "4ssx",
-          "tsm_album_id": "va1"
+          "tsm_album_id": "va1",
+          "version_tags": [
+            "standard"
+          ],
+          "catalog_category": "standard",
+          "music_track": true
         },
         {
           "title": "Actually Romantic",
@@ -528,7 +559,12 @@
           "release_edition": "standard",
           "tags": [],
           "tsm_song_id": "32ub",
-          "tsm_album_id": "va1"
+          "tsm_album_id": "va1",
+          "version_tags": [
+            "standard"
+          ],
+          "catalog_category": "standard",
+          "music_track": true
         },
         {
           "title": "Wi$h Li$t",
@@ -600,7 +636,12 @@
           "release_edition": "standard",
           "tags": [],
           "tsm_song_id": "fxdr",
-          "tsm_album_id": "va1"
+          "tsm_album_id": "va1",
+          "version_tags": [
+            "standard"
+          ],
+          "catalog_category": "standard",
+          "music_track": true
         },
         {
           "title": "Wood",
@@ -670,7 +711,12 @@
           "release_edition": "standard",
           "tags": [],
           "tsm_song_id": "rjdf",
-          "tsm_album_id": "va1"
+          "tsm_album_id": "va1",
+          "version_tags": [
+            "standard"
+          ],
+          "catalog_category": "standard",
+          "music_track": true
         },
         {
           "title": "CANCELLED!",
@@ -745,7 +791,12 @@
           "release_edition": "standard",
           "tags": [],
           "tsm_song_id": "34ff",
-          "tsm_album_id": "va1"
+          "tsm_album_id": "va1",
+          "version_tags": [
+            "standard"
+          ],
+          "catalog_category": "standard",
+          "music_track": true
         },
         {
           "title": "Honey",
@@ -818,7 +869,12 @@
           "release_edition": "standard",
           "tags": [],
           "tsm_song_id": "tlj0",
-          "tsm_album_id": "va1"
+          "tsm_album_id": "va1",
+          "version_tags": [
+            "standard"
+          ],
+          "catalog_category": "standard",
+          "music_track": true
         },
         {
           "title": "The Life of a Showgirl (feat. Sabrina Carpenter)",
@@ -1038,7 +1094,12 @@
           "release_edition": "",
           "tags": [],
           "tsm_song_id": "gkk0",
-          "tsm_album_id": "va1"
+          "tsm_album_id": "va1",
+          "version_tags": [
+            "acoustic"
+          ],
+          "catalog_category": "acoustic",
+          "music_track": true
         },
         {
           "title": "Wi$h Li$t - Settled Down Acoustic Version",
@@ -1297,29 +1358,35 @@
           ],
           "release_date": "2026-03-31T00:00:00Z",
           "genres": [
-            "pop"
+            "pop",
+            "pop rock",
+            "electropop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "pop": 3.0
+            "pop": 3.0,
+            "pop rock": 2.0,
+            "electropop": 1.0
           },
           "genre_sources": {
             "lastfm": [
-              "pop"
+              "pop",
+              "pop rock",
+              "electropop"
             ]
           },
           "genre_raw_sources": {
             "lastfm": [
               "pop",
               "baroque pop",
+              "taylor swift",
               "Who put Katy Perry?",
-              "soty",
-              "Sabrina Carpenter",
+              "pop rock",
+              "electropop",
               "halsey",
-              "Olivia Rodrigo",
-              "Ed Sheeran",
               "katseye",
-              "Jorge Rivera-Herrans"
+              "Jorge Rivera-Herrans",
+              "Sabrina Carpenter"
             ]
           },
           "genre_query_titles": {
@@ -2061,29 +2128,35 @@
           "historical_track_ids": [],
           "release_date": "2026-03-31T00:00:00Z",
           "genres": [
-            "pop"
+            "pop",
+            "pop rock",
+            "electropop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "pop": 3.0
+            "pop": 3.0,
+            "pop rock": 2.0,
+            "electropop": 1.0
           },
           "genre_sources": {
             "lastfm": [
-              "pop"
+              "pop",
+              "pop rock",
+              "electropop"
             ]
           },
           "genre_raw_sources": {
             "lastfm": [
               "pop",
               "baroque pop",
+              "taylor swift",
               "Who put Katy Perry?",
-              "soty",
-              "Sabrina Carpenter",
+              "pop rock",
+              "electropop",
               "halsey",
-              "Olivia Rodrigo",
-              "Ed Sheeran",
               "katseye",
-              "Jorge Rivera-Herrans"
+              "Jorge Rivera-Herrans",
+              "Sabrina Carpenter"
             ]
           },
           "genre_query_titles": {
@@ -2982,7 +3055,44 @@
           "role": "extra",
           "extra_type": "remix",
           "tsm_song_id": "4pvw",
-          "tsm_album_id": "va1"
+          "tsm_album_id": "va1",
+          "genres": [
+            "pop",
+            "pop rock",
+            "electropop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "pop rock": 2.0,
+            "electropop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "pop rock",
+              "electropop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "baroque pop",
+              "taylor swift",
+              "Who put Katy Perry?",
+              "pop rock",
+              "electropop",
+              "halsey",
+              "katseye",
+              "Jorge Rivera-Herrans",
+              "Sabrina Carpenter"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Elizabeth Taylor"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:elizabeth_taylor"
         },
         {
           "title": "The Life of a Showgirl (feat. Sabrina Carpenter)",
@@ -3015,7 +3125,19 @@
           "role": "album_track",
           "category": "feature",
           "tsm_song_id": "6c3t",
-          "tsm_album_id": "va1"
+          "tsm_album_id": "va1",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:the_life_of_a_showgirl"
         }
       ],
       "album": "The Life of a Showgirl"

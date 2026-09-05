@@ -28,16 +28,53 @@
           "image_url": "https://i.scdn.co/image/ab67616d0000b2730b04da4f224b51ff86e0a481",
           "historical_track_ids": [],
           "release_date": "2023-07-07T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
+          "genres": [
+            "country",
+            "country pop",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "country pop": 1.2,
+            "pop": 1.2,
+            "rock": 1.2
+          },
           "genre_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "pop",
+              "country",
+              "rock",
+              "country pop"
+            ]
           },
           "genre_raw_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Country",
+              "Rock",
+              "Honky Tonk",
+              "Contemporary Country",
+              "Кантри",
+              "Музыка",
+              "Música",
+              "Country contemporáneo",
+              "乡村",
+              "音乐",
+              "摇滚",
+              "컨트리",
+              "음악",
+              "록",
+              "홍키 통크",
+              "컨템포러리 컨트리"
+            ]
           },
-          "genre_query_titles": {},
+          "genre_query_titles": {
+            "apple_music": "Mine"
+          },
           "genre_errors": {},
           "genre_canonical_key": "family:mine",
           "filter_tags": [
@@ -79,16 +116,56 @@
           "image_url": "https://i.scdn.co/image/ab67616d0000b2730b04da4f224b51ff86e0a481",
           "historical_track_ids": [],
           "release_date": "2023-07-07T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
+          "genres": [
+            "country",
+            "country pop",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "country pop": 1.2,
+            "pop": 1.2,
+            "rock": 1.2
+          },
           "genre_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "pop",
+              "country",
+              "rock",
+              "country pop"
+            ]
           },
           "genre_raw_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Country",
+              "Musique",
+              "Rock",
+              "Honky tonk",
+              "Country contemporaine",
+              "Кантри",
+              "Музыка",
+              "Música",
+              "Honky Tonk",
+              "Country contemporáneo",
+              "Contemporary Country",
+              "乡村",
+              "音乐",
+              "摇滚",
+              "컨트리",
+              "음악",
+              "록",
+              "홍키 통크",
+              "컨템포러리 컨트리"
+            ]
           },
-          "genre_query_titles": {},
+          "genre_query_titles": {
+            "apple_music": "Sparks Fly"
+          },
           "genre_errors": {},
           "genre_canonical_key": "family:sparks_fly",
           "filter_tags": [
@@ -132,19 +209,26 @@
           "release_date": "2023-07-07T00:00:00Z",
           "genres": [
             "country",
-            "pop",
-            "country pop"
+            "country pop",
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "country": 3.0,
-            "pop": 2.0,
-            "country pop": 1.0
+            "country": 2.2,
+            "country pop": 2.2,
+            "pop": 2.2,
+            "rock": 1.2
           },
           "genre_sources": {
             "lastfm": [
               "country",
               "pop",
+              "country pop"
+            ],
+            "apple_music": [
+              "pop",
+              "country",
+              "rock",
               "country pop"
             ]
           },
@@ -158,12 +242,36 @@
               "Love",
               "love at first listen",
               "<3",
-              "2010",
-              "sweet"
+              "sweet",
+              "2010"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Country",
+              "Rock",
+              "Honky Tonk",
+              "Contemporary Country",
+              "Кантри",
+              "Музыка",
+              "Música",
+              "Country contemporáneo",
+              "Musique",
+              "Honky tonk",
+              "Country contemporaine",
+              "乡村",
+              "音乐",
+              "摇滚",
+              "컨트리",
+              "음악",
+              "록",
+              "홍키 통크",
+              "컨템포러리 컨트리"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "Back To December"
+            "lastfm": "Back To December",
+            "apple_music": "Back To December"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:back_to_december",
@@ -206,16 +314,56 @@
           "image_url": "https://i.scdn.co/image/ab67616d0000b2730b04da4f224b51ff86e0a481",
           "historical_track_ids": [],
           "release_date": "2023-07-07T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
+          "genres": [
+            "country",
+            "country pop",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "country pop": 1.2,
+            "pop": 1.2,
+            "rock": 1.2
+          },
           "genre_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "pop",
+              "country",
+              "rock",
+              "country pop"
+            ]
           },
           "genre_raw_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Country",
+              "Musique",
+              "Rock",
+              "Honky tonk",
+              "Country contemporaine",
+              "Кантри",
+              "Музыка",
+              "Honky Tonk",
+              "Contemporary Country",
+              "乡村",
+              "音乐",
+              "摇滚",
+              "Música",
+              "Country contemporáneo",
+              "컨트리",
+              "음악",
+              "록",
+              "홍키 통크",
+              "컨템포러리 컨트리"
+            ]
           },
-          "genre_query_titles": {},
+          "genre_query_titles": {
+            "apple_music": "Speak Now"
+          },
           "genre_errors": {},
           "genre_canonical_key": "family:speak_now",
           "filter_tags": [
@@ -257,16 +405,48 @@
           "image_url": "https://i.scdn.co/image/ab67616d0000b2730b04da4f224b51ff86e0a481",
           "historical_track_ids": [],
           "release_date": "2023-07-07T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
+          "genres": [
+            "country",
+            "country pop",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "country pop": 1.2,
+            "pop": 1.2,
+            "rock": 1.2
+          },
           "genre_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "pop",
+              "country",
+              "rock",
+              "country pop"
+            ]
           },
           "genre_raw_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Country",
+              "Rock",
+              "Honky Tonk",
+              "Contemporary Country",
+              "Кантри",
+              "Музыка",
+              "Música",
+              "Country contemporáneo",
+              "乡村",
+              "音乐",
+              "摇滚"
+            ]
           },
-          "genre_query_titles": {},
+          "genre_query_titles": {
+            "apple_music": "Dear John"
+          },
           "genre_errors": {},
           "genre_canonical_key": "family:dear_john",
           "filter_tags": [
@@ -308,16 +488,53 @@
           "image_url": "https://i.scdn.co/image/ab67616d0000b2730b04da4f224b51ff86e0a481",
           "historical_track_ids": [],
           "release_date": "2023-07-07T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
+          "genres": [
+            "country",
+            "country pop",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "country pop": 1.2,
+            "pop": 1.2,
+            "rock": 1.2
+          },
           "genre_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "pop",
+              "country",
+              "rock",
+              "country pop"
+            ]
           },
           "genre_raw_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Country",
+              "Rock",
+              "Honky Tonk",
+              "Contemporary Country",
+              "Кантри",
+              "Музыка",
+              "乡村",
+              "音乐",
+              "摇滚",
+              "컨트리",
+              "음악",
+              "록",
+              "홍키 통크",
+              "컨템포러리 컨트리",
+              "Música",
+              "Country contemporáneo"
+            ]
           },
-          "genre_query_titles": {},
+          "genre_query_titles": {
+            "apple_music": "Mean"
+          },
           "genre_errors": {},
           "genre_canonical_key": "family:mean",
           "filter_tags": [
@@ -359,16 +576,48 @@
           "image_url": "https://i.scdn.co/image/ab67616d0000b2730b04da4f224b51ff86e0a481",
           "historical_track_ids": [],
           "release_date": "2023-07-07T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
+          "genres": [
+            "country",
+            "country pop",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "country pop": 1.2,
+            "pop": 1.2,
+            "rock": 1.2
+          },
           "genre_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "pop",
+              "country",
+              "rock",
+              "country pop"
+            ]
           },
           "genre_raw_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Country",
+              "Rock",
+              "Honky Tonk",
+              "Contemporary Country",
+              "Кантри",
+              "Музыка",
+              "Música",
+              "Country contemporáneo",
+              "乡村",
+              "音乐",
+              "摇滚"
+            ]
           },
-          "genre_query_titles": {},
+          "genre_query_titles": {
+            "apple_music": "The Story Of Us"
+          },
           "genre_errors": {},
           "genre_canonical_key": "family:the_story_of_us",
           "filter_tags": [
@@ -410,16 +659,46 @@
           "image_url": "https://i.scdn.co/image/ab67616d0000b2730b04da4f224b51ff86e0a481",
           "historical_track_ids": [],
           "release_date": "2023-07-07T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
+          "genres": [
+            "country",
+            "country pop",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "country pop": 1.2,
+            "pop": 1.2,
+            "rock": 1.2
+          },
           "genre_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "pop",
+              "country",
+              "rock",
+              "country pop"
+            ]
           },
           "genre_raw_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Country",
+              "Rock",
+              "Honky Tonk",
+              "Contemporary Country",
+              "Кантри",
+              "Музыка",
+              "乡村",
+              "音乐",
+              "摇滚"
+            ]
           },
-          "genre_query_titles": {},
+          "genre_query_titles": {
+            "apple_music": "Never Grow Up"
+          },
           "genre_errors": {},
           "genre_canonical_key": "family:never_grow_up",
           "filter_tags": [
@@ -463,19 +742,26 @@
           "release_date": "2023-07-07T00:00:00Z",
           "genres": [
             "country",
-            "pop",
-            "country pop"
+            "country pop",
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "country": 3.0,
-            "pop": 2.0,
-            "country pop": 1.0
+            "country": 2.2,
+            "country pop": 2.2,
+            "pop": 2.2,
+            "rock": 1.2
           },
           "genre_sources": {
             "lastfm": [
               "country",
               "pop",
+              "country pop"
+            ],
+            "apple_music": [
+              "pop",
+              "country",
+              "rock",
               "country pop"
             ]
           },
@@ -483,18 +769,46 @@
             "lastfm": [
               "country",
               "pop",
-              "taylor swift",
               "Love",
+              "taylor swift",
               "country pop",
               "female vocalists",
               "flawless",
               "singer-songwriter",
               "beautiful",
               "sweet"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Country",
+              "Rock",
+              "Honky Tonk",
+              "Contemporary Country",
+              "Кантри",
+              "Музыка",
+              "Música",
+              "Country contemporáneo",
+              "乡村",
+              "音乐",
+              "摇滚",
+              "Musique",
+              "Honky tonk",
+              "Country contemporaine",
+              "Musica",
+              "Honky-tonk",
+              "Country contemporaneo",
+              "컨트리",
+              "음악",
+              "록",
+              "홍키 통크",
+              "컨템포러리 컨트리",
+              "Country contemporânea"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "Enchanted"
+            "lastfm": "Enchanted",
+            "apple_music": "Enchanted"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:enchanted",
@@ -544,15 +858,22 @@
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "country": 3.0,
-            "pop": 2.0,
-            "rock": 1.0
+            "country": 2.2,
+            "country pop": 1.2,
+            "pop": 2.2,
+            "rock": 2.2
           },
           "genre_sources": {
             "lastfm": [
               "country",
               "pop",
               "rock"
+            ],
+            "apple_music": [
+              "pop",
+              "country",
+              "rock",
+              "country pop"
             ]
           },
           "genre_raw_sources": {
@@ -566,11 +887,28 @@
               "pop punk",
               "country pop",
               "2010",
-              "catchy"
+              "revenge"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Country",
+              "Rock",
+              "Honky Tonk",
+              "Contemporary Country",
+              "Кантри",
+              "Музыка",
+              "Música",
+              "Country contemporáneo",
+              "Musica",
+              "Honky-tonk",
+              "Country contemporaneo",
+              "Country contemporânea"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "Better Than Revenge"
+            "lastfm": "Better Than Revenge",
+            "apple_music": "Better Than Revenge"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:better_than_revenge",
@@ -613,16 +951,43 @@
           "image_url": "https://i.scdn.co/image/ab67616d0000b2730b04da4f224b51ff86e0a481",
           "historical_track_ids": [],
           "release_date": "2023-07-07T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
+          "genres": [
+            "country",
+            "country pop",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "country pop": 1.2,
+            "pop": 1.2,
+            "rock": 1.2
+          },
           "genre_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "pop",
+              "country",
+              "rock",
+              "country pop"
+            ]
           },
           "genre_raw_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Country",
+              "Rock",
+              "Honky Tonk",
+              "Contemporary Country",
+              "Кантри",
+              "Музыка"
+            ]
           },
-          "genre_query_titles": {},
+          "genre_query_titles": {
+            "apple_music": "Innocent"
+          },
           "genre_errors": {},
           "genre_canonical_key": "family:innocent",
           "filter_tags": [
@@ -664,16 +1029,45 @@
           "image_url": "https://i.scdn.co/image/ab67616d0000b2730b04da4f224b51ff86e0a481",
           "historical_track_ids": [],
           "release_date": "2023-07-07T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
+          "genres": [
+            "country",
+            "country pop",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "country pop": 1.2,
+            "pop": 1.2,
+            "rock": 1.2
+          },
           "genre_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "pop",
+              "country",
+              "rock",
+              "country pop"
+            ]
           },
           "genre_raw_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Country",
+              "Rock",
+              "Honky Tonk",
+              "Contemporary Country",
+              "Кантри",
+              "Музыка",
+              "Música",
+              "Country contemporáneo"
+            ]
           },
-          "genre_query_titles": {},
+          "genre_query_titles": {
+            "apple_music": "Haunted"
+          },
           "genre_errors": {},
           "genre_canonical_key": "family:haunted",
           "filter_tags": [
@@ -715,16 +1109,51 @@
           "image_url": "https://i.scdn.co/image/ab67616d0000b2730b04da4f224b51ff86e0a481",
           "historical_track_ids": [],
           "release_date": "2023-07-07T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
+          "genres": [
+            "country",
+            "country pop",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "country pop": 1.2,
+            "pop": 1.2,
+            "rock": 1.2
+          },
           "genre_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "pop",
+              "country",
+              "rock",
+              "country pop"
+            ]
           },
           "genre_raw_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Country",
+              "Musique",
+              "Rock",
+              "Honky tonk",
+              "Country contemporaine",
+              "Кантри",
+              "Музыка",
+              "Música",
+              "Honky Tonk",
+              "Country contemporáneo",
+              "Contemporary Country",
+              "乡村",
+              "音乐",
+              "摇滚"
+            ]
           },
-          "genre_query_titles": {},
+          "genre_query_titles": {
+            "apple_music": "Last Kiss"
+          },
           "genre_errors": {},
           "genre_canonical_key": "family:last_kiss",
           "filter_tags": [
@@ -766,16 +1195,53 @@
           "image_url": "https://i.scdn.co/image/ab67616d0000b2730b04da4f224b51ff86e0a481",
           "historical_track_ids": [],
           "release_date": "2023-07-07T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
+          "genres": [
+            "country",
+            "country pop",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "country pop": 1.2,
+            "pop": 1.2,
+            "rock": 1.2
+          },
           "genre_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "pop",
+              "country",
+              "rock",
+              "country pop"
+            ]
           },
           "genre_raw_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Country",
+              "Rock",
+              "Honky Tonk",
+              "Contemporary Country",
+              "Кантри",
+              "Музыка",
+              "Música",
+              "Country contemporáneo",
+              "乡村",
+              "音乐",
+              "摇滚",
+              "컨트리",
+              "음악",
+              "록",
+              "홍키 통크",
+              "컨템포러리 컨트리"
+            ]
           },
-          "genre_query_titles": {},
+          "genre_query_titles": {
+            "apple_music": "Long Live"
+          },
           "genre_errors": {},
           "genre_canonical_key": "family:long_live",
           "filter_tags": [
@@ -819,16 +1285,36 @@
           "image_url": "https://i.scdn.co/image/ab67616d0000b2730b04da4f224b51ff86e0a481",
           "historical_track_ids": [],
           "release_date": "2023-07-07T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
+          "genres": [
+            "country",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "pop": 1.2
+          },
           "genre_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "pop",
+              "country"
+            ]
           },
           "genre_raw_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Country",
+              "Música",
+              "乡村",
+              "音乐"
+            ]
           },
-          "genre_query_titles": {},
+          "genre_query_titles": {
+            "apple_music": "Ours"
+          },
           "genre_errors": {},
           "genre_canonical_key": "family:ours",
           "filter_tags": [
@@ -870,16 +1356,29 @@
           "image_url": "https://i.scdn.co/image/ab67616d0000b2730b04da4f224b51ff86e0a481",
           "historical_track_ids": [],
           "release_date": "2023-07-07T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
+          "genres": [
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 1.2
+          },
           "genre_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "pop"
+            ]
           },
           "genre_raw_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music"
+            ]
           },
-          "genre_query_titles": {},
+          "genre_query_titles": {
+            "apple_music": "Superman"
+          },
           "genre_errors": {},
           "genre_canonical_key": "family:superman",
           "filter_tags": [
@@ -928,10 +1427,12 @@
           "genre_status": "missing",
           "genre_scores": {},
           "genre_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": []
           },
           "genre_raw_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": []
           },
           "genre_query_titles": {},
           "genre_errors": {},
@@ -973,16 +1474,29 @@
           "image_url": "https://i.scdn.co/image/ab67616d0000b2730b04da4f224b51ff86e0a481",
           "historical_track_ids": [],
           "release_date": "2023-07-07T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
+          "genres": [
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 1.2
+          },
           "genre_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "pop"
+            ]
           },
           "genre_raw_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music"
+            ]
           },
-          "genre_query_titles": {},
+          "genre_query_titles": {
+            "apple_music": "When Emma Falls in Love (Taylor's Version) (From The Vault)"
+          },
           "genre_errors": {},
           "genre_canonical_key": "family:when_emma_falls_in_love",
           "filter_tags": [
@@ -1024,16 +1538,29 @@
           "image_url": "https://i.scdn.co/image/ab67616d0000b2730b04da4f224b51ff86e0a481",
           "historical_track_ids": [],
           "release_date": "2023-07-07T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
+          "genres": [
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 1.2
+          },
           "genre_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "pop"
+            ]
           },
           "genre_raw_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music"
+            ]
           },
-          "genre_query_titles": {},
+          "genre_query_titles": {
+            "apple_music": "I Can See You (Taylor's Version) (From The Vault)"
+          },
           "genre_errors": {},
           "genre_canonical_key": "family:i_can_see_you",
           "filter_tags": [
@@ -1082,10 +1609,12 @@
           "genre_status": "missing",
           "genre_scores": {},
           "genre_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": []
           },
           "genre_raw_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": []
           },
           "genre_query_titles": {},
           "genre_errors": {},
@@ -1127,16 +1656,29 @@
           "image_url": "https://i.scdn.co/image/ab67616d0000b2730b04da4f224b51ff86e0a481",
           "historical_track_ids": [],
           "release_date": "2023-07-07T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
+          "genres": [
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 1.2
+          },
           "genre_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "pop"
+            ]
           },
           "genre_raw_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music"
+            ]
           },
-          "genre_query_titles": {},
+          "genre_query_titles": {
+            "apple_music": "Foolish One (Taylor's Version) (From The Vault)"
+          },
           "genre_errors": {},
           "genre_canonical_key": "family:foolish_one",
           "filter_tags": [
@@ -1178,16 +1720,29 @@
           "image_url": "https://i.scdn.co/image/ab67616d0000b2730b04da4f224b51ff86e0a481",
           "historical_track_ids": [],
           "release_date": "2023-07-07T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
+          "genres": [
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 1.2
+          },
           "genre_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "pop"
+            ]
           },
           "genre_raw_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music"
+            ]
           },
-          "genre_query_titles": {},
+          "genre_query_titles": {
+            "apple_music": "Timeless (Taylor's Version) (From The Vault)"
+          },
           "genre_errors": {},
           "genre_canonical_key": "family:timeless",
           "filter_tags": [

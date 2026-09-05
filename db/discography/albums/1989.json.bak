@@ -1,7 +1,7 @@
 {
   "album": "1989",
   "section_count": 7,
-  "track_count": 69,
+  "track_count": 53,
   "sections": [
     {
       "section": "standard_edition",
@@ -54,14 +54,14 @@
             "lastfm": [
               "pop",
               "synthpop",
-              "female vocalists",
               "electropop",
+              "female vocalists",
               "new york",
               "love at first listen",
               "New York City",
-              "taylor swift",
-              "NYC",
-              "synth-pop"
+              "ryan tedder",
+              "synth-pop",
+              "NYC"
             ]
           },
           "genre_query_titles": {
@@ -80,7 +80,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "standard",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "dfdd",
+          "tsm_album_id": "lhq"
         },
         {
           "title": "Blank Space",
@@ -105,21 +107,39 @@
             "1p80LdxRV74UKvL8gnD7ky"
           ],
           "release_date": "2014-01-01T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
+          "genres": [
+            "pop",
+            "electropop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "electropop": 2.0
+          },
           "genre_sources": {
-            "lastfm": []
+            "lastfm": [
+              "pop",
+              "electropop"
+            ]
           },
           "genre_raw_sources": {
-            "lastfm": []
+            "lastfm": [
+              "pop",
+              "love at first listen",
+              "2014",
+              "female vocalists",
+              "best of 2014",
+              "electropop",
+              "taylor swift",
+              "10s",
+              "2010s",
+              "max martin"
+            ]
           },
           "genre_query_titles": {
             "lastfm": "Blank Space"
           },
-          "genre_errors": {
-            "lastfm": "LASTFM_API_KEY missing"
-          },
+          "genre_errors": {},
           "genre_canonical_key": "family:blank_space",
           "filter_tags": [
             "solo",
@@ -132,7 +152,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "standard",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "pxm7",
+          "tsm_album_id": "lhq"
         },
         {
           "title": "Style",
@@ -179,14 +201,14 @@
             "lastfm": [
               "pop",
               "synthpop",
-              "taylor swift",
               "love at first listen",
+              "taylor swift",
               "1989",
               "pop rock",
               "female vocalists",
               "max martin",
-              "Funk-Pop",
-              "2015"
+              "2015",
+              "Funk-Pop"
             ]
           },
           "genre_query_titles": {
@@ -205,7 +227,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "standard",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "7ovr",
+          "tsm_album_id": "lhq"
         },
         {
           "title": "Out Of The Woods",
@@ -233,19 +257,19 @@
           "genres": [
             "pop",
             "synth-pop",
-            "pop rock"
+            "electropop"
           ],
           "genre_status": "auto",
           "genre_scores": {
             "pop": 3.0,
             "synth-pop": 2.0,
-            "pop rock": 1.0
+            "electropop": 1.0
           },
           "genre_sources": {
             "lastfm": [
               "pop",
               "synth-pop",
-              "pop rock"
+              "electropop"
             ]
           },
           "genre_raw_sources": {
@@ -258,8 +282,8 @@
               "taylor swift",
               "amazing",
               "synth-pop",
-              "2014",
-              "pop rock"
+              "electropop",
+              "indietronica"
             ]
           },
           "genre_query_titles": {
@@ -278,7 +302,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "standard",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "e31g",
+          "tsm_album_id": "lhq"
         },
         {
           "title": "All You Had To Do Was Stay",
@@ -327,7 +353,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "standard",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "0tf0",
+          "tsm_album_id": "lhq"
         },
         {
           "title": "Shake It Off",
@@ -394,7 +422,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "standard",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "wex1",
+          "tsm_album_id": "lhq"
         },
         {
           "title": "I Wish You Would",
@@ -443,7 +473,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "standard",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "bk4n",
+          "tsm_album_id": "lhq"
         },
         {
           "title": "Bad Blood",
@@ -466,24 +498,22 @@
           "historical_track_ids": [
             "0TvQLMecTE8utzoNmvXRbK",
             "0yN4fNzmVnmgC0dsOoi9Wh",
-            "273dCMFseLcVsoSWx59IoE"
+            "273dCMFseLcVsoSWx59IoE",
+            "3QdYxkiZu3ilLRHU6lXYvn"
           ],
           "release_date": "2014-01-01T00:00:00Z",
           "genres": [
             "pop",
-            "synth-pop",
             "singer-songwriter"
           ],
           "genre_status": "auto",
           "genre_scores": {
             "pop": 3.0,
-            "synth-pop": 2.0,
-            "singer-songwriter": 1.0
+            "singer-songwriter": 2.0
           },
           "genre_sources": {
             "lastfm": [
               "pop",
-              "synth-pop",
               "singer-songwriter"
             ]
           },
@@ -494,9 +524,9 @@
               "love at first listen",
               "taylor swift",
               "2015",
-              "synthpop",
+              "max martin",
               "singer-songwriter",
-              "shade",
+              "katy perry",
               "BAD BLOOD",
               "2010s"
             ]
@@ -517,7 +547,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "standard",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "htjw",
+          "tsm_album_id": "lhq"
         },
         {
           "title": "Wildest Dreams",
@@ -591,7 +623,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "standard",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "rv14",
+          "tsm_album_id": "lhq"
         },
         {
           "title": "How You Get The Girl",
@@ -639,7 +673,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "standard",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "db8r",
+          "tsm_album_id": "lhq"
         },
         {
           "title": "This Love",
@@ -687,7 +723,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "standard",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "v5a9",
+          "tsm_album_id": "lhq"
         },
         {
           "title": "I Know Places",
@@ -736,7 +774,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "standard",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "gcni",
+          "tsm_album_id": "lhq"
         },
         {
           "title": "Clean",
@@ -784,7 +824,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "standard",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "e29n",
+          "tsm_album_id": "lhq"
         },
         {
           "title": "Wonderland",
@@ -831,7 +873,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "standard",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "n3cl",
+          "tsm_album_id": "lhq"
         },
         {
           "title": "You Are In Love",
@@ -878,7 +922,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "standard",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "m0em",
+          "tsm_album_id": "lhq"
         },
         {
           "title": "New Romantics",
@@ -923,8 +969,8 @@
               "why on earth is this just a bonus track",
               "love at first listen",
               "synthpop",
-              "female vocalists",
               "fave fave fave",
+              "female vocalists",
               "fode essa buceta",
               "max martin",
               "2014",
@@ -947,7 +993,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "standard",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "yh86",
+          "tsm_album_id": "lhq"
         }
       ]
     },
@@ -981,19 +1029,16 @@
           "release_date": "2015-05-17T00:00:00Z",
           "genres": [
             "pop",
-            "synth-pop",
             "singer-songwriter"
           ],
           "genre_status": "auto",
           "genre_scores": {
             "pop": 3.0,
-            "synth-pop": 2.0,
-            "singer-songwriter": 1.0
+            "singer-songwriter": 2.0
           },
           "genre_sources": {
             "lastfm": [
               "pop",
-              "synth-pop",
               "singer-songwriter"
             ]
           },
@@ -1004,9 +1049,9 @@
               "love at first listen",
               "taylor swift",
               "2015",
-              "synthpop",
+              "max martin",
               "singer-songwriter",
-              "shade",
+              "katy perry",
               "BAD BLOOD",
               "2010s"
             ]
@@ -1027,7 +1072,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "deluxe",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "htjw",
+          "tsm_album_id": "lhq"
         }
       ]
     },
@@ -1082,7 +1129,9 @@
           "on_album": false,
           "category": "soundtrack",
           "display_album": "1989",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "9ima",
+          "tsm_album_id": "lhq"
         }
       ]
     },
@@ -1097,7 +1146,7 @@
     },
     {
       "section": "streaming_extras",
-      "track_count": 47,
+      "track_count": 31,
       "chart_extra": true,
       "tracks": [
         {
@@ -1123,22 +1172,40 @@
             "0U3H1C9aasrSUBugEOfh1r"
           ],
           "release_date": "2015-02-01T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
+          "genres": [
+            "pop",
+            "electropop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "electropop": 2.0
+          },
           "genre_sources": {
-            "lastfm": []
+            "lastfm": [
+              "pop",
+              "electropop"
+            ]
           },
           "genre_raw_sources": {
-            "lastfm": []
+            "lastfm": [
+              "pop",
+              "love at first listen",
+              "2014",
+              "female vocalists",
+              "best of 2014",
+              "electropop",
+              "taylor swift",
+              "10s",
+              "2010s",
+              "max martin"
+            ]
           },
           "genre_query_titles": {
-            "lastfm": "Blank Space - Karaoke Version"
+            "lastfm": "Blank Space"
           },
-          "genre_errors": {
-            "lastfm": "LASTFM_API_KEY missing"
-          },
-          "genre_canonical_key": "family:blank_space_karaoke_version",
+          "genre_errors": {},
+          "genre_canonical_key": "family:blank_space",
           "filter_tags": [
             "solo",
             "standalone",
@@ -1153,7 +1220,9 @@
           "role": "extra",
           "extra_type": "karaoke",
           "display_album": "1989",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "pxm7",
+          "tsm_album_id": "lhq"
         },
         {
           "title": "Shake It Off - Karaoke Version",
@@ -1223,7 +1292,9 @@
           "role": "extra",
           "extra_type": "karaoke",
           "display_album": "1989",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "wex1",
+          "tsm_album_id": "lhq"
         },
         {
           "title": "Style - Karaoke Version",
@@ -1270,21 +1341,21 @@
             "lastfm": [
               "pop",
               "synthpop",
-              "taylor swift",
               "love at first listen",
+              "taylor swift",
               "1989",
               "pop rock",
               "female vocalists",
               "max martin",
-              "Funk-Pop",
-              "2015"
+              "2015",
+              "Funk-Pop"
             ]
           },
           "genre_query_titles": {
             "lastfm": "Style"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:style_karaoke_version",
+          "genre_canonical_key": "family:style",
           "filter_tags": [
             "solo",
             "standalone",
@@ -1299,7 +1370,9 @@
           "role": "extra",
           "extra_type": "karaoke",
           "display_album": "1989",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "7ovr",
+          "tsm_album_id": "lhq"
         },
         {
           "title": "Wildest Dreams (Arr. Lawson for Harp)",
@@ -1345,40 +1418,9 @@
           "role": "extra",
           "extra_type": "other",
           "display_album": "1989",
-          "tags": []
-        },
-        {
-          "title": "Back To December - Commentary",
-          "url": "https://open.spotify.com/intl-fr/track/3MqHevAhUErYJoC1ceESEe",
-          "type": "album_track",
-          "edition": "extras",
-          "display_section": "Extras",
-          "display_order": 9,
-          "base_title": "Back To December",
-          "album": "1989",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "Back To December - Commentary",
-          "song_family": "back_to_december",
-          "version_tag": "commentary",
-          "version_tags": [
-            "commentary"
-          ],
-          "catalog_category": "commentary",
-          "music_track": false,
-          "release_date": "2010-10-25T00:00:00Z",
-          "historical_track_ids": [],
-          "excluded_from_public_stats": true,
-          "catalog_exclusion_reason": "commentary",
-          "chart_extra": true,
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273d0eae3c1661a96570f0ca7bd",
-          "on_album": true,
-          "role": "extra",
-          "extra_type": "commentary",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "9pl1",
+          "tsm_album_id": "lhq"
         },
         {
           "title": "Bad Blood - Commentary",
@@ -1411,73 +1453,43 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "commentary",
-          "tags": []
-        },
-        {
-          "title": "Breathe - Commentary",
-          "url": "https://open.spotify.com/intl-fr/track/3cAHqw3B2deaHRXV9WrYAA",
-          "type": "album_track",
-          "edition": "extras",
-          "display_section": "Extras",
-          "display_order": 17,
-          "base_title": "Breathe",
-          "album": "1989",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
+          "tags": [],
+          "tsm_song_id": "htjw",
+          "tsm_album_id": "lhq",
+          "genres": [
+            "pop",
+            "singer-songwriter"
           ],
-          "title_clean": "Breathe - Commentary",
-          "song_family": "breathe",
-          "version_tag": "commentary",
-          "version_tags": [
-            "commentary"
-          ],
-          "catalog_category": "commentary",
-          "music_track": false,
-          "release_date": "2008-11-11T00:00:00Z",
-          "historical_track_ids": [],
-          "excluded_from_public_stats": true,
-          "catalog_exclusion_reason": "commentary",
-          "chart_extra": true,
-          "image_url": "https://i.scdn.co/image/ab67616d0000b27373b565ab9d713e8d5586aac2",
-          "on_album": true,
-          "role": "extra",
-          "extra_type": "commentary",
-          "tags": []
-        },
-        {
-          "title": "Call It What You Want - Commentary",
-          "url": "https://open.spotify.com/intl-fr/track/4eRp4OhES42IiokxA59E60",
-          "type": "album_track",
-          "edition": "extras",
-          "display_section": "Extras",
-          "display_order": 19,
-          "base_title": "Call It What You Want",
-          "album": "1989",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "Call It What You Want - Commentary",
-          "song_family": "call_it_what_you_want",
-          "version_tag": "commentary",
-          "version_tags": [
-            "commentary"
-          ],
-          "catalog_category": "commentary",
-          "music_track": false,
-          "release_date": "2017-11-10T00:00:00Z",
-          "historical_track_ids": [],
-          "excluded_from_public_stats": true,
-          "catalog_exclusion_reason": "commentary",
-          "chart_extra": true,
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273da5d5aeeabacacc1263c0f4b",
-          "on_album": true,
-          "role": "extra",
-          "extra_type": "commentary",
-          "tags": []
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "singer-songwriter": 2.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "singer-songwriter"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "Chupa essa Katy perry",
+              "love at first listen",
+              "taylor swift",
+              "2015",
+              "max martin",
+              "singer-songwriter",
+              "katy perry",
+              "BAD BLOOD",
+              "2010s"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Bad Blood"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:bad_blood"
         },
         {
           "title": "All You Had To Do Was Stay - Karaoke Version",
@@ -1502,7 +1514,9 @@
           "catalog_category": "karaoke",
           "music_track": false,
           "release_date": "2015-02-01T00:00:00Z",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "6AQbsCRdpQ4U8YaH9ySvzP"
+          ],
           "excluded_from_public_stats": true,
           "catalog_exclusion_reason": "karaoke",
           "chart_extra": true,
@@ -1510,7 +1524,21 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "karaoke",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "0tf0",
+          "tsm_album_id": "lhq",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:all_you_had_to_do_was_stay"
         },
         {
           "title": "Blank Space - Commentary",
@@ -1543,106 +1571,43 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "commentary",
-          "tags": []
-        },
-        {
-          "title": "Cold As You - Commentary",
-          "url": "https://open.spotify.com/intl-fr/track/5f22cJ5bgEqYYpbAJn0D6D",
-          "type": "album_track",
-          "edition": "extras",
-          "display_section": "Extras",
-          "display_order": 24,
-          "base_title": "Cold As You",
-          "album": "1989",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
+          "tags": [],
+          "tsm_song_id": "pxm7",
+          "tsm_album_id": "lhq",
+          "genres": [
+            "pop",
+            "electropop"
           ],
-          "title_clean": "Cold As You - Commentary",
-          "song_family": "cold_as_you",
-          "version_tag": "commentary",
-          "version_tags": [
-            "commentary"
-          ],
-          "catalog_category": "commentary",
-          "music_track": false,
-          "release_date": "2006-10-24T00:00:00Z",
-          "historical_track_ids": [],
-          "excluded_from_public_stats": true,
-          "catalog_exclusion_reason": "commentary",
-          "chart_extra": true,
-          "image_url": "https://i.scdn.co/image/ab67616d0000b2732f8c0fd72a80a93f8c53b96c",
-          "on_album": true,
-          "role": "extra",
-          "extra_type": "commentary",
-          "tags": []
-        },
-        {
-          "title": "Dress - Commentary",
-          "url": "https://open.spotify.com/intl-fr/track/0FfnSwDzc5KuBCkhJzIL2c",
-          "type": "album_track",
-          "edition": "extras",
-          "display_section": "Extras",
-          "display_order": 31,
-          "base_title": "Dress",
-          "album": "1989",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "Dress - Commentary",
-          "song_family": "dress",
-          "version_tag": "commentary",
-          "version_tags": [
-            "commentary"
-          ],
-          "catalog_category": "commentary",
-          "music_track": false,
-          "release_date": "2017-11-10T00:00:00Z",
-          "historical_track_ids": [],
-          "excluded_from_public_stats": true,
-          "catalog_exclusion_reason": "commentary",
-          "chart_extra": true,
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273da5d5aeeabacacc1263c0f4b",
-          "on_album": true,
-          "role": "extra",
-          "extra_type": "commentary",
-          "tags": []
-        },
-        {
-          "title": "Dear John - Instrumental With Background Vocals",
-          "url": "https://open.spotify.com/intl-fr/track/4jqsWkHTmhBdTKHtsaw2gL",
-          "type": "album_track",
-          "edition": "extras",
-          "display_section": "Extras",
-          "display_order": 28,
-          "base_title": "Dear John",
-          "album": "1989",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "Dear John - Instrumental With Background Vocals",
-          "song_family": "dear_john",
-          "version_tag": "instrumental",
-          "version_tags": [
-            "instrumental"
-          ],
-          "catalog_category": "instrumental",
-          "music_track": false,
-          "release_date": "2010-10-25T00:00:00Z",
-          "historical_track_ids": [],
-          "excluded_from_public_stats": true,
-          "catalog_exclusion_reason": "instrumental/backing vocals",
-          "chart_extra": true,
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273d0eae3c1661a96570f0ca7bd",
-          "on_album": true,
-          "role": "extra",
-          "extra_type": "instrumental",
-          "tags": []
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "electropop": 2.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "electropop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "love at first listen",
+              "2014",
+              "female vocalists",
+              "best of 2014",
+              "electropop",
+              "taylor swift",
+              "10s",
+              "2010s",
+              "max martin"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Blank Space"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:blank_space"
         },
         {
           "title": "Clean - Commentary",
@@ -1675,7 +1640,21 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "commentary",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "e29n",
+          "tsm_album_id": "lhq",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:clean"
         },
         {
           "title": "How You Get The Girl - Commentary",
@@ -1708,7 +1687,21 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "commentary",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "db8r",
+          "tsm_album_id": "lhq",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:how_you_get_the_girl"
         },
         {
           "title": "How You Get The Girl - Karaoke Version",
@@ -1733,7 +1726,9 @@
           "catalog_category": "karaoke",
           "music_track": false,
           "release_date": "2015-02-01T00:00:00Z",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "1h4lAVDzDt8oQY2yHTEdRx"
+          ],
           "excluded_from_public_stats": true,
           "catalog_exclusion_reason": "karaoke",
           "chart_extra": true,
@@ -1741,7 +1736,21 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "karaoke",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "db8r",
+          "tsm_album_id": "lhq",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:how_you_get_the_girl"
         },
         {
           "title": "I Know Places - Commentary",
@@ -1774,7 +1783,21 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "commentary",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "gcni",
+          "tsm_album_id": "lhq",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:i_know_places"
         },
         {
           "title": "I Know Places - Karaoke Version",
@@ -1799,7 +1822,9 @@
           "catalog_category": "karaoke",
           "music_track": false,
           "release_date": "2015-02-01T00:00:00Z",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "56dqIqcOU4iuDb8EXpgpv4"
+          ],
           "excluded_from_public_stats": true,
           "catalog_exclusion_reason": "karaoke",
           "chart_extra": true,
@@ -1807,7 +1832,21 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "karaoke",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "gcni",
+          "tsm_album_id": "lhq",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:i_know_places"
         },
         {
           "title": "I Wish You Would - Commentary",
@@ -1840,7 +1879,21 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "commentary",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "bk4n",
+          "tsm_album_id": "lhq",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:i_wish_you_would"
         },
         {
           "title": "I Wish You Would - Karaoke Version",
@@ -1865,7 +1918,9 @@
           "catalog_category": "karaoke",
           "music_track": false,
           "release_date": "2015-02-01T00:00:00Z",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "6Bq4W1CV7IqqZ4Dm2WVG5w"
+          ],
           "excluded_from_public_stats": true,
           "catalog_exclusion_reason": "karaoke",
           "chart_extra": true,
@@ -1873,7 +1928,21 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "karaoke",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "bk4n",
+          "tsm_album_id": "lhq",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:i_wish_you_would"
         },
         {
           "title": "New Romantics - Karaoke Version",
@@ -1906,7 +1975,43 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "karaoke",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "yh86",
+          "tsm_album_id": "lhq",
+          "genres": [
+            "pop",
+            "synth-pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "synth-pop": 2.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "synth-pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "why on earth is this just a bonus track",
+              "love at first listen",
+              "synthpop",
+              "fave fave fave",
+              "female vocalists",
+              "fode essa buceta",
+              "max martin",
+              "2014",
+              "taylor swift"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "New Romantics"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:new_romantics"
         },
         {
           "title": "Out Of The Woods - Commentary",
@@ -1939,7 +2044,46 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "commentary",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "e31g",
+          "tsm_album_id": "lhq",
+          "genres": [
+            "pop",
+            "synth-pop",
+            "electropop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "synth-pop": 2.0,
+            "electropop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "synth-pop",
+              "electropop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "love at first listen",
+              "synthpop",
+              "female vocalists",
+              "1989",
+              "taylor swift",
+              "amazing",
+              "synth-pop",
+              "electropop",
+              "indietronica"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Out Of The Woods"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:out_of_the_woods"
         },
         {
           "title": "Out Of The Woods - Karaoke Version",
@@ -1964,7 +2108,9 @@
           "catalog_category": "karaoke",
           "music_track": false,
           "release_date": "2015-02-01T00:00:00Z",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "7x86Zn0YFrNyKQ9O7um0v2"
+          ],
           "excluded_from_public_stats": true,
           "catalog_exclusion_reason": "karaoke",
           "chart_extra": true,
@@ -1972,7 +2118,46 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "karaoke",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "e31g",
+          "tsm_album_id": "lhq",
+          "genres": [
+            "pop",
+            "synth-pop",
+            "electropop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "synth-pop": 2.0,
+            "electropop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "synth-pop",
+              "electropop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "love at first listen",
+              "synthpop",
+              "female vocalists",
+              "1989",
+              "taylor swift",
+              "amazing",
+              "synth-pop",
+              "electropop",
+              "indietronica"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Out Of The Woods"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:out_of_the_woods"
         },
         {
           "title": "Style - Commentary",
@@ -2005,7 +2190,46 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "commentary",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "7ovr",
+          "tsm_album_id": "lhq",
+          "genres": [
+            "pop",
+            "synth-pop",
+            "pop rock"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "synth-pop": 2.0,
+            "pop rock": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "synth-pop",
+              "pop rock"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "synthpop",
+              "love at first listen",
+              "taylor swift",
+              "1989",
+              "pop rock",
+              "female vocalists",
+              "max martin",
+              "2015",
+              "Funk-Pop"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Style"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:style"
         },
         {
           "title": "This Love - Commentary",
@@ -2038,7 +2262,21 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "commentary",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "v5a9",
+          "tsm_album_id": "lhq",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:this_love"
         },
         {
           "title": "This Love - Karaoke Version",
@@ -2063,7 +2301,9 @@
           "catalog_category": "karaoke",
           "music_track": false,
           "release_date": "2015-02-01T00:00:00Z",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "7bbhFp3V4bZct8vpSCIrR8"
+          ],
           "excluded_from_public_stats": true,
           "catalog_exclusion_reason": "karaoke",
           "chart_extra": true,
@@ -2071,7 +2311,21 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "karaoke",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "v5a9",
+          "tsm_album_id": "lhq",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:this_love"
         },
         {
           "title": "Welcome to New York - Commentary",
@@ -2104,7 +2358,46 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "commentary",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "dfdd",
+          "tsm_album_id": "lhq",
+          "genres": [
+            "pop",
+            "synth-pop",
+            "electropop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "synth-pop": 2.0,
+            "electropop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "synth-pop",
+              "electropop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "synthpop",
+              "electropop",
+              "female vocalists",
+              "new york",
+              "love at first listen",
+              "New York City",
+              "ryan tedder",
+              "synth-pop",
+              "NYC"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Welcome To New York"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:welcome_to_new_york"
         },
         {
           "title": "Welcome To New York - Karaoke Version",
@@ -2129,7 +2422,9 @@
           "catalog_category": "karaoke",
           "music_track": false,
           "release_date": "2015-02-01T00:00:00Z",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "2i54CJa3pEfUjTRhAU7y6R"
+          ],
           "excluded_from_public_stats": true,
           "catalog_exclusion_reason": "karaoke",
           "chart_extra": true,
@@ -2137,7 +2432,46 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "karaoke",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "dfdd",
+          "tsm_album_id": "lhq",
+          "genres": [
+            "pop",
+            "synth-pop",
+            "electropop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "synth-pop": 2.0,
+            "electropop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "synth-pop",
+              "electropop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "synthpop",
+              "electropop",
+              "female vocalists",
+              "new york",
+              "love at first listen",
+              "New York City",
+              "ryan tedder",
+              "synth-pop",
+              "NYC"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Welcome To New York"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:welcome_to_new_york"
         },
         {
           "title": "Wildest Dreams - Commentary",
@@ -2170,7 +2504,46 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "commentary",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "rv14",
+          "tsm_album_id": "lhq",
+          "genres": [
+            "pop",
+            "dream pop",
+            "synth-pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "dream pop": 2.0,
+            "synth-pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "dream pop",
+              "synth-pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "dream pop",
+              "max martin",
+              "love at first listen",
+              "lana del rey -ish",
+              "synthpop",
+              "10s",
+              "singer-songwriter",
+              "taylor swift",
+              "epic"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Wildest Dreams"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:wildest_dreams"
         },
         {
           "title": "Wildest Dreams - Karaoke Version",
@@ -2195,7 +2568,9 @@
           "catalog_category": "karaoke",
           "music_track": false,
           "release_date": "2015-02-01T00:00:00Z",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "66LjSOIkrnVlVbNaeJhyUF"
+          ],
           "excluded_from_public_stats": true,
           "catalog_exclusion_reason": "karaoke",
           "chart_extra": true,
@@ -2203,7 +2578,46 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "karaoke",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "rv14",
+          "tsm_album_id": "lhq",
+          "genres": [
+            "pop",
+            "dream pop",
+            "synth-pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "dream pop": 2.0,
+            "synth-pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "dream pop",
+              "synth-pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "dream pop",
+              "max martin",
+              "love at first listen",
+              "lana del rey -ish",
+              "synthpop",
+              "10s",
+              "singer-songwriter",
+              "taylor swift",
+              "epic"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Wildest Dreams"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:wildest_dreams"
         },
         {
           "title": "Wonderland - Karaoke Version",
@@ -2236,7 +2650,21 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "karaoke",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "n3cl",
+          "tsm_album_id": "lhq",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:wonderland"
         },
         {
           "title": "You Are In Love - Karaoke Version",
@@ -2269,337 +2697,21 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "karaoke",
-          "tags": []
-        },
-        {
-          "title": "Out Of The Woods - Karaoke Version",
-          "url": "https://open.spotify.com/track/7x86Zn0YFrNyKQ9O7um0v2",
-          "type": "album_track",
-          "edition": "extras",
-          "display_section": "Extras",
-          "display_order": 10025,
-          "base_title": "Out Of The Woods",
-          "album": "1989",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "Out Of The Woods - Karaoke Version",
-          "song_family": "out_of_the_woods",
-          "version_tag": "karaoke",
-          "version_tags": [
-            "karaoke"
-          ],
-          "catalog_category": "karaoke",
-          "music_track": false,
-          "historical_track_ids": [],
-          "excluded_from_public_stats": true,
-          "catalog_exclusion_reason": "karaoke",
-          "chart_extra": true,
-          "chartsnapshot_source_album": "Taylor Swift Karaoke: 1989",
-          "image_url": "https://image-cdn-ak.spotifycdn.com/image/ab67616d0000b2735d02b9583fd082aefca27c69",
-          "on_album": true,
-          "role": "extra",
-          "extra_type": "karaoke",
-          "tags": []
-        },
-        {
-          "title": "Wildest Dreams - Karaoke Version",
-          "url": "https://open.spotify.com/track/66LjSOIkrnVlVbNaeJhyUF",
-          "type": "album_track",
-          "edition": "extras",
-          "display_section": "Extras",
-          "display_order": 10026,
-          "base_title": "Wildest Dreams",
-          "album": "1989",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "Wildest Dreams - Karaoke Version",
-          "song_family": "wildest_dreams",
-          "version_tag": "karaoke",
-          "version_tags": [
-            "karaoke"
-          ],
-          "catalog_category": "karaoke",
-          "music_track": false,
-          "historical_track_ids": [],
-          "excluded_from_public_stats": true,
-          "catalog_exclusion_reason": "karaoke",
-          "chart_extra": true,
-          "chartsnapshot_source_album": "Taylor Swift Karaoke: 1989",
-          "image_url": "https://image-cdn-ak.spotifycdn.com/image/ab67616d0000b2735d02b9583fd082aefca27c69",
-          "on_album": true,
-          "role": "extra",
-          "extra_type": "karaoke",
-          "tags": []
-        },
-        {
-          "title": "Welcome To New York - Karaoke Version",
-          "url": "https://open.spotify.com/track/2i54CJa3pEfUjTRhAU7y6R",
-          "type": "album_track",
-          "edition": "extras",
-          "display_section": "Extras",
-          "display_order": 10029,
-          "base_title": "Welcome To New York",
-          "album": "1989",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "Welcome To New York - Karaoke Version",
-          "song_family": "welcome_to_new_york",
-          "version_tag": "karaoke",
-          "version_tags": [
-            "karaoke"
-          ],
-          "catalog_category": "karaoke",
-          "music_track": false,
-          "historical_track_ids": [],
-          "excluded_from_public_stats": true,
-          "catalog_exclusion_reason": "karaoke",
-          "chart_extra": true,
-          "chartsnapshot_source_album": "Taylor Swift Karaoke: 1989",
-          "image_url": "https://image-cdn-fa.spotifycdn.com/image/ab67616d0000b2735d02b9583fd082aefca27c69",
-          "on_album": true,
-          "role": "extra",
-          "extra_type": "karaoke",
-          "tags": []
-        },
-        {
-          "title": "Bad Blood - Karaoke Version",
-          "url": "https://open.spotify.com/track/2fkN3ago8ded5UG0LqHKB5",
-          "type": "album_track",
-          "edition": "extras",
-          "display_section": "Extras",
-          "display_order": 10031,
-          "base_title": "Bad Blood",
-          "album": "1989",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "Bad Blood - Karaoke Version",
-          "song_family": "bad_blood",
-          "version_tag": "karaoke",
-          "version_tags": [
-            "karaoke"
-          ],
-          "catalog_category": "karaoke",
-          "music_track": false,
-          "historical_track_ids": [],
-          "excluded_from_public_stats": true,
-          "catalog_exclusion_reason": "karaoke",
-          "chart_extra": true,
-          "chartsnapshot_source_album": "Taylor Swift Karaoke: 1989",
-          "image_url": "https://image-cdn-fa.spotifycdn.com/image/ab67616d0000b2735d02b9583fd082aefca27c69",
-          "on_album": true,
-          "role": "extra",
-          "extra_type": "karaoke",
-          "tags": []
-        },
-        {
-          "title": "This Love - Karaoke Version",
-          "url": "https://open.spotify.com/track/7bbhFp3V4bZct8vpSCIrR8",
-          "type": "album_track",
-          "edition": "extras",
-          "display_section": "Extras",
-          "display_order": 10032,
-          "base_title": "This Love",
-          "album": "1989",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "This Love - Karaoke Version",
-          "song_family": "this_love",
-          "version_tag": "karaoke",
-          "version_tags": [
-            "karaoke"
-          ],
-          "catalog_category": "karaoke",
-          "music_track": false,
-          "historical_track_ids": [],
-          "excluded_from_public_stats": true,
-          "catalog_exclusion_reason": "karaoke",
-          "chart_extra": true,
-          "chartsnapshot_source_album": "Taylor Swift Karaoke: 1989",
-          "image_url": "https://image-cdn-fa.spotifycdn.com/image/ab67616d0000b2735d02b9583fd082aefca27c69",
-          "on_album": true,
-          "role": "extra",
-          "extra_type": "karaoke",
-          "tags": []
-        },
-        {
-          "title": "How You Get The Girl - Karaoke Version",
-          "url": "https://open.spotify.com/track/1h4lAVDzDt8oQY2yHTEdRx",
-          "type": "album_track",
-          "edition": "extras",
-          "display_section": "Extras",
-          "display_order": 10033,
-          "base_title": "How You Get The Girl",
-          "album": "1989",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "How You Get The Girl - Karaoke Version",
-          "song_family": "how_you_get_the_girl",
-          "version_tag": "karaoke",
-          "version_tags": [
-            "karaoke"
-          ],
-          "catalog_category": "karaoke",
-          "music_track": false,
-          "historical_track_ids": [],
-          "excluded_from_public_stats": true,
-          "catalog_exclusion_reason": "karaoke",
-          "chart_extra": true,
-          "chartsnapshot_source_album": "Taylor Swift Karaoke: 1989",
-          "image_url": "https://image-cdn-fa.spotifycdn.com/image/ab67616d0000b2735d02b9583fd082aefca27c69",
-          "on_album": true,
-          "role": "extra",
-          "extra_type": "karaoke",
-          "tags": []
-        },
-        {
-          "title": "Clean - Karaoke Version",
-          "url": "https://open.spotify.com/track/5F2684mgHARE8q5QxYY8RJ",
-          "type": "album_track",
-          "edition": "extras",
-          "display_section": "Extras",
-          "display_order": 10034,
-          "base_title": "Clean",
-          "album": "1989",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "Clean - Karaoke Version",
-          "song_family": "clean",
-          "version_tag": "karaoke",
-          "version_tags": [
-            "karaoke"
-          ],
-          "catalog_category": "karaoke",
-          "music_track": false,
-          "historical_track_ids": [],
-          "excluded_from_public_stats": true,
-          "catalog_exclusion_reason": "karaoke",
-          "chart_extra": true,
-          "chartsnapshot_source_album": "Taylor Swift Karaoke: 1989",
-          "image_url": "https://image-cdn-fa.spotifycdn.com/image/ab67616d0000b2735d02b9583fd082aefca27c69",
-          "on_album": true,
-          "role": "extra",
-          "extra_type": "karaoke",
-          "tags": []
-        },
-        {
-          "title": "I Wish You Would - Karaoke Version",
-          "url": "https://open.spotify.com/track/6Bq4W1CV7IqqZ4Dm2WVG5w",
-          "type": "album_track",
-          "edition": "extras",
-          "display_section": "Extras",
-          "display_order": 10035,
-          "base_title": "I Wish You Would",
-          "album": "1989",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "I Wish You Would - Karaoke Version",
-          "song_family": "i_wish_you_would",
-          "version_tag": "karaoke",
-          "version_tags": [
-            "karaoke"
-          ],
-          "catalog_category": "karaoke",
-          "music_track": false,
-          "historical_track_ids": [],
-          "excluded_from_public_stats": true,
-          "catalog_exclusion_reason": "karaoke",
-          "chart_extra": true,
-          "chartsnapshot_source_album": "Taylor Swift Karaoke: 1989",
-          "image_url": "https://image-cdn-fa.spotifycdn.com/image/ab67616d0000b2735d02b9583fd082aefca27c69",
-          "on_album": true,
-          "role": "extra",
-          "extra_type": "karaoke",
-          "tags": []
-        },
-        {
-          "title": "All You Had To Do Was Stay - Karaoke Version",
-          "url": "https://open.spotify.com/track/6AQbsCRdpQ4U8YaH9ySvzP",
-          "type": "album_track",
-          "edition": "extras",
-          "display_section": "Extras",
-          "display_order": 10036,
-          "base_title": "All You Had To Do Was Stay",
-          "album": "1989",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "All You Had To Do Was Stay - Karaoke Version",
-          "song_family": "all_you_had_to_do_was_stay",
-          "version_tag": "karaoke",
-          "version_tags": [
-            "karaoke"
-          ],
-          "catalog_category": "karaoke",
-          "music_track": false,
-          "historical_track_ids": [],
-          "excluded_from_public_stats": true,
-          "catalog_exclusion_reason": "karaoke",
-          "chart_extra": true,
-          "chartsnapshot_source_album": "Taylor Swift Karaoke: 1989",
-          "image_url": "https://image-cdn-fa.spotifycdn.com/image/ab67616d0000b2735d02b9583fd082aefca27c69",
-          "on_album": true,
-          "role": "extra",
-          "extra_type": "karaoke",
-          "tags": []
-        },
-        {
-          "title": "I Know Places - Karaoke Version",
-          "url": "https://open.spotify.com/track/56dqIqcOU4iuDb8EXpgpv4",
-          "type": "album_track",
-          "edition": "extras",
-          "display_section": "Extras",
-          "display_order": 10039,
-          "base_title": "I Know Places",
-          "album": "1989",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "I Know Places - Karaoke Version",
-          "song_family": "i_know_places",
-          "version_tag": "karaoke",
-          "version_tags": [
-            "karaoke"
-          ],
-          "catalog_category": "karaoke",
-          "music_track": false,
-          "historical_track_ids": [],
-          "excluded_from_public_stats": true,
-          "catalog_exclusion_reason": "karaoke",
-          "chart_extra": true,
-          "chartsnapshot_source_album": "Taylor Swift Karaoke: 1989",
-          "image_url": "https://image-cdn-fa.spotifycdn.com/image/ab67616d0000b2735d02b9583fd082aefca27c69",
-          "on_album": true,
-          "role": "extra",
-          "extra_type": "karaoke",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "m0em",
+          "tsm_album_id": "lhq",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:you_are_in_love"
         },
         {
           "title": "Shake It Off - Commentary",
@@ -2632,7 +2744,40 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "commentary",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "6kvx",
+          "tsm_album_id": "lhq",
+          "genres": [
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "haters gonna hate",
+              "2014",
+              "taylor swift",
+              "love at first listen",
+              "dance",
+              "female vocalists",
+              "best of 2014",
+              "shake it off",
+              "1989"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Shake it Off"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:shake_it_off_chartsnapshot_external_0bj1bAho"
         },
         {
           "title": "Shake It Off - Cover",
@@ -2665,10 +2810,43 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "other",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "i4ge",
+          "tsm_album_id": "lhq",
+          "genres": [
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "haters gonna hate",
+              "2014",
+              "taylor swift",
+              "love at first listen",
+              "dance",
+              "female vocalists",
+              "best of 2014",
+              "shake it off",
+              "1989"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Shake It Off"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:shake_it_off_chartsnapshot_external_5luKF6M5"
         },
         {
-          "title": "Shake it Off",
+          "title": "Shake it Off (Noteservice Wind Ensemble)",
           "url": "https://open.spotify.com/track/0bj1bAhoHpHRSl4IIyFvfU",
           "type": "album_track",
           "edition": "extras",
@@ -2700,7 +2878,40 @@
           "release_edition": "",
           "tags": [],
           "extra_type": "other",
-          "category": "other"
+          "category": "other",
+          "tsm_song_id": "6kvx",
+          "tsm_album_id": "lhq",
+          "genres": [
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "haters gonna hate",
+              "2014",
+              "taylor swift",
+              "love at first listen",
+              "dance",
+              "female vocalists",
+              "best of 2014",
+              "shake it off",
+              "1989"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Shake it Off"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:shake_it_off_chartsnapshot_external_0bj1bAho"
         },
         {
           "title": "Shake It Off (Best Work Edition)",
@@ -2734,7 +2945,40 @@
           "role": "extra",
           "release_edition": "",
           "tags": [],
-          "extra_type": "instrumental"
+          "extra_type": "instrumental",
+          "tsm_song_id": "mx5r",
+          "tsm_album_id": "lhq",
+          "genres": [
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "haters gonna hate",
+              "2014",
+              "taylor swift",
+              "love at first listen",
+              "dance",
+              "female vocalists",
+              "best of 2014",
+              "shake it off",
+              "1989"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Shake It Off"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:shake_it_off_chartsnapshot_external_5VqtAFyt"
         },
         {
           "title": "Shake It Off/Lebedik un Freylach (Arr. ZRI for Mixed Ensemble)",
@@ -2767,7 +3011,21 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "other",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "tu0w",
+          "tsm_album_id": "lhq",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:shake_it_off_lebedik_un_freylach_arr_zri_for_mixed_ensemble_chartsnapshot_external_41AEhaPZ"
         }
       ]
     },
@@ -2798,22 +3056,40 @@
             "4e6QU4gpfZj9xxcK856RgG"
           ],
           "release_date": "2014-01-01T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
+          "genres": [
+            "pop",
+            "electropop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "electropop": 2.0
+          },
           "genre_sources": {
-            "lastfm": []
+            "lastfm": [
+              "pop",
+              "electropop"
+            ]
           },
           "genre_raw_sources": {
-            "lastfm": []
+            "lastfm": [
+              "pop",
+              "love at first listen",
+              "2014",
+              "female vocalists",
+              "best of 2014",
+              "electropop",
+              "taylor swift",
+              "10s",
+              "2010s",
+              "max martin"
+            ]
           },
           "genre_query_titles": {
-            "lastfm": "Blank Space - Voice Memo"
+            "lastfm": "Blank Space"
           },
-          "genre_errors": {
-            "lastfm": "LASTFM_API_KEY missing"
-          },
-          "genre_canonical_key": "family:blank_space_voice_memo",
+          "genre_errors": {},
+          "genre_canonical_key": "family:blank_space",
           "filter_tags": [
             "solo",
             "standalone",
@@ -2827,7 +3103,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "voice_memo",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "pxm7",
+          "tsm_album_id": "lhq"
         },
         {
           "title": "I Know Places - Voice Memo",
@@ -2862,7 +3140,7 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:i_know_places_voice_memo",
+          "genre_canonical_key": "family:i_know_places",
           "filter_tags": [
             "solo",
             "standalone",
@@ -2876,7 +3154,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "voice_memo",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "gcni",
+          "tsm_album_id": "lhq"
         },
         {
           "title": "I Wish You Would - Voice Memo",
@@ -2911,7 +3191,7 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:i_wish_you_would_voice_memo",
+          "genre_canonical_key": "family:i_wish_you_would",
           "filter_tags": [
             "solo",
             "standalone",
@@ -2925,7 +3205,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "voice_memo",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "bk4n",
+          "tsm_album_id": "lhq"
         }
       ]
     },
@@ -3002,7 +3284,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "remix",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "rv14",
+          "tsm_album_id": "lhq"
         }
       ]
     }

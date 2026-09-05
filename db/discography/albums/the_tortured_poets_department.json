@@ -35,39 +35,46 @@
           ],
           "release_date": "2024-05-22T00:00:00Z",
           "genres": [
-            "pop",
-            "synth-pop",
-            "singer-songwriter"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "pop": 3.0,
-            "synth-pop": 2.0,
-            "singer-songwriter": 1.0
+            "pop": 2.2,
+            "singer-songwriter": 1.0,
+            "synth-pop": 1.0
           },
           "genre_sources": {
             "lastfm": [
               "pop",
               "synth-pop",
               "singer-songwriter"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
             "lastfm": [
               "pop",
               "best of 2024",
-              "soty",
               "synthpop",
+              "soty",
+              "new wave",
               "singer-songwriter",
               "post malone",
-              "new wave",
+              "AOTY",
               "taylor swift",
-              "female vocalist",
-              "fortnite"
+              "female vocalist"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Música"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "Fortnight (feat. Post Malone)"
+            "lastfm": "Fortnight (feat. Post Malone)",
+            "apple_music": "Fortnight (feat. Post Malone)"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:fortnight",
@@ -109,21 +116,22 @@
           ],
           "release_date": "2024-04-18T00:00:00Z",
           "genres": [
-            "pop",
-            "synth-pop",
-            "singer-songwriter"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "pop": 3.0,
-            "synth-pop": 2.0,
-            "singer-songwriter": 1.0
+            "pop": 2.2,
+            "singer-songwriter": 1.0,
+            "synth-pop": 1.0
           },
           "genre_sources": {
             "lastfm": [
               "pop",
               "synth-pop",
               "singer-songwriter"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
@@ -132,16 +140,21 @@
               "synthpop",
               "best of 2024",
               "singer-songwriter",
-              "Colleen Hoover",
               "2024",
+              "Colleen Hoover",
               "female vocalist",
               "soty",
               "female vocalists",
               "AOTY"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "The Tortured Poets Department"
+            "lastfm": "The Tortured Poets Department",
+            "apple_music": "The Tortured Poets Department"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:the_tortured_poets_department",
@@ -184,21 +197,22 @@
           ],
           "release_date": "2024-04-18T00:00:00Z",
           "genres": [
-            "pop",
-            "synth-pop",
-            "singer-songwriter"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "pop": 3.0,
-            "synth-pop": 2.0,
-            "singer-songwriter": 1.0
+            "pop": 2.2,
+            "singer-songwriter": 1.0,
+            "synth-pop": 1.0
           },
           "genre_sources": {
             "lastfm": [
               "pop",
               "synth-pop",
               "singer-songwriter"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
@@ -207,16 +221,21 @@
               "best of 2024",
               "synthpop",
               "female vocalists",
-              "taylor swift",
               "Colleen Hoover",
+              "taylor swift",
               "singer-songwriter",
               "AOTY",
               "chatgpt",
-              "soty"
+              "synth pop"
+            ],
+            "apple_music": [
+              "Pop",
+              "Música"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "My Boy Only Breaks His Favorite Toys"
+            "lastfm": "My Boy Only Breaks His Favorite Toys",
+            "apple_music": "My Boy Only Breaks His Favorite Toys"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:my_boy_only_breaks_his_favorite_toys",
@@ -258,21 +277,22 @@
           ],
           "release_date": "2024-04-18T00:00:00Z",
           "genres": [
-            "pop",
-            "synth-pop",
-            "alternative"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "pop": 3.0,
-            "synth-pop": 2.0,
-            "alternative": 1.0
+            "pop": 2.2,
+            "singer-songwriter": 1.0,
+            "synth-pop": 1.0
           },
           "genre_sources": {
             "lastfm": [
               "pop",
               "synth-pop",
-              "alternative"
+              "singer-songwriter"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
@@ -281,16 +301,21 @@
               "synthpop",
               "best of 2024",
               "love at first listen",
-              "Colleen Hoover",
               "pop perfect",
+              "Colleen Hoover",
               "rnb",
+              "singer-songwriter",
               "taylor swift",
-              "female vocalists",
-              "alt-pop"
+              "my top songs"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "Down Bad"
+            "lastfm": "Down Bad",
+            "apple_music": "Down Bad"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:down_bad",
@@ -333,14 +358,12 @@
           ],
           "release_date": "2024-04-18T00:00:00Z",
           "genres": [
-            "pop",
-            "singer-songwriter",
-            "synth-pop"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "pop": 3.0,
-            "singer-songwriter": 2.0,
+            "pop": 2.2,
+            "singer-songwriter": 1.0,
             "synth-pop": 1.0
           },
           "genre_sources": {
@@ -348,6 +371,9 @@
               "pop",
               "singer-songwriter",
               "synth-pop"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
@@ -356,16 +382,21 @@
               "best of 2024",
               "singer-songwriter",
               "synthpop",
+              "Colleen Hoover",
               "Hyperfixate on My Mind",
               "WSUM 91.7 FM Madison",
-              "Colleen Hoover",
               "female vocalists",
               "sad",
               "female vocalist"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "So Long, London"
+            "lastfm": "So Long, London",
+            "apple_music": "So Long, London"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:so_long_london",
@@ -409,21 +440,22 @@
           ],
           "release_date": "2024-04-18T00:00:00Z",
           "genres": [
-            "pop",
-            "pop rock",
-            "country"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "pop": 3.0,
-            "pop rock": 2.0,
-            "country": 1.0
+            "country": 1.0,
+            "pop": 2.2,
+            "pop rock": 1.0
           },
           "genre_sources": {
             "lastfm": [
               "pop",
               "pop rock",
               "country"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
@@ -437,11 +469,16 @@
               "female vocalist",
               "singer-songwriter",
               "female vocalists",
-              "electronica"
+              "singer songwriter"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "But Daddy I Love Him"
+            "lastfm": "But Daddy I Love Him",
+            "apple_music": "But Daddy I Love Him"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:but_daddy_i_love_him",
@@ -483,21 +520,22 @@
           ],
           "release_date": "2024-04-18T00:00:00Z",
           "genres": [
-            "pop",
-            "singer-songwriter",
-            "country"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "pop": 3.0,
-            "singer-songwriter": 2.0,
-            "country": 1.0
+            "country": 1.0,
+            "pop": 2.2,
+            "singer-songwriter": 1.0
           },
           "genre_sources": {
             "lastfm": [
               "pop",
               "singer-songwriter",
               "country"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
@@ -510,12 +548,17 @@
               "country",
               "soty",
               "chatgpt",
-              "country pop",
-              "female vocalist"
+              "female vocalist",
+              "country pop"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "Fresh Out The Slammer"
+            "lastfm": "Fresh Out The Slammer",
+            "apple_music": "Fresh Out The Slammer"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:fresh_out_the_slammer",
@@ -560,39 +603,45 @@
           ],
           "release_date": "2024-04-18T00:00:00Z",
           "genres": [
-            "pop",
-            "rock",
-            "alternative"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "pop": 3.0,
-            "rock": 2.0,
-            "alternative": 1.0
+            "country": 1.0,
+            "pop": 2.2,
+            "rock": 1.0
           },
           "genre_sources": {
             "lastfm": [
               "pop",
               "rock",
-              "alternative"
+              "country"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
             "lastfm": [
               "pop",
               "rock",
-              "alternative",
               "country",
+              "alternative",
               "pop rock",
               "singer-songwriter",
               "love at first listen",
-              "best of 2024",
               "florence + the machine",
-              "2024"
+              "2024",
+              "best of 2024"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "Florida!!! (feat. Florence + The Machine)"
+            "lastfm": "Florida!!! (feat. Florence + The Machine)",
+            "apple_music": "Florida!!! (feat. Florence + The Machine)"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:florida",
@@ -634,21 +683,22 @@
           ],
           "release_date": "2024-04-18T00:00:00Z",
           "genres": [
-            "pop",
-            "singer-songwriter",
-            "pop rock"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "pop": 3.0,
-            "singer-songwriter": 2.0,
-            "pop rock": 1.0
+            "pop": 2.2,
+            "pop rock": 1.0,
+            "singer-songwriter": 1.0
           },
           "genre_sources": {
             "lastfm": [
               "pop",
               "singer-songwriter",
               "pop rock"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
@@ -657,16 +707,22 @@
               "best of 2024",
               "singer-songwriter",
               "pop rock",
-              "soty",
               "Colleen Hoover",
+              "soty",
               "female vocalist",
               "female vocalists",
-              "soft rock",
-              "love at first listen"
+              "love at first listen",
+              "soft rock"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Música"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "Guilty as Sin?"
+            "lastfm": "Guilty as Sin?",
+            "apple_music": "Guilty as Sin?"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:guilty_as_sin",
@@ -708,16 +764,29 @@
             "2d8UxVNhJinc8uat9PoM9y"
           ],
           "release_date": "2024-04-18T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
+          "genres": [
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 1.2
+          },
           "genre_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "pop"
+            ]
           },
           "genre_raw_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music"
+            ]
           },
-          "genre_query_titles": {},
+          "genre_query_titles": {
+            "apple_music": "Who's Afraid of Little Old Me?"
+          },
           "genre_errors": {},
           "genre_canonical_key": "family:who_s_afraid_of_little_old_me",
           "filter_tags": [
@@ -758,39 +827,45 @@
           ],
           "release_date": "2024-04-18T00:00:00Z",
           "genres": [
-            "singer-songwriter",
-            "pop",
-            "country"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "singer-songwriter": 3.0,
-            "pop": 2.0,
-            "country": 1.0
+            "country": 1.0,
+            "pop": 2.2,
+            "singer-songwriter": 1.0
           },
           "genre_sources": {
             "lastfm": [
               "singer-songwriter",
               "pop",
               "country"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
             "lastfm": [
               "singer-songwriter",
               "pop",
-              "love at first listen",
               "sexy",
+              "love at first listen",
               "soty",
-              "Colleen Hoover",
               "country",
+              "Colleen Hoover",
               "best of 2024",
               "chatgpt",
               "female vocalists"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "I Can Fix Him (No Really I Can)"
+            "lastfm": "I Can Fix Him (No Really I Can)",
+            "apple_music": "I Can Fix Him (No Really I Can)"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:i_can_fix_him_no_really_i_can",
@@ -833,21 +908,22 @@
           ],
           "release_date": "2024-04-18T00:00:00Z",
           "genres": [
-            "pop",
-            "singer-songwriter",
-            "folk"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "pop": 3.0,
-            "singer-songwriter": 2.0,
-            "folk": 1.0
+            "folk": 1.0,
+            "pop": 2.2,
+            "singer-songwriter": 1.0
           },
           "genre_sources": {
             "lastfm": [
               "pop",
               "singer-songwriter",
               "folk"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
@@ -860,12 +936,17 @@
               "Ballad",
               "Colleen Hoover",
               "female vocalists",
-              "folk",
-              "acoustic"
+              "acoustic",
+              "folk"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "loml"
+            "lastfm": "loml",
+            "apple_music": "loml"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:loml",
@@ -909,21 +990,22 @@
           ],
           "release_date": "2024-07-16T00:00:00Z",
           "genres": [
-            "pop",
-            "synth-pop",
-            "dance-pop"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "pop": 3.0,
-            "synth-pop": 2.0,
-            "dance-pop": 1.0
+            "dance-pop": 1.0,
+            "pop": 2.2,
+            "synth-pop": 1.0
           },
           "genre_sources": {
             "lastfm": [
               "pop",
               "synth-pop",
               "dance-pop"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
@@ -935,13 +1017,18 @@
               "soty",
               "electropop",
               "dance pop",
-              "Colleen Hoover",
               "2024",
+              "Colleen Hoover",
               "love at first listen"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "I Can Do It With a Broken Heart"
+            "lastfm": "I Can Do It With a Broken Heart",
+            "apple_music": "I Can Do It With a Broken Heart"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:i_can_do_it_with_a_broken_heart",
@@ -985,21 +1072,22 @@
           ],
           "release_date": "2024-04-18T00:00:00Z",
           "genres": [
-            "pop",
-            "singer-songwriter",
-            "pop rock"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "pop": 3.0,
-            "singer-songwriter": 2.0,
-            "pop rock": 1.0
+            "pop": 2.2,
+            "pop rock": 1.0,
+            "singer-songwriter": 1.0
           },
           "genre_sources": {
             "lastfm": [
               "pop",
               "singer-songwriter",
               "pop rock"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
@@ -1008,16 +1096,21 @@
               "singer-songwriter",
               "best of 2024",
               "Colleen Hoover",
-              "chatgpt",
               "love at first listen",
+              "chatgpt",
               "pop rock",
               "soty",
-              "indie",
-              "not poetic"
+              "female vocalist",
+              "sad"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "The Smallest Man Who Ever Lived"
+            "lastfm": "The Smallest Man Who Ever Lived",
+            "apple_music": "The Smallest Man Who Ever Lived"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:the_smallest_man_who_ever_lived",
@@ -1059,14 +1152,12 @@
           ],
           "release_date": "2024-04-18T00:00:00Z",
           "genres": [
-            "pop",
-            "singer-songwriter",
-            "synth-pop"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "pop": 3.0,
-            "singer-songwriter": 2.0,
+            "pop": 2.2,
+            "singer-songwriter": 1.0,
             "synth-pop": 1.0
           },
           "genre_sources": {
@@ -1074,6 +1165,9 @@
               "pop",
               "singer-songwriter",
               "synth-pop"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
@@ -1083,15 +1177,20 @@
               "best of 2024",
               "singer-songwriter",
               "Colleen Hoover",
-              "AI",
               "synthpop",
-              "not poetry",
               "love at first listen",
-              "not poetic"
+              "AI",
+              "not poetic",
+              "not poetry"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "The Alchemy"
+            "lastfm": "The Alchemy",
+            "apple_music": "The Alchemy"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:the_alchemy",
@@ -1133,18 +1232,20 @@
           ],
           "release_date": "2024-04-18T00:00:00Z",
           "genres": [
-            "pop",
-            "singer-songwriter"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "pop": 3.0,
-            "singer-songwriter": 2.0
+            "pop": 2.2,
+            "singer-songwriter": 1.0
           },
           "genre_sources": {
             "lastfm": [
               "pop",
               "singer-songwriter"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
@@ -1153,16 +1254,21 @@
               "singer-songwriter",
               "chatgpt",
               "Colleen Hoover",
-              "taylor swift",
               "best of 2024",
-              "Ballad",
+              "taylor swift",
+              "female vocalists",
               "AI",
-              "not poetry",
-              "not poetic"
+              "Ballad",
+              "not poetry"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "Clara Bow"
+            "lastfm": "Clara Bow",
+            "apple_music": "Clara Bow"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:clara_bow",
@@ -1212,36 +1318,43 @@
           ],
           "release_date": "2024-04-19T00:00:00Z",
           "genres": [
-            "pop",
-            "singer-songwriter"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "pop": 3.0,
-            "singer-songwriter": 2.0
+            "pop": 2.2,
+            "singer-songwriter": 1.0
           },
           "genre_sources": {
             "lastfm": [
               "pop",
               "singer-songwriter"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
             "lastfm": [
-              "pop",
               "soty",
+              "pop",
               "best of 2024",
               "singer-songwriter",
               "love at first listen",
               "the music industry",
               "AOTY",
+              "Colleen Hoover",
               "The Black Dog",
-              "taylor swift",
-              "Colleen Hoover"
+              "taylor swift"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "The Black Dog"
+            "lastfm": "The Black Dog",
+            "apple_music": "The Black Dog"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:the_black_dog",
@@ -1279,14 +1392,12 @@
           "historical_track_ids": [],
           "release_date": "2024-04-19T00:00:00Z",
           "genres": [
-            "pop",
-            "singer-songwriter",
-            "synth-pop"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "pop": 3.0,
-            "singer-songwriter": 2.0,
+            "pop": 2.2,
+            "singer-songwriter": 1.0,
             "synth-pop": 1.0
           },
           "genre_sources": {
@@ -1294,24 +1405,32 @@
               "pop",
               "singer-songwriter",
               "synth-pop"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
             "lastfm": [
               "pop",
               "singer-songwriter",
-              "female vocalists",
               "synthpop",
-              "AI",
+              "female vocalists",
               "Colleen Hoover",
+              "AI",
               "love at first listen",
-              "not poetry",
               "not poetic",
+              "not poetry",
               "reputation"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "imgonnagetyouback"
+            "lastfm": "imgonnagetyouback",
+            "apple_music": "imgonnagetyouback"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:imgonnagetyouback",
@@ -1349,20 +1468,21 @@
           "historical_track_ids": [],
           "release_date": "2024-04-19T00:00:00Z",
           "genres": [
-            "singer-songwriter",
-            "folk",
             "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "singer-songwriter": 3.0,
-            "folk": 2.0,
-            "pop": 1.0
+            "folk": 1.0,
+            "pop": 2.2,
+            "singer-songwriter": 1.0
           },
           "genre_sources": {
             "lastfm": [
               "singer-songwriter",
               "folk",
+              "pop"
+            ],
+            "apple_music": [
               "pop"
             ]
           },
@@ -1372,16 +1492,21 @@
               "folk",
               "pop",
               "best of 2024",
-              "AI",
               "folk pop",
               "Colleen Hoover",
+              "AI",
               "not poetry",
               "not poetic",
               "chatgpt"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "The Albatross"
+            "lastfm": "The Albatross",
+            "apple_music": "The Albatross"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:the_albatross",
@@ -1421,21 +1546,22 @@
           ],
           "release_date": "2024-04-19T00:00:00Z",
           "genres": [
-            "pop",
-            "singer-songwriter",
-            "folk pop"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "pop": 3.0,
-            "singer-songwriter": 2.0,
-            "folk pop": 1.0
+            "folk pop": 1.0,
+            "pop": 2.2,
+            "singer-songwriter": 1.0
           },
           "genre_sources": {
             "lastfm": [
               "pop",
               "singer-songwriter",
               "folk pop"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
@@ -1445,15 +1571,20 @@
               "folk pop",
               "folk",
               "AI",
-              "female vocalists",
               "Ballad",
-              "not poetry",
+              "female vocalists",
               "Colleen Hoover",
-              "not poetic"
+              "not poetic",
+              "not poetry"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "Chloe or Sam or Sophia or Marcus"
+            "lastfm": "Chloe or Sam or Sophia or Marcus",
+            "apple_music": "Chloe or Sam or Sophia or Marcus"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:chloe_or_sam_or_sophia_or_marcus",
@@ -1493,20 +1624,21 @@
           ],
           "release_date": "2024-04-19T00:00:00Z",
           "genres": [
-            "folk",
-            "singer-songwriter",
             "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "folk": 3.0,
-            "singer-songwriter": 2.0,
-            "pop": 1.0
+            "folk": 1.0,
+            "pop": 2.2,
+            "singer-songwriter": 1.0
           },
           "genre_sources": {
             "lastfm": [
               "folk",
               "singer-songwriter",
+              "pop"
+            ],
+            "apple_music": [
               "pop"
             ]
           },
@@ -1514,18 +1646,23 @@
             "lastfm": [
               "folk",
               "Ballad",
-              "singer-songwriter",
               "piano",
-              "pop",
+              "singer-songwriter",
               "AI",
+              "pop",
               "sad",
-              "not poetry",
               "Colleen Hoover",
-              "not poetic"
+              "not poetic",
+              "not poetry"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "How Did It End?"
+            "lastfm": "How Did It End?",
+            "apple_music": "How Did It End?"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:how_did_it_end",
@@ -1566,39 +1703,45 @@
           ],
           "release_date": "2024-04-19T00:00:00Z",
           "genres": [
-            "pop",
-            "rock",
-            "pop rock"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "pop": 3.0,
-            "rock": 2.0,
-            "pop rock": 1.0
+            "pop": 2.2,
+            "pop rock": 1.0,
+            "rock": 1.0
           },
           "genre_sources": {
             "lastfm": [
-              "pop",
               "rock",
+              "pop",
               "pop rock"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
             "lastfm": [
-              "pop",
               "rock",
+              "pop",
               "pop rock",
               "singer-songwriter",
-              "indie rock",
               "Colleen Hoover",
-              "Love",
+              "indie rock",
+              "AI",
+              "not poetic",
               "SOCIOPATH",
-              "not poetry",
-              "not poetic"
+              "chatgpt"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "So High School"
+            "lastfm": "So High School",
+            "apple_music": "So High School"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:so_high_school",
@@ -1636,14 +1779,12 @@
           "historical_track_ids": [],
           "release_date": "2024-04-19T00:00:00Z",
           "genres": [
-            "folk",
-            "pop",
-            "singer-songwriter"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "folk": 3.0,
-            "pop": 2.0,
+            "folk": 1.0,
+            "pop": 2.2,
             "singer-songwriter": 1.0
           },
           "genre_sources": {
@@ -1651,24 +1792,32 @@
               "folk",
               "pop",
               "singer-songwriter"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
             "lastfm": [
               "folk",
               "pop",
-              "singer-songwriter",
               "poetic",
-              "AI",
+              "singer-songwriter",
               "poetry",
               "Colleen Hoover",
-              "not poetry",
+              "AI",
               "not poetic",
+              "not poetry",
               "folk pop"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "I Hate It Here"
+            "lastfm": "I Hate It Here",
+            "apple_music": "I Hate It Here"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:i_hate_it_here",
@@ -1708,39 +1857,27 @@
           ],
           "release_date": "2024-04-19T00:00:00Z",
           "genres": [
-            "folk",
-            "pop",
-            "singer-songwriter"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "folk": 3.0,
-            "pop": 2.0,
-            "singer-songwriter": 1.0
+            "pop": 1.2
           },
           "genre_sources": {
-            "lastfm": [
-              "folk",
-              "pop",
-              "singer-songwriter"
+            "lastfm": [],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
-            "lastfm": [
-              "folk",
-              "female vocalist",
-              "pop",
-              "singer-songwriter",
-              "folk pop",
-              "embarrassing",
-              "country",
-              "AI",
-              "not poetry",
-              "not poetic"
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "thanK you aIMee"
+            "apple_music": "thanK you aIMee"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:thank_you_aimee",
@@ -1778,14 +1915,12 @@
           "historical_track_ids": [],
           "release_date": "2024-04-19T00:00:00Z",
           "genres": [
-            "pop",
-            "folk",
-            "singer-songwriter"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "pop": 3.0,
-            "folk": 2.0,
+            "folk": 1.0,
+            "pop": 2.2,
             "singer-songwriter": 1.0
           },
           "genre_sources": {
@@ -1793,24 +1928,32 @@
               "pop",
               "folk",
               "singer-songwriter"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
             "lastfm": [
               "pop",
               "folk",
-              "singer-songwriter",
               "AI",
+              "singer-songwriter",
               "not poetry",
               "not poetic",
               "female vocalists",
-              "Colleen Hoover",
               "singer songwriter",
+              "Colleen Hoover",
               "Ballad"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "I Look in People's Windows"
+            "lastfm": "I Look in People's Windows",
+            "apple_music": "I Look in People's Windows"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:i_look_in_people_s_windows",
@@ -1848,20 +1991,21 @@
           "historical_track_ids": [],
           "release_date": "2024-04-19T00:00:00Z",
           "genres": [
-            "singer-songwriter",
-            "folk",
             "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "singer-songwriter": 3.0,
-            "folk": 2.0,
-            "pop": 1.0
+            "folk": 1.0,
+            "pop": 2.2,
+            "singer-songwriter": 1.0
           },
           "genre_sources": {
             "lastfm": [
               "singer-songwriter",
               "folk",
+              "pop"
+            ],
+            "apple_music": [
               "pop"
             ]
           },
@@ -1871,16 +2015,21 @@
               "folk",
               "pop",
               "AI",
-              "not poetry",
               "love at first listen",
               "not poetic",
-              "folk pop",
-              "female vocalists",
-              "singer songwriter"
+              "not poetry",
+              "singer songwriter",
+              "Colleen Hoover",
+              "female vocalists"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "The Prophecy"
+            "lastfm": "The Prophecy",
+            "apple_music": "The Prophecy"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:the_prophecy",
@@ -1918,14 +2067,12 @@
           "historical_track_ids": [],
           "release_date": "2024-04-19T00:00:00Z",
           "genres": [
-            "pop",
-            "folk",
-            "singer-songwriter"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "pop": 3.0,
-            "folk": 2.0,
+            "folk": 1.0,
+            "pop": 2.2,
             "singer-songwriter": 1.0
           },
           "genre_sources": {
@@ -1933,6 +2080,9 @@
               "pop",
               "folk",
               "singer-songwriter"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
@@ -1941,16 +2091,21 @@
               "folk",
               "singer-songwriter",
               "female vocalists",
+              "Colleen Hoover",
               "AI",
               "not poetry",
-              "Colleen Hoover",
               "not poetic",
-              "taylor swift",
-              "acoustic"
+              "acoustic",
+              "taylor swift"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "Cassandra"
+            "lastfm": "Cassandra",
+            "apple_music": "Cassandra"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:cassandra",
@@ -1990,39 +2145,43 @@
           ],
           "release_date": "2024-04-19T00:00:00Z",
           "genres": [
-            "folk",
-            "pop",
-            "singer-songwriter"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "folk": 3.0,
-            "pop": 2.0,
-            "singer-songwriter": 1.0
+            "folk": 1.0,
+            "pop": 2.2
           },
           "genre_sources": {
             "lastfm": [
               "folk",
-              "pop",
-              "singer-songwriter"
+              "pop"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
             "lastfm": [
               "Ballad",
               "folk",
-              "pop",
               "traitor",
+              "pop",
               "peter pan",
               "love at first listen",
-              "singer-songwriter",
-              "peter",
               "AI",
-              "not poetry"
+              "not poetry",
+              "best of 2024",
+              "not poetic"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "Peter"
+            "lastfm": "Peter",
+            "apple_music": "Peter"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:peter",
@@ -2062,39 +2221,45 @@
           ],
           "release_date": "2024-04-19T00:00:00Z",
           "genres": [
-            "pop",
-            "folk",
-            "country"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "pop": 3.0,
-            "folk": 2.0,
-            "country": 1.0
+            "country": 1.0,
+            "folk": 1.0,
+            "pop": 2.2
           },
           "genre_sources": {
             "lastfm": [
               "pop",
-              "folk",
-              "country"
+              "country",
+              "folk"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
             "lastfm": [
-              "pop",
               "best of 2024",
-              "folk",
+              "pop",
               "country",
+              "folk",
               "singer-songwriter",
               "folk pop",
               "female vocalists",
+              "AI",
               "soty",
-              "not poetry",
               "love at first listen"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "The Bolter"
+            "lastfm": "The Bolter",
+            "apple_music": "The Bolter"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:the_bolter",
@@ -2132,39 +2297,27 @@
           "historical_track_ids": [],
           "release_date": "2024-04-19T00:00:00Z",
           "genres": [
-            "singer-songwriter",
-            "pop",
-            "folk"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "singer-songwriter": 3.0,
-            "pop": 2.0,
-            "folk": 1.0
+            "pop": 1.2
           },
           "genre_sources": {
-            "lastfm": [
-              "singer-songwriter",
-              "pop",
-              "folk"
+            "lastfm": [],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
-            "lastfm": [
-              "singer-songwriter",
-              "pop",
-              "folk",
-              "indie",
-              "AI",
-              "not poetry",
-              "way to go tiger",
-              "not poetic",
-              "chatgpt",
-              "Colleen Hoover"
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "Robin"
+            "apple_music": "Robin"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:robin",
@@ -2202,21 +2355,22 @@
           "historical_track_ids": [],
           "release_date": "2024-04-19T00:00:00Z",
           "genres": [
-            "pop",
-            "singer-songwriter",
-            "folk"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "pop": 3.0,
-            "singer-songwriter": 2.0,
-            "folk": 1.0
+            "folk": 1.0,
+            "pop": 2.2,
+            "singer-songwriter": 1.0
           },
           "genre_sources": {
             "lastfm": [
               "pop",
               "singer-songwriter",
               "folk"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
@@ -2226,15 +2380,20 @@
               "singer-songwriter",
               "Ballad",
               "best of 2024",
-              "folk",
               "piano",
-              "AI",
+              "folk",
               "not poetry",
+              "AI",
               "not poetic"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "The Manuscript"
+            "lastfm": "The Manuscript",
+            "apple_music": "The Manuscript"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:the_manuscript",
@@ -2283,39 +2442,46 @@
           "historical_track_ids": [],
           "release_date": "2024-05-22T00:00:00Z",
           "genres": [
-            "pop",
-            "synth-pop",
-            "singer-songwriter"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "pop": 3.0,
-            "synth-pop": 2.0,
-            "singer-songwriter": 1.0
+            "pop": 2.2,
+            "singer-songwriter": 1.0,
+            "synth-pop": 1.0
           },
           "genre_sources": {
             "lastfm": [
               "pop",
               "synth-pop",
               "singer-songwriter"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
             "lastfm": [
               "pop",
               "best of 2024",
-              "soty",
               "synthpop",
+              "soty",
+              "new wave",
               "singer-songwriter",
               "post malone",
-              "new wave",
+              "AOTY",
               "taylor swift",
-              "female vocalist",
-              "fortnite"
+              "female vocalist"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Música"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "Fortnight (feat. Post Malone)"
+            "lastfm": "Fortnight (feat. Post Malone)",
+            "apple_music": "Fortnight (feat. Post Malone)"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:fortnight",
@@ -2356,21 +2522,22 @@
           "historical_track_ids": [],
           "release_date": "2024-09-13T00:00:00Z",
           "genres": [
-            "pop",
-            "synth-pop",
-            "dance-pop"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "pop": 3.0,
-            "synth-pop": 2.0,
-            "dance-pop": 1.0
+            "dance-pop": 1.0,
+            "pop": 2.2,
+            "synth-pop": 1.0
           },
           "genre_sources": {
             "lastfm": [
               "pop",
               "synth-pop",
               "dance-pop"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
@@ -2382,13 +2549,18 @@
               "soty",
               "electropop",
               "dance pop",
-              "Colleen Hoover",
               "2024",
+              "Colleen Hoover",
               "love at first listen"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "I Can Do It With a Broken Heart"
+            "lastfm": "I Can Do It With a Broken Heart",
+            "apple_music": "I Can Do It With a Broken Heart"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:i_can_do_it_with_a_broken_heart",
@@ -2431,21 +2603,22 @@
           ],
           "release_date": "2024-07-16T00:00:00Z",
           "genres": [
-            "pop",
-            "synth-pop",
-            "dance-pop"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "pop": 3.0,
-            "synth-pop": 2.0,
-            "dance-pop": 1.0
+            "dance-pop": 1.0,
+            "pop": 2.2,
+            "synth-pop": 1.0
           },
           "genre_sources": {
             "lastfm": [
               "pop",
               "synth-pop",
               "dance-pop"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
@@ -2457,13 +2630,18 @@
               "soty",
               "electropop",
               "dance pop",
-              "Colleen Hoover",
               "2024",
+              "Colleen Hoover",
               "love at first listen"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "I Can Do It With a Broken Heart"
+            "lastfm": "I Can Do It With a Broken Heart",
+            "apple_music": "I Can Do It With a Broken Heart"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:i_can_do_it_with_a_broken_heart",
@@ -2507,39 +2685,46 @@
           "historical_track_ids": [],
           "release_date": "2024-07-09T00:00:00Z",
           "genres": [
-            "pop",
-            "synth-pop",
-            "singer-songwriter"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "pop": 3.0,
-            "synth-pop": 2.0,
-            "singer-songwriter": 1.0
+            "pop": 2.2,
+            "singer-songwriter": 1.0,
+            "synth-pop": 1.0
           },
           "genre_sources": {
             "lastfm": [
               "pop",
               "synth-pop",
               "singer-songwriter"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
             "lastfm": [
               "pop",
               "best of 2024",
-              "soty",
               "synthpop",
+              "soty",
+              "new wave",
               "singer-songwriter",
               "post malone",
-              "new wave",
+              "AOTY",
               "taylor swift",
-              "female vocalist",
-              "fortnite"
+              "female vocalist"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Música"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "Fortnight (feat. Post Malone)"
+            "lastfm": "Fortnight (feat. Post Malone)",
+            "apple_music": "Fortnight (feat. Post Malone)"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:fortnight",
@@ -2585,39 +2770,46 @@
           "historical_track_ids": [],
           "release_date": "2024-07-09T00:00:00Z",
           "genres": [
-            "pop",
-            "synth-pop",
-            "singer-songwriter"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "pop": 3.0,
-            "synth-pop": 2.0,
-            "singer-songwriter": 1.0
+            "pop": 2.2,
+            "singer-songwriter": 1.0,
+            "synth-pop": 1.0
           },
           "genre_sources": {
             "lastfm": [
               "pop",
               "synth-pop",
               "singer-songwriter"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
             "lastfm": [
               "pop",
               "best of 2024",
-              "soty",
               "synthpop",
+              "soty",
+              "new wave",
               "singer-songwriter",
               "post malone",
-              "new wave",
+              "AOTY",
               "taylor swift",
-              "female vocalist",
-              "fortnite"
+              "female vocalist"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Música"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "Fortnight (feat. Post Malone)"
+            "lastfm": "Fortnight (feat. Post Malone)",
+            "apple_music": "Fortnight (feat. Post Malone)"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:fortnight",

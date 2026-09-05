@@ -283,21 +283,19 @@ produire le highlight `best_day_since` — meme logique de regroupement par
 `song_family` et memes filtres que ce qui serait poste sur Twitter, pas de
 duplication.
 
-## Anti-doublon best-day-since (2026-08-22)
+## Anti-doublon best-day-since (2026-08-22, mecanisme grower retire 2026-09-04)
 
-`post_best_day_since_twitter.py` ne doit jamais poster la meme reference
-"best day since X" (ou "best day ever") sur deux jours consecutifs pour le
-meme morceau — meme si le record tient techniquement encore le lendemain
-(streams toujours au-dessus de tout ce qui precede X), c'est un doublon a
-l'affichage. `_track_posted_lock_path(...).lock` stocke desormais un JSON
-`{"best_day_since": ..., "kind": ...}` (au lieu d'un fichier vide) via
-`_write_track_lock`, et `_is_repeat_of_previous_day` compare la valeur du
-jour au lock de la veille avant de poster (dans `_find_all_rows` pour le
-flux batch, et dans `_post_single_track_early` pour `--only-track`). Si le
-lock de la veille n'existe pas ou est vide (anciens locks pre-fix), aucune
-suppression n'a lieu — comportement par defaut sur, pas de faux negatif.
-Cette regle ne s'applique qu'aux posts individuels par morceau ; le post
-recap (`_find_recap_rows`) et les posts album ne sont pas concernes.
+Historique : entre 2026-08-22 et 2026-09-04, un morceau qui reclamait la meme
+reference "best day since X" (ou "best day ever") deux jours consecutifs de
+suite basculait sur un format de post distinct ("grower": card + tweet
+minimalistes montrant 4 jours de daily/%). `_track_posted_lock_path(...).lock`
+stocke toujours un JSON `{"best_day_since": ..., "kind": ...}` via
+`_write_track_lock` (ca reste utile pour `is_recent_repeat_record`), mais
+`_is_repeat_of_previous_day`, `_post_grower_for_repeat`, `_grower_tweet`,
+`_generate_grower_image` et tout le lock dir `best_day_grower_locks/` ont ete
+supprimes de `post_best_day_since_twitter.py` (et `best_day_grower_tweet` de
+`collectors/twitter/text.py`) : voir « Post best-day-since grower retire »
+ci-dessous.
 
 ## Priorite best-day-since > 3 mois (2026-08-22)
 
@@ -514,9 +512,40 @@ une ere** part quand cette ere a une grosse journee :
 - **Suppression** : une fois la card d'une ere postee (lock
   `best_day_since_era_recap_locks/{slug}.lock`), **aucune card best-day-since
   chanson individuelle de cette ere** ce jour-la (`_era_recap_posted_for` dans
-  `_find_all_rows` + `_post_single_track_early`, growers inclus) — **sauf** un
+  `_find_all_rows` + `_post_single_track_early`) — **sauf** un
   biggest day of the year (carte inconditionnelle maintenue, decision owner).
 - `--no-era-recap` pour sauter.
+
+## Post best-day-since "grower" retire (2026-09-04)
+
+Decision proprietaire : on arrete le format de post "grower" (card + tweet
+minimalistes "4 jours de daily/%") qui remplacait la card best-day-since
+normale quand un morceau reclamait la meme reference deux jours consecutifs.
+Desormais un repeat ne saute plus vers un format a part : il reste une row
+best-day-since normale et se fait departager par le **score** comme n'importe
+quel autre candidat — `score_best_day_since.py` a deja un sous-score `grower`
+(poids 0.18-0.20, base sur l'acceleration daily/weekly-pct) qui capture ce
+signal de "chanson qui continue de grimper", donc rien de nouveau a calculer.
+
+- Supprime dans `post_best_day_since_twitter.py` : `_is_repeat_of_previous_day`,
+  `_post_grower_for_repeat`, `_generate_grower_image`, `_grower_tweet`,
+  `_grower_label`, `_daily_grower_points`, `_grower_posted_lock_path` /
+  `_posted_grower_track_ids_for_date` / `_write_grower_lock`,
+  `MAX_BEST_DAY_GROWER_POSTS`, le flag `row["_grower_repeat"]`, et les helpers
+  devenus inutilises `_short_month_day`, `_hex_to_rgb`, `_luma_from_hex`,
+  `_spotify_logo_svg`. Supprime dans `collectors/twitter/text.py` :
+  `best_day_grower_tweet`. Plus de dossier de lock `best_day_grower_locks/`.
+- `_find_all_rows`, `_post_single_track_early` et le batch finalize
+  n'ont plus de branche grower : chaque row qualifiee suit le chemin normal
+  (image `_generate_best_day_since_image` + `_build_tweet`), gatee par les
+  memes caps que d'habitude (early 3/5, finalize 3 standard/5 max, score
+  exceptionnel pour les slots 4-5).
+- La wording "has once again earned its BEST DAY..." (decision 2026-09-03,
+  `best_day_since.is_recent_repeat_record`, fenetre 60 j) est inchangee et
+  reste le seul signal visuel qu'un repeat recent a eu lieu.
+- Consequence : un repeat qui ne clear pas le score/gate normal ne poste
+  simplement plus rien ce jour-la (avant : il postait quand meme, en format
+  grower, dans sa limite dediee de 3/jour).
 
 ## Marqueur ★ since sur Top Songs / Top Eras / GAINERS (2026-09-03)
 
@@ -572,6 +601,103 @@ saisonnier Holiday Collection ici (parite avec l'image d'album).
   echoue (l'ordre ne doit jamais bloquer un post). Consomme par
   `_album_post_queue(ctx, stats_date)` (voir section « Refonte ordre de post »
   ci-dessous), qui pilote `_post_all_albums` et l'alternance de
+  `run_final_update_tasks`.
+
+## Score album : parite etendue avec score_best_day_since (2026-09-04)
+
+Decision proprietaire : ameliorer `score_album_update.py` au maximum plutot
+que de le laisser derriere les affinages deja faits sur le scorer chanson
+(`score_best_day_since.py`). Toujours read-only, toujours utilise seulement
+pour l'ORDRE des cards album (jamais pour gater qui poste).
+
+Signaux ajoutes a `score_album(...)` :
+
+- **Baseline attendue** : `sbd._expected_daily(by_day, target, holiday=False)`
+  (moyenne meme jour de semaine sur 8 semaines a 55% + moyenne 14j recents a
+  45%) -> `expected_daily`/`expected_pct_gain` dans le resultat. Sert de base
+  au comeback bonus, a l'explication "% above its expected baseline", et a un
+  sous-score `expected_pct_gain` dedie dans `AlbumScoreWeights`.
+- **`stature_bonus`** et **`surprise_impact_bonus`** : portage direct de
+  `sbd._stature_bonus`/`sbd._surprise_impact_bonus`, mais recalcules
+  localement (`_album_stature_bonus`/`_album_surprise_impact_bonus`) car les
+  seuils/caps de volume de ces fonctions sont calibres pour un daily de
+  chanson. Nouvelle constante `ALBUM_VOLUME_SCALE = 10` (meme ratio deja
+  choisi pour `ALBUM_DAILY_ABS_GAIN_CAP` = 500k track -> 5M album) applique
+  aux seuils (`ALBUM_SURPRISE_MIN_DAILY`, `ALBUM_SURPRISE_VOLUME_CAP`,
+  `ALBUM_STATURE_MIN_SCALE`, `ALBUM_STATURE_FULL_SCALE`). La magnitude en
+  points des bonus (18.0 / `sbd.STATURE_BONUS_MAX`=14.0) n'est PAS scale —
+  seul le seuil "c'est gros" change avec le niveau album.
+- **`comeback_bonus`** : reutilise `sbd._comeback_bonus` tel quel (aucun
+  seuil de volume dedans, uniquement `days_since`/`expected_pct_gain`/
+  `positive_move_days_7`, donc scale-independant).
+- **Pas de penalite de fraicheur / anti-repetition** (decision 2026-09-04) :
+  le score doit refleter le merite exact du jour, pas forcer de la variete.
+  Un album qui a deja domine recemment reste donc classe normalement si ses
+  signaux du jour le justifient.
+- **Records de tracks ponderes par qualite** (decision 2026-09-04) :
+  `_album_record_track_rows` garde la row best-day-since complete, et
+  `_track_record_quality` module le bonus par age/volume/%/record annuel ou
+  best-ever. `score_album(...)` calcule ces rows par defaut quand il est appele
+  seul, pour ne pas oublier `track_records_bonus` hors `score_albums(...)`.
+- **`negative_momentum_penalty`** (decision 2026-09-04) : petit malus borne
+  (`NEGATIVE_MOMENTUM_PENALTY_MAX = 7.0`) si un album baisse a la fois en
+  daily et en weekly, sauf s'il decroche un vrai record album ce jour-la.
+- Pas de penalite saisonniere Holiday Collection ici (contrairement au
+  scorer chanson) : l'album Holiday Collection est deja entierement bloque
+  hors saison a la generation/post (`generate_album_update_image.
+  holiday_collection_post_block_reason`, appele dans `_post_one_album`), donc
+  une penalite dans le score serait redondante.
+
+**Perf** : `_album_points_by_day` (combine les points jour par jour de tous les
+tracks d'un album) est cache via `_ALBUM_BY_DAY_CACHE`, cle sur
+`tuple(track_ids)`, car la serie combinee ne depend que du line-up de tracks de
+l'album, pas de la date cible.
+
+`_album_track_ids` filtre desormais aussi via
+`album_img._counts_in_album_total(track)` (aligne la liste de tracks scoree
+sur celle qui compte reellement dans le total affiche par la card album).
+
+Nouveaux champs dans le dict retourne par `score_album`/`score_albums` :
+`surprise_impact_bonus`, `stature_bonus`, `comeback_bonus`,
+`negative_momentum_penalty`, `expected_daily`, `expected_pct_gain`,
+`positive_move_days_7`, `track_record_weighted_hits`. `explanations` gagne les
+lignes correspondantes ("major album clearing a long-standing best day",
+"album comeback after a quiet stretch", "negative daily and weekly momentum
+discounted").
+
+Backtest read-only : `python tools/scripts/score_album_update.py --backtest-days
+30 [--backtest-end YYYY-MM-DD] [--json]` simule l'ordre finalize (`top2`,
+Showgirl/TTPD forces, bottom 2 droppes), exclut les albums non postables avant
+ranking, et signale les cas a relire : albums avec 3+ records hors top 2, gros
+gain daily hors top 5, ou spike vs baseline attendu hors top 5.
+
+## Bottom 2 albums exclus + bonus multi-records double (2026-09-04)
+
+Suite du chantier score album ci-dessus, deux ajustements demandes par le
+proprietaire apres relecture du classement :
+
+- **`TRACK_RECORDS_BONUS_MAX` : 8.0 -> 16.0** dans `score_album_update.py`.
+  Plusieurs chansons d'un album qui battent leur record best-day-since le
+  meme jour est un signal fort ("cet album merite le spotlight aujourd'hui")
+  qui etait sous-pondere a cote du `record_bonus` de l'album lui-meme (jusqu'a
+  26 = `BIGGEST_DAY_OF_YEAR_BONUS` 18 + `BEST_EVER_BONUS` 8). Le bonus est
+  maintenant base sur `track_record_weighted_hits` (age/volume/%/record flag),
+  pour eviter qu'un petit record compte autant qu'un vrai gros signal.
+- **Les 2 derniers du classement ne postent plus du tout ce jour-la**
+  (contredit sciemment la decision du 2026-09-03 "tout le monde poste chaque
+  jour"). Nouvelle constante `finalize_update.BOTTOM_ALBUMS_SKIPPED = 2`,
+  appliquee dans `_album_post_queue` : les albums non postables ce jour-la
+  (Holiday Collection hors saison) sont retires avant le ranking, puis apres
+  avoir retire le top 2 garanti et
+  les cibles forcees (Showgirl/TTPD, `PRIMARY_ALBUM_UPDATE_TARGETS`), les 2
+  derniers du "reste par score" (`tail`) sont retires de la queue au lieu
+  d'etre postes en dernier — jamais le top 2 ni les cibles forcees, qui
+  restent garantis quel que soit leur score. Pas de drop si le reste a ≤ 2
+  albums (`len(tail) > BOTTOM_ALBUMS_SKIPPED`), pour ne jamais vider la queue
+  sur un catalogue reduit. Log `[all-albums] skipped (bottom N by score): ...`
+  a cote du log existant `forced after top 2`. S'applique aux deux
+  consommateurs de `_album_post_queue` : `_post_all_albums`
+  (`--post-only all-albums`) et la boucle alternee de
   `run_final_update_tasks`.
 
 ## Refonte de l'ordre de post en finalize (2026-09-03)
@@ -649,7 +775,7 @@ Fix : `_url_to_data_uri` delegue maintenant a `comp.img_fetch.fetch_data_uri`
 tailles CDN Spotify). Une cover fetchee une fois avec succes n'est plus jamais
 re-telechargee. `load_cover_url` (covers.json -> image_url album) est inchange —
 ce n'etait pas un probleme de resolution d'URL. Detail -> skill `image-gen`
-§ "Fetch d'image resilient".
+Â§ "Fetch d'image resilient".
 
 ## Update album "table dark/light" : Showgirl + reputation (2026-08-27)
 

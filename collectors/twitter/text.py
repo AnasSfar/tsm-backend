@@ -107,22 +107,6 @@ def best_day_since_era_recap_tweet(*, era: str, count: int, stats_date: str) -> 
     return with_prefix(body, BEST_DAY_PREFIX)
 
 
-def best_day_grower_tweet(
-    *,
-    title: str,
-    artist: str,
-    lines: list[str],
-    label: str,
-    prefix: str,
-) -> str:
-    body = (
-        f'"{title}" by {artist} on Spotify :\n\n'
-        + "\n".join(lines)
-        + f"\n\nThe song once again earned its {label}."
-    )
-    return with_prefix(body, prefix)
-
-
 def stream_milestone_tweet(
     *,
     title: str,

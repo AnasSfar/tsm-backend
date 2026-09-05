@@ -31,16 +31,53 @@
             "0dBW6ZsW8skfvoRfgeerBF"
           ],
           "release_date": "2010-01-01T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
+          "genres": [
+            "country",
+            "country pop",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "country pop": 1.2,
+            "pop": 1.2,
+            "rock": 1.2
+          },
           "genre_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "pop",
+              "country",
+              "rock",
+              "country pop"
+            ]
           },
           "genre_raw_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Country",
+              "Rock",
+              "Honky Tonk",
+              "Contemporary Country",
+              "Кантри",
+              "Музыка",
+              "Música",
+              "Country contemporáneo",
+              "乡村",
+              "音乐",
+              "摇滚",
+              "컨트리",
+              "음악",
+              "록",
+              "홍키 통크",
+              "컨템포러리 컨트리"
+            ]
           },
-          "genre_query_titles": {},
+          "genre_query_titles": {
+            "apple_music": "Mine"
+          },
           "genre_errors": {},
           "genre_canonical_key": "family:mine",
           "filter_tags": [
@@ -81,16 +118,56 @@
             "6d9IiDcFxtFVIvt9pCqyGH"
           ],
           "release_date": "2010-01-01T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
+          "genres": [
+            "country",
+            "country pop",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "country pop": 1.2,
+            "pop": 1.2,
+            "rock": 1.2
+          },
           "genre_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "pop",
+              "country",
+              "rock",
+              "country pop"
+            ]
           },
           "genre_raw_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Country",
+              "Musique",
+              "Rock",
+              "Honky tonk",
+              "Country contemporaine",
+              "Кантри",
+              "Музыка",
+              "Música",
+              "Honky Tonk",
+              "Country contemporáneo",
+              "Contemporary Country",
+              "乡村",
+              "音乐",
+              "摇滚",
+              "컨트리",
+              "음악",
+              "록",
+              "홍키 통크",
+              "컨템포러리 컨트리"
+            ]
           },
-          "genre_query_titles": {},
+          "genre_query_titles": {
+            "apple_music": "Sparks Fly"
+          },
           "genre_errors": {},
           "genre_canonical_key": "family:sparks_fly",
           "filter_tags": [
@@ -134,19 +211,26 @@
           "release_date": "2010-01-01T00:00:00Z",
           "genres": [
             "country",
-            "pop",
-            "country pop"
+            "country pop",
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "country": 3.0,
-            "pop": 2.0,
-            "country pop": 1.0
+            "country": 2.2,
+            "country pop": 2.2,
+            "pop": 2.2,
+            "rock": 1.2
           },
           "genre_sources": {
             "lastfm": [
               "country",
               "pop",
+              "country pop"
+            ],
+            "apple_music": [
+              "pop",
+              "country",
+              "rock",
               "country pop"
             ]
           },
@@ -160,12 +244,36 @@
               "Love",
               "love at first listen",
               "<3",
-              "2010",
-              "sweet"
+              "sweet",
+              "2010"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Country",
+              "Rock",
+              "Honky Tonk",
+              "Contemporary Country",
+              "Кантри",
+              "Музыка",
+              "Música",
+              "Country contemporáneo",
+              "Musique",
+              "Honky tonk",
+              "Country contemporaine",
+              "乡村",
+              "音乐",
+              "摇滚",
+              "컨트리",
+              "음악",
+              "록",
+              "홍키 통크",
+              "컨템포러리 컨트리"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "Back To December"
+            "lastfm": "Back To December",
+            "apple_music": "Back To December"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:back_to_december",
@@ -207,16 +315,56 @@
             "24DefNCFiWTP8OjYWiXuYe"
           ],
           "release_date": "2010-01-01T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
+          "genres": [
+            "country",
+            "country pop",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "country pop": 1.2,
+            "pop": 1.2,
+            "rock": 1.2
+          },
           "genre_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "pop",
+              "country",
+              "rock",
+              "country pop"
+            ]
           },
           "genre_raw_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Country",
+              "Musique",
+              "Rock",
+              "Honky tonk",
+              "Country contemporaine",
+              "Кантри",
+              "Музыка",
+              "Honky Tonk",
+              "Contemporary Country",
+              "乡村",
+              "音乐",
+              "摇滚",
+              "Música",
+              "Country contemporáneo",
+              "컨트리",
+              "음악",
+              "록",
+              "홍키 통크",
+              "컨템포러리 컨트리"
+            ]
           },
-          "genre_query_titles": {},
+          "genre_query_titles": {
+            "apple_music": "Speak Now"
+          },
           "genre_errors": {},
           "genre_canonical_key": "family:speak_now",
           "filter_tags": [
@@ -257,16 +405,48 @@
             "7hZuICN5eaCuQyp443RCt6"
           ],
           "release_date": "2010-01-01T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
+          "genres": [
+            "country",
+            "country pop",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "country pop": 1.2,
+            "pop": 1.2,
+            "rock": 1.2
+          },
           "genre_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "pop",
+              "country",
+              "rock",
+              "country pop"
+            ]
           },
           "genre_raw_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Country",
+              "Rock",
+              "Honky Tonk",
+              "Contemporary Country",
+              "Кантри",
+              "Музыка",
+              "Música",
+              "Country contemporáneo",
+              "乡村",
+              "音乐",
+              "摇滚"
+            ]
           },
-          "genre_query_titles": {},
+          "genre_query_titles": {
+            "apple_music": "Dear John"
+          },
           "genre_errors": {},
           "genre_canonical_key": "family:dear_john",
           "filter_tags": [
@@ -307,16 +487,53 @@
             "5yEPktRqvIhko5QFF3aBhQ"
           ],
           "release_date": "2010-01-01T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
+          "genres": [
+            "country",
+            "country pop",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "country pop": 1.2,
+            "pop": 1.2,
+            "rock": 1.2
+          },
           "genre_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "pop",
+              "country",
+              "rock",
+              "country pop"
+            ]
           },
           "genre_raw_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Country",
+              "Rock",
+              "Honky Tonk",
+              "Contemporary Country",
+              "Кантри",
+              "Музыка",
+              "乡村",
+              "音乐",
+              "摇滚",
+              "컨트리",
+              "음악",
+              "록",
+              "홍키 통크",
+              "컨템포러리 컨트리",
+              "Música",
+              "Country contemporáneo"
+            ]
           },
-          "genre_query_titles": {},
+          "genre_query_titles": {
+            "apple_music": "Mean"
+          },
           "genre_errors": {},
           "genre_canonical_key": "family:mean",
           "filter_tags": [
@@ -357,16 +574,48 @@
             "3RBluWmSoG2pGA1OePzGJI"
           ],
           "release_date": "2010-01-01T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
+          "genres": [
+            "country",
+            "country pop",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "country pop": 1.2,
+            "pop": 1.2,
+            "rock": 1.2
+          },
           "genre_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "pop",
+              "country",
+              "rock",
+              "country pop"
+            ]
           },
           "genre_raw_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Country",
+              "Rock",
+              "Honky Tonk",
+              "Contemporary Country",
+              "Кантри",
+              "Музыка",
+              "Música",
+              "Country contemporáneo",
+              "乡村",
+              "音乐",
+              "摇滚"
+            ]
           },
-          "genre_query_titles": {},
+          "genre_query_titles": {
+            "apple_music": "The Story Of Us"
+          },
           "genre_errors": {},
           "genre_canonical_key": "family:the_story_of_us",
           "filter_tags": [
@@ -407,16 +656,46 @@
             "1wJL1A0QUHJPf2cm7tsrdw"
           ],
           "release_date": "2010-01-01T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
+          "genres": [
+            "country",
+            "country pop",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "country pop": 1.2,
+            "pop": 1.2,
+            "rock": 1.2
+          },
           "genre_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "pop",
+              "country",
+              "rock",
+              "country pop"
+            ]
           },
           "genre_raw_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Country",
+              "Rock",
+              "Honky Tonk",
+              "Contemporary Country",
+              "Кантри",
+              "Музыка",
+              "乡村",
+              "音乐",
+              "摇滚"
+            ]
           },
-          "genre_query_titles": {},
+          "genre_query_titles": {
+            "apple_music": "Never Grow Up"
+          },
           "genre_errors": {},
           "genre_canonical_key": "family:never_grow_up",
           "filter_tags": [
@@ -459,19 +738,26 @@
           "release_date": "2010-01-01T00:00:00Z",
           "genres": [
             "country",
-            "pop",
-            "country pop"
+            "country pop",
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "country": 3.0,
-            "pop": 2.0,
-            "country pop": 1.0
+            "country": 2.2,
+            "country pop": 2.2,
+            "pop": 2.2,
+            "rock": 1.2
           },
           "genre_sources": {
             "lastfm": [
               "country",
               "pop",
+              "country pop"
+            ],
+            "apple_music": [
+              "pop",
+              "country",
+              "rock",
               "country pop"
             ]
           },
@@ -479,18 +765,46 @@
             "lastfm": [
               "country",
               "pop",
-              "taylor swift",
               "Love",
+              "taylor swift",
               "country pop",
               "female vocalists",
               "flawless",
               "singer-songwriter",
               "beautiful",
               "sweet"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Country",
+              "Rock",
+              "Honky Tonk",
+              "Contemporary Country",
+              "Кантри",
+              "Музыка",
+              "Música",
+              "Country contemporáneo",
+              "乡村",
+              "音乐",
+              "摇滚",
+              "Musique",
+              "Honky tonk",
+              "Country contemporaine",
+              "Musica",
+              "Honky-tonk",
+              "Country contemporaneo",
+              "컨트리",
+              "음악",
+              "록",
+              "홍키 통크",
+              "컨템포러리 컨트리",
+              "Country contemporânea"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "Enchanted"
+            "lastfm": "Enchanted",
+            "apple_music": "Enchanted"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:enchanted",
@@ -539,15 +853,22 @@
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "country": 3.0,
-            "pop": 2.0,
-            "rock": 1.0
+            "country": 2.2,
+            "country pop": 1.2,
+            "pop": 2.2,
+            "rock": 2.2
           },
           "genre_sources": {
             "lastfm": [
               "country",
               "pop",
               "rock"
+            ],
+            "apple_music": [
+              "pop",
+              "country",
+              "rock",
+              "country pop"
             ]
           },
           "genre_raw_sources": {
@@ -561,11 +882,28 @@
               "pop punk",
               "country pop",
               "2010",
-              "catchy"
+              "revenge"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Country",
+              "Rock",
+              "Honky Tonk",
+              "Contemporary Country",
+              "Кантри",
+              "Музыка",
+              "Música",
+              "Country contemporáneo",
+              "Musica",
+              "Honky-tonk",
+              "Country contemporaneo",
+              "Country contemporânea"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "Better Than Revenge"
+            "lastfm": "Better Than Revenge",
+            "apple_music": "Better Than Revenge"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:better_than_revenge",
@@ -607,16 +945,43 @@
             "5GPwN5iZ9ZMSXAkppj4Uvv"
           ],
           "release_date": "2010-01-01T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
+          "genres": [
+            "country",
+            "country pop",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "country pop": 1.2,
+            "pop": 1.2,
+            "rock": 1.2
+          },
           "genre_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "pop",
+              "country",
+              "rock",
+              "country pop"
+            ]
           },
           "genre_raw_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Country",
+              "Rock",
+              "Honky Tonk",
+              "Contemporary Country",
+              "Кантри",
+              "Музыка"
+            ]
           },
-          "genre_query_titles": {},
+          "genre_query_titles": {
+            "apple_music": "Innocent"
+          },
           "genre_errors": {},
           "genre_canonical_key": "family:innocent",
           "filter_tags": [
@@ -657,16 +1022,45 @@
             "28M2gifMU282QBM3fKajIS"
           ],
           "release_date": "2010-01-01T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
+          "genres": [
+            "country",
+            "country pop",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "country pop": 1.2,
+            "pop": 1.2,
+            "rock": 1.2
+          },
           "genre_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "pop",
+              "country",
+              "rock",
+              "country pop"
+            ]
           },
           "genre_raw_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Country",
+              "Rock",
+              "Honky Tonk",
+              "Contemporary Country",
+              "Кантри",
+              "Музыка",
+              "Música",
+              "Country contemporáneo"
+            ]
           },
-          "genre_query_titles": {},
+          "genre_query_titles": {
+            "apple_music": "Haunted"
+          },
           "genre_errors": {},
           "genre_canonical_key": "family:haunted",
           "filter_tags": [
@@ -707,16 +1101,51 @@
             "4h0EXpatqJImv4VRgvX6po"
           ],
           "release_date": "2010-01-01T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
+          "genres": [
+            "country",
+            "country pop",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "country pop": 1.2,
+            "pop": 1.2,
+            "rock": 1.2
+          },
           "genre_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "pop",
+              "country",
+              "rock",
+              "country pop"
+            ]
           },
           "genre_raw_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Country",
+              "Musique",
+              "Rock",
+              "Honky tonk",
+              "Country contemporaine",
+              "Кантри",
+              "Музыка",
+              "Música",
+              "Honky Tonk",
+              "Country contemporáneo",
+              "Contemporary Country",
+              "乡村",
+              "音乐",
+              "摇滚"
+            ]
           },
-          "genre_query_titles": {},
+          "genre_query_titles": {
+            "apple_music": "Last Kiss"
+          },
           "genre_errors": {},
           "genre_canonical_key": "family:last_kiss",
           "filter_tags": [
@@ -756,16 +1185,53 @@
             "7BFc7ffruhZ4Hecnqf5xju"
           ],
           "release_date": "2010-01-01T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
+          "genres": [
+            "country",
+            "country pop",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "country pop": 1.2,
+            "pop": 1.2,
+            "rock": 1.2
+          },
           "genre_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "pop",
+              "country",
+              "rock",
+              "country pop"
+            ]
           },
           "genre_raw_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Country",
+              "Rock",
+              "Honky Tonk",
+              "Contemporary Country",
+              "Кантри",
+              "Музыка",
+              "Música",
+              "Country contemporáneo",
+              "乡村",
+              "音乐",
+              "摇滚",
+              "컨트리",
+              "음악",
+              "록",
+              "홍키 통크",
+              "컨템포러리 컨트리"
+            ]
           },
-          "genre_query_titles": {},
+          "genre_query_titles": {
+            "apple_music": "Long Live"
+          },
           "genre_errors": {},
           "genre_canonical_key": "family:long_live",
           "filter_tags": [
@@ -809,16 +1275,36 @@
             "0hK93KD6Y0j9giUGh4Valj"
           ],
           "release_date": "2010-01-01T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
+          "genres": [
+            "country",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "pop": 1.2
+          },
           "genre_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "pop",
+              "country"
+            ]
           },
           "genre_raw_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Country",
+              "Música",
+              "乡村",
+              "音乐"
+            ]
           },
-          "genre_query_titles": {},
+          "genre_query_titles": {
+            "apple_music": "Ours"
+          },
           "genre_errors": {},
           "genre_canonical_key": "family:ours",
           "filter_tags": [
@@ -858,16 +1344,32 @@
             "5tSmAABuoOfR59lrtXdDqm"
           ],
           "release_date": "2010-01-01T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
+          "genres": [
+            "country"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2
+          },
           "genre_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "country"
+            ]
           },
           "genre_raw_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "Country",
+              "Music",
+              "Música",
+              "乡村",
+              "音乐"
+            ]
           },
-          "genre_query_titles": {},
+          "genre_query_titles": {
+            "apple_music": "If This Was A Movie"
+          },
           "genre_errors": {},
           "genre_canonical_key": "family:if_this_was_a_movie",
           "filter_tags": [
@@ -907,16 +1409,29 @@
             "6aJ0ipi4EPmu1aTbFeXZnw"
           ],
           "release_date": "2010-01-01T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
+          "genres": [
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 1.2
+          },
           "genre_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "pop"
+            ]
           },
           "genre_raw_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music"
+            ]
           },
-          "genre_query_titles": {},
+          "genre_query_titles": {
+            "apple_music": "Superman"
+          },
           "genre_errors": {},
           "genre_canonical_key": "family:superman",
           "filter_tags": [
@@ -967,10 +1482,12 @@
           "genre_status": "missing",
           "genre_scores": {},
           "genre_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": []
           },
           "genre_raw_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": []
           },
           "genre_query_titles": {},
           "genre_errors": {},
@@ -1027,10 +1544,12 @@
           "genre_status": "missing",
           "genre_scores": {},
           "genre_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": []
           },
           "genre_raw_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": []
           },
           "genre_query_titles": {},
           "genre_errors": {},
@@ -1078,19 +1597,26 @@
           "release_date": "2010-01-01T00:00:00Z",
           "genres": [
             "country",
-            "pop",
-            "country pop"
+            "country pop",
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "country": 3.0,
-            "pop": 2.0,
-            "country pop": 1.0
+            "country": 2.2,
+            "country pop": 2.2,
+            "pop": 2.2,
+            "rock": 1.2
           },
           "genre_sources": {
             "lastfm": [
               "country",
               "pop",
+              "country pop"
+            ],
+            "apple_music": [
+              "pop",
+              "country",
+              "rock",
               "country pop"
             ]
           },
@@ -1104,12 +1630,36 @@
               "Love",
               "love at first listen",
               "<3",
-              "2010",
-              "sweet"
+              "sweet",
+              "2010"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Country",
+              "Rock",
+              "Honky Tonk",
+              "Contemporary Country",
+              "Кантри",
+              "Музыка",
+              "Música",
+              "Country contemporáneo",
+              "Musique",
+              "Honky tonk",
+              "Country contemporaine",
+              "乡村",
+              "音乐",
+              "摇滚",
+              "컨트리",
+              "음악",
+              "록",
+              "홍키 통크",
+              "컨템포러리 컨트리"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "Back To December"
+            "lastfm": "Back To December",
+            "apple_music": "Back To December"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:back_to_december",
@@ -1154,16 +1704,45 @@
             "6SdBf0ZsJZoKaH5zcDaz9X"
           ],
           "release_date": "2010-01-01T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
+          "genres": [
+            "country",
+            "country pop",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "country pop": 1.2,
+            "pop": 1.2,
+            "rock": 1.2
+          },
           "genre_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "pop",
+              "country",
+              "rock",
+              "country pop"
+            ]
           },
           "genre_raw_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Country",
+              "Rock",
+              "Honky Tonk",
+              "Contemporary Country",
+              "Кантри",
+              "Музыка",
+              "Música",
+              "Country contemporáneo"
+            ]
           },
-          "genre_query_titles": {},
+          "genre_query_titles": {
+            "apple_music": "Haunted"
+          },
           "genre_errors": {},
           "genre_canonical_key": "family:haunted",
           "filter_tags": [
@@ -1212,15 +1791,22 @@
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "country": 3.0,
-            "pop": 2.0,
-            "rock": 1.0
+            "country": 2.2,
+            "country pop": 1.2,
+            "pop": 2.2,
+            "rock": 2.2
           },
           "genre_sources": {
             "lastfm": [
               "country",
               "pop",
               "rock"
+            ],
+            "apple_music": [
+              "pop",
+              "country",
+              "rock",
+              "country pop"
             ]
           },
           "genre_raw_sources": {
@@ -1234,11 +1820,28 @@
               "pop punk",
               "country pop",
               "2010",
-              "catchy"
+              "revenge"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Country",
+              "Rock",
+              "Honky Tonk",
+              "Contemporary Country",
+              "Кантри",
+              "Музыка",
+              "Música",
+              "Country contemporáneo",
+              "Musica",
+              "Honky-tonk",
+              "Country contemporaneo",
+              "Country contemporânea"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "Better Than Revenge"
+            "lastfm": "Better Than Revenge",
+            "apple_music": "Better Than Revenge"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:better_than_revenge",
@@ -1281,16 +1884,51 @@
           "image_url": "https://i.scdn.co/image/ab67616d0000b273be4ec62353ee75fa11f6d6f7",
           "historical_track_ids": [],
           "release_date": "2010-10-25T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
+          "genres": [
+            "country",
+            "country pop",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "country pop": 1.2,
+            "pop": 1.2,
+            "rock": 1.2
+          },
           "genre_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "pop",
+              "country",
+              "rock",
+              "country pop"
+            ]
           },
           "genre_raw_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Country",
+              "Musique",
+              "Rock",
+              "Honky tonk",
+              "Country contemporaine",
+              "Кантри",
+              "Музыка",
+              "Música",
+              "Honky Tonk",
+              "Country contemporáneo",
+              "Contemporary Country",
+              "乡村",
+              "音乐",
+              "摇滚"
+            ]
           },
-          "genre_query_titles": {},
+          "genre_query_titles": {
+            "apple_music": "Last Kiss"
+          },
           "genre_errors": {},
           "genre_canonical_key": "family:last_kiss",
           "filter_tags": [
@@ -1332,16 +1970,53 @@
           "image_url": "https://i.scdn.co/image/ab67616d0000b273be4ec62353ee75fa11f6d6f7",
           "historical_track_ids": [],
           "release_date": "2010-10-25T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
+          "genres": [
+            "country",
+            "country pop",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "country pop": 1.2,
+            "pop": 1.2,
+            "rock": 1.2
+          },
           "genre_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "pop",
+              "country",
+              "rock",
+              "country pop"
+            ]
           },
           "genre_raw_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Country",
+              "Rock",
+              "Honky Tonk",
+              "Contemporary Country",
+              "Кантри",
+              "Музыка",
+              "乡村",
+              "音乐",
+              "摇滚",
+              "컨트리",
+              "음악",
+              "록",
+              "홍키 통크",
+              "컨템포러리 컨트리",
+              "Música",
+              "Country contemporáneo"
+            ]
           },
-          "genre_query_titles": {},
+          "genre_query_titles": {
+            "apple_music": "Mean"
+          },
           "genre_errors": {},
           "genre_canonical_key": "family:mean",
           "filter_tags": [
@@ -1383,16 +2058,53 @@
           "image_url": "https://i.scdn.co/image/ab67616d0000b273be4ec62353ee75fa11f6d6f7",
           "historical_track_ids": [],
           "release_date": "2010-10-25T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
+          "genres": [
+            "country",
+            "country pop",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "country pop": 1.2,
+            "pop": 1.2,
+            "rock": 1.2
+          },
           "genre_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "pop",
+              "country",
+              "rock",
+              "country pop"
+            ]
           },
           "genre_raw_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Country",
+              "Rock",
+              "Honky Tonk",
+              "Contemporary Country",
+              "Кантри",
+              "Музыка",
+              "Música",
+              "Country contemporáneo",
+              "乡村",
+              "音乐",
+              "摇滚",
+              "컨트리",
+              "음악",
+              "록",
+              "홍키 통크",
+              "컨템포러리 컨트리"
+            ]
           },
-          "genre_query_titles": {},
+          "genre_query_titles": {
+            "apple_music": "Mine"
+          },
           "genre_errors": {},
           "genre_canonical_key": "family:mine",
           "filter_tags": [
@@ -1434,16 +2146,36 @@
           "image_url": "https://i.scdn.co/image/ab67616d0000b273be4ec62353ee75fa11f6d6f7",
           "historical_track_ids": [],
           "release_date": "2010-10-25T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
+          "genres": [
+            "country",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "pop": 1.2
+          },
           "genre_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "pop",
+              "country"
+            ]
           },
           "genre_raw_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Country",
+              "Música",
+              "乡村",
+              "音乐"
+            ]
           },
-          "genre_query_titles": {},
+          "genre_query_titles": {
+            "apple_music": "Ours"
+          },
           "genre_errors": {},
           "genre_canonical_key": "family:ours",
           "filter_tags": [
@@ -1485,16 +2217,56 @@
           "image_url": "https://i.scdn.co/image/ab67616d0000b273be4ec62353ee75fa11f6d6f7",
           "historical_track_ids": [],
           "release_date": "2010-10-25T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
+          "genres": [
+            "country",
+            "country pop",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "country pop": 1.2,
+            "pop": 1.2,
+            "rock": 1.2
+          },
           "genre_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "pop",
+              "country",
+              "rock",
+              "country pop"
+            ]
           },
           "genre_raw_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Country",
+              "Musique",
+              "Rock",
+              "Honky tonk",
+              "Country contemporaine",
+              "Кантри",
+              "Музыка",
+              "Música",
+              "Honky Tonk",
+              "Country contemporáneo",
+              "Contemporary Country",
+              "乡村",
+              "音乐",
+              "摇滚",
+              "컨트리",
+              "음악",
+              "록",
+              "홍키 통크",
+              "컨템포러리 컨트리"
+            ]
           },
-          "genre_query_titles": {},
+          "genre_query_titles": {
+            "apple_music": "Sparks Fly"
+          },
           "genre_errors": {},
           "genre_canonical_key": "family:sparks_fly",
           "filter_tags": [
@@ -1536,16 +2308,56 @@
           "image_url": "https://i.scdn.co/image/ab67616d0000b273be4ec62353ee75fa11f6d6f7",
           "historical_track_ids": [],
           "release_date": "2010-10-25T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
+          "genres": [
+            "country",
+            "country pop",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "country pop": 1.2,
+            "pop": 1.2,
+            "rock": 1.2
+          },
           "genre_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "pop",
+              "country",
+              "rock",
+              "country pop"
+            ]
           },
           "genre_raw_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Country",
+              "Musique",
+              "Rock",
+              "Honky tonk",
+              "Country contemporaine",
+              "Кантри",
+              "Музыка",
+              "Honky Tonk",
+              "Contemporary Country",
+              "乡村",
+              "音乐",
+              "摇滚",
+              "Música",
+              "Country contemporáneo",
+              "컨트리",
+              "음악",
+              "록",
+              "홍키 통크",
+              "컨템포러리 컨트리"
+            ]
           },
-          "genre_query_titles": {},
+          "genre_query_titles": {
+            "apple_music": "Speak Now"
+          },
           "genre_errors": {},
           "genre_canonical_key": "family:speak_now",
           "filter_tags": [
@@ -1587,16 +2399,48 @@
           "image_url": "https://i.scdn.co/image/ab67616d0000b273be4ec62353ee75fa11f6d6f7",
           "historical_track_ids": [],
           "release_date": "2010-10-25T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
+          "genres": [
+            "country",
+            "country pop",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "country pop": 1.2,
+            "pop": 1.2,
+            "rock": 1.2
+          },
           "genre_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "pop",
+              "country",
+              "rock",
+              "country pop"
+            ]
           },
           "genre_raw_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Country",
+              "Rock",
+              "Honky Tonk",
+              "Contemporary Country",
+              "Кантри",
+              "Музыка",
+              "Música",
+              "Country contemporáneo",
+              "乡村",
+              "音乐",
+              "摇滚"
+            ]
           },
-          "genre_query_titles": {},
+          "genre_query_titles": {
+            "apple_music": "The Story Of Us"
+          },
           "genre_errors": {},
           "genre_canonical_key": "family:the_story_of_us",
           "filter_tags": [
@@ -1647,18 +2491,50 @@
           "display_era": "Speak Now",
           "historical_track_ids": [],
           "release_date": "2010-10-25T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
+          "genres": [
+            "country",
+            "country pop",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "country pop": 1.2,
+            "pop": 1.2,
+            "rock": 1.2
+          },
           "genre_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "pop",
+              "country",
+              "rock",
+              "country pop"
+            ]
           },
           "genre_raw_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Country",
+              "Rock",
+              "Honky Tonk",
+              "Contemporary Country",
+              "Кантри",
+              "Музыка",
+              "Música",
+              "Country contemporáneo",
+              "乡村",
+              "音乐",
+              "摇滚"
+            ]
           },
-          "genre_query_titles": {},
+          "genre_query_titles": {
+            "apple_music": "Dear John"
+          },
           "genre_errors": {},
-          "genre_canonical_key": "family:dear_john_live2011",
+          "genre_canonical_key": "family:dear_john",
           "filter_tags": [
             "solo",
             "standalone",
@@ -1700,19 +2576,26 @@
           "release_date": "2010-10-25T00:00:00Z",
           "genres": [
             "country",
-            "pop",
-            "country pop"
+            "country pop",
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "country": 3.0,
-            "pop": 2.0,
-            "country pop": 1.0
+            "country": 2.2,
+            "country pop": 2.2,
+            "pop": 2.2,
+            "rock": 1.2
           },
           "genre_sources": {
             "lastfm": [
               "country",
               "pop",
+              "country pop"
+            ],
+            "apple_music": [
+              "pop",
+              "country",
+              "rock",
               "country pop"
             ]
           },
@@ -1720,21 +2603,49 @@
             "lastfm": [
               "country",
               "pop",
-              "taylor swift",
               "Love",
+              "taylor swift",
               "country pop",
               "female vocalists",
               "flawless",
               "singer-songwriter",
               "beautiful",
               "sweet"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Country",
+              "Rock",
+              "Honky Tonk",
+              "Contemporary Country",
+              "Кантри",
+              "Музыка",
+              "Música",
+              "Country contemporáneo",
+              "乡村",
+              "音乐",
+              "摇滚",
+              "Musique",
+              "Honky tonk",
+              "Country contemporaine",
+              "Musica",
+              "Honky-tonk",
+              "Country contemporaneo",
+              "컨트리",
+              "음악",
+              "록",
+              "홍키 통크",
+              "컨템포러리 컨트리",
+              "Country contemporânea"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "Enchanted"
+            "lastfm": "Enchanted",
+            "apple_music": "Enchanted"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:enchanted_live2011",
+          "genre_canonical_key": "family:enchanted",
           "filter_tags": [
             "solo",
             "standalone",
@@ -1774,18 +2685,47 @@
           "display_era": "Speak Now",
           "historical_track_ids": [],
           "release_date": "2010-10-25T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
+          "genres": [
+            "country",
+            "country pop",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "country pop": 1.2,
+            "pop": 1.2,
+            "rock": 1.2
+          },
           "genre_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "pop",
+              "country",
+              "rock",
+              "country pop"
+            ]
           },
           "genre_raw_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Country",
+              "Rock",
+              "Honky Tonk",
+              "Contemporary Country",
+              "Кантри",
+              "Музыка",
+              "Música",
+              "Country contemporáneo"
+            ]
           },
-          "genre_query_titles": {},
+          "genre_query_titles": {
+            "apple_music": "Haunted"
+          },
           "genre_errors": {},
-          "genre_canonical_key": "family:haunted_live2011",
+          "genre_canonical_key": "family:haunted",
           "filter_tags": [
             "solo",
             "standalone",
@@ -1825,18 +2765,55 @@
           "display_era": "Speak Now",
           "historical_track_ids": [],
           "release_date": "2010-10-25T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
+          "genres": [
+            "country",
+            "country pop",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "country pop": 1.2,
+            "pop": 1.2,
+            "rock": 1.2
+          },
           "genre_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "pop",
+              "country",
+              "rock",
+              "country pop"
+            ]
           },
           "genre_raw_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Country",
+              "Rock",
+              "Honky Tonk",
+              "Contemporary Country",
+              "Кантри",
+              "Музыка",
+              "Música",
+              "Country contemporáneo",
+              "乡村",
+              "音乐",
+              "摇滚",
+              "컨트리",
+              "음악",
+              "록",
+              "홍키 통크",
+              "컨템포러리 컨트리"
+            ]
           },
-          "genre_query_titles": {},
+          "genre_query_titles": {
+            "apple_music": "Long Live"
+          },
           "genre_errors": {},
-          "genre_canonical_key": "family:long_live_live2011",
+          "genre_canonical_key": "family:long_live",
           "filter_tags": [
             "solo",
             "standalone",
@@ -1888,7 +2865,43 @@
           "extra_type": "commentary",
           "tags": [],
           "tsm_song_id": "xx5b",
-          "tsm_album_id": "msv"
+          "tsm_album_id": "msv",
+          "genres": [
+            "country",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "pop": 1.2
+          },
+          "genre_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "pop",
+              "country"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Country",
+              "Música",
+              "乡村",
+              "音乐",
+              "컨트리",
+              "음악",
+              "Country contemporáneo",
+              "Honky Tonk"
+            ]
+          },
+          "genre_query_titles": {
+            "apple_music": "Begin Again"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:begin_again"
         },
         {
           "title": "Better Than Revenge - Instrumental With Background Vocals",
@@ -1925,7 +2938,68 @@
           "extra_type": "instrumental",
           "tags": [],
           "tsm_song_id": "xxsd",
-          "tsm_album_id": "msv"
+          "tsm_album_id": "msv",
+          "genres": [
+            "country",
+            "pop",
+            "rock"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 2.2,
+            "country pop": 1.2,
+            "pop": 2.2,
+            "rock": 2.2
+          },
+          "genre_sources": {
+            "lastfm": [
+              "country",
+              "pop",
+              "rock"
+            ],
+            "apple_music": [
+              "pop",
+              "country",
+              "rock",
+              "country pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "country",
+              "pop",
+              "taylor swift",
+              "rock",
+              "female vocalists",
+              "pop rock",
+              "pop punk",
+              "country pop",
+              "2010",
+              "revenge"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Country",
+              "Rock",
+              "Honky Tonk",
+              "Contemporary Country",
+              "Кантри",
+              "Музыка",
+              "Música",
+              "Country contemporáneo",
+              "Musica",
+              "Honky-tonk",
+              "Country contemporaneo",
+              "Country contemporânea"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Better Than Revenge",
+            "apple_music": "Better Than Revenge"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:better_than_revenge"
         },
         {
           "title": "Clean - Karaoke Version",
@@ -1962,7 +3036,34 @@
           "extra_type": "karaoke",
           "tags": [],
           "tsm_song_id": "e29n",
-          "tsm_album_id": "msv"
+          "tsm_album_id": "msv",
+          "genres": [
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 1.2
+          },
+          "genre_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "ポップ",
+              "ミュージック"
+            ]
+          },
+          "genre_query_titles": {
+            "apple_music": "Clean"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:clean"
         },
         {
           "title": "Cold As You - Instrumental w/ BG vocals",
@@ -1997,7 +3098,48 @@
           "extra_type": "instrumental",
           "tags": [],
           "tsm_song_id": "ydmm",
-          "tsm_album_id": "msv"
+          "tsm_album_id": "msv",
+          "genres": [
+            "country",
+            "country pop",
+            "rock"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "country pop": 1.2,
+            "rock": 1.2
+          },
+          "genre_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "country",
+              "rock",
+              "country pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "Country",
+              "Music",
+              "Rock",
+              "Contemporary Country",
+              "Honky Tonk",
+              "Кантри",
+              "Музыка",
+              "乡村",
+              "音乐",
+              "摇滚",
+              "Música",
+              "Country contemporáneo"
+            ]
+          },
+          "genre_query_titles": {
+            "apple_music": "Cold As You"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:cold_as_you"
         },
         {
           "title": "Bad Blood - Karaoke Version",
@@ -2034,7 +3176,50 @@
           "extra_type": "karaoke",
           "tags": [],
           "tsm_song_id": "htjw",
-          "tsm_album_id": "msv"
+          "tsm_album_id": "msv",
+          "genres": [
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 2.2,
+            "singer-songwriter": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "singer-songwriter"
+            ],
+            "apple_music": [
+              "pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "Chupa essa Katy perry",
+              "love at first listen",
+              "taylor swift",
+              "2015",
+              "max martin",
+              "singer-songwriter",
+              "katy perry",
+              "BAD BLOOD",
+              "2010s"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "ポップ",
+              "ミュージック"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Bad Blood",
+            "apple_music": "Bad Blood"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:bad_blood"
         },
         {
           "title": "Change - Commentary",
@@ -2069,7 +3254,50 @@
           "extra_type": "commentary",
           "tags": [],
           "tsm_song_id": "qzwm",
-          "tsm_album_id": "msv"
+          "tsm_album_id": "msv",
+          "genres": [
+            "country",
+            "country pop",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "country pop": 1.2,
+            "pop": 1.2,
+            "rock": 1.2
+          },
+          "genre_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "country",
+              "pop",
+              "rock",
+              "country pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "Country",
+              "Music",
+              "Música",
+              "乡村",
+              "音乐",
+              "Pop",
+              "Adult Contemporary",
+              "Honky Tonk",
+              "Rock",
+              "Contemporary Country",
+              "Contemporáneo para adultos",
+              "Country contemporáneo"
+            ]
+          },
+          "genre_query_titles": {
+            "apple_music": "Change"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:change"
         },
         {
           "title": "Back To December - Instrumental With Background Vocals",
@@ -2106,7 +3334,75 @@
           "extra_type": "instrumental",
           "tags": [],
           "tsm_song_id": "ahe7",
-          "tsm_album_id": "msv"
+          "tsm_album_id": "msv",
+          "genres": [
+            "country",
+            "country pop",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 2.2,
+            "country pop": 2.2,
+            "pop": 2.2,
+            "rock": 1.2
+          },
+          "genre_sources": {
+            "lastfm": [
+              "country",
+              "pop",
+              "country pop"
+            ],
+            "apple_music": [
+              "pop",
+              "country",
+              "rock",
+              "country pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "country",
+              "pop",
+              "country pop",
+              "female vocalists",
+              "taylor swift",
+              "Love",
+              "love at first listen",
+              "<3",
+              "sweet",
+              "2010"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Country",
+              "Rock",
+              "Honky Tonk",
+              "Contemporary Country",
+              "Кантри",
+              "Музыка",
+              "Música",
+              "Country contemporáneo",
+              "Musique",
+              "Honky tonk",
+              "Country contemporaine",
+              "乡村",
+              "音乐",
+              "摇滚",
+              "컨트리",
+              "음악",
+              "록",
+              "홍키 통크",
+              "컨템포러리 컨트리"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Back To December",
+            "apple_music": "Back To December"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:back_to_december"
         },
         {
           "title": "Breathe - Instrumental only, no BV",
@@ -2143,7 +3439,53 @@
           "extra_type": "instrumental",
           "tags": [],
           "tsm_song_id": "3eja",
-          "tsm_album_id": "msv"
+          "tsm_album_id": "msv",
+          "genres": [
+            "country",
+            "country pop",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "country pop": 1.2,
+            "pop": 1.2,
+            "rock": 1.2
+          },
+          "genre_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "country",
+              "pop",
+              "rock",
+              "country pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "Country",
+              "Musique",
+              "Pop",
+              "Pop contemporaine pour adulte",
+              "Honky tonk",
+              "Rock",
+              "Country contemporaine",
+              "Music",
+              "Adult Contemporary",
+              "Honky Tonk",
+              "Contemporary Country",
+              "乡村",
+              "音乐",
+              "国际流行",
+              "摇滚"
+            ]
+          },
+          "genre_query_titles": {
+            "apple_music": "Breathe"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:breathe"
         },
         {
           "title": "Better Than Revenge - Commentary",
@@ -2178,7 +3520,68 @@
           "extra_type": "commentary",
           "tags": [],
           "tsm_song_id": "xxsd",
-          "tsm_album_id": "msv"
+          "tsm_album_id": "msv",
+          "genres": [
+            "country",
+            "pop",
+            "rock"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 2.2,
+            "country pop": 1.2,
+            "pop": 2.2,
+            "rock": 2.2
+          },
+          "genre_sources": {
+            "lastfm": [
+              "country",
+              "pop",
+              "rock"
+            ],
+            "apple_music": [
+              "pop",
+              "country",
+              "rock",
+              "country pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "country",
+              "pop",
+              "taylor swift",
+              "rock",
+              "female vocalists",
+              "pop rock",
+              "pop punk",
+              "country pop",
+              "2010",
+              "revenge"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Country",
+              "Rock",
+              "Honky Tonk",
+              "Contemporary Country",
+              "Кантри",
+              "Музыка",
+              "Música",
+              "Country contemporáneo",
+              "Musica",
+              "Honky-tonk",
+              "Country contemporaneo",
+              "Country contemporânea"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Better Than Revenge",
+            "apple_music": "Better Than Revenge"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:better_than_revenge"
         },
         {
           "title": "Enchanted - Commentary",
@@ -2213,7 +3616,79 @@
           "extra_type": "commentary",
           "tags": [],
           "tsm_song_id": "hl1j",
-          "tsm_album_id": "msv"
+          "tsm_album_id": "msv",
+          "genres": [
+            "country",
+            "country pop",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 2.2,
+            "country pop": 2.2,
+            "pop": 2.2,
+            "rock": 1.2
+          },
+          "genre_sources": {
+            "lastfm": [
+              "country",
+              "pop",
+              "country pop"
+            ],
+            "apple_music": [
+              "pop",
+              "country",
+              "rock",
+              "country pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "country",
+              "pop",
+              "Love",
+              "taylor swift",
+              "country pop",
+              "female vocalists",
+              "flawless",
+              "singer-songwriter",
+              "beautiful",
+              "sweet"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Country",
+              "Rock",
+              "Honky Tonk",
+              "Contemporary Country",
+              "Кантри",
+              "Музыка",
+              "Música",
+              "Country contemporáneo",
+              "乡村",
+              "音乐",
+              "摇滚",
+              "Musique",
+              "Honky tonk",
+              "Country contemporaine",
+              "Musica",
+              "Honky-tonk",
+              "Country contemporaneo",
+              "컨트리",
+              "음악",
+              "록",
+              "홍키 통크",
+              "컨템포러리 컨트리",
+              "Country contemporânea"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Enchanted",
+            "apple_music": "Enchanted"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:enchanted"
         },
         {
           "title": "Enchanted - Instrumental With Background Vocals",
@@ -2250,7 +3725,79 @@
           "extra_type": "instrumental",
           "tags": [],
           "tsm_song_id": "hl1j",
-          "tsm_album_id": "msv"
+          "tsm_album_id": "msv",
+          "genres": [
+            "country",
+            "country pop",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 2.2,
+            "country pop": 2.2,
+            "pop": 2.2,
+            "rock": 1.2
+          },
+          "genre_sources": {
+            "lastfm": [
+              "country",
+              "pop",
+              "country pop"
+            ],
+            "apple_music": [
+              "pop",
+              "country",
+              "rock",
+              "country pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "country",
+              "pop",
+              "Love",
+              "taylor swift",
+              "country pop",
+              "female vocalists",
+              "flawless",
+              "singer-songwriter",
+              "beautiful",
+              "sweet"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Country",
+              "Rock",
+              "Honky Tonk",
+              "Contemporary Country",
+              "Кантри",
+              "Музыка",
+              "Música",
+              "Country contemporáneo",
+              "乡村",
+              "音乐",
+              "摇滚",
+              "Musique",
+              "Honky tonk",
+              "Country contemporaine",
+              "Musica",
+              "Honky-tonk",
+              "Country contemporaneo",
+              "컨트리",
+              "음악",
+              "록",
+              "홍키 통크",
+              "컨템포러리 컨트리",
+              "Country contemporânea"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Enchanted",
+            "apple_music": "Enchanted"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:enchanted"
         },
         {
           "title": "Haunted - Commentary",
@@ -2285,7 +3832,48 @@
           "extra_type": "commentary",
           "tags": [],
           "tsm_song_id": "lbxe",
-          "tsm_album_id": "msv"
+          "tsm_album_id": "msv",
+          "genres": [
+            "country",
+            "country pop",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "country pop": 1.2,
+            "pop": 1.2,
+            "rock": 1.2
+          },
+          "genre_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "pop",
+              "country",
+              "rock",
+              "country pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Country",
+              "Rock",
+              "Honky Tonk",
+              "Contemporary Country",
+              "Кантри",
+              "Музыка",
+              "Música",
+              "Country contemporáneo"
+            ]
+          },
+          "genre_query_titles": {
+            "apple_music": "Haunted"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:haunted"
         },
         {
           "title": "Haunted - Instrumental With Background Vocals",
@@ -2322,7 +3910,48 @@
           "extra_type": "instrumental",
           "tags": [],
           "tsm_song_id": "lbxe",
-          "tsm_album_id": "msv"
+          "tsm_album_id": "msv",
+          "genres": [
+            "country",
+            "country pop",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "country pop": 1.2,
+            "pop": 1.2,
+            "rock": 1.2
+          },
+          "genre_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "pop",
+              "country",
+              "rock",
+              "country pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Country",
+              "Rock",
+              "Honky Tonk",
+              "Contemporary Country",
+              "Кантри",
+              "Музыка",
+              "Música",
+              "Country contemporáneo"
+            ]
+          },
+          "genre_query_titles": {
+            "apple_music": "Haunted"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:haunted"
         },
         {
           "title": "Innocent - Commentary",
@@ -2357,7 +3986,46 @@
           "extra_type": "commentary",
           "tags": [],
           "tsm_song_id": "a9b5",
-          "tsm_album_id": "msv"
+          "tsm_album_id": "msv",
+          "genres": [
+            "country",
+            "country pop",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "country pop": 1.2,
+            "pop": 1.2,
+            "rock": 1.2
+          },
+          "genre_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "pop",
+              "country",
+              "rock",
+              "country pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Country",
+              "Rock",
+              "Honky Tonk",
+              "Contemporary Country",
+              "Кантри",
+              "Музыка"
+            ]
+          },
+          "genre_query_titles": {
+            "apple_music": "Innocent"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:innocent"
         },
         {
           "title": "Innocent - Instrumental With Background Vocals",
@@ -2394,7 +4062,46 @@
           "extra_type": "instrumental",
           "tags": [],
           "tsm_song_id": "a9b5",
-          "tsm_album_id": "msv"
+          "tsm_album_id": "msv",
+          "genres": [
+            "country",
+            "country pop",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "country pop": 1.2,
+            "pop": 1.2,
+            "rock": 1.2
+          },
+          "genre_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "pop",
+              "country",
+              "rock",
+              "country pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Country",
+              "Rock",
+              "Honky Tonk",
+              "Contemporary Country",
+              "Кантри",
+              "Музыка"
+            ]
+          },
+          "genre_query_titles": {
+            "apple_music": "Innocent"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:innocent"
         },
         {
           "title": "Last Kiss - Commentary",
@@ -2429,7 +4136,54 @@
           "extra_type": "commentary",
           "tags": [],
           "tsm_song_id": "ucz9",
-          "tsm_album_id": "msv"
+          "tsm_album_id": "msv",
+          "genres": [
+            "country",
+            "country pop",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "country pop": 1.2,
+            "pop": 1.2,
+            "rock": 1.2
+          },
+          "genre_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "pop",
+              "country",
+              "rock",
+              "country pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Country",
+              "Musique",
+              "Rock",
+              "Honky tonk",
+              "Country contemporaine",
+              "Кантри",
+              "Музыка",
+              "Música",
+              "Honky Tonk",
+              "Country contemporáneo",
+              "Contemporary Country",
+              "乡村",
+              "音乐",
+              "摇滚"
+            ]
+          },
+          "genre_query_titles": {
+            "apple_music": "Last Kiss"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:last_kiss"
         },
         {
           "title": "Last Kiss - Instrumental With Background Vocals",
@@ -2466,7 +4220,54 @@
           "extra_type": "instrumental",
           "tags": [],
           "tsm_song_id": "ucz9",
-          "tsm_album_id": "msv"
+          "tsm_album_id": "msv",
+          "genres": [
+            "country",
+            "country pop",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "country pop": 1.2,
+            "pop": 1.2,
+            "rock": 1.2
+          },
+          "genre_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "pop",
+              "country",
+              "rock",
+              "country pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Country",
+              "Musique",
+              "Rock",
+              "Honky tonk",
+              "Country contemporaine",
+              "Кантри",
+              "Музыка",
+              "Música",
+              "Honky Tonk",
+              "Country contemporáneo",
+              "Contemporary Country",
+              "乡村",
+              "音乐",
+              "摇滚"
+            ]
+          },
+          "genre_query_titles": {
+            "apple_music": "Last Kiss"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:last_kiss"
         },
         {
           "title": "Long Live - Commentary",
@@ -2501,7 +4302,56 @@
           "extra_type": "commentary",
           "tags": [],
           "tsm_song_id": "deml",
-          "tsm_album_id": "msv"
+          "tsm_album_id": "msv",
+          "genres": [
+            "country",
+            "country pop",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "country pop": 1.2,
+            "pop": 1.2,
+            "rock": 1.2
+          },
+          "genre_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "pop",
+              "country",
+              "rock",
+              "country pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Country",
+              "Rock",
+              "Honky Tonk",
+              "Contemporary Country",
+              "Кантри",
+              "Музыка",
+              "Música",
+              "Country contemporáneo",
+              "乡村",
+              "音乐",
+              "摇滚",
+              "컨트리",
+              "음악",
+              "록",
+              "홍키 통크",
+              "컨템포러리 컨트리"
+            ]
+          },
+          "genre_query_titles": {
+            "apple_music": "Long Live"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:long_live_chartsnapshot_historical_single"
         },
         {
           "title": "Long Live - Instrumental With Background Vocals",
@@ -2538,7 +4388,56 @@
           "extra_type": "instrumental",
           "tags": [],
           "tsm_song_id": "4yg8",
-          "tsm_album_id": "msv"
+          "tsm_album_id": "msv",
+          "genres": [
+            "country",
+            "country pop",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "country pop": 1.2,
+            "pop": 1.2,
+            "rock": 1.2
+          },
+          "genre_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "pop",
+              "country",
+              "rock",
+              "country pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Country",
+              "Rock",
+              "Honky Tonk",
+              "Contemporary Country",
+              "Кантри",
+              "Музыка",
+              "Música",
+              "Country contemporáneo",
+              "乡村",
+              "音乐",
+              "摇滚",
+              "컨트리",
+              "음악",
+              "록",
+              "홍키 통크",
+              "컨템포러리 컨트리"
+            ]
+          },
+          "genre_query_titles": {
+            "apple_music": "Long Live"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:long_live"
         },
         {
           "title": "Mean - Commentary",
@@ -2573,7 +4472,56 @@
           "extra_type": "commentary",
           "tags": [],
           "tsm_song_id": "bv8v",
-          "tsm_album_id": "msv"
+          "tsm_album_id": "msv",
+          "genres": [
+            "country",
+            "country pop",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "country pop": 1.2,
+            "pop": 1.2,
+            "rock": 1.2
+          },
+          "genre_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "pop",
+              "country",
+              "rock",
+              "country pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Country",
+              "Rock",
+              "Honky Tonk",
+              "Contemporary Country",
+              "Кантри",
+              "Музыка",
+              "乡村",
+              "音乐",
+              "摇滚",
+              "컨트리",
+              "음악",
+              "록",
+              "홍키 통크",
+              "컨템포러리 컨트리",
+              "Música",
+              "Country contemporáneo"
+            ]
+          },
+          "genre_query_titles": {
+            "apple_music": "Mean"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:mean"
         },
         {
           "title": "Mean - Instrumental With Background Vocals",
@@ -2610,7 +4558,56 @@
           "extra_type": "instrumental",
           "tags": [],
           "tsm_song_id": "bv8v",
-          "tsm_album_id": "msv"
+          "tsm_album_id": "msv",
+          "genres": [
+            "country",
+            "country pop",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "country pop": 1.2,
+            "pop": 1.2,
+            "rock": 1.2
+          },
+          "genre_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "pop",
+              "country",
+              "rock",
+              "country pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Country",
+              "Rock",
+              "Honky Tonk",
+              "Contemporary Country",
+              "Кантри",
+              "Музыка",
+              "乡村",
+              "音乐",
+              "摇滚",
+              "컨트리",
+              "음악",
+              "록",
+              "홍키 통크",
+              "컨템포러리 컨트리",
+              "Música",
+              "Country contemporáneo"
+            ]
+          },
+          "genre_query_titles": {
+            "apple_music": "Mean"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:mean"
         },
         {
           "title": "Mine - Commentary",
@@ -2645,7 +4642,56 @@
           "extra_type": "commentary",
           "tags": [],
           "tsm_song_id": "15p8",
-          "tsm_album_id": "msv"
+          "tsm_album_id": "msv",
+          "genres": [
+            "country",
+            "country pop",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "country pop": 1.2,
+            "pop": 1.2,
+            "rock": 1.2
+          },
+          "genre_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "pop",
+              "country",
+              "rock",
+              "country pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Country",
+              "Rock",
+              "Honky Tonk",
+              "Contemporary Country",
+              "Кантри",
+              "Музыка",
+              "Música",
+              "Country contemporáneo",
+              "乡村",
+              "音乐",
+              "摇滚",
+              "컨트리",
+              "음악",
+              "록",
+              "홍키 통크",
+              "컨템포러리 컨트리"
+            ]
+          },
+          "genre_query_titles": {
+            "apple_music": "Mine"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:mine"
         },
         {
           "title": "Mine - Instrumental With Background Vocals",
@@ -2682,7 +4728,56 @@
           "extra_type": "instrumental",
           "tags": [],
           "tsm_song_id": "15p8",
-          "tsm_album_id": "msv"
+          "tsm_album_id": "msv",
+          "genres": [
+            "country",
+            "country pop",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "country pop": 1.2,
+            "pop": 1.2,
+            "rock": 1.2
+          },
+          "genre_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "pop",
+              "country",
+              "rock",
+              "country pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Country",
+              "Rock",
+              "Honky Tonk",
+              "Contemporary Country",
+              "Кантри",
+              "Музыка",
+              "Música",
+              "Country contemporáneo",
+              "乡村",
+              "音乐",
+              "摇滚",
+              "컨트리",
+              "음악",
+              "록",
+              "홍키 통크",
+              "컨템포러리 컨트리"
+            ]
+          },
+          "genre_query_titles": {
+            "apple_music": "Mine"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:mine"
         },
         {
           "title": "Never Grow Up - Commentary",
@@ -2717,7 +4812,49 @@
           "extra_type": "commentary",
           "tags": [],
           "tsm_song_id": "mitr",
-          "tsm_album_id": "msv"
+          "tsm_album_id": "msv",
+          "genres": [
+            "country",
+            "country pop",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "country pop": 1.2,
+            "pop": 1.2,
+            "rock": 1.2
+          },
+          "genre_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "pop",
+              "country",
+              "rock",
+              "country pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Country",
+              "Rock",
+              "Honky Tonk",
+              "Contemporary Country",
+              "Кантри",
+              "Музыка",
+              "乡村",
+              "音乐",
+              "摇滚"
+            ]
+          },
+          "genre_query_titles": {
+            "apple_music": "Never Grow Up"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:never_grow_up"
         },
         {
           "title": "Never Grow Up - Instrumental With Background Vocals",
@@ -2754,7 +4891,49 @@
           "extra_type": "instrumental",
           "tags": [],
           "tsm_song_id": "mitr",
-          "tsm_album_id": "msv"
+          "tsm_album_id": "msv",
+          "genres": [
+            "country",
+            "country pop",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "country pop": 1.2,
+            "pop": 1.2,
+            "rock": 1.2
+          },
+          "genre_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "pop",
+              "country",
+              "rock",
+              "country pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Country",
+              "Rock",
+              "Honky Tonk",
+              "Contemporary Country",
+              "Кантри",
+              "Музыка",
+              "乡村",
+              "音乐",
+              "摇滚"
+            ]
+          },
+          "genre_query_titles": {
+            "apple_music": "Never Grow Up"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:never_grow_up"
         },
         {
           "title": "The Story Of Us - International Mix",
@@ -2781,7 +4960,51 @@
           "extra_type": "remix",
           "tags": [],
           "tsm_song_id": "vgb6",
-          "tsm_album_id": "msv"
+          "tsm_album_id": "msv",
+          "genres": [
+            "country",
+            "country pop",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "country pop": 1.2,
+            "pop": 1.2,
+            "rock": 1.2
+          },
+          "genre_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "pop",
+              "country",
+              "rock",
+              "country pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Country",
+              "Rock",
+              "Honky Tonk",
+              "Contemporary Country",
+              "Кантри",
+              "Музыка",
+              "Música",
+              "Country contemporáneo",
+              "乡村",
+              "音乐",
+              "摇滚"
+            ]
+          },
+          "genre_query_titles": {
+            "apple_music": "The Story Of Us"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:the_story_of_us"
         },
         {
           "title": "Sparks Fly - Commentary",
@@ -2816,7 +5039,59 @@
           "extra_type": "commentary",
           "tags": [],
           "tsm_song_id": "c082",
-          "tsm_album_id": "msv"
+          "tsm_album_id": "msv",
+          "genres": [
+            "country",
+            "country pop",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "country pop": 1.2,
+            "pop": 1.2,
+            "rock": 1.2
+          },
+          "genre_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "pop",
+              "country",
+              "rock",
+              "country pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Country",
+              "Musique",
+              "Rock",
+              "Honky tonk",
+              "Country contemporaine",
+              "Кантри",
+              "Музыка",
+              "Música",
+              "Honky Tonk",
+              "Country contemporáneo",
+              "Contemporary Country",
+              "乡村",
+              "音乐",
+              "摇滚",
+              "컨트리",
+              "음악",
+              "록",
+              "홍키 통크",
+              "컨템포러리 컨트리"
+            ]
+          },
+          "genre_query_titles": {
+            "apple_music": "Sparks Fly"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:sparks_fly"
         },
         {
           "title": "Sparks Fly - Instrumental With Background Vocals",
@@ -2853,7 +5128,59 @@
           "extra_type": "instrumental",
           "tags": [],
           "tsm_song_id": "c082",
-          "tsm_album_id": "msv"
+          "tsm_album_id": "msv",
+          "genres": [
+            "country",
+            "country pop",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "country pop": 1.2,
+            "pop": 1.2,
+            "rock": 1.2
+          },
+          "genre_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "pop",
+              "country",
+              "rock",
+              "country pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Country",
+              "Musique",
+              "Rock",
+              "Honky tonk",
+              "Country contemporaine",
+              "Кантри",
+              "Музыка",
+              "Música",
+              "Honky Tonk",
+              "Country contemporáneo",
+              "Contemporary Country",
+              "乡村",
+              "音乐",
+              "摇滚",
+              "컨트리",
+              "음악",
+              "록",
+              "홍키 통크",
+              "컨템포러리 컨트리"
+            ]
+          },
+          "genre_query_titles": {
+            "apple_music": "Sparks Fly"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:sparks_fly"
         },
         {
           "title": "Speak Now - Commentary",
@@ -2888,7 +5215,59 @@
           "extra_type": "commentary",
           "tags": [],
           "tsm_song_id": "eibn",
-          "tsm_album_id": "msv"
+          "tsm_album_id": "msv",
+          "genres": [
+            "country",
+            "country pop",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "country pop": 1.2,
+            "pop": 1.2,
+            "rock": 1.2
+          },
+          "genre_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "pop",
+              "country",
+              "rock",
+              "country pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Country",
+              "Musique",
+              "Rock",
+              "Honky tonk",
+              "Country contemporaine",
+              "Кантри",
+              "Музыка",
+              "Honky Tonk",
+              "Contemporary Country",
+              "乡村",
+              "音乐",
+              "摇滚",
+              "Música",
+              "Country contemporáneo",
+              "컨트리",
+              "음악",
+              "록",
+              "홍키 통크",
+              "컨템포러리 컨트리"
+            ]
+          },
+          "genre_query_titles": {
+            "apple_music": "Speak Now"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:speak_now"
         },
         {
           "title": "Speak Now - Instrumental With Background Vocals",
@@ -2925,7 +5304,59 @@
           "extra_type": "instrumental",
           "tags": [],
           "tsm_song_id": "eibn",
-          "tsm_album_id": "msv"
+          "tsm_album_id": "msv",
+          "genres": [
+            "country",
+            "country pop",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "country pop": 1.2,
+            "pop": 1.2,
+            "rock": 1.2
+          },
+          "genre_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "pop",
+              "country",
+              "rock",
+              "country pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Country",
+              "Musique",
+              "Rock",
+              "Honky tonk",
+              "Country contemporaine",
+              "Кантри",
+              "Музыка",
+              "Honky Tonk",
+              "Contemporary Country",
+              "乡村",
+              "音乐",
+              "摇滚",
+              "Música",
+              "Country contemporáneo",
+              "컨트리",
+              "음악",
+              "록",
+              "홍키 통크",
+              "컨템포러리 컨트리"
+            ]
+          },
+          "genre_query_titles": {
+            "apple_music": "Speak Now"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:speak_now"
         },
         {
           "title": "The Story Of Us - Commentary",
@@ -2960,7 +5391,51 @@
           "extra_type": "commentary",
           "tags": [],
           "tsm_song_id": "vgb6",
-          "tsm_album_id": "msv"
+          "tsm_album_id": "msv",
+          "genres": [
+            "country",
+            "country pop",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "country pop": 1.2,
+            "pop": 1.2,
+            "rock": 1.2
+          },
+          "genre_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "pop",
+              "country",
+              "rock",
+              "country pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Country",
+              "Rock",
+              "Honky Tonk",
+              "Contemporary Country",
+              "Кантри",
+              "Музыка",
+              "Música",
+              "Country contemporáneo",
+              "乡村",
+              "音乐",
+              "摇滚"
+            ]
+          },
+          "genre_query_titles": {
+            "apple_music": "The Story Of Us"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:the_story_of_us"
         },
         {
           "title": "The Story Of Us - Instrumental With Background Vocals",
@@ -2997,7 +5472,51 @@
           "extra_type": "instrumental",
           "tags": [],
           "tsm_song_id": "vgb6",
-          "tsm_album_id": "msv"
+          "tsm_album_id": "msv",
+          "genres": [
+            "country",
+            "country pop",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "country pop": 1.2,
+            "pop": 1.2,
+            "rock": 1.2
+          },
+          "genre_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "pop",
+              "country",
+              "rock",
+              "country pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Country",
+              "Rock",
+              "Honky Tonk",
+              "Contemporary Country",
+              "Кантри",
+              "Музыка",
+              "Música",
+              "Country contemporáneo",
+              "乡村",
+              "音乐",
+              "摇滚"
+            ]
+          },
+          "genre_query_titles": {
+            "apple_music": "The Story Of Us"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:the_story_of_us"
         },
         {
           "title": "Long Live (feat. Paula Fernandes)",
@@ -3025,7 +5544,56 @@
           "tags": [],
           "chart_extra": true,
           "tsm_song_id": "4yg8",
-          "tsm_album_id": "msv"
+          "tsm_album_id": "msv",
+          "genres": [
+            "country",
+            "country pop",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "country pop": 1.2,
+            "pop": 1.2,
+            "rock": 1.2
+          },
+          "genre_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "pop",
+              "country",
+              "rock",
+              "country pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Country",
+              "Rock",
+              "Honky Tonk",
+              "Contemporary Country",
+              "Кантри",
+              "Музыка",
+              "Música",
+              "Country contemporáneo",
+              "乡村",
+              "音乐",
+              "摇滚",
+              "컨트리",
+              "음악",
+              "록",
+              "홍키 통크",
+              "컨템포러리 컨트리"
+            ]
+          },
+          "genre_query_titles": {
+            "apple_music": "Long Live"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:long_live"
         },
         {
           "title": "Long Live (feat. Paula Fernandes)",
@@ -3047,18 +5615,55 @@
           "image_url": "https://i.scdn.co/image/ab67616d0000b27345a15cc3f3142d121b18bd9f",
           "historical_track_ids": [],
           "release_date": "2012-01-01T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
+          "genres": [
+            "country",
+            "country pop",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "country pop": 1.2,
+            "pop": 1.2,
+            "rock": 1.2
+          },
           "genre_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "pop",
+              "country",
+              "rock",
+              "country pop"
+            ]
           },
           "genre_raw_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Country",
+              "Rock",
+              "Honky Tonk",
+              "Contemporary Country",
+              "Кантри",
+              "Музыка",
+              "Música",
+              "Country contemporáneo",
+              "乡村",
+              "音乐",
+              "摇滚",
+              "컨트리",
+              "음악",
+              "록",
+              "홍키 통크",
+              "컨템포러리 컨트리"
+            ]
           },
-          "genre_query_titles": {},
+          "genre_query_titles": {
+            "apple_music": "Long Live"
+          },
           "genre_errors": {},
-          "genre_canonical_key": "family:long_live_chartsnapshot_historical_single",
+          "genre_canonical_key": "family:long_live",
           "filter_tags": [
             "standalone"
           ],
@@ -3106,7 +5711,75 @@
           "extra_type": "commentary",
           "tags": [],
           "tsm_song_id": "ahe7",
-          "tsm_album_id": "msv"
+          "tsm_album_id": "msv",
+          "genres": [
+            "country",
+            "country pop",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 2.2,
+            "country pop": 2.2,
+            "pop": 2.2,
+            "rock": 1.2
+          },
+          "genre_sources": {
+            "lastfm": [
+              "country",
+              "pop",
+              "country pop"
+            ],
+            "apple_music": [
+              "pop",
+              "country",
+              "rock",
+              "country pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "country",
+              "pop",
+              "country pop",
+              "female vocalists",
+              "taylor swift",
+              "Love",
+              "love at first listen",
+              "<3",
+              "sweet",
+              "2010"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Country",
+              "Rock",
+              "Honky Tonk",
+              "Contemporary Country",
+              "Кантри",
+              "Музыка",
+              "Música",
+              "Country contemporáneo",
+              "Musique",
+              "Honky tonk",
+              "Country contemporaine",
+              "乡村",
+              "音乐",
+              "摇滚",
+              "컨트리",
+              "음악",
+              "록",
+              "홍키 통크",
+              "컨템포러리 컨트리"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Back To December",
+            "apple_music": "Back To December"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:back_to_december"
         },
         {
           "title": "Dear John - Instrumental With Background Vocals",
@@ -3143,7 +5816,51 @@
           "extra_type": "instrumental",
           "tags": [],
           "tsm_song_id": "9aq5",
-          "tsm_album_id": "msv"
+          "tsm_album_id": "msv",
+          "genres": [
+            "country",
+            "country pop",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "country pop": 1.2,
+            "pop": 1.2,
+            "rock": 1.2
+          },
+          "genre_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "pop",
+              "country",
+              "rock",
+              "country pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Country",
+              "Rock",
+              "Honky Tonk",
+              "Contemporary Country",
+              "Кантри",
+              "Музыка",
+              "Música",
+              "Country contemporáneo",
+              "乡村",
+              "音乐",
+              "摇滚"
+            ]
+          },
+          "genre_query_titles": {
+            "apple_music": "Dear John"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:dear_john"
         }
       ]
     }

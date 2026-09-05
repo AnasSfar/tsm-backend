@@ -1,7 +1,7 @@
 {
   "album": "Fearless",
   "section_count": 5,
-  "track_count": 68,
+  "track_count": 59,
   "sections": [
     {
       "section": "original_edition",
@@ -57,7 +57,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "standard",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "e66b",
+          "tsm_album_id": "zr6"
         },
         {
           "title": "Fifteen",
@@ -107,7 +109,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "standard",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "0yvx",
+          "tsm_album_id": "zr6"
         },
         {
           "title": "Love Story",
@@ -130,7 +134,8 @@
           "historical_track_ids": [
             "1D4PL9B8gOg78jiHg3FvBb",
             "6SgBWLgjMQdoVQytBgATGx",
-            "1vrd6UOGamcKNGnSHJQlSt"
+            "1vrd6UOGamcKNGnSHJQlSt",
+            "7bad461siaxECNlaYsmIo6"
           ],
           "release_date": "2008-11-11T00:00:00Z",
           "genres": [
@@ -160,8 +165,8 @@
               "romantic",
               "female vocalists",
               "country pop",
-              "love story",
               "love song",
+              "love story",
               "female vocalist"
             ]
           },
@@ -183,7 +188,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "standard",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "kfua",
+          "tsm_album_id": "zr6"
         },
         {
           "title": "Hey Stephen",
@@ -234,7 +241,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "standard",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "h4un",
+          "tsm_album_id": "zr6"
         },
         {
           "title": "White Horse",
@@ -284,7 +293,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "standard",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "zuie",
+          "tsm_album_id": "zr6"
         },
         {
           "title": "You Belong With Me",
@@ -360,7 +371,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "standard",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "vd7b",
+          "tsm_album_id": "zr6"
         },
         {
           "title": "Breathe",
@@ -410,7 +423,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "standard",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "3eja",
+          "tsm_album_id": "zr6"
         },
         {
           "title": "Tell Me Why",
@@ -461,7 +476,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "standard",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "q0lw",
+          "tsm_album_id": "zr6"
         },
         {
           "title": "You're Not Sorry",
@@ -512,7 +529,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "standard",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "ocws",
+          "tsm_album_id": "zr6"
         },
         {
           "title": "The Way I Loved You",
@@ -560,7 +579,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "standard",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "e7em",
+          "tsm_album_id": "zr6"
         },
         {
           "title": "Forever & Always",
@@ -607,7 +628,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "standard",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "6bm9",
+          "tsm_album_id": "zr6"
         },
         {
           "title": "The Best Day",
@@ -655,7 +678,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "standard",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "qa48",
+          "tsm_album_id": "zr6"
         },
         {
           "title": "Change",
@@ -704,7 +729,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "standard",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "qzwm",
+          "tsm_album_id": "zr6"
         }
       ]
     },
@@ -760,7 +787,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "platinum",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "yml2",
+          "tsm_album_id": "zr6"
         },
         {
           "title": "Untouchable",
@@ -809,7 +838,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "platinum",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "mb5b",
+          "tsm_album_id": "zr6"
         },
         {
           "title": "Forever & Always - Piano Version",
@@ -860,7 +891,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "platinum",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "6bm9",
+          "tsm_album_id": "zr6"
         },
         {
           "title": "Come In With The Rain",
@@ -909,7 +942,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "platinum",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "ofec",
+          "tsm_album_id": "zr6"
         },
         {
           "title": "SuperStar",
@@ -958,7 +993,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "platinum",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "uahy",
+          "tsm_album_id": "zr6"
         },
         {
           "title": "The Other Side Of The Door",
@@ -1007,7 +1044,9 @@
           "on_album": true,
           "role": "album_track",
           "release_edition": "platinum",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "jcfg",
+          "tsm_album_id": "zr6"
         }
       ]
     },
@@ -1064,14 +1103,16 @@
           "role": "extra",
           "extra_type": "other",
           "display_album": "Fearless",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "2143",
+          "tsm_album_id": "zr6"
         }
       ]
     },
     {
       "album": "Fearless",
       "section": "streaming_extras",
-      "track_count": 46,
+      "track_count": 37,
       "chart_extra": true,
       "tracks": [
         {
@@ -1106,7 +1147,7 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:change_live_from_clear_channel_stripped_2008",
+          "genre_canonical_key": "family:change",
           "filter_tags": [
             "solo",
             "standalone",
@@ -1121,7 +1162,9 @@
           "role": "extra",
           "extra_type": "live",
           "display_album": "Fearless",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "qzwm",
+          "tsm_album_id": "zr6"
         },
         {
           "title": "Fearless - Live From Clear Channel Stripped 2008",
@@ -1155,7 +1198,7 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:fearless_live_from_clear_channel_stripped_2008",
+          "genre_canonical_key": "family:fearless",
           "filter_tags": [
             "solo",
             "standalone",
@@ -1170,7 +1213,9 @@
           "role": "extra",
           "extra_type": "live",
           "display_album": "Fearless",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "e66b",
+          "tsm_album_id": "zr6"
         },
         {
           "title": "Hey Stephen - Commentary",
@@ -1204,7 +1249,7 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:hey_stephen_commentary",
+          "genre_canonical_key": "family:hey_stephen",
           "filter_tags": [
             "solo",
             "standalone"
@@ -1217,7 +1262,9 @@
           "role": "extra",
           "extra_type": "commentary",
           "display_album": "Fearless",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "h4un",
+          "tsm_album_id": "zr6"
         },
         {
           "title": "Love Story - Instrumental with BGV",
@@ -1266,7 +1313,9 @@
           "role": "extra",
           "extra_type": "instrumental",
           "display_album": "Fearless",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "pn4s",
+          "tsm_album_id": "zr6"
         },
         {
           "title": "Love Story - J Stax Radio Mix",
@@ -1314,7 +1363,9 @@
           "role": "extra",
           "extra_type": "remix",
           "display_album": "Fearless",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "o89h",
+          "tsm_album_id": "zr6"
         },
         {
           "title": "Love Story - Live From Clear Channel Stripped 2008",
@@ -1364,8 +1415,8 @@
               "romantic",
               "female vocalists",
               "country pop",
-              "love story",
               "love song",
+              "love story",
               "female vocalist"
             ]
           },
@@ -1373,7 +1424,7 @@
             "lastfm": "Love Story"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:love_story_live_from_clear_channel_stripped_2008",
+          "genre_canonical_key": "family:love_story",
           "filter_tags": [
             "solo",
             "standalone",
@@ -1388,7 +1439,9 @@
           "role": "extra",
           "extra_type": "live",
           "display_album": "Fearless",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "kfua",
+          "tsm_album_id": "zr6"
         },
         {
           "title": "Love Story - Pop Mix",
@@ -1440,7 +1493,9 @@
           "role": "extra",
           "extra_type": "remix",
           "display_album": "Fearless",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "2gjh",
+          "tsm_album_id": "zr6"
         },
         {
           "title": "Untouchable - Live From Clear Channel Stripped 2008",
@@ -1474,7 +1529,7 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:untouchable_live_from_clear_channel_stripped_2008",
+          "genre_canonical_key": "family:untouchable",
           "filter_tags": [
             "solo",
             "standalone",
@@ -1489,7 +1544,9 @@
           "role": "extra",
           "extra_type": "live",
           "display_album": "Fearless",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "mb5b",
+          "tsm_album_id": "zr6"
         },
         {
           "title": "Dear John - Commentary",
@@ -1522,7 +1579,21 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "commentary",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "9aq5",
+          "tsm_album_id": "zr6",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:dear_john"
         },
         {
           "title": "Delicate - Commentary",
@@ -1555,7 +1626,46 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "commentary",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "oaa8",
+          "tsm_album_id": "zr6",
+          "genres": [
+            "pop",
+            "electropop",
+            "synth-pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "electropop": 2.0,
+            "synth-pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "electropop",
+              "synth-pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "electropop",
+              "taylor swift",
+              "synthpop",
+              "tropical house",
+              "reputation",
+              "synth-pop",
+              "delicate",
+              "alt-pop",
+              "dance-pop"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Delicate"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:delicate"
         },
         {
           "title": "Dancing With Our Hands Tied - Commentary",
@@ -1588,7 +1698,46 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "commentary",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "5c91",
+          "tsm_album_id": "zr6",
+          "genres": [
+            "electropop",
+            "pop",
+            "synth-pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "electropop": 3.0,
+            "pop": 2.0,
+            "synth-pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "electropop",
+              "pop",
+              "synth-pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "electropop",
+              "pop",
+              "future bass",
+              "dance",
+              "Drum and bass",
+              "electronic",
+              "taylor swift",
+              "synthpop",
+              "dance-pop",
+              "contemporary rnb"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Dancing With Our Hands Tied"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:dancing_with_our_hands_tied"
         },
         {
           "title": "Don't Blame Me - Commentary",
@@ -1621,7 +1770,21 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "commentary",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "g8vr",
+          "tsm_album_id": "zr6",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:don_t_blame_me"
         },
         {
           "title": "Fearless - Commentary",
@@ -1654,7 +1817,21 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "commentary",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "e66b",
+          "tsm_album_id": "zr6",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:fearless"
         },
         {
           "title": "Fearless - Instrumental with BGV",
@@ -1689,7 +1866,21 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "instrumental",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "e66b",
+          "tsm_album_id": "zr6",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:fearless"
         },
         {
           "title": "Fifteen - Commentary",
@@ -1722,7 +1913,21 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "commentary",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "0yvx",
+          "tsm_album_id": "zr6",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:fifteen"
         },
         {
           "title": "Fifteen - Instrumental with BGV",
@@ -1747,7 +1952,9 @@
           "catalog_category": "instrumental",
           "music_track": false,
           "release_date": "2008-11-11T00:00:00Z",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "3h96cE8WodfMonauQOhltu"
+          ],
           "excluded_from_public_stats": true,
           "catalog_exclusion_reason": "instrumental/backing vocals",
           "chart_extra": true,
@@ -1755,7 +1962,21 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "instrumental",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "0yvx",
+          "tsm_album_id": "zr6",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:fifteen"
         },
         {
           "title": "Forever & Always - Commentary",
@@ -1788,7 +2009,21 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "commentary",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "6bm9",
+          "tsm_album_id": "zr6",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:forever_always"
         },
         {
           "title": "Forever & Always - Instrumental with BGV",
@@ -1813,7 +2048,9 @@
           "catalog_category": "instrumental",
           "music_track": false,
           "release_date": "2008-11-11T00:00:00Z",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "72PDdE0cAdmGxhMbrqG0PI"
+          ],
           "excluded_from_public_stats": true,
           "catalog_exclusion_reason": "instrumental/backing vocals",
           "chart_extra": true,
@@ -1821,7 +2058,21 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "instrumental",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "93m0",
+          "tsm_album_id": "zr6",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:forever_and_always"
         },
         {
           "title": "Hey Stephen - Instrumental with BGV",
@@ -1846,7 +2097,9 @@
           "catalog_category": "instrumental",
           "music_track": false,
           "release_date": "2008-11-11T00:00:00Z",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "3Uown9ZvhJcCBJBHOXRRhS"
+          ],
           "excluded_from_public_stats": true,
           "catalog_exclusion_reason": "instrumental/backing vocals",
           "chart_extra": true,
@@ -1854,7 +2107,21 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "instrumental",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "h4un",
+          "tsm_album_id": "zr6",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:hey_stephen"
         },
         {
           "title": "Love Story - Commentary",
@@ -1887,7 +2154,46 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "commentary",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "kfua",
+          "tsm_album_id": "zr6",
+          "genres": [
+            "country",
+            "pop",
+            "country pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 3.0,
+            "pop": 2.0,
+            "country pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "country",
+              "pop",
+              "country pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "country",
+              "taylor swift",
+              "pop",
+              "Love",
+              "romantic",
+              "female vocalists",
+              "country pop",
+              "love song",
+              "love story",
+              "female vocalist"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Love Story"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:love_story"
         },
         {
           "title": "Tell Me Why - Commentary",
@@ -1920,7 +2226,21 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "commentary",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "q0lw",
+          "tsm_album_id": "zr6",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:tell_me_why"
         },
         {
           "title": "Tell Me Why - Instrumental with BGV",
@@ -1955,7 +2275,21 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "instrumental",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "q0lw",
+          "tsm_album_id": "zr6",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:tell_me_why"
         },
         {
           "title": "The Best Day - Commentary",
@@ -1988,7 +2322,21 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "commentary",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "qa48",
+          "tsm_album_id": "zr6",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:the_best_day"
         },
         {
           "title": "The Best Day - Instrumental with BGV",
@@ -2013,7 +2361,9 @@
           "catalog_category": "instrumental",
           "music_track": false,
           "release_date": "2008-11-11T00:00:00Z",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "3qcGsGTSDQYdy9xoMFj0YM"
+          ],
           "excluded_from_public_stats": true,
           "catalog_exclusion_reason": "instrumental/backing vocals",
           "chart_extra": true,
@@ -2021,7 +2371,21 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "instrumental",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "qa48",
+          "tsm_album_id": "zr6",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:the_best_day"
         },
         {
           "title": "The Way I Loved You - Commentary",
@@ -2054,7 +2418,21 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "commentary",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "e7em",
+          "tsm_album_id": "zr6",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:the_way_i_loved_you"
         },
         {
           "title": "The Way I Loved You - Instrumental with BGV",
@@ -2079,7 +2457,9 @@
           "catalog_category": "instrumental",
           "music_track": false,
           "release_date": "2008-11-11T00:00:00Z",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "0j42731ciU2x6LW4PJRnEv"
+          ],
           "excluded_from_public_stats": true,
           "catalog_exclusion_reason": "instrumental/backing vocals",
           "chart_extra": true,
@@ -2087,7 +2467,21 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "instrumental",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "e7em",
+          "tsm_album_id": "zr6",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:the_way_i_loved_you"
         },
         {
           "title": "White Horse - Commentary",
@@ -2120,7 +2514,21 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "commentary",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "zuie",
+          "tsm_album_id": "zr6",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:white_horse"
         },
         {
           "title": "White Horse - Instrumental with BGV",
@@ -2145,7 +2553,9 @@
           "catalog_category": "instrumental",
           "music_track": false,
           "release_date": "2008-11-11T00:00:00Z",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "3L84WEUYuc6Vryfi4Fd85j"
+          ],
           "excluded_from_public_stats": true,
           "catalog_exclusion_reason": "instrumental/backing vocals",
           "chart_extra": true,
@@ -2153,7 +2563,21 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "instrumental",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "zuie",
+          "tsm_album_id": "zr6",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:white_horse"
         },
         {
           "title": "You Belong With Me - Commentary",
@@ -2186,7 +2610,46 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "commentary",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "vd7b",
+          "tsm_album_id": "zr6",
+          "genres": [
+            "country",
+            "pop",
+            "country pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 3.0,
+            "pop": 2.0,
+            "country pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "country",
+              "pop",
+              "country pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "country",
+              "taylor swift",
+              "pop",
+              "country pop",
+              "Love",
+              "female vocalists",
+              "female vocalist",
+              "love at first listen",
+              "2009",
+              "singer-songwriter"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "You Belong With Me"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:you_belong_with_me"
         },
         {
           "title": "You Belong With Me - Instrumental with BGV",
@@ -2211,7 +2674,9 @@
           "catalog_category": "instrumental",
           "music_track": false,
           "release_date": "2008-11-11T00:00:00Z",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "53PbrK3xHCahLA67KbR1Ck"
+          ],
           "excluded_from_public_stats": true,
           "catalog_exclusion_reason": "instrumental/backing vocals",
           "chart_extra": true,
@@ -2219,7 +2684,46 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "instrumental",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "vd7b",
+          "tsm_album_id": "zr6",
+          "genres": [
+            "country",
+            "pop",
+            "country pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 3.0,
+            "pop": 2.0,
+            "country pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "country",
+              "pop",
+              "country pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "country",
+              "taylor swift",
+              "pop",
+              "country pop",
+              "Love",
+              "female vocalists",
+              "female vocalist",
+              "love at first listen",
+              "2009",
+              "singer-songwriter"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "You Belong With Me"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:you_belong_with_me"
         },
         {
           "title": "You're Not Sorry - Commentary",
@@ -2252,7 +2756,21 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "commentary",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "ocws",
+          "tsm_album_id": "zr6",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:you_re_not_sorry"
         },
         {
           "title": "You're Not Sorry - Instrumental with BGV",
@@ -2277,7 +2795,9 @@
           "catalog_category": "instrumental",
           "music_track": false,
           "release_date": "2008-11-11T00:00:00Z",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "022VobQaEUvn0YWqYf97HA"
+          ],
           "excluded_from_public_stats": true,
           "catalog_exclusion_reason": "instrumental/backing vocals",
           "chart_extra": true,
@@ -2285,304 +2805,21 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "instrumental",
-          "tags": []
-        },
-        {
-          "title": "Fifteen - Instrumental with BGV",
-          "url": "https://open.spotify.com/track/3h96cE8WodfMonauQOhltu",
-          "type": "album_track",
-          "edition": "extras",
-          "display_section": "Extras",
-          "display_order": 10047,
-          "base_title": "Fifteen",
-          "album": "Fearless",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "Fifteen - Instrumental with BGV",
-          "song_family": "fifteen",
-          "version_tag": "instrumental",
-          "version_tags": [
-            "instrumental"
-          ],
-          "catalog_category": "instrumental",
-          "music_track": false,
-          "historical_track_ids": [],
-          "excluded_from_public_stats": true,
-          "catalog_exclusion_reason": "instrumental/backing vocals",
-          "chart_extra": true,
-          "chartsnapshot_source_album": "Fearless (Karaoke Version)",
-          "image_url": "https://image-cdn-ak.spotifycdn.com/image/ab67616d0000b2733aaff042743bac0fdec793fc",
-          "on_album": true,
-          "role": "extra",
-          "extra_type": "instrumental",
-          "tags": []
-        },
-        {
-          "title": "White Horse - Instrumental with BGV",
-          "url": "https://open.spotify.com/track/3L84WEUYuc6Vryfi4Fd85j",
-          "type": "album_track",
-          "edition": "extras",
-          "display_section": "Extras",
-          "display_order": 10050,
-          "base_title": "White Horse",
-          "album": "Fearless",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "White Horse - Instrumental with BGV",
-          "song_family": "white_horse",
-          "version_tag": "instrumental",
-          "version_tags": [
-            "instrumental"
-          ],
-          "catalog_category": "instrumental",
-          "music_track": false,
-          "historical_track_ids": [],
-          "excluded_from_public_stats": true,
-          "catalog_exclusion_reason": "instrumental/backing vocals",
-          "chart_extra": true,
-          "chartsnapshot_source_album": "Fearless (Karaoke Version)",
-          "image_url": "https://image-cdn-fa.spotifycdn.com/image/ab67616d0000b2733aaff042743bac0fdec793fc",
-          "on_album": true,
-          "role": "extra",
-          "extra_type": "instrumental",
-          "tags": []
-        },
-        {
-          "title": "The Best Day - Instrumental with BGV",
-          "url": "https://open.spotify.com/track/3qcGsGTSDQYdy9xoMFj0YM",
-          "type": "album_track",
-          "edition": "extras",
-          "display_section": "Extras",
-          "display_order": 10051,
-          "base_title": "The Best Day",
-          "album": "Fearless",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "The Best Day - Instrumental with BGV",
-          "song_family": "the_best_day",
-          "version_tag": "instrumental",
-          "version_tags": [
-            "instrumental"
-          ],
-          "catalog_category": "instrumental",
-          "music_track": false,
-          "historical_track_ids": [],
-          "excluded_from_public_stats": true,
-          "catalog_exclusion_reason": "instrumental/backing vocals",
-          "chart_extra": true,
-          "chartsnapshot_source_album": "Fearless (Karaoke Version)",
-          "image_url": "https://image-cdn-fa.spotifycdn.com/image/ab67616d0000b2733aaff042743bac0fdec793fc",
-          "on_album": true,
-          "role": "extra",
-          "extra_type": "instrumental",
-          "tags": []
-        },
-        {
-          "title": "Hey Stephen - Instrumental with BGV",
-          "url": "https://open.spotify.com/track/3Uown9ZvhJcCBJBHOXRRhS",
-          "type": "album_track",
-          "edition": "extras",
-          "display_section": "Extras",
-          "display_order": 10052,
-          "base_title": "Hey Stephen",
-          "album": "Fearless",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "Hey Stephen - Instrumental with BGV",
-          "song_family": "hey_stephen",
-          "version_tag": "instrumental",
-          "version_tags": [
-            "instrumental"
-          ],
-          "catalog_category": "instrumental",
-          "music_track": false,
-          "historical_track_ids": [],
-          "excluded_from_public_stats": true,
-          "catalog_exclusion_reason": "instrumental/backing vocals",
-          "chart_extra": true,
-          "chartsnapshot_source_album": "Fearless (Karaoke Version)",
-          "image_url": "https://image-cdn-ak.spotifycdn.com/image/ab67616d0000b2733aaff042743bac0fdec793fc",
-          "on_album": true,
-          "role": "extra",
-          "extra_type": "instrumental",
-          "tags": []
-        },
-        {
-          "title": "You're Not Sorry - Instrumental with BGV",
-          "url": "https://open.spotify.com/track/022VobQaEUvn0YWqYf97HA",
-          "type": "album_track",
-          "edition": "extras",
-          "display_section": "Extras",
-          "display_order": 10053,
-          "base_title": "You're Not Sorry",
-          "album": "Fearless",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "You're Not Sorry - Instrumental with BGV",
-          "song_family": "you_re_not_sorry",
-          "version_tag": "instrumental",
-          "version_tags": [
-            "instrumental"
-          ],
-          "catalog_category": "instrumental",
-          "music_track": false,
-          "historical_track_ids": [],
-          "excluded_from_public_stats": true,
-          "catalog_exclusion_reason": "instrumental/backing vocals",
-          "chart_extra": true,
-          "chartsnapshot_source_album": "Fearless (Karaoke Version)",
-          "image_url": "https://image-cdn-ak.spotifycdn.com/image/ab67616d0000b2733aaff042743bac0fdec793fc",
-          "on_album": true,
-          "role": "extra",
-          "extra_type": "instrumental",
-          "tags": []
-        },
-        {
-          "title": "Change - Instrumental with BGV",
-          "url": "https://open.spotify.com/track/3lNRE17Ba1Verccqe2h6td",
-          "type": "album_track",
-          "edition": "extras",
-          "display_section": "Extras",
-          "display_order": 10057,
-          "base_title": "Change",
-          "album": "Fearless",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "Change - Instrumental with BGV",
-          "song_family": "change",
-          "version_tag": "instrumental",
-          "version_tags": [
-            "instrumental"
-          ],
-          "catalog_category": "instrumental",
-          "music_track": false,
-          "historical_track_ids": [],
-          "excluded_from_public_stats": true,
-          "catalog_exclusion_reason": "instrumental/backing vocals",
-          "chart_extra": true,
-          "chartsnapshot_source_album": "Fearless (Karaoke Version)",
-          "image_url": "https://image-cdn-fa.spotifycdn.com/image/ab67616d0000b2733aaff042743bac0fdec793fc",
-          "on_album": true,
-          "role": "extra",
-          "extra_type": "instrumental",
-          "tags": []
-        },
-        {
-          "title": "The Way I Loved You - Instrumental with BGV",
-          "url": "https://open.spotify.com/track/0j42731ciU2x6LW4PJRnEv",
-          "type": "album_track",
-          "edition": "extras",
-          "display_section": "Extras",
-          "display_order": 10077,
-          "base_title": "The Way I Loved You",
-          "album": "Fearless",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "The Way I Loved You - Instrumental with BGV",
-          "song_family": "the_way_i_loved_you",
-          "version_tag": "instrumental",
-          "version_tags": [
-            "instrumental"
-          ],
-          "catalog_category": "instrumental",
-          "music_track": false,
-          "historical_track_ids": [],
-          "excluded_from_public_stats": true,
-          "catalog_exclusion_reason": "instrumental/backing vocals",
-          "chart_extra": true,
-          "chartsnapshot_source_album": "Fearless (Karaoke Version)",
-          "image_url": "https://image-cdn-ak.spotifycdn.com/image/ab67616d0000b2733aaff042743bac0fdec793fc",
-          "on_album": true,
-          "role": "extra",
-          "extra_type": "instrumental",
-          "tags": []
-        },
-        {
-          "title": "You Belong With Me - Instrumental with BGV",
-          "url": "https://open.spotify.com/track/53PbrK3xHCahLA67KbR1Ck",
-          "type": "album_track",
-          "edition": "extras",
-          "display_section": "Extras",
-          "display_order": 10083,
-          "base_title": "You Belong With Me",
-          "album": "Fearless",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "You Belong With Me - Instrumental with BGV",
-          "song_family": "you_belong_with_me",
-          "version_tag": "instrumental",
-          "version_tags": [
-            "instrumental"
-          ],
-          "catalog_category": "instrumental",
-          "music_track": false,
-          "historical_track_ids": [],
-          "excluded_from_public_stats": true,
-          "catalog_exclusion_reason": "instrumental/backing vocals",
-          "chart_extra": true,
-          "chartsnapshot_source_album": "Fearless (Karaoke Version)",
-          "image_url": "https://image-cdn-fa.spotifycdn.com/image/ab67616d0000b2733aaff042743bac0fdec793fc",
-          "on_album": true,
-          "role": "extra",
-          "extra_type": "instrumental",
-          "tags": []
-        },
-        {
-          "title": "Breathe - Instrumental only, no BV",
-          "url": "https://open.spotify.com/track/4Hk2aNSkhB6Y8jsJtrAjxa",
-          "type": "album_track",
-          "edition": "extras",
-          "display_section": "Extras",
-          "display_order": 10088,
-          "base_title": "Breathe",
-          "album": "Fearless",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "Breathe - Instrumental only, no BV",
-          "song_family": "breathe",
-          "version_tag": "instrumental",
-          "version_tags": [
-            "instrumental"
-          ],
-          "catalog_category": "instrumental",
-          "music_track": false,
-          "historical_track_ids": [],
-          "excluded_from_public_stats": true,
-          "catalog_exclusion_reason": "instrumental/backing vocals",
-          "chart_extra": true,
-          "chartsnapshot_source_album": "Fearless (Karaoke Version)",
-          "image_url": "https://image-cdn-ak.spotifycdn.com/image/ab67616d0000b2733aaff042743bac0fdec793fc",
-          "on_album": true,
-          "role": "extra",
-          "extra_type": "instrumental",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "ocws",
+          "tsm_album_id": "zr6",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:you_re_not_sorry"
         },
         {
           "title": "Love Story - J Stax Club Mix",
@@ -2610,7 +2847,21 @@
           "role": "extra",
           "extra_type": "remix",
           "tags": [],
-          "chart_extra": true
+          "chart_extra": true,
+          "tsm_song_id": "owt3",
+          "tsm_album_id": "zr6",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:love_story_j_stax_club_mix"
         },
         {
           "title": "Love Story - Digital Dog Radio Mix",
@@ -2638,7 +2889,21 @@
           "role": "extra",
           "extra_type": "remix",
           "tags": [],
-          "chart_extra": true
+          "chart_extra": true,
+          "tsm_song_id": "xg6u",
+          "tsm_album_id": "zr6",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:love_story_digital_dog_radio_mix"
         },
         {
           "title": "Fifteen - Pop Mix Edit",
@@ -2663,7 +2928,21 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "remix",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "zr09",
+          "tsm_album_id": "zr6",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:fifteen_pop"
         },
         {
           "title": "Starlight - Instrumental With Background Vocals",
@@ -2696,40 +2975,68 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "instrumental",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "89ul",
+          "tsm_album_id": "zr6",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:starlight_chartsnapshot_external_6yulzkix"
         },
         {
-          "title": "Forever & Always - Instrumental with BGV",
-          "url": "https://open.spotify.com/track/72PDdE0cAdmGxhMbrqG0PI",
+          "title": "Breathe - Commentary",
+          "url": "https://open.spotify.com/intl-fr/track/3cAHqw3B2deaHRXV9WrYAA",
           "type": "album_track",
           "edition": "extras",
           "display_section": "Extras",
-          "display_order": 10085,
-          "base_title": "Forever & Always",
+          "display_order": 17,
+          "base_title": "Breathe",
           "album": "Fearless",
           "primary_artist": "Taylor Swift",
           "featured_artists": [],
           "artists": [
             "Taylor Swift"
           ],
-          "title_clean": "Forever & Always - Instrumental with BGV",
-          "song_family": "forever_and_always",
-          "version_tag": "instrumental",
+          "title_clean": "Breathe - Commentary",
+          "song_family": "breathe",
+          "version_tag": "commentary",
           "version_tags": [
-            "instrumental"
+            "commentary"
           ],
-          "catalog_category": "instrumental",
+          "catalog_category": "commentary",
           "music_track": false,
+          "release_date": "2008-11-11T00:00:00Z",
           "historical_track_ids": [],
           "excluded_from_public_stats": true,
-          "catalog_exclusion_reason": "instrumental/backing vocals",
+          "catalog_exclusion_reason": "commentary",
           "chart_extra": true,
-          "chartsnapshot_source_album": "Fearless (Karaoke Version)",
-          "image_url": "https://image-cdn-ak.spotifycdn.com/image/ab67616d0000b2733aaff042743bac0fdec793fc",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27373b565ab9d713e8d5586aac2",
           "on_album": true,
           "role": "extra",
-          "extra_type": "instrumental",
-          "tags": []
+          "extra_type": "commentary",
+          "tags": [],
+          "tsm_song_id": "3eja",
+          "tsm_album_id": "zr6",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:breathe"
         }
       ]
     },
@@ -2785,8 +3092,8 @@
               "romantic",
               "female vocalists",
               "country pop",
-              "love story",
               "love song",
+              "love story",
               "female vocalist"
             ]
           },
@@ -2806,7 +3113,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "remix",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "kfua",
+          "tsm_album_id": "zr6"
         },
         {
           "title": "You're Not Sorry - CSI Remix",
@@ -2851,7 +3160,9 @@
           "on_album": true,
           "role": "extra",
           "extra_type": "remix",
-          "tags": []
+          "tags": [],
+          "tsm_song_id": "ocws",
+          "tsm_album_id": "zr6"
         }
       ]
     }

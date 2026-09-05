@@ -9,21 +9,21 @@
       "chart_extra": true,
       "tracks": [
         {
-          "title": "Christmas Must Be Something More",
-          "url": "https://open.spotify.com/intl-fr/track/31JVjy3XWnh6C2zf4kLCXN",
+          "title": "Last Christmas",
+          "url": "https://open.spotify.com/intl-fr/track/2IprIjGNRlj3TfqUWCAo0C",
           "type": "track",
           "edition": "standard",
           "display_section": "Standard Edition",
-          "display_order": 5,
-          "base_title": "Christmas Must Be Something More",
+          "display_order": 1,
+          "base_title": "Last Christmas",
           "album": "The Taylor Swift Holiday Collection",
           "primary_artist": "Taylor Swift",
           "featured_artists": [],
           "artists": [
             "Taylor Swift"
           ],
-          "title_clean": "Christmas Must Be Something More",
-          "song_family": "christmas_must_be_something_more",
+          "title_clean": "Last Christmas",
+          "song_family": "last_christmas",
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2732a0face7d69df61c20a6db2b",
           "historical_track_ids": [],
@@ -39,7 +39,7 @@
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:christmas_must_be_something_more",
+          "genre_canonical_key": "family:last_christmas",
           "filter_tags": [
             "solo",
             "album_track",
@@ -49,7 +49,16 @@
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section",
             "christmas": "high:title_album_or_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": [
+            "christmas"
+          ],
+          "chart_extra": false,
+          "tsm_song_id": "fq8v",
+          "tsm_album_id": "wf6"
         },
         {
           "title": "Christmases When You Were Mine",
@@ -92,50 +101,16 @@
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section",
             "christmas": "high:title_album_or_section"
-          }
-        },
-        {
-          "title": "Last Christmas",
-          "url": "https://open.spotify.com/intl-fr/track/2IprIjGNRlj3TfqUWCAo0C",
-          "type": "track",
-          "edition": "standard",
-          "display_section": "Standard Edition",
-          "display_order": 1,
-          "base_title": "Last Christmas",
-          "album": "The Taylor Swift Holiday Collection",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "Last Christmas",
-          "song_family": "last_christmas",
-          "version_tag": "standard",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b2732a0face7d69df61c20a6db2b",
-          "historical_track_ids": [],
-          "release_date": "2008-12-02T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
-          "genre_sources": {
-            "lastfm": []
           },
-          "genre_raw_sources": {
-            "lastfm": []
-          },
-          "genre_query_titles": {},
-          "genre_errors": {},
-          "genre_canonical_key": "family:last_christmas",
-          "filter_tags": [
-            "solo",
-            "album_track",
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": [
             "christmas"
           ],
-          "filter_tag_sources": {
-            "solo": "high:artist_credit",
-            "album_track": "high:section_or_display_section",
-            "christmas": "high:title_album_or_section"
-          }
+          "chart_extra": false,
+          "tsm_song_id": "iygt",
+          "tsm_album_id": "wf6"
         },
         {
           "title": "Santa Baby",
@@ -178,7 +153,16 @@
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section",
             "christmas": "high:title_album_or_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": [
+            "christmas"
+          ],
+          "chart_extra": false,
+          "tsm_song_id": "wyae",
+          "tsm_album_id": "wf6"
         },
         {
           "title": "Silent Night",
@@ -221,7 +205,68 @@
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section",
             "christmas": "high:title_album_or_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": [
+            "christmas"
+          ],
+          "chart_extra": false,
+          "tsm_song_id": "h8hc",
+          "tsm_album_id": "wf6"
+        },
+        {
+          "title": "Christmas Must Be Something More",
+          "url": "https://open.spotify.com/intl-fr/track/31JVjy3XWnh6C2zf4kLCXN",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 5,
+          "base_title": "Christmas Must Be Something More",
+          "album": "The Taylor Swift Holiday Collection",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Christmas Must Be Something More",
+          "song_family": "christmas_must_be_something_more",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b2732a0face7d69df61c20a6db2b",
+          "historical_track_ids": [],
+          "release_date": "2008-12-02T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:christmas_must_be_something_more",
+          "filter_tags": [
+            "solo",
+            "album_track",
+            "christmas"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section",
+            "christmas": "high:title_album_or_section"
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": [
+            "christmas"
+          ],
+          "chart_extra": false,
+          "tsm_song_id": "m768",
+          "tsm_album_id": "wf6"
         },
         {
           "title": "White Christmas",
@@ -264,7 +309,16 @@
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section",
             "christmas": "high:title_album_or_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": [
+            "christmas"
+          ],
+          "chart_extra": false,
+          "tsm_song_id": "0v9k",
+          "tsm_album_id": "wf6"
         }
       ]
     },
@@ -291,8 +345,10 @@
           "song_family": "christmas_tree_farm",
           "version_tag": "standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2733b86fc3447e27df6630ce0d8",
-          "historical_track_ids": [],
-          "release_date": "2021-11-22T00:00:00Z",
+          "historical_track_ids": [
+            "2mvabkN1i2gLnGAPUVdwek"
+          ],
+          "release_date": "2019-12-06T00:00:00Z",
           "genres": [],
           "genre_status": "missing",
           "genre_scores": {},
@@ -316,7 +372,16 @@
             "album_track": "high:section_or_display_section",
             "standalone": "medium:section_or_type",
             "christmas": "high:title_album_or_section"
-          }
+          },
+          "on_album": false,
+          "category": "other",
+          "tags": [
+            "christmas"
+          ],
+          "role": "single",
+          "chart_extra": false,
+          "tsm_song_id": "km1r",
+          "tsm_album_id": "wf6"
         },
         {
           "title": "Christmas Tree Farm - Old Timey Version",
@@ -363,7 +428,14 @@
             "standalone": "medium:section_or_type",
             "alternate_version": "medium:type_or_title",
             "christmas": "high:title_album_or_section"
-          }
+          },
+          "on_album": false,
+          "category": "other",
+          "tags": [
+            "christmas"
+          ],
+          "tsm_song_id": "km1r",
+          "tsm_album_id": "wf6"
         },
         {
           "title": "Christmas Tree Farm - Recorded Live at the 2019 iHeartRadio Jingle Ball",
@@ -384,7 +456,7 @@
           "version_tag": "live__standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2733b86fc3447e27df6630ce0d8",
           "historical_track_ids": [],
-          "release_date": "2021-11-22T00:00:00Z",
+          "release_date": "2020-12-19T00:00:00Z",
           "genres": [],
           "genre_status": "missing",
           "genre_scores": {},
@@ -410,7 +482,14 @@
             "standalone": "medium:section_or_type",
             "live": "high:type_title_or_section",
             "christmas": "high:title_album_or_section"
-          }
+          },
+          "on_album": false,
+          "category": "other",
+          "tags": [
+            "christmas"
+          ],
+          "tsm_song_id": "km1r",
+          "tsm_album_id": "wf6"
         }
       ]
     }

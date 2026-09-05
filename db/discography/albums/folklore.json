@@ -31,39 +31,53 @@
           ],
           "release_date": "2020-07-24T00:00:00Z",
           "genres": [
-            "folk",
-            "soft rock",
-            "pop"
+            "alternative"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "folk": 3.0,
-            "soft rock": 2.0,
-            "pop": 1.0
+            "alternative": 1.2,
+            "folk": 1.0,
+            "indie pop": 1.0,
+            "soft rock": 1.0
           },
           "genre_sources": {
             "lastfm": [
               "folk",
               "soft rock",
-              "pop"
+              "indie pop"
+            ],
+            "apple_music": [
+              "alternative"
             ]
           },
           "genre_raw_sources": {
             "lastfm": [
               "folk",
               "soft rock",
-              "pop",
               "indie pop",
+              "pop",
               "chamber pop",
               "singer-songwriter",
               "indie",
               "folk pop",
               "indie folk",
               "overrated"
+            ],
+            "apple_music": [
+              "Alternative",
+              "Music",
+              "Alternativa",
+              "Música",
+              "Alternativo",
+              "另类音乐",
+              "音乐",
+              "另類音樂",
+              "音樂"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "the 1"
+            "lastfm": "the 1",
+            "apple_music": "the 1"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:the_1",
@@ -106,22 +120,60 @@
           ],
           "release_date": "2020-07-24T00:00:00Z",
           "genres": [
-            "folk pop",
-            "folk",
-            "pop"
+            "alternative"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "folk pop": 3.0,
-            "folk": 2.0,
+            "alternative": 1.2,
+            "folk": 1.0,
+            "folk pop": 1.0,
             "pop": 1.0
           },
-          "genre_sources": {},
-          "genre_raw_sources": {},
+          "genre_sources": {
+            "lastfm": [
+              "folk pop",
+              "folk",
+              "pop"
+            ],
+            "apple_music": [
+              "alternative"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "folk pop",
+              "folk",
+              "chamber pop",
+              "singer-songwriter",
+              "indie",
+              "pop",
+              "soft rock",
+              "alternative",
+              "indie rock",
+              "indie folk"
+            ],
+            "apple_music": [
+              "Alternative",
+              "Music",
+              "Alternativa",
+              "Música",
+              "Musik",
+              "Alternativo",
+              "另类音乐",
+              "音乐",
+              "Musique",
+              "另類音樂",
+              "音樂",
+              "Musica",
+              "Muziek",
+              "Alternativt"
+            ]
+          },
           "genre_errors": {},
           "genre_canonical_key": "family:cardigan",
           "genre_query_titles": {
-            "lastfm": "cardigan"
+            "lastfm": "cardigan",
+            "apple_music": "cardigan"
           },
           "filter_tags": [
             "solo",
@@ -161,20 +213,21 @@
           ],
           "release_date": "2020-07-24T00:00:00Z",
           "genres": [
-            "indie pop",
-            "pop",
             "alternative"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "indie pop": 3.0,
-            "pop": 2.0,
-            "alternative": 1.0
+            "alternative": 2.2,
+            "indie pop": 1.0,
+            "pop": 1.0
           },
           "genre_sources": {
             "lastfm": [
               "indie pop",
               "pop",
+              "alternative"
+            ],
+            "apple_music": [
               "alternative"
             ]
           },
@@ -184,16 +237,23 @@
               "pop",
               "alternative",
               "folk",
+              "folk pop",
               "singer-songwriter",
               "indie",
-              "folk pop",
+              "female vocalist",
               "chamber pop",
-              "overrated",
-              "female vocalist"
+              "overrated"
+            ],
+            "apple_music": [
+              "Alternative",
+              "Music",
+              "另类音乐",
+              "音乐"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "the last great american dynasty"
+            "lastfm": "the last great american dynasty",
+            "apple_music": "the last great american dynasty"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:the_last_great_american_dynasty",
@@ -238,20 +298,21 @@
           ],
           "release_date": "2020-07-24T00:00:00Z",
           "genres": [
-            "folk",
-            "indie folk",
             "alternative"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "folk": 3.0,
-            "indie folk": 2.0,
-            "alternative": 1.0
+            "alternative": 2.2,
+            "folk": 1.0,
+            "indie folk": 1.0
           },
           "genre_sources": {
             "lastfm": [
               "folk",
               "indie folk",
+              "alternative"
+            ],
+            "apple_music": [
               "alternative"
             ]
           },
@@ -261,16 +322,30 @@
               "indie folk",
               "alternative",
               "pop",
-              "2020",
               "chamber pop",
               "Ballad",
-              "peter",
+              "2020",
               "singer-songwriter",
-              "folk pop"
+              "indie pop",
+              "peter"
+            ],
+            "apple_music": [
+              "另类音乐",
+              "音乐",
+              "Alternativa",
+              "Música",
+              "Alternative",
+              "Music",
+              "Alternativo",
+              "Musik",
+              "另類音樂",
+              "音樂",
+              "Alternativt"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "exile (feat. Bon Iver)"
+            "lastfm": "exile (feat. Bon Iver)",
+            "apple_music": "exile (feat. Bon Iver)"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:exile",
@@ -313,39 +388,51 @@
           ],
           "release_date": "2020-07-24T00:00:00Z",
           "genres": [
-            "folk",
-            "indie pop",
-            "pop"
+            "alternative"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "folk": 3.0,
-            "indie pop": 2.0,
+            "alternative": 1.2,
+            "folk": 1.0,
+            "indie pop": 1.0,
             "pop": 1.0
           },
           "genre_sources": {
             "lastfm": [
-              "folk",
               "indie pop",
+              "folk",
               "pop"
+            ],
+            "apple_music": [
+              "alternative"
             ]
           },
           "genre_raw_sources": {
             "lastfm": [
-              "folk",
               "indie pop",
-              "pop",
+              "folk",
               "sad",
+              "pop",
               "chamber pop",
               "gospel",
               "Ballad",
               "arena-goth",
-              "indie",
-              "alternative"
+              "alternative",
+              "indie"
+            ],
+            "apple_music": [
+              "Alternative",
+              "Music",
+              "Alternativa",
+              "Música",
+              "Alternativo",
+              "另类音乐",
+              "音乐"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "my tears ricochet"
+            "lastfm": "my tears ricochet",
+            "apple_music": "my tears ricochet"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:my_tears_ricochet",
@@ -387,20 +474,21 @@
           ],
           "release_date": "2020-07-24T00:00:00Z",
           "genres": [
-            "dream pop",
-            "folk",
             "alternative"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "dream pop": 3.0,
-            "folk": 2.0,
-            "alternative": 1.0
+            "alternative": 2.2,
+            "dream pop": 1.0,
+            "folk": 1.0
           },
           "genre_sources": {
             "lastfm": [
               "dream pop",
               "folk",
+              "alternative"
+            ],
+            "apple_music": [
               "alternative"
             ]
           },
@@ -413,13 +501,22 @@
               "indie folk",
               "overrated",
               "jangle pop",
-              "indie",
-              "chamber pop",
-              "folk pop"
+              "singer-songwriter",
+              "shoegaze",
+              "indie pop"
+            ],
+            "apple_music": [
+              "Alternative",
+              "Music",
+              "另类音乐",
+              "音乐",
+              "Alternativa",
+              "Música"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "mirrorball"
+            "lastfm": "mirrorball",
+            "apple_music": "mirrorball"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:mirrorball",
@@ -461,14 +558,13 @@
           ],
           "release_date": "2020-07-24T00:00:00Z",
           "genres": [
-            "folk",
-            "indie pop",
-            "pop"
+            "alternative"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "folk": 3.0,
-            "indie pop": 2.0,
+            "alternative": 1.2,
+            "folk": 1.0,
+            "indie pop": 1.0,
             "pop": 1.0
           },
           "genre_sources": {
@@ -476,24 +572,36 @@
               "folk",
               "indie pop",
               "pop"
+            ],
+            "apple_music": [
+              "alternative"
             ]
           },
           "genre_raw_sources": {
             "lastfm": [
               "folk",
               "indie pop",
-              "pop",
               "chamber pop",
+              "pop",
               "indie folk",
               "heartstopper",
               "indie",
               "singer-songwriter",
-              "dream pop",
-              "alternative"
+              "alternative",
+              "dream pop"
+            ],
+            "apple_music": [
+              "Alternative",
+              "Music",
+              "另类音乐",
+              "音乐",
+              "Alternativa",
+              "Música"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "seven"
+            "lastfm": "seven",
+            "apple_music": "seven"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:seven",
@@ -536,14 +644,56 @@
           ],
           "release_date": "2020-07-24T00:00:00Z",
           "genres": [
-            "folk"
+            "alternative"
           ],
-          "genre_status": "manual",
+          "genre_status": "auto",
           "genre_scores": {
-            "folk": 999.0
+            "alternative": 1.2,
+            "dream pop": 1.0,
+            "folk": 1.0,
+            "folk pop": 1.0
           },
-          "genre_sources": {},
-          "genre_raw_sources": {},
+          "genre_sources": {
+            "lastfm": [
+              "dream pop",
+              "folk",
+              "folk pop"
+            ],
+            "apple_music": [
+              "alternative"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "dream pop",
+              "folk",
+              "folk pop",
+              "indie pop",
+              "guitar pop",
+              "indie",
+              "indie folk",
+              "chamber pop",
+              "singer-songwriter",
+              "pop"
+            ],
+            "apple_music": [
+              "Alternative",
+              "Music",
+              "Alternativa",
+              "Música",
+              "Musik",
+              "Alternativo",
+              "另类音乐",
+              "音乐",
+              "另類音樂",
+              "音樂",
+              "Musica",
+              "얼터너티브",
+              "음악",
+              "Muziek",
+              "Alternativt"
+            ]
+          },
           "genre_errors": {},
           "genre_canonical_key": "family:august",
           "filter_tags": [
@@ -559,7 +709,11 @@
           "release_edition": "standard",
           "tags": [],
           "tsm_song_id": "cr3c",
-          "tsm_album_id": "g0f"
+          "tsm_album_id": "g0f",
+          "genre_query_titles": {
+            "lastfm": "august",
+            "apple_music": "august"
+          }
         },
         {
           "title": "this is me trying",
@@ -585,14 +739,13 @@
           ],
           "release_date": "2020-07-24T00:00:00Z",
           "genres": [
-            "dream pop",
-            "folk",
-            "pop"
+            "alternative"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "dream pop": 3.0,
-            "folk": 2.0,
+            "alternative": 1.2,
+            "dream pop": 1.0,
+            "folk": 1.0,
             "pop": 1.0
           },
           "genre_sources": {
@@ -600,6 +753,9 @@
               "dream pop",
               "folk",
               "pop"
+            ],
+            "apple_music": [
+              "alternative"
             ]
           },
           "genre_raw_sources": {
@@ -608,16 +764,25 @@
               "folk",
               "chamber pop",
               "pop",
+              "orchestral pop",
               "indie folk",
               "overrated",
-              "orchestral pop",
               "oto",
-              "indie",
+              "baroque pop",
               "alternative"
+            ],
+            "apple_music": [
+              "Alternative",
+              "Music",
+              "另类音乐",
+              "音乐",
+              "Alternativa",
+              "Música"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "this is me trying"
+            "lastfm": "this is me trying",
+            "apple_music": "this is me trying"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:this_is_me_trying",
@@ -659,39 +824,49 @@
           ],
           "release_date": "2020-07-24T00:00:00Z",
           "genres": [
-            "indie folk",
-            "folk",
-            "pop"
+            "alternative"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "indie folk": 3.0,
-            "folk": 2.0,
-            "pop": 1.0
+            "alternative": 1.2,
+            "folk": 1.0,
+            "indie folk": 1.0,
+            "indie pop": 1.0
           },
           "genre_sources": {
             "lastfm": [
-              "indie folk",
               "folk",
-              "pop"
+              "indie folk",
+              "indie pop"
+            ],
+            "apple_music": [
+              "alternative"
             ]
           },
           "genre_raw_sources": {
             "lastfm": [
-              "indie folk",
               "folk",
-              "pop",
+              "indie folk",
               "indie",
-              "singer-songwriter",
+              "pop",
               "folk pop",
+              "singer-songwriter",
               "female vocalists",
               "overrated",
-              "contemporary folk",
-              "alternative"
+              "julia mofada",
+              "old-fashioned"
+            ],
+            "apple_music": [
+              "Alternative",
+              "Musique",
+              "Music",
+              "另类音乐",
+              "音乐"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "illicit affairs"
+            "lastfm": "illicit affairs",
+            "apple_music": "illicit affairs"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:illicit_affairs",
@@ -734,14 +909,13 @@
           ],
           "release_date": "2020-07-24T00:00:00Z",
           "genres": [
-            "folk",
-            "indie pop",
-            "pop"
+            "alternative"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "folk": 3.0,
-            "indie pop": 2.0,
+            "alternative": 1.2,
+            "folk": 1.0,
+            "indie pop": 1.0,
             "pop": 1.0
           },
           "genre_sources": {
@@ -749,24 +923,36 @@
               "folk",
               "indie pop",
               "pop"
+            ],
+            "apple_music": [
+              "alternative"
             ]
           },
           "genre_raw_sources": {
             "lastfm": [
               "folk",
               "Nashville",
-              "indie",
               "Love",
-              "pop",
-              "singer-songwriter",
+              "indie",
               "chamber pop",
-              "indie folk",
+              "singer-songwriter",
+              "pop",
               "folk pop",
+              "indie folk",
               "overrated"
+            ],
+            "apple_music": [
+              "Alternative",
+              "Music",
+              "另类音乐",
+              "音乐",
+              "Alternativa",
+              "Música"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "invisible string"
+            "lastfm": "invisible string",
+            "apple_music": "invisible string"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:invisible_string",
@@ -808,39 +994,46 @@
           ],
           "release_date": "2020-07-24T00:00:00Z",
           "genres": [
-            "folk",
-            "indie pop",
-            "indie folk"
+            "alternative"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "folk": 3.0,
-            "indie pop": 2.0,
-            "indie folk": 1.0
+            "alternative": 1.2,
+            "folk": 1.0,
+            "indie pop": 1.0,
+            "singer-songwriter": 1.0
           },
           "genre_sources": {
             "lastfm": [
               "folk",
               "indie pop",
-              "indie folk"
+              "singer-songwriter"
+            ],
+            "apple_music": [
+              "alternative"
             ]
           },
           "genre_raw_sources": {
             "lastfm": [
               "folk",
               "indie",
-              "indie folk",
               "singer-songwriter",
-              "pop",
-              "indie pop",
+              "indie folk",
               "alternative",
+              "indie pop",
+              "pop",
+              "julia mofada",
               "folk pop",
-              "indietronica",
-              "female vocalist"
+              "indietronica"
+            ],
+            "apple_music": [
+              "Alternative",
+              "Music"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "mad woman"
+            "lastfm": "mad woman",
+            "apple_music": "mad woman"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:mad_woman",
@@ -882,21 +1075,23 @@
           ],
           "release_date": "2020-07-24T00:00:00Z",
           "genres": [
-            "pop",
-            "folk",
-            "indie pop"
+            "alternative"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "pop": 3.0,
-            "folk": 2.0,
-            "indie pop": 1.0
+            "alternative": 1.2,
+            "folk": 1.0,
+            "indie pop": 1.0,
+            "pop": 1.0
           },
           "genre_sources": {
             "lastfm": [
               "pop",
               "folk",
               "indie pop"
+            ],
+            "apple_music": [
+              "alternative"
             ]
           },
           "genre_raw_sources": {
@@ -905,16 +1100,21 @@
               "ambient",
               "folk",
               "indie",
-              "pop",
               "Soundtrack Of My Life",
               "indie pop",
-              "singer-songwriter",
+              "pop",
               "americana",
+              "singer-songwriter",
               "alternative"
+            ],
+            "apple_music": [
+              "Alternative",
+              "Music"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "epiphany"
+            "lastfm": "epiphany",
+            "apple_music": "epiphany"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:epiphany",
@@ -957,14 +1157,13 @@
           ],
           "release_date": "2020-07-24T00:00:00Z",
           "genres": [
-            "folk",
-            "country",
-            "folk pop"
+            "alternative"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "folk": 3.0,
-            "country": 2.0,
+            "alternative": 1.2,
+            "country": 1.0,
+            "folk": 1.0,
             "folk pop": 1.0
           },
           "genre_sources": {
@@ -972,24 +1171,38 @@
               "folk",
               "country",
               "folk pop"
+            ],
+            "apple_music": [
+              "alternative"
             ]
           },
           "genre_raw_sources": {
             "lastfm": [
               "folk",
               "country",
-              "folk rock",
               "folk pop",
-              "2020",
-              "singer-songwriter",
+              "folk rock",
               "americana",
-              "2020s",
+              "singer-songwriter",
+              "2020",
               "guitar pop",
-              "pop"
+              "2020s",
+              "indie folk"
+            ],
+            "apple_music": [
+              "Alternativa",
+              "Música",
+              "Alternative",
+              "Music",
+              "另类音乐",
+              "音乐",
+              "另類音樂",
+              "音樂"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "betty"
+            "lastfm": "betty",
+            "apple_music": "betty"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:betty",
@@ -1032,39 +1245,46 @@
           ],
           "release_date": "2020-07-24T00:00:00Z",
           "genres": [
-            "folk",
-            "pop",
-            "indie pop"
+            "alternative"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "folk": 3.0,
-            "pop": 2.0,
-            "indie pop": 1.0
+            "alternative": 1.2,
+            "folk": 1.0,
+            "indie pop": 1.0,
+            "pop": 1.0
           },
           "genre_sources": {
             "lastfm": [
               "folk",
-              "pop",
-              "indie pop"
+              "indie pop",
+              "pop"
+            ],
+            "apple_music": [
+              "alternative"
             ]
           },
           "genre_raw_sources": {
             "lastfm": [
-              "folk",
               "Lo-Fi",
-              "pop",
+              "folk",
               "indie",
-              "rnb",
+              "pop",
+              "julia mofada",
               "indie pop",
+              "rnb",
               "ambient",
-              "indie folk",
               "indie-pop",
               "chill out"
+            ],
+            "apple_music": [
+              "Alternative",
+              "Music"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "peace"
+            "lastfm": "peace",
+            "apple_music": "peace"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:peace",
@@ -1107,14 +1327,13 @@
           ],
           "release_date": "2020-07-24T00:00:00Z",
           "genres": [
-            "indie pop",
-            "folk",
-            "pop"
+            "alternative"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "indie pop": 3.0,
-            "folk": 2.0,
+            "alternative": 1.2,
+            "folk": 1.0,
+            "indie pop": 1.0,
             "pop": 1.0
           },
           "genre_sources": {
@@ -1122,24 +1341,32 @@
               "indie pop",
               "folk",
               "pop"
+            ],
+            "apple_music": [
+              "alternative"
             ]
           },
           "genre_raw_sources": {
             "lastfm": [
               "indie pop",
               "folk",
-              "pop",
               "indie",
+              "pop",
               "IndieFolk",
               "alternative",
               "Ballad",
+              "indie-pop",
               "indietronica",
-              "indie folk",
-              "poetry"
+              "indie folk"
+            ],
+            "apple_music": [
+              "Alternative",
+              "Music"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "hoax"
+            "lastfm": "hoax",
+            "apple_music": "hoax"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:hoax",
@@ -1196,8 +1423,8 @@
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "folk": 3.0,
-            "indie pop": 2.0,
+            "folk": 1.0,
+            "indie pop": 1.0,
             "pop": 1.0
           },
           "genre_sources": {
@@ -1205,7 +1432,8 @@
               "folk",
               "indie pop",
               "pop"
-            ]
+            ],
+            "apple_music": []
           },
           "genre_raw_sources": {
             "lastfm": [
@@ -1213,13 +1441,14 @@
               "indie",
               "orchestral",
               "baroque pop",
-              "indie folk",
               "poetry",
+              "indie folk",
               "female vocalist",
               "folklore",
               "contemporary folk",
               "heaven"
-            ]
+            ],
+            "apple_music": []
           },
           "genre_query_titles": {
             "lastfm": "the lakes - bonus track"
@@ -1271,39 +1500,51 @@
           ],
           "release_date": "2020-11-25T00:00:00Z",
           "genres": [
-            "folk",
-            "indie pop",
-            "pop"
+            "alternative"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "folk": 3.0,
-            "indie pop": 2.0,
+            "alternative": 1.2,
+            "folk": 1.0,
+            "indie pop": 1.0,
             "pop": 1.0
           },
           "genre_sources": {
             "lastfm": [
-              "folk",
               "indie pop",
+              "folk",
               "pop"
+            ],
+            "apple_music": [
+              "alternative"
             ]
           },
           "genre_raw_sources": {
             "lastfm": [
-              "folk",
               "indie pop",
-              "pop",
+              "folk",
               "sad",
+              "pop",
               "chamber pop",
               "gospel",
               "Ballad",
               "arena-goth",
-              "indie",
-              "alternative"
+              "alternative",
+              "indie"
+            ],
+            "apple_music": [
+              "Alternative",
+              "Music",
+              "Alternativa",
+              "Música",
+              "Alternativo",
+              "另类音乐",
+              "音乐"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "my tears ricochet"
+            "lastfm": "my tears ricochet",
+            "apple_music": "my tears ricochet"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:my_tears_ricochet",
@@ -1346,20 +1587,21 @@
           ],
           "release_date": "2020-11-25T00:00:00Z",
           "genres": [
-            "dream pop",
-            "folk",
             "alternative"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "dream pop": 3.0,
-            "folk": 2.0,
-            "alternative": 1.0
+            "alternative": 2.2,
+            "dream pop": 1.0,
+            "folk": 1.0
           },
           "genre_sources": {
             "lastfm": [
               "dream pop",
               "folk",
+              "alternative"
+            ],
+            "apple_music": [
               "alternative"
             ]
           },
@@ -1372,13 +1614,22 @@
               "indie folk",
               "overrated",
               "jangle pop",
-              "indie",
-              "chamber pop",
-              "folk pop"
+              "singer-songwriter",
+              "shoegaze",
+              "indie pop"
+            ],
+            "apple_music": [
+              "Alternative",
+              "Music",
+              "另类音乐",
+              "音乐",
+              "Alternativa",
+              "Música"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "mirrorball"
+            "lastfm": "mirrorball",
+            "apple_music": "mirrorball"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:mirrorball",
@@ -1421,14 +1672,13 @@
           ],
           "release_date": "2020-11-25T00:00:00Z",
           "genres": [
-            "folk",
-            "indie pop",
-            "pop"
+            "alternative"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "folk": 3.0,
-            "indie pop": 2.0,
+            "alternative": 1.2,
+            "folk": 1.0,
+            "indie pop": 1.0,
             "pop": 1.0
           },
           "genre_sources": {
@@ -1436,24 +1686,36 @@
               "folk",
               "indie pop",
               "pop"
+            ],
+            "apple_music": [
+              "alternative"
             ]
           },
           "genre_raw_sources": {
             "lastfm": [
               "folk",
               "indie pop",
-              "pop",
               "chamber pop",
+              "pop",
               "indie folk",
               "heartstopper",
               "indie",
               "singer-songwriter",
-              "dream pop",
-              "alternative"
+              "alternative",
+              "dream pop"
+            ],
+            "apple_music": [
+              "Alternative",
+              "Music",
+              "另类音乐",
+              "音乐",
+              "Alternativa",
+              "Música"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "seven"
+            "lastfm": "seven",
+            "apple_music": "seven"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:seven",
@@ -1496,14 +1758,56 @@
           ],
           "release_date": "2020-11-25T00:00:00Z",
           "genres": [
-            "folk"
+            "alternative"
           ],
-          "genre_status": "manual",
+          "genre_status": "auto",
           "genre_scores": {
-            "folk": 999.0
+            "alternative": 1.2,
+            "dream pop": 1.0,
+            "folk": 1.0,
+            "folk pop": 1.0
           },
-          "genre_sources": {},
-          "genre_raw_sources": {},
+          "genre_sources": {
+            "lastfm": [
+              "dream pop",
+              "folk",
+              "folk pop"
+            ],
+            "apple_music": [
+              "alternative"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "dream pop",
+              "folk",
+              "folk pop",
+              "indie pop",
+              "guitar pop",
+              "indie",
+              "indie folk",
+              "chamber pop",
+              "singer-songwriter",
+              "pop"
+            ],
+            "apple_music": [
+              "Alternative",
+              "Music",
+              "Alternativa",
+              "Música",
+              "Musik",
+              "Alternativo",
+              "另类音乐",
+              "音乐",
+              "另類音樂",
+              "音樂",
+              "Musica",
+              "얼터너티브",
+              "음악",
+              "Muziek",
+              "Alternativt"
+            ]
+          },
           "genre_errors": {},
           "genre_canonical_key": "family:august",
           "filter_tags": [
@@ -1520,7 +1824,11 @@
           "release_edition": "the long pond studio sessions",
           "tags": [],
           "tsm_song_id": "cr3c",
-          "tsm_album_id": "g0f"
+          "tsm_album_id": "g0f",
+          "genre_query_titles": {
+            "lastfm": "august",
+            "apple_music": "august"
+          }
         },
         {
           "title": "this is me trying - the long pond studio sessions",
@@ -1545,14 +1853,13 @@
           ],
           "release_date": "2020-11-25T00:00:00Z",
           "genres": [
-            "dream pop",
-            "folk",
-            "pop"
+            "alternative"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "dream pop": 3.0,
-            "folk": 2.0,
+            "alternative": 1.2,
+            "dream pop": 1.0,
+            "folk": 1.0,
             "pop": 1.0
           },
           "genre_sources": {
@@ -1560,6 +1867,9 @@
               "dream pop",
               "folk",
               "pop"
+            ],
+            "apple_music": [
+              "alternative"
             ]
           },
           "genre_raw_sources": {
@@ -1568,16 +1878,25 @@
               "folk",
               "chamber pop",
               "pop",
+              "orchestral pop",
               "indie folk",
               "overrated",
-              "orchestral pop",
               "oto",
-              "indie",
+              "baroque pop",
               "alternative"
+            ],
+            "apple_music": [
+              "Alternative",
+              "Music",
+              "另类音乐",
+              "音乐",
+              "Alternativa",
+              "Música"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "this is me trying"
+            "lastfm": "this is me trying",
+            "apple_music": "this is me trying"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:this_is_me_trying",
@@ -1620,39 +1939,49 @@
           ],
           "release_date": "2020-11-25T00:00:00Z",
           "genres": [
-            "indie folk",
-            "folk",
-            "pop"
+            "alternative"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "indie folk": 3.0,
-            "folk": 2.0,
-            "pop": 1.0
+            "alternative": 1.2,
+            "folk": 1.0,
+            "indie folk": 1.0,
+            "indie pop": 1.0
           },
           "genre_sources": {
             "lastfm": [
-              "indie folk",
               "folk",
-              "pop"
+              "indie folk",
+              "indie pop"
+            ],
+            "apple_music": [
+              "alternative"
             ]
           },
           "genre_raw_sources": {
             "lastfm": [
-              "indie folk",
               "folk",
-              "pop",
+              "indie folk",
               "indie",
-              "singer-songwriter",
+              "pop",
               "folk pop",
+              "singer-songwriter",
               "female vocalists",
               "overrated",
-              "contemporary folk",
-              "alternative"
+              "julia mofada",
+              "old-fashioned"
+            ],
+            "apple_music": [
+              "Alternative",
+              "Musique",
+              "Music",
+              "另类音乐",
+              "音乐"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "illicit affairs"
+            "lastfm": "illicit affairs",
+            "apple_music": "illicit affairs"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:illicit_affairs",
@@ -1695,14 +2024,13 @@
           ],
           "release_date": "2020-11-25T00:00:00Z",
           "genres": [
-            "folk",
-            "indie pop",
-            "pop"
+            "alternative"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "folk": 3.0,
-            "indie pop": 2.0,
+            "alternative": 1.2,
+            "folk": 1.0,
+            "indie pop": 1.0,
             "pop": 1.0
           },
           "genre_sources": {
@@ -1710,24 +2038,36 @@
               "folk",
               "indie pop",
               "pop"
+            ],
+            "apple_music": [
+              "alternative"
             ]
           },
           "genre_raw_sources": {
             "lastfm": [
               "folk",
               "Nashville",
-              "indie",
               "Love",
-              "pop",
-              "singer-songwriter",
+              "indie",
               "chamber pop",
-              "indie folk",
+              "singer-songwriter",
+              "pop",
               "folk pop",
+              "indie folk",
               "overrated"
+            ],
+            "apple_music": [
+              "Alternative",
+              "Music",
+              "另类音乐",
+              "音乐",
+              "Alternativa",
+              "Música"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "invisible string"
+            "lastfm": "invisible string",
+            "apple_music": "invisible string"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:invisible_string",
@@ -1770,39 +2110,46 @@
           ],
           "release_date": "2020-11-25T00:00:00Z",
           "genres": [
-            "folk",
-            "indie pop",
-            "indie folk"
+            "alternative"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "folk": 3.0,
-            "indie pop": 2.0,
-            "indie folk": 1.0
+            "alternative": 1.2,
+            "folk": 1.0,
+            "indie pop": 1.0,
+            "singer-songwriter": 1.0
           },
           "genre_sources": {
             "lastfm": [
               "folk",
               "indie pop",
-              "indie folk"
+              "singer-songwriter"
+            ],
+            "apple_music": [
+              "alternative"
             ]
           },
           "genre_raw_sources": {
             "lastfm": [
               "folk",
               "indie",
-              "indie folk",
               "singer-songwriter",
-              "pop",
-              "indie pop",
+              "indie folk",
               "alternative",
+              "indie pop",
+              "pop",
+              "julia mofada",
               "folk pop",
-              "indietronica",
-              "female vocalist"
+              "indietronica"
+            ],
+            "apple_music": [
+              "Alternative",
+              "Music"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "mad woman"
+            "lastfm": "mad woman",
+            "apple_music": "mad woman"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:mad_woman",
@@ -1845,21 +2192,23 @@
           ],
           "release_date": "2020-11-25T00:00:00Z",
           "genres": [
-            "pop",
-            "folk",
-            "indie pop"
+            "alternative"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "pop": 3.0,
-            "folk": 2.0,
-            "indie pop": 1.0
+            "alternative": 1.2,
+            "folk": 1.0,
+            "indie pop": 1.0,
+            "pop": 1.0
           },
           "genre_sources": {
             "lastfm": [
               "pop",
               "folk",
               "indie pop"
+            ],
+            "apple_music": [
+              "alternative"
             ]
           },
           "genre_raw_sources": {
@@ -1868,16 +2217,21 @@
               "ambient",
               "folk",
               "indie",
-              "pop",
               "Soundtrack Of My Life",
               "indie pop",
-              "singer-songwriter",
+              "pop",
               "americana",
+              "singer-songwriter",
               "alternative"
+            ],
+            "apple_music": [
+              "Alternative",
+              "Music"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "epiphany"
+            "lastfm": "epiphany",
+            "apple_music": "epiphany"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:epiphany",
@@ -1920,14 +2274,13 @@
           ],
           "release_date": "2020-11-25T00:00:00Z",
           "genres": [
-            "folk",
-            "country",
-            "folk pop"
+            "alternative"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "folk": 3.0,
-            "country": 2.0,
+            "alternative": 1.2,
+            "country": 1.0,
+            "folk": 1.0,
             "folk pop": 1.0
           },
           "genre_sources": {
@@ -1935,24 +2288,38 @@
               "folk",
               "country",
               "folk pop"
+            ],
+            "apple_music": [
+              "alternative"
             ]
           },
           "genre_raw_sources": {
             "lastfm": [
               "folk",
               "country",
-              "folk rock",
               "folk pop",
-              "2020",
-              "singer-songwriter",
+              "folk rock",
               "americana",
-              "2020s",
+              "singer-songwriter",
+              "2020",
               "guitar pop",
-              "pop"
+              "2020s",
+              "indie folk"
+            ],
+            "apple_music": [
+              "Alternativa",
+              "Música",
+              "Alternative",
+              "Music",
+              "另类音乐",
+              "音乐",
+              "另類音樂",
+              "音樂"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "betty"
+            "lastfm": "betty",
+            "apple_music": "betty"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:betty",
@@ -1995,39 +2362,46 @@
           ],
           "release_date": "2020-11-25T00:00:00Z",
           "genres": [
-            "folk",
-            "pop",
-            "indie pop"
+            "alternative"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "folk": 3.0,
-            "pop": 2.0,
-            "indie pop": 1.0
+            "alternative": 1.2,
+            "folk": 1.0,
+            "indie pop": 1.0,
+            "pop": 1.0
           },
           "genre_sources": {
             "lastfm": [
               "folk",
-              "pop",
-              "indie pop"
+              "indie pop",
+              "pop"
+            ],
+            "apple_music": [
+              "alternative"
             ]
           },
           "genre_raw_sources": {
             "lastfm": [
-              "folk",
               "Lo-Fi",
-              "pop",
+              "folk",
               "indie",
-              "rnb",
+              "pop",
+              "julia mofada",
               "indie pop",
+              "rnb",
               "ambient",
-              "indie folk",
               "indie-pop",
               "chill out"
+            ],
+            "apple_music": [
+              "Alternative",
+              "Music"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "peace"
+            "lastfm": "peace",
+            "apple_music": "peace"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:peace",
@@ -2070,14 +2444,13 @@
           ],
           "release_date": "2020-11-25T00:00:00Z",
           "genres": [
-            "indie pop",
-            "folk",
-            "pop"
+            "alternative"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "indie pop": 3.0,
-            "folk": 2.0,
+            "alternative": 1.2,
+            "folk": 1.0,
+            "indie pop": 1.0,
             "pop": 1.0
           },
           "genre_sources": {
@@ -2085,24 +2458,32 @@
               "indie pop",
               "folk",
               "pop"
+            ],
+            "apple_music": [
+              "alternative"
             ]
           },
           "genre_raw_sources": {
             "lastfm": [
               "indie pop",
               "folk",
-              "pop",
               "indie",
+              "pop",
               "IndieFolk",
               "alternative",
               "Ballad",
+              "indie-pop",
               "indietronica",
-              "indie folk",
-              "poetry"
+              "indie folk"
+            ],
+            "apple_music": [
+              "Alternative",
+              "Music"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "hoax"
+            "lastfm": "hoax",
+            "apple_music": "hoax"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:hoax",
@@ -2148,10 +2529,12 @@
           "genre_status": "missing",
           "genre_scores": {},
           "genre_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": []
           },
           "genre_raw_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": []
           },
           "genre_query_titles": {},
           "genre_errors": {},
@@ -2205,10 +2588,12 @@
           "genre_status": "missing",
           "genre_scores": {},
           "genre_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": []
           },
           "genre_raw_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": []
           },
           "genre_query_titles": {},
           "genre_errors": {},
@@ -2255,10 +2640,12 @@
           "genre_status": "missing",
           "genre_scores": {},
           "genre_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": []
           },
           "genre_raw_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": []
           },
           "genre_query_titles": {},
           "genre_errors": {},
@@ -2309,10 +2696,12 @@
           "genre_status": "missing",
           "genre_scores": {},
           "genre_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": []
           },
           "genre_raw_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": []
           },
           "genre_query_titles": {},
           "genre_errors": {},
@@ -2366,39 +2755,53 @@
           ],
           "release_date": "2020-11-25T00:00:00Z",
           "genres": [
-            "folk",
-            "soft rock",
-            "pop"
+            "alternative"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "folk": 3.0,
-            "soft rock": 2.0,
-            "pop": 1.0
+            "alternative": 1.2,
+            "folk": 1.0,
+            "indie pop": 1.0,
+            "soft rock": 1.0
           },
           "genre_sources": {
             "lastfm": [
               "folk",
               "soft rock",
-              "pop"
+              "indie pop"
+            ],
+            "apple_music": [
+              "alternative"
             ]
           },
           "genre_raw_sources": {
             "lastfm": [
               "folk",
               "soft rock",
-              "pop",
               "indie pop",
+              "pop",
               "chamber pop",
               "singer-songwriter",
               "indie",
               "folk pop",
               "indie folk",
               "overrated"
+            ],
+            "apple_music": [
+              "Alternative",
+              "Music",
+              "Alternativa",
+              "Música",
+              "Alternativo",
+              "另类音乐",
+              "音乐",
+              "另類音樂",
+              "音樂"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "the 1"
+            "lastfm": "the 1",
+            "apple_music": "the 1"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:the_1",
@@ -2443,22 +2846,60 @@
           ],
           "release_date": "2020-11-25T00:00:00Z",
           "genres": [
-            "folk pop",
-            "folk",
-            "pop"
+            "alternative"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "folk pop": 3.0,
-            "folk": 2.0,
+            "alternative": 1.2,
+            "folk": 1.0,
+            "folk pop": 1.0,
             "pop": 1.0
           },
-          "genre_sources": {},
-          "genre_raw_sources": {},
+          "genre_sources": {
+            "lastfm": [
+              "folk pop",
+              "folk",
+              "pop"
+            ],
+            "apple_music": [
+              "alternative"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "folk pop",
+              "folk",
+              "chamber pop",
+              "singer-songwriter",
+              "indie",
+              "pop",
+              "soft rock",
+              "alternative",
+              "indie rock",
+              "indie folk"
+            ],
+            "apple_music": [
+              "Alternative",
+              "Music",
+              "Alternativa",
+              "Música",
+              "Musik",
+              "Alternativo",
+              "另类音乐",
+              "音乐",
+              "Musique",
+              "另類音樂",
+              "音樂",
+              "Musica",
+              "Muziek",
+              "Alternativt"
+            ]
+          },
           "genre_errors": {},
           "genre_canonical_key": "family:cardigan",
           "genre_query_titles": {
-            "lastfm": "cardigan"
+            "lastfm": "cardigan",
+            "apple_music": "cardigan"
           },
           "filter_tags": [
             "solo",
@@ -2501,20 +2942,21 @@
           ],
           "release_date": "2020-11-25T00:00:00Z",
           "genres": [
-            "indie pop",
-            "pop",
             "alternative"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "indie pop": 3.0,
-            "pop": 2.0,
-            "alternative": 1.0
+            "alternative": 2.2,
+            "indie pop": 1.0,
+            "pop": 1.0
           },
           "genre_sources": {
             "lastfm": [
               "indie pop",
               "pop",
+              "alternative"
+            ],
+            "apple_music": [
               "alternative"
             ]
           },
@@ -2524,16 +2966,23 @@
               "pop",
               "alternative",
               "folk",
+              "folk pop",
               "singer-songwriter",
               "indie",
-              "folk pop",
+              "female vocalist",
               "chamber pop",
-              "overrated",
-              "female vocalist"
+              "overrated"
+            ],
+            "apple_music": [
+              "Alternative",
+              "Music",
+              "另类音乐",
+              "音乐"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "the last great american dynasty"
+            "lastfm": "the last great american dynasty",
+            "apple_music": "the last great american dynasty"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:the_last_great_american_dynasty",
@@ -2581,10 +3030,12 @@
           "genre_status": "missing",
           "genre_scores": {},
           "genre_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": []
           },
           "genre_raw_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": []
           },
           "genre_query_titles": {},
           "genre_errors": {},
@@ -2636,14 +3087,13 @@
           ],
           "release_date": "2020-09-18T00:00:00Z",
           "genres": [
-            "folk",
-            "country",
-            "folk pop"
+            "alternative"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "folk": 3.0,
-            "country": 2.0,
+            "alternative": 1.2,
+            "country": 1.0,
+            "folk": 1.0,
             "folk pop": 1.0
           },
           "genre_sources": {
@@ -2651,24 +3101,38 @@
               "folk",
               "country",
               "folk pop"
+            ],
+            "apple_music": [
+              "alternative"
             ]
           },
           "genre_raw_sources": {
             "lastfm": [
               "folk",
               "country",
-              "folk rock",
               "folk pop",
-              "2020",
-              "singer-songwriter",
+              "folk rock",
               "americana",
-              "2020s",
+              "singer-songwriter",
+              "2020",
               "guitar pop",
-              "pop"
+              "2020s",
+              "indie folk"
+            ],
+            "apple_music": [
+              "Alternativa",
+              "Música",
+              "Alternative",
+              "Music",
+              "另类音乐",
+              "音乐",
+              "另類音樂",
+              "音樂"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "betty"
+            "lastfm": "betty",
+            "apple_music": "betty"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:betty",
@@ -2712,22 +3176,60 @@
           "historical_track_ids": [],
           "release_date": "2020-07-30T00:00:00Z",
           "genres": [
-            "folk pop",
-            "folk",
-            "pop"
+            "alternative"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "folk pop": 3.0,
-            "folk": 2.0,
+            "alternative": 1.2,
+            "folk": 1.0,
+            "folk pop": 1.0,
             "pop": 1.0
           },
-          "genre_sources": {},
-          "genre_raw_sources": {},
+          "genre_sources": {
+            "lastfm": [
+              "folk pop",
+              "folk",
+              "pop"
+            ],
+            "apple_music": [
+              "alternative"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "folk pop",
+              "folk",
+              "chamber pop",
+              "singer-songwriter",
+              "indie",
+              "pop",
+              "soft rock",
+              "alternative",
+              "indie rock",
+              "indie folk"
+            ],
+            "apple_music": [
+              "Alternative",
+              "Music",
+              "Alternativa",
+              "Música",
+              "Musik",
+              "Alternativo",
+              "另类音乐",
+              "音乐",
+              "Musique",
+              "另類音樂",
+              "音樂",
+              "Musica",
+              "Muziek",
+              "Alternativt"
+            ]
+          },
           "genre_errors": {},
           "genre_canonical_key": "family:cardigan",
           "genre_query_titles": {
-            "lastfm": "cardigan"
+            "lastfm": "cardigan",
+            "apple_music": "cardigan"
           },
           "filter_tags": [
             "solo",

@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 import os
 import re
 import subprocess
@@ -36,6 +37,9 @@ PRIMARY_ALBUM_UPDATE_TARGETS = (
     "The Life of a Showgirl",
     "THE TORTURED POETS DEPARTMENT",
 )
+# The lowest-scoring albums (excluding the guaranteed top 2 / forced primary
+# targets) skip their card entirely for the day (decision 2026-09-04).
+BOTTOM_ALBUMS_SKIPPED = 2
 FINALIZE_POST_RETRY_ATTEMPTS = max(1, int(os.getenv("FINALIZE_POST_RETRY_ATTEMPTS", "3")))
 FINALIZE_POST_RETRY_SLEEP_SECONDS = max(0, int(os.getenv("FINALIZE_POST_RETRY_SLEEP_SECONDS", "60")))
 
@@ -1041,8 +1045,25 @@ def _album_post_queue(ctx: FinalizeContext, stats_date: str) -> list[str]:
     with ``score_album_update``, post the two best, then Showgirl / TTPD if they
     are not already in that top 2, then the rest strictly by score. No targeted
     gain/gainer/majority scans anymore — the score already carries the
-    biggest-day / best-ever / majority-positive bonuses."""
-    ranked = _rank_albums_for_posting(_all_album_names(ctx), stats_date)
+    biggest-day / best-ever / majority-positive bonuses.
+
+    Decision 2026-09-04: the `BOTTOM_ALBUMS_SKIPPED` lowest-scoring albums in
+    that "rest by score" tail don't get a card at all that day — the two
+    guaranteed top scorers and the forced primary targets (Showgirl/TTPD) are
+    never at risk of being dropped, only the genuine bottom of the ranking."""
+    albums = _all_album_names(ctx)
+    blocked: list[str] = []
+    postable: list[str] = []
+    for album in albums:
+        block_reason = generate_album_update_image.holiday_collection_post_block_reason(album, stats_date)
+        if block_reason:
+            blocked.append(album)
+        else:
+            postable.append(album)
+    if blocked:
+        print(f"[all-albums] skipped before ranking (not postable): {', '.join(blocked)}")
+
+    ranked = _rank_albums_for_posting(postable, stats_date)
     if len(ranked) <= 2:
         return ranked
     primary_cf = {name.casefold() for name in PRIMARY_ALBUM_UPDATE_TARGETS}
@@ -1051,9 +1072,17 @@ def _album_post_queue(ctx: FinalizeContext, stats_date: str) -> list[str]:
     forced = [album for album in ranked if album.casefold() in primary_cf and album.casefold() not in done_cf]
     done_cf |= {album.casefold() for album in forced}
     tail = [album for album in ranked if album.casefold() not in done_cf]
+
+    dropped: list[str] = []
+    if len(tail) > BOTTOM_ALBUMS_SKIPPED:
+        dropped = tail[-BOTTOM_ALBUMS_SKIPPED:]
+        tail = tail[: -BOTTOM_ALBUMS_SKIPPED]
+
     queue = top2 + forced + tail
     if forced:
         print(f"[all-albums] forced after top 2: {', '.join(forced)}")
+    if dropped:
+        print(f"[all-albums] skipped (bottom {len(dropped)} by score): {', '.join(dropped)}")
     return queue
 
 
@@ -1123,6 +1152,92 @@ def _post_best_day_since(ctx: FinalizeContext, state: dict[str, float]) -> None:
         should_post=not ctx.no_post_mode,
         state=state,
     )
+
+
+def _post_best_day_since_recap_fallback(ctx: FinalizeContext, state: dict[str, float]) -> None:
+    """Safety net for the best-day-since recap + era recap cards (decision
+    2026-09-04): they normally post as replies in the Top Songs thread
+    (post_streams_twitter.py -> post_best_day_since_twitter.build_recap_thread_posts).
+    ``--limit 0`` skips individual song posts and runs only the (unchanged)
+    era-recap-batch + global-recap code, which checks the same lock files the
+    thread path writes -- so this is a no-op print when the thread already
+    covered it, and a real standalone fallback if that thread post failed.
+    Must run before best-day-since candidate listing so era-recap suppression
+    is correctly in place either way."""
+    if not ctx.summary.get("all_done"):
+        return
+    best_day_script = ctx.script_dir / "tools" / "scripts" / "post_best_day_since_twitter.py"
+    cmd = [sys.executable, str(best_day_script), ctx.summary["stats_date"], "--limit", "0"]
+    if ctx.no_post_mode:
+        cmd.append("--no-post")
+    _run(
+        ctx,
+        cmd,
+        label="best-day-since recap (fallback)",
+        should_post=not ctx.no_post_mode,
+        state=state,
+    )
+
+
+def _best_day_since_candidate_tracks(ctx: FinalizeContext) -> list[str]:
+    """Ask post_best_day_since_twitter.py which individual song track ids the
+    finalize batch would post today (same selection/caps as the old
+    single-call batch), without posting anything. Used to interleave each
+    song 1-for-1 with the album queue instead of posting the whole batch as
+    one alternation turn. Never blocks finalize -- returns [] on any failure."""
+    best_day_script = ctx.script_dir / "tools" / "scripts" / "post_best_day_since_twitter.py"
+    cmd = [sys.executable, str(best_day_script), ctx.summary["stats_date"], "--list-batch-candidates"]
+    if ctx.posted_best_day_since_tracks:
+        cmd.extend(["--exclude-tracks", ",".join(sorted(ctx.posted_best_day_since_tracks))])
+    try:
+        result = subprocess.run(cmd, capture_output=True, text=True, encoding="utf-8", errors="replace", check=False)
+    except Exception as exc:
+        print(f"[best-day-since] Failed to list batch candidates: {exc}")
+        return []
+    for line in reversed(result.stdout.splitlines()):
+        if line.startswith("BATCH_CANDIDATES_JSON:"):
+            try:
+                data = json.loads(line.split(":", 1)[1].strip())
+                return [str(tid) for tid in (data.get("track_ids") or [])]
+            except Exception as exc:
+                print(f"[best-day-since] Failed to parse batch candidates ({exc}): {line}")
+                return []
+    print("[best-day-since] No BATCH_CANDIDATES_JSON line found; skipping individual song posts.")
+    if result.stdout:
+        print(result.stdout[-2000:])
+    if result.stderr:
+        print(result.stderr[-2000:])
+    return []
+
+
+def _post_one_best_day_track(
+    ctx: FinalizeContext,
+    state: dict[str, float],
+    best_day_script: Path,
+    track_id: str,
+) -> None:
+    """Post a single best-day-since song card already selected by
+    _best_day_since_candidate_tracks, so it can take its own turn in the
+    album/other-posts alternation instead of the whole batch posting at once."""
+    if track_id in ctx.posted_best_day_since_tracks:
+        return
+    cmd = [
+        sys.executable,
+        str(best_day_script),
+        ctx.summary["stats_date"],
+        "--post-batch-track",
+        track_id,
+    ]
+    if ctx.no_post_mode:
+        cmd.append("--no-post")
+    _run(
+        ctx,
+        cmd,
+        label=f"best-day-since post ({track_id})",
+        should_post=not ctx.no_post_mode,
+        state=state,
+    )
+    ctx.posted_best_day_since_tracks.add(track_id)
 
 
 def _post_spotlight_gainers(ctx: FinalizeContext, state: dict[str, float]) -> None:
@@ -1399,6 +1514,11 @@ def run_final_update_tasks(ctx: FinalizeContext) -> None:
             _guarded_post_step("top eras post", lambda: _post_albums_daily(ctx, post_state))
 
         _guarded_post_step("top 20 songs post", lambda: _post_streams_image(ctx, post_state))
+        if not ctx.debug_daily_mode and not ctx.local_test_mode:
+            _guarded_post_step(
+                "best-day-since recap (fallback)",
+                lambda: _post_best_day_since_recap_fallback(ctx, post_state),
+            )
 
         album_queue: list[str] = []
         if not ctx.debug_daily_mode and not ctx.local_test_mode:
@@ -1411,7 +1531,18 @@ def run_final_update_tasks(ctx: FinalizeContext) -> None:
         other_steps: list[tuple[str, Callable[[], None]]] = []
         if not ctx.debug_daily_mode and not ctx.local_test_mode:
             other_steps.append(("debut posts", lambda: _post_debut_releases(ctx, post_state)))
-            other_steps.append(("best-day-since posts", lambda: _post_best_day_since(ctx, post_state)))
+            # Each candidate gets its own alternation turn against the album
+            # queue (decision 2026-09-04), instead of the whole best-day-since
+            # batch posting back to back as a single turn.
+            if ctx.summary.get("all_done"):
+                best_day_script = ctx.script_dir / "tools" / "scripts" / "post_best_day_since_twitter.py"
+                for track_id in _best_day_since_candidate_tracks(ctx):
+                    other_steps.append((
+                        f"best-day-since post ({track_id})",
+                        lambda tid=track_id: _post_one_best_day_track(ctx, post_state, best_day_script, tid),
+                    ))
+            else:
+                print("Best-day-since posts skipped: not all tracks are done yet.")
         other_steps.append(("weekend song gainers", lambda: _post_weekend_song_gainers(ctx, post_state)))
         other_steps.append(("song overtakes", lambda: _post_song_overtakes(ctx, post_state)))
         other_steps.append(("stream milestones", lambda: _post_stream_milestones(ctx, post_state)))

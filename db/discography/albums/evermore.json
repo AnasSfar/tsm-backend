@@ -33,14 +33,13 @@
           ],
           "release_date": "2020-12-16T00:00:00Z",
           "genres": [
-            "folk pop",
-            "folk",
-            "singer-songwriter"
+            "alternative"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "folk pop": 3.0,
-            "folk": 2.0,
+            "alternative": 1.2,
+            "folk": 1.0,
+            "folk pop": 1.0,
             "singer-songwriter": 1.0
           },
           "genre_sources": {
@@ -48,6 +47,9 @@
               "folk pop",
               "folk",
               "singer-songwriter"
+            ],
+            "apple_music": [
+              "alternative"
             ]
           },
           "genre_raw_sources": {
@@ -56,16 +58,35 @@
               "chamber folk",
               "singer-songwriter",
               "folk",
-              "indie folk",
-              "pop",
               "overrated",
-              "indie",
+              "pop",
+              "indie folk",
+              "alternative",
               "indie pop",
-              "alternative"
+              "indie"
+            ],
+            "apple_music": [
+              "Alternative",
+              "Music",
+              "オルタナティブ",
+              "ミュージック",
+              "Alternativa",
+              "Música",
+              "Alternativo",
+              "另类音乐",
+              "音乐",
+              "Musik",
+              "另類音樂",
+              "音樂",
+              "얼터너티브",
+              "음악",
+              "Muziek",
+              "Alternativt"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "willow"
+            "lastfm": "willow",
+            "apple_music": "willow"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:willow",
@@ -108,14 +129,13 @@
           ],
           "release_date": "2020-12-10T00:00:00Z",
           "genres": [
-            "folk",
-            "rock",
-            "singer-songwriter"
+            "alternative"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "folk": 3.0,
-            "rock": 2.0,
+            "alternative": 1.2,
+            "folk": 1.0,
+            "rock": 1.0,
             "singer-songwriter": 1.0
           },
           "genre_sources": {
@@ -123,6 +143,9 @@
               "folk",
               "rock",
               "singer-songwriter"
+            ],
+            "apple_music": [
+              "alternative"
             ]
           },
           "genre_raw_sources": {
@@ -132,15 +155,29 @@
               "chamber rock",
               "singer-songwriter",
               "alternative rock",
-              "Lo-Fi",
-              "female vocalists",
-              "indie folk",
+              "indie",
+              "pop",
               "chamber pop",
-              "overrated"
+              "Lo-Fi",
+              "female vocalists"
+            ],
+            "apple_music": [
+              "Alternative",
+              "Music",
+              "オルタナティブ",
+              "ミュージック",
+              "Alternativa",
+              "Música",
+              "Alternativo",
+              "另类音乐",
+              "音乐",
+              "另類音樂",
+              "音樂"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "champagne problems"
+            "lastfm": "champagne problems",
+            "apple_music": "champagne problems"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:champagne_problems",
@@ -183,39 +220,46 @@
           ],
           "release_date": "2020-12-10T00:00:00Z",
           "genres": [
-            "folk",
-            "singer-songwriter",
-            "rock"
+            "alternative"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "folk": 3.0,
-            "singer-songwriter": 2.0,
-            "rock": 1.0
+            "alternative": 1.2,
+            "folk": 1.0,
+            "rock": 1.0,
+            "singer-songwriter": 1.0
           },
           "genre_sources": {
             "lastfm": [
-              "folk",
               "singer-songwriter",
+              "folk",
               "rock"
+            ],
+            "apple_music": [
+              "alternative"
             ]
           },
           "genre_raw_sources": {
             "lastfm": [
-              "folk",
               "singer-songwriter",
+              "folk",
               "chamber rock",
               "pop",
               "chamber pop",
+              "julia mofada",
               "indie pop",
-              "female vocalist",
-              "current",
-              "alt pop",
-              "contemporary folk"
+              "alternative pop",
+              "synthpop",
+              "current"
+            ],
+            "apple_music": [
+              "Alternative",
+              "Music"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "gold rush"
+            "lastfm": "gold rush",
+            "apple_music": "gold rush"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:gold_rush",
@@ -257,16 +301,31 @@
             "7dW84mWkdWE5a6lFWxJCBG"
           ],
           "release_date": "2020-12-10T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
+          "genres": [
+            "alternative"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "alternative": 1.2
+          },
           "genre_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "alternative"
+            ]
           },
           "genre_raw_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "Alternative",
+              "Music",
+              "另类音乐",
+              "音乐"
+            ]
           },
-          "genre_query_titles": {},
+          "genre_query_titles": {
+            "apple_music": "'tis the damn season"
+          },
           "genre_errors": {},
           "genre_canonical_key": "family:tis_the_damn_season",
           "filter_tags": [
@@ -308,21 +367,23 @@
           ],
           "release_date": "2020-12-10T00:00:00Z",
           "genres": [
-            "singer-songwriter",
-            "indie pop",
-            "folk"
+            "alternative"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "singer-songwriter": 3.0,
-            "indie pop": 2.0,
-            "folk": 1.0
+            "alternative": 1.2,
+            "folk": 1.0,
+            "indie pop": 1.0,
+            "singer-songwriter": 1.0
           },
           "genre_sources": {
             "lastfm": [
               "singer-songwriter",
               "indie pop",
               "folk"
+            ],
+            "apple_music": [
+              "alternative"
             ]
           },
           "genre_raw_sources": {
@@ -332,15 +393,24 @@
               "Ballad",
               "folk",
               "pop",
-              "chamber rock",
               "alternative rock",
-              "alt pop",
-              "female vocalist",
-              "singer songwriter"
+              "chamber rock",
+              "julia mofada",
+              "contemporary folk",
+              "sad"
+            ],
+            "apple_music": [
+              "Alternative",
+              "Music",
+              "オルタナティブ",
+              "ミュージック",
+              "另类音乐",
+              "音乐"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "tolerate it"
+            "lastfm": "tolerate it",
+            "apple_music": "tolerate it"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:tolerate_it",
@@ -385,39 +455,48 @@
           ],
           "release_date": "2020-12-10T00:00:00Z",
           "genres": [
-            "country",
-            "pop rock",
-            "americana"
+            "alternative"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "country": 3.0,
-            "pop rock": 2.0,
-            "americana": 1.0
+            "alternative": 1.2,
+            "americana": 1.0,
+            "country": 1.0,
+            "pop rock": 1.0
           },
           "genre_sources": {
             "lastfm": [
               "country",
               "pop rock",
               "americana"
+            ],
+            "apple_music": [
+              "alternative"
             ]
           },
           "genre_raw_sources": {
             "lastfm": [
-              "country rock",
               "country",
+              "country rock",
               "pop rock",
               "americana",
               "country pop",
               "2020s",
               "soft rock",
-              "pop",
               "singer-songwriter",
-              "female vocalist"
+              "female vocalist",
+              "pop"
+            ],
+            "apple_music": [
+              "Alternative",
+              "Music",
+              "オルタナティブ",
+              "ミュージック"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "no body, no crime (feat. HAIM)"
+            "lastfm": "no body, no crime (feat. HAIM)",
+            "apple_music": "no body, no crime (feat. HAIM)"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:no_body_no_crime",
@@ -460,39 +539,46 @@
           ],
           "release_date": "2020-12-10T00:00:00Z",
           "genres": [
-            "folk",
-            "pop",
-            "singer-songwriter"
+            "alternative"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "folk": 3.0,
-            "pop": 2.0,
+            "alternative": 1.2,
+            "folk": 1.0,
+            "pop": 1.0,
             "singer-songwriter": 1.0
           },
           "genre_sources": {
             "lastfm": [
-              "folk",
               "pop",
+              "folk",
               "singer-songwriter"
+            ],
+            "apple_music": [
+              "alternative"
             ]
           },
           "genre_raw_sources": {
             "lastfm": [
-              "folk",
               "ambient pop",
+              "folk",
               "singer-songwriter",
               "alternative",
               "chamber pop",
               "alternative rock",
               "rock",
-              "pop",
+              "Ballad",
               "indie",
-              "Ballad"
+              "pop"
+            ],
+            "apple_music": [
+              "Alternative",
+              "Music"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "happiness"
+            "lastfm": "happiness",
+            "apple_music": "happiness"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:happiness",
@@ -535,39 +621,46 @@
           ],
           "release_date": "2020-12-10T00:00:00Z",
           "genres": [
-            "pop",
-            "folk",
-            "singer-songwriter"
+            "alternative"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "pop": 3.0,
-            "folk": 2.0,
-            "singer-songwriter": 1.0
+            "alternative": 1.2,
+            "americana": 1.0,
+            "folk": 1.0,
+            "pop": 1.0
           },
           "genre_sources": {
             "lastfm": [
               "pop",
               "folk",
-              "singer-songwriter"
+              "americana"
+            ],
+            "apple_music": [
+              "alternative"
             ]
           },
           "genre_raw_sources": {
             "lastfm": [
               "pop",
               "folk",
-              "singer-songwriter",
               "americana",
-              "chamber pop",
+              "singer-songwriter",
               "folk pop",
+              "chamber pop",
               "country",
-              "alternative rock",
+              "alternative",
               "timeless",
-              "alternative"
+              "alternative rock"
+            ],
+            "apple_music": [
+              "Alternative",
+              "Music"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "dorothea"
+            "lastfm": "dorothea",
+            "apple_music": "dorothea"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:dorothea",
@@ -613,39 +706,48 @@
           ],
           "release_date": "2020-12-10T00:00:00Z",
           "genres": [
-            "alternative rock",
-            "rock",
-            "folk"
+            "alternative"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "alternative rock": 3.0,
-            "rock": 2.0,
-            "folk": 1.0
+            "alternative": 1.2,
+            "alternative rock": 1.0,
+            "pop": 1.0,
+            "rock": 1.0
           },
           "genre_sources": {
             "lastfm": [
               "alternative rock",
               "rock",
-              "folk"
+              "pop"
+            ],
+            "apple_music": [
+              "alternative"
             ]
           },
           "genre_raw_sources": {
             "lastfm": [
               "alternative rock",
               "rock",
-              "folk",
               "chamber pop",
+              "folk",
               "folk pop",
-              "pop",
               "indie",
-              "indie folk",
+              "pop",
               "singer-songwriter",
-              "indie pop"
+              "indie pop",
+              "indie folk"
+            ],
+            "apple_music": [
+              "Alternative",
+              "Music",
+              "オルタナティブ",
+              "ミュージック"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "coney island (feat. The National)"
+            "lastfm": "coney island (feat. The National)",
+            "apple_music": "coney island (feat. The National)"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:coney_island",
@@ -688,39 +790,46 @@
           ],
           "release_date": "2020-12-10T00:00:00Z",
           "genres": [
-            "folk pop",
-            "folk",
-            "singer-songwriter"
+            "alternative"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "folk pop": 3.0,
-            "folk": 2.0,
-            "singer-songwriter": 1.0
+            "alternative": 1.2,
+            "alternative rock": 1.0,
+            "folk": 1.0,
+            "folk pop": 1.0
           },
           "genre_sources": {
             "lastfm": [
               "folk pop",
               "folk",
-              "singer-songwriter"
+              "alternative rock"
+            ],
+            "apple_music": [
+              "alternative"
             ]
           },
           "genre_raw_sources": {
             "lastfm": [
               "folk pop",
               "folk",
-              "singer-songwriter",
               "alternative rock",
+              "singer-songwriter",
               "chamber rock",
               "folk-pop",
               "pop",
               "indie folk",
-              "current",
+              "folk song",
               "indie"
+            ],
+            "apple_music": [
+              "Alternative",
+              "Music"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "ivy"
+            "lastfm": "ivy",
+            "apple_music": "ivy"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:ivy",
@@ -763,21 +872,23 @@
           ],
           "release_date": "2020-12-10T00:00:00Z",
           "genres": [
-            "country",
-            "folk",
-            "alternative rock"
+            "alternative"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "country": 3.0,
-            "folk": 2.0,
-            "alternative rock": 1.0
+            "alternative": 1.2,
+            "alternative rock": 1.0,
+            "country": 1.0,
+            "folk": 1.0
           },
           "genre_sources": {
             "lastfm": [
               "country",
               "folk",
               "alternative rock"
+            ],
+            "apple_music": [
+              "alternative"
             ]
           },
           "genre_raw_sources": {
@@ -786,16 +897,21 @@
               "folk",
               "alternative rock",
               "pop",
+              "blues rock",
               "singer-songwriter",
               "folk rock",
-              "blues rock",
               "chamber rock",
-              "indie",
-              "2020"
+              "2020",
+              "indie"
+            ],
+            "apple_music": [
+              "Alternative",
+              "Music"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "cowboy like me"
+            "lastfm": "cowboy like me",
+            "apple_music": "cowboy like me"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:cowboy_like_me",
@@ -838,21 +954,23 @@
           ],
           "release_date": "2020-12-10T00:00:00Z",
           "genres": [
-            "rock",
-            "folk",
-            "pop"
+            "alternative"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "rock": 3.0,
-            "folk": 2.0,
-            "pop": 1.0
+            "alternative": 1.2,
+            "folk": 1.0,
+            "pop": 1.0,
+            "rock": 1.0
           },
           "genre_sources": {
             "lastfm": [
               "rock",
               "folk",
               "pop"
+            ],
+            "apple_music": [
+              "alternative"
             ]
           },
           "genre_raw_sources": {
@@ -862,15 +980,22 @@
               "pop",
               "electropop",
               "indie pop",
-              "rock",
               "alternative",
-              "folk-pop",
+              "rock",
+              "synthpop",
               "synth-pop",
-              "synthpop"
+              "folk-pop"
+            ],
+            "apple_music": [
+              "Alternative",
+              "Music",
+              "另类音乐",
+              "音乐"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "long story short"
+            "lastfm": "long story short",
+            "apple_music": "long story short"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:long_story_short",
@@ -913,39 +1038,50 @@
           ],
           "release_date": "2020-12-10T00:00:00Z",
           "genres": [
-            "rock",
-            "pop",
-            "folk"
+            "alternative"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "rock": 3.0,
-            "pop": 2.0,
-            "folk": 1.0
+            "alternative": 1.2,
+            "folk": 1.0,
+            "pop": 1.0,
+            "rock": 1.0
           },
           "genre_sources": {
             "lastfm": [
               "rock",
-              "pop",
-              "folk"
+              "folk",
+              "pop"
+            ],
+            "apple_music": [
+              "alternative"
             ]
           },
           "genre_raw_sources": {
             "lastfm": [
               "Ballad",
               "rock",
-              "pop",
               "folk",
+              "pop",
+              "alternative rock",
               "singer-songwriter",
               "chamber pop",
-              "alternative rock",
-              "indie folk",
               "chamber rock",
-              "owned by taylor swift"
+              "indie folk",
+              "folk-pop"
+            ],
+            "apple_music": [
+              "Alternative",
+              "Music",
+              "オルタナティブ",
+              "ミュージック",
+              "另类音乐",
+              "音乐"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "marjorie"
+            "lastfm": "marjorie",
+            "apple_music": "marjorie"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:marjorie",
@@ -988,39 +1124,45 @@
           ],
           "release_date": "2020-12-10T00:00:00Z",
           "genres": [
-            "pop",
-            "folk",
-            "rock"
+            "alternative"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "pop": 3.0,
-            "folk": 2.0,
-            "rock": 1.0
+            "alternative": 2.2,
+            "folk": 1.0,
+            "pop": 1.0
           },
           "genre_sources": {
             "lastfm": [
-              "pop",
               "folk",
-              "rock"
+              "pop",
+              "alternative"
+            ],
+            "apple_music": [
+              "alternative"
             ]
           },
           "genre_raw_sources": {
             "lastfm": [
-              "pop",
               "folk",
-              "indietronica",
+              "pop",
               "experimental",
-              "idm",
-              "best of 2020",
+              "indietronica",
               "hyperpop",
+              "best of 2020",
+              "idm",
+              "alternative",
               "rock",
-              "alternative rock",
-              "alternative"
+              "alternative rock"
+            ],
+            "apple_music": [
+              "Alternative",
+              "Music"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "closure"
+            "lastfm": "closure",
+            "apple_music": "closure"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:closure",
@@ -1065,21 +1207,23 @@
           ],
           "release_date": "2020-12-10T00:00:00Z",
           "genres": [
-            "folk",
-            "rock",
-            "alternative rock"
+            "alternative"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "folk": 3.0,
-            "rock": 2.0,
-            "alternative rock": 1.0
+            "alternative": 1.2,
+            "alternative rock": 1.0,
+            "folk": 1.0,
+            "rock": 1.0
           },
           "genre_sources": {
             "lastfm": [
               "folk",
               "rock",
               "alternative rock"
+            ],
+            "apple_music": [
+              "alternative"
             ]
           },
           "genre_raw_sources": {
@@ -1089,15 +1233,22 @@
               "alternative rock",
               "Ballad",
               "chamber rock",
-              "pop",
               "female vocalist",
+              "pop",
+              "piano",
               "singer-songwriter",
-              "chamber pop",
-              "piano"
+              "chamber pop"
+            ],
+            "apple_music": [
+              "Alternative",
+              "Music",
+              "另类音乐",
+              "音乐"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "evermore (feat. Bon Iver)"
+            "lastfm": "evermore (feat. Bon Iver)",
+            "apple_music": "evermore (feat. Bon Iver)"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:evermore",
@@ -1144,36 +1295,38 @@
           "historical_track_ids": [],
           "release_date": "2021-01-07T00:00:00Z",
           "genres": [
-            "folk pop",
             "country",
-            "folk"
+            "folk",
+            "folk pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "folk pop": 3.0,
-            "country": 2.0,
-            "folk": 1.0
+            "country": 1.0,
+            "folk": 1.0,
+            "folk pop": 1.0
           },
           "genre_sources": {
             "lastfm": [
               "folk pop",
               "country",
               "folk"
-            ]
+            ],
+            "apple_music": []
           },
           "genre_raw_sources": {
             "lastfm": [
               "folk pop",
               "country",
-              "folk-pop",
               "folk",
-              "country pop",
+              "folk-pop",
+              "julia mofada",
               "evermore",
+              "country pop",
               "female vocalist",
-              "pop",
-              "singer-songwriter",
-              "alt pop"
-            ]
+              "sad",
+              "emotional"
+            ],
+            "apple_music": []
           },
           "genre_query_titles": {
             "lastfm": "right where you left me - bonus track"
@@ -1219,10 +1372,12 @@
           "genre_status": "missing",
           "genre_scores": {},
           "genre_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": []
           },
           "genre_raw_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": []
           },
           "genre_query_titles": {},
           "genre_errors": {},
@@ -1270,14 +1425,13 @@
           "historical_track_ids": [],
           "release_date": "2021-06-14T00:00:00Z",
           "genres": [
-            "folk pop",
-            "folk",
-            "singer-songwriter"
+            "alternative"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "folk pop": 3.0,
-            "folk": 2.0,
+            "alternative": 1.2,
+            "folk": 1.0,
+            "folk pop": 1.0,
             "singer-songwriter": 1.0
           },
           "genre_sources": {
@@ -1285,6 +1439,9 @@
               "folk pop",
               "folk",
               "singer-songwriter"
+            ],
+            "apple_music": [
+              "alternative"
             ]
           },
           "genre_raw_sources": {
@@ -1293,16 +1450,35 @@
               "chamber folk",
               "singer-songwriter",
               "folk",
-              "indie folk",
-              "pop",
               "overrated",
-              "indie",
+              "pop",
+              "indie folk",
+              "alternative",
               "indie pop",
-              "alternative"
+              "indie"
+            ],
+            "apple_music": [
+              "Alternative",
+              "Music",
+              "オルタナティブ",
+              "ミュージック",
+              "Alternativa",
+              "Música",
+              "Alternativo",
+              "另类音乐",
+              "音乐",
+              "Musik",
+              "另類音樂",
+              "音樂",
+              "얼터너티브",
+              "음악",
+              "Muziek",
+              "Alternativt"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "willow"
+            "lastfm": "willow",
+            "apple_music": "willow"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:willow",
@@ -1344,14 +1520,13 @@
           ],
           "release_date": "2020-12-13T00:00:00Z",
           "genres": [
-            "folk pop",
-            "folk",
-            "singer-songwriter"
+            "alternative"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "folk pop": 3.0,
-            "folk": 2.0,
+            "alternative": 1.2,
+            "folk": 1.0,
+            "folk pop": 1.0,
             "singer-songwriter": 1.0
           },
           "genre_sources": {
@@ -1359,6 +1534,9 @@
               "folk pop",
               "folk",
               "singer-songwriter"
+            ],
+            "apple_music": [
+              "alternative"
             ]
           },
           "genre_raw_sources": {
@@ -1367,16 +1545,35 @@
               "chamber folk",
               "singer-songwriter",
               "folk",
-              "indie folk",
-              "pop",
               "overrated",
-              "indie",
+              "pop",
+              "indie folk",
+              "alternative",
               "indie pop",
-              "alternative"
+              "indie"
+            ],
+            "apple_music": [
+              "Alternative",
+              "Music",
+              "オルタナティブ",
+              "ミュージック",
+              "Alternativa",
+              "Música",
+              "Alternativo",
+              "另类音乐",
+              "音乐",
+              "Musik",
+              "另類音樂",
+              "音樂",
+              "얼터너티브",
+              "음악",
+              "Muziek",
+              "Alternativt"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "willow"
+            "lastfm": "willow",
+            "apple_music": "willow"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:willow",
@@ -1425,14 +1622,13 @@
           ],
           "release_date": "2020-12-15T00:00:00Z",
           "genres": [
-            "folk pop",
-            "folk",
-            "singer-songwriter"
+            "alternative"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "folk pop": 3.0,
-            "folk": 2.0,
+            "alternative": 1.2,
+            "folk": 1.0,
+            "folk pop": 1.0,
             "singer-songwriter": 1.0
           },
           "genre_sources": {
@@ -1440,6 +1636,9 @@
               "folk pop",
               "folk",
               "singer-songwriter"
+            ],
+            "apple_music": [
+              "alternative"
             ]
           },
           "genre_raw_sources": {
@@ -1448,16 +1647,35 @@
               "chamber folk",
               "singer-songwriter",
               "folk",
-              "indie folk",
-              "pop",
               "overrated",
-              "indie",
+              "pop",
+              "indie folk",
+              "alternative",
               "indie pop",
-              "alternative"
+              "indie"
+            ],
+            "apple_music": [
+              "Alternative",
+              "Music",
+              "オルタナティブ",
+              "ミュージック",
+              "Alternativa",
+              "Música",
+              "Alternativo",
+              "另类音乐",
+              "音乐",
+              "Musik",
+              "另類音樂",
+              "音樂",
+              "얼터너티브",
+              "음악",
+              "Muziek",
+              "Alternativt"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "willow"
+            "lastfm": "willow",
+            "apple_music": "willow"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:willow",
@@ -1501,14 +1719,13 @@
           ],
           "release_date": "2020-12-16T00:00:00Z",
           "genres": [
-            "folk pop",
-            "folk",
-            "singer-songwriter"
+            "alternative"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "folk pop": 3.0,
-            "folk": 2.0,
+            "alternative": 1.2,
+            "folk": 1.0,
+            "folk pop": 1.0,
             "singer-songwriter": 1.0
           },
           "genre_sources": {
@@ -1516,6 +1733,9 @@
               "folk pop",
               "folk",
               "singer-songwriter"
+            ],
+            "apple_music": [
+              "alternative"
             ]
           },
           "genre_raw_sources": {
@@ -1524,16 +1744,35 @@
               "chamber folk",
               "singer-songwriter",
               "folk",
-              "indie folk",
-              "pop",
               "overrated",
-              "indie",
+              "pop",
+              "indie folk",
+              "alternative",
               "indie pop",
-              "alternative"
+              "indie"
+            ],
+            "apple_music": [
+              "Alternative",
+              "Music",
+              "オルタナティブ",
+              "ミュージック",
+              "Alternativa",
+              "Música",
+              "Alternativo",
+              "另类音乐",
+              "音乐",
+              "Musik",
+              "另類音樂",
+              "音樂",
+              "얼터너티브",
+              "음악",
+              "Muziek",
+              "Alternativt"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "willow"
+            "lastfm": "willow",
+            "apple_music": "willow"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:willow",

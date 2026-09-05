@@ -32,39 +32,45 @@
           ],
           "release_date": "2023-03-03T00:00:00Z",
           "genres": [
-            "pop",
-            "synth-pop",
-            "dream pop"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "pop": 3.0,
-            "synth-pop": 2.0,
-            "dream pop": 1.0
+            "alternative": 1.0,
+            "pop": 2.2,
+            "synth-pop": 1.0
           },
           "genre_sources": {
             "lastfm": [
               "pop",
               "synth-pop",
-              "dream pop"
+              "alternative"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
             "lastfm": [
               "pop",
               "synthpop",
+              "alt-pop",
               "dream pop",
               "overrated",
-              "alt-pop",
-              "rnb",
               "electropop",
+              "rnb",
               "best of 2022",
               "electronic",
-              "soty"
+              "ambient house"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "Lavender Haze"
+            "lastfm": "Lavender Haze",
+            "apple_music": "Lavender Haze"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:lavender_haze",
@@ -107,39 +113,45 @@
           ],
           "release_date": "2022-10-21T00:00:00Z",
           "genres": [
-            "synth-pop",
-            "pop",
-            "singer-songwriter"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "synth-pop": 3.0,
-            "pop": 2.0,
-            "singer-songwriter": 1.0
+            "alternative": 1.0,
+            "pop": 2.2,
+            "synth-pop": 1.0
           },
           "genre_sources": {
             "lastfm": [
               "synth-pop",
               "pop",
-              "singer-songwriter"
+              "alternative"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
             "lastfm": [
               "synthpop",
               "pop",
-              "singer-songwriter",
-              "shoegaze",
-              "chillwave",
               "alt-pop",
+              "singer-songwriter",
+              "chillwave",
+              "shoegaze",
               "AOTY",
-              "soty",
+              "downtempo",
               "midnights",
-              "amazing"
+              "dream pop"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "Maroon"
+            "lastfm": "Maroon",
+            "apple_music": "Maroon"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:maroon",
@@ -182,14 +194,12 @@
           ],
           "release_date": "2022-11-08T00:00:00Z",
           "genres": [
-            "rock",
-            "pop",
-            "synth-pop"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "rock": 3.0,
-            "pop": 2.0,
+            "pop": 2.2,
+            "rock": 1.0,
             "synth-pop": 1.0
           },
           "genre_sources": {
@@ -197,6 +207,9 @@
               "rock",
               "pop",
               "synth-pop"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
@@ -206,15 +219,20 @@
               "90s",
               "test-tag",
               "batch-test",
-              "automated",
               "integration-test",
+              "automated",
               "pop",
               "synthpop",
               "pop rock"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "Anti-Hero"
+            "lastfm": "Anti-Hero",
+            "apple_music": "Anti-Hero"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:anti_hero",
@@ -259,39 +277,45 @@
           ],
           "release_date": "2022-10-21T00:00:00Z",
           "genres": [
-            "dream pop",
-            "pop",
-            "singer-songwriter"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "dream pop": 3.0,
-            "pop": 2.0,
-            "singer-songwriter": 1.0
+            "dream pop": 1.0,
+            "pop": 2.2,
+            "synth-pop": 1.0
           },
           "genre_sources": {
             "lastfm": [
               "dream pop",
               "pop",
-              "singer-songwriter"
+              "synth-pop"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
             "lastfm": [
               "dream pop",
               "pop",
-              "chill",
               "Ballad",
-              "singer-songwriter",
-              "Mellow",
-              "synthpop",
+              "chill",
               "relaxing",
-              "beautiful",
-              "amazing"
+              "synthpop",
+              "singer-songwriter",
+              "amazing",
+              "calm",
+              "beautiful"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "Snow On The Beach (feat. Lana Del Rey)"
+            "lastfm": "Snow On The Beach (feat. Lana Del Rey)",
+            "apple_music": "Snow On The Beach (feat. Lana Del Rey)"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:snow_on_the_beach",
@@ -333,39 +357,45 @@
           ],
           "release_date": "2022-10-21T00:00:00Z",
           "genres": [
-            "pop",
-            "synth-pop",
-            "dream pop"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "pop": 3.0,
-            "synth-pop": 2.0,
-            "dream pop": 1.0
+            "dream pop": 1.0,
+            "pop": 2.2,
+            "synth-pop": 1.0
           },
           "genre_sources": {
             "lastfm": [
-              "pop",
               "synth-pop",
+              "pop",
               "dream pop"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
             "lastfm": [
-              "pop",
               "synthpop",
+              "pop",
               "dream pop",
               "sad",
               "overrated",
               "synth pop",
+              "singer-songwriter",
               "singer songwriter",
               "AOTY",
-              "alternative rock",
-              "kid"
+              "electronic"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "You're On Your Own, Kid"
+            "lastfm": "You're On Your Own, Kid",
+            "apple_music": "You're On Your Own, Kid"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:you_re_on_your_own_kid",
@@ -408,21 +438,22 @@
           ],
           "release_date": "2022-10-21T00:00:00Z",
           "genres": [
-            "pop",
-            "synth-pop",
-            "electropop"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "pop": 3.0,
-            "synth-pop": 2.0,
-            "electropop": 1.0
+            "electropop": 1.0,
+            "pop": 2.2,
+            "synth-pop": 1.0
           },
           "genre_sources": {
             "lastfm": [
               "pop",
               "synth-pop",
               "electropop"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
@@ -431,16 +462,21 @@
               "synthpop",
               "electropop",
               "chillout",
-              "overrated",
-              "AOTY",
               "singer-songwriter",
-              "dream pop",
-              "travis kelce has skidmarks",
-              "electronic"
+              "AOTY",
+              "overrated",
+              "chillwave",
+              "female vocalists",
+              "favs"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "Midnight Rain"
+            "lastfm": "Midnight Rain",
+            "apple_music": "Midnight Rain"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:midnight_rain",
@@ -482,14 +518,12 @@
           ],
           "release_date": "2022-10-21T00:00:00Z",
           "genres": [
-            "pop",
-            "singer-songwriter",
-            "synth-pop"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "pop": 3.0,
-            "singer-songwriter": 2.0,
+            "pop": 2.2,
+            "singer-songwriter": 1.0,
             "synth-pop": 1.0
           },
           "genre_sources": {
@@ -497,6 +531,9 @@
               "pop",
               "singer-songwriter",
               "synth-pop"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
@@ -505,16 +542,21 @@
               "singer-songwriter",
               "synthpop",
               "electronic",
+              "alt-pop",
               "dream pop",
               "overrated",
-              "awful",
               "Colleen Hoover",
               "travis kelce has skidmarks",
-              "death metal"
+              "awful"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "Question...?"
+            "lastfm": "Question...?",
+            "apple_music": "Question...?"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:question",
@@ -556,21 +598,22 @@
           ],
           "release_date": "2022-10-21T00:00:00Z",
           "genres": [
-            "pop",
-            "synth-pop",
-            "singer-songwriter"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "pop": 3.0,
-            "synth-pop": 2.0,
-            "singer-songwriter": 1.0
+            "electropop": 1.0,
+            "pop": 2.2,
+            "synth-pop": 1.0
           },
           "genre_sources": {
             "lastfm": [
               "pop",
               "synth-pop",
-              "singer-songwriter"
+              "electropop"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
@@ -580,15 +623,20 @@
               "synthpop",
               "overrated",
               "Colleen Hoover",
-              "singer-songwriter",
               "electropop",
-              "revenge",
+              "singer-songwriter",
               "synth pop",
+              "revenge",
               "electronic"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "Vigilante Shit"
+            "lastfm": "Vigilante Shit",
+            "apple_music": "Vigilante Shit"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:vigilante_shit",
@@ -630,36 +678,43 @@
           ],
           "release_date": "2022-10-21T00:00:00Z",
           "genres": [
-            "pop",
-            "synth-pop"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "pop": 3.0,
-            "synth-pop": 2.0
+            "pop": 2.2,
+            "synth-pop": 1.0
           },
           "genre_sources": {
             "lastfm": [
               "pop",
               "synth-pop"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
             "lastfm": [
               "pop",
+              "synthpop",
               "bubblegum pop",
               "2022",
-              "synthpop",
               "female vocalists",
               "Colleen Hoover",
               "overrated",
-              "2020s",
               "best of 2022",
-              "shimmer"
+              "2020s",
+              "hino"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "Bejeweled"
+            "lastfm": "Bejeweled",
+            "apple_music": "Bejeweled"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:bejeweled",
@@ -701,39 +756,45 @@
           ],
           "release_date": "2022-10-21T00:00:00Z",
           "genres": [
-            "pop",
-            "dream pop",
-            "synth-pop"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "pop": 3.0,
-            "dream pop": 2.0,
+            "dream pop": 1.0,
+            "pop": 2.2,
             "synth-pop": 1.0
           },
           "genre_sources": {
             "lastfm": [
               "pop",
-              "dream pop",
-              "synth-pop"
+              "synth-pop",
+              "dream pop"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
             "lastfm": [
               "pop",
+              "synthpop",
               "dream pop",
               "beautiful",
-              "synthpop",
               "female vocalists",
               "singer-songwriter",
               "ambient pop",
-              "Colleen Hoover",
               "chillwave",
-              "alt-pop"
+              "alt-pop",
+              "Colleen Hoover"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "Labyrinth"
+            "lastfm": "Labyrinth",
+            "apple_music": "Labyrinth"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:labyrinth",
@@ -776,18 +837,20 @@
           ],
           "release_date": "2022-10-21T00:00:00Z",
           "genres": [
-            "pop",
-            "synth-pop"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "pop": 3.0,
-            "synth-pop": 2.0
+            "pop": 2.2,
+            "synth-pop": 1.0
           },
           "genre_sources": {
             "lastfm": [
               "pop",
               "synth-pop"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
@@ -797,15 +860,20 @@
               "Brutal Death Metal",
               "metal",
               "overrated",
-              "death metal",
               "synthpop",
+              "death metal",
               "deathcore",
               "nsbm",
-              "Donald Trump"
+              "Worst Song Ever"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "Karma"
+            "lastfm": "Karma",
+            "apple_music": "Karma"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:karma",
@@ -847,14 +915,12 @@
           ],
           "release_date": "2022-10-21T00:00:00Z",
           "genres": [
-            "pop",
-            "singer-songwriter",
-            "synth-pop"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "pop": 3.0,
-            "singer-songwriter": 2.0,
+            "pop": 2.2,
+            "singer-songwriter": 1.0,
             "synth-pop": 1.0
           },
           "genre_sources": {
@@ -862,6 +928,9 @@
               "pop",
               "singer-songwriter",
               "synth-pop"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
@@ -873,13 +942,18 @@
               "Ballad",
               "overrated",
               "synthpop",
-              "Colleen Hoover",
-              "travis kelce has skidmarks",
-              "best of 2022"
+              "Avant Pop",
+              "alt-pop",
+              "awful"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "Sweet Nothing"
+            "lastfm": "Sweet Nothing",
+            "apple_music": "Sweet Nothing"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:sweet_nothing",
@@ -922,39 +996,45 @@
           ],
           "release_date": "2022-10-21T00:00:00Z",
           "genres": [
-            "pop",
-            "synth-pop",
-            "electropop"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "pop": 3.0,
-            "synth-pop": 2.0,
-            "electropop": 1.0
+            "electropop": 1.0,
+            "pop": 2.2,
+            "synth-pop": 1.0
           },
           "genre_sources": {
             "lastfm": [
-              "pop",
               "synth-pop",
+              "pop",
               "electropop"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
             "lastfm": [
-              "pop",
               "synthpop",
+              "pop",
               "female vocalists",
               "electropop",
               "singer-songwriter",
               "overrated",
               "electronic",
-              "Colleen Hoover",
-              "travis kelce has skidmarks",
-              "singer songwriter"
+              "awful",
+              "alt-pop",
+              "midnights"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "Mastermind"
+            "lastfm": "Mastermind",
+            "apple_music": "Mastermind"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:mastermind",
@@ -1003,21 +1083,22 @@
           ],
           "release_date": "2022-10-21T00:00:00Z",
           "genres": [
-            "pop",
-            "synth-pop",
-            "singer-songwriter"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "pop": 3.0,
-            "synth-pop": 2.0,
-            "singer-songwriter": 1.0
+            "pop": 2.2,
+            "singer-songwriter": 1.0,
+            "synth-pop": 1.0
           },
           "genre_sources": {
             "lastfm": [
               "pop",
               "synth-pop",
               "singer-songwriter"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
@@ -1026,16 +1107,21 @@
               "synthpop",
               "singer-songwriter",
               "dream pop",
-              "midnights",
-              "The Eras Tour",
               "Maria Jose Cardoso",
-              "folk pop",
-              "Masterpiece",
-              "electronic"
+              "The Eras Tour",
+              "midnights",
+              "julia mofada",
+              "electronic",
+              "Masterpiece"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "The Great War"
+            "lastfm": "The Great War",
+            "apple_music": "The Great War"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:the_great_war",
@@ -1079,27 +1165,28 @@
           ],
           "release_date": "2022-10-21T00:00:00Z",
           "genres": [
-            "pop",
-            "synth-pop",
-            "singer-songwriter"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "pop": 3.0,
-            "synth-pop": 2.0,
-            "singer-songwriter": 1.0
+            "pop": 2.2,
+            "singer-songwriter": 1.0,
+            "synth-pop": 1.0
           },
           "genre_sources": {
             "lastfm": [
-              "pop",
               "synth-pop",
+              "pop",
               "singer-songwriter"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
             "lastfm": [
-              "pop",
               "synthpop",
+              "pop",
               "Ballad",
               "singer-songwriter",
               "dream pop",
@@ -1108,10 +1195,15 @@
               "best of 2022",
               "melancholic",
               "ambient"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "Bigger Than The Whole Sky"
+            "lastfm": "Bigger Than The Whole Sky",
+            "apple_music": "Bigger Than The Whole Sky"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:bigger_than_the_whole_sky",
@@ -1155,39 +1247,45 @@
           ],
           "release_date": "2022-10-21T00:00:00Z",
           "genres": [
-            "pop",
-            "singer-songwriter",
-            "synth-pop"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "pop": 3.0,
-            "singer-songwriter": 2.0,
+            "pop": 2.2,
+            "singer-songwriter": 1.0,
             "synth-pop": 1.0
           },
           "genre_sources": {
             "lastfm": [
-              "pop",
               "singer-songwriter",
+              "pop",
               "synth-pop"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
             "lastfm": [
-              "pop",
               "singer-songwriter",
+              "pop",
               "synthpop",
               "electropop",
               "Colleen Hoover",
-              "female vocalist",
               "electronic",
+              "female vocalist",
+              "overrated",
               "death metal",
-              "bubblegum pop",
-              "american"
+              "bubblegum pop"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "Paris"
+            "lastfm": "Paris",
+            "apple_music": "Paris"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:paris",
@@ -1231,21 +1329,22 @@
           ],
           "release_date": "2022-10-21T00:00:00Z",
           "genres": [
-            "synth-pop",
-            "pop",
-            "singer-songwriter"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "synth-pop": 3.0,
-            "pop": 2.0,
-            "singer-songwriter": 1.0
+            "pop": 2.2,
+            "singer-songwriter": 1.0,
+            "synth-pop": 1.0
           },
           "genre_sources": {
             "lastfm": [
               "synth-pop",
               "pop",
               "singer-songwriter"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
@@ -1254,16 +1353,21 @@
               "pop",
               "singer-songwriter",
               "electronic",
-              "Colleen Hoover",
               "best of 2022",
+              "Colleen Hoover",
               "electropop",
-              "racist",
               "awful",
-              "artpop"
+              "artpop",
+              "racist"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "High Infidelity"
+            "lastfm": "High Infidelity",
+            "apple_music": "High Infidelity"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:high_infidelity",
@@ -1307,39 +1411,45 @@
           ],
           "release_date": "2022-10-21T00:00:00Z",
           "genres": [
-            "singer-songwriter",
-            "synth-pop",
             "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "singer-songwriter": 3.0,
-            "synth-pop": 2.0,
-            "pop": 1.0
+            "pop": 2.2,
+            "singer-songwriter": 1.0,
+            "synth-pop": 1.0
           },
           "genre_sources": {
             "lastfm": [
-              "singer-songwriter",
               "synth-pop",
+              "singer-songwriter",
+              "pop"
+            ],
+            "apple_music": [
               "pop"
             ]
           },
           "genre_raw_sources": {
             "lastfm": [
-              "singer-songwriter",
               "synthpop",
+              "singer-songwriter",
               "pop",
               "electronic",
               "Colleen Hoover",
-              "female vocalists",
               "electronica",
+              "female vocalists",
               "slayAM edition",
               "female vocalist",
               "synth pop"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "Glitch"
+            "lastfm": "Glitch",
+            "apple_music": "Glitch"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:glitch",
@@ -1383,39 +1493,45 @@
           ],
           "release_date": "2022-10-21T00:00:00Z",
           "genres": [
-            "pop",
-            "soft rock",
-            "singer-songwriter"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "pop": 3.0,
-            "soft rock": 2.0,
-            "singer-songwriter": 1.0
+            "pop": 2.2,
+            "pop rock": 1.0,
+            "soft rock": 1.0
           },
           "genre_sources": {
             "lastfm": [
               "pop",
               "soft rock",
-              "singer-songwriter"
+              "pop rock"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
             "lastfm": [
               "pop",
               "soft rock",
-              "singer-songwriter",
               "pop rock",
-              "dream pop",
-              "Post-punk revival",
+              "singer-songwriter",
               "best of 2022",
+              "Post-punk revival",
+              "dream pop",
+              "😭",
               "Midnights (The Til Dawn Edition)",
-              "ðŸ˜­",
               "soty"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "Would've, Could've, Should've"
+            "lastfm": "Would've, Could've, Should've",
+            "apple_music": "Would've, Could've, Should've"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:would_ve_could_ve_should_ve",
@@ -1459,39 +1575,45 @@
           ],
           "release_date": "2022-10-21T00:00:00Z",
           "genres": [
-            "singer-songwriter",
-            "synth-pop",
             "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "singer-songwriter": 3.0,
-            "synth-pop": 2.0,
-            "pop": 1.0
+            "pop": 2.2,
+            "singer-songwriter": 1.0,
+            "synth-pop": 1.0
           },
           "genre_sources": {
             "lastfm": [
-              "singer-songwriter",
               "synth-pop",
+              "singer-songwriter",
+              "pop"
+            ],
+            "apple_music": [
               "pop"
             ]
           },
           "genre_raw_sources": {
             "lastfm": [
-              "singer-songwriter",
               "synthpop",
-              "pop",
+              "singer-songwriter",
               "female vocalists",
+              "pop",
               "why on earth is this just a bonus track",
               "dream pop",
-              "electropop",
+              "lofi",
+              "synth",
               "chill",
-              "synth pop",
-              "amazing"
+              "synth pop"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "Dear Reader"
+            "lastfm": "Dear Reader",
+            "apple_music": "Dear Reader"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:dear_reader",
@@ -1542,14 +1664,12 @@
           ],
           "release_date": "2023-05-26T00:00:00Z",
           "genres": [
-            "pop",
-            "pop rock",
-            "synth-pop"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "pop": 3.0,
-            "pop rock": 2.0,
+            "pop": 2.2,
+            "pop rock": 1.0,
             "synth-pop": 1.0
           },
           "genre_sources": {
@@ -1557,6 +1677,9 @@
               "pop",
               "pop rock",
               "synth-pop"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
@@ -1566,15 +1689,20 @@
               "bonus track",
               "pop rock",
               "best of 2023",
-              "beautiful",
               "female vocalist",
-              "female vocalists",
+              "beautiful",
               "synth pop",
-              "Disco"
+              "Disco",
+              "female vocalists"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "Hits Different"
+            "lastfm": "Hits Different",
+            "apple_music": "Hits Different"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:hits_different",
@@ -1617,39 +1745,45 @@
           "historical_track_ids": [],
           "release_date": "2023-05-26T00:00:00Z",
           "genres": [
-            "dream pop",
-            "pop",
-            "singer-songwriter"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "dream pop": 3.0,
-            "pop": 2.0,
-            "singer-songwriter": 1.0
+            "dream pop": 1.0,
+            "pop": 2.2,
+            "synth-pop": 1.0
           },
           "genre_sources": {
             "lastfm": [
               "dream pop",
               "pop",
-              "singer-songwriter"
+              "synth-pop"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
             "lastfm": [
               "dream pop",
               "pop",
-              "chill",
               "Ballad",
-              "singer-songwriter",
-              "Mellow",
-              "synthpop",
+              "chill",
               "relaxing",
-              "beautiful",
-              "amazing"
+              "synthpop",
+              "singer-songwriter",
+              "amazing",
+              "calm",
+              "beautiful"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "Snow On The Beach (feat. Lana Del Rey)"
+            "lastfm": "Snow On The Beach (feat. Lana Del Rey)",
+            "apple_music": "Snow On The Beach (feat. Lana Del Rey)"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:snow_on_the_beach",
@@ -1690,18 +1824,20 @@
           "historical_track_ids": [],
           "release_date": "2023-05-26T00:00:00Z",
           "genres": [
-            "pop",
-            "synth-pop"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "pop": 3.0,
-            "synth-pop": 2.0
+            "pop": 2.2,
+            "synth-pop": 1.0
           },
           "genre_sources": {
             "lastfm": [
               "pop",
               "synth-pop"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
@@ -1711,15 +1847,20 @@
               "Brutal Death Metal",
               "metal",
               "overrated",
-              "death metal",
               "synthpop",
+              "death metal",
               "deathcore",
               "nsbm",
-              "Donald Trump"
+              "Worst Song Ever"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "Karma"
+            "lastfm": "Karma",
+            "apple_music": "Karma"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:karma",
@@ -1763,16 +1904,29 @@
           "image_url": "https://i.scdn.co/image/ab67616d0000b2734fe1868aa6838eb595f3673a",
           "historical_track_ids": [],
           "release_date": "2023-11-29T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
+          "genres": [
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 1.2
+          },
           "genre_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "pop"
+            ]
           },
           "genre_raw_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music"
+            ]
           },
-          "genre_query_titles": {},
+          "genre_query_titles": {
+            "apple_music": "You're Losing Me (From The Vault)"
+          },
           "genre_errors": {},
           "genre_canonical_key": "family:you_re_losing_me",
           "filter_tags": [
@@ -1824,42 +1978,48 @@
           "historical_track_ids": [],
           "release_date": "2023-03-31T00:00:00Z",
           "genres": [
-            "pop",
-            "synth-pop",
-            "dream pop"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "pop": 3.0,
-            "synth-pop": 2.0,
-            "dream pop": 1.0
+            "alternative": 1.0,
+            "pop": 2.2,
+            "synth-pop": 1.0
           },
           "genre_sources": {
             "lastfm": [
               "pop",
               "synth-pop",
-              "dream pop"
+              "alternative"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
             "lastfm": [
               "pop",
               "synthpop",
+              "alt-pop",
               "dream pop",
               "overrated",
-              "alt-pop",
-              "rnb",
               "electropop",
+              "rnb",
               "best of 2022",
               "electronic",
-              "soty"
+              "ambient house"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "Lavender Haze"
+            "lastfm": "Lavender Haze",
+            "apple_music": "Lavender Haze"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:lavender_haze_acoustic_version",
+          "genre_canonical_key": "family:lavender_haze",
           "filter_tags": [
             "solo",
             "standalone",
@@ -1913,14 +2073,12 @@
           ],
           "release_date": "2022-11-08T00:00:00Z",
           "genres": [
-            "rock",
-            "pop",
-            "synth-pop"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "rock": 3.0,
-            "pop": 2.0,
+            "pop": 2.2,
+            "rock": 1.0,
             "synth-pop": 1.0
           },
           "genre_sources": {
@@ -1928,6 +2086,9 @@
               "rock",
               "pop",
               "synth-pop"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
@@ -1937,15 +2098,20 @@
               "90s",
               "test-tag",
               "batch-test",
-              "automated",
               "integration-test",
+              "automated",
               "pop",
               "synthpop",
               "pop rock"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "Anti-Hero"
+            "lastfm": "Anti-Hero",
+            "apple_music": "Anti-Hero"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:anti_hero",
@@ -1983,14 +2149,12 @@
           "historical_track_ids": [],
           "release_date": "2022-11-18T00:00:00Z",
           "genres": [
-            "rock",
-            "pop",
-            "synth-pop"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "rock": 3.0,
-            "pop": 2.0,
+            "pop": 2.2,
+            "rock": 1.0,
             "synth-pop": 1.0
           },
           "genre_sources": {
@@ -1998,6 +2162,9 @@
               "rock",
               "pop",
               "synth-pop"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
@@ -2007,15 +2174,20 @@
               "90s",
               "test-tag",
               "batch-test",
-              "automated",
               "integration-test",
+              "automated",
               "pop",
               "synthpop",
               "pop rock"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "Anti-Hero"
+            "lastfm": "Anti-Hero",
+            "apple_music": "Anti-Hero"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:anti_hero",
@@ -2057,14 +2229,12 @@
           ],
           "release_date": "2022-11-11T00:00:00Z",
           "genres": [
-            "rock",
-            "pop",
-            "synth-pop"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "rock": 3.0,
-            "pop": 2.0,
+            "pop": 2.2,
+            "rock": 1.0,
             "synth-pop": 1.0
           },
           "genre_sources": {
@@ -2072,6 +2242,9 @@
               "rock",
               "pop",
               "synth-pop"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
@@ -2081,15 +2254,20 @@
               "90s",
               "test-tag",
               "batch-test",
-              "automated",
               "integration-test",
+              "automated",
               "pop",
               "synthpop",
               "pop rock"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "Anti-Hero"
+            "lastfm": "Anti-Hero",
+            "apple_music": "Anti-Hero"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:anti_hero",
@@ -2131,14 +2309,12 @@
           ],
           "release_date": "2022-11-11T00:00:00Z",
           "genres": [
-            "rock",
-            "pop",
-            "synth-pop"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "rock": 3.0,
-            "pop": 2.0,
+            "pop": 2.2,
+            "rock": 1.0,
             "synth-pop": 1.0
           },
           "genre_sources": {
@@ -2146,6 +2322,9 @@
               "rock",
               "pop",
               "synth-pop"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
@@ -2155,15 +2334,20 @@
               "90s",
               "test-tag",
               "batch-test",
-              "automated",
               "integration-test",
+              "automated",
               "pop",
               "synthpop",
               "pop rock"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "Anti-Hero"
+            "lastfm": "Anti-Hero",
+            "apple_music": "Anti-Hero"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:anti_hero",
@@ -2205,14 +2389,12 @@
           ],
           "release_date": "2022-11-11T00:00:00Z",
           "genres": [
-            "rock",
-            "pop",
-            "synth-pop"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "rock": 3.0,
-            "pop": 2.0,
+            "pop": 2.2,
+            "rock": 1.0,
             "synth-pop": 1.0
           },
           "genre_sources": {
@@ -2220,6 +2402,9 @@
               "rock",
               "pop",
               "synth-pop"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
@@ -2229,15 +2414,20 @@
               "90s",
               "test-tag",
               "batch-test",
-              "automated",
               "integration-test",
+              "automated",
               "pop",
               "synthpop",
               "pop rock"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "Anti-Hero"
+            "lastfm": "Anti-Hero",
+            "apple_music": "Anti-Hero"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:anti_hero",
@@ -2277,14 +2467,12 @@
           "historical_track_ids": [],
           "release_date": "2022-11-25T00:00:00Z",
           "genres": [
-            "rock",
-            "pop",
-            "synth-pop"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "rock": 3.0,
-            "pop": 2.0,
+            "pop": 2.2,
+            "rock": 1.0,
             "synth-pop": 1.0
           },
           "genre_sources": {
@@ -2292,6 +2480,9 @@
               "rock",
               "pop",
               "synth-pop"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
@@ -2301,15 +2492,20 @@
               "90s",
               "test-tag",
               "batch-test",
-              "automated",
               "integration-test",
+              "automated",
               "pop",
               "synthpop",
               "pop rock"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "Anti-Hero"
+            "lastfm": "Anti-Hero",
+            "apple_music": "Anti-Hero"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:anti_hero",
@@ -2356,39 +2552,45 @@
           ],
           "release_date": "2023-02-10T00:00:00Z",
           "genres": [
-            "pop",
-            "synth-pop",
-            "dream pop"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "pop": 3.0,
-            "synth-pop": 2.0,
-            "dream pop": 1.0
+            "alternative": 1.0,
+            "pop": 2.2,
+            "synth-pop": 1.0
           },
           "genre_sources": {
             "lastfm": [
               "pop",
               "synth-pop",
-              "dream pop"
+              "alternative"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
             "lastfm": [
               "pop",
               "synthpop",
+              "alt-pop",
               "dream pop",
               "overrated",
-              "alt-pop",
-              "rnb",
               "electropop",
+              "rnb",
               "best of 2022",
               "electronic",
-              "soty"
+              "ambient house"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "Lavender Haze"
+            "lastfm": "Lavender Haze",
+            "apple_music": "Lavender Haze"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:lavender_haze",
@@ -2430,39 +2632,45 @@
           ],
           "release_date": "2023-03-03T00:00:00Z",
           "genres": [
-            "pop",
-            "synth-pop",
-            "dream pop"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "pop": 3.0,
-            "synth-pop": 2.0,
-            "dream pop": 1.0
+            "alternative": 1.0,
+            "pop": 2.2,
+            "synth-pop": 1.0
           },
           "genre_sources": {
             "lastfm": [
               "pop",
               "synth-pop",
-              "dream pop"
+              "alternative"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
             "lastfm": [
               "pop",
               "synthpop",
+              "alt-pop",
               "dream pop",
               "overrated",
-              "alt-pop",
-              "rnb",
               "electropop",
+              "rnb",
               "best of 2022",
               "electronic",
-              "soty"
+              "ambient house"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "Lavender Haze"
+            "lastfm": "Lavender Haze",
+            "apple_music": "Lavender Haze"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:lavender_haze",
@@ -2504,39 +2712,45 @@
           ],
           "release_date": "2023-03-03T00:00:00Z",
           "genres": [
-            "pop",
-            "synth-pop",
-            "dream pop"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "pop": 3.0,
-            "synth-pop": 2.0,
-            "dream pop": 1.0
+            "alternative": 1.0,
+            "pop": 2.2,
+            "synth-pop": 1.0
           },
           "genre_sources": {
             "lastfm": [
               "pop",
               "synth-pop",
-              "dream pop"
+              "alternative"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
             "lastfm": [
               "pop",
               "synthpop",
+              "alt-pop",
               "dream pop",
               "overrated",
-              "alt-pop",
-              "rnb",
               "electropop",
+              "rnb",
               "best of 2022",
               "electronic",
-              "soty"
+              "ambient house"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "Lavender Haze"
+            "lastfm": "Lavender Haze",
+            "apple_music": "Lavender Haze"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:lavender_haze",
@@ -2578,39 +2792,45 @@
           ],
           "release_date": "2023-03-03T00:00:00Z",
           "genres": [
-            "pop",
-            "synth-pop",
-            "dream pop"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "pop": 3.0,
-            "synth-pop": 2.0,
-            "dream pop": 1.0
+            "alternative": 1.0,
+            "pop": 2.2,
+            "synth-pop": 1.0
           },
           "genre_sources": {
             "lastfm": [
               "pop",
               "synth-pop",
-              "dream pop"
+              "alternative"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
             "lastfm": [
               "pop",
               "synthpop",
+              "alt-pop",
               "dream pop",
               "overrated",
-              "alt-pop",
-              "rnb",
               "electropop",
+              "rnb",
               "best of 2022",
               "electronic",
-              "soty"
+              "ambient house"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "Lavender Haze"
+            "lastfm": "Lavender Haze",
+            "apple_music": "Lavender Haze"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:lavender_haze",

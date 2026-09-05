@@ -27,7 +27,10 @@ DROP_VIDEO_MARKERS = (
 
 
 def normalize_text(value: str) -> str:
-    value = unicodedata.normalize("NFKD", value or "")
+    value = (value or "").replace("�", " ")
+    for quote in ("‘", "’", "ʼ", "´", "`"):
+        value = value.replace(quote, "'")
+    value = unicodedata.normalize("NFKD", value)
     value = value.encode("ascii", "ignore").decode("ascii")
     value = value.lower().replace("&", " and ")
     value = re.sub(r"[^a-z0-9]+", " ", value)
@@ -57,9 +60,13 @@ def _track_display_title(track: dict[str, Any]) -> str:
 def _iter_discography_sections(path: Path) -> list[dict[str, Any]]:
     if not path.exists():
         return []
-    with path.open(encoding="utf-8") as f:
+    with path.open(encoding="utf-8-sig") as f:
         payload = json.load(f)
-    return payload if isinstance(payload, list) else []
+    if isinstance(payload, list):
+        return payload
+    if isinstance(payload, dict):
+        return payload.get("sections") or []
+    return []
 
 
 def _catalog_paths(path: Path) -> list[Path]:
@@ -99,6 +106,8 @@ def load_song_catalog(path: Path) -> list[dict[str, str]]:
     for catalog_path in _catalog_paths(path):
         for section in _iter_discography_sections(catalog_path):
             for track in section.get("tracks", []):
+                if track.get("chart_extra") or track.get("excluded_from_public_stats"):
+                    continue
                 display = _track_display_title(track)
                 family = str(track.get("song_family") or title_key(display))
                 if not display or not family:

@@ -31,39 +31,49 @@
           ],
           "release_date": "2023-10-26T00:00:00Z",
           "genres": [
-            "pop",
-            "synth-pop",
-            "electropop"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "pop": 3.0,
-            "synth-pop": 2.0,
-            "electropop": 1.0
+            "electropop": 1.0,
+            "pop": 2.2,
+            "synth-pop": 1.0
           },
           "genre_sources": {
             "lastfm": [
               "pop",
               "synth-pop",
               "electropop"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
             "lastfm": [
               "pop",
               "synthpop",
-              "female vocalists",
               "electropop",
+              "female vocalists",
               "new york",
               "love at first listen",
               "New York City",
-              "taylor swift",
-              "NYC",
-              "synth-pop"
+              "ryan tedder",
+              "synth-pop",
+              "NYC"
+            ],
+            "apple_music": [
+              "国际流行",
+              "音乐",
+              "Pop",
+              "Music",
+              "ポップ",
+              "ミュージック"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "Welcome To New York"
+            "lastfm": "Welcome To New York",
+            "apple_music": "Welcome To New York"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:welcome_to_new_york",
@@ -108,21 +118,50 @@
             "0108kcWLnn2HlH2kedi1gn"
           ],
           "release_date": "2023-10-26T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
+          "genres": [
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "electropop": 1.0,
+            "pop": 2.2
+          },
           "genre_sources": {
-            "lastfm": []
+            "lastfm": [
+              "pop",
+              "electropop"
+            ],
+            "apple_music": [
+              "pop"
+            ]
           },
           "genre_raw_sources": {
-            "lastfm": []
+            "lastfm": [
+              "pop",
+              "love at first listen",
+              "2014",
+              "female vocalists",
+              "best of 2014",
+              "electropop",
+              "taylor swift",
+              "10s",
+              "2010s",
+              "max martin"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "ポップ",
+              "ミュージック",
+              "Música",
+              "Musik"
+            ]
           },
           "genre_query_titles": {
-            "lastfm": "Blank Space"
+            "lastfm": "Blank Space",
+            "apple_music": "Blank Space"
           },
-          "genre_errors": {
-            "lastfm": "LASTFM_API_KEY missing"
-          },
+          "genre_errors": {},
           "genre_canonical_key": "family:blank_space",
           "filter_tags": [
             "solo",
@@ -166,39 +205,48 @@
           ],
           "release_date": "2023-10-26T00:00:00Z",
           "genres": [
-            "pop",
-            "synth-pop",
-            "pop rock"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "pop": 3.0,
-            "synth-pop": 2.0,
-            "pop rock": 1.0
+            "pop": 2.2,
+            "pop rock": 1.0,
+            "synth-pop": 1.0
           },
           "genre_sources": {
             "lastfm": [
               "pop",
               "synth-pop",
               "pop rock"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
             "lastfm": [
               "pop",
               "synthpop",
-              "taylor swift",
               "love at first listen",
+              "taylor swift",
               "1989",
               "pop rock",
               "female vocalists",
               "max martin",
-              "Funk-Pop",
-              "2015"
+              "2015",
+              "Funk-Pop"
+            ],
+            "apple_music": [
+              "Pop",
+              "Música",
+              "Music",
+              "ポップ",
+              "ミュージック"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "Style"
+            "lastfm": "Style",
+            "apple_music": "Style"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:style",
@@ -244,21 +292,22 @@
           ],
           "release_date": "2023-10-26T00:00:00Z",
           "genres": [
-            "pop",
-            "synth-pop",
-            "pop rock"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "pop": 3.0,
-            "synth-pop": 2.0,
-            "pop rock": 1.0
+            "electropop": 1.0,
+            "pop": 2.2,
+            "synth-pop": 1.0
           },
           "genre_sources": {
             "lastfm": [
               "pop",
               "synth-pop",
-              "pop rock"
+              "electropop"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
@@ -271,12 +320,19 @@
               "taylor swift",
               "amazing",
               "synth-pop",
-              "2014",
-              "pop rock"
+              "electropop",
+              "indietronica"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "ポップ",
+              "ミュージック"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "Out Of The Woods"
+            "lastfm": "Out Of The Woods",
+            "apple_music": "Out Of The Woods"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:out_of_the_woods",
@@ -321,16 +377,31 @@
             "2k0ZEeAqzvYMcx9Qt5aClQ"
           ],
           "release_date": "2023-10-26T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
+          "genres": [
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 1.2
+          },
           "genre_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "pop"
+            ]
           },
           "genre_raw_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "ポップ",
+              "ミュージック"
+            ]
           },
-          "genre_query_titles": {},
+          "genre_query_titles": {
+            "apple_music": "All You Had To Do Was Stay"
+          },
           "genre_errors": {},
           "genre_canonical_key": "family:all_you_had_to_do_was_stay",
           "filter_tags": [
@@ -379,29 +450,39 @@
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "pop": 3.0
+            "pop": 2.2
           },
           "genre_sources": {
             "lastfm": [
+              "pop"
+            ],
+            "apple_music": [
               "pop"
             ]
           },
           "genre_raw_sources": {
             "lastfm": [
               "pop",
-              "2014",
               "haters gonna hate",
+              "2014",
               "taylor swift",
               "love at first listen",
               "dance",
-              "happy",
-              "1989",
+              "female vocalists",
+              "best of 2014",
               "shake it off",
-              "best of 2014"
+              "1989"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "ポップ",
+              "ミュージック"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "Shake It Off"
+            "lastfm": "Shake It Off",
+            "apple_music": "Shake It Off"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:shake_it_off",
@@ -446,16 +527,31 @@
             "3FxJDucHWdw6caWTKO5b23"
           ],
           "release_date": "2023-10-26T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
+          "genres": [
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 1.2
+          },
           "genre_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "pop"
+            ]
           },
           "genre_raw_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "ポップ",
+              "ミュージック"
+            ]
           },
-          "genre_query_titles": {},
+          "genre_query_titles": {
+            "apple_music": "I Wish You Would"
+          },
           "genre_errors": {},
           "genre_canonical_key": "family:i_wish_you_would",
           "filter_tags": [
@@ -500,21 +596,20 @@
           ],
           "release_date": "2023-10-26T00:00:00Z",
           "genres": [
-            "pop",
-            "synth-pop",
-            "singer-songwriter"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "pop": 3.0,
-            "synth-pop": 2.0,
+            "pop": 2.2,
             "singer-songwriter": 1.0
           },
           "genre_sources": {
             "lastfm": [
               "pop",
-              "synth-pop",
               "singer-songwriter"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
@@ -524,15 +619,22 @@
               "love at first listen",
               "taylor swift",
               "2015",
-              "synthpop",
+              "max martin",
               "singer-songwriter",
-              "shade",
+              "katy perry",
               "BAD BLOOD",
               "2010s"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "ポップ",
+              "ミュージック"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "Bad Blood"
+            "lastfm": "Bad Blood",
+            "apple_music": "Bad Blood"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:bad_blood",
@@ -579,14 +681,12 @@
           ],
           "release_date": "2021-09-17T00:00:00Z",
           "genres": [
-            "pop",
-            "dream pop",
-            "synth-pop"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "pop": 3.0,
-            "dream pop": 2.0,
+            "dream pop": 1.0,
+            "pop": 2.2,
             "synth-pop": 1.0
           },
           "genre_sources": {
@@ -594,6 +694,9 @@
               "pop",
               "dream pop",
               "synth-pop"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
@@ -608,10 +711,18 @@
               "singer-songwriter",
               "taylor swift",
               "epic"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "ポップ",
+              "ミュージック",
+              "Música"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "Wildest Dreams"
+            "lastfm": "Wildest Dreams",
+            "apple_music": "Wildest Dreams"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:wildest_dreams",
@@ -656,16 +767,31 @@
             "75W3SngKzTuoQ94uLf3y82"
           ],
           "release_date": "2023-10-26T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
+          "genres": [
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 1.2
+          },
           "genre_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "pop"
+            ]
           },
           "genre_raw_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "ポップ",
+              "ミュージック"
+            ]
           },
-          "genre_query_titles": {},
+          "genre_query_titles": {
+            "apple_music": "How You Get The Girl"
+          },
           "genre_errors": {},
           "genre_canonical_key": "family:how_you_get_the_girl",
           "filter_tags": [
@@ -710,16 +836,33 @@
             "5QVVjX0ZItqlVpEuVCM9Yg"
           ],
           "release_date": "2022-05-06T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
+          "genres": [
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 1.2
+          },
           "genre_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "pop"
+            ]
           },
           "genre_raw_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Поп",
+              "Музыка",
+              "ポップ",
+              "ミュージック"
+            ]
           },
-          "genre_query_titles": {},
+          "genre_query_titles": {
+            "apple_music": "This Love"
+          },
           "genre_errors": {},
           "genre_canonical_key": "family:this_love",
           "filter_tags": [
@@ -763,16 +906,33 @@
             "2f0GI2ZLUtbGqFx8t2Gk6A"
           ],
           "release_date": "2023-10-26T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
+          "genres": [
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 1.2
+          },
           "genre_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "pop"
+            ]
           },
           "genre_raw_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Поп",
+              "Музыка",
+              "ポップ",
+              "ミュージック"
+            ]
           },
-          "genre_query_titles": {},
+          "genre_query_titles": {
+            "apple_music": "I Know Places"
+          },
           "genre_errors": {},
           "genre_canonical_key": "family:i_know_places",
           "filter_tags": [
@@ -816,16 +976,31 @@
             "2ByBBvpR9b7IynvRmnG7kG"
           ],
           "release_date": "2023-10-26T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
+          "genres": [
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 1.2
+          },
           "genre_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "pop"
+            ]
           },
           "genre_raw_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "ポップ",
+              "ミュージック"
+            ]
           },
-          "genre_query_titles": {},
+          "genre_query_titles": {
+            "apple_music": "Clean"
+          },
           "genre_errors": {},
           "genre_canonical_key": "family:clean",
           "filter_tags": [
@@ -869,16 +1044,33 @@
             "2ve0kuaWUCt4Zx8x4bf1MR"
           ],
           "release_date": "2023-10-26T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
+          "genres": [
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 1.2
+          },
           "genre_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "pop"
+            ]
           },
           "genre_raw_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Поп",
+              "Музыка",
+              "ポップ",
+              "ミュージック"
+            ]
           },
-          "genre_query_titles": {},
+          "genre_query_titles": {
+            "apple_music": "Wonderland"
+          },
           "genre_errors": {},
           "genre_canonical_key": "family:wonderland",
           "filter_tags": [
@@ -922,16 +1114,29 @@
             "4UwqOWDpdeIDVQDuKT6iza"
           ],
           "release_date": "2023-10-26T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
+          "genres": [
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 1.2
+          },
           "genre_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "pop"
+            ]
           },
           "genre_raw_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music"
+            ]
           },
-          "genre_query_titles": {},
+          "genre_query_titles": {
+            "apple_music": "You Are In Love"
+          },
           "genre_errors": {},
           "genre_canonical_key": "family:you_are_in_love",
           "filter_tags": [
@@ -976,18 +1181,20 @@
           ],
           "release_date": "2023-10-26T00:00:00Z",
           "genres": [
-            "pop",
-            "synth-pop"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "pop": 3.0,
-            "synth-pop": 2.0
+            "pop": 2.2,
+            "synth-pop": 1.0
           },
           "genre_sources": {
             "lastfm": [
               "pop",
               "synth-pop"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
@@ -996,16 +1203,23 @@
               "why on earth is this just a bonus track",
               "love at first listen",
               "synthpop",
-              "female vocalists",
               "fave fave fave",
+              "female vocalists",
               "fode essa buceta",
               "max martin",
               "2014",
               "taylor swift"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "ポップ",
+              "ミュージック"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "New Romantics"
+            "lastfm": "New Romantics",
+            "apple_music": "New Romantics"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:new_romantics",
@@ -1051,39 +1265,46 @@
           ],
           "release_date": "2023-10-27T00:00:00Z",
           "genres": [
-            "synth-pop",
-            "pop",
-            "dream pop"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "synth-pop": 3.0,
-            "pop": 2.0,
-            "dream pop": 1.0
+            "dream pop": 1.0,
+            "pop": 1.2,
+            "singer-songwriter": 1.0,
+            "synth-pop": 1.0
           },
           "genre_sources": {
             "lastfm": [
               "synth-pop",
-              "pop",
-              "dream pop"
+              "dream pop",
+              "singer-songwriter"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
             "lastfm": [
               "synthpop",
-              "pop",
               "dream pop",
+              "singer songwriter",
               "female vocalists",
               "singer song writer",
-              "taylors version",
-              "singer songwriter",
               "From the Vault",
-              "female vocalist",
-              "bedroom pop"
+              "taylors version",
+              "julia mofada",
+              "synth pop",
+              "synthwave"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "\"Slut!\" (Taylor's Version) (From The Vault)"
+            "lastfm": "\"Slut!\" (Taylor's Version) (From The Vault)",
+            "apple_music": "\"Slut!\" (Taylor's Version) (From The Vault)"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:slut",
@@ -1129,39 +1350,45 @@
           ],
           "release_date": "2023-10-26T00:00:00Z",
           "genres": [
-            "pop",
-            "synth-pop",
-            "pop rock"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "pop": 3.0,
-            "synth-pop": 2.0,
-            "pop rock": 1.0
+            "pop": 2.2,
+            "pop rock": 1.0,
+            "synth-pop": 1.0
           },
           "genre_sources": {
             "lastfm": [
               "pop",
               "synth-pop",
               "pop rock"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
             "lastfm": [
               "pop",
               "synthpop",
-              "female vocalists",
               "pop rock",
-              "taylors version",
+              "female vocalists",
               "singer songwriter",
               "diane warren",
+              "taylors version",
               "From the Vault",
-              "female vocalist",
-              "power pop"
+              "power pop",
+              "female vocalist"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "Say Don't Go (Taylor's Version) (From The Vault)"
+            "lastfm": "Say Don't Go (Taylor's Version) (From The Vault)",
+            "apple_music": "Say Don't Go (Taylor's Version) (From The Vault)"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:say_don_t_go",
@@ -1209,39 +1436,45 @@
           ],
           "release_date": "2023-10-26T00:00:00Z",
           "genres": [
-            "pop",
-            "synth-pop",
-            "alternative"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "pop": 3.0,
-            "synth-pop": 2.0,
-            "alternative": 1.0
+            "electropop": 1.0,
+            "pop": 2.2,
+            "synth-pop": 1.0
           },
           "genre_sources": {
             "lastfm": [
-              "pop",
               "synth-pop",
-              "alternative"
+              "pop",
+              "electropop"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
             "lastfm": [
-              "pop",
               "synthpop",
               "From the Vault",
               "female vocalist",
-              "Legendary",
-              "alt-pop",
-              "Acid Rock",
-              "taylors version",
-              "goodgirl owns this song",
-              "owned by taylor swift"
+              "pop",
+              "cool",
+              "new wave",
+              "electropop",
+              "dance-pop",
+              "Disco",
+              "beautiful"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "Now That We Don't Talk (Taylor's Version) (From The Vault)"
+            "lastfm": "Now That We Don't Talk (Taylor's Version) (From The Vault)",
+            "apple_music": "Now That We Don't Talk (Taylor's Version) (From The Vault)"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:now_that_we_don_t_talk",
@@ -1289,36 +1522,27 @@
           ],
           "release_date": "2023-10-26T00:00:00Z",
           "genres": [
-            "synth-pop",
-            "alternative"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "synth-pop": 3.0,
-            "alternative": 2.0
+            "pop": 1.2
           },
           "genre_sources": {
-            "lastfm": [
-              "synth-pop",
-              "alternative"
+            "lastfm": [],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
-            "lastfm": [
-              "my top songs",
-              "synthpop",
-              "From the Vault",
-              "synth pop",
-              "alt-pop",
-              "amazing",
-              "Summer vibes",
-              "hino",
-              "synthwave",
-              "Suburban Legends"
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "Suburban Legends (Taylor's Version) (From The Vault)"
+            "apple_music": "Suburban Legends (Taylor's Version) (From The Vault)"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:suburban_legends",
@@ -1366,39 +1590,45 @@
           ],
           "release_date": "2023-10-26T00:00:00Z",
           "genres": [
-            "pop",
-            "synth-pop",
-            "electropop"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "pop": 3.0,
-            "synth-pop": 2.0,
-            "electropop": 1.0
+            "electropop": 1.0,
+            "pop": 2.2,
+            "synth-pop": 1.0
           },
           "genre_sources": {
             "lastfm": [
-              "pop",
               "synth-pop",
+              "pop",
               "electropop"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
             "lastfm": [
-              "pop",
               "synthpop",
               "synthwave",
+              "pop",
               "electropop",
               "break-up",
-              "adult contemporary",
               "Masterpiece",
-              "From the Vault",
+              "adult contemporary",
+              "julia mofada",
               "us number one",
-              "sad"
+              "From the Vault"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "Is It Over Now? (Taylor's Version) (From The Vault)"
+            "lastfm": "Is It Over Now? (Taylor's Version) (From The Vault)",
+            "apple_music": "Is It Over Now? (Taylor's Version) (From The Vault)"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:is_it_over_now",
@@ -1454,21 +1684,20 @@
           "historical_track_ids": [],
           "release_date": "2023-10-27T00:00:00Z",
           "genres": [
-            "pop",
-            "synth-pop",
-            "singer-songwriter"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "pop": 3.0,
-            "synth-pop": 2.0,
+            "pop": 2.2,
             "singer-songwriter": 1.0
           },
           "genre_sources": {
             "lastfm": [
               "pop",
-              "synth-pop",
               "singer-songwriter"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
@@ -1478,15 +1707,22 @@
               "love at first listen",
               "taylor swift",
               "2015",
-              "synthpop",
+              "max martin",
               "singer-songwriter",
-              "shade",
+              "katy perry",
               "BAD BLOOD",
               "2010s"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "ポップ",
+              "ミュージック"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "Bad Blood"
+            "lastfm": "Bad Blood",
+            "apple_music": "Bad Blood"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:bad_blood",

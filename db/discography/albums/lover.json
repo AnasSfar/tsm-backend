@@ -29,39 +29,27 @@
           "historical_track_ids": [],
           "release_date": "2019-08-23T00:00:00Z",
           "genres": [
-            "pop",
-            "synth-pop",
-            "dream pop"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "pop": 3.0,
-            "synth-pop": 2.0,
-            "dream pop": 1.0
+            "pop": 1.2
           },
           "genre_sources": {
-            "lastfm": [
-              "pop",
-              "synth-pop",
-              "dream pop"
+            "lastfm": [],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
-            "lastfm": [
-              "pop",
-              "synthpop",
-              "dream pop",
-              "2010s",
-              "taylor swift",
-              "female vocalists",
-              "electropop",
-              "singer-songwriter",
-              "female vocalist",
-              "dance pop"
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "I Forgot That You Existed"
+            "apple_music": "I Forgot That You Existed"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:i_forgot_that_you_existed",
@@ -103,14 +91,12 @@
           ],
           "release_date": "2023-10-19T00:00:00Z",
           "genres": [
-            "electropop",
-            "pop",
-            "synth-pop"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "electropop": 3.0,
-            "pop": 2.0,
+            "electropop": 1.0,
+            "pop": 2.2,
             "synth-pop": 1.0
           },
           "genre_sources": {
@@ -118,6 +104,9 @@
               "electropop",
               "pop",
               "synth-pop"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
@@ -126,16 +115,29 @@
               "pop",
               "synthpop",
               "industrial pop",
-              "pop perfection",
               "synthwave",
+              "pop perfection",
               "2019",
               "the best of 2019",
               "love at first listen",
               "soty"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Música",
+              "Musik",
+              "国际流行",
+              "音乐",
+              "팝",
+              "음악",
+              "流行樂",
+              "音樂"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "Cruel Summer"
+            "lastfm": "Cruel Summer",
+            "apple_music": "Cruel Summer"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:cruel_summer",
@@ -175,39 +177,47 @@
           "historical_track_ids": [],
           "release_date": "2019-08-23T00:00:00Z",
           "genres": [
-            "pop",
-            "country",
-            "indie folk"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "pop": 3.0,
-            "country": 2.0,
-            "indie folk": 1.0
+            "country": 1.0,
+            "indie folk": 1.0,
+            "pop": 2.2
           },
           "genre_sources": {
             "lastfm": [
               "pop",
               "country",
               "indie folk"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
             "lastfm": [
               "pop",
               "country",
-              "indie folk",
               "Love",
+              "indie folk",
               "country pop",
-              "2010s",
-              "singer-songwriter",
               "folk pop",
-              "2019",
+              "singer-songwriter",
+              "2010s",
+              "soft rock",
               "Ballad"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Música",
+              "Musik"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "Lover"
+            "lastfm": "Lover",
+            "apple_music": "Lover"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:lover",
@@ -247,14 +257,12 @@
           "historical_track_ids": [],
           "release_date": "2019-08-23T00:00:00Z",
           "genres": [
-            "pop",
-            "electropop",
-            "synth-pop"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "pop": 3.0,
-            "electropop": 2.0,
+            "electropop": 1.0,
+            "pop": 2.2,
             "synth-pop": 1.0
           },
           "genre_sources": {
@@ -262,24 +270,32 @@
               "pop",
               "electropop",
               "synth-pop"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
             "lastfm": [
               "pop",
               "electropop",
-              "feminism",
               "2019",
+              "feminism",
               "overrated",
-              "synth-pop",
               "synthpop",
-              "taylor swift",
-              "dance-pop",
-              "2010s"
+              "feminist",
+              "2010s",
+              "julia mofada",
+              "taylor swift"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "The Man"
+            "lastfm": "The Man",
+            "apple_music": "The Man"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:the_man",
@@ -319,39 +335,45 @@
           "historical_track_ids": [],
           "release_date": "2019-08-23T00:00:00Z",
           "genres": [
-            "pop",
-            "synth-pop",
-            "dream pop"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "pop": 3.0,
-            "synth-pop": 2.0,
-            "dream pop": 1.0
+            "dream pop": 1.0,
+            "pop": 2.2,
+            "synth-pop": 1.0
           },
           "genre_sources": {
             "lastfm": [
-              "pop",
               "synth-pop",
+              "pop",
               "dream pop"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
             "lastfm": [
-              "pop",
               "synthpop",
+              "pop",
               "dream pop",
               "ambient pop",
               "synthwave",
               "taylor swift",
               "ambient",
               "lover",
-              "electropop",
-              "2019"
+              "alt-pop",
+              "electropop"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "The Archer"
+            "lastfm": "The Archer",
+            "apple_music": "The Archer"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:the_archer",
@@ -391,14 +413,12 @@
           "historical_track_ids": [],
           "release_date": "2019-08-23T00:00:00Z",
           "genres": [
-            "pop",
-            "electropop",
-            "synth-pop"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "pop": 3.0,
-            "electropop": 2.0,
+            "electropop": 1.0,
+            "pop": 2.2,
             "synth-pop": 1.0
           },
           "genre_sources": {
@@ -406,6 +426,9 @@
               "pop",
               "electropop",
               "synth-pop"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
@@ -413,17 +436,22 @@
               "pop",
               "electropop",
               "synthpop",
-              "dance-pop",
               "taylor swift",
-              "rnb",
+              "dance-pop",
               "singer-songwriter",
-              "bubblegum pop",
-              "contemporary rnb",
-              "upbeat"
+              "rnb",
+              "upbeat",
+              "2019",
+              "2010s"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "I Think He Knows"
+            "lastfm": "I Think He Knows",
+            "apple_music": "I Think He Knows"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:i_think_he_knows",
@@ -463,42 +491,48 @@
           "historical_track_ids": [],
           "release_date": "2019-08-23T00:00:00Z",
           "genres": [
-            "pop",
-            "electropop",
-            "dream pop"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "pop": 3.0,
-            "electropop": 2.0,
-            "dream pop": 1.0
+            "electropop": 1.0,
+            "pop": 2.2,
+            "synth-pop": 1.0
           },
           "genre_sources": {
             "lastfm": [
               "pop",
               "electropop",
-              "dream pop"
+              "synth-pop"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
             "lastfm": [
               "pop",
               "electropop",
-              "dream pop",
               "synthpop",
+              "dream pop",
               "alt-pop",
               "alternative rnb",
               "synth-pop",
-              "taylor swift",
               "2010s",
-              "rock"
+              "julia mofada",
+              "taylor swift"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "Miss Americana & The Heartbreak Prince"
+            "lastfm": "Miss Americana & The Heartbreak Prince",
+            "apple_music": "Miss Americana & The Heartbreak Prince"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:miss_americana_the_heartbreak_prince",
+          "genre_canonical_key": "family:miss_americana_and_the_heartbreak_prince",
           "filter_tags": [
             "solo",
             "album_track"
@@ -535,39 +569,45 @@
           "historical_track_ids": [],
           "release_date": "2019-08-23T00:00:00Z",
           "genres": [
-            "pop",
-            "pop rock",
-            "electropop"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "pop": 3.0,
-            "pop rock": 2.0,
-            "electropop": 1.0
+            "electropop": 1.0,
+            "pop": 2.2,
+            "pop rock": 1.0
           },
           "genre_sources": {
             "lastfm": [
               "pop",
               "pop rock",
               "electropop"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
             "lastfm": [
               "pop",
               "pop rock",
-              "electropop",
               "new wave",
+              "electropop",
               "2010s",
-              "rockabilly",
               "synthpop",
-              "taylor swift",
-              "indie pop",
-              "singer songwriter"
+              "rockabilly",
+              "pop punk",
+              "singer songwriter",
+              "indie pop"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "Paper Rings"
+            "lastfm": "Paper Rings",
+            "apple_music": "Paper Rings"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:paper_rings",
@@ -607,21 +647,22 @@
           "historical_track_ids": [],
           "release_date": "2019-08-23T00:00:00Z",
           "genres": [
-            "synth-pop",
-            "pop",
-            "electropop"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "synth-pop": 3.0,
-            "pop": 2.0,
-            "electropop": 1.0
+            "electropop": 1.0,
+            "pop": 2.2,
+            "synth-pop": 1.0
           },
           "genre_sources": {
             "lastfm": [
               "synth-pop",
               "pop",
               "electropop"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
@@ -630,16 +671,21 @@
               "pop",
               "electropop",
               "alt-pop",
+              "dance-pop",
               "singer-songwriter",
               "taylor swift",
-              "dance-pop",
+              "julia mofada",
               "2010s",
-              "rosa",
-              "electronic"
+              "azul"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "Cornelia Street"
+            "lastfm": "Cornelia Street",
+            "apple_music": "Cornelia Street"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:cornelia_street",
@@ -679,39 +725,45 @@
           "historical_track_ids": [],
           "release_date": "2019-08-23T00:00:00Z",
           "genres": [
-            "pop",
-            "synth-pop",
-            "electropop"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "pop": 3.0,
-            "synth-pop": 2.0,
-            "electropop": 1.0
+            "electropop": 1.0,
+            "pop": 2.2,
+            "synth-pop": 1.0
           },
           "genre_sources": {
             "lastfm": [
-              "pop",
               "synth-pop",
+              "pop",
               "electropop"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
             "lastfm": [
-              "pop",
               "synthpop",
+              "pop",
               "electropop",
               "dream pop",
               "alt-pop",
               "singer-songwriter",
               "indie pop",
-              "taylor swift",
+              "lover",
               "folk pop",
-              "lover"
+              "taylor swift"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "Death By A Thousand Cuts"
+            "lastfm": "Death By A Thousand Cuts",
+            "apple_music": "Death By A Thousand Cuts"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:death_by_a_thousand_cuts",
@@ -751,39 +803,45 @@
           "historical_track_ids": [],
           "release_date": "2019-08-23T00:00:00Z",
           "genres": [
-            "pop",
-            "synth-pop",
-            "singer-songwriter"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "pop": 3.0,
-            "synth-pop": 2.0,
-            "singer-songwriter": 1.0
+            "electropop": 1.0,
+            "pop": 2.2,
+            "synth-pop": 1.0
           },
           "genre_sources": {
             "lastfm": [
               "pop",
               "synth-pop",
-              "singer-songwriter"
+              "electropop"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
             "lastfm": [
               "pop",
               "britpop",
-              "bubblegum pop",
               "synthpop",
-              "singer-songwriter",
+              "bubblegum pop",
               "electropop",
+              "singer-songwriter",
               "electronic",
-              "taylor swift",
               "2010s",
+              "julia mofada",
               "alt-pop"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "London Boy"
+            "lastfm": "London Boy",
+            "apple_music": "London Boy"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:london_boy",
@@ -825,16 +883,29 @@
           "image_url": "https://i.scdn.co/image/ab67616d0000b273e787cffec20aa2a396a61647",
           "historical_track_ids": [],
           "release_date": "2019-08-23T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
+          "genres": [
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 1.2
+          },
           "genre_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "pop"
+            ]
           },
           "genre_raw_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music"
+            ]
           },
-          "genre_query_titles": {},
+          "genre_query_titles": {
+            "apple_music": "Soon You'll Get Better (feat. The Chicks)"
+          },
           "genre_errors": {},
           "genre_canonical_key": "family:soon_you_ll_get_better",
           "filter_tags": [
@@ -873,21 +944,22 @@
           "historical_track_ids": [],
           "release_date": "2019-08-23T00:00:00Z",
           "genres": [
-            "pop",
-            "synth-pop",
-            "alternative"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "pop": 3.0,
-            "synth-pop": 2.0,
-            "alternative": 1.0
+            "alternative": 1.0,
+            "pop": 2.2,
+            "synth-pop": 1.0
           },
           "genre_sources": {
             "lastfm": [
               "pop",
               "synth-pop",
               "alternative"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
@@ -896,16 +968,21 @@
               "synthpop",
               "Sophisti-Pop",
               "rnb",
-              "alt-pop",
               "saxophone",
+              "alt-pop",
               "sexy",
-              "taylor swift",
-              "dream pop",
-              "alternative rnb"
+              "alternative rnb",
+              "Neo-Soul",
+              "dream pop"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "False God"
+            "lastfm": "False God",
+            "apple_music": "False God"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:false_god",
@@ -945,21 +1022,22 @@
           "historical_track_ids": [],
           "release_date": "2019-08-23T00:00:00Z",
           "genres": [
-            "pop",
-            "synth-pop",
-            "electropop"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "pop": 3.0,
-            "synth-pop": 2.0,
-            "electropop": 1.0
+            "electropop": 1.0,
+            "pop": 2.2,
+            "synth-pop": 1.0
           },
           "genre_sources": {
             "lastfm": [
               "pop",
               "synth-pop",
               "electropop"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
@@ -969,15 +1047,22 @@
               "taylor swift",
               "lgbtq",
               "2010s",
-              "electropop",
               "2019",
+              "electropop",
               "lgbt",
               "soty",
               "You Need to Calm Down"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Música",
+              "Musik"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "You Need To Calm Down"
+            "lastfm": "You Need To Calm Down",
+            "apple_music": "You Need To Calm Down"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:you_need_to_calm_down",
@@ -1017,39 +1102,45 @@
           "historical_track_ids": [],
           "release_date": "2019-08-23T00:00:00Z",
           "genres": [
-            "pop",
-            "synth-pop",
-            "dream pop"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "pop": 3.0,
-            "synth-pop": 2.0,
-            "dream pop": 1.0
+            "dream pop": 1.0,
+            "pop": 2.2,
+            "synth-pop": 1.0
           },
           "genre_sources": {
             "lastfm": [
-              "pop",
               "synth-pop",
+              "pop",
               "dream pop"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
             "lastfm": [
-              "pop",
               "synthpop",
+              "pop",
               "dream pop",
               "alt-pop",
               "love at first listen",
-              "electropop",
               "pop rock",
-              "taylor swift",
+              "electropop",
               "bubblegum pop",
-              "lover"
+              "Ballad",
+              "relatable"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "Afterglow"
+            "lastfm": "Afterglow",
+            "apple_music": "Afterglow"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:afterglow",
@@ -1092,18 +1183,20 @@
           "historical_track_ids": [],
           "release_date": "2019-08-23T00:00:00Z",
           "genres": [
-            "pop",
-            "synth-pop"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "pop": 3.0,
-            "synth-pop": 2.0
+            "pop": 2.2,
+            "synth-pop": 1.0
           },
           "genre_sources": {
             "lastfm": [
               "pop",
               "synth-pop"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
@@ -1112,16 +1205,21 @@
               "bubblegum pop",
               "taylor swift",
               "2019",
-              "synthpop",
               "brendon urie",
+              "synthpop",
               "teen pop",
               "lover",
-              "duet",
-              "A literal masterpiece STREAM"
+              "A literal masterpiece STREAM",
+              "queen of pop"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "ME! (feat. Brendon Urie of Panic! At The Disco)"
+            "lastfm": "ME! (feat. Brendon Urie of Panic! At The Disco)",
+            "apple_music": "ME! (feat. Brendon Urie of Panic! At The Disco)"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:me",
@@ -1160,16 +1258,29 @@
           "image_url": "https://i.scdn.co/image/ab67616d0000b273e787cffec20aa2a396a61647",
           "historical_track_ids": [],
           "release_date": "2019-08-23T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
+          "genres": [
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 1.2
+          },
           "genre_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "pop"
+            ]
           },
           "genre_raw_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music"
+            ]
           },
-          "genre_query_titles": {},
+          "genre_query_titles": {
+            "apple_music": "It's Nice To Have A Friend"
+          },
           "genre_errors": {},
           "genre_canonical_key": "family:it_s_nice_to_have_a_friend",
           "filter_tags": [
@@ -1208,21 +1319,22 @@
           "historical_track_ids": [],
           "release_date": "2019-08-23T00:00:00Z",
           "genres": [
-            "pop",
-            "synth-pop",
-            "alternative"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "pop": 3.0,
-            "synth-pop": 2.0,
-            "alternative": 1.0
+            "alternative": 1.0,
+            "pop": 2.2,
+            "synth-pop": 1.0
           },
           "genre_sources": {
             "lastfm": [
               "pop",
               "synth-pop",
               "alternative"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
@@ -1235,12 +1347,18 @@
               "golden",
               "love at first listen",
               "best of 2019",
-              "synth-pop",
-              "taylor swift"
+              "electropop",
+              "piano"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Música"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "Daylight"
+            "lastfm": "Daylight",
+            "apple_music": "Daylight"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:daylight",
@@ -1291,14 +1409,12 @@
           ],
           "release_date": "2019-08-23T00:00:00Z",
           "genres": [
-            "pop",
-            "dream pop",
-            "synth-pop"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "pop": 3.0,
-            "dream pop": 2.0,
+            "dream pop": 1.0,
+            "pop": 2.2,
             "synth-pop": 1.0
           },
           "genre_sources": {
@@ -1306,6 +1422,9 @@
               "pop",
               "dream pop",
               "synth-pop"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
@@ -1314,16 +1433,21 @@
               "pop",
               "dream pop",
               "synthpop",
-              "rnb",
-              "female vocalists",
               "alt-pop",
-              "doo-wop",
+              "female vocalists",
+              "rnb",
+              "pop soul",
               "brill building",
-              "pop soul"
+              "doo-wop"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "All Of The Girls You Loved Before"
+            "lastfm": "All Of The Girls You Loved Before",
+            "apple_music": "All Of The Girls You Loved Before"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:all_of_the_girls_you_loved_before",
@@ -1376,10 +1500,12 @@
           "genre_status": "missing",
           "genre_scores": {},
           "genre_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": []
           },
           "genre_raw_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": []
           },
           "genre_query_titles": {},
           "genre_errors": {},
@@ -1427,16 +1553,29 @@
           "image_url": "https://i.scdn.co/image/ab67616d0000b27359457bdb1edb5c6417f3baa2",
           "historical_track_ids": [],
           "release_date": "2019-11-13T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
+          "genres": [
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 1.2
+          },
           "genre_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "pop"
+            ]
           },
           "genre_raw_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music"
+            ]
           },
-          "genre_query_titles": {},
+          "genre_query_titles": {
+            "apple_music": "Lover (Remix) [feat. Shawn Mendes]"
+          },
           "genre_errors": {},
           "genre_canonical_key": "family:lover_feat_shawn_mendes",
           "filter_tags": [
@@ -1475,39 +1614,47 @@
           "historical_track_ids": [],
           "release_date": "2019-11-26T00:00:00Z",
           "genres": [
-            "pop",
-            "country",
-            "indie folk"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "pop": 3.0,
-            "country": 2.0,
-            "indie folk": 1.0
+            "country": 1.0,
+            "indie folk": 1.0,
+            "pop": 2.2
           },
           "genre_sources": {
             "lastfm": [
               "pop",
               "country",
               "indie folk"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
             "lastfm": [
               "pop",
               "country",
-              "indie folk",
               "Love",
+              "indie folk",
               "country pop",
-              "2010s",
-              "singer-songwriter",
               "folk pop",
-              "2019",
+              "singer-songwriter",
+              "2010s",
+              "soft rock",
               "Ballad"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Música",
+              "Musik"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "Lover"
+            "lastfm": "Lover",
+            "apple_music": "Lover"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:lover",
@@ -1547,39 +1694,47 @@
           "historical_track_ids": [],
           "release_date": "2020-05-17T00:00:00Z",
           "genres": [
-            "pop",
-            "country",
-            "indie folk"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "pop": 3.0,
-            "country": 2.0,
-            "indie folk": 1.0
+            "country": 1.0,
+            "indie folk": 1.0,
+            "pop": 2.2
           },
           "genre_sources": {
             "lastfm": [
               "pop",
               "country",
               "indie folk"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
             "lastfm": [
               "pop",
               "country",
-              "indie folk",
               "Love",
+              "indie folk",
               "country pop",
-              "2010s",
-              "singer-songwriter",
               "folk pop",
-              "2019",
+              "singer-songwriter",
+              "2010s",
+              "soft rock",
               "Ballad"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Música",
+              "Musik"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "Lover"
+            "lastfm": "Lover",
+            "apple_music": "Lover"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:lover",
@@ -1621,21 +1776,22 @@
           "historical_track_ids": [],
           "release_date": "2019-08-20T00:00:00Z",
           "genres": [
-            "pop",
-            "synth-pop",
-            "electropop"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "pop": 3.0,
-            "synth-pop": 2.0,
-            "electropop": 1.0
+            "electropop": 1.0,
+            "pop": 2.2,
+            "synth-pop": 1.0
           },
           "genre_sources": {
             "lastfm": [
               "pop",
               "synth-pop",
               "electropop"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
@@ -1645,15 +1801,22 @@
               "taylor swift",
               "lgbtq",
               "2010s",
-              "electropop",
               "2019",
+              "electropop",
               "lgbt",
               "soty",
               "You Need to Calm Down"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Música",
+              "Musik"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "You Need To Calm Down"
+            "lastfm": "You Need To Calm Down",
+            "apple_music": "You Need To Calm Down"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:you_need_to_calm_down",
@@ -1693,21 +1856,22 @@
           "historical_track_ids": [],
           "release_date": "2020-05-17T00:00:00Z",
           "genres": [
-            "pop",
-            "synth-pop",
-            "electropop"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "pop": 3.0,
-            "synth-pop": 2.0,
-            "electropop": 1.0
+            "electropop": 1.0,
+            "pop": 2.2,
+            "synth-pop": 1.0
           },
           "genre_sources": {
             "lastfm": [
               "pop",
               "synth-pop",
               "electropop"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
@@ -1717,15 +1881,22 @@
               "taylor swift",
               "lgbtq",
               "2010s",
-              "electropop",
               "2019",
+              "electropop",
               "lgbt",
               "soty",
               "You Need to Calm Down"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Música",
+              "Musik"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "You Need To Calm Down"
+            "lastfm": "You Need To Calm Down",
+            "apple_music": "You Need To Calm Down"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:you_need_to_calm_down",
@@ -1767,21 +1938,22 @@
           "historical_track_ids": [],
           "release_date": "2020-05-18T00:00:00Z",
           "genres": [
-            "synth-pop",
-            "pop",
-            "electropop"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "synth-pop": 3.0,
-            "pop": 2.0,
-            "electropop": 1.0
+            "electropop": 1.0,
+            "pop": 2.2,
+            "synth-pop": 1.0
           },
           "genre_sources": {
             "lastfm": [
               "synth-pop",
               "pop",
               "electropop"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
@@ -1790,16 +1962,21 @@
               "pop",
               "electropop",
               "alt-pop",
+              "dance-pop",
               "singer-songwriter",
               "taylor swift",
-              "dance-pop",
+              "julia mofada",
               "2010s",
-              "rosa",
-              "electronic"
+              "azul"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "Cornelia Street"
+            "lastfm": "Cornelia Street",
+            "apple_music": "Cornelia Street"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:cornelia_street",
@@ -1841,21 +2018,22 @@
           "historical_track_ids": [],
           "release_date": "2020-05-17T00:00:00Z",
           "genres": [
-            "pop",
-            "synth-pop",
-            "alternative"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "pop": 3.0,
-            "synth-pop": 2.0,
-            "alternative": 1.0
+            "alternative": 1.0,
+            "pop": 2.2,
+            "synth-pop": 1.0
           },
           "genre_sources": {
             "lastfm": [
               "pop",
               "synth-pop",
               "alternative"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
@@ -1868,12 +2046,18 @@
               "golden",
               "love at first listen",
               "best of 2019",
-              "synth-pop",
-              "taylor swift"
+              "electropop",
+              "piano"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Música"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "Daylight"
+            "lastfm": "Daylight",
+            "apple_music": "Daylight"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:daylight",
@@ -1915,39 +2099,45 @@
           "historical_track_ids": [],
           "release_date": "2020-05-17T00:00:00Z",
           "genres": [
-            "pop",
-            "synth-pop",
-            "electropop"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "pop": 3.0,
-            "synth-pop": 2.0,
-            "electropop": 1.0
+            "electropop": 1.0,
+            "pop": 2.2,
+            "synth-pop": 1.0
           },
           "genre_sources": {
             "lastfm": [
-              "pop",
               "synth-pop",
+              "pop",
               "electropop"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
             "lastfm": [
-              "pop",
               "synthpop",
+              "pop",
               "electropop",
               "dream pop",
               "alt-pop",
               "singer-songwriter",
               "indie pop",
-              "taylor swift",
+              "lover",
               "folk pop",
-              "lover"
+              "taylor swift"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "Death By A Thousand Cuts"
+            "lastfm": "Death By A Thousand Cuts",
+            "apple_music": "Death By A Thousand Cuts"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:death_by_a_thousand_cuts",
@@ -1989,39 +2179,45 @@
           "historical_track_ids": [],
           "release_date": "2020-05-17T00:00:00Z",
           "genres": [
-            "pop",
-            "synth-pop",
-            "dream pop"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "pop": 3.0,
-            "synth-pop": 2.0,
-            "dream pop": 1.0
+            "dream pop": 1.0,
+            "pop": 2.2,
+            "synth-pop": 1.0
           },
           "genre_sources": {
             "lastfm": [
-              "pop",
               "synth-pop",
+              "pop",
               "dream pop"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
             "lastfm": [
-              "pop",
               "synthpop",
+              "pop",
               "dream pop",
               "ambient pop",
               "synthwave",
               "taylor swift",
               "ambient",
               "lover",
-              "electropop",
-              "2019"
+              "alt-pop",
+              "electropop"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "The Archer"
+            "lastfm": "The Archer",
+            "apple_music": "The Archer"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:the_archer",
@@ -2063,14 +2259,12 @@
           "historical_track_ids": [],
           "release_date": "2020-02-18T00:00:00Z",
           "genres": [
-            "pop",
-            "electropop",
-            "synth-pop"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "pop": 3.0,
-            "electropop": 2.0,
+            "electropop": 1.0,
+            "pop": 2.2,
             "synth-pop": 1.0
           },
           "genre_sources": {
@@ -2078,24 +2272,32 @@
               "pop",
               "electropop",
               "synth-pop"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
             "lastfm": [
               "pop",
               "electropop",
-              "feminism",
               "2019",
+              "feminism",
               "overrated",
-              "synth-pop",
               "synthpop",
-              "taylor swift",
-              "dance-pop",
-              "2010s"
+              "feminist",
+              "2010s",
+              "julia mofada",
+              "taylor swift"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "The Man"
+            "lastfm": "The Man",
+            "apple_music": "The Man"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:the_man",
@@ -2137,18 +2339,20 @@
           "historical_track_ids": [],
           "release_date": "2020-05-17T00:00:00Z",
           "genres": [
-            "pop",
-            "synth-pop"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "pop": 3.0,
-            "synth-pop": 2.0
+            "pop": 2.2,
+            "synth-pop": 1.0
           },
           "genre_sources": {
             "lastfm": [
               "pop",
               "synth-pop"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
@@ -2157,16 +2361,21 @@
               "bubblegum pop",
               "taylor swift",
               "2019",
-              "synthpop",
               "brendon urie",
+              "synthpop",
               "teen pop",
               "lover",
-              "duet",
-              "A literal masterpiece STREAM"
+              "A literal masterpiece STREAM",
+              "queen of pop"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "ME! (feat. Brendon Urie of Panic! At The Disco)"
+            "lastfm": "ME! (feat. Brendon Urie of Panic! At The Disco)",
+            "apple_music": "ME! (feat. Brendon Urie of Panic! At The Disco)"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:me",
@@ -2217,14 +2426,12 @@
           ],
           "release_date": "2023-10-19T00:00:00Z",
           "genres": [
-            "electropop",
-            "pop",
-            "synth-pop"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "electropop": 3.0,
-            "pop": 2.0,
+            "electropop": 1.0,
+            "pop": 2.2,
             "synth-pop": 1.0
           },
           "genre_sources": {
@@ -2232,6 +2439,9 @@
               "electropop",
               "pop",
               "synth-pop"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
@@ -2240,16 +2450,29 @@
               "pop",
               "synthpop",
               "industrial pop",
-              "pop perfection",
               "synthwave",
+              "pop perfection",
               "2019",
               "the best of 2019",
               "love at first listen",
               "soty"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Música",
+              "Musik",
+              "国际流行",
+              "音乐",
+              "팝",
+              "음악",
+              "流行樂",
+              "音樂"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "Cruel Summer"
+            "lastfm": "Cruel Summer",
+            "apple_music": "Cruel Summer"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:cruel_summer",
@@ -2289,14 +2512,12 @@
           "historical_track_ids": [],
           "release_date": "2023-10-19T00:00:00Z",
           "genres": [
-            "electropop",
-            "pop",
-            "synth-pop"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "electropop": 3.0,
-            "pop": 2.0,
+            "electropop": 1.0,
+            "pop": 2.2,
             "synth-pop": 1.0
           },
           "genre_sources": {
@@ -2304,6 +2525,9 @@
               "electropop",
               "pop",
               "synth-pop"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
@@ -2312,16 +2536,29 @@
               "pop",
               "synthpop",
               "industrial pop",
-              "pop perfection",
               "synthwave",
+              "pop perfection",
               "2019",
               "the best of 2019",
               "love at first listen",
               "soty"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Música",
+              "Musik",
+              "国际流行",
+              "音乐",
+              "팝",
+              "음악",
+              "流行樂",
+              "音樂"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "Cruel Summer"
+            "lastfm": "Cruel Summer",
+            "apple_music": "Cruel Summer"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:cruel_summer",
@@ -2370,14 +2607,12 @@
           ],
           "image_url": "https://image-cdn-ak.spotifycdn.com/image/ab67616d0000b273f669b4e7f0327c92909bc762",
           "genres": [
-            "electropop",
-            "pop",
-            "synth-pop"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "electropop": 3.0,
-            "pop": 2.0,
+            "electropop": 1.0,
+            "pop": 2.2,
             "synth-pop": 1.0
           },
           "genre_sources": {
@@ -2385,6 +2620,9 @@
               "electropop",
               "pop",
               "synth-pop"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
@@ -2393,16 +2631,29 @@
               "pop",
               "synthpop",
               "industrial pop",
-              "pop perfection",
               "synthwave",
+              "pop perfection",
               "2019",
               "the best of 2019",
               "love at first listen",
               "soty"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Música",
+              "Musik",
+              "国际流行",
+              "音乐",
+              "팝",
+              "음악",
+              "流行樂",
+              "音樂"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "Cruel Summer"
+            "lastfm": "Cruel Summer",
+            "apple_music": "Cruel Summer"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:cruel_summer",
@@ -2450,7 +2701,21 @@
           "tags": [],
           "chart_extra": true,
           "tsm_song_id": "txki",
-          "tsm_album_id": "ksv"
+          "tsm_album_id": "ksv",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": [],
+            "apple_music": []
+          },
+          "genre_raw_sources": {
+            "lastfm": [],
+            "apple_music": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:soon_youll_get_better"
         },
         {
           "title": "Me! - Cover",
@@ -2485,7 +2750,32 @@
           "extra_type": "other",
           "tags": [],
           "tsm_song_id": "6mmr",
-          "tsm_album_id": "ksv"
+          "tsm_album_id": "ksv",
+          "genres": [
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 1.2
+          },
+          "genre_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music"
+            ]
+          },
+          "genre_query_titles": {
+            "apple_music": "Me!"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:me_chartsnapshot_external_5BHa3hmD"
         }
       ],
       "album": "Lover"

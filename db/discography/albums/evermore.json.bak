@@ -26,8 +26,12 @@
           "song_family": "willow",
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b27333b8541201f1ef38941024be",
-          "historical_track_ids": [],
-          "release_date": "2020-12-11T00:00:00Z",
+          "historical_track_ids": [
+            "3yk94DUDanXyVhRLVjmI3w",
+            "3Uo7WG0vmLQ07WB4BDwy7D",
+            "2gVhfX2Gy1T9kDuS9azrF7"
+          ],
+          "release_date": "2020-12-16T00:00:00Z",
           "genres": [
             "folk pop",
             "folk",
@@ -72,7 +76,13 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": [],
+          "tsm_song_id": "20he",
+          "tsm_album_id": "dy9"
         },
         {
           "title": "champagne problems",
@@ -92,8 +102,11 @@
           "song_family": "champagne_problems",
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b27333b8541201f1ef38941024be",
-          "historical_track_ids": [],
-          "release_date": "2020-12-11T00:00:00Z",
+          "historical_track_ids": [
+            "6rap8NpGq8LDcVaJWkKFPn",
+            "1gcyHQpBQ1lfXGdhZmWrHP"
+          ],
+          "release_date": "2020-12-10T00:00:00Z",
           "genres": [
             "folk",
             "rock",
@@ -138,7 +151,13 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": [],
+          "tsm_song_id": "zzv1",
+          "tsm_album_id": "dy9"
         },
         {
           "title": "gold rush",
@@ -158,8 +177,11 @@
           "song_family": "gold_rush",
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b27333b8541201f1ef38941024be",
-          "historical_track_ids": [],
-          "release_date": "2020-12-11T00:00:00Z",
+          "historical_track_ids": [
+            "2ZTKWFG6OtHI3ewy9OGNOY",
+            "3Dby3p1m6IOZn2gIIqECgK"
+          ],
+          "release_date": "2020-12-10T00:00:00Z",
           "genres": [
             "folk",
             "singer-songwriter",
@@ -204,7 +226,63 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": [],
+          "tsm_song_id": "woxq",
+          "tsm_album_id": "dy9"
+        },
+        {
+          "title": "'tis the damn season",
+          "url": "https://open.spotify.com/track/6sQckd3Z8NPxVVKUnavY1F",
+          "type": "track",
+          "edition": "standard",
+          "display_section": "Standard Edition",
+          "display_order": 4,
+          "base_title": "'tis the damn season",
+          "album": "evermore",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "'tis the damn season",
+          "song_family": "tis_the_damn_season",
+          "version_tag": "standard",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b27390fd9741e1838115cd90b3b6",
+          "historical_track_ids": [
+            "4GBkffrtA51p17JH35irGA",
+            "7dW84mWkdWE5a6lFWxJCBG"
+          ],
+          "release_date": "2020-12-10T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:tis_the_damn_season",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "album_track": "high:section_or_display_section"
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": [],
+          "tsm_song_id": "hl6h",
+          "tsm_album_id": "dy9"
         },
         {
           "title": "tolerate it",
@@ -224,8 +302,11 @@
           "song_family": "tolerate_it",
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b27333b8541201f1ef38941024be",
-          "historical_track_ids": [],
-          "release_date": "2020-12-11T00:00:00Z",
+          "historical_track_ids": [
+            "1t2M7UYoUpmhfZNMBsymJr",
+            "6lCvK2AR2uOKkVFCVlAzzm"
+          ],
+          "release_date": "2020-12-10T00:00:00Z",
           "genres": [
             "singer-songwriter",
             "indie pop",
@@ -270,7 +351,13 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": [],
+          "tsm_song_id": "lho7",
+          "tsm_album_id": "dy9"
         },
         {
           "title": "no body, no crime (feat. HAIM)",
@@ -293,8 +380,10 @@
           "song_family": "no_body_no_crime",
           "version_tag": "featured__feature",
           "image_url": "https://i.scdn.co/image/ab67616d0000b27333b8541201f1ef38941024be",
-          "historical_track_ids": [],
-          "release_date": "2020-12-11T00:00:00Z",
+          "historical_track_ids": [
+            "6uwfVkaOM1mcMkFmSn35ix"
+          ],
+          "release_date": "2020-12-10T00:00:00Z",
           "genres": [
             "country",
             "pop rock",
@@ -339,7 +428,13 @@
           "filter_tag_sources": {
             "feature": "high:type_or_primary_artist",
             "album_track": "high:section_or_display_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": [],
+          "tsm_song_id": "tyoi",
+          "tsm_album_id": "dy9"
         },
         {
           "title": "happiness",
@@ -359,8 +454,11 @@
           "song_family": "happiness",
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b27333b8541201f1ef38941024be",
-          "historical_track_ids": [],
-          "release_date": "2020-12-11T00:00:00Z",
+          "historical_track_ids": [
+            "0EFdoyXHpRHhEmsOlQhIXO",
+            "55Vf4bimc1Rtfg0PAQRAo2"
+          ],
+          "release_date": "2020-12-10T00:00:00Z",
           "genres": [
             "folk",
             "pop",
@@ -405,7 +503,13 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": [],
+          "tsm_song_id": "oxy6",
+          "tsm_album_id": "dy9"
         },
         {
           "title": "dorothea",
@@ -425,8 +529,11 @@
           "song_family": "dorothea",
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b27333b8541201f1ef38941024be",
-          "historical_track_ids": [],
-          "release_date": "2020-12-11T00:00:00Z",
+          "historical_track_ids": [
+            "3w9VRlKPvNxj40RdUGRweH",
+            "66tOfHVH3aUrscg8vExRV4"
+          ],
+          "release_date": "2020-12-10T00:00:00Z",
           "genres": [
             "pop",
             "folk",
@@ -471,7 +578,13 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": [],
+          "tsm_song_id": "my92",
+          "tsm_album_id": "dy9"
         },
         {
           "title": "coney island (feat. The National)",
@@ -494,8 +607,11 @@
           "song_family": "coney_island",
           "version_tag": "featured__feature",
           "image_url": "https://i.scdn.co/image/ab67616d0000b27333b8541201f1ef38941024be",
-          "historical_track_ids": [],
-          "release_date": "2020-12-11T00:00:00Z",
+          "historical_track_ids": [
+            "4tyX1rw9X309WkEdh2As4B",
+            "2awNGIJHodfLZSClB3PYhz"
+          ],
+          "release_date": "2020-12-10T00:00:00Z",
           "genres": [
             "alternative rock",
             "rock",
@@ -540,7 +656,13 @@
           "filter_tag_sources": {
             "feature": "high:type_or_primary_artist",
             "album_track": "high:section_or_display_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": [],
+          "tsm_song_id": "73fa",
+          "tsm_album_id": "dy9"
         },
         {
           "title": "ivy",
@@ -560,8 +682,11 @@
           "song_family": "ivy",
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b27333b8541201f1ef38941024be",
-          "historical_track_ids": [],
-          "release_date": "2020-12-11T00:00:00Z",
+          "historical_track_ids": [
+            "7tXMHAFEOzcUaUQqovRGho",
+            "43Ykum9T72UOPhBN31grpN"
+          ],
+          "release_date": "2020-12-10T00:00:00Z",
           "genres": [
             "folk pop",
             "folk",
@@ -606,7 +731,13 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": [],
+          "tsm_song_id": "s2gd",
+          "tsm_album_id": "dy9"
         },
         {
           "title": "cowboy like me",
@@ -626,8 +757,11 @@
           "song_family": "cowboy_like_me",
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b27333b8541201f1ef38941024be",
-          "historical_track_ids": [],
-          "release_date": "2020-12-11T00:00:00Z",
+          "historical_track_ids": [
+            "3qy4znWySY3rwzS2vHDOeg",
+            "52OkpDsU6MmPx1AwGOb6Ap"
+          ],
+          "release_date": "2020-12-10T00:00:00Z",
           "genres": [
             "country",
             "folk",
@@ -672,7 +806,13 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": [],
+          "tsm_song_id": "z8gr",
+          "tsm_album_id": "dy9"
         },
         {
           "title": "long story short",
@@ -692,8 +832,11 @@
           "song_family": "long_story_short",
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b27333b8541201f1ef38941024be",
-          "historical_track_ids": [],
-          "release_date": "2020-12-11T00:00:00Z",
+          "historical_track_ids": [
+            "0vVMlbdYx2080Oa9FndPZr",
+            "5VYWxXUpxuxEmCqMLDqICo"
+          ],
+          "release_date": "2020-12-10T00:00:00Z",
           "genres": [
             "rock",
             "folk",
@@ -738,7 +881,13 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": [],
+          "tsm_song_id": "ris3",
+          "tsm_album_id": "dy9"
         },
         {
           "title": "marjorie",
@@ -758,8 +907,11 @@
           "song_family": "marjorie",
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b27333b8541201f1ef38941024be",
-          "historical_track_ids": [],
-          "release_date": "2020-12-11T00:00:00Z",
+          "historical_track_ids": [
+            "7vBNFh3NIZTj6tB5s1IBjE",
+            "5uICWmZTLkpEVbK22PBP6e"
+          ],
+          "release_date": "2020-12-10T00:00:00Z",
           "genres": [
             "rock",
             "pop",
@@ -804,7 +956,13 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": [],
+          "tsm_song_id": "zwq6",
+          "tsm_album_id": "dy9"
         },
         {
           "title": "closure",
@@ -824,8 +982,11 @@
           "song_family": "closure",
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b27333b8541201f1ef38941024be",
-          "historical_track_ids": [],
-          "release_date": "2020-12-11T00:00:00Z",
+          "historical_track_ids": [
+            "3uayvzcbqFydIbgUeC6EJh",
+            "6a8aUhYbaQBUI8PcJ5ZmQ6"
+          ],
+          "release_date": "2020-12-10T00:00:00Z",
           "genres": [
             "pop",
             "folk",
@@ -870,7 +1031,13 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": [],
+          "tsm_song_id": "9k0l",
+          "tsm_album_id": "dy9"
         },
         {
           "title": "evermore (feat. Bon Iver)",
@@ -893,8 +1060,10 @@
           "song_family": "evermore",
           "version_tag": "featured__feature",
           "image_url": "https://i.scdn.co/image/ab67616d0000b27333b8541201f1ef38941024be",
-          "historical_track_ids": [],
-          "release_date": "2020-12-11T00:00:00Z",
+          "historical_track_ids": [
+            "6Wlq9rqkxrqj5Kls4Kw14H"
+          ],
+          "release_date": "2020-12-10T00:00:00Z",
           "genres": [
             "folk",
             "rock",
@@ -939,48 +1108,13 @@
           "filter_tag_sources": {
             "feature": "high:type_or_primary_artist",
             "album_track": "high:section_or_display_section"
-          }
-        },
-        {
-          "title": "'tis the damn season",
-          "url": "https://open.spotify.com/track/6sQckd3Z8NPxVVKUnavY1F",
-          "type": "track",
-          "edition": "standard",
-          "display_section": "Standard Edition",
-          "display_order": 4,
-          "base_title": "'tis the damn season",
-          "album": "evermore",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "'tis the damn season",
-          "song_family": "tis_the_damn_season",
-          "version_tag": "standard",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b27390fd9741e1838115cd90b3b6",
-          "historical_track_ids": [],
-          "release_date": "2021-01-07T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
-          "genre_sources": {
-            "lastfm": []
           },
-          "genre_raw_sources": {
-            "lastfm": []
-          },
-          "genre_query_titles": {},
-          "genre_errors": {},
-          "genre_canonical_key": "family:tis_the_damn_season",
-          "filter_tags": [
-            "solo",
-            "album_track"
-          ],
-          "filter_tag_sources": {
-            "solo": "high:artist_credit",
-            "album_track": "high:section_or_display_section"
-          }
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": [],
+          "tsm_song_id": "kshl",
+          "tsm_album_id": "dy9"
         }
       ]
     },
@@ -1053,7 +1187,13 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "alternate_version": "medium:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "deluxe",
+          "tags": [],
+          "tsm_song_id": "yqri",
+          "tsm_album_id": "dy9"
         },
         {
           "title": "it's time to go - bonus track",
@@ -1094,7 +1234,13 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "alternate_version": "medium:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "deluxe",
+          "tags": [],
+          "tsm_song_id": "clzn",
+          "tsm_album_id": "dy9"
         }
       ]
     },
@@ -1167,7 +1313,13 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "remix": "high:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "remix",
+          "tags": [],
+          "tsm_song_id": "20he",
+          "tsm_album_id": "dy9"
         },
         {
           "title": "willow - dancing witch version (Elvira remix)",
@@ -1235,7 +1387,13 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "remix": "high:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "remix",
+          "tags": [],
+          "tsm_song_id": "20he",
+          "tsm_album_id": "dy9"
         }
       ]
     },
@@ -1312,7 +1470,13 @@
             "solo": "high:artist_credit",
             "standalone": "medium:section_or_type",
             "alternate_version": "medium:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "remix",
+          "tags": [],
+          "tsm_song_id": "20he",
+          "tsm_album_id": "dy9"
         },
         {
           "title": "willow - moonlit witch version",
@@ -1382,7 +1546,13 @@
             "solo": "high:artist_credit",
             "standalone": "medium:section_or_type",
             "alternate_version": "medium:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "remix",
+          "tags": [],
+          "tsm_song_id": "20he",
+          "tsm_album_id": "dy9"
         }
       ]
     }

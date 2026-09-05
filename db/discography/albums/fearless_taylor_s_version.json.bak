@@ -1,7 +1,7 @@
 {
   "album": "Fearless (Taylor's Version)",
   "section_count": 3,
-  "track_count": 28,
+  "track_count": 29,
   "sections": [
     {
       "section": "standard_edition_tv",
@@ -26,7 +26,9 @@
           "song_family": "fearless",
           "version_tag": "taylors_version__alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273a48964b5d9a3d6968ae3e0de",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "5dwLFuYXsOikE1BMoBDMN6"
+          ],
           "release_date": "2021-04-09T00:00:00Z",
           "genres": [],
           "genre_status": "missing",
@@ -51,7 +53,13 @@
             "album_track": "high:section_or_display_section",
             "taylor_version": "high:title_or_section",
             "alternate_version": "medium:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "taylors_version",
+          "tags": [],
+          "tsm_song_id": "e66b",
+          "tsm_album_id": "uvw"
         },
         {
           "title": "Fifteen (Taylor's Version)",
@@ -96,7 +104,13 @@
             "album_track": "high:section_or_display_section",
             "taylor_version": "high:title_or_section",
             "alternate_version": "medium:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "taylors_version",
+          "tags": [],
+          "tsm_song_id": "0yvx",
+          "tsm_album_id": "uvw"
         },
         {
           "title": "Love Story (Taylor's Version)",
@@ -116,8 +130,10 @@
           "song_family": "love_story",
           "version_tag": "taylors_version__alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273a48964b5d9a3d6968ae3e0de",
-          "historical_track_ids": [],
-          "release_date": "2021-04-09T00:00:00Z",
+          "historical_track_ids": [
+            "3CeCwYWvdfXbZLXFhBrbnf"
+          ],
+          "release_date": "2021-02-12T00:00:00Z",
           "genres": [
             "country",
             "pop",
@@ -145,8 +161,8 @@
               "romantic",
               "female vocalists",
               "country pop",
-              "love story",
               "love song",
+              "love story",
               "female vocalist"
             ]
           },
@@ -166,7 +182,13 @@
             "album_track": "high:section_or_display_section",
             "taylor_version": "high:title_or_section",
             "alternate_version": "medium:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "taylors_version",
+          "tags": [],
+          "tsm_song_id": "kfua",
+          "tsm_album_id": "uvw"
         },
         {
           "title": "Hey Stephen (Taylor's Version)",
@@ -211,7 +233,13 @@
             "album_track": "high:section_or_display_section",
             "taylor_version": "high:title_or_section",
             "alternate_version": "medium:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "taylors_version",
+          "tags": [],
+          "tsm_song_id": "h4un",
+          "tsm_album_id": "uvw"
         },
         {
           "title": "White Horse (Taylor's Version)",
@@ -231,7 +259,9 @@
           "song_family": "white_horse",
           "version_tag": "taylors_version__alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273a48964b5d9a3d6968ae3e0de",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "4ieGtGwqOpvIQhRngp5VvR"
+          ],
           "release_date": "2021-04-09T00:00:00Z",
           "genres": [],
           "genre_status": "missing",
@@ -256,7 +286,13 @@
             "album_track": "high:section_or_display_section",
             "taylor_version": "high:title_or_section",
             "alternate_version": "medium:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "taylors_version",
+          "tags": [],
+          "tsm_song_id": "zuie",
+          "tsm_album_id": "uvw"
         },
         {
           "title": "You Belong With Me (Taylor's Version)",
@@ -276,7 +312,9 @@
           "song_family": "you_belong_with_me",
           "version_tag": "taylors_version__alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273a48964b5d9a3d6968ae3e0de",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "06qAK0pLx43pwzRi6MWV8g"
+          ],
           "release_date": "2021-04-09T00:00:00Z",
           "genres": [
             "country",
@@ -326,7 +364,13 @@
             "album_track": "high:section_or_display_section",
             "taylor_version": "high:title_or_section",
             "alternate_version": "medium:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "taylors_version",
+          "tags": [],
+          "tsm_song_id": "vd7b",
+          "tsm_album_id": "uvw"
         },
         {
           "title": "Breathe (feat. Colbie Caillat) (Taylor's Version)",
@@ -372,7 +416,13 @@
             "feature": "high:type_or_primary_artist",
             "album_track": "high:section_or_display_section",
             "taylor_version": "high:title_or_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "taylors_version",
+          "tags": [],
+          "tsm_song_id": "3eja",
+          "tsm_album_id": "uvw"
         },
         {
           "title": "Tell Me Why (Taylor's Version)",
@@ -417,7 +467,13 @@
             "album_track": "high:section_or_display_section",
             "taylor_version": "high:title_or_section",
             "alternate_version": "medium:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "taylors_version",
+          "tags": [],
+          "tsm_song_id": "q0lw",
+          "tsm_album_id": "uvw"
         },
         {
           "title": "You're Not Sorry (Taylor's Version)",
@@ -462,50 +518,13 @@
             "album_track": "high:section_or_display_section",
             "taylor_version": "high:title_or_section",
             "alternate_version": "medium:type_or_title"
-          }
-        },
-        {
-          "title": "Forever & Always (Piano Version) (Taylor's Version)",
-          "url": "https://open.spotify.com/intl-fr/track/01QdEx6kFr78ZejhQtWR5m",
-          "type": "standalone",
-          "edition": "extras",
-          "display_section": "Standard Edition Tv",
-          "display_order": 10,
-          "base_title": "Forever & Always (Piano Version)",
-          "album": "Fearless (Taylor's Version)",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "Forever & Always (Piano Version)",
-          "song_family": "forever_always_piano_version",
-          "version_tag": "taylors_version__standalone",
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273a48964b5d9a3d6968ae3e0de",
-          "historical_track_ids": [],
-          "release_date": "2021-04-09T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
-          "genre_sources": {
-            "lastfm": []
           },
-          "genre_raw_sources": {
-            "lastfm": []
-          },
-          "genre_query_titles": {},
-          "genre_errors": {},
-          "genre_canonical_key": "family:forever_always_piano_version",
-          "filter_tags": [
-            "solo",
-            "standalone",
-            "taylor_version"
-          ],
-          "filter_tag_sources": {
-            "solo": "high:artist_credit",
-            "standalone": "medium:section_or_type",
-            "taylor_version": "high:title_or_section"
-          }
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "taylors_version",
+          "tags": [],
+          "tsm_song_id": "ocws",
+          "tsm_album_id": "uvw"
         },
         {
           "title": "The Way I Loved You (Taylor's Version)",
@@ -550,7 +569,13 @@
             "album_track": "high:section_or_display_section",
             "taylor_version": "high:title_or_section",
             "alternate_version": "medium:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "taylors_version",
+          "tags": [],
+          "tsm_song_id": "e7em",
+          "tsm_album_id": "uvw"
         },
         {
           "title": "Forever & Always (Taylor's Version)",
@@ -595,7 +620,13 @@
             "album_track": "high:section_or_display_section",
             "taylor_version": "high:title_or_section",
             "alternate_version": "medium:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "taylors_version",
+          "tags": [],
+          "tsm_song_id": "6bm9",
+          "tsm_album_id": "uvw"
         },
         {
           "title": "The Best Day (Taylor's Version)",
@@ -640,7 +671,13 @@
             "album_track": "high:section_or_display_section",
             "taylor_version": "high:title_or_section",
             "alternate_version": "medium:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "taylors_version",
+          "tags": [],
+          "tsm_song_id": "qa48",
+          "tsm_album_id": "uvw"
         },
         {
           "title": "Change (Taylor's Version)",
@@ -685,7 +722,13 @@
             "album_track": "high:section_or_display_section",
             "taylor_version": "high:title_or_section",
             "alternate_version": "medium:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "taylors_version",
+          "tags": [],
+          "tsm_song_id": "qzwm",
+          "tsm_album_id": "uvw"
         },
         {
           "title": "Jump Then Fall (Taylor's Version)",
@@ -730,7 +773,13 @@
             "album_track": "high:section_or_display_section",
             "taylor_version": "high:title_or_section",
             "alternate_version": "medium:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "taylors_version",
+          "tags": [],
+          "tsm_song_id": "yml2",
+          "tsm_album_id": "uvw"
         },
         {
           "title": "Untouchable (Taylor's Version)",
@@ -775,7 +824,62 @@
             "album_track": "high:section_or_display_section",
             "taylor_version": "high:title_or_section",
             "alternate_version": "medium:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "taylors_version",
+          "tags": [],
+          "tsm_song_id": "mb5b",
+          "tsm_album_id": "uvw"
+        },
+        {
+          "title": "Forever & Always (Piano Version) (Taylor's Version)",
+          "url": "https://open.spotify.com/intl-fr/track/01QdEx6kFr78ZejhQtWR5m",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "Standard Edition Tv",
+          "display_order": 16,
+          "base_title": "Forever & Always (Piano Version)",
+          "album": "Fearless (Taylor's Version)",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Forever & Always (Piano Version)",
+          "song_family": "forever_always_piano_version",
+          "version_tag": "taylors_version__standalone",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273a48964b5d9a3d6968ae3e0de",
+          "historical_track_ids": [],
+          "release_date": "2021-04-09T00:00:00Z",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": []
+          },
+          "genre_raw_sources": {
+            "lastfm": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:forever_always_piano_version",
+          "filter_tags": [
+            "solo",
+            "standalone",
+            "taylor_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type",
+            "taylor_version": "high:title_or_section"
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "taylors_version",
+          "tags": [],
+          "tsm_song_id": "cpnm",
+          "tsm_album_id": "uvw"
         },
         {
           "title": "Come In With The Rain (Taylor's Version)",
@@ -783,7 +887,7 @@
           "type": "alternate_version",
           "edition": "standard",
           "display_section": "Standard Edition Tv",
-          "display_order": 16,
+          "display_order": 17,
           "base_title": "Come In With The Rain",
           "album": "Fearless (Taylor's Version)",
           "primary_artist": "Taylor Swift",
@@ -820,7 +924,13 @@
             "album_track": "high:section_or_display_section",
             "taylor_version": "high:title_or_section",
             "alternate_version": "medium:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "taylors_version",
+          "tags": [],
+          "tsm_song_id": "ofec",
+          "tsm_album_id": "uvw"
         },
         {
           "title": "Superstar (Taylor's Version)",
@@ -828,7 +938,7 @@
           "type": "alternate_version",
           "edition": "standard",
           "display_section": "Standard Edition Tv",
-          "display_order": 17,
+          "display_order": 18,
           "base_title": "Superstar",
           "album": "Fearless (Taylor's Version)",
           "primary_artist": "Taylor Swift",
@@ -865,7 +975,13 @@
             "album_track": "high:section_or_display_section",
             "taylor_version": "high:title_or_section",
             "alternate_version": "medium:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "taylors_version",
+          "tags": [],
+          "tsm_song_id": "uahy",
+          "tsm_album_id": "uvw"
         },
         {
           "title": "The Other Side Of The Door (Taylor's Version)",
@@ -873,7 +989,7 @@
           "type": "alternate_version",
           "edition": "standard",
           "display_section": "Standard Edition Tv",
-          "display_order": 18,
+          "display_order": 19,
           "base_title": "The Other Side Of The Door",
           "album": "Fearless (Taylor's Version)",
           "primary_artist": "Taylor Swift",
@@ -910,7 +1026,13 @@
             "album_track": "high:section_or_display_section",
             "taylor_version": "high:title_or_section",
             "alternate_version": "medium:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "taylors_version",
+          "tags": [],
+          "tsm_song_id": "jcfg",
+          "tsm_album_id": "uvw"
         },
         {
           "title": "Today Was A Fairytale (Taylor's Version)",
@@ -918,7 +1040,7 @@
           "type": "alternate_version",
           "edition": "standard",
           "display_section": "Standard Edition Tv",
-          "display_order": 19,
+          "display_order": 20,
           "base_title": "Today Was A Fairytale",
           "album": "Fearless (Taylor's Version)",
           "primary_artist": "Taylor Swift",
@@ -955,7 +1077,13 @@
             "album_track": "high:section_or_display_section",
             "taylor_version": "high:title_or_section",
             "alternate_version": "medium:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "taylors_version",
+          "tags": [],
+          "tsm_song_id": "2143",
+          "tsm_album_id": "uvw"
         },
         {
           "title": "You All Over Me (feat. Maren Morris) (Taylor's Version) (From The Vault)",
@@ -963,7 +1091,7 @@
           "type": "feature",
           "edition": "standard",
           "display_section": "Standard Edition Tv",
-          "display_order": 20,
+          "display_order": 21,
           "base_title": "You All Over Me (feat. Maren Morris) (Taylor's Version) (From The Vault)",
           "album": "Fearless (Taylor's Version)",
           "primary_artist": "Taylor Swift",
@@ -1004,7 +1132,14 @@
             "feature": "high:type_or_primary_artist",
             "taylor_version": "high:title_or_section",
             "from_the_vault": "high:title_section_or_edition"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "from_the_vault",
+          "display_album": "Fearless",
+          "tags": [],
+          "tsm_song_id": "qe82",
+          "tsm_album_id": "uvw"
         },
         {
           "title": "Mr. Perfectly Fine (Taylor's Version) (From The Vault)",
@@ -1012,7 +1147,7 @@
           "type": "standalone",
           "edition": "standard",
           "display_section": "Standard Edition Tv",
-          "display_order": 21,
+          "display_order": 22,
           "base_title": "Mr. Perfectly Fine (Taylor's Version) (From The Vault)",
           "album": "Fearless (Taylor's Version)",
           "primary_artist": "Taylor Swift",
@@ -1025,7 +1160,7 @@
           "version_tag": "vault__taylors_version__standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273a48964b5d9a3d6968ae3e0de",
           "historical_track_ids": [],
-          "release_date": "2021-04-09T00:00:00Z",
+          "release_date": "2021-04-07T00:00:00Z",
           "genres": [],
           "genre_status": "missing",
           "genre_scores": {},
@@ -1049,7 +1184,13 @@
             "standalone": "medium:section_or_type",
             "taylor_version": "high:title_or_section",
             "from_the_vault": "high:title_section_or_edition"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "from_the_vault",
+          "tags": [],
+          "tsm_song_id": "idsn",
+          "tsm_album_id": "uvw"
         },
         {
           "title": "We Were Happy (Taylor's Version) (From The Vault)",
@@ -1057,7 +1198,7 @@
           "type": "standalone",
           "edition": "standard",
           "display_section": "Standard Edition Tv",
-          "display_order": 22,
+          "display_order": 23,
           "base_title": "We Were Happy (Taylor's Version) (From The Vault)",
           "album": "Fearless (Taylor's Version)",
           "primary_artist": "Taylor Swift",
@@ -1094,7 +1235,13 @@
             "standalone": "medium:section_or_type",
             "taylor_version": "high:title_or_section",
             "from_the_vault": "high:title_section_or_edition"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "from_the_vault",
+          "tags": [],
+          "tsm_song_id": "crz5",
+          "tsm_album_id": "uvw"
         },
         {
           "title": "That's When (feat. Keith Urban) (Taylor's Version) (From The Vault)",
@@ -1102,7 +1249,7 @@
           "type": "feature",
           "edition": "standard",
           "display_section": "Standard Edition Tv",
-          "display_order": 23,
+          "display_order": 24,
           "base_title": "That's When (feat. Keith Urban) (Taylor's Version) (From The Vault)",
           "album": "Fearless (Taylor's Version)",
           "primary_artist": "Taylor Swift",
@@ -1140,7 +1287,13 @@
             "feature": "high:type_or_primary_artist",
             "taylor_version": "high:title_or_section",
             "from_the_vault": "high:title_section_or_edition"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "from_the_vault",
+          "tags": [],
+          "tsm_song_id": "8r9w",
+          "tsm_album_id": "uvw"
         },
         {
           "title": "Don't You (Taylor's Version) (From The Vault)",
@@ -1148,7 +1301,7 @@
           "type": "standalone",
           "edition": "standard",
           "display_section": "Standard Edition Tv",
-          "display_order": 24,
+          "display_order": 25,
           "base_title": "Don't You (Taylor's Version) (From The Vault)",
           "album": "Fearless (Taylor's Version)",
           "primary_artist": "Taylor Swift",
@@ -1185,7 +1338,13 @@
             "standalone": "medium:section_or_type",
             "taylor_version": "high:title_or_section",
             "from_the_vault": "high:title_section_or_edition"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "from_the_vault",
+          "tags": [],
+          "tsm_song_id": "imq4",
+          "tsm_album_id": "uvw"
         },
         {
           "title": "Bye Bye Baby (Taylor's Version) (From The Vault)",
@@ -1193,7 +1352,7 @@
           "type": "standalone",
           "edition": "standard",
           "display_section": "Standard Edition Tv",
-          "display_order": 25,
+          "display_order": 26,
           "base_title": "Bye Bye Baby (Taylor's Version) (From The Vault)",
           "album": "Fearless (Taylor's Version)",
           "primary_artist": "Taylor Swift",
@@ -1216,8 +1375,12 @@
           "genre_raw_sources": {
             "lastfm": []
           },
-          "genre_query_titles": {},
-          "genre_errors": {},
+          "genre_query_titles": {
+            "lastfm": "Bye Bye Baby"
+          },
+          "genre_errors": {
+            "lastfm": "HTTPSConnectionPool(host='ws.audioscrobbler.com', port=443): Max retries exceeded with url: /2.0/?method=track.getTopTags&artist=Taylor+Swift&track=Bye+Bye+Baby&api_key=76dd34aeac1027e54760b2ac0e8d2020&format=json&autocorrect=1 (Caused by NewConnectionError(\"HTTPSConnection(host='ws.audioscrobbler.com', port=443): Failed to establish a new connection: [WinError 10013] Une tentative d’accès à un socket de manière interdite par ses autorisations d’accès a été tentée\"))"
+          },
           "genre_canonical_key": "family:bye_bye_baby",
           "filter_tags": [
             "solo",
@@ -1230,7 +1393,13 @@
             "standalone": "medium:section_or_type",
             "taylor_version": "high:title_or_section",
             "from_the_vault": "high:title_section_or_edition"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "from_the_vault",
+          "tags": [],
+          "tsm_song_id": "uvuv",
+          "tsm_album_id": "uvw"
         }
       ]
     },
@@ -1284,13 +1453,20 @@
             "solo": "high:artist_credit",
             "standalone": "medium:section_or_type",
             "taylor_version": "high:title_or_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "taylors_version",
+          "display_album": "Fearless",
+          "tags": [],
+          "tsm_song_id": "t8uc",
+          "tsm_album_id": "uvw"
         }
       ]
     },
     {
       "section": "remixes",
-      "track_count": 1,
+      "track_count": 2,
       "chart_extra": true,
       "tracks": [
         {
@@ -1340,8 +1516,8 @@
               "romantic",
               "female vocalists",
               "country pop",
-              "love story",
               "love song",
+              "love story",
               "female vocalist"
             ]
           },
@@ -1359,7 +1535,75 @@
             "solo": "high:artist_credit",
             "remix": "high:type_or_title",
             "taylor_version": "high:title_or_section"
-          }
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "remix",
+          "tags": [],
+          "tsm_song_id": "kfua",
+          "tsm_album_id": "uvw"
+        },
+        {
+          "title": "Love Story (Taylor's Version) [Elvira Remix]",
+          "url": "",
+          "type": "remix",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 999,
+          "base_title": "Love Story [Elvira Remix]",
+          "album": "Fearless (Taylor's Version)",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Love Story [Elvira Remix]",
+          "song_family": "love_story",
+          "version_tag": "extras__taylors_version__remix",
+          "image_url": "https://is1-ssl.mzstatic.com/image/thumb/Music114/v4/a3/0b/f5/a30bf5ad-3ba7-ae84-0a79-b4591298c1de/21UMGIM23472.rgb.jpg/64x64bb.jpg",
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "remix",
+          "tags": [],
+          "tsm_song_id": "kfua",
+          "tsm_album_id": "uvw",
+          "genres": [
+            "country",
+            "pop",
+            "country pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 3.0,
+            "pop": 2.0,
+            "country pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "country",
+              "pop",
+              "country pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "country",
+              "taylor swift",
+              "pop",
+              "Love",
+              "romantic",
+              "female vocalists",
+              "country pop",
+              "love song",
+              "love story",
+              "female vocalist"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Love Story"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:love_story"
         }
       ]
     }

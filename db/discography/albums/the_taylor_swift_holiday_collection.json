@@ -32,10 +32,15 @@
           "genre_status": "missing",
           "genre_scores": {},
           "genre_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": []
           },
           "genre_raw_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "節慶",
+              "音樂"
+            ]
           },
           "genre_query_titles": {},
           "genre_errors": {},
@@ -84,10 +89,12 @@
           "genre_status": "missing",
           "genre_scores": {},
           "genre_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": []
           },
           "genre_raw_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": []
           },
           "genre_query_titles": {},
           "genre_errors": {},
@@ -136,10 +143,15 @@
           "genre_status": "missing",
           "genre_scores": {},
           "genre_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": []
           },
           "genre_raw_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "Зимние праздники",
+              "Музыка"
+            ]
           },
           "genre_query_titles": {},
           "genre_errors": {},
@@ -188,10 +200,12 @@
           "genre_status": "missing",
           "genre_scores": {},
           "genre_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": []
           },
           "genre_raw_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": []
           },
           "genre_query_titles": {},
           "genre_errors": {},
@@ -236,16 +250,29 @@
           "image_url": "https://i.scdn.co/image/ab67616d0000b2732a0face7d69df61c20a6db2b",
           "historical_track_ids": [],
           "release_date": "2008-12-02T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
+          "genres": [
+            "country"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2
+          },
           "genre_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "country"
+            ]
           },
           "genre_raw_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "Country",
+              "Music"
+            ]
           },
-          "genre_query_titles": {},
+          "genre_query_titles": {
+            "apple_music": "Christmas Must Be Something More"
+          },
           "genre_errors": {},
           "genre_canonical_key": "family:christmas_must_be_something_more",
           "filter_tags": [
@@ -292,10 +319,12 @@
           "genre_status": "missing",
           "genre_scores": {},
           "genre_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": []
           },
           "genre_raw_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": []
           },
           "genre_query_titles": {},
           "genre_errors": {},
@@ -349,16 +378,29 @@
             "2mvabkN1i2gLnGAPUVdwek"
           ],
           "release_date": "2019-12-06T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
+          "genres": [
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 1.2
+          },
           "genre_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "pop"
+            ]
           },
           "genre_raw_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music"
+            ]
           },
-          "genre_query_titles": {},
+          "genre_query_titles": {
+            "apple_music": "Christmas Tree Farm"
+          },
           "genre_errors": {},
           "genre_canonical_key": "family:christmas_tree_farm",
           "filter_tags": [
@@ -403,16 +445,29 @@
           "image_url": "https://i.scdn.co/image/ab67616d0000b2733b86fc3447e27df6630ce0d8",
           "historical_track_ids": [],
           "release_date": "2021-11-22T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
+          "genres": [
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 1.2
+          },
           "genre_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "pop"
+            ]
           },
           "genre_raw_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music"
+            ]
           },
-          "genre_query_titles": {},
+          "genre_query_titles": {
+            "apple_music": "Christmas Tree Farm"
+          },
           "genre_errors": {},
           "genre_canonical_key": "family:christmas_tree_farm",
           "filter_tags": [
@@ -457,16 +512,29 @@
           "image_url": "https://i.scdn.co/image/ab67616d0000b2733b86fc3447e27df6630ce0d8",
           "historical_track_ids": [],
           "release_date": "2020-12-19T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
+          "genres": [
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 1.2
+          },
           "genre_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "pop"
+            ]
           },
           "genre_raw_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music"
+            ]
           },
-          "genre_query_titles": {},
+          "genre_query_titles": {
+            "apple_music": "Christmas Tree Farm"
+          },
           "genre_errors": {},
           "genre_canonical_key": "family:christmas_tree_farm",
           "filter_tags": [

@@ -24,6 +24,12 @@ python scripts/assign_tsm_ids.py --apply                              # attribue
 
 Toujours dry-run d'abord (sans `--apply`) pour lire le diff avant d'écrire. Ces scripts créent un `.json.bak` à côté du fichier modifié — normal, pas besoin de le committer séparément.
 
+**`genres`** (depuis 2026-09-04, source Apple Music ajoutée 2026-09-05) est exporté vers `data/songs.json` **et** vers les tracks embarqués dans `data/albums.json` par `export_for_web.py` (fusionné entre doublons comme `filter_tags`) et alimente le `MobileGenreMenu` frontend (page Streams — bouton + popover single-select, comme Flags). ⚠️ `build_discography_index()` (dans `export_for_web.py`) reconstruit chaque track d'album via une whitelist de champs explicite (`file_tracks.append({...})`) — tout nouveau champ à exposer côté albums.json doit être ajouté À CETTE whitelist, pas juste au dict "seen" des songs (piège vécu : `genres` était bien dans `data/songs.json` mais absent de `data/albums.json` jusqu'à ce que la whitelist soit corrigée).
+
+**Source `apple_music`** (dans `enrich_genres.py`, préférer `--sources lastfm,apple_music`) : lit en local `runtime/exports/web/site/data/applemusic.json` (aucun appel réseau) — `genre_names` est la classification catalogue officielle d'Apple (ex. une chanson au France Country genre chart y porte `"Country"`), bien plus fiable/complète que les tags Last.fm seuls. Fait passer la couverture catalogue de ~47% à ~93,5% (2026-09-05). Poids 1.2 vs 1.0 Last.fm dans `SOURCE_WEIGHTS` — assez pour dominer sans écraser Last.fm là où Apple n'a pas de match. Ce fichier `applemusic.json` doit exister localement (généré par un run Apple Music ou `scripts/export_apple_music.py`) avant de lancer l'enrichissement avec cette source — sinon `apple_music` ne matche simplement rien (dégrade gracieusement, pas d'erreur).
+
+Relancer périodiquement `python scripts/enrich_genres.py --apply --sources lastfm,apple_music --refresh-cache` (sans `--skip-existing` pour re-fusionner les deux sources sur tout le catalogue) puis re-exporter (`export_for_web.export_for_web()`, `UPLOAD_TO_R2=0` pour tester en local sans toucher R2) pour compléter/rafraîchir au fil du temps. Corrections manuelles ponctuelles → `db/discography/genre_overrides.json` ou `--set-genres`.
+
 ## IDs internes du catalogue (`tsm_song_id` / `tsm_album_id`)
 
 `scripts/assign_tsm_ids.py` — clé de jointure interne stable pour le catalogue, à relancer **après toute modification de `db/discography/`** (nouvelle chanson, save de l'éditeur GUI, édition manuelle). Idempotent, dry-run par défaut.

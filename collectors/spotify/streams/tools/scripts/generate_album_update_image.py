@@ -469,11 +469,61 @@ def fmt_optional_num(n) -> str:
 
 # ── Data loading ───────────────────────────────────────────────────────────────
 
+def _as_bool(value) -> bool | None:
+    if value is None:
+        return None
+    text = str(value).strip().lower()
+    if text in {"1", "true", "yes", "y", "on"}:
+        return True
+    if text in {"0", "false", "no", "n", "off"}:
+        return False
+    return None
+
+
+def _counts_in_album_total(track: dict) -> bool:
+    return _as_bool(track.get("on_album")) is not False and _as_bool(track.get("chart_extra")) is not True
+
+
+def _album_total_tracks(sections: list[dict]) -> list[dict]:
+    return [
+        track
+        for section in sections
+        for track in section.get("tracks", [])
+        if _counts_in_album_total(track)
+    ]
+
+
+def _has_era_context(sections: list[dict]) -> bool:
+    return any(
+        section.get("totals_only") or any(not _counts_in_album_total(track) for track in section.get("tracks", []))
+        for section in sections
+    )
+
+
+def _display_total_tracks(sections: list[dict]) -> list[dict]:
+    if not _has_era_context(sections):
+        return _album_total_tracks(sections)
+
+    seen: set[str] = set()
+    result = []
+    for section in sections:
+        for track in section.get("tracks", []):
+            track_id = track.get("track_id")
+            if not track_id or track_id in seen:
+                continue
+            seen.add(track_id)
+            result.append(track)
+    return result
+
+
 def load_album_sections(album_name: str, target_date: str | None = None) -> list[dict]:
     """
     Returns list of sections for the given album, each with:
       {name, tracks: [{track_id, title, title_clean, version_tag, display_order, image_url}]}
     Includes every track whose section/track is not marked chart_extra.
+    For reputation, chart_extra tracks are also loaded into a totals-only
+    "Extras" section so the era context can sit below the album without being
+    counted as album tracks.
     Tracks sorted by display_order.
 
     If target_date is given, sections not yet released as of that date
@@ -495,16 +545,6 @@ def load_album_sections(album_name: str, target_date: str | None = None) -> list
 
     if target_payload is None:
         return [], album_name
-
-    def _as_bool(value) -> bool | None:
-        if value is None:
-            return None
-        text = str(value).strip().lower()
-        if text in {"1", "true", "yes", "y", "on"}:
-            return True
-        if text in {"0", "false", "no", "n", "off"}:
-            return False
-        return None
 
     def _is_chart_extra(section: dict, track: dict) -> bool:
         track_flag = _as_bool(track.get("chart_extra"))
@@ -549,17 +589,20 @@ def load_album_sections(album_name: str, target_date: str | None = None) -> list
 
     canonical_name = target_payload.get("album") or album_name
     sections = []
+    extra_total_tracks = []
+    is_reputation = canonical_name.strip().casefold() == "reputation"
     for sec in target_payload.get("sections", []):
         tracks = []
         seen_track_ids = set()
         for t in sec.get("tracks", []):
-            if _is_chart_extra(sec, t):
-                continue
             url = (t.get("url") or t.get("spotify_url") or "").strip()
             m = re.search(r"track/([A-Za-z0-9]+)", url)
             if not m:
                 continue
             track_id = m.group(1)
+            chart_extra = _is_chart_extra(sec, t)
+            if chart_extra and not is_reputation:
+                continue
 
             # Some album JSONs can contain accidental duplicate rows for a section.
             # Keep distinct versions in the same song family, e.g. All Too Well
@@ -573,7 +616,7 @@ def load_album_sections(album_name: str, target_date: str | None = None) -> list
             except Exception:
                 display_order = 9999
 
-            tracks.append({
+            track_item = {
                 "track_id":     track_id,
                 "title":        (t.get("title") or t.get("title_clean") or "").strip(),
                 "title_clean":  (t.get("title_clean") or t.get("title") or "").strip(),
@@ -581,7 +624,13 @@ def load_album_sections(album_name: str, target_date: str | None = None) -> list
                 "version_tag":  (t.get("version_tag") or "").strip(),
                 "display_order": display_order,
                 "image_url":    (t.get("image_url") or "").strip(),
-            })
+                "on_album":     _as_bool(t.get("on_album")),
+                "chart_extra":  chart_extra,
+            }
+            if chart_extra:
+                extra_total_tracks.append(track_item)
+                continue
+            tracks.append(track_item)
         if not tracks:
             continue
         tracks.sort(key=lambda x: (x["display_order"], x["title_clean"].casefold()))
@@ -611,6 +660,28 @@ def load_album_sections(album_name: str, target_date: str | None = None) -> list
             sec for sec in sections
             if not sec.get("release_date") or sec["release_date"] <= target_date
         ]
+
+    if is_reputation and extra_total_tracks:
+        deduped_extra_tracks = []
+        seen_extra_ids = set()
+        for track in sorted(extra_total_tracks, key=lambda x: (x["display_order"], x["title_clean"].casefold(), x["track_id"])):
+            if track["track_id"] in seen_extra_ids:
+                continue
+            seen_extra_ids.add(track["track_id"])
+            deduped_extra_tracks.append(track)
+        release_dates = [
+            str(t.get("release_date") or "")[:10]
+            for t in deduped_extra_tracks
+            if re.match(r"\d{4}-\d{2}-\d{2}", str(t.get("release_date") or ""))
+        ]
+        if not target_date or not release_dates or min(release_dates) <= target_date:
+            sections.append({
+                "name": "Extras",
+                "tracks": deduped_extra_tracks,
+                "release_date": min(release_dates) if release_dates else "",
+                "source_order": len(sections),
+                "totals_only": True,
+            })
 
     return sections, canonical_name
 
@@ -868,9 +939,15 @@ def header_images_for_album(album_name: str) -> list[Path]:
         if _norm(p.stem) == target_norm:
             result.append(p)
 
+    # Keep insertion order: dedicated subfolder images first, legacy flat file
+    # last. Do NOT re-sort by parent folder name here — that would put the flat
+    # legacy file (parent = the shared top-level headers/ dir, holding every
+    # album's art) ahead of the album's own subfolder, and callers that use
+    # deduped[0].parent as "the header pool for this album" would then pick a
+    # random header from every album instead of this one's.
     seen = set()
     deduped = []
-    for path in sorted(result, key=lambda x: (x.parent.name.casefold(), x.name.casefold())):
+    for path in result:
         key = str(path.resolve()).casefold()
         if key in seen:
             continue
@@ -1238,15 +1315,20 @@ def _compute_layout_metrics(
     best_day_labels_by_track: dict[str, str] | None = None,
 ) -> dict:
     """Compute dynamic grid/body sizing to avoid extra whitespace in final PNG."""
-    total_tracks = sum(len(s["tracks"]) for s in sections)
+    visible_tracks = [
+        t
+        for s in sections
+        if not s.get("totals_only")
+        for t in s.get("tracks", [])
+    ]
+    total_tracks = len(visible_tracks) + sum(1 for s in sections if s.get("totals_only"))
     row_h = max(20, min(36, 20 + (16 - total_tracks) * 2))
     best_day_labels_by_track = best_day_labels_by_track or {}
     song_header = "SONG (MM/DD/YYYY)" if best_day_labels_by_track else "SONG"
 
     titles = [
         _display_song_title(t, best_day_labels_by_track.get(t.get("track_id", "")))
-        for s in sections
-        for t in s.get("tracks", [])
+        for t in visible_tracks
     ]
     longest_title_px = max((_estimate_title_width_px(t) for t in titles), default=150.0)
 
@@ -1521,9 +1603,8 @@ def build_html(
 
     # build song rows + section totals
     rows_html = ""
-    total_daily   = 0
-    total_streams = 0
-    total_change  = 0
+    total_tracks = _display_total_tracks(sections)
+    total_label = "Total Era" if _has_era_context(sections) else "Total"
 
     sec_bg_css = f"rgba({dr},{dg},{db},0.14)"
 
@@ -1538,30 +1619,29 @@ def build_html(
             bg = f"rgba({ar},{ag},{ab},0.15)"
         else:
             bg = sec_bg_css
-        for si, track in enumerate(sec["tracks"]):
-            hd = hist.get(track["track_id"], {"daily": None, "change": None, "pct": None, "streams": None})
-            if not show_filter_cols:
-                hd = {**hd, "filtered_streams": None, "filter_rate": None}
-            rows_html += build_song_row_html(si, track, hd, si % 2 != 0, show_filter_cols, best_day_labels_by_track)
+        if not sec.get("totals_only"):
+            for si, track in enumerate(sec["tracks"]):
+                hd = hist.get(track["track_id"], {"daily": None, "change": None, "pct": None, "streams": None})
+                if not show_filter_cols:
+                    hd = {**hd, "filtered_streams": None, "filter_rate": None}
+                rows_html += build_song_row_html(si, track, hd, si % 2 != 0, show_filter_cols, best_day_labels_by_track)
         rows_html += build_section_total_html(sec["name"], sec["tracks"], hist, accent, bg, show_filter_cols)
 
-        for t in sec["tracks"]:
-            hd = hist.get(t["track_id"], {})
-            total_daily   += hd.get("daily") or 0
-            total_streams += hd.get("streams") or 0
-            total_change  += hd.get("change") or 0
+        total_daily = sum(hist.get(t["track_id"], {}).get("daily") or 0 for t in total_tracks)
+        total_streams = sum(hist.get(t["track_id"], {}).get("streams") or 0 for t in total_tracks)
+        total_change = sum(hist.get(t["track_id"], {}).get("change") or 0 for t in total_tracks)
         total_filtered = sum(
             (hist.get(t["track_id"], {}).get("filtered_streams") or 0)
-            for sec in sections for t in sec["tracks"]
+            for t in total_tracks
         )
         total_filtered_count = sum(
             1
-            for sec in sections for t in sec["tracks"]
+            for t in total_tracks
             if hist.get(t["track_id"], {}).get("filtered_streams") is not None
         )
         total_daily_filtered = sum(
             (hist.get(t["track_id"], {}).get("daily") or 0)
-            for sec in sections for t in sec["tracks"]
+            for t in total_tracks
             if hist.get(t["track_id"], {}).get("filtered_streams") is not None
         )
 
@@ -1571,7 +1651,7 @@ def build_html(
         tot_chg_s, tot_pct_s, chg_cls = fmt_chg(total_change, total_pct)
         if all(
             not hist.get(t["track_id"], {}).get("ever_seen", True)
-            for sec2 in sections for t in sec2["tracks"]
+            for t in total_tracks
         ):
             tot_chg_s, tot_pct_s, chg_cls = "NEW", "NEW", "new"
 
@@ -1598,7 +1678,7 @@ def build_html(
             ])
 
             era_html = f"""<div class="era-total">
-    <div class="era-label">Total</div>
+    <div class="era-label">{total_label}</div>
     <div class="tot-chip-wrap era-filter-wrap">{filter_chip}</div>
     <div class="tot-chip-wrap era-main-wrap">{total_main_chip}</div>
 </div>
@@ -1606,7 +1686,7 @@ def build_html(
         else:
             total_daily_s, total_daily_cls = fmt_signed(total_daily)
             era_html = f"""<div class="era-total no-filter">
-    <div class="era-label">Total</div>
+    <div class="era-label">{total_label}</div>
     <div class="era-num {total_daily_cls}" style="grid-column:3">{total_daily_s}</div>
     <div class="era-num {chg_cls}" style="grid-column:4">{tot_chg_s}</div>
     <div class="era-num {chg_cls}" style="grid-column:5">{tot_pct_s or "—"}</div>
@@ -2188,6 +2268,8 @@ def build_table_dark_html(
             continue
         if show_sections:
             rows.append(_table_dark_section_row(section, hist))
+        if section.get("totals_only"):
+            continue
         for track in tracks:
             idx += 1
             hdata = hist.get(track["track_id"], {})
@@ -2195,9 +2277,10 @@ def build_table_dark_html(
             daily = hdata.get("daily")
             change = hdata.get("change")
             pct = hdata.get("pct")
-            total_streams += streams or 0
-            total_daily += daily or 0
-            total_change += change or 0
+            if _counts_in_album_total(track):
+                total_streams += streams or 0
+                total_daily += daily or 0
+                total_change += change or 0
             pct_text = "-" if pct is None else f"{pct:+.2f}%"
             delta_text = "-" if change is None else f"{change:+,}"
             state_cls = "pos" if (change or 0) >= 0 else "neg"
@@ -2210,6 +2293,11 @@ def build_table_dark_html(
     <div class="td daily{alt_cls}">{daily_text}</div>
     <div class="td pct {state_cls}{alt_cls}">{pct_text}</div>
     <div class="td delta {state_cls}{alt_cls}">{delta_text}</div>""")
+    total_tracks = _display_total_tracks(sections)
+    total_label = "TOTAL ERA" if _has_era_context(sections) else "TOTAL"
+    total_streams = sum(hist.get(track["track_id"], {}).get("streams") or 0 for track in total_tracks)
+    total_daily = sum(hist.get(track["track_id"], {}).get("daily") or 0 for track in total_tracks)
+    total_change = sum(hist.get(track["track_id"], {}).get("change") or 0 for track in total_tracks)
     total_yest = total_daily - total_change
     total_pct = (total_change / total_yest * 100) if total_yest else None
     total_pct_text = "-" if total_pct is None else f"{total_pct:+.2f}%"
@@ -2221,7 +2309,7 @@ def build_table_dark_html(
   <div class="table">
     <div class="th">#</div><div class="th">Track</div><div class="th">Total Streams</div><div class="th">Daily Streams</div><div class="th change-head">Change</div>
     {"".join(rows)}
-    <div class="td total-row total-label">TOTAL</div><div class="td total-row">{fmt_comma_num(total_streams)}</div><div class="td total-row">+{fmt_comma_num(total_daily)}</div><div class="td total-row {total_state_cls}">{total_pct_text}</div><div class="td total-row {total_state_cls}">{total_change:+,}</div>
+    <div class="td total-row total-label">{total_label}</div><div class="td total-row">{fmt_comma_num(total_streams)}</div><div class="td total-row">+{fmt_comma_num(total_daily)}</div><div class="td total-row {total_state_cls}">{total_pct_text}</div><div class="td total-row {total_state_cls}">{total_change:+,}</div>
   </div>
 </div>
 </body></html>"""
@@ -2308,6 +2396,8 @@ def _best_day_labels_for_sections(
     marked: dict[str, str] = {}
     seen: set[str] = set()
     for section in sections:
+        if section.get("totals_only"):
+            continue
         for item in section.get("tracks", []):
             track_id = item.get("track_id")
             if not track_id or track_id in seen:
@@ -2352,6 +2442,8 @@ def _best_day_rows_for_sections(
     seen: set[str] = set()
     for section in sections:
         for item in section.get("tracks", []):
+            if not _counts_in_album_total(item):
+                continue
             track_id = item.get("track_id")
             if not track_id or track_id in seen:
                 continue
@@ -2526,29 +2618,7 @@ def generate(
 ALBUM_BEST_DAY_MIN_DAYS = 30
 
 
-def _album_best_day_row(album_name: str, canonical_name: str, target_date: str) -> dict | None:
-    """Album-level best-day-since row for the update-card first line.
-
-    Same record definition the (now removed) standalone album best-day card
-    used: standard-edition album tracks, combined daily total, a >= 30-day gap -
-    or a biggest-day-of-the-year / best-ever record regardless of the gap.
-    Returns ``None`` when the album has no postable record for the day.
-    """
-    try:
-        tracks = best_day_since.load_tracks(include_extras=False)
-        history = best_day_since.load_history()
-        by_album = best_day_since.load_album_track_ids(tracks)
-    except Exception as exc:  # noqa: BLE001 - a lookup failure must never break the caption
-        print(f"[album_update] Album best-day lookup skipped for {album_name}: {exc}")
-        return None
-
-    track_ids = by_album.get(album_name) or by_album.get(canonical_name)
-    if not track_ids or len(track_ids) < 2:
-        return None
-
-    row = best_day_since.compute_album_best_day_since(
-        album_name, track_ids, history, date_cls.fromisoformat(target_date)
-    )
+def _postable_album_best_day_row(row: dict | None) -> dict | None:
     if not row:
         return None
     if row.get("is_biggest_day_of_year") and row.get("kind") in ("since", "best_ever"):
@@ -2562,6 +2632,57 @@ def _album_best_day_row(album_name: str, canonical_name: str, target_date: str) 
     return row
 
 
+def _best_day_row_for_track_ids(album_name: str, track_ids: list[str], target_date: str) -> dict | None:
+    if not track_ids or len(track_ids) < 2:
+        return None
+    try:
+        history = best_day_since.load_history()
+    except Exception as exc:  # noqa: BLE001 - a lookup failure must never break the caption
+        print(f"[album_update] Best-day lookup skipped for {album_name}: {exc}")
+        return None
+
+    row = best_day_since.compute_album_best_day_since(
+        album_name, track_ids, history, date_cls.fromisoformat(target_date)
+    )
+    return _postable_album_best_day_row(row)
+
+
+def _album_best_day_row(album_name: str, canonical_name: str, target_date: str) -> dict | None:
+    """Album-level best-day-since row for the update-card first line.
+
+    Same record definition the (now removed) standalone album best-day card
+    used: standard-edition album tracks, combined daily total, a >= 30-day gap -
+    or a biggest-day-of-the-year / best-ever record regardless of the gap.
+    Returns ``None`` when the album has no postable record for the day.
+    """
+    try:
+        tracks = best_day_since.load_tracks(include_extras=False)
+        by_album = best_day_since.load_album_track_ids(tracks)
+    except Exception as exc:  # noqa: BLE001 - a lookup failure must never break the caption
+        print(f"[album_update] Album best-day lookup skipped for {album_name}: {exc}")
+        return None
+
+    track_ids = by_album.get(album_name) or by_album.get(canonical_name)
+    return _best_day_row_for_track_ids(album_name, list(track_ids or []), target_date)
+
+
+def _era_best_day_row(album_name: str, sections: list[dict], target_date: str) -> dict | None:
+    if not _has_era_context(sections):
+        return None
+    track_ids = [track["track_id"] for track in _display_total_tracks(sections)]
+    return _best_day_row_for_track_ids(album_name, track_ids, target_date)
+
+
+def _daily_summary_for_tracks(tracks: list[dict], hist: dict[str, dict]) -> tuple[int, float | None]:
+    total_daily = sum(hist.get(t["track_id"], {}).get("daily") or 0 for t in tracks)
+    total_change = sum(hist.get(t["track_id"], {}).get("change") or 0 for t in tracks)
+    total_yesterday = total_daily - total_change
+    total_pct = None
+    if total_yesterday and total_yesterday > 0:
+        total_pct = (total_change / total_yesterday) * 100
+    return total_daily, total_pct
+
+
 def _build_album_post_text(album_name: str, target_date: str) -> str:
     """Builds the album post text with daily total and biggest gainer/most stable track."""
     from datetime import datetime
@@ -2572,17 +2693,8 @@ def _build_album_post_text(album_name: str, target_date: str) -> str:
 
     hist = load_history_for_album(sections, target_date)
 
-    tracks = [t for sec in sections for t in sec["tracks"]]
-    total_daily = sum(hist.get(t["track_id"], {}).get("daily") or 0 for t in tracks)
-
-    # Calculate album percentage change
-    # change = daily_today - daily_yesterday, so daily_yesterday = daily_today - change
-    total_daily_yesterday = total_daily - sum(hist.get(t["track_id"], {}).get("change") or 0 for t in tracks)
-
-    album_pct = None
-    if total_daily_yesterday and total_daily_yesterday > 0:
-        album_change = total_daily - total_daily_yesterday
-        album_pct = (album_change / total_daily_yesterday) * 100
+    tracks = _album_total_tracks(sections)
+    total_daily, album_pct = _daily_summary_for_tracks(tracks, hist)
 
     scored = []
     for t in tracks:
@@ -2641,7 +2753,18 @@ def _build_album_post_text(album_name: str, target_date: str) -> str:
         first_line = f'📈| "{canonical_name}" received {total_daily_fmt} streams on its second anniversary, April 19th 2026.{album_pct_str}'
     else:
         when = f"on {date_fmt}"
-        best_day_row = _album_best_day_row(album_name, canonical_name, target_date)
+        best_day_row = _era_best_day_row(canonical_name, sections, target_date)
+        if best_day_row:
+            era_daily, era_pct = _daily_summary_for_tracks(_display_total_tracks(sections), hist)
+            total_daily_fmt = f"{int(era_daily):,}"
+            album_pct_str = ""
+            if era_pct is not None:
+                sign = "+" if era_pct >= 0 else "-"
+                album_pct_str = f" ({sign}{abs(era_pct):.1f}%)"
+            subject = f'The "{canonical_name}" era'
+        else:
+            best_day_row = _album_best_day_row(album_name, canonical_name, target_date)
+            subject = f'"{canonical_name}"'
         if best_day_row:
             verb = (
                 "has once again earned"
@@ -2650,7 +2773,7 @@ def _build_album_post_text(album_name: str, target_date: str) -> str:
             )
             best_label = _best_day_post_label(best_day_row)
             first_line = (
-                f'📈| "{canonical_name}" {verb} its {best_label} with '
+                f'📈| {subject} {verb} its {best_label} with '
                 f'{total_daily_fmt} streams {when}.{album_pct_str}'
             )
         else:
@@ -2668,7 +2791,7 @@ _build_album_post_text_base = _build_album_post_text
 
 def _selected_album_post_track(sections: list[dict], target_date: str) -> dict | None:
     hist = load_history_for_album(sections, target_date)
-    tracks = [t for sec in sections for t in sec["tracks"]]
+    tracks = _album_total_tracks(sections)
     scored = []
     for t in tracks:
         h = hist.get(t["track_id"], {})

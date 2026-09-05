@@ -343,6 +343,63 @@ minute) :**
 
 ## Pieges
 
+- **Bug corrigé le 2026-09-05 dans `core/title_groups.py`** : le catalogue de
+  matching titre-vidéo→chanson ignorait silencieusement les 17 fichiers
+  `db/discography/albums/*.json` (forme dict `{"album","sections"}` depuis
+  avril 2026 — `_iter_discography_sections` n'acceptait qu'une liste
+  racine), réduisant le catalogue réel à ~28 chansons sur ~338. Ça faussait
+  `youtube_title_history.csv` (donc `units_youtube` TayBoard) et le
+  regroupement par chanson côté frontend pour la quasi-totalité des tracks
+  d'album. Fix + deux correctifs liés dans le même commit : les entrées
+  `chart_extra`/`excluded_from_public_stats` (bruit de chart-snapshot) ne
+  génèrent plus d'alias (elles pouvaient voler le match d'une vraie chanson
+  au même titre, ex. "Starlight" volé par une entrée "Instrumental With
+  Background Vocals" bruitée) ; `normalize_text()` normalise les guillemets
+  courbes (`’`/`‘`) en apostrophe droite au lieu de les faire disparaître
+  (cassait le match sur "Who's Afraid of Little Old Me?" etc.). Après ce
+  fix, ~49 chansons "réelles" (hors bruit chart) restent sans vidéo
+  matchée — certaines sont de vrais trous (deep cuts jamais promues en
+  vidéo), d'autres restent des cas limites (ex. parenthèses de
+  désambiguïsation strippées par `_clean_video_title`, mojibake déjà présent
+  dans le titre stocké en DB).
+- **Audit du 2026-09-05 — chansons vraiment sans vidéo officielle nulle part**
+  (vérifié sur la chaîne principale UCqECaJ8Gagnn7YCbPEzWH6g + la chaîne
+  auto-générée **"Taylor Swift - Topic"** `UCPC0L1d253x-KuMNwa05TpA`, qui
+  couvre en "official audio" quasi tout le catalogue streamé y compris les
+  deep cuts — 2122 vidéos, second catalogue utile pour l'association
+  tsm_song_id↔vidéo mais PAS suivi pour les vues quotidiennes) : seulement 3
+  vraies impasses — **Invisible** (Taylor Swift, 2006), **September -
+  Recorded at The Tracking Room Nashville** (cover 2018), **Hold On (feat.
+  Taylor Swift) [Live]** (chanson de Jack Ingram — aucun upload officiel
+  trouvé même sur sa chaîne à lui). Le reste des ~49 a un official audio sur
+  la chaîne Topic, ou (3 vrais collabs) sur la chaîne du collaborateur :
+  Highway Don't Care → TimMcGrawVEVO, The Joker And The Queen → chaîne
+  officielle Ed Sheeran, Both of Us → chaîne officielle B.o.B. `primary_artist`
+  était mis à tort à "Taylor Swift" pour ces 4 collabs (+ Hold On/Jack
+  Ingram) dans `db/discography/misc.json` — corrigé le 2026-09-05 (champ
+  `artists` aussi mis à jour). 4 associations vidéo↔chanson ajoutées à
+  `video_groups.json` (Carolina ×2 fusionnées sur une seule entrée faute de
+  family propre en DB, exile/long pond sessions, les 2 bonus tracks
+  evermore) — ces vidéos existaient déjà dans `video_db.json` mais leur
+  `song_family` en DB était pollué par le suffixe d'édition
+  (`..._bonus_track`, `..._feat_bon_iver`), empêchant le match auto.
+- **⚠️ `video_groups.json` (390 groupes) contient des overrides manuels
+  probablement gelés à une époque où le catalogue de matching était cassé
+  (voir bug ci-dessus) — certains ne couvrent qu'UNE vidéo sur une clé
+  synthétique ad hoc au lieu du `song_family` réel de la DB (ex.
+  `breathe_ft_colbie_caillat` pour la seule vidéo de "Breathe", au lieu de
+  `breathe` ; `end_game_ft_ed_sheeran_future` / `end_game_behind_the_scenes`
+  au lieu de `end_game`). Conséquence découverte le 2026-09-05 : appliquer
+  les overrides manuels (`load_manual_groups`, comme le fait
+  `build_title_rows` en prod) fait *régresser* le nombre de chansons
+  matchées par rapport au matching automatique seul (68 chansons non
+  matchées avec overrides vs 49 sans) — Breathe, End Game, Everything Has
+  Changed, Forever & Always, Run, Safe & Sound, The Last Time, The Story Of
+  Us et une dizaine d'autres singles bien connus en font les frais. **Pas
+  corrigé** (chantier séparé, ~390 entrées à auditer contre le catalogue
+  maintenant fixé, potentiellement via `scripts/youtube_grouping_editor/` ou
+  un script d'audit dédié) — à traiter avant de considérer l'association
+  tsm_song_id↔YouTube comme fiable en prod.
 - Ne pas utiliser un delta multi-jours comme record quotidien.
 - `--commit` est volontaire; ne pas committer sans demande.
 - `--force` peut remplacer des lignes existantes; verifier la date et les

@@ -52,7 +52,9 @@ DEFAULT_MIN_DAYS = 30
 RECENT_REPEAT_RECORD_DAYS = 60
 LIVE_COLLECTION_MIN_DAYS = 30
 LIVE_COLLECTION_MIN_PCT_CHANGE = 10.0
-YEAR_RECORD_IGNORE_DAYS = 15
+# Year records must include the full calendar year; holiday carryover in early
+# January is real data and should still beat later "biggest day of the year" rows.
+YEAR_RECORD_IGNORE_DAYS = 0
 MONTH_RECORD_IGNORE_DAYS = 10
 MONTH_RECORD_MIN_DAILY_STREAMS = 200_000
 MONTH_RECORD_LAST_DAYS = 5
@@ -67,6 +69,7 @@ class Track:
     song_family: str = ""
     is_alt_version: bool = False
     release_date: date | None = None
+    on_album: bool = True
 
 
 @dataclass(frozen=True)
@@ -101,6 +104,19 @@ def parse_release_date(value: str | None) -> date | None:
         return date.fromisoformat(raw[:10])
     except ValueError:
         return None
+
+
+def parse_bool(value) -> bool | None:
+    if isinstance(value, bool):
+        return value
+    if value is None:
+        return None
+    text = str(value).strip().lower()
+    if text in {"1", "true", "yes", "y", "on"}:
+        return True
+    if text in {"0", "false", "no", "n", "off"}:
+        return False
+    return None
 
 
 def load_album_sections() -> list[dict]:
@@ -200,6 +216,7 @@ def load_tracks(*, include_extras: bool = False) -> dict[str, Track]:
                 song_family=str(item.get("song_family") or "").strip(),
                 is_alt_version=is_extra_track(section, item),
                 release_date=parse_release_date(item.get("release_date") or section.get("release_date")),
+                on_album=parse_bool(item.get("on_album")) is not False,
             )
 
     return tracks
@@ -437,7 +454,7 @@ def load_album_track_ids(tracks: dict[str, Track]) -> dict[str, list[str]]:
     """Group standard-edition track IDs (no karaoke/live/remix/acoustic) by album."""
     by_album: dict[str, list[str]] = {}
     for track_id, track in tracks.items():
-        if track.is_alt_version or not track.album:
+        if track.is_alt_version or not track.on_album or not track.album:
             continue
         by_album.setdefault(track.album, []).append(track_id)
     return by_album

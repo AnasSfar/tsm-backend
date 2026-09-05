@@ -209,6 +209,7 @@ def load_album_track_map() -> dict[str, dict]:
                         "album":       album_name,
                         "image_url":   (track.get("image_url") or "").strip(),
                         "chart_extra": _is_chart_extra(section, track),
+                        "on_album":    _as_bool(track.get("on_album")) is not False,
                         "release_date": (track.get("release_date") or section.get("release_date") or "").strip(),
                     }
 
@@ -450,7 +451,7 @@ def build_album_rows(
         for track_id, info in album_tracks:
             if track_id in merge_losers:
                 continue
-            if not merge_eras and info.get("chart_extra"):
+            if not merge_eras and (info.get("chart_extra") or not info.get("on_album", True)):
                 continue
             t = today.get(track_id)
             if t is None:
@@ -578,13 +579,13 @@ def _album_best_day_labels(rows: list[dict], target_date: str) -> dict[str, str]
     itself is the combined total."""
     labels: dict[str, str] = {}
     try:
-        tracks = best_day_since.load_tracks(include_extras=False)
+        track_map = load_album_track_map()
         history = best_day_since.load_history()
         target = date_cls.fromisoformat(target_date)
         by_key: dict[str, list[str]] = {}
-        for track_id, track in tracks.items():
-            key = best_day_since.era_key(track.album)
-            if key and not track.is_alt_version:
+        for track_id, info in track_map.items():
+            key = best_day_since.era_key(info.get("album"))
+            if key:
                 by_key.setdefault(key, []).append(track_id)
         label_by_key: dict[str, str] = {}
         for key, track_ids in by_key.items():

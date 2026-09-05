@@ -384,6 +384,7 @@ def load_tracks_from_discography() -> list[dict]:
                 "release_date": track.get("release_date") or None,
                 "filter_tags": track.get("filter_tags") or [],
                 "filter_tag_sources": track.get("filter_tag_sources") or {},
+                "genres": track.get("genres") or [],
             }
 
     if missing_tsm_id:
@@ -541,6 +542,17 @@ def dedupe_songs_for_site(
             sources.update(song.get("filter_tag_sources") or {})
         return tags, sources
 
+    def merge_genres(group: list[dict]) -> list[str]:
+        genres = []
+        seen_genres = set()
+        for song in group:
+            for genre in song.get("genres") or []:
+                if genre in seen_genres:
+                    continue
+                seen_genres.add(genre)
+                genres.append(genre)
+        return genres
+
     groups: dict[str, list[dict]] = defaultdict(list)
     for song in songs:
         groups[song["title_key"]].append(song)
@@ -580,6 +592,7 @@ def dedupe_songs_for_site(
         kept["appearances"] = merged_appearances
         kept["merged_track_ids"] = merged_track_ids
         kept["filter_tags"], kept["filter_tag_sources"] = merge_filter_tags(group)
+        kept["genres"] = merge_genres(group)
 
         album_apps = [a for a in merged_appearances if a.get("source_type") == "album"]
         primary = album_apps[0] if album_apps else (merged_appearances[0] if merged_appearances else None)
@@ -938,6 +951,7 @@ def build_discography_index() -> tuple[dict, list[dict]]:
                         "chart_extra":    chart_extra,
                         "section":        section_name,
                         "source_file":    file_name,
+                        "genres":         track.get("genres") or [],
                     })
                     album_track_ids_ordered.append(track_id)
 

@@ -26,8 +26,11 @@
           "song_family": "lavender_haze",
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273fa747621a53c8e2cc436dee0",
-          "historical_track_ids": [],
-          "release_date": "2022-10-21T00:00:00Z",
+          "historical_track_ids": [
+            "0u1YuY5CjyhlCXV3wN9yYJ",
+            "24emu3sabKISjRkrys28jq"
+          ],
+          "release_date": "2023-03-03T00:00:00Z",
           "genres": [
             "pop",
             "synth-pop",
@@ -72,7 +75,13 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": [],
+          "tsm_song_id": "b1di",
+          "tsm_album_id": "5xl"
         },
         {
           "title": "Maroon",
@@ -92,7 +101,10 @@
           "song_family": "maroon",
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273bb54dde68cd23e2a268ae0f5",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "09T4f2HgIJY1Ia6FRjzTk3",
+            "6qxvy9Pe4RJIq5JBVbbwbS"
+          ],
           "release_date": "2022-10-21T00:00:00Z",
           "genres": [
             "synth-pop",
@@ -138,7 +150,13 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": [],
+          "tsm_song_id": "aub6",
+          "tsm_album_id": "5xl"
         },
         {
           "title": "Anti-Hero",
@@ -158,8 +176,11 @@
           "song_family": "anti_hero",
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273fa747621a53c8e2cc436dee0",
-          "historical_track_ids": [],
-          "release_date": "2022-10-21T00:00:00Z",
+          "historical_track_ids": [
+            "1BdZWUTQyvuBYbp3Sl2Cc0",
+            "5qIHFdkW6phMsTZlN2g8Lc"
+          ],
+          "release_date": "2022-11-08T00:00:00Z",
           "genres": [
             "rock",
             "pop",
@@ -204,7 +225,13 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": [],
+          "tsm_song_id": "ocn4",
+          "tsm_album_id": "5xl"
         },
         {
           "title": "Snow On The Beach (feat. Lana Del Rey)",
@@ -227,7 +254,9 @@
           "song_family": "snow_on_the_beach",
           "version_tag": "featured__feature",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273bb54dde68cd23e2a268ae0f5",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "7GA86Uo2jYbj8vIXe2nyWd"
+          ],
           "release_date": "2022-10-21T00:00:00Z",
           "genres": [
             "dream pop",
@@ -273,7 +302,13 @@
           "filter_tag_sources": {
             "feature": "high:type_or_primary_artist",
             "album_track": "high:section_or_display_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": [],
+          "tsm_song_id": "nh32",
+          "tsm_album_id": "5xl"
         },
         {
           "title": "You're On Your Own, Kid",
@@ -293,7 +328,9 @@
           "song_family": "you_re_on_your_own_kid",
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273bb54dde68cd23e2a268ae0f5",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "6PQOU00xWNrGwCZzboriXy"
+          ],
           "release_date": "2022-10-21T00:00:00Z",
           "genres": [
             "pop",
@@ -339,7 +376,13 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": [],
+          "tsm_song_id": "2pgq",
+          "tsm_album_id": "5xl"
         },
         {
           "title": "Midnight Rain",
@@ -359,7 +402,10 @@
           "song_family": "midnight_rain",
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273bb54dde68cd23e2a268ae0f5",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "1DAHLigfUqSLrU3RLG1EKR",
+            "4eKMqf9ZMSclDX7V9Ptg7x"
+          ],
           "release_date": "2022-10-21T00:00:00Z",
           "genres": [
             "pop",
@@ -405,7 +451,13 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": [],
+          "tsm_song_id": "24m1",
+          "tsm_album_id": "5xl"
         },
         {
           "title": "Question...?",
@@ -425,7 +477,9 @@
           "song_family": "question",
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273bb54dde68cd23e2a268ae0f5",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "7oomkQSYf1ia2VnVEWfFIU"
+          ],
           "release_date": "2022-10-21T00:00:00Z",
           "genres": [
             "pop",
@@ -471,7 +525,13 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": [],
+          "tsm_song_id": "9b84",
+          "tsm_album_id": "5xl"
         },
         {
           "title": "Vigilante Shit",
@@ -491,7 +551,9 @@
           "song_family": "vigilante_shit",
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273bb54dde68cd23e2a268ae0f5",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "0GKDhq6ZbmSbRHd3eyGlB7"
+          ],
           "release_date": "2022-10-21T00:00:00Z",
           "genres": [
             "pop",
@@ -537,7 +599,13 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": [],
+          "tsm_song_id": "8lu6",
+          "tsm_album_id": "5xl"
         },
         {
           "title": "Bejeweled",
@@ -557,7 +625,9 @@
           "song_family": "bejeweled",
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273bb54dde68cd23e2a268ae0f5",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "0VpF6RLdCfPIeYRwMu4tZK"
+          ],
           "release_date": "2022-10-21T00:00:00Z",
           "genres": [
             "pop",
@@ -600,7 +670,13 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": [],
+          "tsm_song_id": "wkub",
+          "tsm_album_id": "5xl"
         },
         {
           "title": "Labyrinth",
@@ -620,8 +696,10 @@
           "song_family": "labyrinth",
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273fa747621a53c8e2cc436dee0",
-          "historical_track_ids": [],
-          "release_date": "2023-05-26T00:00:00Z",
+          "historical_track_ids": [
+            "0A1JLUlkZkp2EFrosoNQi0"
+          ],
+          "release_date": "2022-10-21T00:00:00Z",
           "genres": [
             "pop",
             "dream pop",
@@ -666,7 +744,13 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": [],
+          "tsm_song_id": "w0xe",
+          "tsm_album_id": "5xl"
         },
         {
           "title": "Karma",
@@ -686,8 +770,11 @@
           "song_family": "karma",
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273fa747621a53c8e2cc436dee0",
-          "historical_track_ids": [],
-          "release_date": "2023-05-26T00:00:00Z",
+          "historical_track_ids": [
+            "5GjkD2Xujig8TPty57wfsS",
+            "7KokYm8cMIXCsGVmUvKtqf"
+          ],
+          "release_date": "2022-10-21T00:00:00Z",
           "genres": [
             "pop",
             "synth-pop"
@@ -729,7 +816,13 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": [],
+          "tsm_song_id": "urcu",
+          "tsm_album_id": "5xl"
         },
         {
           "title": "Sweet Nothing",
@@ -749,8 +842,10 @@
           "song_family": "sweet_nothing",
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273fa747621a53c8e2cc436dee0",
-          "historical_track_ids": [],
-          "release_date": "2023-05-26T00:00:00Z",
+          "historical_track_ids": [
+            "0wavGRldH0AWyu2zvTz8zb"
+          ],
+          "release_date": "2022-10-21T00:00:00Z",
           "genres": [
             "pop",
             "singer-songwriter",
@@ -795,7 +890,13 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": [],
+          "tsm_song_id": "qyva",
+          "tsm_album_id": "5xl"
         },
         {
           "title": "Mastermind",
@@ -815,8 +916,11 @@
           "song_family": "mastermind",
           "version_tag": "standard",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273fa747621a53c8e2cc436dee0",
-          "historical_track_ids": [],
-          "release_date": "2023-05-26T00:00:00Z",
+          "historical_track_ids": [
+            "6pXGAXMfoi7q7sek9uCFSL",
+            "7FmYn9e7KHMXcxqGSj9LjH"
+          ],
+          "release_date": "2022-10-21T00:00:00Z",
           "genres": [
             "pop",
             "synth-pop",
@@ -861,7 +965,13 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "standard",
+          "tags": [],
+          "tsm_song_id": "d4ki",
+          "tsm_album_id": "5xl"
         }
       ]
     },
@@ -888,8 +998,10 @@
           "song_family": "the_great_war",
           "version_tag": "standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273fa747621a53c8e2cc436dee0",
-          "historical_track_ids": [],
-          "release_date": "2023-05-26T00:00:00Z",
+          "historical_track_ids": [
+            "5BYl3SodS3rGmafWXRWmB7"
+          ],
+          "release_date": "2022-10-21T00:00:00Z",
           "genres": [
             "pop",
             "synth-pop",
@@ -936,7 +1048,13 @@
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section",
             "standalone": "medium:section_or_type"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "3am",
+          "tags": [],
+          "tsm_song_id": "64ql",
+          "tsm_album_id": "5xl"
         },
         {
           "title": "Bigger Than The Whole Sky",
@@ -956,8 +1074,10 @@
           "song_family": "bigger_than_the_whole_sky",
           "version_tag": "standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273fa747621a53c8e2cc436dee0",
-          "historical_track_ids": [],
-          "release_date": "2023-05-26T00:00:00Z",
+          "historical_track_ids": [
+            "3jzbpOzoYa22FvzBkNkLvC"
+          ],
+          "release_date": "2022-10-21T00:00:00Z",
           "genres": [
             "pop",
             "synth-pop",
@@ -1004,7 +1124,13 @@
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section",
             "standalone": "medium:section_or_type"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "3am",
+          "tags": [],
+          "tsm_song_id": "tbhk",
+          "tsm_album_id": "5xl"
         },
         {
           "title": "Paris",
@@ -1024,8 +1150,10 @@
           "song_family": "paris",
           "version_tag": "standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273fa747621a53c8e2cc436dee0",
-          "historical_track_ids": [],
-          "release_date": "2023-05-26T00:00:00Z",
+          "historical_track_ids": [
+            "6J834IBcZJMH38ksrgAqwF"
+          ],
+          "release_date": "2022-10-21T00:00:00Z",
           "genres": [
             "pop",
             "singer-songwriter",
@@ -1072,7 +1200,13 @@
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section",
             "standalone": "medium:section_or_type"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "3am",
+          "tags": [],
+          "tsm_song_id": "991q",
+          "tsm_album_id": "5xl"
         },
         {
           "title": "High Infidelity",
@@ -1092,8 +1226,10 @@
           "song_family": "high_infidelity",
           "version_tag": "standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273fa747621a53c8e2cc436dee0",
-          "historical_track_ids": [],
-          "release_date": "2023-05-26T00:00:00Z",
+          "historical_track_ids": [
+            "4356PL6jkERzJouVfQQkZo"
+          ],
+          "release_date": "2022-10-21T00:00:00Z",
           "genres": [
             "synth-pop",
             "pop",
@@ -1140,7 +1276,13 @@
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section",
             "standalone": "medium:section_or_type"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "3am",
+          "tags": [],
+          "tsm_song_id": "5uh0",
+          "tsm_album_id": "5xl"
         },
         {
           "title": "Glitch",
@@ -1160,8 +1302,10 @@
           "song_family": "glitch",
           "version_tag": "standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273fa747621a53c8e2cc436dee0",
-          "historical_track_ids": [],
-          "release_date": "2023-05-26T00:00:00Z",
+          "historical_track_ids": [
+            "6RJBrG3VHz2hPITjv88chh"
+          ],
+          "release_date": "2022-10-21T00:00:00Z",
           "genres": [
             "singer-songwriter",
             "synth-pop",
@@ -1208,7 +1352,13 @@
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section",
             "standalone": "medium:section_or_type"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "3am",
+          "tags": [],
+          "tsm_song_id": "ajgk",
+          "tsm_album_id": "5xl"
         },
         {
           "title": "Would've, Could've, Should've",
@@ -1228,8 +1378,10 @@
           "song_family": "would_ve_could_ve_should_ve",
           "version_tag": "standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273fa747621a53c8e2cc436dee0",
-          "historical_track_ids": [],
-          "release_date": "2023-05-26T00:00:00Z",
+          "historical_track_ids": [
+            "3pUa0ZxdSeaJXm0EIydD3F"
+          ],
+          "release_date": "2022-10-21T00:00:00Z",
           "genres": [
             "pop",
             "soft rock",
@@ -1276,7 +1428,13 @@
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section",
             "standalone": "medium:section_or_type"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "3am",
+          "tags": [],
+          "tsm_song_id": "sltt",
+          "tsm_album_id": "5xl"
         },
         {
           "title": "Dear Reader",
@@ -1296,8 +1454,10 @@
           "song_family": "dear_reader",
           "version_tag": "standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273fa747621a53c8e2cc436dee0",
-          "historical_track_ids": [],
-          "release_date": "2023-05-26T00:00:00Z",
+          "historical_track_ids": [
+            "7lFNXsbcbds699xCWO3pSe"
+          ],
+          "release_date": "2022-10-21T00:00:00Z",
           "genres": [
             "singer-songwriter",
             "synth-pop",
@@ -1344,7 +1504,13 @@
             "solo": "high:artist_credit",
             "album_track": "high:section_or_display_section",
             "standalone": "medium:section_or_type"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "3am",
+          "tags": [],
+          "tsm_song_id": "w955",
+          "tsm_album_id": "5xl"
         }
       ]
     },
@@ -1371,7 +1537,9 @@
           "song_family": "hits_different",
           "version_tag": "standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273fa747621a53c8e2cc436dee0",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "2BPLFluGLtHPN9EF6oK5w8"
+          ],
           "release_date": "2023-05-26T00:00:00Z",
           "genres": [
             "pop",
@@ -1417,7 +1585,13 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "standalone": "medium:section_or_type"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "til_dawn",
+          "tags": [],
+          "tsm_song_id": "uet5",
+          "tsm_album_id": "5xl"
         },
         {
           "title": "Snow On The Beach (feat. More Lana Del Rey)",
@@ -1484,7 +1658,13 @@
           ],
           "filter_tag_sources": {
             "feature": "high:type_or_primary_artist"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "til_dawn",
+          "tags": [],
+          "tsm_song_id": "nh32",
+          "tsm_album_id": "5xl"
         },
         {
           "title": "Karma (feat. Ice Spice)",
@@ -1548,7 +1728,13 @@
           ],
           "filter_tag_sources": {
             "feature": "high:type_or_primary_artist"
-          }
+          },
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "til_dawn",
+          "tags": [],
+          "tsm_song_id": "urcu",
+          "tsm_album_id": "5xl"
         }
       ]
     },
@@ -1600,7 +1786,99 @@
             "album_track": "high:section_or_display_section",
             "standalone": "medium:section_or_type",
             "from_the_vault": "high:title_section_or_edition"
-          }
+          },
+          "on_album": false,
+          "role": "album_track",
+          "release_edition": "from_the_vault",
+          "tags": [],
+          "tsm_song_id": "7j3v",
+          "tsm_album_id": "5xl"
+        }
+      ]
+    },
+    {
+      "album": "Midnights",
+      "section": "streaming_extras",
+      "track_count": 1,
+      "chart_extra": true,
+      "tracks": [
+        {
+          "title": "Lavender Haze - Acoustic Version",
+          "url": "https://open.spotify.com/intl-fr/track/05kJkr80XEaZeN8kxyQoFp",
+          "type": "standalone",
+          "edition": "extras",
+          "display_section": "Extras",
+          "display_order": 9999,
+          "base_title": "Lavender Haze - Acoustic Version",
+          "album": "Midnights",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Lavender Haze - Acoustic Version",
+          "song_family": "lavender_haze",
+          "version_tag": null,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273f233c37dddd971caf61515cf",
+          "display_era": "Midnights",
+          "historical_track_ids": [],
+          "release_date": "2023-03-31T00:00:00Z",
+          "genres": [
+            "pop",
+            "synth-pop",
+            "dream pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 3.0,
+            "synth-pop": 2.0,
+            "dream pop": 1.0
+          },
+          "genre_sources": {
+            "lastfm": [
+              "pop",
+              "synth-pop",
+              "dream pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "pop",
+              "synthpop",
+              "dream pop",
+              "overrated",
+              "alt-pop",
+              "rnb",
+              "electropop",
+              "best of 2022",
+              "electronic",
+              "soty"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Lavender Haze"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:lavender_haze_acoustic_version",
+          "filter_tags": [
+            "solo",
+            "standalone",
+            "acoustic",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "standalone": "medium:section_or_type",
+            "acoustic": "high:title_or_section",
+            "alternate_version": "medium:type_or_title"
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "acoustic",
+          "display_album": "Midnights",
+          "tags": [],
+          "tsm_song_id": "b1di",
+          "tsm_album_id": "5xl"
         }
       ]
     },
@@ -1630,8 +1908,10 @@
           "song_family": "anti_hero",
           "version_tag": "featured__feature",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2739954fa9f0ba8534c3897b59d",
-          "historical_track_ids": [],
-          "release_date": "2022-11-11T00:00:00Z",
+          "historical_track_ids": [
+            "7mz1Dj0C0sa8tG3ykgtLpD"
+          ],
+          "release_date": "2022-11-08T00:00:00Z",
           "genres": [
             "rock",
             "pop",
@@ -1674,7 +1954,13 @@
           ],
           "filter_tag_sources": {
             "feature": "high:type_or_primary_artist"
-          }
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "remix",
+          "tags": [],
+          "tsm_song_id": "ocn4",
+          "tsm_album_id": "5xl"
         },
         {
           "title": "Anti-Hero - ILLENIUM Remix",
@@ -1740,7 +2026,13 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "remix": "high:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "remix",
+          "tags": [],
+          "tsm_song_id": "ocn4",
+          "tsm_album_id": "5xl"
         },
         {
           "title": "Anti-Hero - Jayda G Remix",
@@ -1760,7 +2052,9 @@
           "song_family": "anti_hero",
           "version_tag": "remix",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2739954fa9f0ba8534c3897b59d",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "22t8PQeP5klRoguomM4wZp"
+          ],
           "release_date": "2022-11-11T00:00:00Z",
           "genres": [
             "rock",
@@ -1806,7 +2100,13 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "remix": "high:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "remix",
+          "tags": [],
+          "tsm_song_id": "ocn4",
+          "tsm_album_id": "5xl"
         },
         {
           "title": "Anti-Hero - Kungs Remix",
@@ -1826,7 +2126,9 @@
           "song_family": "anti_hero",
           "version_tag": "remix",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2739954fa9f0ba8534c3897b59d",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "1h0GRtSo5NeVVb1vqb5Uh1"
+          ],
           "release_date": "2022-11-11T00:00:00Z",
           "genres": [
             "rock",
@@ -1872,7 +2174,13 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "remix": "high:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "remix",
+          "tags": [],
+          "tsm_song_id": "ocn4",
+          "tsm_album_id": "5xl"
         },
         {
           "title": "Anti-Hero - Roosevelt Remix",
@@ -1892,7 +2200,9 @@
           "song_family": "anti_hero",
           "version_tag": "remix",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2739954fa9f0ba8534c3897b59d",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "2G19YDBzl32ASNiRJ1sT9s"
+          ],
           "release_date": "2022-11-11T00:00:00Z",
           "genres": [
             "rock",
@@ -1938,7 +2248,13 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "remix": "high:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "remix",
+          "tags": [],
+          "tsm_song_id": "ocn4",
+          "tsm_album_id": "5xl"
         },
         {
           "title": "Anti-Hero - Acoustic Version",
@@ -2008,7 +2324,13 @@
             "standalone": "medium:section_or_type",
             "acoustic": "high:title_or_section",
             "alternate_version": "medium:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "acoustic",
+          "tags": [],
+          "tsm_song_id": "ocn4",
+          "tsm_album_id": "5xl"
         },
         {
           "title": "Lavender Haze - Felix Jaehn Remix",
@@ -2029,7 +2351,8 @@
           "version_tag": "remix",
           "image_url": "https://i.scdn.co/image/ab67616d0000b27390212229c9230e320fe0ecd3",
           "historical_track_ids": [
-            "5KxZfCXXmVvKhPo8hQz2pS"
+            "5KxZfCXXmVvKhPo8hQz2pS",
+            "47Q0MEywj692L1RQn6mC7S"
           ],
           "release_date": "2023-02-10T00:00:00Z",
           "genres": [
@@ -2076,7 +2399,13 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "remix": "high:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "remix",
+          "tags": [],
+          "tsm_song_id": "b1di",
+          "tsm_album_id": "5xl"
         },
         {
           "title": "Lavender Haze - Jungle Remix",
@@ -2096,7 +2425,9 @@
           "song_family": "lavender_haze",
           "version_tag": "remix",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273f7c84273e5c8ecb7594b4357",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "1cY0NDSosVXD6Am57Ylbuy"
+          ],
           "release_date": "2023-03-03T00:00:00Z",
           "genres": [
             "pop",
@@ -2142,7 +2473,13 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "remix": "high:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "remix",
+          "tags": [],
+          "tsm_song_id": "b1di",
+          "tsm_album_id": "5xl"
         },
         {
           "title": "Lavender Haze - Snakehips Remix",
@@ -2162,7 +2499,9 @@
           "song_family": "lavender_haze",
           "version_tag": "remix",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273f7c84273e5c8ecb7594b4357",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "2PnWf3DoX5Ha3UL8VdpVrs"
+          ],
           "release_date": "2023-03-03T00:00:00Z",
           "genres": [
             "pop",
@@ -2208,7 +2547,13 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "remix": "high:type_or_title"
-          }
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "remix",
+          "tags": [],
+          "tsm_song_id": "b1di",
+          "tsm_album_id": "5xl"
         },
         {
           "title": "Lavender Haze - Tensnake Remix",
@@ -2228,7 +2573,9 @@
           "song_family": "lavender_haze",
           "version_tag": "remix",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273f7c84273e5c8ecb7594b4357",
-          "historical_track_ids": [],
+          "historical_track_ids": [
+            "6dokmh5E6obEI11G9VaWSB"
+          ],
           "release_date": "2023-03-03T00:00:00Z",
           "genres": [
             "pop",
@@ -2274,86 +2621,13 @@
           "filter_tag_sources": {
             "solo": "high:artist_credit",
             "remix": "high:type_or_title"
-          }
-        }
-      ]
-    },
-    {
-      "album": "Midnights",
-      "section": "streaming_extras",
-      "track_count": 1,
-      "chart_extra": true,
-      "tracks": [
-        {
-          "title": "Lavender Haze - Acoustic Version",
-          "url": "https://open.spotify.com/intl-fr/track/05kJkr80XEaZeN8kxyQoFp",
-          "type": "standalone",
-          "edition": "extras",
-          "display_section": "Extras",
-          "display_order": 9999,
-          "base_title": "Lavender Haze - Acoustic Version",
-          "album": "Midnights",
-          "primary_artist": "Taylor Swift",
-          "featured_artists": [],
-          "artists": [
-            "Taylor Swift"
-          ],
-          "title_clean": "Lavender Haze - Acoustic Version",
-          "song_family": "lavender_haze_acoustic_version",
-          "version_tag": null,
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273f233c37dddd971caf61515cf",
-          "display_era": "Midnights",
-          "historical_track_ids": [],
-          "release_date": "2023-03-31T00:00:00Z",
-          "genres": [
-            "pop",
-            "synth-pop",
-            "dream pop"
-          ],
-          "genre_status": "auto",
-          "genre_scores": {
-            "pop": 3.0,
-            "synth-pop": 2.0,
-            "dream pop": 1.0
           },
-          "genre_sources": {
-            "lastfm": [
-              "pop",
-              "synth-pop",
-              "dream pop"
-            ]
-          },
-          "genre_raw_sources": {
-            "lastfm": [
-              "pop",
-              "synthpop",
-              "dream pop",
-              "overrated",
-              "alt-pop",
-              "rnb",
-              "electropop",
-              "best of 2022",
-              "electronic",
-              "soty"
-            ]
-          },
-          "genre_query_titles": {
-            "lastfm": "Lavender Haze"
-          },
-          "genre_errors": {},
-          "genre_canonical_key": "family:lavender_haze_acoustic_version",
-          "filter_tags": [
-            "solo",
-            "standalone",
-            "acoustic",
-            "alternate_version"
-          ],
-          "filter_tag_sources": {
-            "solo": "high:artist_credit",
-            "standalone": "medium:section_or_type",
-            "acoustic": "high:title_or_section",
-            "alternate_version": "medium:type_or_title"
-          }
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "remix",
+          "tags": [],
+          "tsm_song_id": "b1di",
+          "tsm_album_id": "5xl"
         }
       ]
     }

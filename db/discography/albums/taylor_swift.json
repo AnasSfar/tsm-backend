@@ -30,16 +30,47 @@
             "6tzHi7qmbncwyjdfkDuwPI"
           ],
           "release_date": "2006-01-01T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
+          "genres": [
+            "country",
+            "country pop",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "country pop": 1.2,
+            "pop": 1.2,
+            "rock": 1.2
+          },
           "genre_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "country",
+              "rock",
+              "country pop",
+              "pop"
+            ]
           },
           "genre_raw_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "Country",
+              "Music",
+              "Rock",
+              "Contemporary Country",
+              "Honky Tonk",
+              "Pop",
+              "Teen Pop",
+              "Música",
+              "Country contemporáneo",
+              "乡村",
+              "音乐",
+              "摇滚"
+            ]
           },
-          "genre_query_titles": {},
+          "genre_query_titles": {
+            "apple_music": "Tim McGraw"
+          },
           "genre_errors": {},
           "genre_canonical_key": "family:tim_mcgraw",
           "filter_tags": [
@@ -81,38 +112,66 @@
           "release_date": "2006-01-01T00:00:00Z",
           "genres": [
             "country",
-            "pop",
-            "country pop"
+            "country pop",
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "country": 3.0,
-            "pop": 2.0,
-            "country pop": 1.0
+            "country": 2.2,
+            "country pop": 2.2,
+            "pop": 2.2,
+            "rock": 1.2
           },
           "genre_sources": {
             "lastfm": [
               "country",
               "pop",
               "country pop"
+            ],
+            "apple_music": [
+              "country",
+              "rock",
+              "country pop",
+              "pop"
             ]
           },
           "genre_raw_sources": {
             "lastfm": [
               "country",
               "taylor swift",
-              "pop",
               "catchy",
-              "female vocalists",
+              "pop",
               "feel good",
+              "female vocalists",
               "Picture To Burn",
               "country pop",
-              "rock",
-              "pop rock"
+              "pop rock",
+              "rock"
+            ],
+            "apple_music": [
+              "Country",
+              "Music",
+              "Rock",
+              "Contemporary Country",
+              "Honky Tonk",
+              "Pop",
+              "Teen Pop",
+              "Кантри",
+              "Музыка",
+              "Música",
+              "Country contemporáneo",
+              "乡村",
+              "音乐",
+              "摇滚",
+              "Musica",
+              "Country contemporaneo",
+              "Honky-tonk",
+              "Country contemporânea"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "Picture To Burn"
+            "lastfm": "Picture To Burn",
+            "apple_music": "Picture To Burn"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:picture_to_burn",
@@ -151,16 +210,43 @@
           "image_url": "https://i.scdn.co/image/ab67616d0000b2732f8c0fd72a80a93f8c53b96c",
           "historical_track_ids": [],
           "release_date": "2006-01-01T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
+          "genres": [
+            "country",
+            "country pop",
+            "rock"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "country pop": 1.2,
+            "rock": 1.2
+          },
           "genre_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "country",
+              "rock",
+              "country pop"
+            ]
           },
           "genre_raw_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "Country",
+              "Music",
+              "Rock",
+              "Contemporary Country",
+              "Honky Tonk",
+              "Música",
+              "Country contemporáneo",
+              "乡村",
+              "音乐",
+              "摇滚"
+            ]
           },
-          "genre_query_titles": {},
+          "genre_query_titles": {
+            "apple_music": "Teardrops on My Guitar"
+          },
           "genre_errors": {},
           "genre_canonical_key": "family:teardrops_on_my_guitar",
           "filter_tags": [
@@ -200,16 +286,45 @@
             "0be2GMLqyJKvlMVimVRl9z"
           ],
           "release_date": "2006-01-01T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
+          "genres": [
+            "country",
+            "country pop",
+            "rock"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "country pop": 1.2,
+            "rock": 1.2
+          },
           "genre_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "country",
+              "rock",
+              "country pop"
+            ]
           },
           "genre_raw_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "Country",
+              "Music",
+              "Rock",
+              "Contemporary Country",
+              "Honky Tonk",
+              "Кантри",
+              "Музыка",
+              "Música",
+              "Country contemporáneo",
+              "乡村",
+              "音乐",
+              "摇滚"
+            ]
           },
-          "genre_query_titles": {},
+          "genre_query_titles": {
+            "apple_music": "A Place in this World"
+          },
           "genre_errors": {},
           "genre_canonical_key": "family:a_place_in_this_world",
           "filter_tags": [
@@ -249,16 +364,45 @@
             "2WefzSY75eE8gWn1Zbf8xK"
           ],
           "release_date": "2006-01-01T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
+          "genres": [
+            "country",
+            "country pop",
+            "rock"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "country pop": 1.2,
+            "rock": 1.2
+          },
           "genre_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "country",
+              "rock",
+              "country pop"
+            ]
           },
           "genre_raw_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "Country",
+              "Music",
+              "Rock",
+              "Contemporary Country",
+              "Honky Tonk",
+              "Кантри",
+              "Музыка",
+              "乡村",
+              "音乐",
+              "摇滚",
+              "Música",
+              "Country contemporáneo"
+            ]
           },
-          "genre_query_titles": {},
+          "genre_query_titles": {
+            "apple_music": "Cold As You"
+          },
           "genre_errors": {},
           "genre_canonical_key": "family:cold_as_you",
           "filter_tags": [
@@ -298,16 +442,43 @@
             "4prldYE5Z0GxtLdO1XhgzH"
           ],
           "release_date": "2006-01-01T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
+          "genres": [
+            "country",
+            "country pop",
+            "rock"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "country pop": 1.2,
+            "rock": 1.2
+          },
           "genre_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "country",
+              "rock",
+              "country pop"
+            ]
           },
           "genre_raw_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "Country",
+              "Music",
+              "Rock",
+              "Contemporary Country",
+              "Honky Tonk",
+              "乡村",
+              "音乐",
+              "摇滚",
+              "Música",
+              "Country contemporáneo"
+            ]
           },
-          "genre_query_titles": {},
+          "genre_query_titles": {
+            "apple_music": "The Outside"
+          },
           "genre_errors": {},
           "genre_canonical_key": "family:the_outside",
           "filter_tags": [
@@ -347,16 +518,40 @@
             "1YU4JKqPMYqpGDtcQn5Kzw"
           ],
           "release_date": "2006-01-01T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
+          "genres": [
+            "country",
+            "country pop",
+            "rock"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "country pop": 1.2,
+            "rock": 1.2
+          },
           "genre_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "country",
+              "rock",
+              "country pop"
+            ]
           },
           "genre_raw_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "Country",
+              "Music",
+              "Rock",
+              "Contemporary Country",
+              "Honky Tonk",
+              "Música",
+              "Country contemporáneo"
+            ]
           },
-          "genre_query_titles": {},
+          "genre_query_titles": {
+            "apple_music": "Tied Together with a Smile"
+          },
           "genre_errors": {},
           "genre_canonical_key": "family:tied_together_with_a_smile",
           "filter_tags": [
@@ -396,16 +591,38 @@
             "5jTmmyo19Vi4caf8kA3xnZ"
           ],
           "release_date": "2006-01-01T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
+          "genres": [
+            "country",
+            "country pop",
+            "rock"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "country pop": 1.2,
+            "rock": 1.2
+          },
           "genre_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "country",
+              "rock",
+              "country pop"
+            ]
           },
           "genre_raw_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "Country",
+              "Music",
+              "Rock",
+              "Contemporary Country",
+              "Honky Tonk"
+            ]
           },
-          "genre_query_titles": {},
+          "genre_query_titles": {
+            "apple_music": "Stay Beautiful"
+          },
           "genre_errors": {},
           "genre_canonical_key": "family:stay_beautiful",
           "filter_tags": [
@@ -446,16 +663,49 @@
             "2gwvtlwlKhvkfjz7Fcb6Yk"
           ],
           "release_date": "2006-01-01T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
+          "genres": [
+            "country",
+            "country pop",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "country pop": 1.2,
+            "pop": 1.2,
+            "rock": 1.2
+          },
           "genre_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "country",
+              "country pop",
+              "pop",
+              "rock"
+            ]
           },
           "genre_raw_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "Country",
+              "Music",
+              "Contemporary Country",
+              "Honky Tonk",
+              "Pop",
+              "Teen Pop",
+              "Rock",
+              "Кантри",
+              "Музыка",
+              "Música",
+              "Country contemporáneo",
+              "乡村",
+              "音乐",
+              "摇滚"
+            ]
           },
-          "genre_query_titles": {},
+          "genre_query_titles": {
+            "apple_music": "Should've Said No"
+          },
           "genre_errors": {},
           "genre_canonical_key": "family:should_ve_said_no",
           "filter_tags": [
@@ -495,16 +745,43 @@
             "3eYLIn5iJlcTUDrOg31yLj"
           ],
           "release_date": "2006-01-01T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
+          "genres": [
+            "country",
+            "country pop",
+            "rock"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "country pop": 1.2,
+            "rock": 1.2
+          },
           "genre_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "country",
+              "rock",
+              "country pop"
+            ]
           },
           "genre_raw_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "Country",
+              "Music",
+              "Rock",
+              "Contemporary Country",
+              "Honky Tonk",
+              "乡村",
+              "音乐",
+              "摇滚",
+              "Música",
+              "Country contemporáneo"
+            ]
           },
-          "genre_query_titles": {},
+          "genre_query_titles": {
+            "apple_music": "Mary's Song (Oh My My My)"
+          },
           "genre_errors": {},
           "genre_canonical_key": "family:mary_s_song_oh_my_my_my",
           "filter_tags": [
@@ -546,20 +823,27 @@
           "release_date": "2006-01-01T00:00:00Z",
           "genres": [
             "country",
-            "pop",
-            "country pop"
+            "country pop",
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "country": 3.0,
-            "pop": 2.0,
-            "country pop": 1.0
+            "country": 2.2,
+            "country pop": 2.2,
+            "pop": 2.2,
+            "rock": 1.2
           },
           "genre_sources": {
             "lastfm": [
               "country",
               "pop",
               "country pop"
+            ],
+            "apple_music": [
+              "country",
+              "rock",
+              "country pop",
+              "pop"
             ]
           },
           "genre_raw_sources": {
@@ -573,11 +857,36 @@
               "country pop",
               "summer",
               "singer-songwriter",
-              "sweet"
+              "catchy"
+            ],
+            "apple_music": [
+              "Country",
+              "Music",
+              "Rock",
+              "Contemporary Country",
+              "Honky Tonk",
+              "Pop",
+              "Teen Pop",
+              "Кантри",
+              "Музыка",
+              "Música",
+              "Country contemporáneo",
+              "乡村",
+              "音乐",
+              "摇滚",
+              "Musica",
+              "Country contemporaneo",
+              "Honky-tonk",
+              "컨트리",
+              "음악",
+              "록",
+              "컨템포러리 컨트리",
+              "홍키 통크"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "Our Song"
+            "lastfm": "Our Song",
+            "apple_music": "Our Song"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:our_song",
@@ -618,16 +927,40 @@
             "4hBYCCUKtPLp3IKk9RJ2Gv"
           ],
           "release_date": "2006-10-24T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
+          "genres": [
+            "country",
+            "country pop",
+            "rock"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "country pop": 1.2,
+            "rock": 1.2
+          },
           "genre_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "country",
+              "rock",
+              "country pop"
+            ]
           },
           "genre_raw_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "Country",
+              "Music",
+              "Rock",
+              "Contemporary Country",
+              "Honky Tonk",
+              "Música",
+              "Country contemporáneo"
+            ]
           },
-          "genre_query_titles": {},
+          "genre_query_titles": {
+            "apple_music": "I'm Only Me When I'm With You"
+          },
           "genre_errors": {},
           "genre_canonical_key": "family:i_m_only_me_when_i_m_with_you",
           "filter_tags": [
@@ -667,16 +1000,40 @@
             "1k3PzDNjg38cWqOvL4M9vq"
           ],
           "release_date": "2006-10-24T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
+          "genres": [
+            "country",
+            "country pop",
+            "rock"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "country pop": 1.2,
+            "rock": 1.2
+          },
           "genre_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "country",
+              "rock",
+              "country pop"
+            ]
           },
           "genre_raw_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "Country",
+              "Music",
+              "Rock",
+              "Contemporary Country",
+              "Honky Tonk",
+              "Кантри",
+              "Музыка"
+            ]
           },
-          "genre_query_titles": {},
+          "genre_query_titles": {
+            "apple_music": "Invisible"
+          },
           "genre_errors": {},
           "genre_canonical_key": "family:invisible",
           "filter_tags": [
@@ -716,16 +1073,38 @@
             "0YgHuReCSPwTXYny7isLja"
           ],
           "release_date": "2006-10-24T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
+          "genres": [
+            "country",
+            "country pop",
+            "rock"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "country pop": 1.2,
+            "rock": 1.2
+          },
           "genre_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "country",
+              "rock",
+              "country pop"
+            ]
           },
           "genre_raw_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "Country",
+              "Music",
+              "Rock",
+              "Contemporary Country",
+              "Honky Tonk"
+            ]
           },
-          "genre_query_titles": {},
+          "genre_query_titles": {
+            "apple_music": "A Perfectly Good Heart"
+          },
           "genre_errors": {},
           "genre_canonical_key": "family:a_perfectly_good_heart",
           "filter_tags": [
@@ -763,16 +1142,43 @@
           "image_url": "https://i.scdn.co/image/ab67616d0000b2732f8c0fd72a80a93f8c53b96c",
           "historical_track_ids": [],
           "release_date": "2006-10-24T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
+          "genres": [
+            "country",
+            "country pop",
+            "rock"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "country pop": 1.2,
+            "rock": 1.2
+          },
           "genre_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "country",
+              "rock",
+              "country pop"
+            ]
           },
           "genre_raw_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "Country",
+              "Music",
+              "Rock",
+              "Contemporary Country",
+              "Honky Tonk",
+              "Música",
+              "Country contemporáneo",
+              "乡村",
+              "音乐",
+              "摇滚"
+            ]
           },
-          "genre_query_titles": {},
+          "genre_query_titles": {
+            "apple_music": "Teardrops on My Guitar"
+          },
           "genre_errors": {},
           "genre_canonical_key": "family:teardrops_on_my_guitar",
           "filter_tags": [
@@ -818,16 +1224,46 @@
           "version_tag": "standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2730e8ba185f3e9f15630a7b5fb",
           "historical_track_ids": [],
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
+          "genres": [
+            "country",
+            "country pop",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "country pop": 1.2,
+            "pop": 1.2,
+            "rock": 1.2,
+            "soundtrack": 1.2
+          },
           "genre_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "soundtrack",
+              "rock",
+              "pop",
+              "country",
+              "country pop"
+            ]
           },
           "genre_raw_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "Soundtrack",
+              "Music",
+              "Rock",
+              "Pop",
+              "Teen Pop",
+              "Country",
+              "Honky Tonk",
+              "Children’s Music",
+              "Contemporary Country"
+            ]
           },
-          "genre_query_titles": {},
+          "genre_query_titles": {
+            "apple_music": "Crazier"
+          },
           "genre_errors": {},
           "genre_canonical_key": "family:crazier",
           "filter_tags": [
@@ -878,14 +1314,16 @@
           "genre_status": "missing",
           "genre_scores": {},
           "genre_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": []
           },
           "genre_raw_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": []
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:beautiful_eyes_live_from_clear_channel_stripped_2008",
+          "genre_canonical_key": "family:beautiful_eyes",
           "filter_tags": [
             "solo",
             "standalone",
@@ -927,41 +1365,69 @@
           "release_date": "2008-06-28T00:00:00Z",
           "genres": [
             "country",
-            "pop",
-            "country pop"
+            "country pop",
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "country": 3.0,
-            "pop": 2.0,
-            "country pop": 1.0
+            "country": 2.2,
+            "country pop": 2.2,
+            "pop": 2.2,
+            "rock": 1.2
           },
           "genre_sources": {
             "lastfm": [
               "country",
               "pop",
               "country pop"
+            ],
+            "apple_music": [
+              "country",
+              "rock",
+              "country pop",
+              "pop"
             ]
           },
           "genre_raw_sources": {
             "lastfm": [
               "country",
               "taylor swift",
-              "pop",
               "catchy",
-              "female vocalists",
+              "pop",
               "feel good",
+              "female vocalists",
               "Picture To Burn",
               "country pop",
-              "rock",
-              "pop rock"
+              "pop rock",
+              "rock"
+            ],
+            "apple_music": [
+              "Country",
+              "Music",
+              "Rock",
+              "Contemporary Country",
+              "Honky Tonk",
+              "Pop",
+              "Teen Pop",
+              "Кантри",
+              "Музыка",
+              "Música",
+              "Country contemporáneo",
+              "乡村",
+              "音乐",
+              "摇滚",
+              "Musica",
+              "Country contemporaneo",
+              "Honky-tonk",
+              "Country contemporânea"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "Picture To Burn"
+            "lastfm": "Picture To Burn",
+            "apple_music": "Picture To Burn"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:picture_to_burn_live_from_clear_channel_stripped_2008",
+          "genre_canonical_key": "family:picture_to_burn",
           "filter_tags": [
             "solo",
             "standalone",
@@ -1001,18 +1467,51 @@
           "display_era": "Taylor Swift",
           "historical_track_ids": [],
           "release_date": "2008-06-28T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
+          "genres": [
+            "country",
+            "country pop",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "country pop": 1.2,
+            "pop": 1.2,
+            "rock": 1.2
+          },
           "genre_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "country",
+              "country pop",
+              "pop",
+              "rock"
+            ]
           },
           "genre_raw_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "Country",
+              "Music",
+              "Contemporary Country",
+              "Honky Tonk",
+              "Pop",
+              "Teen Pop",
+              "Rock",
+              "Кантри",
+              "Музыка",
+              "Música",
+              "Country contemporáneo",
+              "乡村",
+              "音乐",
+              "摇滚"
+            ]
           },
-          "genre_query_titles": {},
+          "genre_query_titles": {
+            "apple_music": "Should've Said No"
+          },
           "genre_errors": {},
-          "genre_canonical_key": "family:shouldve_said_no_live_from_clear_channel_stripped_2008",
+          "genre_canonical_key": "family:should_ve_said_no",
           "filter_tags": [
             "solo",
             "standalone",
@@ -1055,10 +1554,12 @@
           "genre_status": "missing",
           "genre_scores": {},
           "genre_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": []
           },
           "genre_raw_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": []
           },
           "genre_query_titles": {},
           "genre_errors": {},
@@ -1102,16 +1603,43 @@
             "7gfzBsM4xaMb8c2WdpzEat",
             "2RM02ladxD5mgdrlAwh3h9"
           ],
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
+          "genres": [
+            "country",
+            "country pop",
+            "rock"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "country pop": 1.2,
+            "rock": 1.2
+          },
           "genre_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "country",
+              "rock",
+              "country pop"
+            ]
           },
           "genre_raw_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "Country",
+              "Music",
+              "Rock",
+              "Contemporary Country",
+              "Honky Tonk",
+              "Música",
+              "Country contemporáneo",
+              "乡村",
+              "音乐",
+              "摇滚"
+            ]
           },
-          "genre_query_titles": {},
+          "genre_query_titles": {
+            "apple_music": "Teardrops on My Guitar"
+          },
           "genre_errors": {},
           "genre_canonical_key": "family:teardrops_on_my_guitar",
           "filter_tags": [
@@ -1151,18 +1679,45 @@
           "display_era": "Taylor Swift",
           "historical_track_ids": [],
           "release_date": "2008-06-28T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
+          "genres": [
+            "country",
+            "country pop",
+            "rock"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "country pop": 1.2,
+            "rock": 1.2
+          },
           "genre_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "country",
+              "rock",
+              "country pop"
+            ]
           },
           "genre_raw_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "Country",
+              "Music",
+              "Rock",
+              "Contemporary Country",
+              "Honky Tonk",
+              "Música",
+              "Country contemporáneo",
+              "乡村",
+              "音乐",
+              "摇滚"
+            ]
           },
-          "genre_query_titles": {},
+          "genre_query_titles": {
+            "apple_music": "Teardrops on My Guitar"
+          },
           "genre_errors": {},
-          "genre_canonical_key": "family:teardrops_on_my_guitar_live_from_clear_channel_stripped_2008",
+          "genre_canonical_key": "family:teardrops_on_my_guitar",
           "filter_tags": [
             "solo",
             "standalone",
@@ -1214,7 +1769,41 @@
           "extra_type": "commentary",
           "tags": [],
           "tsm_song_id": "yf70",
-          "tsm_album_id": "9dy"
+          "tsm_album_id": "9dy",
+          "genres": [
+            "country",
+            "country pop",
+            "rock"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "country pop": 1.2,
+            "rock": 1.2
+          },
+          "genre_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "country",
+              "rock",
+              "country pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "Country",
+              "Music",
+              "Rock",
+              "Contemporary Country",
+              "Honky Tonk"
+            ]
+          },
+          "genre_query_titles": {
+            "apple_music": "A Perfectly Good Heart"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:a_perfectly_good_heart"
         },
         {
           "title": "A Place In This World - Instrumental w/ BG vocals",
@@ -1249,7 +1838,48 @@
           "extra_type": "instrumental",
           "tags": [],
           "tsm_song_id": "jjyp",
-          "tsm_album_id": "9dy"
+          "tsm_album_id": "9dy",
+          "genres": [
+            "country",
+            "country pop",
+            "rock"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "country pop": 1.2,
+            "rock": 1.2
+          },
+          "genre_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "country",
+              "rock",
+              "country pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "Country",
+              "Music",
+              "Rock",
+              "Contemporary Country",
+              "Honky Tonk",
+              "Кантри",
+              "Музыка",
+              "Música",
+              "Country contemporáneo",
+              "乡村",
+              "音乐",
+              "摇滚"
+            ]
+          },
+          "genre_query_titles": {
+            "apple_music": "A Place in this World"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:a_place_in_this_world"
         },
         {
           "title": "A Place In This World - Commentary",
@@ -1284,7 +1914,48 @@
           "extra_type": "commentary",
           "tags": [],
           "tsm_song_id": "jjyp",
-          "tsm_album_id": "9dy"
+          "tsm_album_id": "9dy",
+          "genres": [
+            "country",
+            "country pop",
+            "rock"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "country pop": 1.2,
+            "rock": 1.2
+          },
+          "genre_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "country",
+              "rock",
+              "country pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "Country",
+              "Music",
+              "Rock",
+              "Contemporary Country",
+              "Honky Tonk",
+              "Кантри",
+              "Музыка",
+              "Música",
+              "Country contemporáneo",
+              "乡村",
+              "音乐",
+              "摇滚"
+            ]
+          },
+          "genre_query_titles": {
+            "apple_music": "A Place in this World"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:a_place_in_this_world"
         },
         {
           "title": "I'm Only Me When I'm With You - Instrumental w/ BG vocals",
@@ -1319,7 +1990,43 @@
           "extra_type": "instrumental",
           "tags": [],
           "tsm_song_id": "cnx5",
-          "tsm_album_id": "9dy"
+          "tsm_album_id": "9dy",
+          "genres": [
+            "country",
+            "country pop",
+            "rock"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "country pop": 1.2,
+            "rock": 1.2
+          },
+          "genre_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "country",
+              "rock",
+              "country pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "Country",
+              "Music",
+              "Rock",
+              "Contemporary Country",
+              "Honky Tonk",
+              "Música",
+              "Country contemporáneo"
+            ]
+          },
+          "genre_query_titles": {
+            "apple_music": "I'm Only Me When I'm With You"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:i_m_only_me_when_i_m_with_you"
         },
         {
           "title": "Invisible - Commentary",
@@ -1354,7 +2061,43 @@
           "extra_type": "commentary",
           "tags": [],
           "tsm_song_id": "ostz",
-          "tsm_album_id": "9dy"
+          "tsm_album_id": "9dy",
+          "genres": [
+            "country",
+            "country pop",
+            "rock"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "country pop": 1.2,
+            "rock": 1.2
+          },
+          "genre_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "country",
+              "rock",
+              "country pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "Country",
+              "Music",
+              "Rock",
+              "Contemporary Country",
+              "Honky Tonk",
+              "Кантри",
+              "Музыка"
+            ]
+          },
+          "genre_query_titles": {
+            "apple_music": "Invisible"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:invisible"
         },
         {
           "title": "Invisible - Instrumental w/ BG vocals",
@@ -1389,7 +2132,43 @@
           "extra_type": "instrumental",
           "tags": [],
           "tsm_song_id": "ostz",
-          "tsm_album_id": "9dy"
+          "tsm_album_id": "9dy",
+          "genres": [
+            "country",
+            "country pop",
+            "rock"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "country pop": 1.2,
+            "rock": 1.2
+          },
+          "genre_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "country",
+              "rock",
+              "country pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "Country",
+              "Music",
+              "Rock",
+              "Contemporary Country",
+              "Honky Tonk",
+              "Кантри",
+              "Музыка"
+            ]
+          },
+          "genre_query_titles": {
+            "apple_music": "Invisible"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:invisible"
         },
         {
           "title": "I’m Only Me When I’m With You - Commentary",
@@ -1424,7 +2203,43 @@
           "extra_type": "commentary",
           "tags": [],
           "tsm_song_id": "jdke",
-          "tsm_album_id": "9dy"
+          "tsm_album_id": "9dy",
+          "genres": [
+            "country",
+            "country pop",
+            "rock"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "country pop": 1.2,
+            "rock": 1.2
+          },
+          "genre_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "country",
+              "rock",
+              "country pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "Country",
+              "Music",
+              "Rock",
+              "Contemporary Country",
+              "Honky Tonk",
+              "Música",
+              "Country contemporáneo"
+            ]
+          },
+          "genre_query_titles": {
+            "apple_music": "I’m Only Me When I’m With You"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:im_only_me_when_im_with_you"
         },
         {
           "title": "Mary's Song (Oh My My My) - Commentary",
@@ -1459,7 +2274,46 @@
           "extra_type": "commentary",
           "tags": [],
           "tsm_song_id": "vhjn",
-          "tsm_album_id": "9dy"
+          "tsm_album_id": "9dy",
+          "genres": [
+            "country",
+            "country pop",
+            "rock"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "country pop": 1.2,
+            "rock": 1.2
+          },
+          "genre_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "country",
+              "rock",
+              "country pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "Country",
+              "Music",
+              "Rock",
+              "Contemporary Country",
+              "Honky Tonk",
+              "乡村",
+              "音乐",
+              "摇滚",
+              "Música",
+              "Country contemporáneo"
+            ]
+          },
+          "genre_query_titles": {
+            "apple_music": "Mary's Song (Oh My My My)"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:mary_s_song_oh_my_my_my"
         },
         {
           "title": "Mary's Song (Oh My My My) - Instrumental w/ BG vocals",
@@ -1494,7 +2348,46 @@
           "extra_type": "instrumental",
           "tags": [],
           "tsm_song_id": "vhjn",
-          "tsm_album_id": "9dy"
+          "tsm_album_id": "9dy",
+          "genres": [
+            "country",
+            "country pop",
+            "rock"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "country pop": 1.2,
+            "rock": 1.2
+          },
+          "genre_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "country",
+              "rock",
+              "country pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "Country",
+              "Music",
+              "Rock",
+              "Contemporary Country",
+              "Honky Tonk",
+              "乡村",
+              "音乐",
+              "摇滚",
+              "Música",
+              "Country contemporáneo"
+            ]
+          },
+          "genre_query_titles": {
+            "apple_music": "Mary's Song (Oh My My My)"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:mary_s_song_oh_my_my_my"
         },
         {
           "title": "Our Song - Commentary",
@@ -1529,7 +2422,21 @@
           "extra_type": "commentary",
           "tags": [],
           "tsm_song_id": "7cuv",
-          "tsm_album_id": "9dy"
+          "tsm_album_id": "9dy",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": [],
+            "apple_music": []
+          },
+          "genre_raw_sources": {
+            "lastfm": [],
+            "apple_music": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:our_song_chartsnapshot_historical_fearless"
         },
         {
           "title": "Our Song - Instrumental w/ BG vocals",
@@ -1564,7 +2471,76 @@
           "extra_type": "instrumental",
           "tags": [],
           "tsm_song_id": "jctp",
-          "tsm_album_id": "9dy"
+          "tsm_album_id": "9dy",
+          "genres": [
+            "country",
+            "country pop",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 2.2,
+            "country pop": 2.2,
+            "pop": 2.2,
+            "rock": 1.2
+          },
+          "genre_sources": {
+            "lastfm": [
+              "country",
+              "pop",
+              "country pop"
+            ],
+            "apple_music": [
+              "country",
+              "rock",
+              "country pop",
+              "pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "country",
+              "female vocalists",
+              "taylor swift",
+              "pop",
+              "Love",
+              "fun",
+              "country pop",
+              "summer",
+              "singer-songwriter",
+              "catchy"
+            ],
+            "apple_music": [
+              "Country",
+              "Music",
+              "Rock",
+              "Contemporary Country",
+              "Honky Tonk",
+              "Pop",
+              "Teen Pop",
+              "Кантри",
+              "Музыка",
+              "Música",
+              "Country contemporáneo",
+              "乡村",
+              "音乐",
+              "摇滚",
+              "Musica",
+              "Country contemporaneo",
+              "Honky-tonk",
+              "컨트리",
+              "음악",
+              "록",
+              "컨템포러리 컨트리",
+              "홍키 통크"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Our Song",
+            "apple_music": "Our Song"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:our_song"
         },
         {
           "title": "Picture To Burn - Commentary",
@@ -1599,7 +2575,72 @@
           "extra_type": "commentary",
           "tags": [],
           "tsm_song_id": "x9a4",
-          "tsm_album_id": "9dy"
+          "tsm_album_id": "9dy",
+          "genres": [
+            "country",
+            "country pop",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 2.2,
+            "country pop": 2.2,
+            "pop": 2.2,
+            "rock": 1.2
+          },
+          "genre_sources": {
+            "lastfm": [
+              "country",
+              "pop",
+              "country pop"
+            ],
+            "apple_music": [
+              "country",
+              "rock",
+              "country pop",
+              "pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "country",
+              "taylor swift",
+              "catchy",
+              "pop",
+              "feel good",
+              "female vocalists",
+              "Picture To Burn",
+              "country pop",
+              "pop rock",
+              "rock"
+            ],
+            "apple_music": [
+              "Country",
+              "Music",
+              "Rock",
+              "Contemporary Country",
+              "Honky Tonk",
+              "Pop",
+              "Teen Pop",
+              "Кантри",
+              "Музыка",
+              "Música",
+              "Country contemporáneo",
+              "乡村",
+              "音乐",
+              "摇滚",
+              "Musica",
+              "Country contemporaneo",
+              "Honky-tonk",
+              "Country contemporânea"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Picture To Burn",
+            "apple_music": "Picture To Burn"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:picture_to_burn"
         },
         {
           "title": "Picture To Burn - Instrumental w/ BG vocals",
@@ -1634,7 +2675,72 @@
           "extra_type": "instrumental",
           "tags": [],
           "tsm_song_id": "x9a4",
-          "tsm_album_id": "9dy"
+          "tsm_album_id": "9dy",
+          "genres": [
+            "country",
+            "country pop",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 2.2,
+            "country pop": 2.2,
+            "pop": 2.2,
+            "rock": 1.2
+          },
+          "genre_sources": {
+            "lastfm": [
+              "country",
+              "pop",
+              "country pop"
+            ],
+            "apple_music": [
+              "country",
+              "rock",
+              "country pop",
+              "pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [
+              "country",
+              "taylor swift",
+              "catchy",
+              "pop",
+              "feel good",
+              "female vocalists",
+              "Picture To Burn",
+              "country pop",
+              "pop rock",
+              "rock"
+            ],
+            "apple_music": [
+              "Country",
+              "Music",
+              "Rock",
+              "Contemporary Country",
+              "Honky Tonk",
+              "Pop",
+              "Teen Pop",
+              "Кантри",
+              "Музыка",
+              "Música",
+              "Country contemporáneo",
+              "乡村",
+              "音乐",
+              "摇滚",
+              "Musica",
+              "Country contemporaneo",
+              "Honky-tonk",
+              "Country contemporânea"
+            ]
+          },
+          "genre_query_titles": {
+            "lastfm": "Picture To Burn",
+            "apple_music": "Picture To Burn"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:picture_to_burn"
         },
         {
           "title": "Should've Said No - Instrumental w/ BG vocals",
@@ -1669,7 +2775,52 @@
           "extra_type": "instrumental",
           "tags": [],
           "tsm_song_id": "w8u6",
-          "tsm_album_id": "9dy"
+          "tsm_album_id": "9dy",
+          "genres": [
+            "country",
+            "country pop",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "country pop": 1.2,
+            "pop": 1.2,
+            "rock": 1.2
+          },
+          "genre_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "country",
+              "country pop",
+              "pop",
+              "rock"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "Country",
+              "Music",
+              "Contemporary Country",
+              "Honky Tonk",
+              "Pop",
+              "Teen Pop",
+              "Rock",
+              "Кантри",
+              "Музыка",
+              "Música",
+              "Country contemporáneo",
+              "乡村",
+              "音乐",
+              "摇滚"
+            ]
+          },
+          "genre_query_titles": {
+            "apple_music": "Should've Said No"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:should_ve_said_no"
         },
         {
           "title": "Stay Beautiful - Commentary",
@@ -1704,7 +2855,41 @@
           "extra_type": "commentary",
           "tags": [],
           "tsm_song_id": "tq67",
-          "tsm_album_id": "9dy"
+          "tsm_album_id": "9dy",
+          "genres": [
+            "country",
+            "country pop",
+            "rock"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "country pop": 1.2,
+            "rock": 1.2
+          },
+          "genre_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "country",
+              "rock",
+              "country pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "Country",
+              "Music",
+              "Rock",
+              "Contemporary Country",
+              "Honky Tonk"
+            ]
+          },
+          "genre_query_titles": {
+            "apple_music": "Stay Beautiful"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:stay_beautiful"
         },
         {
           "title": "Stay Beautiful - Instrumental w/ BG vocals",
@@ -1739,7 +2924,41 @@
           "extra_type": "instrumental",
           "tags": [],
           "tsm_song_id": "tq67",
-          "tsm_album_id": "9dy"
+          "tsm_album_id": "9dy",
+          "genres": [
+            "country",
+            "country pop",
+            "rock"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "country pop": 1.2,
+            "rock": 1.2
+          },
+          "genre_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "country",
+              "rock",
+              "country pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "Country",
+              "Music",
+              "Rock",
+              "Contemporary Country",
+              "Honky Tonk"
+            ]
+          },
+          "genre_query_titles": {
+            "apple_music": "Stay Beautiful"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:stay_beautiful"
         },
         {
           "title": "Teardrops On My Guitar - Instrumental w/ BG vocals",
@@ -1774,7 +2993,46 @@
           "extra_type": "instrumental",
           "tags": [],
           "tsm_song_id": "nxg3",
-          "tsm_album_id": "9dy"
+          "tsm_album_id": "9dy",
+          "genres": [
+            "country",
+            "country pop",
+            "rock"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "country pop": 1.2,
+            "rock": 1.2
+          },
+          "genre_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "country",
+              "rock",
+              "country pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "Country",
+              "Music",
+              "Rock",
+              "Contemporary Country",
+              "Honky Tonk",
+              "Música",
+              "Country contemporáneo",
+              "乡村",
+              "音乐",
+              "摇滚"
+            ]
+          },
+          "genre_query_titles": {
+            "apple_music": "Teardrops on My Guitar"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:teardrops_on_my_guitar"
         },
         {
           "title": "Teardrops On My Guitar - Pop Version / Commentary",
@@ -1809,7 +3067,46 @@
           "extra_type": "commentary",
           "tags": [],
           "tsm_song_id": "nxg3",
-          "tsm_album_id": "9dy"
+          "tsm_album_id": "9dy",
+          "genres": [
+            "country",
+            "country pop",
+            "rock"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "country pop": 1.2,
+            "rock": 1.2
+          },
+          "genre_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "country",
+              "rock",
+              "country pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "Country",
+              "Music",
+              "Rock",
+              "Contemporary Country",
+              "Honky Tonk",
+              "Música",
+              "Country contemporáneo",
+              "乡村",
+              "音乐",
+              "摇滚"
+            ]
+          },
+          "genre_query_titles": {
+            "apple_music": "Teardrops on My Guitar"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:teardrops_on_my_guitar"
         },
         {
           "title": "Teardrops On My Guitar - Radio Single Remix / Commentary",
@@ -1844,7 +3141,46 @@
           "extra_type": "commentary",
           "tags": [],
           "tsm_song_id": "nxg3",
-          "tsm_album_id": "9dy"
+          "tsm_album_id": "9dy",
+          "genres": [
+            "country",
+            "country pop",
+            "rock"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "country pop": 1.2,
+            "rock": 1.2
+          },
+          "genre_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "country",
+              "rock",
+              "country pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "Country",
+              "Music",
+              "Rock",
+              "Contemporary Country",
+              "Honky Tonk",
+              "Música",
+              "Country contemporáneo",
+              "乡村",
+              "音乐",
+              "摇滚"
+            ]
+          },
+          "genre_query_titles": {
+            "apple_music": "Teardrops on My Guitar"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:teardrops_on_my_guitar"
         },
         {
           "title": "The Outside - Commentary",
@@ -1879,7 +3215,46 @@
           "extra_type": "commentary",
           "tags": [],
           "tsm_song_id": "l5ks",
-          "tsm_album_id": "9dy"
+          "tsm_album_id": "9dy",
+          "genres": [
+            "country",
+            "country pop",
+            "rock"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "country pop": 1.2,
+            "rock": 1.2
+          },
+          "genre_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "country",
+              "rock",
+              "country pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "Country",
+              "Music",
+              "Rock",
+              "Contemporary Country",
+              "Honky Tonk",
+              "乡村",
+              "音乐",
+              "摇滚",
+              "Música",
+              "Country contemporáneo"
+            ]
+          },
+          "genre_query_titles": {
+            "apple_music": "The Outside"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:the_outside"
         },
         {
           "title": "The Outside - Instrumental w/ BG vocals",
@@ -1914,7 +3289,46 @@
           "extra_type": "instrumental",
           "tags": [],
           "tsm_song_id": "l5ks",
-          "tsm_album_id": "9dy"
+          "tsm_album_id": "9dy",
+          "genres": [
+            "country",
+            "country pop",
+            "rock"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "country pop": 1.2,
+            "rock": 1.2
+          },
+          "genre_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "country",
+              "rock",
+              "country pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "Country",
+              "Music",
+              "Rock",
+              "Contemporary Country",
+              "Honky Tonk",
+              "乡村",
+              "音乐",
+              "摇滚",
+              "Música",
+              "Country contemporáneo"
+            ]
+          },
+          "genre_query_titles": {
+            "apple_music": "The Outside"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:the_outside"
         },
         {
           "title": "Tied Together With A Smile - Commentary",
@@ -1949,7 +3363,43 @@
           "extra_type": "commentary",
           "tags": [],
           "tsm_song_id": "qpe2",
-          "tsm_album_id": "9dy"
+          "tsm_album_id": "9dy",
+          "genres": [
+            "country",
+            "country pop",
+            "rock"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "country pop": 1.2,
+            "rock": 1.2
+          },
+          "genre_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "country",
+              "rock",
+              "country pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "Country",
+              "Music",
+              "Rock",
+              "Contemporary Country",
+              "Honky Tonk",
+              "Música",
+              "Country contemporáneo"
+            ]
+          },
+          "genre_query_titles": {
+            "apple_music": "Tied Together with a Smile"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:tied_together_with_a_smile"
         },
         {
           "title": "Tied Together With A Smile - Instrumental w/ BG vocals",
@@ -1984,7 +3434,43 @@
           "extra_type": "instrumental",
           "tags": [],
           "tsm_song_id": "qpe2",
-          "tsm_album_id": "9dy"
+          "tsm_album_id": "9dy",
+          "genres": [
+            "country",
+            "country pop",
+            "rock"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "country pop": 1.2,
+            "rock": 1.2
+          },
+          "genre_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "country",
+              "rock",
+              "country pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "Country",
+              "Music",
+              "Rock",
+              "Contemporary Country",
+              "Honky Tonk",
+              "Música",
+              "Country contemporáneo"
+            ]
+          },
+          "genre_query_titles": {
+            "apple_music": "Tied Together with a Smile"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:tied_together_with_a_smile"
         },
         {
           "title": "Tim McGraw - Commentary",
@@ -2019,7 +3505,50 @@
           "extra_type": "commentary",
           "tags": [],
           "tsm_song_id": "vtbl",
-          "tsm_album_id": "9dy"
+          "tsm_album_id": "9dy",
+          "genres": [
+            "country",
+            "country pop",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "country pop": 1.2,
+            "pop": 1.2,
+            "rock": 1.2
+          },
+          "genre_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "country",
+              "rock",
+              "country pop",
+              "pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "Country",
+              "Music",
+              "Rock",
+              "Contemporary Country",
+              "Honky Tonk",
+              "Pop",
+              "Teen Pop",
+              "Música",
+              "Country contemporáneo",
+              "乡村",
+              "音乐",
+              "摇滚"
+            ]
+          },
+          "genre_query_titles": {
+            "apple_music": "Tim McGraw"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:tim_mcgraw"
         },
         {
           "title": "Tim McGraw - Instrumental w/ BG vocals",
@@ -2054,7 +3583,50 @@
           "extra_type": "instrumental",
           "tags": [],
           "tsm_song_id": "vtbl",
-          "tsm_album_id": "9dy"
+          "tsm_album_id": "9dy",
+          "genres": [
+            "country",
+            "country pop",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "country pop": 1.2,
+            "pop": 1.2,
+            "rock": 1.2
+          },
+          "genre_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "country",
+              "rock",
+              "country pop",
+              "pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "Country",
+              "Music",
+              "Rock",
+              "Contemporary Country",
+              "Honky Tonk",
+              "Pop",
+              "Teen Pop",
+              "Música",
+              "Country contemporáneo",
+              "乡村",
+              "音乐",
+              "摇滚"
+            ]
+          },
+          "genre_query_titles": {
+            "apple_music": "Tim McGraw"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:tim_mcgraw"
         },
         {
           "title": "Tim McGraw - Live",
@@ -2089,7 +3661,50 @@
           "extra_type": "live",
           "tags": [],
           "tsm_song_id": "vtbl",
-          "tsm_album_id": "9dy"
+          "tsm_album_id": "9dy",
+          "genres": [
+            "country",
+            "country pop",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "country pop": 1.2,
+            "pop": 1.2,
+            "rock": 1.2
+          },
+          "genre_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "country",
+              "rock",
+              "country pop",
+              "pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "Country",
+              "Music",
+              "Rock",
+              "Contemporary Country",
+              "Honky Tonk",
+              "Pop",
+              "Teen Pop",
+              "Música",
+              "Country contemporáneo",
+              "乡村",
+              "音乐",
+              "摇滚"
+            ]
+          },
+          "genre_query_titles": {
+            "apple_music": "Tim McGraw"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:tim_mcgraw"
         },
         {
           "title": "Our Song - International Mix",
@@ -2115,14 +3730,16 @@
           "genre_status": "missing",
           "genre_scores": {},
           "genre_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": []
           },
           "genre_raw_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": []
           },
           "genre_query_titles": {},
           "genre_errors": {},
-          "genre_canonical_key": "family:our_song_international_mix",
+          "genre_canonical_key": "family:our_song_chartsnapshot_historical_fearless",
           "filter_tags": [
             "solo",
             "remix"
@@ -2164,7 +3781,46 @@
           "tags": [],
           "chart_extra": true,
           "tsm_song_id": "ndfx",
-          "tsm_album_id": "9dy"
+          "tsm_album_id": "9dy",
+          "genres": [
+            "country",
+            "country pop",
+            "rock"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "country pop": 1.2,
+            "rock": 1.2
+          },
+          "genre_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "country",
+              "rock",
+              "country pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "Country",
+              "Music",
+              "Rock",
+              "Contemporary Country",
+              "Honky Tonk",
+              "Música",
+              "Country contemporáneo",
+              "乡村",
+              "音乐",
+              "摇滚"
+            ]
+          },
+          "genre_query_titles": {
+            "apple_music": "Teardrops on my Guitar"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:teardrops_on_my_guitar_chartsnapshot_external_2OHH1jLP"
         },
         {
           "title": "Teardrops On My Guitar - Alternate Version",
@@ -2192,7 +3848,46 @@
           "tags": [],
           "chart_extra": true,
           "tsm_song_id": "jnnm",
-          "tsm_album_id": "9dy"
+          "tsm_album_id": "9dy",
+          "genres": [
+            "country",
+            "country pop",
+            "rock"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "country pop": 1.2,
+            "rock": 1.2
+          },
+          "genre_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "country",
+              "rock",
+              "country pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "Country",
+              "Music",
+              "Rock",
+              "Contemporary Country",
+              "Honky Tonk",
+              "Música",
+              "Country contemporáneo",
+              "乡村",
+              "音乐",
+              "摇滚"
+            ]
+          },
+          "genre_query_titles": {
+            "apple_music": "Teardrops On My Guitar - Alternate Version"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:teardrops_on_my_guitar_alternate_version"
         },
         {
           "title": "Our Song - International Mix",
@@ -2214,18 +3909,75 @@
           "image_url": "https://i.scdn.co/image/ab67616d0000b273d0eae3c1661a96570f4ca7bd",
           "historical_track_ids": [],
           "release_date": "2008-11-11T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
+          "genres": [
+            "country",
+            "country pop",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 2.2,
+            "country pop": 2.2,
+            "pop": 2.2,
+            "rock": 1.2
+          },
           "genre_sources": {
-            "lastfm": []
+            "lastfm": [
+              "country",
+              "pop",
+              "country pop"
+            ],
+            "apple_music": [
+              "country",
+              "rock",
+              "country pop",
+              "pop"
+            ]
           },
           "genre_raw_sources": {
-            "lastfm": []
+            "lastfm": [
+              "country",
+              "female vocalists",
+              "taylor swift",
+              "pop",
+              "Love",
+              "fun",
+              "country pop",
+              "summer",
+              "singer-songwriter",
+              "catchy"
+            ],
+            "apple_music": [
+              "Country",
+              "Music",
+              "Rock",
+              "Contemporary Country",
+              "Honky Tonk",
+              "Pop",
+              "Teen Pop",
+              "Кантри",
+              "Музыка",
+              "Música",
+              "Country contemporáneo",
+              "乡村",
+              "音乐",
+              "摇滚",
+              "Musica",
+              "Country contemporaneo",
+              "Honky-tonk",
+              "컨트리",
+              "음악",
+              "록",
+              "컨템포러리 컨트리",
+              "홍키 통크"
+            ]
           },
-          "genre_query_titles": {},
+          "genre_query_titles": {
+            "lastfm": "Our Song",
+            "apple_music": "Our Song"
+          },
           "genre_errors": {},
-          "genre_canonical_key": "family:our_song_chartsnapshot_historical_fearless",
+          "genre_canonical_key": "family:our_song",
           "filter_tags": [
             "standalone"
           ],
@@ -2274,7 +4026,52 @@
           "extra_type": "commentary",
           "tags": [],
           "tsm_song_id": "3u2v",
-          "tsm_album_id": "9dy"
+          "tsm_album_id": "9dy",
+          "genres": [
+            "country",
+            "country pop",
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "country pop": 1.2,
+            "pop": 1.2,
+            "rock": 1.2
+          },
+          "genre_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "country",
+              "country pop",
+              "pop",
+              "rock"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "Country",
+              "Music",
+              "Contemporary Country",
+              "Honky Tonk",
+              "Pop",
+              "Teen Pop",
+              "Rock",
+              "Кантри",
+              "Музыка",
+              "Música",
+              "Country contemporáneo",
+              "乡村",
+              "音乐",
+              "摇滚"
+            ]
+          },
+          "genre_query_titles": {
+            "apple_music": "Should’ve Said No"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:shouldve_said_no"
         },
         {
           "title": "Teardrops on my Guitar (WalMart Exclusive)",
@@ -2309,7 +4106,46 @@
           "release_edition": "",
           "tags": [],
           "tsm_song_id": "ndfx",
-          "tsm_album_id": "9dy"
+          "tsm_album_id": "9dy",
+          "genres": [
+            "country",
+            "country pop",
+            "rock"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "country pop": 1.2,
+            "rock": 1.2
+          },
+          "genre_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "country",
+              "rock",
+              "country pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "Country",
+              "Music",
+              "Rock",
+              "Contemporary Country",
+              "Honky Tonk",
+              "Música",
+              "Country contemporáneo",
+              "乡村",
+              "音乐",
+              "摇滚"
+            ]
+          },
+          "genre_query_titles": {
+            "apple_music": "Teardrops on my Guitar"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:teardrops_on_my_guitar_chartsnapshot_external_2OHH1jLP"
         },
         {
           "title": "You'll Always Find Your Way Back Home (Disney Sing Along)",
@@ -2344,7 +4180,21 @@
           "extra_type": "instrumental",
           "tags": [],
           "tsm_song_id": "8pid",
-          "tsm_album_id": "9dy"
+          "tsm_album_id": "9dy",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": [],
+            "apple_music": []
+          },
+          "genre_raw_sources": {
+            "lastfm": [],
+            "apple_music": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:you_ll_always_find_your_way_back_home_chartsnapshot_external_49Nfi3WO"
         },
         {
           "title": "Teardrops On My Guitar - Cahill Radio Edit",
@@ -2379,7 +4229,46 @@
           "extra_type": "other",
           "tags": [],
           "tsm_song_id": "e6cz",
-          "tsm_album_id": "9dy"
+          "tsm_album_id": "9dy",
+          "genres": [
+            "country",
+            "country pop",
+            "rock"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "country pop": 1.2,
+            "rock": 1.2
+          },
+          "genre_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "country",
+              "rock",
+              "country pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "Country",
+              "Music",
+              "Rock",
+              "Contemporary Country",
+              "Honky Tonk",
+              "Música",
+              "Country contemporáneo",
+              "乡村",
+              "音乐",
+              "摇滚"
+            ]
+          },
+          "genre_query_titles": {
+            "apple_music": "Teardrops On My Guitar"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:teardrops_on_my_guitar_chartsnapshot_external_2y2Y9tGc"
         },
         {
           "title": "Taylor Swift Interview",
@@ -2414,7 +4303,21 @@
           "extra_type": "other",
           "tags": [],
           "tsm_song_id": "vg83",
-          "tsm_album_id": "9dy"
+          "tsm_album_id": "9dy",
+          "genres": [],
+          "genre_status": "missing",
+          "genre_scores": {},
+          "genre_sources": {
+            "lastfm": [],
+            "apple_music": []
+          },
+          "genre_raw_sources": {
+            "lastfm": [],
+            "apple_music": []
+          },
+          "genre_query_titles": {},
+          "genre_errors": {},
+          "genre_canonical_key": "family:taylor_swift_interview_chartsnapshot_external_6Bgc6CGz"
         },
         {
           "title": "Teardrops On My Guitar - Acoustic Version",
@@ -2449,7 +4352,46 @@
           "extra_type": "acoustic",
           "tags": [],
           "tsm_song_id": "ndfx",
-          "tsm_album_id": "9dy"
+          "tsm_album_id": "9dy",
+          "genres": [
+            "country",
+            "country pop",
+            "rock"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "country pop": 1.2,
+            "rock": 1.2
+          },
+          "genre_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "country",
+              "rock",
+              "country pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "Country",
+              "Music",
+              "Rock",
+              "Contemporary Country",
+              "Honky Tonk",
+              "Música",
+              "Country contemporáneo",
+              "乡村",
+              "音乐",
+              "摇滚"
+            ]
+          },
+          "genre_query_titles": {
+            "apple_music": "Teardrops on my Guitar"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:teardrops_on_my_guitar_chartsnapshot_external_2OHH1jLP"
         },
         {
           "title": "Cold As You - Commentary",
@@ -2484,7 +4426,48 @@
           "extra_type": "commentary",
           "tags": [],
           "tsm_song_id": "ydmm",
-          "tsm_album_id": "9dy"
+          "tsm_album_id": "9dy",
+          "genres": [
+            "country",
+            "country pop",
+            "rock"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "country": 1.2,
+            "country pop": 1.2,
+            "rock": 1.2
+          },
+          "genre_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "country",
+              "rock",
+              "country pop"
+            ]
+          },
+          "genre_raw_sources": {
+            "lastfm": [],
+            "apple_music": [
+              "Country",
+              "Music",
+              "Rock",
+              "Contemporary Country",
+              "Honky Tonk",
+              "Кантри",
+              "Музыка",
+              "乡村",
+              "音乐",
+              "摇滚",
+              "Música",
+              "Country contemporáneo"
+            ]
+          },
+          "genre_query_titles": {
+            "apple_music": "Cold As You"
+          },
+          "genre_errors": {},
+          "genre_canonical_key": "family:cold_as_you"
         }
       ]
     },

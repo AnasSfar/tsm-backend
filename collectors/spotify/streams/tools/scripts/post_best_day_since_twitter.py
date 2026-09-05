@@ -64,7 +64,6 @@ EARLY_BEST_DAY_STANDARD_MAX_POSTS = 3
 EARLY_BEST_DAY_EXCEPTIONAL_MAX_POSTS = 5
 EARLY_BEST_DAY_EXCEPTIONAL_MIN_SCORE = 90.0
 EARLY_BEST_DAY_MAX_POSTS_PER_ERA = 1
-MAX_BEST_DAY_GROWER_POSTS = 3
 ALWAYS_POST_BEST_DAY_SINCE_AFTER_DAYS = 60
 PRIORITY_BEST_DAY_SINCE_MIN_DAYS = 90
 
@@ -79,15 +78,12 @@ sys.path.insert(0, str(COLLECTORS_ROOT))              # collectors/
 sys.path.insert(0, str(ROOT))                         # collectors/spotify/streams/
 sys.path.insert(0, str(ROOT.parent))                  # collectors/spotify/
 
-from comp.song_card import image_data_uri  # noqa: E402
 from comp.song_card_chart_sheet import format_change_html, render_chart_sheet_card, slugify, write_chart_sheet_card_png  # noqa: E402
 from comp.tables_image import build_table_html, masthead_theme_for_date, render_html_to_png, url_to_data_uri  # noqa: E402
 from comp.fmt import fmt_streams, fmt_pct, pct_cls, get_pct  # noqa: E402
 from core.twitter import post_image_thread, post_with_image  # noqa: E402
 from core.data_paths import update_streams_dir  # noqa: E402
 from twitter.text import best_day_since_era_recap_tweet, best_day_since_recap_tweet, best_day_since_tweet  # noqa: E402
-from twitter.albums import album_emoji  # noqa: E402
-from twitter.text import best_day_grower_tweet  # noqa: E402
 import best_day_since  # noqa: E402
 import score_best_day_since  # noqa: E402
 import generate_album_update_image  # noqa: E402
@@ -122,28 +118,6 @@ def _fmt_pct(current: int | None, previous: int | None) -> str:
         return "n/a"
     pct = (current - previous) / previous * 100
     return f"{pct:+.1f}%"
-
-
-def _short_month_day(day: date) -> str:
-    return f"{day.month}/{day.day}"
-
-
-def _hex_to_rgb(value: str) -> tuple[int, int, int] | None:
-    raw = (value or "").strip().lstrip("#")
-    if len(raw) != 6:
-        return None
-    try:
-        return int(raw[:2], 16), int(raw[2:4], 16), int(raw[4:6], 16)
-    except ValueError:
-        return None
-
-
-def _luma_from_hex(value: str) -> float:
-    rgb = _hex_to_rgb(value) or (29, 185, 84)
-    r, g, b = rgb
-    return (0.2126 * r + 0.7152 * g + 0.0722 * b) / 255
-
-
 
 
 def _norm(value: str) -> str:
@@ -339,12 +313,6 @@ def _find_all_rows(target_date: str, *, min_days: int) -> list[dict]:
                 f"already posted for {target_date}."
             )
             continue
-        if _is_repeat_of_previous_day(row, target_date, min_days=min_days):
-            print(
-                f"[best_day_since_post] {row['title']} repeated the same best-day-since "
-                f"({row['best_day_since']}); using grower tweet format."
-            )
-            row["_grower_repeat"] = True
         rows.append(row)
     return rows
 
@@ -673,249 +641,6 @@ def _write_track_lock(track_id: str, target_date: str, row: dict, *, post_type: 
     )
 
 
-def _grower_posted_lock_path(track_id: str, target_date: str) -> Path:
-    return _day_dir(target_date) / "best_day_grower_locks" / f"{track_id}.lock"
-
-
-def _posted_grower_track_ids_for_date(target_date: str) -> set[str]:
-    grower_locks_dir = _day_dir(target_date) / "best_day_grower_locks"
-    if not grower_locks_dir.exists():
-        return set()
-    return {p.stem for p in grower_locks_dir.glob("*.lock")}
-
-
-def _write_grower_lock(track_id: str, target_date: str, row: dict) -> None:
-    lock = _grower_posted_lock_path(track_id, target_date)
-    lock.parent.mkdir(parents=True, exist_ok=True)
-    lock.write_text(
-        json.dumps({
-            "best_day_since": row.get("best_day_since"),
-            "kind": row.get("kind"),
-            "post_type": "grower",
-        }),
-        encoding="utf-8",
-    )
-
-
-def _is_repeat_of_previous_day(row: dict, target_date: str, *, min_days: int = RECAP_BEST_DAY_MIN_DAYS) -> bool:
-    """True if yesterday's post for this track already claimed the same
-    best-day-since reference, or yesterday's exact data produced the same
-    best-day-since reference.
-
-    Posting "best day since <X>" (or "best day ever") again the very next
-    day for the same track reads as a duplicate even though it's technically
-    still true, so the second consecutive day switches to the grower format."""
-    previous_target = date.fromisoformat(target_date) - timedelta(days=1)
-    try:
-        tracks = best_day_since.load_tracks(include_extras=False)
-        history = best_day_since.load_history()
-        track = tracks.get(row["track_id"])
-        previous_row = (
-            best_day_since.compute_best_day_since(track, history.get(row["track_id"]) or [], previous_target)
-            if track
-            else None
-        )
-        if (
-            previous_row
-            and previous_row.get("kind") == row.get("kind")
-            and bool(previous_row.get("best_day_since"))
-            and previous_row.get("best_day_since") == row.get("best_day_since")
-            and (
-                previous_row.get("is_biggest_day_of_year")
-                or best_day_since.passes_filters(previous_row, min_days=min_days)
-            )
-        ):
-            return True
-    except Exception:
-        pass
-
-    previous_date = (date.fromisoformat(target_date) - timedelta(days=1)).isoformat()
-    lock = _track_posted_lock_path(row["track_id"], previous_date)
-    if not lock.exists():
-        return False
-    try:
-        previous = json.loads(lock.read_text(encoding="utf-8"))
-    except Exception:
-        return False
-    return bool(previous.get("best_day_since")) and previous.get("best_day_since") == row.get("best_day_since")
-
-
-def _daily_grower_points(track_ids: list[str], target_date: str, *, days: int = 4) -> list[dict] | None:
-    target = date.fromisoformat(target_date)
-    wanted_dates = [(target - timedelta(days=offset)).isoformat() for offset in range(days, -1, -1)]
-    wanted_ids = set(track_ids)
-    dailies: dict[str, int] = {}
-    if not best_day_since.HISTORY_PATH.exists():
-        return None
-
-    with best_day_since.HISTORY_PATH.open(newline="", encoding="utf-8-sig") as file:
-        for row in csv.DictReader(file):
-            if row.get("track_id") not in wanted_ids:
-                continue
-            day = (row.get("date") or "").strip()
-            if day not in wanted_dates:
-                continue
-            daily_raw = (row.get("daily_streams") or "").strip()
-            if not daily_raw:
-                continue
-            try:
-                dailies[day] = dailies.get(day, 0) + int(daily_raw)
-            except ValueError:
-                continue
-
-    points: list[dict] = []
-    for index, day in enumerate(wanted_dates[1:], 1):
-        previous_day = wanted_dates[index - 1]
-        if day not in dailies or previous_day not in dailies:
-            return None
-        previous_daily = dailies[previous_day]
-        if previous_daily <= 0:
-            return None
-        current_daily = dailies[day]
-        pct = (current_daily - previous_daily) / previous_daily * 100
-        points.append({
-            "date": date.fromisoformat(day),
-            "daily": current_daily,
-            "pct": pct,
-        })
-    return points
-
-
-def _grower_label(row: dict) -> str:
-    if row.get("is_biggest_day_of_year") and row.get("kind") == "since":
-        return f"biggest day of the year and its best day since {best_day_since.format_long_date(row['best_day_since'])}"
-    return best_day_since.row_label(row)
-
-
-def _grower_tweet(row: dict, track: dict, points: list[dict]) -> str:
-    lines = [
-        f"{_short_month_day(point['date'])} — {_fmt_int(point['daily'])} [{point['pct']:+.1f}%]"
-        for point in points
-    ]
-    return best_day_grower_tweet(
-        title=track.get("title") or row["title"],
-        artist=track.get("artist") or track.get("primary_artist") or "Taylor Swift",
-        lines=lines,
-        label=_grower_label(row),
-        prefix=album_emoji(track.get("album")),
-    )
-
-
-def _spotify_logo_svg(fill: str) -> str:
-    return f"""<svg class="spotify-logo" viewBox="0 0 24 24" fill="{fill}" xmlns="http://www.w3.org/2000/svg">
-  <path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/>
-</svg>"""
-
-
-def _generate_grower_image(*, track: dict, cover_url: str, target_date: str) -> Path:
-    cover_uri, cover_bytes = image_data_uri(cover_url)
-    if cover_url:
-        try:
-            bg_color = generate_album_update_image._dominant_color_from_url(cover_url)
-        except Exception:
-            bg_color = "#1db954"
-    else:
-        bg_color = "#1db954"
-    logo_fill = "#000000" if _luma_from_hex(bg_color) > 0.58 else "#ffffff"
-    art_html = f'<img class="cover" src="{html.escape(cover_uri, quote=True)}" />' if cover_uri else '<div class="cover-ph"></div>'
-    html_text = f"""<!doctype html>
-<html>
-<head>
-<meta charset="utf-8">
-<style>
-*{{box-sizing:border-box;margin:0;padding:0}}
-body{{
-  width:900px;height:900px;
-  font-family:Inter,-apple-system,'Helvetica Neue',Arial,sans-serif;
-  background:
-    radial-gradient(circle at 78% 18%,rgba(255,255,255,.22),rgba(255,255,255,0) 28%),
-    radial-gradient(circle at 10% 90%,rgba(0,0,0,.20),rgba(0,0,0,0) 34%),
-    {bg_color};
-  overflow:hidden;
-  position:relative;
-}}
-.wrap{{
-  position:absolute;inset:0;
-  display:flex;align-items:center;justify-content:center;
-}}
-.cover-frame{{
-  width:620px;height:620px;border-radius:46px;overflow:hidden;
-  box-shadow:0 42px 90px rgba(0,0,0,.34),0 0 0 1px rgba(255,255,255,.18);
-}}
-.cover,.cover-ph{{width:100%;height:100%;object-fit:cover;display:block}}
-.cover-ph{{background:rgba(255,255,255,.18)}}
-.logo-badge{{
-  position:absolute;right:96px;bottom:92px;
-  width:170px;height:170px;border-radius:50%;
-  display:flex;align-items:center;justify-content:center;
-  background:rgba(255,255,255,.16);
-  backdrop-filter:blur(10px);
-  box-shadow:0 24px 60px rgba(0,0,0,.32), inset 0 0 0 1px rgba(255,255,255,.18);
-}}
-.spotify-logo{{width:102px;height:102px;display:block}}
-.grain{{
-  position:absolute;inset:0;opacity:.10;mix-blend-mode:overlay;
-  background-image:linear-gradient(45deg,rgba(255,255,255,.18) 25%,transparent 25%,transparent 50%,rgba(255,255,255,.18) 50%,rgba(255,255,255,.18) 75%,transparent 75%);
-  background-size:9px 9px;
-}}
-</style>
-</head>
-<body>
-  <div class="grain"></div>
-  <div class="wrap">
-    <div class="cover-frame">{art_html}</div>
-    <div class="logo-badge">{_spotify_logo_svg(logo_fill)}</div>
-  </div>
-</body>
-</html>"""
-    out_dir = _day_dir(target_date) / "best_day_since"
-    out_path = out_dir / f"best_day_grower_{slugify(track.get('title') or track.get('track_id') or 'track')}_{target_date}.png"
-    tmp_path = out_dir / f"_best_day_grower_{track.get('track_id') or slugify(track.get('title') or 'track')}.html"
-    return render_html_to_png(html_text, out_path, tmp_path, width=900)
-
-
-def _post_grower_for_repeat(row: dict, track: dict, target_date: str, *, no_post: bool) -> str:
-    posted_grower_ids = _posted_grower_track_ids_for_date(target_date)
-    if row["track_id"] in posted_grower_ids and not no_post:
-        print(f"[best_day_grower] Already posted grower for {row['title']} on {target_date}, skipping.")
-        return "skipped"
-    if len(posted_grower_ids) >= MAX_BEST_DAY_GROWER_POSTS and not no_post:
-        print(
-            f"[best_day_grower] Skipping {row['title']}: already "
-            f"{MAX_BEST_DAY_GROWER_POSTS} grower post(s) for {target_date}."
-        )
-        return "skipped"
-
-    points = _daily_grower_points(row.get("combined_track_ids") or [row["track_id"]], target_date)
-    if not points:
-        print(f"[best_day_grower] Skipping {row['title']}: incomplete exact 4-day daily history.")
-        return "skipped"
-
-    tweet = _grower_tweet(row, track, points)
-    print(f"[best_day_grower] Tweet ({len(tweet)} chars):\n{tweet}")
-    if len(tweet) > 280:
-        print(f"[best_day_grower] Skipping {row['title']}: tweet is {len(tweet)} chars (limit 280).")
-        return "skipped"
-
-    cover_url = get_cover_url(track, load_covers())
-    image_path = _generate_grower_image(track=track, cover_url=cover_url, target_date=target_date)
-    print(f"[best_day_grower] Image: {image_path}")
-
-    if no_post:
-        return "posted"
-
-    if not TWITTER_SESSION.exists():
-        print(f"ERROR: Twitter session not found at {TWITTER_SESSION}")
-        return "error"
-    if not post_with_image(tweet, image_path, TWITTER_SESSION):
-        print(f"[best_day_grower] Failed to post {row['title']}.")
-        return "error"
-
-    _write_track_lock(row["track_id"], target_date, row, post_type="grower")
-    _write_grower_lock(row["track_id"], target_date, row)
-    return "posted"
-
-
 def _post_single_track_early(
     track_id: str,
     target_date: str,
@@ -996,16 +721,6 @@ def _post_single_track_early(
             f"{MAX_BEST_DAY_SONG_POSTS_PER_ALBUM} best-day song post(s) for {track.get('album')}."
         )
         return "skipped"
-
-    if _is_repeat_of_previous_day(row, target_date, min_days=min_days):
-        print(
-            f"[best_day_since_early] {track_id} repeated the same best-day-since "
-            f"({row['best_day_since']}); using grower tweet format."
-        )
-        grower_result = _post_grower_for_repeat(row, track, target_date, no_post=no_post)
-        if is_unconditional and grower_result == "posted":
-            return "posted_unconditional"
-        return grower_result
 
     track_ids = row.get("combined_track_ids") or [track_id]
     total_today, total_yesterday, daily_today, daily_yesterday, daily_last_week = (
@@ -1382,6 +1097,78 @@ def _generate_recap_images(
 def _build_recap_tweet(rows: list[dict], target_date: str) -> str:
     return best_day_since_recap_tweet(count=len(rows), stats_date=target_date)
 
+
+def build_recap_thread_posts(
+    target_date: str,
+    *,
+    tracks_by_id: dict[str, dict] | None = None,
+    covers: dict[str, str] | None = None,
+) -> tuple[list[tuple[str, list[Path]]], list[dict], bool]:
+    """Build (not post) the best-day-since thread continuation for the day's
+    Top Songs tweet (decision 2026-09-04): one entry per qualifying era not
+    yet posted today, then the global recap if it has more than one row.
+    Used by post_streams_twitter.py to post everything as one native X
+    thread; call mark_recap_thread_posted after actually posting the
+    returned entries to write the lock files."""
+    if tracks_by_id is None:
+        tracks_by_id = {track["track_id"]: track for track in load_all_tracks()}
+    if covers is None:
+        covers = load_covers()
+
+    posts: list[tuple[str, list[Path]]] = []
+    era_groups: list[dict] = []
+    already_posted = _posted_era_recap_keys_for_date(target_date)
+    for group in _era_recap_groups(target_date):
+        era_key = group.get("era_key") or _album_key(group.get("album"))
+        if era_key in already_posted:
+            continue
+        rows = list(group.get("items") or [])
+        if len(rows) < ERA_RECAP_MIN_SONGS:
+            continue
+        rows.sort(key=_recap_sort_key)
+        era_display = group.get("album") or era_key
+        image_paths = _generate_recap_images(
+            rows=rows,
+            target_date=target_date,
+            tracks_by_id=tracks_by_id,
+            covers=covers,
+            era_display=era_display,
+        )
+        tweet = best_day_since_era_recap_tweet(era=era_display, count=len(rows), stats_date=target_date)
+        posts.append((tweet, image_paths))
+        era_groups.append(group)
+
+    has_global_recap = False
+    recap_lock = _day_dir(target_date) / "best_day_since_recap_posted.lock"
+    if not recap_lock.exists():
+        recap_rows = _find_recap_rows(target_date)
+        recap_rows.sort(key=_recap_sort_key)
+        if len(recap_rows) > 1:
+            image_paths = _generate_recap_images(
+                rows=recap_rows,
+                target_date=target_date,
+                tracks_by_id=tracks_by_id,
+                covers=covers,
+            )
+            tweet = _build_recap_tweet(recap_rows, target_date)
+            posts.append((tweet, image_paths))
+            has_global_recap = True
+
+    return posts, era_groups, has_global_recap
+
+
+def mark_recap_thread_posted(target_date: str, era_groups: list[dict], has_global_recap: bool = True) -> None:
+    """Write the lock files for a recap thread already posted by the caller
+    (post_streams_twitter.py) via build_recap_thread_posts."""
+    for group in era_groups:
+        era_key = group.get("era_key") or _album_key(group.get("album"))
+        _write_era_recap_lock(era_key, target_date, group)
+        _ERA_RECAP_DONE_THIS_RUN.add(era_key)
+    if has_global_recap:
+        recap_lock = _day_dir(target_date) / "best_day_since_recap_posted.lock"
+        recap_lock.parent.mkdir(parents=True, exist_ok=True)
+        recap_lock.touch()
+
 def _best_since_badge_text(row: dict) -> str:
     if row.get("is_biggest_day_of_year") and row.get("kind") == "since":
         return f"biggest day of the year and best day since {best_day_since.format_long_date(row['best_day_since'])}"
@@ -1463,6 +1250,50 @@ def _generate_best_day_since_image(
     return write_chart_sheet_card_png(html, out_path, tmp_path)
 
 
+def _post_one_selected_row(
+    row: dict,
+    *,
+    target_date: str,
+    covers: dict[str, str],
+    no_post: bool,
+    index: int | None = None,
+    total: int | None = None,
+) -> bool:
+    """Generate the image, build the tweet, and post one already-selected
+    best-day-since song row (row["_post_track"]/_post_total_today/
+    _post_daily_yesterday must already be set). Writes the per-track lock on
+    success. Returns True if posted (or --no-post preview), False on failure.
+    Shared by the normal batch loop and --post-batch-track."""
+    track = row["_post_track"]
+    total_today = row["_post_total_today"]
+    daily_yesterday = row["_post_daily_yesterday"]
+
+    cover_url = get_cover_url(track, covers)
+    image_path = _generate_best_day_since_image(
+        row=row,
+        track=track,
+        total_today=total_today,
+        daily_yesterday=daily_yesterday,
+        cover_url=cover_url,
+        target_date=target_date,
+    )
+
+    tweet = _build_tweet(row, daily_yesterday)
+    label = f" {index}/{total}" if index is not None and total is not None else ""
+    print(f"[best_day_since_post] Tweet{label} ({len(tweet)} chars):\n{tweet}")
+    print(f"[best_day_since_post] Image: {image_path}")
+
+    if no_post:
+        return True
+
+    if not post_with_image(tweet, image_path, TWITTER_SESSION):
+        print(f"[best_day_since_post] Failed to post {row['title']}.")
+        return False
+
+    _write_track_lock(row["track_id"], target_date, row)
+    return True
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description="Post top best-day-since songs to @swiftiescharts.")
     parser.add_argument("date", nargs="?", help="Stats date YYYY-MM-DD. Defaults to yesterday.")
@@ -1534,6 +1365,23 @@ def main() -> None:
         default="",
         help="Comma-separated track ids already posted early (e.g. via --only-track); skip them here.",
     )
+    parser.add_argument(
+        "--list-batch-candidates",
+        action="store_true",
+        help=(
+            "Print the ordered list of individual song track ids the finalize batch would "
+            "post today (same selection/caps as the normal batch), without posting anything. "
+            "Stashes the selected rows to best_day_since_batch_candidates.json for --post-batch-track."
+        ),
+    )
+    parser.add_argument(
+        "--post-batch-track",
+        help=(
+            "Post one track id previously selected by --list-batch-candidates, reading its row "
+            "from the stashed candidates file. Used by finalize to interleave individual "
+            "best-day-since posts with album posts."
+        ),
+    )
     args = parser.parse_args()
 
     target_date = args.date or str(date.today() - timedelta(days=1))
@@ -1580,6 +1428,68 @@ def main() -> None:
             sys.exit(3)
         result = _post_one_era_recap(group, target_date, no_post=args.no_post, early=True)
         sys.exit(0 if result == "posted" else (3 if result == "skipped" else 1))
+
+    if args.list_batch_candidates:
+        limit = min(POST_COLLECTION_MAX_SONG_POSTS, max(0, int(args.limit)))
+        tracks_by_id = {track["track_id"]: track for track in load_all_tracks()}
+        lock = day_dir / "best_day_since_posted.lock"
+        track_locked = lock.exists() and not args.no_post and not args.force
+        exclude_ids = {t.strip() for t in args.exclude_tracks.split(",") if t.strip()}
+        exclude_ids.update(_posted_track_ids_for_date(target_date))
+        album_post_counts = _track_album_counts(exclude_ids, tracks_by_id)
+        candidate_rows = (
+            []
+            if track_locked or limit <= 0
+            else _pick_rows(
+                target_date,
+                limit=max(limit * 5, limit + 20),
+                min_days=args.min_days,
+                min_daily_streams=None,
+                min_pct_change=None,
+                exclude_ids=exclude_ids,
+                album_post_counts=album_post_counts,
+            )
+        )
+        rows = _validated_song_rows_for_post(
+            candidate_rows,
+            target_date=target_date,
+            tracks_by_id=tracks_by_id,
+            limit=limit,
+            min_days=args.min_days,
+        )
+        stash = [{k: v for k, v in row.items() if k != "_post_track"} for row in rows]
+        stash_path = day_dir / "best_day_since_batch_candidates.json"
+        stash_path.write_text(json.dumps(stash), encoding="utf-8")
+        print("BATCH_CANDIDATES_JSON: " + json.dumps({"track_ids": [row["track_id"] for row in rows]}))
+        return
+
+    if args.post_batch_track:
+        stash_path = day_dir / "best_day_since_batch_candidates.json"
+        try:
+            stash = json.loads(stash_path.read_text(encoding="utf-8"))
+        except Exception as exc:
+            print(f"ERROR: could not read batch candidates stash ({exc}); run --list-batch-candidates first.")
+            sys.exit(1)
+        row = next((r for r in stash if r.get("track_id") == args.post_batch_track), None)
+        if row is None:
+            print(f"[best_day_since_post] {args.post_batch_track} not found in today's batch candidates.")
+            sys.exit(3)
+
+        if not args.no_post and not TWITTER_SESSION.exists():
+            print(f"ERROR: Twitter session not found at {TWITTER_SESSION}")
+            sys.exit(1)
+
+        tracks_by_id = {track["track_id"]: track for track in load_all_tracks()}
+        track = tracks_by_id.get(row["track_id"])
+        if not track:
+            print(
+                f"[best_day_since_post] Candidate skipped: track missing in discography: "
+                f"{row.get('title')} [{row['track_id']}]."
+            )
+            sys.exit(3)
+        row["_post_track"] = track
+        ok = _post_one_selected_row(row, target_date=target_date, covers=load_covers(), no_post=args.no_post)
+        sys.exit(0 if ok else 1)
 
     limit = min(POST_COLLECTION_MAX_SONG_POSTS, max(0, int(args.limit)))
     if limit == 0:
@@ -1654,50 +1564,19 @@ def main() -> None:
         print(f"[best_day_since_post] No best-day-since songs found for {target_date}.")
 
     posted_count = 0
-    grower_post_count = len(_posted_grower_track_ids_for_date(target_date))
     for index, row in enumerate(rows, 1):
-        track = row["_post_track"]
-        total_today = row["_post_total_today"]
-        daily_yesterday = row["_post_daily_yesterday"]
-
-        if row.get("_grower_repeat"):
-            if grower_post_count >= MAX_BEST_DAY_GROWER_POSTS:
-                print(
-                    f"[best_day_grower] Skipping {row['title']}: already "
-                    f"{MAX_BEST_DAY_GROWER_POSTS} grower post(s) selected for {target_date}."
-                )
-                continue
-            result = _post_grower_for_repeat(row, track, target_date, no_post=args.no_post)
-            if result == "error":
-                sys.exit(1)
-            if result == "posted":
-                grower_post_count += 1
-                if not args.no_post:
-                    posted_count += 1
-            continue
-
-        cover_url = get_cover_url(track, covers)
-        image_path = _generate_best_day_since_image(
-            row=row,
-            track=track,
-            total_today=total_today,
-            daily_yesterday=daily_yesterday,
-            cover_url=cover_url,
+        ok = _post_one_selected_row(
+            row,
             target_date=target_date,
+            covers=covers,
+            no_post=args.no_post,
+            index=index,
+            total=len(rows),
         )
-
-        tweet = _build_tweet(row, daily_yesterday)
-        print(f"[best_day_since_post] Tweet {index}/{len(rows)} ({len(tweet)} chars):\n{tweet}")
-        print(f"[best_day_since_post] Image: {image_path}")
-
-        if args.no_post:
-            continue
-
-        if not post_with_image(tweet, image_path, TWITTER_SESSION):
-            print(f"[best_day_since_post] Failed to post {row['title']}.")
+        if not ok:
             sys.exit(1)
-        posted_count += 1
-        _write_track_lock(row["track_id"], target_date, row)
+        if not args.no_post:
+            posted_count += 1
 
     if posted_count and not args.no_post:
         lock.touch()
