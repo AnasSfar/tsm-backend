@@ -1407,7 +1407,7 @@
             "Taylor Swift"
           ],
           "title_clean": "the lakes - bonus track",
-          "song_family": "the_lakes_bonus_track",
+          "song_family": "the_lakes",
           "version_tag": "deluxe__alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273c288028c2592f400dd0b9233",
           "historical_track_ids": [
@@ -1467,7 +1467,7 @@
           "role": "album_track",
           "release_edition": "deluxe",
           "tags": [],
-          "tsm_song_id": "nann",
+          "tsm_song_id": "urtx",
           "tsm_album_id": "g0f"
         }
       ]
@@ -2578,7 +2578,7 @@
             "Taylor Swift"
           ],
           "title_clean": "Carolina - \"Where The Crawdads Sing\" - Video Edition",
-          "song_family": "carolina_where_the_crawdads_sing_video_edition",
+          "song_family": "carolina",
           "version_tag": "soundtrack",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2732c683c1b9fa1b711499408f7",
           "display_era": "folklore",
@@ -2628,7 +2628,7 @@
             "Taylor Swift"
           ],
           "title_clean": "Carolina - From The Motion Picture “Where The Crawdads Sing”",
-          "song_family": "carolina_from_the_motion_picture_where_the_crawdads_sing",
+          "song_family": "carolina",
           "version_tag": "soundtrack",
           "image_url": "https://i.scdn.co/image/ab67616d0000b2732c683c1b9fa1b711499408f7",
           "display_era": "folklore",
@@ -2662,7 +2662,7 @@
           "category": "soundtrack",
           "display_album": "folklore",
           "tags": [],
-          "tsm_song_id": "mp9d",
+          "tsm_song_id": "ev97",
           "tsm_album_id": "g0f"
         }
       ]
@@ -3018,7 +3018,7 @@
             "Taylor Swift"
           ],
           "title_clean": "exile (feat. Bon Iver) - the long pond studio sessions",
-          "song_family": "exile_feat_bon_iver",
+          "song_family": "exile",
           "version_tag": "standalone",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273045514e3ed4e1767a7c3ece5",
           "display_era": "folklore",
@@ -3054,7 +3054,7 @@
           "display_album": "folklore",
           "tags": [],
           "release_edition": "the long pond studio sessions",
-          "tsm_song_id": "ce8r",
+          "tsm_song_id": "7slc",
           "tsm_album_id": "g0f"
         }
       ]

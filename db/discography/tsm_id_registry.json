@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-08-29",
+  "updated_at": "2026-09-05",
   "songs": {
     "0qnt": {
       "song_family": "sad_beautiful_tragic",
@@ -934,10 +934,12 @@
       "slug": "exile-feat-bon-iver",
       "spotify_track_ids": [
         "4pvb0WLRcMtbPGmtejJJ6y",
-        "6kz2hkq1xQvDqPcUyBkw8f"
+        "6kz2hkq1xQvDqPcUyBkw8f",
+        "7N015NTIWGjQDddHUdHPoO",
+        "7bFqfMKnKsZJH9FytUXg3E"
       ],
       "created_at": "2026-08-29",
-      "updated_at": "2026-08-29",
+      "updated_at": "2026-09-05",
       "merged_into": null
     },
     "83js": {
@@ -1625,14 +1627,14 @@
       "merged_into": null
     },
     "clzn": {
-      "song_family": "it_s_time_to_go_bonus_track",
+      "song_family": "it_s_time_to_go",
       "canonical_title": "it's time to go - bonus track",
       "slug": "it-s-time-to-go-bonus-track",
       "spotify_track_ids": [
         "1kdWw77ZpYOkhxeuhzU1j6"
       ],
       "created_at": "2026-08-29",
-      "updated_at": "2026-08-29",
+      "updated_at": "2026-09-05",
       "merged_into": null
     },
     "cnro": {
@@ -1913,14 +1915,16 @@
       "merged_into": null
     },
     "ev97": {
-      "song_family": "carolina_where_the_crawdads_sing_video_edition",
+      "song_family": "carolina",
       "canonical_title": "Carolina - \"Where The Crawdads Sing\" - Video Edition",
       "slug": "carolina-where-the-crawdads-sing-video-edition",
       "spotify_track_ids": [
-        "12xIjI9A9UlB6zEc7kyZ06"
+        "12xIjI9A9UlB6zEc7kyZ06",
+        "2SVQOjsBI42bbaEeBFk5Uy",
+        "4axSuOg3BqsowKjRpj59RU"
       ],
       "created_at": "2026-08-29",
-      "updated_at": "2026-08-29",
+      "updated_at": "2026-09-05",
       "merged_into": null
     },
     "f4r3": {
@@ -3892,11 +3896,15 @@
       "slug": "the-lakes",
       "spotify_track_ids": [
         "0UAdDYrkCvVQftaKpL6q5f",
+        "0eFQWVz0qIxDOvhLpZ40P7",
+        "0zEprKYeuGOIZoHyu6O1E2",
         "2BDBBNaWZf2ueZwp4h52b2",
+        "4LghBuFPMgETxG6NcfoDp4",
+        "5dwQhzeE8LXpl9sbZJZmQS",
         "6mqyTq948oap5AkyTsd6XF"
       ],
       "created_at": "2026-08-29",
-      "updated_at": "2026-08-29",
+      "updated_at": "2026-09-05",
       "merged_into": null
     },
     "uvuv": {
@@ -4452,14 +4460,14 @@
       "merged_into": null
     },
     "yqri": {
-      "song_family": "right_where_you_left_me_bonus_track",
+      "song_family": "right_where_you_left_me",
       "canonical_title": "right where you left me - bonus track",
       "slug": "right-where-you-left-me-bonus-track",
       "spotify_track_ids": [
         "3zwMVvkBe2qIKDObWgXw4N"
       ],
       "created_at": "2026-08-29",
-      "updated_at": "2026-08-29",
+      "updated_at": "2026-09-05",
       "merged_into": null
     },
     "ytqf": {
