@@ -1,34 +1,5 @@
 [
   {
-    "title_key": "carolina_from_the_motion_picture_where_the_crawdads_sing",
-    "title": "Carolina - From The Motion Picture \"Where The Crawdads Sing\"",
-    "video_ids": [
-      "egxyRSb_XtI",
-      "3Q94kA7llGw"
-    ]
-  },
-  {
-    "title_key": "right_where_you_left_me_bonus_track",
-    "title": "right where you left me - bonus track",
-    "video_ids": [
-      "Ur_wAcYDnuA"
-    ]
-  },
-  {
-    "title_key": "it_s_time_to_go_bonus_track",
-    "title": "it's time to go - bonus track",
-    "video_ids": [
-      "1iRbIYkccgw"
-    ]
-  },
-  {
-    "title_key": "exile_feat_bon_iver",
-    "title": "exile (feat. Bon Iver) - the long pond studio sessions",
-    "video_ids": [
-      "o5SQIECedTY"
-    ]
-  },
-  {
     "title_key": "anti_hero",
     "title": "Anti Hero",
     "video_ids": [
@@ -69,25 +40,6 @@
       "b7kmP1fsGg8",
       "QBllgPHa8aQ",
       "7yRXgL7SaV0"
-    ]
-  },
-  {
-    "title_key": "ours_behind_the_scenes",
-    "title": "Ours Behind The Scenes",
-    "video_ids": [
-      "IdMI-HCO5QY",
-      "QvNW_z1Y7Ls",
-      "wIvJI6mF1ME",
-      "yHqjZUxaigo",
-      "7D6-_twz7YE",
-      "0Ot5C6O-KfA",
-      "HsLl-IL9c7E",
-      "gPJ8PFeq9Xw",
-      "Y89k5sfHBaw",
-      "h6CRgcouLuU",
-      "_zyYtE9di9A",
-      "AtHsg4USz8g",
-      "beGv3NTnduo"
     ]
   },
   {
@@ -305,7 +257,10 @@
       "MA0HQG9J9Yk",
       "bqOfdv9i4sE",
       "lj2mZ8zDToY",
-      "MUf1ili4Zew"
+      "MUf1ili4Zew",
+      "_zUCMfYkgj0",
+      "S--WI8PUVVo",
+      "FuXNumBwDOM"
     ]
   },
   {
@@ -496,7 +451,9 @@
     "video_ids": [
       "MBR2kxt7RK8",
       "tCXGJQYZ9JA",
-      "eQVhAN7-IAw"
+      "eQVhAN7-IAw",
+      "sEr7bAtZ8rY",
+      "zGSneb3McDo"
     ]
   },
   {
@@ -541,16 +498,8 @@
     "video_ids": [
       "ZwK7hrDC5UM",
       "Hoi-PI8QpTU",
-      "rg18Kf4en2o"
-    ]
-  },
-  {
-    "title_key": "me_ft_brendon_urie",
-    "title": "Me Ft Brendon Urie",
-    "video_ids": [
-      "_zUCMfYkgj0",
-      "S--WI8PUVVo",
-      "FuXNumBwDOM"
+      "rg18Kf4en2o",
+      "XzOvgu3GPwY"
     ]
   },
   {
@@ -599,7 +548,7 @@
     ]
   },
   {
-    "title_key": "the_last_time_ft_gary_lightbody",
+    "title_key": "the_last_time",
     "title": "The Last Time Ft Gary Lightbody",
     "video_ids": [
       "pCH4QrSx2Jg",
@@ -697,11 +646,12 @@
     ]
   },
   {
-    "title_key": "everything_has_changed_ft_ed_sheeran",
+    "title_key": "everything_has_changed",
     "title": "Everything Has Changed Ft Ed Sheeran",
     "video_ids": [
       "eMcMbWl0fDk",
-      "w1oM3kQpXRo"
+      "w1oM3kQpXRo",
+      "dgzN0Puq_hE"
     ]
   },
   {
@@ -757,7 +707,10 @@
     "title": "I Knew You Were Trouble",
     "video_ids": [
       "TqAollrUJdA",
-      "vNoKguSdy4Y"
+      "vNoKguSdy4Y",
+      "rghH6QlT5a0",
+      "sIjKXPXjVxU",
+      "jinbX0hwYOo"
     ]
   },
   {
@@ -789,7 +742,20 @@
     "title": "Ours",
     "video_ids": [
       "PH8Uc0Z_KRY",
-      "LZ34LlaIk88"
+      "LZ34LlaIk88",
+      "IdMI-HCO5QY",
+      "QvNW_z1Y7Ls",
+      "wIvJI6mF1ME",
+      "yHqjZUxaigo",
+      "7D6-_twz7YE",
+      "0Ot5C6O-KfA",
+      "HsLl-IL9c7E",
+      "gPJ8PFeq9Xw",
+      "Y89k5sfHBaw",
+      "h6CRgcouLuU",
+      "_zyYtE9di9A",
+      "AtHsg4USz8g",
+      "beGv3NTnduo"
     ]
   },
   {
@@ -829,7 +795,8 @@
     "title": "Sparks Fly",
     "video_ids": [
       "UlFrV5GJA_4",
-      "oKar-tF__ac"
+      "oKar-tF__ac",
+      "Nx-5bHeC6xo"
     ]
   },
   {
@@ -1077,13 +1044,7 @@
     "title_key": "bad_blood",
     "title": "Bad Blood",
     "video_ids": [
-      "lUvBk4owRNU"
-    ]
-  },
-  {
-    "title_key": "bad_blood_ft_kendrick_lamar",
-    "title": "Bad Blood Ft Kendrick Lamar",
-    "video_ids": [
+      "lUvBk4owRNU",
       "QcIy9NiNbmo"
     ]
   },
@@ -1165,7 +1126,7 @@
     ]
   },
   {
-    "title_key": "breathe_ft_colbie_caillat",
+    "title_key": "breathe",
     "title": "Breathe Ft Colbie Caillat",
     "video_ids": [
       "qsUK-BG5OQQ"
@@ -1305,7 +1266,7 @@
     ]
   },
   {
-    "title_key": "coney_island_ft_the_national",
+    "title_key": "coney_island",
     "title": "Coney Island Ft The National",
     "video_ids": [
       "c_p_TBaHvos"
@@ -1340,20 +1301,6 @@
     ]
   },
   {
-    "title_key": "delicate_music_video_dance_rehearsal_part_1",
-    "title": "Delicate Music Video Dance Rehearsal Part 1",
-    "video_ids": [
-      "sEr7bAtZ8rY"
-    ]
-  },
-  {
-    "title_key": "delicate_music_video_dance_rehearsal_part_2",
-    "title": "Delicate Music Video Dance Rehearsal Part 2",
-    "video_ids": [
-      "zGSneb3McDo"
-    ]
-  },
-  {
     "title_key": "demonstrating_my_fine_athletic_skills_and_more",
     "title": "Demonstrating My Fine Athletic Skills And More",
     "video_ids": [
@@ -1361,7 +1308,7 @@
     ]
   },
   {
-    "title_key": "dont_you",
+    "title_key": "don_t_you",
     "title": "Dont You",
     "video_ids": [
       "dHdAN4FXzmc"
@@ -1389,16 +1336,10 @@
     ]
   },
   {
-    "title_key": "end_game_behind_the_scenes",
+    "title_key": "end_game",
     "title": "End Game Behind The Scenes",
     "video_ids": [
-      "VA7Y_Psp5l4"
-    ]
-  },
-  {
-    "title_key": "end_game_ft_ed_sheeran_future",
-    "title": "End Game Ft Ed Sheeran Future",
-    "video_ids": [
+      "VA7Y_Psp5l4",
       "dfnCAmr569k"
     ]
   },
@@ -1417,30 +1358,17 @@
     ]
   },
   {
-    "title_key": "evermore_ft_bon_iver",
+    "title_key": "evermore",
     "title": "Evermore Ft Bon Iver",
     "video_ids": [
       "EXLgZZE072g"
     ]
   },
   {
-    "title_key": "everything_has_changed_song_preview_from_red_now_available",
-    "title": "Everything Has Changed Song Preview From Red Now Available",
-    "video_ids": [
-      "dgzN0Puq_hE"
-    ]
-  },
-  {
     "title_key": "exile",
     "title": "Exile",
     "video_ids": [
-      "osdoLjUNFnA"
-    ]
-  },
-  {
-    "title_key": "exile_ft_bon_iver",
-    "title": "Exile Ft Bon Iver",
-    "video_ids": [
+      "osdoLjUNFnA",
       "o5SQIECedTY"
     ]
   },
@@ -1616,20 +1544,8 @@
     "title_key": "holy_ground",
     "title": "Holy Ground",
     "video_ids": [
-      "S4PuN-IWi2g"
-    ]
-  },
-  {
-    "title_key": "holy_ground_live_on_the_red_tour",
-    "title": "Holy Ground Live On The Red Tour",
-    "video_ids": [
-      "3H21433WdtU"
-    ]
-  },
-  {
-    "title_key": "holy_ground_song_preview_from_red_now_available",
-    "title": "Holy Ground Song Preview From Red Now Available",
-    "video_ids": [
+      "S4PuN-IWi2g",
+      "3H21433WdtU",
       "Rcex4Nw6Z9U"
     ]
   },
@@ -1658,13 +1574,7 @@
     "title_key": "i_almost_do",
     "title": "I Almost Do",
     "video_ids": [
-      "w1AV_35zVwU"
-    ]
-  },
-  {
-    "title_key": "i_almost_do_song_preview_from_red_now_available",
-    "title": "I Almost Do Song Preview From Red Now Available",
-    "video_ids": [
+      "w1AV_35zVwU",
       "YszERgNNKnc"
     ]
   },
@@ -1708,27 +1618,6 @@
     "title": "I Hope It S Gonna Make You Notice",
     "video_ids": [
       "M134RqAbiwY"
-    ]
-  },
-  {
-    "title_key": "i_knew_you_were_trouble_behind_the_scenes_1",
-    "title": "I Knew You Were Trouble Behind The Scenes 1",
-    "video_ids": [
-      "rghH6QlT5a0"
-    ]
-  },
-  {
-    "title_key": "i_knew_you_were_trouble_behind_the_scenes_2",
-    "title": "I Knew You Were Trouble Behind The Scenes 2",
-    "video_ids": [
-      "sIjKXPXjVxU"
-    ]
-  },
-  {
-    "title_key": "i_knew_you_were_trouble_behind_the_scenes_3",
-    "title": "I Knew You Were Trouble Behind The Scenes 3",
-    "video_ids": [
-      "jinbX0hwYOo"
     ]
   },
   {
@@ -1816,14 +1705,14 @@
     ]
   },
   {
-    "title_key": "its_nice_to_have_a_friend",
+    "title_key": "it_s_nice_to_have_a_friend",
     "title": "Its Nice To Have A Friend",
     "video_ids": [
       "eaP1VswBF28"
     ]
   },
   {
-    "title_key": "its_time_to_go",
+    "title_key": "it_s_time_to_go",
     "title": "Its Time To Go",
     "video_ids": [
       "1iRbIYkccgw"
@@ -1848,13 +1737,6 @@
     "title": "Jump Then Fall",
     "video_ids": [
       "vUHDR6Rg3Y4"
-    ]
-  },
-  {
-    "title_key": "karma_ft_ice_spice",
-    "title": "Karma Ft Ice Spice",
-    "video_ids": [
-      "XzOvgu3GPwY"
     ]
   },
   {
@@ -2089,7 +1971,7 @@
     ]
   },
   {
-    "title_key": "no_body_no_crime_ft_haim",
+    "title_key": "no_body_no_crime",
     "title": "No Body No Crime Ft Haim",
     "video_ids": [
       "IEPomqor2A8"
@@ -2271,7 +2153,7 @@
     ]
   },
   {
-    "title_key": "run_ft_ed_sheeran",
+    "title_key": "run",
     "title": "Run Ft Ed Sheeran",
     "video_ids": [
       "flv8AEWrRMI"
@@ -2344,13 +2226,7 @@
     "title_key": "snow_on_the_beach",
     "title": "Snow On The Beach",
     "video_ids": [
-      "2CnUYMmEHrs"
-    ]
-  },
-  {
-    "title_key": "snow_on_the_beach_ft_lana_del_rey",
-    "title": "Snow On The Beach Ft Lana Del Rey",
-    "video_ids": [
+      "2CnUYMmEHrs",
       "ycE7bUq3-2k"
     ]
   },
@@ -2376,17 +2252,10 @@
     ]
   },
   {
-    "title_key": "soon_youll_get_better_ft_the_chicks",
+    "title_key": "soon_youll_get_better",
     "title": "Soon Youll Get Better Ft The Chicks",
     "video_ids": [
       "tMoW5G5LU08"
-    ]
-  },
-  {
-    "title_key": "sparks_fly_live_on_the_red_tour",
-    "title": "Sparks Fly Live On The Red Tour",
-    "video_ids": [
-      "Nx-5bHeC6xo"
     ]
   },
   {
@@ -2621,7 +2490,7 @@
     ]
   },
   {
-    "title_key": "thats_when",
+    "title_key": "that_s_when",
     "title": "Thats When",
     "video_ids": [
       "aOa6D6ku3dM"
@@ -2929,7 +2798,7 @@
     ]
   },
   {
-    "title_key": "whos_afraid_of_little_old_me",
+    "title_key": "who_s_afraid_of_little_old_me",
     "title": "Whos Afraid Of Little Old Me",
     "video_ids": [
       "vOZFiX6hDXQ"
