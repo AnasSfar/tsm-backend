@@ -1149,6 +1149,12 @@ body{
   background:#ffffff;
 }
 .song-row.alt{background:var(--alt-row)}
+/* same-album overtake variant: swapped pair highlight + per-row rank movement */
+.song-row.ov-up{background:rgba(80,200,130,.15);box-shadow:inset 4px 0 0 #067647}
+.song-row.ov-down{background:rgba(224,120,110,.15);box-shadow:inset 4px 0 0 #b42318}
+.rank-move{font-size:8.5px;font-weight:800;margin-left:3px;letter-spacing:0}
+.rank-move.up{color:#067647}
+.rank-move.down{color:#b42318}
 .col-rank{
   font-size:12px;color:#b0bac8;font-weight:600;
   text-align:center;
@@ -1422,6 +1428,45 @@ def _display_song_title(track: dict, best_day_label: str | None = None) -> str:
     return title
 
 
+def _flat_total_movement(pool: list[dict], hist: dict) -> dict[str, int | None]:
+    """{track_id: rank delta} for a flat all-time-total ranking of ``pool``:
+    yesterday's position minus today's (positive = moved up). ``None`` when
+    yesterday's total can't be derived (missing daily) — no marker then."""
+    def total(t):
+        return hist.get(t["track_id"], {}).get("streams")
+
+    def daily(t):
+        return hist.get(t["track_id"], {}).get("daily")
+
+    def yest(t):
+        s, d = total(t), daily(t)
+        return None if s is None or d is None else s - d
+
+    today_pos = {
+        t["track_id"]: i + 1
+        for i, t in enumerate(sorted(pool, key=lambda t: -(total(t) or 0)))
+    }
+    yest_pos = {
+        t["track_id"]: i + 1
+        for i, t in enumerate(sorted(pool, key=lambda t: -(yest(t) or 0)))
+    }
+    return {
+        t["track_id"]: (None if yest(t) is None else yest_pos[t["track_id"]] - today_pos[t["track_id"]])
+        for t in pool
+    }
+
+
+def _movement_span(delta: int | None) -> str:
+    """Rank-movement marker for the flat overtake list. Empty for no data or a
+    stable position (0) — most album rows don't move day to day, and a marker on
+    every one of them is just noise; only real ▲/▼ shifts get drawn."""
+    if not delta:
+        return ""
+    if delta > 0:
+        return f'<span class="rank-move up">&#9650;{delta}</span>'
+    return f'<span class="rank-move down">&#9660;{abs(delta)}</span>'
+
+
 def build_song_row_html(
     si: int,
     track: dict,
@@ -1429,6 +1474,9 @@ def build_song_row_html(
     alt: bool,
     show_filter_cols: bool,
     best_day_labels_by_track: dict[str, str] | None = None,
+    *,
+    movement_html: str = "",
+    row_cls_extra: str = "",
 ) -> str:
     best_day_labels_by_track = best_day_labels_by_track or {}
     title = _display_song_title(track, best_day_labels_by_track.get(track.get("track_id", "")))
@@ -1455,8 +1503,8 @@ def build_song_row_html(
     else:
         extra_cells = ""
 
-    return f"""<div class="song-row{alt_cls}">
-    <div class="col-rank">{si + 1}</div>
+    return f"""<div class="song-row{alt_cls}{row_cls_extra}">
+    <div class="col-rank">{si + 1}{movement_html}</div>
     <div class="col-song">
         <div class="song-title">{title}</div>
     </div>
@@ -1544,8 +1592,11 @@ def build_html(
     layout: dict | None = None,
     handle_icon_uri: str = "",
     best_day_labels_by_track: dict[str, str] | None = None,
+    movement_by_track: dict[str, int | None] | None = None,
+    highlight_track_ids: dict[str, str] | None = None,
 ) -> str:
     from datetime import datetime
+    highlight_track_ids = highlight_track_ids or {}
     date_obj = datetime.strptime(target_date, "%Y-%m-%d")
     date_fmt = f"{date_obj.strftime('%A, %B')} {_ordinal(date_obj.day)}, {date_obj.year}"
 
@@ -1624,8 +1675,16 @@ def build_html(
                 hd = hist.get(track["track_id"], {"daily": None, "change": None, "pct": None, "streams": None})
                 if not show_filter_cols:
                     hd = {**hd, "filtered_streams": None, "filter_rate": None}
-                rows_html += build_song_row_html(si, track, hd, si % 2 != 0, show_filter_cols, best_day_labels_by_track)
-        rows_html += build_section_total_html(sec["name"], sec["tracks"], hist, accent, bg, show_filter_cols)
+                tid = track.get("track_id", "")
+                move_html = _movement_span(movement_by_track.get(tid)) if movement_by_track else ""
+                role = highlight_track_ids.get(tid)
+                row_extra = " ov-up" if role == "overtaker" else (" ov-down" if role == "passed" else "")
+                rows_html += build_song_row_html(
+                    si, track, hd, si % 2 != 0, show_filter_cols, best_day_labels_by_track,
+                    movement_html=move_html, row_cls_extra=row_extra,
+                )
+        if not sec.get("no_section_total"):
+            rows_html += build_section_total_html(sec["name"], sec["tracks"], hist, accent, bg, show_filter_cols)
 
         total_daily = sum(hist.get(t["track_id"], {}).get("daily") or 0 for t in total_tracks)
         total_streams = sum(hist.get(t["track_id"], {}).get("streams") or 0 for t in total_tracks)
@@ -2473,7 +2532,14 @@ def generate(
     style: str = "default",
     header_path: Path | None = None,
     output_suffix: str = "",
+    flat_rank_by_total: bool = False,
+    highlight_track_ids: dict[str, str] | None = None,
 ) -> Path:
+    """flat_rank_by_total: same-album overtake variant — collapse the album to a
+    single list ranked by all-time total streams, add a rank-movement marker on
+    every row (vs yesterday's total-streams position), and highlight the tracks
+    in ``highlight_track_ids`` ({track_id: "overtaker"|"passed"}). Default style
+    only."""
     if target_date is None:
         target_date = get_latest_date()
     print(f"[album_update] Album: {album_name}  Date: {target_date}")
@@ -2482,11 +2548,26 @@ def generate(
     if not sections:
         raise ValueError(f"Aucune section trouvée pour l'album: {album_name!r}")
     style = effective_album_update_style(album_name, style)
+    if flat_rank_by_total:
+        style = "default"
     header_variant = "light" if style == "table-light" else "dark"
     print(f"[album_update] {sum(len(s['tracks']) for s in sections)} tracks dans {len(sections)} section(s)")
 
     hist = load_history_for_album(sections, target_date)
-    if sort_tracks_by_daily:
+
+    movement_by_track: dict[str, int | None] | None = None
+    if flat_rank_by_total:
+        pool = _display_total_tracks(sections)
+        pool = sorted(pool, key=lambda t: -(hist.get(t["track_id"], {}).get("streams") or 0))
+        movement_by_track = _flat_total_movement(pool, hist)
+        sections = [{
+            "name": album_name,
+            "tracks": pool,
+            "release_date": "",
+            "source_order": 0,
+            "no_section_total": True,
+        }]
+    elif sort_tracks_by_daily:
         sort_album_sections_by_daily_streams(sections, hist)
 
     best_day_labels_by_track = _best_day_labels_for_sections(sections, target_date)
@@ -2567,12 +2648,16 @@ def generate(
             layout=layout,
             handle_icon_uri=handle_icon_uri,
             best_day_labels_by_track=best_day_labels_by_track,
+            movement_by_track=movement_by_track,
+            highlight_track_ids=highlight_track_ids,
         )
 
     album_slug = album_update_slug(album_name)
     out_dir    = album_update_out_dir(target_date)
     out_dir.mkdir(parents=True, exist_ok=True)
     style_suffix = "_table_light" if table_light_style else ("_table_dark" if table_dark_style else "")
+    if flat_rank_by_total:
+        style_suffix += "_overtake"
     safe_output_suffix = f"_{_norm(output_suffix)}" if output_suffix else ""
     out_path   = out_dir / f"{album_slug}_update{style_suffix}{safe_output_suffix}.png"
     raw_out_path = out_dir / f"_{album_slug}_update{style_suffix}{safe_output_suffix}_hires.png"

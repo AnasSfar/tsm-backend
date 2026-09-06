@@ -395,7 +395,14 @@ def build_top_n(today_rows: list[dict], yesterday_rows: list[dict], last_week_ro
     Déduplique par titre, trie par daily_streams décroissant, retourne top N.
     Attache prev_rank et daily_streams_yesterday à chaque entrée.
     """
+    # Drop Spotify catalog-merge losers from every window, not just today —
+    # otherwise a merge loser with a distinct title (e.g. "Shake It Off (Best
+    # Work Edition)") survives dedup-by-title in the yesterday/last-week ranking
+    # only, inflating every prev_rank below it by one and painting a bogus
+    # "▲ 1" on every song under the merge loser's rank (observed 2026-09-04).
     today_rows = _drop_active_catalog_merge_duplicates(today_rows)
+    yesterday_rows = _drop_active_catalog_merge_duplicates(yesterday_rows)
+    last_week_rows = _drop_active_catalog_merge_duplicates(last_week_rows)
     yest_deduped = _dedup_by_title(yesterday_rows, song_db)
     yest_sorted  = sorted(yest_deduped, key=lambda r: (r.get("daily_streams") or 0), reverse=True)
     yest_rank_by_key  = {_norm(r["title"]): i + 1 for i, r in enumerate(yest_sorted)}

@@ -1319,6 +1319,12 @@ def _weekly_youtube_views(*, week_dates: set[str], logger: Logger) -> dict[str, 
             day = (row.get("date") or "").strip()
             if day not in week_dates:
                 continue
+            # Depuis le 2026-09-06, une ligne par (date, title_key) x 3 sources
+            # (all/main/topic — cf. collector-youtube § Pièges) : ne garder que
+            # "all" (les 2 chaînes déjà sommées), sinon on compterait 2-3x. Les
+            # lignes antérieures à ce fix n'ont pas de colonne `source` (vide).
+            if (row.get("source") or "all") != "all":
+                continue
             title = (row.get("title") or "").strip()
             views = _to_int(row.get("daily_views"))
             if not title or views is None or views < 0:

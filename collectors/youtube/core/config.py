@@ -40,6 +40,23 @@ CHANNEL_ID = "UCqECaJ8Gagnn7YCbPEzWH6g"  # chaîne officielle Taylor Swift
 # Coût : playlistItems.list = 1 unité/page vs search.list = 100 unités/appel
 UPLOADS_PLAYLIST_ID = "UUqECaJ8Gagnn7YCbPEzWH6g"
 
+# Chaîne "Topic" auto-générée par YouTube depuis la distribution streaming
+# (Content ID / Universal Music Group) : couvre en "official audio" quasi
+# tout le catalogue, y compris les deep cuts jamais promues sur la chaîne
+# officielle. Suivie depuis le 2026-09-05 pour l'association tsm_song_id
+# ↔ YouTube (TayBoard + futures pages charts par chanson) — cf. skill
+# collector-youtube § Pièges pour l'impact sur units_youtube (méthodologie).
+TOPIC_CHANNEL_ID = "UCPC0L1d253x-KuMNwa05TpA"
+TOPIC_UPLOADS_PLAYLIST_ID = "UUPC0L1d253x-KuMNwa05TpA"
+
+# channel_id -> tag écrit dans la colonne `channel` du CSV par vidéo (permet au
+# frontend de filtrer Videos / Topic / Combiné). Défaut "main" pour tout id
+# inconnu (robustesse si la chaîne officielle change un jour).
+CHANNEL_TAGS = {
+    CHANNEL_ID: "main",
+    TOPIC_CHANNEL_ID: "topic",
+}
+
 NTFY_TOPIC = os.getenv("NTFY_TOPIC_YOUTUBE", "taylormuseum-youtube")
 
 CSV_PATH = DB_DIR / "youtube_views_history.csv"
@@ -58,6 +75,7 @@ CSV_FIELDNAMES = [
     "date",
     "snapshot_at",
     "video_id",
+    "channel",
     "title",
     "rank",
     "previous_rank",
@@ -87,6 +105,7 @@ CSV_FIELDNAMES = [
 TITLE_CSV_FIELDNAMES = [
     "date",
     "snapshot_at",
+    "source",
     "title_key",
     "title",
     "rank",

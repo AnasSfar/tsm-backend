@@ -159,14 +159,15 @@ card is a fixed `CARD_WIDTH=1080 × CARD_HEIGHT=594` CSS px always.
 ## `build_table_html(masthead_word=...)` (2026-08-25)
 
 `tables_image.py::build_table_html` supporte un style de header alternatif
-opt-in : `masthead_word="SONGS"` / `"ERAS"` (utilise par
-`generate_streams_image.py` et `generate_albums_image.py`) remplace le header
+opt-in : `masthead_word="SONGS"` / `"ERAS"` / `"STREAMS"` (utilise par
+`generate_streams_image.py`, `generate_albums_image.py` et
+`post_song_overtakes.py` — voir plus bas) remplace le header
 classique logo+titre par un bandeau plus haut avec un gros wordmark fantome
-en overlay sur la photo. Par defaut (`masthead_word=None`), tous les autres
-appelants (`generate_snapshot_images.py` Apple Music, `post_song_overtakes.py`)
-gardent le header classique inchange — ne jamais rendre `masthead_word`
-obligatoire ni changer son comportement par defaut sans verifier ces deux
-appelants. Charge une police Google Fonts ("Big Shoulders Display") via un
+en overlay sur la photo. Par defaut (`masthead_word=None`), les appelants
+restants (`generate_snapshot_images.py` Apple Music) gardent le header
+classique inchange — ne jamais rendre `masthead_word` obligatoire ni changer
+son comportement par defaut sans verifier cet appelant. Charge une police
+Google Fonts ("Big Shoulders Display") via un
 `<link>` ajoute uniquement quand `masthead_word` est fourni — seul point du
 pipeline `comp/` qui depend d'une police externe ; degrade sans casser si le
 rendu tourne hors-ligne.
@@ -176,6 +177,19 @@ colonnes/footer vers un style "ledger" (`.ledger-*`, dark ou light selon
 `masthead_theme`) au lieu du tableau classique — voir le detail cote produit
 dans la skill `spotify-streams` ("Table Ledger"). Cote composant partage,
 retenir :
+
+- **`post_song_overtakes.py` est passe au masthead/ledger le 2026-09-06**
+  (`masthead_word="STREAMS"`, `masthead_theme=masthead_theme_for_date(date)`,
+  titre `"Taylor Swift · All-Time Streams"`). Colonnes ledger
+  `Rank | +/- | Track | Total | Daily | Daily Chg | Weekly Chg` (Total en
+  premier + gras via `extra_css`, Daily attenue ; Weekly Chg = delta vs J-7).
+  Les deux chansons de
+  l'overtake sont mises en avant via `extra_css` local :
+  `.ledger-row.overtaker` (rail + tint vert) / `.ledger-row.passed` (rail +
+  tint rouge). Reutilise les helpers `era_accent_color` /
+  `dominant_color_from_data_uri` / `ledger_name_with_best_day` /
+  `masthead_theme_for_date` comme Top Songs. Seul `generate_snapshot_images.py`
+  (Apple Music) garde encore le header classique.
 
 - **`masthead_theme_for_date(date)` (2026-08-26)** : helper unique qui encode
   la regle proprietaire "thème selon le jour" — `"light"` sur les posts de

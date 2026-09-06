@@ -861,6 +861,21 @@ Cablage actuel :
   catalogue incomplet en 2026-08-08 (voir Pieges ci-dessous) — verifier ses
   fonctions en parallele de celles d'`export_for_web.py`/`history_store.py`
   avant de considerer une regle de classement comme entierement cablee.
+- **Fix 2026-09-05 — le `+/-` (rank change) de l'image Top Songs etait faux
+  a partir du ~rang 10.** Le cablage 2026-08-22 ne droppait les merge losers
+  que du jour courant, pas des fenetres veille / semaine-derniere qui servent
+  a calculer `prev_rank`. Un loser au **titre distinct** (`Shake It Off (Best
+  Work Edition)`, `Love Story - Pop Mix`, `Our Song - International Mix`...)
+  survivait donc au dedup-par-titre dans le classement de la veille
+  uniquement -> entree fantôme intercalee -> `prev_rank` de toutes les
+  chansons sous son rang gonfle de 1 -> faux `▲ 1` uniforme sur toute la
+  moitie basse du tableau (observe sur l'image postee du 2026-09-04, ~6
+  losers actifs dont Shake It Off (Best Work Edition) ~rang 9 la veille).
+  `build_top_n` applique maintenant `_drop_active_catalog_merge_duplicates`
+  aux trois listes (`today_rows`, `yesterday_rows`, `last_week_rows`). Couvre
+  aussi `generate_weekend_streams_image.py` et `post_throwback_thread.py`.
+  L'image du 2026-09-04 a ete regeneree en local (tweet deja poste, pas
+  rattrapable).
 - `export_for_web.py::enrich_albums_payload` et
   `generate_albums_image.py::build_album_rows` (2026-08-25) : les losers du
   jour sont aussi exclus des sommes publiques `total_streams_sum`/
@@ -1068,9 +1083,10 @@ deja le pattern sur, seul celui-ci avait la regression.
 `generate_streams_image.py::build_html` et `generate_albums_image.py::build_html`
 passent maintenant `masthead_word="SONGS"` / `"ERAS"` a
 `build_table_html` (`collectors/comp/tables_image.py`). Ca active un style de
-header alternatif (opt-in, n'affecte aucun autre appelant de
-`build_table_html` — Apple Music `generate_snapshot_images.py`,
-`post_song_overtakes.py` continuent avec le header classique par defaut) :
+header alternatif (opt-in ; `post_song_overtakes.py` l'utilise aussi depuis
+le 2026-09-06 avec `masthead_word="STREAMS"` — voir "Table Ledger" plus bas ;
+seul Apple Music `generate_snapshot_images.py` garde le header classique par
+defaut) :
 la photo du pool `headers_dir` reste le fond, mais avec un gros wordmark
 fantome ("SONGS"/"ERAS", police Google Fonts "Big Shoulders Display",
 `mix-blend-mode:overlay`, `rgba(255,255,255,.5)`) plaque a droite du bandeau,
@@ -1107,11 +1123,61 @@ source.
 
 Suite au masthead, le corps du tableau (lignes) a aussi ete refait pour ne
 plus utiliser le style "glassmorphism" classique (`build_table_html(...)`
-sans `masthead_word`), toujours reserve a Apple Music
-(`generate_snapshot_images.py`) et `post_song_overtakes.py`. Quand
+sans `masthead_word`), aujourd'hui reserve au seul Apple Music
+(`generate_snapshot_images.py`). Quand
 `masthead_word` est fourni, `build_table_html` bascule aussi les lignes/
 colonnes/footer vers un nouveau style "ledger" (`comp/tables_image.py`,
 classes `.ledger-*`) :
+
+- **`post_song_overtakes.py` en ledger depuis le 2026-09-06.** Card overtake
+  "chanson passe une autre chanson au compteur total" : `masthead_word="STREAMS"`,
+  `masthead_theme=masthead_theme_for_date(stats_date)` (light lun-ven / dark
+  week-end comme les autres), titre `"Taylor Swift · All-Time Streams"`,
+  sous-titre = phrase overtake. Colonnes
+  `Rank | +/- | Track | Total | Daily | Daily Chg | Weekly Chg` — **Total en
+  premier et en gras** (`extra_css` local sur `.ledger-total`, c'est la
+  metrique vedette de cette card), Daily attenue (`.ledger-daily` muted).
+  Total = `fmt_num(streams)`, Daily = daily signe via `fmt_signed`,
+  Daily Chg = `fmt_delta(daily, daily_veille)` num+%, Weekly Chg =
+  `fmt_delta(daily, daily_J-7)` num+% (nouveau ranking `last_week_by_id` a
+  J-7 dans `find_overtakes`, attache `daily_streams_last_week` aux context
+  rows). Rang colore par ere (`era_accent_color` -> fallback
+  `dominant_color_from_data_uri`), marqueur `★ ... since` via
+  `ledger_name_with_best_day` (peut apparaitre sur la chanson depassee aussi).
+  Les 2 lignes de l'overtake : `extra_css` local `.ledger-row.overtaker`
+  (rail + tint vert) / `.ledger-row.passed` (rail + tint rouge) ; les lignes
+  de contexte (1 au-dessus de l'overtaker, 1 sous la depassee) restent
+  neutres. `body_width=940`, `art_size=44`. `_rank_delta_badge` /
+  `_fmt_change_block` supprimes, remplaces par `_ledger_rank_chg` + les
+  helpers `comp.fmt`.
+
+- **Overtake entre deux chansons du MEME album -> image album update, pas de
+  card ledger (2026-09-06).** `post_song_overtakes.main()` split les events via
+  `build_track_album_map` : `_event_album(event, map)` renvoie l'album quand
+  overtaker ET passed y mappent, sinon `None`. Les events cross-album suivent
+  le chemin ledger ci-dessus ; les events same-album sont groupes par album
+  canonique (`_canonical_album_name` via `load_album_sections`) et
+  `_post_same_album_overtake` appelle
+  `generate_album_update_image.generate(album, date, flat_rank_by_total=True,
+  highlight_track_ids={track_id: "overtaker"|"passed"})` :
+  - **liste plate 1..N triee par total streams** (une section synthetique
+    `no_section_total`, ligne `Total`/`Total Era` conservee), style `default`
+    force, header/cover de l'album.
+  - marqueur `▲n/▼n` par ligne : `_flat_total_movement(pool, hist)` = position
+    par total du jour vs position par total de la veille (`streams - daily`) ;
+    delta 0 ou pas de donnee -> **aucun** marqueur (la plupart des lignes ne
+    bougent pas, un marqueur partout = bruit). Rangs qui bougent seulement.
+  - lignes overtaker (`.song-row.ov-up`, rail vert) / passed (`.song-row.ov-down`,
+    rail rouge). `build_song_row_html(..., movement_html=, row_cls_extra=)`,
+    `build_html(..., movement_by_track=, highlight_track_ids=)`.
+  - **Caption = phrase overtake inchangee** (`song_overtake_tweet`).
+  - **Remplace la card daily de l'album** : ecrit
+    `generate_album_update_image.album_update_lock_path(album, date)` apres post,
+    ET `finalize_update` retire l'album de `album_queue` via
+    `post_song_overtakes.same_album_overtake_albums(date)` (semaine). **Le
+    week-end elle poste quand meme** (exception a "pas de card album le
+    week-end" — decision proprietaire). Holiday Collection hors saison -> skip
+    + lock event (jamais poste hors 25 nov-7 jan).
 
 - **Theme** : `masthead_theme="dark"` ou `"light"` — bascule toutes les
   couleurs (fond, texte, bordures, +/- vert/rouge) ET l'overlay du header

@@ -362,44 +362,56 @@ minute) :**
   vidéo), d'autres restent des cas limites (ex. parenthèses de
   désambiguïsation strippées par `_clean_video_title`, mojibake déjà présent
   dans le titre stocké en DB).
-- **Audit du 2026-09-05 — chansons vraiment sans vidéo officielle nulle part**
-  (vérifié sur la chaîne principale UCqECaJ8Gagnn7YCbPEzWH6g + la chaîne
-  auto-générée **"Taylor Swift - Topic"** `UCPC0L1d253x-KuMNwa05TpA`, qui
-  couvre en "official audio" quasi tout le catalogue streamé y compris les
-  deep cuts — 2122 vidéos, second catalogue utile pour l'association
+- **Audit + nettoyage du 2026-09-05 — chansons vraiment sans vidéo officielle
+  nulle part** (vérifié sur la chaîne principale UCqECaJ8Gagnn7YCbPEzWH6g +
+  la chaîne auto-générée **"Taylor Swift - Topic"** `UCPC0L1d253x-KuMNwa05TpA`,
+  qui couvre en "official audio" quasi tout le catalogue streamé y compris
+  les deep cuts — 2122 vidéos, second catalogue utile pour l'association
   tsm_song_id↔vidéo mais PAS suivi pour les vues quotidiennes) : seulement 3
   vraies impasses — **Invisible** (Taylor Swift, 2006), **September -
   Recorded at The Tracking Room Nashville** (cover 2018), **Hold On (feat.
   Taylor Swift) [Live]** (chanson de Jack Ingram — aucun upload officiel
-  trouvé même sur sa chaîne à lui). Le reste des ~49 a un official audio sur
-  la chaîne Topic, ou (3 vrais collabs) sur la chaîne du collaborateur :
-  Highway Don't Care → TimMcGrawVEVO, The Joker And The Queen → chaîne
-  officielle Ed Sheeran, Both of Us → chaîne officielle B.o.B. `primary_artist`
-  était mis à tort à "Taylor Swift" pour ces 4 collabs (+ Hold On/Jack
-  Ingram) dans `db/discography/misc.json` — corrigé le 2026-09-05 (champ
-  `artists` aussi mis à jour). 4 associations vidéo↔chanson ajoutées à
-  `video_groups.json` (Carolina ×2 fusionnées sur une seule entrée faute de
-  family propre en DB, exile/long pond sessions, les 2 bonus tracks
-  evermore) — ces vidéos existaient déjà dans `video_db.json` mais leur
-  `song_family` en DB était pollué par le suffixe d'édition
-  (`..._bonus_track`, `..._feat_bon_iver`), empêchant le match auto.
-- **⚠️ `video_groups.json` (390 groupes) contient des overrides manuels
-  probablement gelés à une époque où le catalogue de matching était cassé
-  (voir bug ci-dessus) — certains ne couvrent qu'UNE vidéo sur une clé
-  synthétique ad hoc au lieu du `song_family` réel de la DB (ex.
-  `breathe_ft_colbie_caillat` pour la seule vidéo de "Breathe", au lieu de
-  `breathe` ; `end_game_ft_ed_sheeran_future` / `end_game_behind_the_scenes`
-  au lieu de `end_game`). Conséquence découverte le 2026-09-05 : appliquer
-  les overrides manuels (`load_manual_groups`, comme le fait
-  `build_title_rows` en prod) fait *régresser* le nombre de chansons
-  matchées par rapport au matching automatique seul (68 chansons non
-  matchées avec overrides vs 49 sans) — Breathe, End Game, Everything Has
-  Changed, Forever & Always, Run, Safe & Sound, The Last Time, The Story Of
-  Us et une dizaine d'autres singles bien connus en font les frais. **Pas
-  corrigé** (chantier séparé, ~390 entrées à auditer contre le catalogue
-  maintenant fixé, potentiellement via `scripts/youtube_grouping_editor/` ou
-  un script d'audit dédié) — à traiter avant de considérer l'association
-  tsm_song_id↔YouTube comme fiable en prod.
+  trouvé même sur sa chaîne à lui). Le reste des ~50 restants (matching sur
+  la seule chaîne principale) a un official audio sur la chaîne Topic, ou (3
+  vrais collabs) sur la chaîne du collaborateur : Highway Don't Care →
+  TimMcGrawVEVO, The Joker And The Queen → chaîne officielle Ed Sheeran,
+  Both of Us → chaîne officielle B.o.B. `primary_artist` était mis à tort à
+  "Taylor Swift" pour ces 4 collabs (+ Hold On/Jack Ingram) dans
+  `db/discography/misc.json` — corrigé le 2026-09-05 (champ `artists` aussi
+  mis à jour).
+- **`song_family` pollué par le suffixe d'édition — corrigé le 2026-09-05**
+  sur 5 tracks dont le `song_family` avait été auto-généré depuis le titre
+  complet au lieu d'un identifiant propre, les empêchant de matcher leur
+  vidéo pourtant déjà présente : `right where you left me - bonus track`
+  (`..._bonus_track` → `right_where_you_left_me`), `it's time to go - bonus
+  track` (idem → `it_s_time_to_go`), `the lakes - bonus track` (idem →
+  `the_lakes`, aligné sur les 2 autres éditions de la chanson), `exile
+  (feat. Bon Iver) - the long pond studio sessions` (`exile_feat_bon_iver` →
+  `exile`, aligné sur l'entrée album), et la paire `Carolina` (Where The
+  Crawdads Sing / Video Edition — 2 entrées quasi-doublons, `song_family`
+  fusionné sur `carolina`). Fixé directement dans `db/discography/` (backup
+  + `assign_tsm_ids.py --apply` pour resynchroniser le registre — 3
+  renommages détectés via Spotify id partagé, comportement normal).
+- **Audit de `video_groups.json` (390 → 369 entrées) le 2026-09-05** : ce
+  fichier d'overrides manuels (édité via `scripts/youtube_grouping_editor/`,
+  **commité dans git** malgré une note antérieure ici le disant gitignoré —
+  vérifié, aucun des 3 JSON de ce dossier n'a de pattern `.gitignore`)
+  contenait des clés figées d'avant le fix du bug de catalogue ci-dessus :
+  26 entrées utilisaient une clé synthétique ad hoc (ex.
+  `breathe_ft_colbie_caillat` au lieu de `breathe`, `end_game_behind_the_scenes`
+  au lieu de `end_game`) au lieu du `song_family` réel — conséquence :
+  appliquer les overrides (`load_manual_groups`, comme le fait
+  `build_title_rows` en prod) faisait *régresser* le matching par rapport à
+  l'automatique seul (68 chansons non matchées avec overrides vs 49 sans),
+  touchant des singles connus (Breathe, End Game, Run, Safe & Sound, The
+  Story Of Us...). Corrigé : renommage en place ou fusion dans le groupe
+  propre déjà existant (dédoublonnage des `video_ids`) pour les 26 ; 4
+  entrées ajoutées par erreur pour Carolina/exile/les 2 bonus tracks se sont
+  révélées redondantes avec des groupes propres déjà présents et ont été
+  supprimées — c'est le `song_family` en DB qui était fautif (cf. ci-dessus),
+  pas l'association vidéo. Reste ~140 entrées à 1 seule vidéo qui ne
+  correspondent à aucun `song_family` (contenu non-chanson légitime : vlogs,
+  annonces de tournée, BTS, interviews — normal, pas un bug).
 - Ne pas utiliser un delta multi-jours comme record quotidien.
 - `--commit` est volontaire; ne pas committer sans demande.
 - `--force` peut remplacer des lignes existantes; verifier la date et les

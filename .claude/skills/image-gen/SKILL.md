@@ -5,6 +5,15 @@ description: Conventions de génération d'images backend TSM (cards Twitter, ta
 
 # Génération d'images backend (collectors)
 
+## Hors périmètre : images de partage Open Graph
+
+Les `og:image` du site (aperçu quand on partage un lien sur Twitter/Discord/…)
+**ne sont PAS des cards `comp/`**. Ce sont de vraies captures Playwright des
+pages du site live, produites par `scripts/generate_og_screenshots.py` (2×/j,
+tâche `TSM OG Screenshots`) et servies depuis R2 `og/<slug>.png` par
+`tsm-frontend/api/routes/og_images.py`. Ne pas les reconstruire en card. Détail
+→ skills `pipeline-ops` et `tsm-map`.
+
 ## Architecture : tout passe par `collectors/comp/`
 
 - Composants partagés : `song_card.py` (helpers partagés image/palette/logo — son propre style `render_song_card()` n'est plus posté nulle part depuis le 2026-08-26, legacy), `song_card_chart_sheet.py` (**la card chanson réellement postée** — voir section dédiée plus bas), `tables_image.py` (images à tableaux : gainers, top eras, màj albums, récaps…), `fmt.py`, `discography.py`, `track_cover_cache.py`.
@@ -113,6 +122,16 @@ ces 4 URLs.
 
 `generate_album_update_image.py` extrait normalement l'accent (couleur de la barre "Total" de section et du handle @) depuis l'image header/cover, mais ses helpers (`_header_accent_color`, `_section_palette_colors`) forcent un plancher de saturation et **excluent volontairement les tons gris** pour rester "vifs" — sur un header quasi monochrome (folklore, reputation), ça fait remonter une couleur chair/tache chaude résiduelle (rose/beige) au lieu du gris attendu (fix 24/07/2026). `MONOCHROME_ALBUM_ACCENTS` dans ce fichier force un accent gris neutre (`#6b6b6b`) pour ces albums, cohérent avec le gris déjà codé en dur côté frontend (`tsm-frontend/frontend/src/utils/anniversaries.js` + `themes.css`, thèmes `theme-folklore`/`theme-reputation`). Si un autre album au cover très désaturé fait remonter une teinte parasite, l'ajouter à ce dict plutôt que de retoucher l'algo d'extraction (qui doit rester vif pour les covers colorées).
 
+## Album update — variante overtake même-album (2026-09-06)
+
+`generate_album_update_image.generate(album, date, flat_rank_by_total=True, highlight_track_ids={track_id: "overtaker"|"passed"})` : quand deux chansons **du même album** se dépassent au total streams, `post_song_overtakes.py` ne poste pas la card ledger STREAMS mais cette variante — suffixe fichier `_update*_overtake.png`, style `default` forcé (jamais `table-*`).
+
+- **Liste plate 1..N triée par total streams** : `generate()` remplace `sections` par une seule section synthétique (`no_section_total=True`) contenant `_display_total_tracks(sections)` triés par `hist[tid]["streams"]` desc. La ligne grand-total (`Total` / `Total Era`) reste ; les section-totals par édition disparaissent.
+- **Marqueur `▲n/▼n` par ligne** : `_flat_total_movement(pool, hist)` = position par total du jour vs position par total de la veille (`streams - daily`). **delta 0 ou pas de daily → `_movement_span` renvoie `""`** (la majorité des lignes d'un album ne bougent pas d'un jour à l'autre — un marqueur partout = bruit). Rendu inline dans `.col-rank` (`{rang}<span class="rank-move up|down">…`), **pas** de colonne de grille en plus (le grid `default` est fragile, on n'y touche pas).
+- **Lignes des 2 chansons** : `highlight_track_ids` → classes `.song-row.ov-up` (overtaker, rail vert + tint) / `.song-row.ov-down` (passed, rail rouge). Un même album peut avoir plusieurs overtakers (ex. 3 chansons passent la même) → toutes en vert.
+- Params ajoutés : `build_html(movement_by_track=, highlight_track_ids=)`, `build_song_row_html(movement_html=, row_cls_extra=)`. `movement_by_track=None` → comportement d'origine strictement inchangé pour la card daily.
+- Piège track_id : l'event overtake vient de `history_store` (pipeline streams), l'image de `load_album_sections` (discographie) — si une chanson a des IDs Spotify différents entre les deux sources, son highlight/marqueur peut manquer. Rare (multi-éditions), pas bloquant.
+
 ## Covers des chansons
 
 Politique décidée : **API Spotify en principal, images Apple Music en fallback** (elles ont les bonnes versions). Attention aux multi-versions : prendre la cover de la version principale de la chanson. Cache d'URL : `db/discography/track_cover_cache.json` (résolution track_id → URL, `comp/discography.get_album_cover`).
@@ -144,6 +163,7 @@ placée après la règle de base, pas compter sur `.neg` seul.
 - **RE en bleu** ; NEW réservé aux vraies nouveautés. Apple Music : jamais de NEW rétroactif (→ skill `data-rules`).
 - Gold = #1, vert hausse / rouge baisse (mêmes conventions que le site).
 - **Piège corrigé (2026-07-21)** : `charts_history_global/fr/us/uk.csv` contient des vieilles lignes migrées (avant l'ajout de la colonne `movement`) où **le tout premier jour de chart d'une chanson est marqué `movement=RE`** au lieu de `NEW` (ex. les titres de folklore le 24/07/2020, jour de sortie surprise — `total_days=1`, `peak_rank` vide, mais `movement=RE` en dur). Le calcul du chg pour Spotify Charts (tab Image Studio du tsm-frontend, `api/routes/charts.py::_is_re_entry_chart_row`) faisait confiance à ce `movement` archivé en priorité, donc affichait RE-ENTRY sur des debuts réels. Fix : si `total_days<=1` (et `peak_rank` absent ou = rang courant), c'est forcément NEW, peu importe ce que dit le `movement` archivé — ce check passe maintenant AVANT la lecture du `movement`. `tables_image.py::rank_change` (Python, utilisé par les générateurs PNG des collectors) n'avait pas ce bug — il ne lit jamais de champ `movement`, seulement `previous_rank`/`total_days`/`peak_rank`.
+- **Piège corrigé (2026-09-05) — Top Songs streams, `+/-` faux à partir du ~rang 10** : `generate_streams_image.build_top_n` appliquait `_drop_active_catalog_merge_duplicates` (retrait des track_id que Spotify est en train de fusionner dans le total d'un autre) **uniquement au jour courant**, pas aux fenêtres veille / semaine-dernière servant à calculer `prev_rank`. Un merge loser au **titre distinct** (ex. `Shake It Off (Best Work Edition)`, `Love Story - Pop Mix`) survit alors au dédup-par-titre dans le classement de la veille seulement → une entrée fantôme s'y intercale → toutes les chansons sous son rang héritent d'un `prev_rank` gonflé de 1 → faux `▲ 1` uniforme sur toute la moitié basse du tableau (observé 2026-09-04). Fix : `build_top_n` applique désormais le drop aux trois listes (`today_rows`, `yesterday_rows`, `last_week_rows`). Concerne aussi `generate_weekend_streams_image.py` et `post_throwback_thread.py` qui réutilisent `build_top_n`.
 
 ## Thème masthead : light en semaine, dark le week-end (2026-08-26)
 

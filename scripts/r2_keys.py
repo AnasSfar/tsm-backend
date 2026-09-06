@@ -74,3 +74,10 @@ CACHE_VERSION_KEY = "cache/version.json"
 HIRING_PREFIX = "hiring"
 REPORT_PREFIX = "report-"
 REPORT_IMG_PREFIX = "report-img-"
+
+# --- Open Graph share screenshots: PNG captures of live site pages, written by
+#     scripts/generate_og_screenshots.py, streamed to social crawlers by
+#     tsm-frontend/api/routes/og_images.py as og:image. Regenerable cache
+#     (2x/day), safe to prune. Key shape: og/<slug>.png where <slug> matches
+#     _og_slug() on both sides (mirrored like this module -- keep in sync). ---
+OG_SCREENSHOTS_PREFIX = "og"

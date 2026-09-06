@@ -63,10 +63,12 @@ from .core.config import (
     DISCOGRAPHY_SONGS_PATH,
     HISTORY_PATH,
     NTFY_TOPIC,
+    CHANNEL_TAGS,
     REPO_ROOT,
     TITLE_CSV_FIELDNAMES,
     TITLE_HISTORY_PATH,
     TOOLS_JSON_DIR,
+    TOPIC_UPLOADS_PLAYLIST_ID,
     VIDEO_DB_PATH,
     VIDEO_GROUPS_PATH,
     YOUTUBE_API_KEY,
@@ -733,10 +735,19 @@ def main() -> int:
     existing_ids = set(video_db.keys())
 
     if args.bootstrap:
-        print("[INFO] Mode bootstrap — scan complet de la chaîne")
+        print("[INFO] Mode bootstrap — scan complet de la chaîne officielle")
         new_videos = discover_new_videos(YOUTUBE_API_KEY, existing_ids)
+        print("[INFO] Mode bootstrap — scan complet de la chaîne Topic")
+        new_videos += discover_new_videos(
+            YOUTUBE_API_KEY, existing_ids | {v["video_id"] for v in new_videos},
+            playlist_id=TOPIC_UPLOADS_PLAYLIST_ID,
+        )
     else:
         new_videos = discover_new_videos_short_circuit(YOUTUBE_API_KEY, existing_ids)
+        new_videos += discover_new_videos_short_circuit(
+            YOUTUBE_API_KEY, existing_ids | {v["video_id"] for v in new_videos},
+            playlist_id=TOPIC_UPLOADS_PLAYLIST_ID,
+        )
 
     new_video_ids = {v["video_id"] for v in new_videos}
     if new_videos:
@@ -825,6 +836,7 @@ def main() -> int:
                 "date": activity_date,
                 "snapshot_at": snapshot_at,
                 "video_id": vid_id,
+                "channel": CHANNEL_TAGS.get(video_db.get(vid_id, {}).get("channel_id", ""), "main"),
                 "title": stat.get("title") or video_db.get(vid_id, {}).get("title", ""),
                 "rank": "",
                 "previous_rank": "",
@@ -902,22 +914,41 @@ def main() -> int:
                 except Exception as e:
                     print(f"[first_day_schedule] Échec (non bloquant) pour {r['video_id']}: {e}")
 
-    title_rows = build_title_rows(
-        date=activity_date,
-        video_rows=all_rows,
-        songs_path=DISCOGRAPHY_SONGS_PATH,
-        manual_groups_path=VIDEO_GROUPS_PATH,
-    )
+    # Trois variantes de regroupement par chanson pour ce jour : "all" (les 2
+    # chaînes sommées — c'est la vue historique, celle que lit TayBoard) et
+    # "main"/"topic" (une seule chaîne) pour le toggle Videos/Audios/Both du
+    # frontend. Même pipeline (build_title_rows + enrich_chart_rows), juste des
+    # video_rows filtrés en entrée — TayBoard (source=all) est donc inchangé.
     existing_title_rows = read_csv_rows(TITLE_HISTORY_PATH)
-    title_rows = enrich_chart_rows(
-        title_rows,
-        existing_rows=existing_title_rows,
-        target_date=activity_date,
-        key_field="title_key",
-    )
+    video_rows_by_source = {
+        "all": all_rows,
+        "main": [r for r in all_rows if (r.get("channel") or "main") == "main"],
+        "topic": [r for r in all_rows if r.get("channel") == "topic"],
+    }
+    combined_title_rows: list[dict] = []
+    for source_tag, source_video_rows in video_rows_by_source.items():
+        variant_rows = build_title_rows(
+            date=activity_date,
+            video_rows=source_video_rows,
+            songs_path=DISCOGRAPHY_SONGS_PATH,
+            manual_groups_path=VIDEO_GROUPS_PATH,
+        )
+        for r in variant_rows:
+            r["source"] = source_tag
+        variant_existing = [
+            r for r in existing_title_rows if (r.get("source") or "all") == source_tag
+        ]
+        variant_rows = enrich_chart_rows(
+            variant_rows,
+            existing_rows=variant_existing,
+            target_date=activity_date,
+            key_field="title_key",
+        )
+        combined_title_rows.extend(variant_rows)
+
     write_title_history(
         TITLE_HISTORY_PATH,
-        title_rows,
+        combined_title_rows,
         TITLE_CSV_FIELDNAMES,
         date=activity_date,
     )

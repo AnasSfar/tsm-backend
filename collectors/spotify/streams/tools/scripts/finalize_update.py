@@ -1526,6 +1526,24 @@ def run_final_update_tasks(ctx: FinalizeContext) -> None:
                 print("Album update posts skipped: no album cards on weekend stats dates.")
             else:
                 album_queue = _album_post_queue(ctx, ctx.summary["stats_date"])
+                # A same-album overtake posts that album's update as the overtake
+                # image (flat total ranking) from the "song overtakes" step, so
+                # drop it from the normal daily queue to avoid a double post.
+                try:
+                    import post_song_overtakes
+                    overtake_albums = {
+                        a.casefold()
+                        for a in post_song_overtakes.same_album_overtake_albums(ctx.summary["stats_date"])
+                    }
+                except Exception as exc:
+                    print(f"[all-albums] same-album overtake check failed ({exc}); keeping full queue.")
+                    overtake_albums = set()
+                if overtake_albums:
+                    kept = [a for a in album_queue if a.casefold() not in overtake_albums]
+                    removed = [a for a in album_queue if a.casefold() in overtake_albums]
+                    if removed:
+                        print(f"[all-albums] handled as same-album overtake image: {', '.join(removed)}")
+                    album_queue = kept
         album_img_script = ctx.script_dir / "tools" / "scripts" / "generate_album_update_image.py"
 
         other_steps: list[tuple[str, Callable[[], None]]] = []
