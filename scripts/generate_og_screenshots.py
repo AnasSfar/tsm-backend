@@ -48,7 +48,7 @@ DEFAULT_BASE_URL = "https://thetsmuseum.app"
 VIEWPORT = {"width": 1200, "height": 630}
 DEVICE_SCALE = 2
 NAV_TIMEOUT_MS = 35_000
-SETTLE_MS = 1_200
+SETTLE_MS = 1_800  # after networkidle: let fonts swap + entry animations finish
 
 # Hosts whose requests get aborted before the page paints: ads, tag managers,
 # analytics and Google's consent CMP (funding choices). Keeps every capture
