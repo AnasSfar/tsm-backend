@@ -1713,7 +1713,7 @@ def repair_missing_daily_streams_for_date(stats_date: str, track_ids: set[str] |
     if not repaired_ids:
         return set()
 
-    save_history_rows(rows)
+    save_history_rows(rows, allowed_dates={stats_date})
 
     day_rows = [
         row for row in rows
@@ -2273,7 +2273,7 @@ def run_debug_total_replace(stats_date: str) -> None:
         row["daily_streams"] = repl["daily_streams"]
         replaced_count += 1
 
-    save_history_rows(rows)
+    save_history_rows(rows, allowed_dates={stats_date})
 
     log_path = DATA_DIR / f"debug_total_replace_{stats_date}.csv"
     with log_path.open("w", newline="", encoding="utf-8") as f:

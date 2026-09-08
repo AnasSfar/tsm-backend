@@ -64,6 +64,95 @@ Modes visibles dans les logs/code:
 
 Avant de conseiller une option non listee ici, verifier `update_streams.py`.
 
+## Regle : daily negatif `admin_override` non verifie ne doit jamais etre mis en avant (2026-09-08)
+
+Decision proprietaire, suite a l'incident "The Best Day" 2026-09-06 (total Spotify
+baisse de 46 954 641 a 46 932 431, `--admin` utilise sans verification manuelle
+prealable d'une fusion/split Spotify reelle, contrairement au cas Karma).
+
+- Le total reste ecrit tel quel (`daily=-22210`, `estimated_reason=admin_override`)
+  — on ne fabrique jamais un chiffre different de ce que Spotify a renvoye.
+- `load_history_track_ids_with_daily_for_date` (`history_store.py`) compte
+  desormais une ligne `admin_override` comme "faite" meme avec un daily
+  negatif/vide, pour ne plus jamais bloquer indefiniment le completeness-check
+  de fin de collecte (observe : round 41+ sur 2026-09-07/08). Avant ce fix,
+  la fonction faisait `if int(daily_raw) < 0: continue`, contredisant ce que
+  documentait deja ce fichier.
+- **Mais** ce daily negatif ne doit jamais etre affiche comme si c'etait un
+  vrai evenement du jour dans un post ou la chanson est nommee/mise en avant :
+  - `generate_album_update_image.load_history_for_album` : si
+    `estimated_reason == "admin_override"` et `daily < 0`, le daily/change/pct
+    du track sont traites comme "pas de donnee aujourd'hui" (`daily = None`)
+    — le total cumule reste affiche normalement, seul le delta du jour est
+    masque. Impacte la card update album (et donc l'eventuelle ligne best-day
+    album qui s'appuie sur les memes chiffres).
+  - `post_song_overtakes.find_overtakes` : un track avec cette signature pour
+    `stats_date` est exclu des deux cotes d'un overtake (`admin_negative_ids`)
+    — un swap de rang cause par cette baisse artificielle n'est pas de la
+    vraie ecoute organique.
+  - Milestones (`post_stream_milestones.py`) : naturellement sans risque, un
+    milestone ne se declenche qu'a la hausse. Era recap best-day-since :
+    naturellement sans risque aussi, un `best_day_since` ne peut jamais se
+    declencher sur une baisse.
+  - Agregats/classements generaux (Top Songs, Top 45, Biggest Gainers,
+    export web `rank_total`/`rank_daily`/album aggregates) : **pas touches**,
+    ok de poster sans changement — un daily negatif ne remonte de toute façon
+    jamais en haut d'un classement par gain, et un total en baisse infime ne
+    change quasi jamais un classement par total. Cf. `merge_losers` dans
+    `export_for_web.py` pour le mecanisme equivalent (mais different, ne pas
+    confondre) reserve aux fusions Spotify actives.
+- Reflexe a garder : si un futur `--admin` negatif touche un post non couvert
+  ci-dessus (nouveau type de card), verifier `estimated_reason=="admin_override"
+  and daily<0` avant d'afficher/nommer la chanson.
+
+## Incident : perte de ~19 mois de `db/streams_history.csv` + propagation R2 (2026-09-08)
+
+Decouvert en debloquant le post du 2026-09-06 (voir regle ci-dessus).
+`db/streams_history.csv` local ne couvrait plus que 2018-2024-12-25 puis
+sautait directement a 2026-08-18 (4 lignes) et 2026-09-06 (717 lignes) : tout
+2025 + janvier-aout 2026 manquant en local (~264k lignes). Cause exacte non
+identifiee (anterieure a cette session ; le fichier est gitignore par la regle
+`*.csv` de `.gitignore`, donc aucun commit git ne protegeait cette periode —
+lien possible avec l'incident "git ne committait plus rien depuis le
+16/05/2026" deja documente, jamais reellement corrige malgre la note
+"fixe le 2026-08-21"). Un run `--admin` (rescrape complet catalogue) a ensuite
+**propage** ce trou vers R2 : `push_updated_track_histories_to_r2` re-upload
+l'historique complet par chanson (`history-by-track/{track_id}.json`) depuis
+le `HistoryIndex` local a chaque run non-debug — les 717 fichiers R2 ont donc
+ete ecrases avec la version tronquee (`[r2] Uploaded 717/717 track history
+file(s)`).
+
+Recuperation, en 2 temps, aucune perte reelle : les exports par-date
+`runtime/exports/web/site/history/{date}.json` (locaux ET sur R2, cle
+`history/{date}.json`) n'avaient pas ete touches par le run `--admin` (seul le
+par-chanson est re-uploade a chaque run) et couvraient integralement la
+periode manquante avec les valeurs deja normalisees (`{track_id: {"s": total,
+"d": daily}}`, `d` null quand le daily est intentionnellement vide/blanke).
+1. Reconstruction du CSV local : lignes du 2024-12-26 au 2026-09-05 regenerees
+   depuis ces JSON (`estimated_reason=recovered_from_export_20260908`),
+   lignes hors de cette fenetre conservees telles quelles. Verifie : 0 trou
+   calendaire dans la zone reconstruite, 0 doublon (date, track_id), valeur
+   controlee (The Best Day 2026-09-05 = 46 954 641, coherente avec l'incident
+   ci-dessus).
+2. Re-upload R2 : `HistoryIndex.load()` sur le CSV reconstruit +
+   `push_updated_track_histories_to_r2(active_ids, history_index)` (meme
+   fonction que le pipeline normal) pour les 717 tracks actifs.
+
+Piege rencontre en ecrivant le script de reparation : `history_store.py`
+compte sur l'appelant pour avoir charge le `.env` (credentials R2) au
+prealable — `update_streams.py` le fait indirectement via sa chaine
+d'imports, mais un script autonome doit appeler `load_dotenv(...)` et poser
+les memes `sys.path.insert` que `update_streams.py` (racine `scripts/`,
+`collectors/spotify/` pour `core.*`, `.../streams/tools/scripts`,
+`.../streams/extras`, `collectors/comp`) sinon `_r2_config()` renvoie `None`
+et l'upload est **silencieusement skip** (aucune ligne `[r2] Uploading...`
+dans les logs — piege facile a manquer).
+
+Point ouvert : la cause racine de la perte locale initiale (avant le run
+`--admin` de cette session) n'a pas ete identifiee. A surveiller si ça se
+reproduit — verifier en premier si `.gitignore` matche encore
+`db/streams_history.csv` (`git check-ignore -v db/streams_history.csv`).
+
 ## Donnees
 
 Source principale:

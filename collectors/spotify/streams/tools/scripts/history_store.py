@@ -29,6 +29,81 @@ _R2_TRACK_PREFIX = os.getenv("SPOTIFY_R2_TRACK_PREFIX", "history-by-track")
 HISTORY_FIELDNAMES = ["date", "track_id", "streams", "daily_streams", "estimated", "estimated_reason"]
 
 
+class HistoryProtectionError(Exception):
+    """Raised when a write would remove/lose streams_history.csv (or its R2
+    mirror) rows for a date other than the snapshot(s) the operation is
+    actually targeting. See CONTEXTE.md, incident 2026-09-08 (~19 months of
+    history lost by a full-rewrite that ran on an incomplete in-memory row
+    list, then propagated to R2)."""
+
+
+def _history_protection_bypassed() -> bool:
+    return os.getenv("ALLOW_OLD_HISTORY_REWRITE", "").strip() == "1"
+
+
+def _assert_rewrite_preserves_other_dates(
+    old_rows: list[dict],
+    new_rows: list[dict],
+    context: str,
+    allowed_dates: set[str] | None = None,
+) -> None:
+    """Compare the (date, track_id) coverage of old_rows vs new_rows and
+    refuse the rewrite if any track_id present for a date OTHER than
+    `allowed_dates` would disappear from that date.
+
+    The protected set is "every date except the snapshot(s) this operation
+    is explicitly targeting" — not an age/wall-clock cutoff. A --force/
+    --admin redo of stats_date 2026-09-06 run two days later, on
+    2026-09-08, must stay allowed (2026-09-06 is the snapshot in question);
+    what must never happen is that same rewrite silently losing e.g.
+    2025-03-14 because the in-memory row list it worked from was short.
+
+    Deduping exact-duplicate rows is unaffected (it never drops a track_id
+    from a date), only actual data loss is blocked. Bypass with
+    ALLOW_OLD_HISTORY_REWRITE=1 for a deliberate, verified manual repair
+    that legitimately needs to touch more than one date at once (e.g. the
+    2026-09-08 recovery)."""
+    if _history_protection_bypassed():
+        return
+
+    allowed = allowed_dates or set()
+
+    old_ids_by_date: dict[str, set[str]] = {}
+    for row in old_rows:
+        d = (row.get("date") or "").strip()
+        tid = (row.get("track_id") or "").strip()
+        if not d or not tid:
+            continue
+        old_ids_by_date.setdefault(d, set()).add(tid)
+
+    new_ids_by_date: dict[str, set[str]] = {}
+    for row in new_rows:
+        d = (row.get("date") or "").strip()
+        tid = (row.get("track_id") or "").strip()
+        if not d or not tid:
+            continue
+        new_ids_by_date.setdefault(d, set()).add(tid)
+
+    lost: list[tuple[str, int, int]] = []
+    for d, old_ids in old_ids_by_date.items():
+        if d in allowed:
+            continue
+        missing = old_ids - new_ids_by_date.get(d, set())
+        if missing:
+            lost.append((d, len(missing), len(old_ids)))
+
+    if lost:
+        lost.sort()
+        preview = ", ".join(f"{d} (-{n}/{total})" for d, n, total in lost[:10])
+        more = "" if len(lost) <= 10 else f" (+{len(lost) - 10} more date(s))"
+        raise HistoryProtectionError(
+            f"[{context}] refusing to write streams_history.csv: it would drop track_id "
+            f"row(s) for {len(lost)} date(s) outside this operation's target: {preview}{more}. "
+            "A run must never touch snapshots other than the one it's targeting. Set "
+            "ALLOW_OLD_HISTORY_REWRITE=1 to bypass for a deliberate, verified manual repair."
+        )
+
+
 def _clean_csv_fieldnames(fieldnames: list[str] | None) -> list[str]:
     cleaned = [name for name in (fieldnames or HISTORY_FIELDNAMES) if name]
     return cleaned or list(HISTORY_FIELDNAMES)
@@ -135,10 +210,7 @@ def _upload_track_history_points_to_r2(track_id: str, points: list[dict], cfg: d
         return False
 
     points.sort(key=lambda x: x["date"])
-    payload = json.dumps(
-        {"track_id": track_id, "points": points},
-        ensure_ascii=False, separators=(",", ":"),
-    ).encode("utf-8")
+    key = f"{_R2_TRACK_PREFIX}/{track_id}.json"
 
     try:
         s3 = cfg["boto3"].client(
@@ -147,9 +219,49 @@ def _upload_track_history_points_to_r2(track_id: str, points: list[dict], cfg: d
             aws_access_key_id=cfg["key_id"],
             aws_secret_access_key=cfg["secret"],
         )
+    except Exception as e:
+        if LOG_MODE == "verbose":
+            print(f"  [r2] upload failed for {track_id}: {e}")
+        return False
+
+    # This upload replaces the *entire* per-track R2 history file (it's
+    # always meant to hold every date for this track, never a single
+    # snapshot), so it can silently wipe out old dates if `points` (built
+    # from the local CSV) is ever short — this is exactly how the
+    # 2026-09-08 incident propagated ~19 months of local data loss onto R2.
+    # Unlike the local-CSV guards, there's no "date this call is targeting"
+    # to exempt here: a track's R2 history must always be a superset of
+    # what it already had. Bypass with ALLOW_OLD_HISTORY_REWRITE=1.
+    if not _history_protection_bypassed():
+        try:
+            existing_obj = s3.get_object(Bucket=cfg["bucket"], Key=key)
+            existing_points = json.loads(existing_obj["Body"].read().decode("utf-8")).get("points") or []
+        except Exception:
+            existing_points = []  # no existing object, or unreadable: nothing to compare against
+
+        if existing_points:
+            new_dates = {p.get("date") for p in points}
+            lost_dates = sorted({
+                p["date"] for p in existing_points
+                if p.get("date") and p["date"] not in new_dates
+            })
+            if lost_dates:
+                print(
+                    f"  [r2] PROTECTION: refusing to overwrite {track_id} — would drop "
+                    f"{len(lost_dates)} existing date(s) (e.g. {lost_dates[0]}). "
+                    "Set ALLOW_OLD_HISTORY_REWRITE=1 to bypass for a deliberate manual repair."
+                )
+                return False
+
+    payload = json.dumps(
+        {"track_id": track_id, "points": points},
+        ensure_ascii=False, separators=(",", ":"),
+    ).encode("utf-8")
+
+    try:
         s3.put_object(
             Bucket=cfg["bucket"],
-            Key=f"{_R2_TRACK_PREFIX}/{track_id}.json",
+            Key=key,
             Body=payload,
             ContentType="application/json; charset=utf-8",
         )
@@ -504,6 +616,10 @@ def delete_history_rows_for_date(target_date: str) -> int:
     kept_rows = [r for r in rows if (r.get("date") or "").strip() != target_date]
     removed = len(rows) - len(kept_rows)
 
+    _assert_rewrite_preserves_other_dates(
+        rows, kept_rows, "delete_history_rows_for_date", allowed_dates={target_date}
+    )
+
     with HISTORY_PATH.open("w", newline="", encoding="utf-8") as f:
         writer = csv.DictWriter(f, fieldnames=fieldnames)
         writer.writeheader()
@@ -531,6 +647,11 @@ def dedupe_history_rows_by_date_track() -> int:
     removed = len(rows) - len(deduped)
     if removed <= 0:
         return 0
+
+    # No allowed_dates: proper dedup never drops a track_id from any date
+    # (it only collapses literal (date, track_id) duplicates), so any date
+    # losing coverage here is a genuine bug regardless of which date it is.
+    _assert_rewrite_preserves_other_dates(rows, list(deduped.values()), "dedupe_history_rows_by_date_track")
 
     with HISTORY_PATH.open("w", newline="", encoding="utf-8") as f:
         writer = csv.DictWriter(f, fieldnames=fieldnames)
@@ -602,8 +723,17 @@ def load_history_rows() -> list[dict]:
     with HISTORY_PATH.open("r", newline="", encoding="utf-8-sig") as f:
         return list(csv.DictReader(f))
 
-def save_history_rows(rows: list[dict]) -> None:
+def save_history_rows(rows: list[dict], allowed_dates: set[str] | None = None) -> None:
+    """Full rewrite of streams_history.csv from `rows`. Pass `allowed_dates`
+    with the specific stats_date(s) this call is legitimately correcting
+    (e.g. {stats_date}) — any other date losing track_id coverage compared
+    to what's currently on disk aborts the write. See
+    _assert_rewrite_preserves_other_dates."""
     HISTORY_PATH.parent.mkdir(parents=True, exist_ok=True)
+    if HISTORY_PATH.exists():
+        with HISTORY_PATH.open("r", newline="", encoding="utf-8-sig") as f:
+            existing_rows = list(csv.DictReader(f))
+        _assert_rewrite_preserves_other_dates(existing_rows, rows, "save_history_rows", allowed_dates=allowed_dates)
     fieldnames = list(HISTORY_FIELDNAMES)
     for row in rows:
         for key in row.keys():
@@ -840,6 +970,15 @@ def load_history_track_ids_with_daily_for_date(stats_date: str) -> set[str]:
                 continue
             track_id = (row.get("track_id") or "").strip()
             if not track_id:
+                continue
+            if (row.get("estimated_reason") or "").strip() == "admin_override":
+                # The operator explicitly vouched for this total via --admin;
+                # daily can be negative or blank (fusion/split, glitch), but
+                # the row is a deliberate, final answer for this date and
+                # must count as done — otherwise the completeness gate below
+                # retries it forever (observed: rounds 41+ on 2026-09-06/07
+                # "The Best Day", a genuine Spotify total drop).
+                done.add(track_id)
                 continue
             daily_raw = (row.get("daily_streams") or "").strip()
             if not daily_raw:

@@ -512,7 +512,11 @@ def write_rows(existing_rows: list[dict], candidates: list[Candidate], *, replac
         )
 
     rows.sort(key=lambda row: (str(row.get("date") or ""), str(row.get("track_id") or "")))
-    save_history_rows([{field: row.get(field, "") for field in fieldnames} for row in rows])
+    backfilled_dates = replace_dates | {item.date for item in candidates}
+    save_history_rows(
+        [{field: row.get(field, "") for field in fieldnames} for row in rows],
+        allowed_dates=backfilled_dates,
+    )
 
     by_date: dict[str, list[dict]] = {}
     for row in rows:

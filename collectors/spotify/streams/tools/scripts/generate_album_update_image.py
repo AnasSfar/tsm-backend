@@ -776,6 +776,14 @@ def load_history_for_album(
         y = yest_data.get(tid)
         daily = t.get("daily_streams")
         streams = t.get("streams")
+        if t.get("estimated_reason") == "admin_override" and daily is not None and daily < 0:
+            # Operator-forced correction for an unverified Spotify total drop
+            # (--admin, e.g. "The Best Day" 2026-09-06): the real cumulative
+            # total stays visible, but the negative delta itself must never
+            # be surfaced as this song's day in song/album/era-facing content
+            # — only in aggregates where it just sinks out of view (data-rules
+            # decision 2026-09-08). Treat as "no update today" here.
+            daily = None
         yest_d = (y or {}).get("daily_streams")
         change = (daily - yest_d) if (daily is not None and yest_d is not None) else None
         pct = (change / yest_d * 100) if (change is not None and yest_d not in (None, 0)) else None

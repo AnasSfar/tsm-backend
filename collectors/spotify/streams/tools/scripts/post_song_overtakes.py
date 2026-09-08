@@ -127,6 +127,17 @@ def find_overtakes(stats_date: str, *, limit: int = DEFAULT_LIMIT) -> list[dict]
         and history_store.track_is_released_for_stats_date(track, stats_date)
     ]
     history = history_store.HistoryIndex.load()
+    # Operator-forced corrections for an unverified Spotify total drop
+    # (--admin, e.g. "The Best Day" 2026-09-06) must never be framed as a
+    # real overtake — a rank swap on stats_date caused by that artificial
+    # negative delta isn't organic listening (data-rules decision 2026-09-08).
+    admin_negative_ids = {
+        row["track_id"] for row in history.rows
+        if row.get("date") == stats_date
+        and row.get("estimated_reason") == "admin_override"
+        and (row.get("daily_streams") or "").lstrip("-").isdigit()
+        and int(row["daily_streams"]) < 0
+    }
     current = _ranking_for_date(tracks, history, stats_date)
     previous = _ranking_for_date(tracks, history, previous_date)
     previous_by_id = {row["track_id"]: row for row in previous}
@@ -135,10 +146,14 @@ def find_overtakes(stats_date: str, *, limit: int = DEFAULT_LIMIT) -> list[dict]
     events: list[dict] = []
     seen_pairs: set[str] = set()
     for current_index, overtaker in enumerate(current):
+        if overtaker["track_id"] in admin_negative_ids:
+            continue
         overtaker_prev = previous_by_id.get(overtaker["track_id"])
         if not overtaker_prev:
             continue
         for passed in current[current_index + 1:]:
+            if passed["track_id"] in admin_negative_ids:
+                continue
             passed_prev = previous_by_id.get(passed["track_id"])
             if not passed_prev:
                 continue
