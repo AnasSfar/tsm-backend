@@ -148,10 +148,16 @@ PLAYWRIGHT_LAUNCH_TIMEOUT_MS = int(os.getenv("SPOTIFY_PLAYWRIGHT_LAUNCH_TIMEOUT_
 PLAYWRIGHT_GOTO_TIMEOUT_MS = int(os.getenv("SPOTIFY_PLAYWRIGHT_GOTO_TIMEOUT_MS", "15000"))
 PLAYWRIGHT_TOKEN_WAIT_SECONDS = int(os.getenv("SPOTIFY_PLAYWRIGHT_TOKEN_WAIT_SECONDS", "10"))
 # Cas "chart pas encore propage" (URL datee 404, /latest 200 mais pointe encore sur la veille):
-# toujours borne, meme en run quotidien live (FETCH_MAX_ATTEMPTS=0/illimite ne s'applique pas
-# ici expres, pour eviter un hang si la region ne publie vraiment pas ce jour-la).
+# borne pour les regionaux (FETCH_MAX_ATTEMPTS=0/illimite ne s'applique pas ici expres, pour
+# eviter un hang si une region ne publie vraiment pas ce jour-la).
 NOT_FOUND_RETRY_ATTEMPTS = int(os.getenv("SPOTIFY_WORLDWIDE_NOT_FOUND_RETRY_ATTEMPTS", "3"))
 NOT_FOUND_RETRY_SECONDS = int(os.getenv("SPOTIFY_WORLDWIDE_NOT_FOUND_RETRY_SECONDS", "20"))
+# "global" publie tous les jours sans exception: on l'attend indefiniment (0 = infini) au lieu
+# d'abandonner et d'ecrire un snapshot vide sur un simple decalage de propagation CDN entre le
+# probe de dispo (run_all_charts) et l'endpoint regional-global-daily/{date}. Pause plafonnee a
+# GLOBAL_NOT_FOUND_RETRY_MAX_SECONDS pour garder un log lisible sans marteler l'API.
+GLOBAL_NOT_FOUND_RETRY_ATTEMPTS = int(os.getenv("SPOTIFY_WORLDWIDE_GLOBAL_NOT_FOUND_RETRY_ATTEMPTS", "0"))
+GLOBAL_NOT_FOUND_RETRY_MAX_SECONDS = int(os.getenv("SPOTIFY_WORLDWIDE_GLOBAL_NOT_FOUND_RETRY_MAX_SECONDS", "120"))
 PRIORITY_CARD_POST_MAX_ATTEMPTS = int(os.getenv("SPOTIFY_PRIORITY_CARD_POST_MAX_ATTEMPTS", "3"))
 PRIORITY_CARD_POST_RETRY_SECONDS = int(os.getenv("SPOTIFY_PRIORITY_CARD_POST_RETRY_SECONDS", "30"))
 REQUEST_INTERVAL_SECONDS = float(os.getenv("SPOTIFY_WORLDWIDE_REQUEST_INTERVAL_SECONDS", "2.0"))
@@ -193,8 +199,8 @@ def _note_region_ok(region: str) -> None:
     if _backfill_404_streak.get(region):
         _backfill_404_streak[region] = 0
 _OVERVIEW_URL   = "https://charts-spotify-com-service.spotify.com/auth/v1/overview/GLOBAL"
-MULTI_SONG_REGIONAL_POST_MIN_SONGS = 3
-MULTI_SONG_REGIONAL_POST_MAX_POSTS = 1
+MULTI_SONG_REGIONAL_POST_MIN_SONGS = 2
+MULTI_SONG_REGIONAL_POST_MAX_POSTS = 2
 MULTI_SONG_REGIONAL_POST_POOL_SIZE = 3
 MULTI_SONG_REGIONAL_NO_REPEAT_DAYS = 1
 MULTI_SONG_REGIONAL_WEEKLY_LOOKBACK_DAYS = 7
@@ -858,7 +864,12 @@ class GlobalPause:
     States: open → paused → probing → taken → open | paused
     - On 429: try rotating the token pool first (immediate resume).
     - If all tokens exhausted: pause with multiplicative backoff (x1, x2, x3…).
-    - After pause: one probe worker goes through; on success all resume.
+    - After pause: one probe worker goes through; it reopens the gate for
+      everyone as soon as its request comes back with ANY status ≠ 429 (or
+      times out / errors) — not only on HTTP 200. Otherwise a probe that lands
+      on a region with no chart (404) returned without calling mark_success(),
+      leaving the state stuck in "taken" and every other worker parked forever
+      in _cond.wait() — a silent hang (observed 2026-08-17, 2026-09-08).
     """
 
     def __init__(self, pool: TokenPool) -> None:
@@ -963,10 +974,17 @@ async def _fetch_region(
                     headers=headers,
                     timeout=aiohttp.ClientTimeout(total=30),
                 ) as resp:
+                    # Le serveur a répondu (statut ≠ 429) → le rate-limit est levé.
+                    # On rouvre la barrière globale ICI, pas seulement sur 200 : sinon une
+                    # sonde post-pause qui tombe sur un 404 (région sans chart, ex. si) ou
+                    # un skip 4xx revient sans jamais appeler mark_success(), GlobalPause
+                    # reste bloqué en "taken" et tous les autres workers dorment pour
+                    # toujours dans _cond.wait() (hang silencieux, cf. 2026-08-17).
+                    if resp.status != 429:
+                        await pause.mark_success()
                     if resp.status == 200:
                         data = await resp.json(content_type=None)
                         rows = _parse_ts_entries(data)
-                        await pause.mark_success()
                         _note_region_ok(region)
                         print(f"  [{region:>6}] {len(rows)} TS entries ({chart_date})")
                         return region, rows
@@ -988,14 +1006,28 @@ async def _fetch_region(
                                     rows = _parse_ts_entries(latest_data)
                                     print(f"  [{region:>6}] {len(rows)} TS entries ({chart_date}, via latest)")
                                     return region, rows
-                                if not_found_attempts < NOT_FOUND_RETRY_ATTEMPTS:
+                                is_global = region == "global"
+                                nf_cap = (
+                                    GLOBAL_NOT_FOUND_RETRY_ATTEMPTS if is_global
+                                    else NOT_FOUND_RETRY_ATTEMPTS
+                                )
+                                if nf_cap <= 0 or not_found_attempts < nf_cap:
                                     not_found_attempts += 1
+                                    if is_global:
+                                        nf_wait = min(
+                                            NOT_FOUND_RETRY_SECONDS * not_found_attempts,
+                                            GLOBAL_NOT_FOUND_RETRY_MAX_SECONDS,
+                                        )
+                                        cap_label = str(nf_cap) if nf_cap > 0 else "∞"
+                                    else:
+                                        nf_wait = NOT_FOUND_RETRY_SECONDS
+                                        cap_label = str(nf_cap)
                                     print(
                                         f"  [{region:>6}] 404 date, latest={latest_date or 'unknown'} "
-                                        f"- pas encore propage, retry dans {NOT_FOUND_RETRY_SECONDS}s "
-                                        f"(tentative {not_found_attempts}/{NOT_FOUND_RETRY_ATTEMPTS})"
+                                        f"- pas encore propage, retry dans {nf_wait}s "
+                                        f"(tentative {not_found_attempts}/{cap_label})"
                                     )
-                                    await asyncio.sleep(NOT_FOUND_RETRY_SECONDS)
+                                    await asyncio.sleep(nf_wait)
                                     continue
                                 print(
                                     f"  [{region:>6}] 404 date, latest={latest_date or 'unknown'} "
@@ -1004,6 +1036,18 @@ async def _fetch_region(
                                 _note_region_404(region)
                                 return region, []
                             if latest_resp.status == 404:
+                                if region == "global" and GLOBAL_NOT_FOUND_RETRY_ATTEMPTS <= 0:
+                                    not_found_attempts += 1
+                                    nf_wait = min(
+                                        NOT_FOUND_RETRY_SECONDS * not_found_attempts,
+                                        GLOBAL_NOT_FOUND_RETRY_MAX_SECONDS,
+                                    )
+                                    print(
+                                        f"  [{region:>6}] 404 date+latest - global jamais absent, "
+                                        f"retry dans {nf_wait}s (tentative {not_found_attempts}/∞)"
+                                    )
+                                    await asyncio.sleep(nf_wait)
+                                    continue
                                 _note_region_404(region)
                                 print(f"  [{region:>6}] 404 date+latest - no chart")
                                 return region, []
@@ -1025,6 +1069,10 @@ async def _fetch_region(
                         return region, None
                     print(f"  [{region:>6}] HTTP {resp.status} — retry dans 10s (tentative {attempt})")
             except asyncio.TimeoutError:
+                # Un timeout n'est pas un signal de rate-limit : si ce worker tenait la
+                # sonde post-pause, il faut rouvrir la barrière sinon lui-même (et tous les
+                # autres) reste bloqué dans pause.wait() au tour suivant.
+                await pause.mark_success()
                 if FETCH_MAX_ATTEMPTS > 0 and attempt >= FETCH_MAX_ATTEMPTS:
                     print(f"  [{region:>6}] SKIP — timeout after {attempt} attempts, giving up on this region for {chart_date}")
                     return region, None
@@ -1032,6 +1080,7 @@ async def _fetch_region(
             except Exception as exc:
                 if isinstance(exc, TokenExpired):
                     raise
+                await pause.mark_success()  # idem timeout : ne jamais laisser la sonde figer le run
                 if FETCH_MAX_ATTEMPTS > 0 and attempt >= FETCH_MAX_ATTEMPTS:
                     print(f"  [{region:>6}] SKIP — {exc!r} after {attempt} attempts, giving up on this region for {chart_date}")
                     return region, None

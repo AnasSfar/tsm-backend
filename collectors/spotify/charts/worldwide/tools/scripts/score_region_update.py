@@ -38,6 +38,8 @@ NEW_ENTRY_BASE = 40.0
 NEW_ENTRY_RANK_FACTOR = 0.6
 RE_ENTRY_BASE = 80.0
 RE_ENTRY_RANK_FACTOR = 0.8
+MAIN_STORE_RE_ENTRY_BONUS = 220.0
+MAIN_STORE_RE_ENTRY_RANK_FACTOR = 1.2
 DROPOUT_BASE = 70.0
 DROPOUT_RANK_FACTOR = 0.5
 STREAM_PCT_CAP = 50.0
@@ -49,8 +51,9 @@ CONTINUING_BREAKOUT_BONUS_MAX = 60.0
 CONTINUING_BREAKOUT_MIN_STREAM_PCT = 5.0
 CONTINUING_BREAKOUT_MIN_RANK_GAIN = 3
 REGIONAL_BEST_DAY_LOOKBACK_DAYS = 14
-DEFAULT_POST_MIN_ADJUSTED_SCORE = 45.0
-DEFAULT_WEEKEND_POST_MIN_ADJUSTED_SCORE = 95.0
+DEFAULT_POST_MIN_ADJUSTED_SCORE = 12.0
+DEFAULT_WEEKEND_POST_MIN_ADJUSTED_SCORE = 35.0
+MAIN_STORE_RE_ENTRY_REGIONS = {"global", "us", "gb", "uk", "fr"}
 
 REPEAT_PENALTIES_BY_DAYS_AGO = {
     1: 85.0,
@@ -211,6 +214,8 @@ def _reason(
         pieces.append("continuing breakout")
     if breakdown.get("re_points", 0) > 0:
         pieces.append("RE lift")
+    if breakdown.get("main_store_re_bonus", 0) > 0:
+        pieces.append("main store RE")
     if breakdown.get("new_points", 0) > 0:
         pieces.append("NEW lift")
     if out:
@@ -257,6 +262,7 @@ def score_region_snapshot(
         "weekly_points": 0.0,
         "new_points": 0.0,
         "re_points": 0.0,
+        "main_store_re_bonus": 0.0,
         "out_penalty": 0.0,
         "peak_bonus": 0.0,
         "continuation_bonus": 0.0,
@@ -284,6 +290,11 @@ def score_region_snapshot(
         elif row.get("is_re_entry"):
             points = RE_ENTRY_BASE + (201 - rank_for_points) * RE_ENTRY_RANK_FACTOR
             parts["re_points"] += points
+            if region.lower() in MAIN_STORE_RE_ENTRY_REGIONS:
+                parts["main_store_re_bonus"] += (
+                    MAIN_STORE_RE_ENTRY_BONUS
+                    + (201 - rank_for_points) * MAIN_STORE_RE_ENTRY_RANK_FACTOR
+                )
             entries_in += 1
         elif prev_rank is not None and prev_rank > 0:
             parts["rank_points"] += rank_gain * _rank_weight(min(rank, prev_rank))

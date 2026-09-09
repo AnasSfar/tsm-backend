@@ -22,7 +22,8 @@ tsm-backend/
 │   │   ├── charts/         ← charts par région (global, fr, us, uk, worldwide, artists_global)
 │   │   ├── core/           ← modules partagés Spotify (twitter.py, history, download, notify…)
 │   │   └── website/        ← ancien export site (legacy)
-│   ├── apple_music/        ← charts Apple Music (pays, genres, albums, vidéos)
+│   ├── apple_music/        ← charts Apple Music streaming/most-played (pays, genres, albums, vidéos)
+│   ├── itunes/             ← charts d'achats iTunes Store (Top Songs + Top Albums par pays, RSS legacy) — data-only R2
 │   ├── deezer/              ← charts Deezer (global + top tracks TS) + fans
 │   ├── billboard/          ← scrape Billboard + TayBoard (Swift Top 100/albums/eras)
 │   ├── youtube/            ← vues YouTube
@@ -37,7 +38,7 @@ tsm-backend/
 ├── docs/                   ← runbook.md + data-layout-audit.md + apple-music-script-context.md
 ├── website/                ← ⚠️ site statique LEGACY — INTERDIT sauf demande explicite
 ├── .github/workflows/      ← workflows GitHub (peu utilisés : tout tourne en local ; run-data-only-collectors.yml = escape hatch manuel Apple Music/YouTube)
-├── .claude/skills/         ← skills Claude Code (tsm-map, pipeline-ops, data-rules, image-gen, deploy, admin-work, style-rules, collector-apple-music, collector-deezer)
+├── .claude/skills/         ← skills Claude Code (tsm-map, pipeline-ops, data-rules, image-gen, deploy, admin-work, style-rules, collector-apple-music, collector-itunes, collector-deezer)
 ├── run_daily.bat           ← launcher : python -m tsm daily
 ├── run_all_charts.bat      ← launcher : python -m tsm collect charts
 ├── run_discography_editor.bat ← launcher : GUI locale d'édition de db/discography/ (scripts/discography_editor/)
@@ -62,6 +63,7 @@ python -m tsm collect streams [YYYY-MM-DD] [--no-post|--post]   # → update_str
 python -m tsm collect charts  [YYYY-MM-DD] [--no-post|--post]   # → run_all_charts.py
 python -m tsm collect apple-music [--no-post]                   # → run_apple_music.py
 python -m tsm collect deezer [--no-post]                        # → run_deezer.py
+python -m tsm collect itunes [--no-post]                        # → run_itunes.py (charts d'achats iTunes Store)
 python -m tsm collect youtube [YYYY-MM-DD] [--no-post] [--force] # → update_youtube.py (YYYY-MM-DD = jour d'activité voulu ; sinon run−1j)
 python -m tsm export web [--date YYYY-MM-DD] [--dry-run]        # → scripts/export_for_web.py
 python -m tsm audit data [--write]        # audit du layout → docs/data-layout-audit.*
@@ -184,7 +186,7 @@ Idempotence (fix 17/07/2026, après double post global/us) : les `daily.py` glob
 | `global/` | `daily.py` / `daily_no_post.py` ; `tools/script/` : `refresh_session.py` (relogin Playwright → `spotify_session.json`, `--output`), `import_cookies.py` (Cookie-Editor JSON → session, `input`, `--output`), `fix_missing.py` (reconstruit les jours manquants sans poster), `rebuild.py`, `rebuild_history_from_logs.py`, `migrate_charts_to_csv.py`, `daily_test.py` (dry-run) |
 | `fr/` | `daily.py` / `daily_no_post.py` ; `tools/rebuild.py`, `tools/rebuild_pop_history.py` |
 | `us/`, `uk/` | `daily.py` ; `tools/scripts/backfill_charts_history_{us,uk}.py` (backfill massif avec resume/retry : `--start --end --resume --retry-at-end --until-complete --cache --failed-dates --only-failed --min-delay --base-rate-limit-sleep --max-rate-limit-retries --no-retry --verbose --log-http`) |
-| `worldwide/` | `daily.py` (105 Ko) : tous les pays en parallèle ; poste desormais aussi une re-entree standalone par pays des sa collecte et sync le CSV `db/charts_history_<region>.csv` de ce pays immediatement (voir SKILL spotify-charts Â§ "Immediate re-entry posting" / "Sync CSV immediat"). `date`, `--dates`, `--dates-file`, `--backfill-from/to`, `--no-post`, `--post-song-updates`, `--post-priority-global-new`, `--post-priority-region R`, `--post-multi-song-regions[-only]`, `--force`, `--force-priority-global-new`, `--regions CODE…` / `--exclude-regions CODE…` (restreint/exclut des pays ; sous filtre, le snapshot daté existant est relu et les régions hors périmètre sont mergées en retour — même sous `--force`, qui ne ré-fetch alors que les régions ciblées : permet de remplir un snapshot région par région). En boucle multi-dates : une région qui 404 `SPOTIFY_WORLDWIDE_DEAD_REGION_STREAK` fois d'affilée (déf. 6) est retirée du fetch pour le reste du run (chart jamais publié sur la période) ; si `global` 404 pour une date, la date est court-circuitée après la Phase 1 ; `tools/scripts/generate_card_images.py` (cards par chanson : `--date`, `--theme`, `--min-countries 3`, `--force`, `--post`), `post_global_new_releases.py` (card NEW prioritaire : `date`, `--post`, `--post-worldwide`, `--force`, `--force-song`), `backfill_total_days.py`, `profile_daily.py` |
+| `worldwide/` | `daily.py` (105 Ko) : tous les pays en parallèle ; poste desormais aussi une re-entree standalone par pays des sa collecte et sync le CSV `db/charts_history_<region>.csv` de ce pays immediatement (voir SKILL spotify-charts Â§ "Immediate re-entry posting" / "Sync CSV immediat"). `date`, `--dates`, `--dates-file`, `--backfill-from/to`, `--no-post`, `--post-song-updates`, `--post-priority-global-new`, `--post-priority-region R`, `--post-multi-song-regions[-only]`, `--force`, `--force-priority-global-new`, `--regions CODE…` / `--exclude-regions CODE…` (restreint/exclut des pays ; sous filtre, le snapshot daté existant est relu et les régions hors périmètre sont mergées en retour — même sous `--force`, qui ne ré-fetch alors que les régions ciblées : permet de remplir un snapshot région par région). En boucle multi-dates : une région qui 404 `SPOTIFY_WORLDWIDE_DEAD_REGION_STREAK` fois d'affilée (déf. 6) est retirée du fetch pour le reste du run (chart jamais publié sur la période) ; si `global` 404 en `--backfill-mode`, la date est court-circuitée après la Phase 1. **Run live (date unique)** : sur "URL datée 404 + /latest sur la veille", un régional retente `SPOTIFY_WORLDWIDE_NOT_FOUND_RETRY_ATTEMPTS` fois (déf. 3 / 20 s) puis abandonne ; **`global` retente à l'infini** (`SPOTIFY_WORLDWIDE_GLOBAL_NOT_FOUND_RETRY_ATTEMPTS` déf. 0, pause croissante capée à `..._MAX_SECONDS` déf. 120) — jamais de snapshot worldwide vide sur un décalage de propagation ; **rate-limit 429** : rotation des tokens puis `GlobalPause` (pause croissante capée à `SPOTIFY_WORLDWIDE_RATE_LIMIT_MAX_SECONDS`), une seule requête « sonde » repasse après chaque pause et **rouvre la barrière dès qu'elle obtient un statut ≠ 429 / timeout / erreur** (pas seulement un 200) — fix 2026-09-09 : avant, une sonde qui tombait sur un pays sans chart (404, ex. `si`) revenait sans rouvrir la barrière → tous les workers figés à l'infini, hang silencieux (cf. 2026-08-17) ; `tools/scripts/generate_card_images.py` (cards par chanson : `--date`, `--theme`, `--min-countries 3`, `--force`, `--post`), `post_global_new_releases.py` (card NEW prioritaire : `date`, `--post`, `--post-worldwide`, `--force`, `--force-song`), `backfill_total_days.py`, `profile_daily.py` |
 | `artists_global/` | Autonome, PAS orchestre par `run_all_charts.py` (task scheduler dediee `TSM - Spotify Artists Global Daily`, 15h). `artist_global_daily.py` : chart artistes global + declenche lui-meme les charts filtres en fin de run (`_run_filtered_artist_charts`, liste `_ACTIVE_FILTERED_ARTIST_CHARTS`). `--period daily\|weekly`, `--date`, `--no-wait`, `--retry-seconds`, `--no-csv`, `--no-upload`, `--no-post`, `--force`, `--force-post`, `--no-warp`. `Artists.csv` (artist_id, artist_name, gender F/M/Group — curation manuelle, exception au `.gitignore` `*.csv`, auto-completee avec les nouveaux artistes rencontres) ; `tools/scripts/generate_artist_chart_image.py` (`date`, `--period`, `--no-post`, `--session`, `--force` ; builders `build_top5_html/build_top10_html/build_solo_html` acceptent un `title=` reutilise par les charts filtres), `generate_filtered_artist_chart.py` (variantes filtrees du chart artiste — filtres locaux `female` (cadence quotidienne type chart principal), `starts_with_t`/`named_taylor` (cadence "poste seulement si le rang de Taylor s'ameliore") filtrent le chart GLOBAL deja collecte sans reseau ; filtres regionaux `us_artist_chart`/`uk_artist_chart` (cadence rank_up) fetchent en LIVE le chart artiste propre au pays (`artist-us-daily`/`artist-gb-daily`, via `_fetch_chart`/`_get_bearer_token` de `artist_global_daily.py`) — classement different du chart global ; `filter_key`, `date`, `--no-post`, `--session`, `--force` ; nouveaux filtres = une entree dans `FILTERS` (ce script) + `_ACTIVE_FILTERED_ARTIST_CHARTS` (`artist_global_daily.py`), synchronisees a la main. `generate_artist_worldwide_card.py` supprime le 2026-08-16 (redondant avec les filtres regionaux, plus utilise). |
 
 ### `collectors/spotify/core/` — modules partagés (pas des scripts)
@@ -274,6 +276,73 @@ remplacé par YouTube — voir Â§ 5 et `collector-billboard/CONTEXTE.md` Â§
 
 ---
 
+## 4ter. `collectors/itunes/` — charts iTunes Store (achats)
+
+**Avant tout travail ici : charger le skill `collector-itunes`.** Créé le
+2026-09-09. Signal **distinct** d'Apple Music : le collecteur `apple_music/`
+collecte les charts *streaming / most-played* Apple Music ; celui-ci
+collecte les charts **d'achats** iTunes Store (téléchargements payants), via
+les flux RSS legacy `https://itunes.apple.com/{storefront}/rss/topsongs/limit=100/json`
+et `.../rss/topalbums/...` (aucune auth). Le rang = la position dans le flux,
+filtré ensuite à Taylor Swift (même règle que `apple_music/country_all.py`).
+
+Ne poste **jamais** sur X, ne commit **jamais** git (seul l'upload R2
+distribue la donnée — même modèle qu'Apple Music / Deezer). N'alimente pas le
+scoring TayBoard ni les home highlights. Storefronts = découverte live Apple
+Music (`apple_music/core/storefronts.resolve_storefronts`, ~167 pays), donc
+partage le cache de jeton MusicKit d'Apple Music ; fallback = liste statique
+`apple_music/core/config.COUNTRIES` ; override `ITUNES_COUNTRIES="us,gb,..."`.
+
+Orchestrateur : `run_itunes.py` (appelé par `python -m tsm collect itunes`) —
+`--no-post` (flag legacy sans effet). `scraped_at` arrondi au dernier slot
+pair Europe/Paris et timezone-aware (`ITUNES_SNAPSHOT_HOURS`,
+`ITUNES_SNAPSHOT_TZ`, `ITUNES_ROUND_SCRAPED_AT`), calqué sur `run_apple_music.py`.
+Ordre : `charts.py` → `scripts/export_itunes.py` → `scripts/upload_itunes_r2.py`
+(sauf `UPLOAD_TO_R2=0`). Un collecteur en échec = run abandonné.
+
+**Scheduler** : **pas de tâche dédiée** — `collectors/apple_music/run_apple_music.bat`
+(tâche `TSM Apple Music Every 4 Hours`, repeat 2h) lance `run_itunes.py`
+**juste après** `run_apple_music.py`, dans le même `.bat` (jeton MusicKit déjà
+chaud, log séparé `collectors/itunes/run_itunes.log`, tourne quel que soit le
+code de sortie d'Apple Music). `collectors/itunes/run_itunes.bat` +
+`run_itunes_hidden.vbs` existent pour un lancement manuel / rattrapage, pas
+branchés à une tâche.
+
+| Fichier | Rôle / lancement |
+|---|---|
+| `charts.py` | **(runner)** Top Songs + Top Albums par storefront (2 flux RSS), threadé (`ITUNES_WORKERS` déf. **3** — le RSS legacy throttle en **403** sous rafale). `--countries`, `--date`, `--scraped-at`. Un 404 = chart vide (pas un échec) ; un 403/429/503 = throttle → retries avec backoff dans `_fetch`, puis **passe de rattrapage séquentielle** des storefronts encore en échec (session neuve, 5 s d'espacement). Abort si : un storefront **critique** (`ITUNES_CRITICAL_STOREFRONTS` déf. `us,gb`) échoue après retry, OU taux d'échec > `ITUNES_MAX_FAILURE_PCT` (déf. **25%**). Sinon publie avec ce qu'on a (le snapshot suivant, 2 h après, backfille — `previous_rank` tolère les trous). Écrit `db/itunes_top_songs.csv` / `db/itunes_top_albums.csv` (idempotents par `scraped_at`, chemin réel = `snapshots/itunes_charts/AAAA/MM/AAAA-MM-JJ/`). |
+| `core/config.py` | Constantes + env `ITUNES_*` (`ITUNES_CHART_LIMIT` déf. 100, `ITUNES_WORKERS` déf. **3**, `ITUNES_THROTTLE_RETRIES`/`_BASE_SLEEP`, `ITUNES_MAX_FAILURE_PCT` déf. 25, `ITUNES_CRITICAL_STOREFRONTS` déf. `us,gb`, `ITUNES_COUNTRIES`, `ITUNES_TIMEOUT`, `ITUNES_RETRY_*`). `DB_DIR = itunes_charts_dir(RUN_DATE)`. |
+| `core/rss.py` | Fetch + parse des flux RSS legacy (`im:id` → `apple_music_id`, artist id extrait de l'href `im:artist`, `im:releaseDate` gardé en ISO uniquement, artwork upscalé 300/500). `is_taylor_entry()`. `ITunesFeedError` = erreur réseau/5xx (comptée), pas un 404. |
+| `core/csv_utils.py` | Copie de `apple_music/core/csv_utils.py` pointée sur `itunes_daily_csv*` : `previous_rank` = dernier snapshot d'un jour *antérieur*, `rewrite_for_snapshot` idempotent, env `ITUNES_REQUIRE_PREVIOUS_RANKS`. |
+| `core/storefronts.py` | `resolve_storefronts()` : override `ITUNES_COUNTRIES` > découverte Apple Music > liste statique `apple_music` COUNTRIES. |
+| `core/http.py` / `core/export.py` | Session requests avec retries ; `maybe_run_export` (gate `ITUNES_SKIP_EXPORT`, mis à `1` par le runner). |
+
+Helpers chemins ajoutés dans `collectors/spotify/core/data_paths.py` :
+`itunes_charts_dir`, `itunes_daily_csv`, `itunes_daily_csv_paths`
+(`ITUNES_CHARTS_SNAPSHOT_ROOT = snapshots/itunes_charts`).
+
+Sorties : `runtime/exports/web/site/data/itunes.json` (dernier snapshot par
+pays + `last_charted`), `itunes_history.json` (fenêtré `ITUNES_HISTORY_DAYS`
+déf. 30 j), `itunes_history_dates/*.json` (splits par date). Objets R2 (via
+`scripts/upload_itunes_r2.py`, préfixes dans `scripts/r2_keys.py` mirrorés
+dans `tsm-frontend/api/data/r2_keys.py`) : `data/itunes.json`,
+`data/itunes_history.json`, `itunes/snapshots/{date}.json`,
+`itunes/history-by-date/*.json`, `itunes/db/*.csv`.
+
+⚠️ **Même piège `.gitignore` qu'Apple Music** : `*.csv` est exclu globalement
+et `db/itunes_*.csv` / les snapshots ne sont jamais force-ajoutés — un clone
+frais n'a aucun historique local. Avant un premier run réel sur une nouvelle
+machine : copier `snapshots/itunes_charts/` (≥ 35 j) depuis une machine qui a
+l'historique, ou re-télécharger depuis R2 (`itunes/snapshots/`). Contrairement
+à Apple Music, aucun 2e consommateur ne lit cette donnée localement, donc pas
+de script de resync R2→local pour l'instant.
+
+Frontend (câblé 2026-09-09) : onglet **iTunes Charts** à `/amcharts/itunes`
+(`tsm-frontend/api/routes/itunes.py` + `frontend/src/pages/ITunes.jsx`,
+calqués sur Deezer) — voir skill `collector-itunes` § Frontend.
+
+---
+
 ## 5. `collectors/billboard/` — Billboard & TayBoard
 
 | Fichier | Rôle / lancement |
@@ -343,13 +412,15 @@ Avant tout travail ici : charger le skill `scripts-maintenance` (ordre du workfl
 
 | Fichier | Rôle / lancement |
 |---|---|
-| `r2_keys.py` | **Source de vérité des préfixes/clés R2** (`history/`, `history-by-track/`, `data/`, `db/`, `images/apple-music/`, `apple-music/*`, `chart-history-global-by-track/`, `cache/*`, `hiring`, `report-*`, `og/` = captures OG des pages du site). Importé par `r2.py`, `upload_ap_r2.py`, `chartr2.py`, `download_apple_music_images.py`, `generate_home_highlights.py`, `generate_og_screenshots.py`, `migrate_app_r2.py`, `fetch_issues.py`, `fetch_hiring.py`, `check_r2_storage.py` — ne pas redéfinir un préfixe localement. Préserve les env-var overrides existants (`R2_STATIC_DATA_PREFIX` etc.). Miroir tenu à la main côté frontend : `tsm-frontend/api/data/r2_keys.py` (à garder synchronisé, même session si une valeur change) |
+| `r2_keys.py` | **Source de vérité des préfixes/clés R2** (`history/`, `history-by-track/`, `data/`, `db/`, `images/apple-music/`, `apple-music/*`, `itunes/*`, `deezer/*`, `chart-history-global-by-track/`, `cache/*`, `hiring`, `report-*`, `og/` = captures OG des pages du site). Importé par `r2.py`, `upload_ap_r2.py`, `chartr2.py`, `download_apple_music_images.py`, `generate_home_highlights.py`, `generate_og_screenshots.py`, `migrate_app_r2.py`, `fetch_issues.py`, `fetch_hiring.py`, `check_r2_storage.py` — ne pas redéfinir un préfixe localement. Préserve les env-var overrides existants (`R2_STATIC_DATA_PREFIX` etc.). Miroir tenu à la main côté frontend : `tsm-frontend/api/data/r2_keys.py` (à garder synchronisé, même session si une valeur change) |
 | `r2.py` (34 Ko) | **Upload R2 principal** (data/history/db/images). `--bucket`, `--new-date D` (une seule date), `--slugs a,b`, `--streams-daily`, `--charts-only`, `--worldwide-snapshot-only` (avec `--new-date`), `--skip-{history,static,db,images}-upload`, `--dry-run` (⚠️ opt-in ici, contrairement au reste de `scripts/` — sans ce flag, upload réel). Liste `json_mappings` = fichiers `data/*.json` poussés (songs/albums/artist/milestones/billboard/swift_top_100/applemusic*/charts_worldwide*/active_catalog_merges/**best_day_since** — ce dernier ajouté 2026-08-30, il manquait, cf. skill `spotify-streams`) |
 | `generate_home_highlights.py` | Précalcule le pool de highlights de la Charts Gallery + les dates de dernier snapshot (`version`), à partir des données locales déjà exportées (`WEB_EXPORT_DATA_DIR`/`WEB_EXPORT_HISTORY_DIR`, `db/charts_history_*.csv`) — évite au frontend de refaire ce calcul à chaque requête. Upload `cache/home_highlights.json` et `cache/version.json` sur R2 (mêmes clés lues par `tsm-frontend/api/data/precompute_cache.py`). Utilise directement `charts_history_global.csv` (track_id/movement déjà résolus par le collector) plutôt que le matching flou du frontend — ne pas y porter la logique de `api/routes/charts.py`. Le highlight `best_day_since` réutilise directement les fonctions de `collectors/spotify/streams/best_day_since.py` (mêmes filtres/tri que ce qui serait posté sur Twitter) plutôt que de redupliquer la logique de regroupement par `song_family` ; un 2e highlight `oldest_record` surface séparément le record `kind="since"` au plus grand `days_since` du jour (perdu sinon quand un `best_ever` du même jour gagne le pick principal). `regional_climb` : plus gros bond de rang jour/jour (seuil `_REGIONAL_CLIMB_THRESHOLD = 20`) tous charts confondus (`global`/`fr`/`us`/`uk`, worldwide inclus). `top_album`/`top_era`/`tayboard_1` ne sont ajoutés que si le chart a ≤ 2 jours (`_TAYBOARD_MAX_AGE_DAYS`) par rapport à `latest_date` (évite d'afficher un #1 TayBoard vieux d'une semaine). `--dry-run` (affiche sans uploader), `--quiet` (utilisé quand appelé depuis un autre collector). Appelé en best-effort (jamais bloquant) en fin de `update_streams.py` (via `finalize_update.py`), `run_all_charts.py`, `run_apple_music.py`, `swift_top_100.py` et `swift_top_albums.py` |
 | `export_for_web.py` | Wrapper → `streams/extras/export_for_web.py`. `--new-date`, `--dry-run` |
 | `check_r2_storage.py` | Alerte ntfy si le stockage R2 dépasse les seuils. `--dry-run`, `--bucket-limits b=size,…`, `--warning-percent`, `--topic`. `--breakdown` : mode séparé, lecture seule — taille/nb d'objets par préfixe R2 (`list_objects_v2` sur les préfixes de `r2_keys.py`) pour objectiver ce qui grossit ; coûte des requêtes List, à lancer manuellement/hebdo, pas sur le cron de l'alerte de seuil |
 | `migrate_app_r2.py` | Copie bucket public → bucket app. `--dry-run`, `--overwrite`, `--key`, `--prefix` |
 | `upload_ap_r2.py` | Upload Apple Music vers R2 (JSON, snapshots par date, CSV du jour, history-by-song incl. vidéos). `--bucket`, `--prefix`, `--dry-run` |
+| `export_itunes.py` | Export CSV iTunes Store → `itunes.json` (dernier snapshot/pays + `last_charted`) et `itunes_history.json` **fenêtré** (`ITUNES_HISTORY_DAYS`, déf. 30 j) + `itunes_history_dates/*.json`. Appelé par `run_itunes.py`. |
+| `upload_itunes_r2.py` | Upload iTunes Store vers R2 : `data/itunes*.json`, `itunes/snapshots/{date}.json`, `itunes/history-by-date/*.json`, `itunes/db/*.csv`. `--bucket`, `--dry-run`. Pas de per-song object (v1). |
 | `sync_apple_music_snapshots_from_r2.py` | **Sens inverse** de `upload_ap_r2.py` : reconstruit les CSV quotidiens locaux `snapshots/apple_music_charts/YYYY/MM/YYYY-MM-DD/apple_music_{global,country_charts,genre_charts,ts_top_songs}.csv` depuis `apple-music/snapshots/{timestamp}.json` sur R2 (jamais supprimé, historique complet). Nécessaire depuis le passage d'Apple Music au VPS OVH (2026-07-30, voir Â§ 12) : la machine locale qui fait tourner `swift_top_100.py` n'a plus aucune écriture Apple Music locale, donc son historique diverge silencieusement de R2 (incident 2026-08-09, voir piège `collector-billboard/CONTEXTE.md`). Dry-run par défaut (liste ce qui serait écrit), `--apply` pour écrire ; `--start`/`--end` (défaut : lendemain du dernier jour local détecté → aujourd'hui) ; `--force` pour écraser un jour déjà présent localement |
 | `prune_apple_music_snapshots.py` | Rétention snapshots Apple Music : garde le dernier snapshot par jour passé, lignes retirées archivées en `.csv.gz` dans `_pruned_archive/` (dry-run par défaut). `--apply`, `--since`, `--no-archive` |
 | `prune_apple_music_images.py` | Supprime les objets R2 orphelins de `images/apple-music/` (adressés par `md5(url CDN Apple)`, non référencés par le CSV Apple Music courant — voir skill `scripts-maintenance` Â§ "R2 : données pérennes vs cache"). Dry-run par défaut, `--apply` pour supprimer, manifeste local des clés supprimées sauf `--no-archive`, `--bucket` |
@@ -436,7 +507,7 @@ Statut : migration Phase 1 appliquée le 2026-07-29 (voir `data/schema_migration
 | `DEPLOYMENT_AUDIT.md`, `GITHUB_SECRETS_SETUP.md`, `add_github_secrets.py` | Setup GitHub Actions (secrets) |
 | `setup.py`, `requirements.txt`, `.python-version` | Packaging/deps Python |
 | `.github/workflows/` | Tous `disabled` côté GitHub, `workflow_dispatch` manuel seulement (collecte = Task Scheduler local). `run-data-only-collectors.yml` = escape hatch Apple Music/YouTube quand le PC est éteint (`scripts/ci_data_collector_gate.py` route les inputs) ; `run-apple-music.yml` legacy équivalent ; `run-all-charts.yml`, `update-streams.yml`, `check-r2-storage.yml`, `keepalive.yml` idem |
-| `.claude/skills/` | Skills Claude Code : `tsm-map`, `pipeline-ops`, `data-rules`, `image-gen`, `deploy`, `admin-work`, `style-rules`, `collector-apple-music` (série « un skill par collecteur » — à charger avant tout travail sur le collecteur correspondant) |
+| `.claude/skills/` | Skills Claude Code : `tsm-map`, `pipeline-ops`, `data-rules`, `image-gen`, `deploy`, `admin-work`, `style-rules`, `collector-apple-music`, `collector-itunes`, `collector-billboard`, `collector-youtube`, `collector-deezer`… (série « un skill par collecteur » — à charger avant tout travail sur le collecteur correspondant) |
 
 Les `.bat` du Task Scheduler vivent dans **`tsm-frontend/tasks/`** (`run_spotify_streams.bat`, `run_spotify_charts_global.bat`, `run_spotify_charts_fr.bat`, `run_og_screenshots.bat`, `watch_logs.bat`) et font `cd` vers ce repo. Tâche `TSM OG Screenshots` : `run_og_screenshots.bat` → `scripts/generate_og_screenshots.py`, 2×/j (log `scripts/run_og_screenshots.log`), pas de `-NoExit` (cf. skill `pipeline-ops`).
 
@@ -454,7 +525,9 @@ pour 2 crons légers — voir `OVH.md` section « Décommissionnement »).
 **État actuel (2026-08-29) : `collectors/youtube` et `collectors/apple_music`
 tournent en local via le Planificateur de tâches Windows** (`TSM Apple Music
 Every 4 Hours` : `run_apple_music_hidden.vbs` → `run_apple_music.bat`, repeat
-2h ; `TSM YouTube Videos Daily` : `run_youtube.bat`, 06:05 Europe/Paris).
+2h — **lance aussi `collectors/itunes/run_itunes.py` juste après depuis le
+2026-09-09** ; `TSM YouTube Videos Daily` : `run_youtube.bat`, 06:05
+Europe/Paris).
 
 Bascule GitHub Actions tentée le 2026-08-28 (`run-data-only-collectors.yml`,
 cron fréquent + `scripts/ci_data_collector_gate.py`) puis **abandonnée le

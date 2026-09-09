@@ -18,6 +18,11 @@ l'upload R2 distribue la donnee).
 Scheduler : prod tourne **en local via le Planificateur de taches Windows**
 (`TSM Apple Music Every 4 Hours`, action = `run_apple_music_hidden.vbs` ->
 `run_apple_music.bat`, repeat toutes les 2h). Ni GitHub Actions ni VPS.
+**Depuis le 2026-09-09, `run_apple_music.bat` lance aussi `collectors/itunes/run_itunes.py`
+juste apres** (charts d'achats iTunes Store — collecteur separe, skill
+`collector-itunes`, meme cadence, log `collectors/itunes/run_itunes.log`,
+tourne quel que soit le code de sortie d'Apple Music). Ne pas casser la 2e
+ligne du `.bat` en modifiant la 1re.
 Tente sur GitHub Actions le 2026-08-28 (`run-data-only-collectors.yml` +
 `scripts/ci_data_collector_gate.py`), re-bascule en local le 2026-08-29 :
 le `schedule:` natif de GitHub est trop peu fiable pour une cadence 2h

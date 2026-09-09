@@ -16,6 +16,7 @@ display (see scripts/export_apple_music.py::TOP_SONGS_CSV).
 from __future__ import annotations
 
 import argparse
+import json
 import os
 import sys
 from concurrent.futures import ThreadPoolExecutor, as_completed
@@ -25,7 +26,7 @@ from threading import local
 from requests import RequestException
 
 from core.config import ARTIST_ID, DB_DIR, SCRIPTS_DIR, WORKERS
-from core.csv_utils import load_previous_ranks, rewrite_for_snapshot
+from core.csv_utils import load_previous_ranks, read_csv_rows, rewrite_for_snapshot
 from core.export import maybe_run_export
 from core.filters import build_artwork_url, clean_text, rank_key
 from core.http import build_session
@@ -37,6 +38,7 @@ EXPORT_SCRIPT = SCRIPTS_DIR / "export_apple_music.py"
 _THREAD_LOCAL = local()
 
 GLOBAL_STOREFRONT_TAG = "global"
+IMPORTANT_STOREFRONTS = ("us", "gb", "fr", "ca", "au", "de", "jp", "br", "mx", "it", "es")
 MAX_FAILURE_PCT = 5.0
 PAGE_LIMIT = 100
 
@@ -121,7 +123,54 @@ FIELDNAMES = [
     "isrc",
     "content_rating",
     "genre_names",
+    "storefront_ranks",
 ]
+
+
+def _snapshot_key(row: dict) -> str:
+    return row.get("scraped_at") or row.get("date", "")
+
+
+def _load_previous_storefront_ranks(today: str) -> dict[tuple[str, str], int]:
+    rows = read_csv_rows(CSV_PATH, include_daily_history=True, history_days=30)
+    current_day = (today or "")[:10]
+    previous_keys = sorted(
+        {_snapshot_key(row) for row in rows if _snapshot_key(row) and _snapshot_key(row)[:10] < current_day},
+        reverse=True,
+    )
+    if not previous_keys:
+        return {}
+    latest = previous_keys[0]
+
+    previous: dict[tuple[str, str], int] = {}
+    for row in rows:
+        if _snapshot_key(row) != latest:
+            continue
+        try:
+            ranks = json.loads(row.get("storefront_ranks") or "{}")
+        except json.JSONDecodeError:
+            ranks = {}
+        if not isinstance(ranks, dict):
+            continue
+
+        identity_keys = []
+        am_id = str(row.get("apple_music_id") or "").strip()
+        song_name = str(row.get("song_name") or "").strip()
+        if am_id:
+            identity_keys.append(f"id:{am_id}")
+        if song_name:
+            identity_keys.append(f"name:{rank_key(song_name)}")
+
+        for storefront, value in ranks.items():
+            if not isinstance(value, dict):
+                continue
+            try:
+                rank = int(value.get("rank") or "")
+            except (TypeError, ValueError):
+                continue
+            for identity_key in identity_keys:
+                previous[(identity_key, str(storefront).lower())] = rank
+    return previous
 
 
 def parse_args() -> argparse.Namespace:
@@ -268,7 +317,7 @@ def main() -> None:
             )
             sys.exit(1)
 
-    # Aggregate: apple_music_id -> {score, best_rank, song}
+    # Aggregate: apple_music_id -> {score, best_rank, song, storefront_ranks}
     composite: dict[str, dict] = {}
     for storefront, songs in results.items():
         weight = _market_weight(storefront)
@@ -279,12 +328,14 @@ def main() -> None:
             score = _rank_to_score(idx) * weight
             entry = composite.get(am_id)
             if entry is None:
-                composite[am_id] = {"score": score, "best_rank": idx, "song": song}
+                entry = composite[am_id] = {"score": score, "best_rank": idx, "song": song, "storefront_ranks": {}}
             else:
                 entry["score"] += score
                 if idx < entry["best_rank"]:
                     entry["best_rank"] = idx
                     entry["song"] = song
+            if storefront in IMPORTANT_STOREFRONTS:
+                entry["storefront_ranks"][storefront] = {"rank": idx}
 
     # Sort by composite score desc; tie-break on apple_music_id for determinism.
     ranked = sorted(composite.items(), key=lambda kv: (-kv[1]["score"], kv[0]))
@@ -299,6 +350,7 @@ def main() -> None:
         key_fields=["storefront", "song_name"],
         today=scraped_at,
     )
+    previous_storefront_ranks = _load_previous_storefront_ranks(scraped_at)
 
     rows: list[dict] = []
     for idx, (am_id, entry) in enumerate(ranked, start=1):
@@ -308,6 +360,19 @@ def main() -> None:
         prev_rank = previous_by_id.get(key_by_id)
         if prev_rank is None:
             prev_rank = previous_by_name.get(key_by_name)
+        storefront_ranks = {}
+        identity_keys = [f"id:{am_id}", f"name:{rank_key(song['song_name'])}"]
+        for storefront, value in sorted(entry.get("storefront_ranks", {}).items()):
+            rank = value.get("rank")
+            previous_storefront_rank = None
+            for identity_key in identity_keys:
+                previous_storefront_rank = previous_storefront_ranks.get((identity_key, storefront))
+                if previous_storefront_rank is not None:
+                    break
+            storefront_ranks[storefront] = {
+                "rank": rank,
+                "previous_rank": previous_storefront_rank if previous_storefront_rank is not None else None,
+            }
         rows.append(
             {
                 "date": today,
@@ -326,6 +391,7 @@ def main() -> None:
                 "isrc": song["isrc"],
                 "content_rating": song["content_rating"],
                 "genre_names": song["genre_names"],
+                "storefront_ranks": json.dumps(storefront_ranks, ensure_ascii=False, separators=(",", ":")),
             }
         )
         if idx <= 20:

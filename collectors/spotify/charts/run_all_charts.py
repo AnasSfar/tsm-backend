@@ -896,7 +896,7 @@ def _wait_for_charts_available(
         if check_token_exhausted >= len(check_tokens):
             return False
         check_token_idx = (check_token_idx + 1) % len(check_tokens)
-        print(f"[CHECK] rotation token → {check_token_idx + 1}/{len(check_tokens)}", flush=True)
+        print(f"[CHECK] rotation token -> {check_token_idx + 1}/{len(check_tokens)}", flush=True)
         return True
 
     def _reset_check_token_cycle() -> None:
@@ -1822,10 +1822,10 @@ def _ensure_worldwide_valid(
     return ok, 0
 
 
-_ALL_POST_PARTS = {"global", "fr", "us", "cards"}
+_ALL_POST_PARTS = {"global", "fr", "us", "cards", "regions"}
 _PAUSED_POST_PARTS = {"fr"}
 _DEFAULT_POST_PARTS = _ALL_POST_PARTS - _PAUSED_POST_PARTS
-_EXTRA_POST_PARTS = {"best-day-since", "regions"}  # non inclus dans le défaut, à passer explicitement via --post
+_EXTRA_POST_PARTS = {"best-day-since"}  # non inclus dans le défaut, à passer explicitement via --post
 
 
 def _streams_history_path() -> Path:
@@ -1916,8 +1916,8 @@ def main() -> int:
         metavar="PART",
         default=None,
         help=(
-            "Parties à poster sur Twitter: cards, fr, global, us (défaut: toutes sauf fr, en pause). "
-            "Extras non inclus par défaut (à passer explicitement): best-day-since, regions. "
+            "Parties a poster sur Twitter: cards, fr, global, regions, us (defaut: toutes sauf fr, en pause). "
+            "Extras non inclus par defaut (a passer explicitement): best-day-since. "
             "Exemple: --post global fr"
         ),
     )

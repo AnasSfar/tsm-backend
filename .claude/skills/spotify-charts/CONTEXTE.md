@@ -614,6 +614,23 @@ volontairement independant de `FETCH_MAX_ATTEMPTS` (illimite par defaut en run
 live) pour ne pas risquer un hang si la region ne publie vraiment pas ce
 jour-la.
 
+**`global` : retry infini (2026-09-08).** Le cap `3` ci-dessus s'applique aux
+**regionaux** uniquement. `global` publie tous les jours sans exception : un
+abandon apres ~1 min sur un simple decalage de propagation CDN faisait ecrire
+un snapshot worldwide **vide** (`by_track: {}`) + `charts_worldwide.json` vide
++ upload R2 en run live (aucun court-circuit `global 404` hors `--backfill-mode`).
+Observe le 2026-09-07 : `_wait_for_charts_available` de `run_all_charts.py` (qui
+probe `global`, attente infinie par defaut) avait valide la dispo, mais
+l'endpoint `regional-global-daily/{date}` etait encore en 404 quand `daily.py`
+a lance sa Phase 1. Desormais, pour `region == "global"` :
+`SPOTIFY_WORLDWIDE_GLOBAL_NOT_FOUND_RETRY_ATTEMPTS` (defaut `0` = **infini**)
+avec pause croissante `20s * tentative` plafonnee a
+`SPOTIFY_WORLDWIDE_GLOBAL_NOT_FOUND_RETRY_MAX_SECONDS` (defaut `120`). Couvre
+aussi le cas `date + /latest` tous deux en 404 pour `global`. `global` ne
+retourne donc plus jamais `[]` sur un decalage de propagation ; Ctrl-C /
+kill du process reste le seul moyen de sortir si Spotify ne publie vraiment
+jamais (panne).
+
 **Piege confirme et corrige (2026-08-17) : backoff `GlobalPause` sans plafond
 = pause silencieuse pouvant depasser 1h, indistinguable d'un vrai hang.**
 Quand les deux tokens Spotify se prennent un 429 dans le meme cycle
@@ -635,7 +652,27 @@ indefiniment) — seule la duree d'un cycle de pause individuel est bornee, ce
 qui garantit un log toutes les <=5 min au lieu d'un silence potentiellement
 illimite. Si un run parait fige sans nouvelle ligne de log pendant plus de
 ~5-6 min avec zero activite reseau/CPU sur le process, ce n'est plus ce
-mecanisme (deja borne) — chercher ailleurs (Playwright, deadlock semaphore).
+mecanisme (deja borne) — chercher ailleurs (Playwright, deadlock semaphore,
+ou le piege sonde ci-dessous).
+
+**Piege confirme et corrige (2026-09-09) : sonde `GlobalPause` qui ne rouvre
+la barriere que sur HTTP 200 = deadlock silencieux quand la sonde tombe sur un
+pays sans chart.** Apres un cycle de pause (`tous tokens epuises`), `_resume()`
+passe l'etat a `probing` et reveille **un seul** worker (`notify(1)`) : cette
+requete « sonde » doit rouvrir la barriere pour tout le monde. Or `mark_success()`
+n'etait appele que sur la branche `resp.status == 200`. Si la sonde tombe sur une
+region qui n'a pas de chart ce jour-la (`404 date+latest - no chart`, ex. `si`
+Slovenie) — ou sur un skip 4xx / timeout — elle `return` sans rouvrir la
+barriere : l'etat reste bloque en `taken`, plus aucun `notify`, et les ~60 autres
+workers dorment **pour toujours** dans `_cond.wait()`. Meme symptome que le piege
+2026-08-17 (zero reseau/CPU/log) mais cause differente ; observe en prod le
+2026-09-08, derniere ligne `[si] 404 date+latest - no chart` puis silence total.
+Corrige : `_fetch_region` appelle `pause.mark_success()` des que la requete
+revient avec **n'importe quel statut != 429** (le serveur a repondu => rate-limit
+leve), et aussi dans les branches `except TimeoutError` / `except Exception`
+(un timeout n'est pas un signal de rate-limit). Recovery si ca arrive sur une
+version pas encore patchee : kill + relance (`run_all_charts.py`), les regions
+deja faites ont ete sync en CSV au fil de l'eau.
 
 Variables d'environnement:
 
@@ -657,9 +694,14 @@ Variables d'environnement:
 - `SPOTIFY_WORLDWIDE_NOT_FOUND_RETRY_ATTEMPTS` / `SPOTIFY_WORLDWIDE_NOT_FOUND_RETRY_SECONDS`:
   retry specifique au cas "URL datee 404, `/latest` 200 mais pointe encore sur
   la veille" (voir "Retry sur chart pas encore propage" plus bas), defaut `3`
-  tentatives / `20s`. Toujours borne, meme en run quotidien live — contrairement
+  tentatives / `20s`. Borne pour les **regionaux** — contrairement
   a `FETCH_MAX_ATTEMPTS` (defaut `0` = illimite en live), pour eviter un hang si
-  la region ne publie vraiment pas ce jour-la.
+  une region ne publie vraiment pas ce jour-la.
+- `SPOTIFY_WORLDWIDE_GLOBAL_NOT_FOUND_RETRY_ATTEMPTS` /
+  `SPOTIFY_WORLDWIDE_GLOBAL_NOT_FOUND_RETRY_MAX_SECONDS`: idem mais pour
+  `global` seul, defaut `0` (= **infini**) / pause croissante plafonnee a
+  `120s`. `global` ne retourne jamais `[]` sur un decalage de propagation
+  (voir "`global` : retry infini" plus bas).
 - `SPOTIFY_CHARTS_SESSION_FILE`: session Spotify a utiliser.
 - `SPOTIFY_CHARTS_SINGLE_SESSION`: force l'utilisation d'une seule session dans
   le process.

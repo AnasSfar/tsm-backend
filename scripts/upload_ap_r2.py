@@ -191,8 +191,21 @@ def upload_json_if_changed(
     return True
 
 
-def clean_row(row: dict[str, str], keep_fields: list[str]) -> dict[str, str]:
-    return {field: row.get(field, "") for field in keep_fields if field in row}
+def clean_row(row: dict[str, str], keep_fields: list[str]) -> dict[str, Any]:
+    clean: dict[str, Any] = {}
+    for field in keep_fields:
+        if field not in row:
+            continue
+        value = row.get(field, "")
+        if field == "storefront_ranks" and value:
+            try:
+                parsed = json.loads(value)
+            except json.JSONDecodeError:
+                parsed = {}
+            clean[field] = parsed if isinstance(parsed, dict) else {}
+        else:
+            clean[field] = value
+    return clean
 
 
 def normalize_song_identity(song_name: str) -> str:
@@ -281,7 +294,7 @@ def build_history_objects() -> dict[str, dict[str, Any]]:
         grouped=grouped,
         rows=read_csv(TS_TOP_CSV),
         source_name="ts_top_songs",
-        keep_fields=["date", "scraped_at", "storefront", "song_name", "rank", "previous_rank", "image_url", "url", "apple_music_id", "album_name"],
+        keep_fields=["date", "scraped_at", "storefront", "song_name", "rank", "previous_rank", "image_url", "url", "apple_music_id", "album_name", "storefront_ranks"],
     )
 
     for normalized_name in list(grouped.keys()):

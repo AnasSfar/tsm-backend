@@ -85,7 +85,25 @@ def normalize_song_entry(row: dict[str, Any]) -> dict[str, Any]:
     previous_rank = to_int(row.get("previous_rank") or row.get("prev_rank"))
     genre_names_raw = clean_str(row.get("genre_names"))
     video_name = clean_str(row.get("video_name"))
-    return {
+    storefront_ranks_raw = clean_str(row.get("storefront_ranks"))
+    storefront_ranks = {}
+    if storefront_ranks_raw:
+        try:
+            parsed_storefront_ranks = json.loads(storefront_ranks_raw)
+        except json.JSONDecodeError:
+            parsed_storefront_ranks = {}
+        if isinstance(parsed_storefront_ranks, dict):
+            for storefront, value in parsed_storefront_ranks.items():
+                if not isinstance(value, dict):
+                    continue
+                rank = to_int(value.get("rank"))
+                if not rank:
+                    continue
+                storefront_ranks[str(storefront).lower()] = {
+                    "rank": rank,
+                    "previous_rank": to_int(value.get("previous_rank")),
+                }
+    entry = {
         "song_name": clean_str(row.get("song_name") or row.get("title") or row.get("track_name") or video_name),
         "video_name": video_name,
         "apple_music_id": clean_str(row.get("apple_music_id") or row.get("song_id") or row.get("id")),
@@ -101,6 +119,9 @@ def normalize_song_entry(row: dict[str, Any]) -> dict[str, Any]:
         "content_rating": clean_str(row.get("content_rating")),
         "genre_names": [part.strip() for part in genre_names_raw.split("|") if part.strip()] if genre_names_raw else [],
     }
+    if storefront_ranks:
+        entry["storefront_ranks"] = storefront_ranks
+    return entry
 
 
 def normalize_album_entry(row: dict[str, Any]) -> dict[str, Any]:

@@ -70,6 +70,7 @@ TS_FIELDS = [
     "date", "scraped_at", "storefront", "song_name", "apple_music_id", "rank",
     "previous_rank", "image_url", "url", "artist_name", "album_name",
     "duration_ms", "release_date", "isrc", "content_rating", "genre_names",
+    "storefront_ranks",
 ]
 
 
@@ -100,6 +101,9 @@ def _entry_row(entry: dict[str, Any], fields: list[str], extra: dict[str, Any]) 
         if f == "genre_names":
             names = entry.get("genre_names") or []
             row[f] = " | ".join(names) if isinstance(names, list) else (names or "")
+        elif f == "storefront_ranks":
+            ranks = entry.get("storefront_ranks") or ""
+            row[f] = json.dumps(ranks, ensure_ascii=False, separators=(",", ":")) if isinstance(ranks, dict) else ranks
         else:
             row[f] = entry.get(f, "")
     return row
