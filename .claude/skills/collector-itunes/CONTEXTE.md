@@ -232,8 +232,18 @@ Onglet **iTunes Charts** à `/amcharts/itunes` (réutilise le préfixe
 - SEO : `SEO.jsx`, `sitemap.xml`, `ChartsGallery.jsx` (carte), `en.json`
   (clés `itunes_*` / `nav_itunes` — autres langues via `i18n:translate`).
 - `useDataVersion.js` : `pcClearPrefix("itunes:")` piggyback sur le signal
-  Apple Music (même cadence, pas de champ version propre). **TODO possible** :
-  ajouter `latest_itunes_date` à `api/routes/version.py` pour un vrai signal.
+  Apple Music (même cadence, `run_apple_music.bat` lance les deux).
+- **`latest_itunes_date` / `latest_itunes_updated_at`** ajoutés à
+  `api/routes/version.py` (chemins caché ET calculé) + `scripts/generate_home_highlights.py`
+  (2026-09-09) → la tuile ChartsGallery iTunes a maintenant sa date "Last
+  snapshot" et se trie par fraîcheur comme les autres.
+- **Highlight `itunes_1`** (Charts Gallery, 2026-09-09) : Taylor #1 sur un
+  chart d'achats iTunes d'un pays → highlight du plus gros marché. Backend
+  `generate_home_highlights.py::compute_itunes_highlight` + fallback
+  `api/routes/home_highlights.py` (les deux ont la table `_ITUNES_MARKET_PRIORITY`,
+  à garder en phase) + `ChartsHighlights.jsx` case `itunes_1` + clé
+  `hl_itunes_1` + accent CSS `.hl-card-itunes_1`. Détail → `data-rules`
+  § Home highlights.
 - `api/data/r2_keys.py` : `ITUNES_SNAPSHOTS_PREFIX` / `ITUNES_HISTORY_BY_DATE_PREFIX`.
 
 Pas encore fait : capture OG (`_OG_SCREENSHOT_PATHS` + backend

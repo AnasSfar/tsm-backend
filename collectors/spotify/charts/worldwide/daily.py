@@ -1473,9 +1473,25 @@ def _post_multi_song_regions(
         print(f"[WARN] Multi-song regional posts skipped: Twitter session missing: {TWITTER_SESSION}", flush=True)
         return
 
+    with_out = [c for c in scored if int(c[3].get("out") or 0) > 0]
+    if with_out:
+        print(
+            "[INFO] Regions exclues (OUT present): "
+            + ", ".join(f"{region}=out:{int(detail.get('out') or 0)}" for region, _rows, _score, detail in with_out[:10]),
+            flush=True,
+        )
+
     min_adjusted_score = post_min_adjusted_score_for_date(chart_date)
-    positive = [c for c in scored if c[2] >= min_adjusted_score]
-    below_threshold = [c for c in scored if 0 < c[2] < min_adjusted_score]
+    positive = [
+        c
+        for c in scored
+        if c[2] >= min_adjusted_score and int(c[3].get("out") or 0) == 0
+    ]
+    below_threshold = [
+        c
+        for c in scored
+        if 0 < c[2] < min_adjusted_score and int(c[3].get("out") or 0) == 0
+    ]
     if below_threshold:
         print(
             f"[INFO] Regions below post threshold ({min_adjusted_score:.1f}): "

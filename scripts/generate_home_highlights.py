@@ -200,6 +200,25 @@ def load_apple_music_dates() -> list[str]:
     return data.get("dates", []) if isinstance(data, dict) else []
 
 
+def load_itunes() -> dict:
+    """Latest iTunes Store purchase-chart payload (top_songs/top_albums per country)."""
+    data = _load_json(SITE_DATA_DIR / "itunes.json")
+    return data if isinstance(data, dict) else {}
+
+
+# Which market's #1 wins when Taylor is #1 in several countries at once.
+_ITUNES_MARKET_PRIORITY = [
+    "us", "gb", "ca", "au", "de", "fr", "jp", "br", "mx", "it", "es", "nl", "se", "ie", "nz",
+]
+
+
+def _itunes_market_rank(country: str) -> int:
+    try:
+        return _ITUNES_MARKET_PRIORITY.index(country)
+    except ValueError:
+        return len(_ITUNES_MARKET_PRIORITY)
+
+
 _CHART_CSV_FILENAMES = {
     "global": "charts_history_global.csv",
     "fr": "charts_history_fr.csv",
@@ -289,6 +308,13 @@ def compute_version() -> dict:
     latest_apple_music_raw = max(am_dates) if am_dates else None
     latest_apple_music_date = latest_apple_music_raw[:10] if latest_apple_music_raw else None
 
+    itunes_data = load_itunes()
+    itunes_dates = itunes_data.get("dates") if isinstance(itunes_data.get("dates"), list) else []
+    latest_itunes_raw = max(itunes_dates) if itunes_dates else (
+        itunes_data.get("scraped_at") or None
+    )
+    latest_itunes_date = latest_itunes_raw[:10] if latest_itunes_raw else None
+
     yt_dates = load_youtube_dates()
     latest_youtube_date = max(yt_dates) if yt_dates else None
 
@@ -298,6 +324,8 @@ def compute_version() -> dict:
         "latest_tayboard_date": latest_tayboard_date,
         "latest_apple_music_date": latest_apple_music_date,
         "latest_apple_music_updated_at": latest_apple_music_raw,
+        "latest_itunes_date": latest_itunes_date,
+        "latest_itunes_updated_at": latest_itunes_raw,
         "latest_youtube_date": latest_youtube_date,
     }
 
@@ -556,6 +584,48 @@ def compute_apple_music_rank_since_highlight(song_map: dict) -> dict | None:
     }
 
 
+def compute_itunes_highlight() -> dict | None:
+    """Taylor's strongest iTunes Store #1 today.
+
+    iTunes has no global chart — it's per-country — so this scans every
+    country's Top Songs / Top Albums chart for a rank-1 entry and surfaces the
+    one in the biggest market (songs win ties over albums, matching the
+    Apple Music highlight's songs focus). No #1 anywhere -> no highlight, same
+    "only when it's actually true" rule as every other non-persisted highlight.
+    """
+    data = load_itunes()
+    reference = data.get("scraped_at") or data.get("date")
+    best: tuple | None = None  # (sort_key, country, kind, entry)
+    for section, kind in (("top_songs", "song"), ("top_albums", "album")):
+        block = data.get(section)
+        countries = block.get("countries") if isinstance(block, dict) else None
+        if not isinstance(countries, dict):
+            continue
+        for country, entries in countries.items():
+            if not isinstance(country, str) or not isinstance(entries, list):
+                continue
+            for entry in entries:
+                if not isinstance(entry, dict) or _rank(entry) != 1:
+                    continue
+                sort_key = (_itunes_market_rank(country), kind == "album", country)
+                if best is None or sort_key < best[0]:
+                    best = (sort_key, country, kind, entry)
+
+    if best is None:
+        return None
+    _key, country, kind, entry = best
+    return {
+        "type": "itunes_1",
+        "title": entry.get("song_name") or entry.get("album_name") or "—",
+        "meta": entry.get("album_name") if kind == "song" else None,
+        "image": entry.get("image_url"),
+        "rank": 1,
+        "country": country,
+        "kind": kind,
+        "date": reference,
+    }
+
+
 def compute_highlights() -> list[dict]:
     song_map = load_song_map()
 
@@ -714,6 +784,11 @@ def compute_highlights() -> list[dict]:
             "rank": _rank(am_top) or 1,
             "date": am_date,
         })
+
+    # ITUNES STORE #1 (strongest market where Taylor tops a purchase chart)
+    itunes_item = compute_itunes_highlight()
+    if itunes_item:
+        items.append(itunes_item)
 
     # SPOTIFY CHARTS #1 (global) + a random NEW/RE row.
     # Uses charts_history_global.csv directly: track_id/movement are already

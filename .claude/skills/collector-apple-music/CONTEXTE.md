@@ -80,13 +80,20 @@ Scripts combines quotidiens:
   single-storefront intact car c'est la seule source lue par le scoring
   TayBoard (`_weekly_apple_music_ts_points`) — brancher ce dernier sur le
   composite fausserait ce score deja calibre. Pagination plafonnee a
-  `APPLE_MUSIC_TS_GLOBAL_DEPTH` (defaut 200, soit 2 pages/storefront — le
-  catalogue TS complet fait ~675 titres/storefront, la queue au-dela du rang
-  200 pese <10 pts sur ~500 pour le rang 1, donc negligeable). Ne tourne pour
-  de vrai qu'une fois/jour (`APPLE_MUSIC_TS_GLOBAL_HOUR`, defaut `02`, les
-  autres passages du cron 4h se skippent avec exit 0 — `--force` bypasse) car
-  le site n'affiche que le dernier snapshot et ~167 storefronts x plusieurs
-  runs/jour serait un cout API inutile.
+  `APPLE_MUSIC_TS_GLOBAL_DEPTH` (**defaut 400 = 4 pages/storefront depuis le
+  2026-09-10**, avant 200 — le catalogue TS complet fait ~675 titres/storefront,
+  mais au-dela du rang ~400 le score composite se joue a des fractions de
+  point = bruit, pas du signal ; rang 400 ~= 6 pts sur ~500 pour le rang 1).
+  Le classement global est l'**union** des tops de tous les storefronts : une
+  chanson est classee des qu'elle apparait dans les N premiers d'au moins un
+  storefront ; une colonne storefront a `–` = pas dans le top N de ce pays ce
+  jour-la (0 point la, jamais une estimation).
+  `ts_page_all.py` garde un gate interne une fois/jour
+  (`APPLE_MUSIC_TS_GLOBAL_HOUR`, defaut `02`), **mais `run_apple_music.py` lui
+  passe `--force` a chaque run depuis le 2026-08-28** (`ca4146fa5`) : le
+  composite tourne a chaque cycle Apple Music, pas une fois/jour. Monter
+  `APPLE_MUSIC_TS_GLOBAL_DEPTH` multiplie donc la pagination sur *tous* ces
+  runs.
 
 Scripts legacy/manuels:
 

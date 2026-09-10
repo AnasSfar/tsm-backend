@@ -43,9 +43,12 @@ MAX_FAILURE_PCT = 5.0
 PAGE_LIMIT = 100
 
 # Tail ranks contribute negligible composite score under the power-law curve
-# below (rank 200 ~= 9 pts vs ~500 pts for rank 1), so capping pagination
+# below (rank 400 ~= 6 pts vs ~500 pts for rank 1), so capping pagination
 # depth per storefront keeps request volume bounded across 100+ storefronts.
-DEPTH_CAP = max(1, int(os.getenv("APPLE_MUSIC_TS_GLOBAL_DEPTH", "200")))
+# 400 (4 pages) covers every song with real Apple Music presence somewhere;
+# the full catalogue is ~675/storefront but ranks past 400 are decided by
+# fractions of a point and add noise, not signal. Override via env.
+DEPTH_CAP = max(1, int(os.getenv("APPLE_MUSIC_TS_GLOBAL_DEPTH", "400")))
 MAX_PAGES = max(1, -(-DEPTH_CAP // PAGE_LIMIT))
 
 # The site only ever displays the latest snapshot, so this (expensive,
