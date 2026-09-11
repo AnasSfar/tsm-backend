@@ -320,7 +320,16 @@ def main() -> None:
             )
             sys.exit(1)
 
-    # Aggregate: apple_music_id -> {score, best_rank, song, storefront_ranks}
+    # Aggregate one entry per recording -> {score, best_rank, song, storefront_ranks}.
+    # Merge key is the ISRC when present, else the raw apple_music_id. Apple serves
+    # a different apple_music_id per regional catalogue for the same 2014-era master
+    # (e.g. "Wildest Dreams" / "Blank Space" have a US, an international and a
+    # Japan-deluxe id, all sharing ISRC USCJY1431379). Keying on apple_music_id
+    # split those into 2-3 competing entries, each carrying only its regions'
+    # storefront ranks and a fraction of the market-weighted score. ISRC identifies
+    # the master independently of the release, so it merges the deluxe/platinum/EP
+    # repackagings while keeping Taylor's Versions, remixes and live cuts (own
+    # ISRCs) separate. Empty ISRC (karaoke, a few very old rows) falls back to id.
     composite: dict[str, dict] = {}
     for storefront, songs in results.items():
         weight = _market_weight(storefront)
@@ -328,19 +337,23 @@ def main() -> None:
             am_id = song["apple_music_id"]
             if not am_id:
                 continue
+            isrc = (song.get("isrc") or "").strip()
+            merge_key = f"isrc:{isrc}" if isrc else f"id:{am_id}"
             score = _rank_to_score(idx) * weight
-            entry = composite.get(am_id)
+            entry = composite.get(merge_key)
             if entry is None:
-                entry = composite[am_id] = {"score": score, "best_rank": idx, "song": song, "storefront_ranks": {}}
+                entry = composite[merge_key] = {"score": score, "best_rank": idx, "song": song, "storefront_ranks": {}}
             else:
                 entry["score"] += score
                 if idx < entry["best_rank"]:
                     entry["best_rank"] = idx
                     entry["song"] = song
             if storefront in IMPORTANT_STOREFRONTS:
-                entry["storefront_ranks"][storefront] = {"rank": idx}
+                existing = entry["storefront_ranks"].get(storefront, {}).get("rank")
+                if existing is None or idx < existing:
+                    entry["storefront_ranks"][storefront] = {"rank": idx}
 
-    # Sort by composite score desc; tie-break on apple_music_id for determinism.
+    # Sort by composite score desc; tie-break on merge key for determinism.
     ranked = sorted(composite.items(), key=lambda kv: (-kv[1]["score"], kv[0]))
 
     previous_by_id = load_previous_ranks(
@@ -356,8 +369,11 @@ def main() -> None:
     previous_storefront_ranks = _load_previous_storefront_ranks(scraped_at)
 
     rows: list[dict] = []
-    for idx, (am_id, entry) in enumerate(ranked, start=1):
+    for idx, (_merge_key, entry) in enumerate(ranked, start=1):
         song = entry["song"]
+        # Representative id = the best-ranked fragment's id (see aggregation above);
+        # it is what lands in the CSV column and anchors day-over-day id lookups.
+        am_id = song["apple_music_id"]
         key_by_id = (GLOBAL_STOREFRONT_TAG, am_id)
         key_by_name = (GLOBAL_STOREFRONT_TAG, rank_key(song["song_name"]))
         prev_rank = previous_by_id.get(key_by_id)

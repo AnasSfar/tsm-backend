@@ -79,7 +79,22 @@ Scripts combines quotidiens:
   (`apple_music_ts_top_songs_global.csv`) : `ts_page.py` garde son fichier
   single-storefront intact car c'est la seule source lue par le scoring
   TayBoard (`_weekly_apple_music_ts_points`) — brancher ce dernier sur le
-  composite fausserait ce score deja calibre. Pagination plafonnee a
+  composite fausserait ce score deja calibre.
+  **Agregation par ISRC** (fallback `apple_music_id` si ISRC vide, depuis
+  2026-09-10) : Apple sert un `apple_music_id` different par catalogue regional
+  pour le meme master 2014-era (Wildest Dreams / Blank Space / Style / Shake It
+  Off... ont un id US, un international, un Japon-deluxe, tous meme ISRC).
+  Keyer sur l'id eclatait la chanson en 2-3 entrees concurrentes, chacune ne
+  portant que ses storefronts et une fraction du score marche (Wildest Dreams
+  sortait #10 en portant gb/au/de mais US/CA/JP vides car sur un autre id).
+  L'ISRC identifie le master independamment de la sortie -> fusionne les
+  repackagings deluxe/platinum/EP, garde Taylor's Versions / remixes / lives
+  separes (ISRC propre). ~13 % du catalogue etait fragmente. L'`apple_music_id`
+  ecrit au CSV = celui du fragment le mieux classe (peut changer d'un jour a
+  l'autre ; le fallback previous_rank par nom couvre ce cas). Verifie : 1 seul
+  merge discutable (Teardrops on My Guitar absorbe son "Radio Single Remix" car
+  Apple leur met le meme ISRC — accepte).
+  Pagination plafonnee a
   `APPLE_MUSIC_TS_GLOBAL_DEPTH` (**defaut 400 = 4 pages/storefront depuis le
   2026-09-10**, avant 200 — le catalogue TS complet fait ~675 titres/storefront,
   mais au-dela du rang ~400 le score composite se joue a des fractions de
