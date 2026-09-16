@@ -117,7 +117,6 @@ def rows_from_payload(payload: dict[str, Any], day: str, scraped_at: str) -> dic
         "apple_music_genre_charts.csv": [],
         "apple_music_genre_album_charts.csv": [],
         "apple_music_ts_top_songs_global.csv": [],
-        "apple_music_ts_top_songs_daily.csv": [],
     }
 
     for entry in payload.get("global_chart") or []:
