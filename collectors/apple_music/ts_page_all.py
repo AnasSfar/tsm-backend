@@ -20,20 +20,23 @@ import json
 import os
 import sys
 from concurrent.futures import ThreadPoolExecutor, as_completed
-from datetime import date, datetime
+from datetime import date, datetime, timedelta
 from threading import local
 
 from requests import RequestException
 
 from core.config import ARTIST_ID, DB_DIR, SCRIPTS_DIR, WORKERS
-from core.csv_utils import load_previous_ranks, read_csv_rows, rewrite_for_snapshot
+from core.csv_utils import load_previous_ranks, read_csv_rows, rewrite_for_snapshot, write_csv_rows
 from core.export import maybe_run_export
 from core.filters import build_artwork_url, clean_text, rank_key
 from core.http import build_session
 from core.storefronts import resolve_storefronts
 from core.token import TokenManager, build_auth_headers
+from collectors.apple_music.daily_top_songs import IncompleteDailyChart, aggregate_daily_chart
+from collectors.spotify.core.data_paths import apple_music_daily_csv
 
 CSV_PATH = DB_DIR / "apple_music_ts_top_songs_global.csv"
+DAILY_CSV_PATH = DB_DIR / "apple_music_ts_top_songs_daily.csv"
 EXPORT_SCRIPT = SCRIPTS_DIR / "export_apple_music.py"
 _THREAD_LOCAL = local()
 
@@ -55,6 +58,7 @@ MAX_PAGES = max(1, -(-DEPTH_CAP // PAGE_LIMIT))
 # 100+ storefront) composite only needs to refresh once/day even though
 # run_apple_music.py itself runs every 4h. Other invocations skip.
 RUN_HOUR = os.getenv("APPLE_MUSIC_TS_GLOBAL_HOUR", "02").strip()
+DAILY_PUBLISH_HOUR = int(os.getenv("APPLE_MUSIC_TS_DAILY_PUBLISH_HOUR", "10"))
 
 # Same market-weight table as TayBoard's Apple Music scoring
 # (collectors/billboard/swift_top_100.py::AM_MARKET_WEIGHTS), duplicated
@@ -117,6 +121,7 @@ FIELDNAMES = [
     "apple_music_id",
     "rank",
     "previous_rank",
+    "composite_score",
     "image_url",
     "url",
     "artist_name",
@@ -128,6 +133,89 @@ FIELDNAMES = [
     "genre_names",
     "storefront_ranks",
 ]
+
+DAILY_FIELDNAMES = [
+    "date",
+    "scraped_at",
+    "storefront",
+    "song_name",
+    "apple_music_id",
+    "rank",
+    "previous_rank",
+    "composite_score",
+    "snapshot_count",
+    "image_url",
+    "url",
+    "artist_name",
+    "album_name",
+    "duration_ms",
+    "release_date",
+    "isrc",
+    "content_rating",
+    "genre_names",
+    "storefront_ranks",
+]
+
+
+def _expected_snapshot_hours() -> list[int]:
+    raw = os.getenv("APPLE_MUSIC_SNAPSHOT_HOURS", "0,2,4,6,8,10,12,14,16,18,20,22")
+    hours = sorted({int(part.strip()) for part in raw.split(",") if part.strip()})
+    if not hours or any(hour < 0 or hour > 23 for hour in hours):
+        raise ValueError("APPLE_MUSIC_SNAPSHOT_HOURS must contain hours from 0 to 23")
+    return hours
+
+
+def _maybe_finalize_daily_chart(scraped_at: str) -> bool:
+    try:
+        current_hour = int(scraped_at[11:13])
+        current_day = date.fromisoformat(scraped_at[:10])
+    except (TypeError, ValueError):
+        print(f"[Apple Music TS Daily] Invalid scraped_at: {scraped_at!r}")
+        return False
+    if current_hour < DAILY_PUBLISH_HOUR:
+        return False
+
+    target_day = (current_day - timedelta(days=1)).isoformat()
+    daily_rows = read_csv_rows(DAILY_CSV_PATH, include_daily_history=True, history_days=30)
+    if any(str(row.get("date") or "")[:10] == target_day for row in daily_rows):
+        print(f"[Apple Music TS Daily] {target_day} already finalized")
+        return True
+
+    previous_days = sorted(
+        {
+            str(row.get("date") or row.get("scraped_at") or "")[:10]
+            for row in daily_rows
+            if str(row.get("date") or row.get("scraped_at") or "")[:10] < target_day
+        }
+    )
+    previous_rows = []
+    if previous_days:
+        previous_day = previous_days[-1]
+        previous_rows = [
+            row for row in daily_rows
+            if str(row.get("date") or row.get("scraped_at") or "")[:10] == previous_day
+        ]
+
+    raw_rows = read_csv_rows(CSV_PATH, include_daily_history=True, history_days=3)
+    try:
+        finalized = aggregate_daily_chart(
+            raw_rows,
+            previous_rows,
+            target_day=target_day,
+            expected_hours=_expected_snapshot_hours(),
+            important_storefronts=IMPORTANT_STOREFRONTS,
+        )
+    except IncompleteDailyChart as exc:
+        print(f"[Apple Music TS Daily] BLOCKED for {target_day}: {exc}")
+        return False
+
+    output_path = apple_music_daily_csv(target_day, DAILY_CSV_PATH.name)
+    write_csv_rows(output_path, DAILY_FIELDNAMES, finalized)
+    print(
+        f"[Apple Music TS Daily] Finalized {target_day}: "
+        f"{len(finalized)} songs from {finalized[0]['snapshot_count']} snapshots -> {output_path}"
+    )
+    return True
 
 
 def _snapshot_key(row: dict) -> str:
@@ -401,6 +489,7 @@ def main() -> None:
                 "apple_music_id": am_id,
                 "rank": idx,
                 "previous_rank": prev_rank if prev_rank is not None else "",
+                "composite_score": f"{entry['score']:.6f}",
                 "image_url": song["image_url"],
                 "url": song["url"],
                 "artist_name": song["artist_name"],
@@ -432,8 +521,9 @@ def main() -> None:
     if len(rows) > 20:
         print(f"... {len(rows) - 20} more row(s)")
 
-    rewrite_for_snapshot(CSV_PATH, FIELDNAMES, scraped_at, rows)
+    rewrite_for_snapshot(CSV_PATH, FIELDNAMES, scraped_at, rows, skip_identical=False)
     print(f"Wrote {len(rows)} rows -> {CSV_PATH}")
+    _maybe_finalize_daily_chart(scraped_at)
     maybe_run_export(EXPORT_SCRIPT)
 
 
