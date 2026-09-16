@@ -102,6 +102,10 @@ Généré une fois par le runner : `datetime.now().strftime("%Y-%m-%dT%H:%M:%S")
 
 `load_previous_ranks` prend le dernier snapshot du **jour distinct précédent** (jamais un rerun du même jour) : les flèches ▲/▼ signifient toujours « vs hier », quel que soit le nombre de runs du scheduler dans la journée (~6/jour). Fenêtre de lecture : 30 derniers jours de CSV quotidiens (`PREV_RANK_WINDOW_DAYS`). `rewrite_for_snapshot` logue `[info] … may not have refreshed` quand un snapshot est identique au dernier du jour précédent (signal faible — les sous-ensembles filtrés TS peuvent se répéter légitimement — donc on écrit quand même).
 
+### Publication quotidienne `TS Top Songs` (depuis 2026-09-16)
+
+Le composite brut `apple_music_ts_top_songs_global.csv` continue d'etre collecte a chaque creneau de 2 h et stocke son `composite_score`. Pour ce seul fichier, `rewrite_for_snapshot(..., skip_identical=False)` conserve aussi les observations identiques : elles comptent dans la moyenne quotidienne. A partir de 10 h Europe/Paris, `ts_page_all.py` tente de finaliser la veille via `daily_top_songs.aggregate_daily_chart` : tous les creneaux de `APPLE_MUSIC_SNAPSHOT_HOURS` sont obligatoires, puis la moyenne des scores composites produit le rang quotidien. Une chanson absente d'un snapshot contribue 0, exactement comme son absence d'un storefront contribue 0 au composite. Les colonnes storefront sont reclassees avec la moyenne de leur propre score `500/rank**0.75`. `previous_rank` compare le dernier classement quotidien finalise, pas les snapshots de 2 h. Toute donnee manquante ou contradictoire bloque la nouvelle edition et conserve la precedente. L'export public utilise `apple_music_ts_top_songs_daily.csv` des qu'une premiere journee complete existe ; avant cela seulement, il garde le brut comme fallback de migration.
+
 ## Chemins de données
 
 Le chemin du jour vient de `collectors.spotify.core.data_paths.apple_music_charts_dir`. `RUN_DATE`/`DB_DIR` sont évalués **à l'import** de `core/config.py` (`TSM_DATA_DATE` sinon date du jour) — piège classique pour les tests/monkeypatching.
