@@ -93,9 +93,14 @@ def rewrite_for_snapshot(
     fieldnames: list[str],
     scraped_at: str,
     new_rows: list[dict],
+    *,
+    skip_identical: bool = True,
 ) -> None:
-    """Append a new snapshot, removing any existing rows with the same scraped_at (idempotent).
-    Skips write if the new data is identical to the most recent existing snapshot."""
+    """Append a new snapshot, removing rows with the same scraped_at.
+
+    skip_identical=False preserves every scheduled observation for callers
+    that aggregate exact intraday snapshots into a daily chart.
+    """
     existing = read_csv_rows(csv_path, include_daily_history=True, history_days=7)
 
     # Find the most recent previous snapshot rows
@@ -116,7 +121,7 @@ def rewrite_for_snapshot(
         if prev_rows == new_comparable:
             prev_day = prev_keys[0][:10]
             new_day = scraped_at[:10]
-            if prev_day == new_day:
+            if prev_day == new_day and skip_identical:
                 print(f"[skip] snapshot identical to previous ({prev_keys[0]}), not writing")
                 return
             # Cross-day identical: weak signal (TS-filtered subsets can genuinely
