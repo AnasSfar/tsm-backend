@@ -108,7 +108,16 @@ Scripts combines quotidiens:
   passe `--force` a chaque run depuis le 2026-08-28** (`ca4146fa5`) : le
   composite tourne a chaque cycle Apple Music, pas une fois/jour. Monter
   `APPLE_MUSIC_TS_GLOBAL_DEPTH` multiplie donc la pagination sur *tous* ces
-  runs.
+  runs. Chaque snapshot brut conserve maintenant son `composite_score` et
+  n'est plus saute quand il est identique au precedent : les 12 observations
+  configurees sont necessaires au classement quotidien exact. A partir de
+  `APPLE_MUSIC_TS_DAILY_PUBLISH_HOUR` (defaut `10`, heure Europe/Paris), le
+  premier run disponible finalise la veille dans
+  `apple_music_ts_top_songs_daily.csv` en moyennant les scores composites.
+  Il bloque la nouvelle edition si un creneau manque, si un score manque ou si
+  un doublon se contredit ; l'export conserve alors la derniere edition valide.
+  Le frontend et les historiques par chanson lisent ce CSV quotidien, tandis
+  que `apple_music_ts_top_songs_global.csv` reste la source brute 2 h.
 
 Scripts legacy/manuels:
 
@@ -134,7 +143,8 @@ Outils partages:
 CSV principaux dans `db/`:
 
 - `apple_music_ts_top_songs.csv` (single-storefront `us`, input TayBoard uniquement)
-- `apple_music_ts_top_songs_global.csv` (composite tous storefronts, alimente l'onglet site "TS Top Songs" via `export_apple_music.py`/`upload_ap_r2.py`)
+- `apple_music_ts_top_songs_global.csv` (snapshots composites bruts toutes les 2 h, avec `composite_score`)
+- `apple_music_ts_top_songs_daily.csv` (classement quotidien finalise, alimente l'onglet site "TS Top Songs" et son historique)
 - `apple_music_global.csv`
 - `apple_music_genre_charts.csv`
 - `apple_music_country_charts.csv`
@@ -162,6 +172,8 @@ precalcules.
 - `APPLE_MUSIC_RETRY_TOTAL`
 - `APPLE_MUSIC_RETRY_BACKOFF`
 - `APPLE_MUSIC_SKIP_EXPORT`: mis a `1` par le runner pendant les sous-scripts.
+- `APPLE_MUSIC_TS_DAILY_PUBLISH_HOUR`: premiere heure de finalisation de la veille, defaut `10` Europe/Paris.
+- `APPLE_MUSIC_SNAPSHOT_HOURS`: creneaux obligatoires du classement quotidien, defaut `0,2,...,22`.
 - `UPLOAD_TO_R2=0`: skip upload R2.
 
 Token cache:
@@ -173,8 +185,9 @@ collectors/apple_music/tools/json/apple_music_token.json
 ## Regles data
 
 - Donnee absente ou ambigue: bloquer/loguer, ne pas publier comme complete.
-- `previous_rank` doit venir du dernier snapshot d'un jour distinct precedent,
-  pas d'un rerun du meme jour.
+- Pour les charts bruts, `previous_rank` vient du dernier snapshot d'un jour
+  distinct precedent. Pour `TS Top Songs` public, il vient du classement
+  quotidien finalise precedent, jamais d'un snapshot intrajournalier.
 - `rewrite_for_snapshot` doit rester idempotent par `scraped_at`.
 - `scraped_at` (depuis 2026-08-30) est timezone-aware : `2026-08-30T14:00:00+02:00`
   (`build_scraped_at()` dans `run_apple_music.py`). L'offset vient de
