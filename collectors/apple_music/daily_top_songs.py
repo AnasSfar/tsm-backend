@@ -82,6 +82,7 @@ def aggregate_daily_chart(
     expected = sorted(set(int(hour) for hour in expected_hours))
     if not expected:
         raise IncompleteDailyChart("No expected snapshot hours configured")
+    important_storefronts = list(important_storefronts)
 
     snapshots_by_hour: dict[int, list[dict]] = defaultdict(list)
     keys_by_hour: dict[int, set[str]] = defaultdict(set)

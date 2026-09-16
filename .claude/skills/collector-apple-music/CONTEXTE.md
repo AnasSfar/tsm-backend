@@ -249,6 +249,22 @@ ici. Seuils/decisions produit → skill `data-rules` § "Home highlights".
 
 ## Pieges
 
+- **`composite_score` doit survivre le chemin de restauration R2**
+  (2026-09-16) : `daily_top_songs.aggregate_daily_chart` bloque toute
+  finalisation si une ligne brute n'a pas de `composite_score` exact. Ce champ
+  est donc propage explicitement dans `export_apple_music.normalize_song_entry`
+  (cle `composite_score` sur l'entree `ts_top_songs`) et dans
+  `scripts/sync_apple_music_snapshots_from_r2.TS_FIELDS`. Si l'un des deux
+  est retire par erreur, la restauration R2 (VPS/CI/nouvelle machine) reproduit
+  le meme piege que le `.gitignore` ci-dessous : classement quotidien bloque
+  en permanence apres restauration, sans erreur visible avant le prochain run.
+- **`upload_ap_r2.py` retombe sur le CSV brut tant que le quotidien est vide** :
+  `TS_TOP_CSV_DAILY` (`apple_music_ts_top_songs_daily.csv`) alimente
+  l'historique par chanson uploade sur R2 une fois qu'il contient des lignes ;
+  avant la premiere edition quotidienne finalisee (ou si le fichier est
+  absent), l'upload retombe sur `TS_TOP_CSV_RAW`
+  (`apple_music_ts_top_songs_global.csv`) pour ne pas vider l'historique R2
+  pendant la transition.
 - **`.gitignore` exclut tous les `.csv` du repo, et `db/apple_music_*.csv`
   n'est jamais force-ajoute** (contrairement a YouTube qui fait
   `git add -f` dans `git_ops.py`). Un `git clone` frais (nouvelle machine,

@@ -122,6 +122,9 @@ def normalize_song_entry(row: dict[str, Any]) -> dict[str, Any]:
     }
     if storefront_ranks:
         entry["storefront_ranks"] = storefront_ranks
+    composite_score = clean_str(row.get("composite_score"))
+    if composite_score:
+        entry["composite_score"] = composite_score
     return entry
 
 
