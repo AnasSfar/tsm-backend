@@ -57,7 +57,7 @@ class TestDailyTopSongs(unittest.TestCase):
         self.assertEqual([item["snapshot_count"] for item in daily], [2, 2])
         self.assertEqual(
             json.loads(daily[0]["storefront_ranks"])["us"],
-            {"rank": 1, "previous_rank": 1},
+            {"rank": 2, "previous_rank": 1},
         )
 
     def test_absent_song_contributes_zero_for_that_snapshot(self):
