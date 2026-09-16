@@ -104,6 +104,7 @@ jobs:
               "apple_music_genre_charts.csv",
               "apple_music_ts_top_songs.csv",
               "apple_music_ts_top_songs_global.csv",
+              "apple_music_ts_top_songs_daily.csv",
               "apple_music_country_albums.csv",
               "apple_music_genre_album_charts.csv",
           ]
