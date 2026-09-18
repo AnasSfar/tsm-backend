@@ -27,7 +27,8 @@ ARCHIVE_DB_DIR = DATA_ROOT / "_archive" / "original" / "db"
 OUT_DIR = WEB_EXPORT_DATA_DIR
 
 GLOBAL_CSV = DB_DIR / "apple_music_global.csv"
-TOP_SONGS_CSV = DB_DIR / "apple_music_ts_top_songs_global.csv"
+TOP_SONGS_RAW_CSV = DB_DIR / "apple_music_ts_top_songs_global.csv"
+TOP_SONGS_DAILY_CSV = DB_DIR / "apple_music_ts_top_songs_daily.csv"
 TOP_VIDEOS_CSV = DB_DIR / "apple_music_ts_top_videos.csv"
 COUNTRY_CSV = DB_DIR / "apple_music_country_charts.csv"
 COUNTRY_ALBUMS_CSV = DB_DIR / "apple_music_country_albums.csv"
@@ -121,6 +122,9 @@ def normalize_song_entry(row: dict[str, Any]) -> dict[str, Any]:
     }
     if storefront_ranks:
         entry["storefront_ranks"] = storefront_ranks
+    composite_score = clean_str(row.get("composite_score"))
+    if composite_score:
+        entry["composite_score"] = composite_score
     return entry
 
 
@@ -653,7 +657,9 @@ def main() -> None:
         return window_rows(read_csv_rows(path))
 
     global_rows = read_windowed(GLOBAL_CSV)
-    top_rows = read_windowed(TOP_SONGS_CSV)
+    daily_top_rows_full = read_csv_rows(TOP_SONGS_DAILY_CSV)
+    use_daily_top_songs = bool(daily_top_rows_full)
+    top_rows = window_rows(daily_top_rows_full) if use_daily_top_songs else read_windowed(TOP_SONGS_RAW_CSV)
     top_video_rows = read_windowed(TOP_VIDEOS_CSV)
     country_rows_full = read_csv_rows(COUNTRY_CSV)
     last_charted = build_last_charted(country_rows_full)
@@ -664,7 +670,7 @@ def main() -> None:
     genre_rows = read_windowed(GENRE_CSV)
 
     global_current, global_history, _ = build_global(global_rows)
-    top_current, top_history, _ = build_top_songs(top_rows)
+    top_current, top_history, top_dates = build_top_songs(top_rows)
     top_video_current, top_video_history, _ = build_ranked_video_series(top_video_rows)
     country_current, country_history, _ = build_country(country_rows)
     country_album_current, country_album_history, _ = build_country_albums(country_album_rows)
@@ -678,7 +684,8 @@ def main() -> None:
     # Mirror that unchanged current data onto the run timestamp so date-specific API
     # consumers do not see a partially unavailable snapshot.
     _mirror_flat_current_to_latest(global_current, global_history, latest_any, "global")
-    _mirror_flat_current_to_latest(top_current, top_history, latest_any, "top_songs")
+    if not use_daily_top_songs:
+        _mirror_flat_current_to_latest(top_current, top_history, latest_any, "top_songs")
     _mirror_flat_current_to_latest(top_video_current, top_video_history, latest_any, "top_videos")
     _mirror_grouped_current_to_latest(country_current, country_history, latest_any, "countries", "country")
     _mirror_grouped_current_to_latest(country_album_current, country_album_history, latest_any, "countries", "country_albums")
@@ -688,6 +695,7 @@ def main() -> None:
     applemusic_data = {
         "scraped_at": latest_any,
         "dates": all_dates,
+        "ts_top_songs_dates": top_dates,
         "last_charted": last_charted,
         "global_chart": global_current,
         "ts_top_songs": top_current,
@@ -718,7 +726,8 @@ def main() -> None:
     # Backfill previous_rank from previous snapshot (covers CI where only current run's CSVs exist)
     if prev_data:
         _backfill_flat(global_current, prev_data.get("global_chart"))
-        _backfill_flat(top_current, prev_data.get("ts_top_songs"))
+        if not use_daily_top_songs:
+            _backfill_flat(top_current, prev_data.get("ts_top_songs"))
         _backfill_flat(top_video_current, prev_data.get("ts_top_videos"))
         _backfill_by_country(country_current, prev_data.get("country_charts"))
         _backfill_by_country(country_album_current, prev_data.get("country_album_charts"))

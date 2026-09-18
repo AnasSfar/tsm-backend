@@ -36,7 +36,8 @@ APPLEMUSIC_HISTORY_DATES_DIR = SITE_DATA_DIR / "applemusic_history_dates"
 COUNTRY_CSV = DB_DIR / "apple_music_country_charts.csv"
 GENRE_CSV = DB_DIR / "apple_music_genre_charts.csv"
 GLOBAL_CSV = DB_DIR / "apple_music_global.csv"
-TS_TOP_CSV = DB_DIR / "apple_music_ts_top_songs_global.csv"
+TS_TOP_CSV_DAILY = DB_DIR / "apple_music_ts_top_songs_daily.csv"
+TS_TOP_CSV_RAW = DB_DIR / "apple_music_ts_top_songs_global.csv"
 
 R2_PREFIX = r2_keys.APPLE_MUSIC_HISTORY_BY_SONG_PREFIX
 CSV_R2_PREFIX = r2_keys.APPLE_MUSIC_DB_PREFIX
@@ -49,6 +50,7 @@ APPLE_MUSIC_CSV_NAMES = [
     "apple_music_country_charts.csv",
     "apple_music_genre_charts.csv",
     "apple_music_ts_top_songs_global.csv",
+    "apple_music_ts_top_songs_daily.csv",
     "apple_music_country_albums.csv",
     "apple_music_genre_album_charts.csv",
 ]
@@ -290,9 +292,10 @@ def build_history_objects() -> dict[str, dict[str, Any]]:
         keep_fields=["date", "scraped_at", "song_name", "rank", "previous_rank", "image_url", "url", "apple_music_id"],
     )
 
+    daily_ts_rows = read_csv(TS_TOP_CSV_DAILY)
     append_rows(
         grouped=grouped,
-        rows=read_csv(TS_TOP_CSV),
+        rows=daily_ts_rows if daily_ts_rows else read_csv(TS_TOP_CSV_RAW),
         source_name="ts_top_songs",
         keep_fields=["date", "scraped_at", "storefront", "song_name", "rank", "previous_rank", "image_url", "url", "apple_music_id", "album_name", "storefront_ranks"],
     )

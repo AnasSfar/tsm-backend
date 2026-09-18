@@ -68,9 +68,9 @@ GENRE_ALBUM_FIELDS = [
 ]
 TS_FIELDS = [
     "date", "scraped_at", "storefront", "song_name", "apple_music_id", "rank",
-    "previous_rank", "image_url", "url", "artist_name", "album_name",
-    "duration_ms", "release_date", "isrc", "content_rating", "genre_names",
-    "storefront_ranks",
+    "previous_rank", "composite_score", "image_url", "url", "artist_name",
+    "album_name", "duration_ms", "release_date", "isrc", "content_rating",
+    "genre_names", "storefront_ranks",
 ]
 
 
