@@ -358,6 +358,118 @@ python .\collectors\spotify\streams\tools\scripts\reconcile_gap_catchup.py 2026-
 python .\collectors\spotify\streams\tools\scripts\reconcile_gap_catchup.py 2026-07-03 --all-pending --apply
 ```
 
+### Canari Spotify Charts pour `reconcile_gap_catchup.py` (2026-09-19)
+
+En plus du canari `manual_trusted` (une ligne injectee a la main depuis une
+source de confiance), `reconcile_gap_catchup._charts_canary(target_date)`
+verifie si `db/charts_history_global.csv` a deja une ligne reelle
+(`streams > 0`) pour `target_date`. Le scraper Charts (Global Top 200) est un
+pipeline separe, sur son propre horaire, qui regle generalement son jour
+avant que le probe de totaux par track ne rattrape un retard Spotify — une
+ligne Charts reelle pour une date est donc une preuve independante que cette
+date existe reellement cote Spotify, meme sans injection manuelle.
+`_canary_confirmed_for_date` retourne `True` si l'un OU l'autre canari
+confirme (`manual_trusted` OU Charts) ; les deux restent des signaux qui
+*corroborent*, jamais qui remplacent la classification par ratio
+delta/rythme (`single_day` / `fully_caught_up` / `partial_catchup` /
+`uncertain`) — `uncertain` reste toujours exclu d'`--apply`.
+
+Contexte : incident du 2026-09-17/18 ou le run streams est reste bloque en
+probe (Spotify en retard, pas une panne WARP) pendant que le jour suivant
+approchait — `MultipleInstances=IgnoreNew` sur la tache planifiee empeche un
+2e run concurrent de demarrer et d'ecrire un total sur la meme date sans
+savoir de quel jour il s'agit (regle data n°8). Le canari Charts donne un
+signal de plus pour dater correctement les deltas une fois le run debloque,
+avant d'`--apply` le rattrapage du jour suivant.
+
+### Verif anomalie multi-jour AVANT export/post : `check_daily_rate_anomaly.py` (2026-09-19)
+
+Trou identifie le meme jour : `gap_days_before_stats_date` (calcule dans
+`update_streams.py`) mesure juste la distance calendaire entre la derniere
+ligne connue et `stats_date` — si cette distance vaut 1 (ligne J-1 presente,
+cas normal de la quasi-totalite du catalogue), le run accepte n'importe quel
+delta comme le daily de `stats_date` (`reason="updated"`) SANS jamais
+comparer sa taille au rythme habituel du track. Si Spotify a lui-meme ete en
+retard cote back-end et publie d'un coup un total qui vaut reellement 2 jours
+de streams, ce delta serait donc silencieusement ecrit comme le daily d'un
+seul jour — le seul garde-fou existant (`MAX_DAILY_INCREASE = 50_000_000`)
+est un plafond global anti-catastrophe, pas une detection par track.
+
+Nouveau script en lecture seule, `tools/scripts/check_daily_rate_anomaly.py
+<date> [--ratio 1.6]` : compare le daily fraichement ecrit de chaque track a
+la mediane de son `daily_streams` reel sur les 14 jours precedents (meme
+fenetre que `reconcile_gap_catchup._expected_daily_rate`), flague tout ce qui
+depasse le ratio (defaut x1.6). A lancer juste apres que
+`update_streams.py` ait ecrit les lignes d'une date, **avant** que finalize
+exporte/poste quoi que ce soit — cf. `data-rules` regle n°1, une donnee
+fausse est pire qu'une donnee manquante. N'ecrit/ne modifie jamais rien.
+
+Bruit connu : les tracks a tres faible volume (`chart_extra=true`,
+instrumentaux/karaoke) declenchent facilement un ratio enorme sur un delta de
+quelques milliers de streams (rythme mediane proche de zero) — normal, pas un
+signe de fusion de jours. Le signal utile est sur les non-extra a volume
+significatif : un ratio proche de x2 sur un gros titre = suspect, a
+verifier/corriger (`fix_one.py`/`reconcile_gap_catchup.py`) avant de poster,
+pas juste un bruit statistique.
+
+### Meme check cable en live dans `finalize_update.py` (2026-09-19)
+
+`check_daily_rate_anomaly.py` est manuel (a lancer a la main). Cable en plus
+directement dans `finalize_update.run_final_update_tasks`, via
+`_rate_anomaly_flagged_nonextra_tracks(stats_date)` +
+`_check_rate_anomalies_before_posting(ctx)` — nouvelle etape `"rate anomaly
+check"`, appelee juste apres l'export web (`_export_web_data_once`) et AVANT
+le premier post Twitter. Meme logique (mediane 14j, seuil `RATE_ANOMALY_RATIO
+= 1.6`) mais filtree directement sur les tracks non-extra (`chart_extra`
+false) via `history_store.load_released_active_tracks_for_date`, pour eviter
+le bruit des instrumentaux/karaoke sans avoir a le filtrer a la main.
+
+- **Jamais bloquant** (coherent avec la regle data n°5 : le pipeline ne doit
+  jamais s'arreter tout seul) — envoie juste une notif ntfy immediate
+  (`NTFY_TOPIC` = `taylormuseum-streams`, titre "TSM Streams - possible
+  multi-day merge") si un track non-extra est flagge, avec les noms/ratios,
+  pour reagir manuellement (tuer le run, corriger via `fix_one.py`/
+  `reconcile_gap_catchup.py`) avant/pendant que les posts partent.
+- Un `except Exception` best-effort entoure tout le check : un echec du check
+  lui-meme (donnees manquantes, erreur de lecture) n'empeche jamais la
+  finalisation de continuer.
+- **Ne couvre que les runs demarres apres ce commit** — un process
+  `update_streams.py` deja lance avant cette modif tourne avec l'ancien code
+  en memoire (pas de hot-reload Python) ; pour qu'un run en cours en
+  beneficie, il faut le relancer (aucun cout si Spotify n'a pas encore publie
+  — pas de vraie donnee perdue, juste les tentatives de retry).
+- Contexte : ajoute pendant l'incident du 2026-09-17/18 (Spotify en retard,
+  crainte qu'un total en retard fusionne silencieusement 2 jours de streams
+  en un seul daily) — voir aussi le canari Charts ci-dessus, qui couvre le
+  rattrapage APRES coup (`reconcile_gap_catchup.py`) pendant que ce check
+  couvre AVANT le post, en live.
+
+### Meme check sur le chemin "early post" (2026-09-19)
+
+Trou trouve juste apres le premier cablage : `_check_rate_anomalies_before_posting`
+dans `finalize_update.py` ne couvre que les posts groupes de fin de run.
+Les posts best-day-since **precoces** (`post_best_day_since_twitter.
+_post_single_track_early`, declenches par `finalize_update.ReadyBestDaySincePoster`
+DES QU'UN SEUL track a sa donnee du jour, y compris "biggest day of the year"
+qui poste en inconditionnel, cf. `data-rules`) partent pendant la collecte,
+bien avant que `run_final_update_tasks` ne soit meme appele — completement
+hors de portee du check finalize.
+
+Fix : meme logique (mediane 14j, seuil `RATE_ANOMALY_RATIO = 1.6`) dupliquee
+en plus petit dans `post_best_day_since_twitter._rate_anomaly_ratio(track_id,
+target_date, daily)`, cablee au tout debut de `_post_single_track_early`
+juste apres avoir obtenu la `row` best-day-since (donc AVANT le test
+`is_unconditional`/tous les caps early) — si le daily du jour ressemble a
+`>= 1.6x` le rythme median 14j du track, le post early est skip (`"skipped"`)
+et une notif ntfy separee part ("possible multi-day merge (early post)").
+Retourne `None` (jamais bloquant) si pas assez d'historique recent pour
+juger — ex. un debut de sortie (`ReadyDebutReleasePoster`) n'a par definition
+aucun rythme anterieur, donc n'est jamais concerne par ce check.
+
+Les deux checks (finalize + early) sont volontairement dupliques plutot que
+partages via un import croise — meme seuil/fenetre par convention, a garder
+synchronises si le seuil `1.6` change un jour.
+
 ## Highlights Charts Gallery
 
 Depuis 2026-07-28, `finalize_update.py::run_final_update_tasks` appelle en

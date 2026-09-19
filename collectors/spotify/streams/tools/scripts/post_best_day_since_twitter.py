@@ -83,10 +83,45 @@ from comp.tables_image import build_table_html, masthead_theme_for_date, render_
 from comp.fmt import fmt_streams, fmt_pct, pct_cls, get_pct  # noqa: E402
 from core.twitter import post_image_thread, post_with_image  # noqa: E402
 from core.data_paths import update_streams_dir  # noqa: E402
+from core.notify import send as notify  # noqa: E402
 from twitter.text import best_day_since_era_recap_tweet, best_day_since_recap_tweet, best_day_since_tweet  # noqa: E402
 import best_day_since  # noqa: E402
 import score_best_day_since  # noqa: E402
 import generate_album_update_image  # noqa: E402
+from config import NTFY_TOPIC  # noqa: E402
+
+RATE_ANOMALY_RATIO = 1.6  # same threshold as finalize_update._rate_anomaly_flagged_nonextra_tracks
+RATE_ANOMALY_WINDOW_DAYS = 14
+
+
+def _rate_anomaly_ratio(track_id: str, target_date: str, daily: int | None) -> float | None:
+    """Read-only: how many x the track's own 14-day median daily rate this
+    day's ``daily`` is — None when there isn't enough recent history to judge
+    (never blocks a post for lack of data, only for a clear size anomaly).
+
+    Same purpose as finalize_update._rate_anomaly_flagged_nonextra_tracks, but
+    needed here too because early best-day-since posts happen mid-collection,
+    per track, well before finalize_update.run_final_update_tasks ever runs —
+    a record built on a daily that secretly merges 2 days of Spotify's own
+    delayed reporting would otherwise post immediately, unchecked."""
+    if daily is None:
+        return None
+    try:
+        target = date.fromisoformat(target_date)
+    except ValueError:
+        return None
+    points = best_day_since.load_history().get(track_id) or []
+    window = [
+        p.daily for p in points
+        if p.daily is not None and target - timedelta(days=RATE_ANOMALY_WINDOW_DAYS) <= p.day < target
+    ]
+    if not window:
+        return None
+    import statistics
+    rate = statistics.median(window)
+    if rate <= 0:
+        return None
+    return daily / rate
 
 
 def _fmt_int(value: int | None) -> str:
@@ -691,6 +726,27 @@ def _post_single_track_early(
     )
     if not row:
         return "skipped"
+
+    rate_ratio = _rate_anomaly_ratio(track_id, target_date, row.get("daily_streams"))
+    if rate_ratio is not None and rate_ratio >= RATE_ANOMALY_RATIO:
+        print(
+            f"[best_day_since_early] Skipping {track_id}: today's daily "
+            f"({row.get('daily_streams')}) looks like {rate_ratio:.2f}x its recent rate — "
+            "possible multi-day merge, holding back this early record post for review."
+        )
+        try:
+            notify(
+                NTFY_TOPIC,
+                f"{track.get('title') or track_id} on {target_date}: daily looks like "
+                f"{rate_ratio:.2f}x its recent rate. Early best-day-since post held back — "
+                "review (reconcile_gap_catchup.py / fix_one.py) before it's posted some other way.",
+                title="TSM Streams - possible multi-day merge (early post)",
+                tags="warning,rotating_light",
+            )
+        except Exception as exc:
+            print(f"[best_day_since_early] notify failed: {exc}")
+        return "skipped"
+
     is_priority = _is_priority_best_day_since(row)
 
     if not _is_unconditional_best_day(row) and _era_recap_posted_for(track.get("album"), target_date):

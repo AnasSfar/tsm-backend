@@ -46,6 +46,8 @@ sys.path.insert(0, str(SCRIPT_DIR.parents[2]))  # collectors/spotify/
 import history_store  # noqa: E402
 import spotify_api  # noqa: E402
 
+CHARTS_HISTORY_GLOBAL_PATH = history_store.DB_ROOT / "charts_history_global.csv"
+
 RATE_WINDOW_DAYS = 14
 RATIO_TOLERANCE = 0.4  # 40% — how far a delta can be from N x the usual rate
 
@@ -166,7 +168,7 @@ class RapidApiBudget:
 MANUAL_TRUSTED_REASON = "manual_trusted"
 
 
-def _canary_confirmed_for_date(target_date: date) -> bool:
+def _manual_trusted_canary(target_date: date) -> bool:
     """True only when a track has a row for target_date that WE manually
     injected from a verified trusted source (estimated_reason ==
     MANUAL_TRUSTED_REASON) — never a plain scraper-written row, since an
@@ -181,6 +183,40 @@ def _canary_confirmed_for_date(target_date: date) -> bool:
         if (r.get("estimated_reason") or "").strip() == MANUAL_TRUSTED_REASON:
             return True
     return False
+
+
+def _charts_canary(target_date: date) -> bool:
+    """True when Spotify Charts (Global Top 200, a separate scraper/pipeline
+    from the per-track totals probe) already has a real row for target_date.
+
+    Charts and per-track totals both key off Spotify's own daily rollover,
+    but they're two independent scrapers on separate schedules — Charts
+    usually settles first (lighter scrape). A real (non-zero streams) chart
+    row for target_date is Spotify-side proof that day's numbers exist
+    somewhere in their systems already, corroborating (never overriding)
+    the manual_trusted canary rather than replacing it — same role, second
+    independent source, so a day doesn't stay "uncertain" for want of a
+    human-injected anchor when Charts already settled it."""
+    if not CHARTS_HISTORY_GLOBAL_PATH.exists():
+        return False
+    target_str = target_date.isoformat()
+    with CHARTS_HISTORY_GLOBAL_PATH.open(newline="", encoding="utf-8-sig") as f:
+        for row in csv.DictReader(f):
+            if (row.get("date") or "").strip() != target_str:
+                continue
+            try:
+                if int((row.get("streams") or "").strip()) > 0:
+                    return True
+            except ValueError:
+                continue
+    return False
+
+
+def _canary_confirmed_for_date(target_date: date) -> bool:
+    """True when target_date is independently corroborated by either the
+    manual_trusted anchor or the Spotify Charts cross-check — see the two
+    helpers above for what each one proves."""
+    return _manual_trusted_canary(target_date) or _charts_canary(target_date)
 
 
 def _classify_from_total(
@@ -404,9 +440,17 @@ def main() -> None:
     if not RAPIDAPI_KEY:
         print("[warn] RAPIDAPI_KEY not set — ambiguous tracks won't get a tie-breaker check.")
 
-    canary = _canary_confirmed_for_date(target_date)
+    manual_canary = _manual_trusted_canary(target_date)
+    charts_canary = _charts_canary(target_date)
+    canary = manual_canary or charts_canary
+    if manual_canary:
+        canary_source = "manual_trusted anchor"
+    elif charts_canary:
+        canary_source = "Spotify Charts cross-check"
+    else:
+        canary_source = "none"
     print(f"Canary check for {args.date}: "
-          f"{'a confirmed real update exists (trusted anchor active)' if canary else 'no confirmed real update on record yet'}")
+          f"{'confirmed real (' + canary_source + ')' if canary else 'no confirmed real update on record yet'}")
 
     out_path = Path(args.out) if args.out else SCRIPT_DIR / f"reconcile_report_{args.date}.csv"
     report_fields = [

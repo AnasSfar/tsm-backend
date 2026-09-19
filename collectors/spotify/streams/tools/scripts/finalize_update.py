@@ -9,17 +9,20 @@ import threading
 import time
 from contextlib import contextmanager
 from dataclasses import dataclass, field
-from datetime import date as date_cls
+from datetime import date as date_cls, timedelta as _timedelta
 from pathlib import Path
 from typing import Any, Callable
 
 from core.data_paths import db_file, update_streams_dir
 from core.swift_top_gate import check_swift_top_gate, mark_swift_top_done
 from core.retention import cleanup_generated_artifacts
+from core.notify import send as notify
 from git_ops import git_commit_and_push
 import generate_album_update_image
 import post_best_day_since_twitter
 import score_album_update
+import history_store
+from config import NTFY_TOPIC
 from post_debut_releases import post_debut_releases as run_debut_release_posts
 
 
@@ -704,6 +707,91 @@ def _export_web_data_once(ctx: FinalizeContext, *, force: bool = False) -> None:
     if not ctx.local_test_mode and not ctx.test_mode:
         run_dir.mkdir(parents=True, exist_ok=True)
         export_lock.touch()
+
+
+RATE_ANOMALY_RATIO = 1.6  # flag a non-extra daily >= this x its 14-day median rate
+RATE_ANOMALY_WINDOW_DAYS = 14
+
+
+def _rate_anomaly_flagged_nonextra_tracks(stats_date: str) -> list[tuple[str, str, int, float, float]]:
+    """Read-only: non-extra tracks whose freshly-written daily for stats_date
+    looks like it bakes in more than one day of real streams (Spotify's own
+    backend silently catching up on a delay), by size rather than by calendar
+    gap. A calendar gap of 1 day (row for stats_date-1 already present, the
+    normal case) never triggers the multi-day-gap branch in
+    try_apply_track_update, so a merged delta would otherwise pass through
+    unflagged as a plain "updated" daily. Never blocks/writes anything itself
+    — see tools/scripts/check_daily_rate_anomaly.py for the standalone,
+    manually-run version of this same check."""
+    import statistics
+
+    target = date_cls.fromisoformat(stats_date)
+    tracks = history_store.load_released_active_tracks_for_date(stats_date)
+    non_extra_ids = {t["track_id"] for t in tracks if t.get("track_id") and not t.get("chart_extra")}
+    title_by_id = {t["track_id"]: (t.get("title") or t["track_id"]) for t in tracks}
+
+    rows_by_track: dict[str, list[int]] = {}
+    target_daily: dict[str, int] = {}
+    for r in history_store.load_history_rows():
+        tid = r.get("track_id")
+        if tid not in non_extra_ids:
+            continue
+        raw = (r.get("daily_streams") or "").strip()
+        if not raw:
+            continue
+        try:
+            d = date_cls.fromisoformat((r.get("date") or "").strip())
+            daily = int(raw)
+        except Exception:
+            continue
+        if d == target:
+            target_daily[tid] = daily
+        elif target - _timedelta(days=RATE_ANOMALY_WINDOW_DAYS) <= d < target:
+            rows_by_track.setdefault(tid, []).append(daily)
+
+    flagged = []
+    for tid, daily in target_daily.items():
+        values = rows_by_track.get(tid)
+        if not values:
+            continue
+        rate = statistics.median(values)
+        if rate <= 0:
+            continue
+        ratio = daily / rate
+        if ratio >= RATE_ANOMALY_RATIO:
+            flagged.append((tid, title_by_id.get(tid, tid), daily, rate, ratio))
+    return flagged
+
+
+def _check_rate_anomalies_before_posting(ctx: FinalizeContext) -> None:
+    """Best-effort, never blocking the run itself (data-rules #5) — but if a
+    non-extra track's fresh daily looks like a 2-day merge, notify immediately
+    so a human can react before/while the posting steps below run, instead of
+    finding out only after it's already public (data-rules #1)."""
+    if ctx.debug_daily_mode or ctx.local_test_mode or ctx.test_mode:
+        return
+    try:
+        flagged = _rate_anomaly_flagged_nonextra_tracks(ctx.stats_date)
+    except Exception as exc:
+        print(f"[rate-anomaly-check] failed, not blocking: {exc}")
+        return
+    if not flagged:
+        return
+    names = ", ".join(f"{name} ({ratio:.2f}x)" for _, name, _, _, ratio in flagged)
+    print(
+        f"[rate-anomaly-check] {len(flagged)} non-extra track(s) look like they bake in "
+        f"more than one day of streams for {ctx.stats_date}: {names}"
+    )
+    try:
+        notify(
+            NTFY_TOPIC,
+            f"{ctx.stats_date}: {names}\nPosting is about to start — review before it goes public "
+            f"(reconcile_gap_catchup.py / fix_one.py) if this is a real multi-day merge.",
+            title="TSM Streams - possible multi-day merge",
+            tags="warning,rotating_light",
+        )
+    except Exception as exc:
+        print(f"[rate-anomaly-check] notify failed: {exc}")
     print("Web export done.")
 
 
@@ -1531,6 +1619,9 @@ def run_final_update_tasks(ctx: FinalizeContext) -> None:
         print("Skipping Spotify API release-date refresh during finalization.")
         with timer.step("web export"):
             _export_web_data_once(ctx, force=artist_metadata_updated)
+
+        with timer.step("rate anomaly check"):
+            _check_rate_anomalies_before_posting(ctx)
 
         with timer.step("home highlights cache"):
             _regenerate_home_highlights_cache(ctx)
