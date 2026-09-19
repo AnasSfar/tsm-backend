@@ -58,6 +58,14 @@ YEAR_RECORD_IGNORE_DAYS = 0
 MONTH_RECORD_IGNORE_DAYS = 10
 MONTH_RECORD_MIN_DAILY_STREAMS = 200_000
 MONTH_RECORD_LAST_DAYS = 5
+# Owner rule (2026-09-18): an individual song best-day-since post needs at
+# least this many daily streams, UNLESS the record it beats is at least
+# MIN_DAILY_STREAMS_WAIVER_DAYS old - a genuinely stale record (a year-plus)
+# is newsworthy on its own regardless of the song's current size. Below the
+# floor and inside the waiver window, the record simply does not post (no
+# fallback path, including the day-over-day % spike gate).
+MIN_SONG_DAILY_STREAMS_FLOOR = 200_000
+MIN_DAILY_STREAMS_WAIVER_DAYS = 365
 
 
 @dataclass(frozen=True)
@@ -538,9 +546,12 @@ def _era_recap_post_gate_ok(
     toward an era recap)?"""
     if row.get("is_biggest_day_of_year"):
         return True
-    if (row.get("days_since") or 0) > always_post_after_days:
-        return True
+    days_since = row.get("days_since") or 0
     daily = int(row.get("daily_streams") or 0)
+    if daily < MIN_SONG_DAILY_STREAMS_FLOOR and days_since < MIN_DAILY_STREAMS_WAIVER_DAYS:
+        return False
+    if days_since > always_post_after_days:
+        return True
     if min_daily_streams is not None and daily >= min_daily_streams:
         return True
     previous_day_daily = row.get("previous_day_daily")
@@ -942,12 +953,12 @@ def is_recent_repeat_record(
 
 
 def row_label(row: dict) -> str:
+    # Owner rule (2026-09-18): "biggest day of the year" never stands alone -
+    # it always carries the actual since-date (or "ever") alongside it.
     if row["kind"] == "best_ever":
         label = "best day ever"
     elif row.get("is_biggest_day_of_year") and row.get("kind") == "since":
         label = f"biggest day of the year and best day since {format_long_date(row['best_day_since'])}"
-    elif row.get("is_biggest_day_of_year"):
-        label = "biggest day of the year"
     elif row.get("kind") == "since":
         label = f"best day since {format_long_date(row['best_day_since'])}"
     elif row.get("is_biggest_day_of_month"):

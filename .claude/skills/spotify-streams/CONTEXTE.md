@@ -575,7 +575,8 @@ Desormais, chaque jour :
 En plus du recap **global** (header fixe ci-dessus), une **card recap dediee a
 une ere** part quand cette ere a une grosse journee :
 
-- **Declencheur** : `>= ERA_RECAP_MIN_SONGS = 5` chansons d'une meme **ere**
+- **Declencheur** : `>= ERA_RECAP_MIN_SONGS = 3` (abaisse de 5 -> 3, decision
+  proprietaire 2026-09-18) chansons d'une meme **ere**
   (`best_day_since.era_key` : Red + Red (TV), 1989 + 1989 (TV), Midnights +
   3am/Til Dawn... comptent ensemble) qui, le meme jour, decrochent un
   best-day-since **et** passent le gate de post individuel (daily >= 80k, ou
@@ -1559,3 +1560,165 @@ dark le week-end (sam/dim)**. Base sur la **date des donnees postees**
   `_best_day_post_label()` ajoutent automatiquement le suffixe `(combined)`
   quand `row["combined"]` est vrai — ne pas dupliquer cette logique ailleurs,
   passer par ces fonctions.
+
+## Floor 200k streams pour un post best-day-since chanson, sauf record vieux d'1 an+ (2026-09-18)
+
+Decision proprietaire : une chanson ne poste plus sa propre card best-day-since
+si son daily du jour est sous `best_day_since.MIN_SONG_DAILY_STREAMS_FLOOR`
+(200 000) — sauf si le jour battu (`days_since`) a au moins
+`best_day_since.MIN_DAILY_STREAMS_WAIVER_DAYS` (365) jours, auquel cas le
+record poste quel que soit le volume (un record vieux d'un an+ est
+newsworthy en soi). Biggest-day-of-the-year reste inconditionnel
+(inchange).
+
+- Remplace l'ancien comportement ou `ALWAYS_POST_BEST_DAY_SINCE_AFTER_DAYS`
+  (60 jours) faisait poster n'importe quel volume des que l'ecart depassait
+  60 jours — desormais entre 60 jours et 1 an, il faut aussi >= 200k/jour.
+- Implemente dans les DEUX copies du gate (elles doivent rester en miroir) :
+  `post_best_day_since_twitter._passes_song_post_gate` (early lane + batch
+  finalize, chemin individuel) et `best_day_since._era_recap_post_gate_ok`
+  (compte une chanson dans le declencheur recap par ere, `era_recap_groups`).
+  Le check de floor est en premier et court-circuite tout le reste (aucun
+  fallback via `min_daily_streams`/`min_pct_change` ne peut repecher une
+  chanson sous le floor et sous le waiver).
+- `MIN_SONG_DAILY_STREAMS_TO_POST` (80k, post_best_day_since_twitter.py) reste
+  dans le code pour le chemin `--only-track` mais est desormais toujours
+  couvert par le floor 200k (200k > 80k) : ce seuil ne peut plus jamais etre
+  le facteur decisif seul.
+
+## Fix ordre watchlist early best-day-since : year-record candidates en premier (2026-09-18)
+
+Bug trouve suite a un signalement proprietaire : "Better Man (Taylor's Version)
+(From The Vault)" (Red TV), 134k streams, best day since avril 2024, avait
+poste APRES Top Songs/Top Eras/des cards album alors qu'il aurait du etre dans
+les tout premiers posts (record inconditionnel, `is_biggest_day_of_year`
+true). Cause racine dans `update_streams.build_priority_best_day_track_ids` :
+le track etait a 99.1% de son pic de l'annee la veille (`year_record_candidates`,
+tri par plus petit ecart = quasi certain de battre un record aujourd'hui —
+devrait donc sortir en position ~1-5), mais figurait AUSSI dans la liste
+generaliste `candidates` (heuristique ecart >90 jours) a la position 105/230 —
+et le merge (`for ... in year_record_candidates: if track_id not in seen`)
+ne repositionnait jamais un track deja present dans `candidates`, meme si sa
+position year-record etait bien meilleure. Verifie 2026-09-16 : position
+105 -> **4** apres le fix (Dear Reader 42 -> 2, present dans les deux listes
+aussi).
+
+- Fix : `year_record_candidates` (deja trie par ecart croissant, plafonne a
+  `EARLY_BEST_DAY_YEAR_RECORD_WATCH_LIMIT`=50) est desormais construit EN
+  PREMIER dans `ordered`, la liste `candidates` (ecart >90j) complete ensuite
+  seulement les track_ids pas deja presents. Toujours la meme union de
+  candidats (aucun track ajoute/retire), seul l'ORDRE change.
+- Rappel : cette position ne determine QUE l'ordre dans lequel
+  `ReadyBestDaySincePoster` (finalize_update.py) spawn un subprocess
+  `--only-track` par candidat pret pendant la collecte — ce n'est jamais une
+  garantie de blocage/caps (un `is_biggest_day_of_year` reste inconditionnel
+  quelle que soit sa position), juste de delai avant d'etre atteint dans le
+  balayage sequentiel.
+- Root cause du delai observe le 2026-09-16 (poste ~9.5 min apres Dear
+  Reader, tard dans la nuit) : run retente 2x (`partial export 2026-09-16
+  (after retry 1)` / `(after retry 2)`, commits 2026-09-18 00:12-00:13 —
+  panne WARP recurrente deja documentee dans `pipeline-ops`) — l'historique
+  du jour etait deja quasi entierement ecrit quand le watcher a demarre, donc
+  ~60+ candidats "prets" simultanement ont chacun coute un spawn subprocess
+  complet (interpreteur + reload CSV/discographie) avant d'atteindre Better
+  Man.
+- **Fix complementaire (meme session) : precheck in-process avant spawn.**
+  `ReadyBestDaySincePoster._precheck_candidate` (finalize_update.py) appelle
+  `best_day_since.best_day_since_for_track(..., keep_year_record=True)`
+  directement en process (memes `min_days`/args que le subprocess
+  `--only-track` — ne peut donc jamais rejeter un candidat que le subprocess
+  aurait accepte) pour filtrer gratuitement les tracks sans aucun record
+  aujourd'hui, AVANT de payer un spawn subprocess. `_refresh_precheck_data`
+  invalide le cache `best_day_since.load_history` toutes les
+  `BEST_DAY_PRECHECK_RELOAD_SECONDS` (5s) pour rester a jour pendant que la
+  collecte ecrit encore l'history. Verifie sur les 60 premiers candidats du
+  2026-09-16 : 0.1s pour tout le lot (apres 1er load a froid ~2s) contre
+  ~9s/track en subprocess avant (~9 min pour 60 tracks) — seuls les
+  candidats plausibles (13/60 dans ce test) paient encore le spawn complet.
+  Toute exception du precheck retombe sur `plausible = True` (jamais bloquant
+  pour un vrai post).
+
+## "Biggest day of the year" ne s'affiche jamais seul, toujours avec une date (2026-09-18)
+
+Decision proprietaire, suite a un post album folklore ou exile affichait juste
+"BIGGEST DAY of the year" sans date. Regle : ce label ne doit jamais etre
+affiche seul — soit c'est integre a un vrai "best day since XX" / "best day
+ever", soit ce n'est pas affiche du tout.
+
+- `best_day_since.row_label()` (score table, recap, ledger, spotlight,
+  `post_stream_highlights_thread.py`) etait deja correct
+  (`is_biggest_day_of_year and kind == "since"` -> texte combine avec date) —
+  seule la branche `elif is_biggest_day_of_year: "biggest day of the year"`
+  seule (deja morte en pratique, `kind` ne vaut jamais autre chose que
+  `since`/`best_ever` a ce point) a ete supprimee par securite.
+- **Bug reel trouve et corrige** :
+  `generate_album_update_image._best_day_post_label` (label utilise dans la
+  1ere ligne de la card update album/ere, `_build_album_post_text`) avait
+  l'ordre invers'e : `elif is_biggest_day_of_year: "BIGGEST DAY of the year"`
+  passait AVANT le check `kind == "since"`, donc perdait la date des que le
+  record de l'annee etait aussi un "since" (cas le plus frequent). Fix :
+  meme ordre que `post_best_day_since_twitter._best_day_post_label` —
+  `is_biggest_day_of_year and kind == "since"` teste en premier et combine
+  toujours `"BIGGEST DAY of the year and BEST DAY since <date>"`.
+- Le marqueur compact `★ Title · of the year` des tables ledger (Top Songs /
+  Top Eras / GAINERS, `best_day_marker_text`) n'est PAS concerne : c'est un
+  badge court d'espace limite, design different, jamais une phrase complete —
+  a rediscuter separement si besoin.
+
+## Sous-score volume dans score_best_day_since (2026-09-18)
+
+Decision proprietaire : une chanson a gros volume avec un record recent doit
+scorer au-dessus d'une chanson a tout petit volume avec un record plus vieux
+(ex. verifie : 300k streams / record depuis juillet doit battre 10k streams /
+record depuis mai). Avant ce fix, `ScoreWeights` n'avait aucun sous-score de
+taille absolue — seulement des percentiles de gain (abs/pct/weekly) qui
+peuvent sur-noter une toute petite chanson avec un pic % exceptionnel.
+
+- Nouveau sous-score `volume` (poids 0.14 standard et early) :
+  `_volume_score(daily_streams)`, echelle log absolue (pas un percentile du
+  jour, contrairement aux autres sous-scores), cap 1M — meme fonction que
+  celle deja utilisee par `_surprise_impact_bonus`.
+- Poids rebalances pour faire de la place (age 0.08->0.06, daily_pct_gain
+  0.16->0.14, grower early 0.20->0.18, etc. — somme des poids toujours 1.0
+  dans `ScoreWeights`/`WEIGHTS`/`EARLY_WEIGHTS`).
+- Combine avec `_stature_bonus` (deja existant, absolu aussi, kick in > 150k)
+  pour donner un avantage net et fiable aux grosses chansons — en pratique,
+  la plupart des candidats sous le nouveau floor 200k (regle ci-dessus) ne
+  sont de toute facon plus scores du tout puisqu'ils ne passent plus le gate.
+
+## Watchlist early best-day-since enrichie par le momentum Spotify Charts (2026-09-18)
+
+`update_streams.build_chart_gainer_priority_track_ids(stats_date)` lit
+`db/charts_history_global.csv` (colonne `streams` = daily chart streams du
+Global Top 200) et calcule, par `track_id`, le % de variation entre
+`stats_date` et la veille. Un track dont le chart daily a saute d'au moins
+`CHART_GAINER_MIN_PCT_CHANGE = 20.0` % (avec un plancher
+`CHART_GAINER_MIN_BASELINE_STREAMS = 5_000` pour eviter le bruit sur les tout
+petits volumes) rejoint `priority_best_day_track_ids`, en plus des candidats
+deja produits par `build_priority_best_day_track_ids`. Fusion faite juste
+avant l'instanciation de `ReadyBestDaySincePoster` (`priority_track_ids=...`).
+
+Logique : un pic sur le Global Top 200 (streams "filtres" par le cutoff
+chart) et le total exact "non filtre" collecte par `update_streams.py`
+viennent des memes ecoutes reelles — un gros mouvement cote charts est donc
+un signal precoce fiable que le daily exact du jour sera lui aussi en forte
+hausse, avant meme que ce daily soit calcule.
+
+**Best-effort, jamais bloquant.** `TSM Update Streams` et
+`TSM Spotify Charts Watch Release` sont deux taches planifiees distinctes qui
+se declenchent toutes les deux a `SPOTIFY_UPDATE_HOUR` (15h) — rien ne
+garantit que la ligne `stats_date` de `charts_history_global.csv` existe deja
+au moment ou `update_streams.py` construit la watchlist (quelques minutes
+apres le debut du run). En pratique le scrape charts est beaucoup plus leger
+qu'une collecte streams exacte (qui peut prendre jusqu'a 2h, cf. incident
+timeout dans `pipeline-ops`) donc il finit generalement avant, mais ce n'est
+pas garanti. Si la ligne n'existe pas encore,
+`build_chart_gainer_priority_track_ids` renvoie simplement `[]` — aucune
+erreur, aucun blocage, la watchlist standard (`build_priority_best_day_track_ids`)
+fonctionne independamment.
+
+Ce signal ne sert **qu'a l'ordre de verification de la watchlist early**
+(quels tracks le `ReadyBestDaySincePoster` checke en premier des que leur
+daily exact arrive) — jamais poste ni affiche tel quel, jamais utilise comme
+donnee publique (regle exact-data : seul le daily exact scrape par
+`update_streams.py` compte, le chart daily n'est qu'un indice de priorite).

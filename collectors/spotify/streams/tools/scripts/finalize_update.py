@@ -42,6 +42,12 @@ PRIMARY_ALBUM_UPDATE_TARGETS = (
 BOTTOM_ALBUMS_SKIPPED = 2
 FINALIZE_POST_RETRY_ATTEMPTS = max(1, int(os.getenv("FINALIZE_POST_RETRY_ATTEMPTS", "3")))
 FINALIZE_POST_RETRY_SLEEP_SECONDS = max(0, int(os.getenv("FINALIZE_POST_RETRY_SLEEP_SECONDS", "60")))
+# ReadyBestDaySincePoster in-process precheck (2026-09-18): minimum seconds
+# between best_day_since.load_history() cache reloads used by the cheap
+# precheck below. Throttled so a busy sweep does not re-parse the whole
+# streams history CSV on every candidate; low enough that a track whose data
+# just got written mid-collection is picked up within a few seconds.
+BEST_DAY_PRECHECK_RELOAD_SECONDS = 5.0
 
 
 def _subprocess_env(extra: dict[str, str] | None = None) -> dict[str, str]:
@@ -442,6 +448,7 @@ class ReadyBestDaySincePoster:
         self._stop = threading.Event()
         self._thread: threading.Thread | None = None
         self._post_state = {"posted_count": 0, "last_post_at": 0.0}
+        self._precheck_last_reload = 0.0
 
     def start(self) -> None:
         if not self.enabled or self._thread is not None:
@@ -475,8 +482,45 @@ class ReadyBestDaySincePoster:
             # the per-track subprocess enforces the cap on the rest itself.
             return len(self._checked) >= len(self.track_ids)
 
+    def _refresh_precheck_data(self) -> None:
+        now = time.time()
+        if now - self._precheck_last_reload < BEST_DAY_PRECHECK_RELOAD_SECONDS:
+            return
+        post_best_day_since_twitter.best_day_since.load_history.cache_clear()
+        self._precheck_last_reload = now
+
+    def _precheck_candidate(self, track_id: str) -> bool:
+        """Cheap in-process check: does this track plausibly have any
+        best-day-since row today? Mirrors exactly the
+        ``best_day_since_for_track`` call the ``--only-track`` subprocess
+        itself makes (same ``min_days``, same ``keep_year_record=True``), so
+        it can never reject a candidate the subprocess would have accepted -
+        it only lets the sweep skip the (usually large) majority of watched
+        tracks with no record today without paying a full interpreter+CSV-
+        reload subprocess spawn per track. Added 2026-09-18 after a delayed/
+        retried run made ~60 watched tracks ready at once and the resulting
+        chain of subprocess spawns delayed a real, important candidate
+        (Better Man (Taylor's Version) [From The Vault]) by several minutes,
+        long enough for lower-priority finalize posts to go out first."""
+        bds = post_best_day_since_twitter.best_day_since
+        tracks = bds.load_tracks(include_extras=True)
+        track = tracks.get(track_id)
+        if track is None:
+            return True  # not in this cache: let the subprocess be the judge
+        if post_best_day_since_twitter._holiday_collection_out_of_season(track.album, self.stats_date):
+            return False
+        row = bds.best_day_since_for_track(
+            track_id,
+            self.stats_date,
+            min_days=self.min_days if self.min_days is not None else bds.DEFAULT_MIN_DAYS,
+            combined=False,
+            keep_year_record=True,
+        )
+        return row is not None
+
     def _post_newly_ready_track(self) -> bool:
         done_ids = self.load_history_track_ids_for_date(self.stats_date)
+        self._refresh_precheck_data()
         for track_id in self.track_ids:
             with self._lock:
                 if track_id in self._checked:
@@ -486,6 +530,17 @@ class ReadyBestDaySincePoster:
             is_priority_track = track_id in self._priority_track_id_set
             if not is_priority_track and not self.priority_ready():
                 return False
+
+            try:
+                plausible = self._precheck_candidate(track_id)
+            except Exception as exc:  # a precheck failure must never block real posting
+                print(f"[best_day_since_early] Precheck failed for {track_id} ({exc}); falling back to full check.")
+                plausible = True
+            if not plausible:
+                with self._lock:
+                    self._checked.add(track_id)
+                continue
+
             with self._lock:
                 self._checked.add(track_id)
 

@@ -136,6 +136,7 @@ DB_ALBUMS_DIR = DISCOGRAPHY_DIR / "albums"
 DB_SONGS_JSON = DISCOGRAPHY_DIR / "songs.json"
 ARTIST_PATH = DISCOGRAPHY_DIR / "artist.json"
 ARTIST_URL = "https://open.spotify.com/artist/06HL4z0CvFAxyc27GXpf02"
+CHARTS_HISTORY_GLOBAL_PATH = _DB_ROOT / "charts_history_global.csv"
 
 # Spotify daily update happens around this local hour; before it, we're still in the previous day's window
 SPOTIFY_UPDATE_HOUR = 15
@@ -186,6 +187,13 @@ EARLY_BEST_DAY_PRIORITY_RECENT_PEAK_RATIO = 0.90
 EARLY_BEST_DAY_YEAR_RECORD_WATCH_RATIO = 0.80
 EARLY_BEST_DAY_YEAR_RECORD_MIN_DAILY = 20_000
 EARLY_BEST_DAY_YEAR_RECORD_WATCH_LIMIT = 50
+# Chart-momentum early watch: a track whose Spotify Charts (Global Top 200) daily
+# streams jumped at least this much vs the day before is a leading signal that its
+# unfiltered exact total will also be up today - the two are the same underlying
+# plays, charts just publish first. Only used to prioritize which tracks the early
+# best-day-since watcher checks first; never posted or used as data on its own.
+CHART_GAINER_MIN_PCT_CHANGE = 20.0
+CHART_GAINER_MIN_BASELINE_STREAMS = 5_000
 GROWER_NOTIFY_LIMIT = 3
 GROWER_NOTIFY_WINDOW_DAYS = 7
 GROWER_NOTIFY_MIN_BASELINE_DAILY = 1_000
@@ -1472,9 +1480,18 @@ def build_priority_best_day_track_ids(
 
     candidates.sort()
     year_record_candidates.sort()
-    ordered = [track_id for _gap, _days, track_id in candidates]
+    # Year-record candidates go first (owner rule, 2026-09-18): they are the
+    # unconditional, always-post group and this list is already sorted by
+    # smallest gap-to-year-peak (most imminent first), so it is the closest
+    # thing to a merit ranking this function has. Previously they were
+    # appended AFTER the long-gap `candidates` list and only if not already
+    # present there - a track sitting in both (e.g. 99% of the way to its own
+    # year peak, per owner report: Better Man (Taylor's Version) [From The
+    # Vault] on 2026-09-16) kept whatever worse position `candidates` gave it
+    # instead of the near-top slot its year-record standing earned.
+    ordered = [track_id for _gap, track_id in year_record_candidates[:EARLY_BEST_DAY_YEAR_RECORD_WATCH_LIMIT]]
     seen = set(ordered)
-    for _gap, track_id in year_record_candidates[:EARLY_BEST_DAY_YEAR_RECORD_WATCH_LIMIT]:
+    for _gap, _days, track_id in candidates:
         if track_id not in seen:
             ordered.append(track_id)
             seen.add(track_id)
@@ -1507,6 +1524,67 @@ def build_early_best_day_track_ids(
     ]
     candidates.sort(key=lambda item: item[1], reverse=True)
     return [track_id for track_id, _daily in candidates[:limit]]
+
+
+def build_chart_gainer_priority_track_ids(
+    stats_date: str,
+    *,
+    min_pct_change: float = CHART_GAINER_MIN_PCT_CHANGE,
+    min_baseline_streams: int = CHART_GAINER_MIN_BASELINE_STREAMS,
+) -> list[str]:
+    """Track ids whose Spotify Charts (Global Top 200) daily streams jumped at
+    least ``min_pct_change`` vs the previous day, per today's chart snapshot.
+
+    Best-effort only: the Charts Watch Release task and Update Streams are two
+    separate scheduled tasks that both trigger at SPOTIFY_UPDATE_HOUR, so
+    ``stats_date``'s row in charts_history_global.csv may not exist yet when
+    this runs (charts usually finishes first since it's a lighter scrape, but
+    that's not guaranteed). Returns [] rather than waiting/erroring when the
+    snapshot isn't there yet - the early best-day-since watcher still has its
+    own candidate list regardless.
+    """
+    if not CHARTS_HISTORY_GLOBAL_PATH.exists():
+        return []
+
+    try:
+        target_day = date.fromisoformat(stats_date)
+    except ValueError:
+        return []
+    previous_date = (target_day - timedelta(days=1)).isoformat()
+
+    today_streams: dict[str, int] = {}
+    previous_streams: dict[str, int] = {}
+    with CHARTS_HISTORY_GLOBAL_PATH.open(newline="", encoding="utf-8-sig") as f:
+        for row in csv.DictReader(f):
+            row_date = (row.get("date") or "").strip()
+            if row_date not in (stats_date, previous_date):
+                continue
+            track_id = (row.get("track_id") or "").strip()
+            if not track_id:
+                continue
+            try:
+                streams = int((row.get("streams") or "").strip())
+            except ValueError:
+                continue
+            if row_date == stats_date:
+                today_streams[track_id] = streams
+            else:
+                previous_streams[track_id] = streams
+
+    if not today_streams:
+        return []
+
+    candidates: list[tuple[float, str]] = []
+    for track_id, streams_today in today_streams.items():
+        streams_before = previous_streams.get(track_id)
+        if streams_before is None or streams_before < min_baseline_streams:
+            continue
+        pct_change = (streams_today - streams_before) / streams_before * 100
+        if pct_change >= min_pct_change:
+            candidates.append((pct_change, track_id))
+
+    candidates.sort(reverse=True)
+    return [track_id for _pct, track_id in candidates]
 
 
 def _format_pct_value(value: float | None) -> str:
@@ -3299,6 +3377,12 @@ def main():
         min_days_since=EARLY_BEST_DAY_PRIORITY_AFTER_DAYS,
         min_recent_peak_ratio=EARLY_BEST_DAY_PRIORITY_RECENT_PEAK_RATIO,
     )
+    chart_gainer_track_ids = build_chart_gainer_priority_track_ids(stats_date)
+    if chart_gainer_track_ids:
+        seen_priority_ids = set(priority_best_day_track_ids)
+        priority_best_day_track_ids = priority_best_day_track_ids + [
+            track_id for track_id in chart_gainer_track_ids if track_id not in seen_priority_ids
+        ]
     early_best_day_track_ids = build_early_best_day_track_ids(
         tracks,
         stats_date,
@@ -3307,7 +3391,8 @@ def main():
     )
     print(
         f"Early best-day-since watcher has {len(priority_best_day_track_ids)} "
-        f"priority long-gap candidate(s) and {len(early_best_day_track_ids)} "
+        f"priority long-gap candidate(s) ({len(chart_gainer_track_ids)} from Spotify "
+        f"Charts momentum) and {len(early_best_day_track_ids)} "
         f"score-watch track(s) from {get_previous_stats_date_str(stats_date)}."
     )
     best_day_since_poster = ReadyBestDaySincePoster(

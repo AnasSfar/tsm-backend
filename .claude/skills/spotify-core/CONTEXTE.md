@@ -58,3 +58,22 @@ Selon le helper:
   exports modernes vivent sous `runtime/exports/web`.
 - `twitter.py` est fragile au DOM X; diagnostiquer avec les HTML/debugs plutot
   que deviner les selecteurs.
+- Incident 2026-09-17 (global-post/us-post, plusieurs tentatives echouees) :
+  quand le file chooser natif ne se declenche pas ("X file chooser
+  introuvable, fallback input[type=file]"), le fallback `set_input_files`
+  contourne l'evenement de fermeture du chooser et laisse une couche
+  decorative absolument positionnee (inset:0) peinte au-dessus de
+  `tweetButton`. Un `.click()` classique boucle en timeout contre elle ; meme
+  `force=True` echoue silencieusement car Playwright dispatche quand meme
+  l'evenement souris aux coordonnees du bouton, que le navigateur route vers
+  ce meme div en hit-test (constate le 2026-09-17 : le clic force ne renvoyait
+  pas d'erreur mais le texte du composer n'etait jamais efface, donc rien
+  n'etait poste). Fix dans `_click_tweet_button()` : clic normal, puis
+  raccourci clavier Ctrl/Cmd+Entree (evite completement le hit-test), puis
+  `element.evaluate("el => el.click()")` (invoque les handlers JS du bouton
+  sans passer par le hit-test souris), et seulement en dernier recours un clic
+  force. Apres chaque etape, on verifie brievement le composer/toast avant
+  d'escalader, pour eviter de poster deux fois si une etape a en fait marche.
+  Un screenshot/HTML debug est aussi ecrit des que le fallback file-input est
+  utilise (`_write_upload_debug_artifacts`), pour diagnostiquer pourquoi le
+  chooser natif ne se declenche pas.

@@ -54,22 +54,30 @@ STATURE_BONUS_FULL_SCALE = 1_200_000
 
 @dataclass(frozen=True)
 class ScoreWeights:
-    age: float = 0.08
-    daily_abs_gain: float = 0.20
-    daily_pct_gain: float = 0.16
-    weekly_pct_gain: float = 0.20
-    rarity: float = 0.18
-    grower: float = 0.18
+    age: float = 0.06
+    volume: float = 0.14
+    daily_abs_gain: float = 0.18
+    daily_pct_gain: float = 0.14
+    weekly_pct_gain: float = 0.18
+    rarity: float = 0.16
+    grower: float = 0.14
 
 
+# ``volume`` (owner rule, 2026-09-18): raw current-day size on an absolute log
+# scale, not a same-day percentile like the other subscores. A 300k-stream
+# song must reliably outrank a 10k-stream song even when the smaller song's
+# record is older - percentile-only ranking can let a tiny song's outsized %
+# swing outscore a much bigger, steadier one. Paired with ``_stature_bonus``
+# (also absolute-scale) for songs above 150k.
 WEIGHTS = ScoreWeights()
 EARLY_WEIGHTS = ScoreWeights(
-    age=0.08,
-    daily_abs_gain=0.18,
-    daily_pct_gain=0.18,
-    weekly_pct_gain=0.18,
-    rarity=0.18,
-    grower=0.20,
+    age=0.06,
+    volume=0.14,
+    daily_abs_gain=0.16,
+    daily_pct_gain=0.14,
+    weekly_pct_gain=0.16,
+    rarity=0.16,
+    grower=0.18,
 )
 
 
@@ -543,6 +551,7 @@ def _score_from_subscores(
 ) -> tuple[float, float, float]:
     base_score = (
         weights.age * subscores["age"]
+        + weights.volume * subscores["volume"]
         + weights.daily_abs_gain * subscores["daily_abs_gain"]
         + weights.daily_pct_gain * subscores["daily_pct_gain"]
         + weights.weekly_pct_gain * subscores["weekly_pct_gain"]
@@ -673,6 +682,7 @@ def score_single_best_day_candidate(
 
     subscores = {
         "age": metrics["age"],
+        "volume": _volume_score(metrics["daily_streams"]),
         "daily_abs_gain": _gain_score(metrics["daily_abs_gain"], 500_000),
         "daily_pct_gain": _pct_score(metrics["daily_pct_gain"]),
         "weekly_pct_gain": _pct_score(metrics["weekly_pct_gain"]),
@@ -814,6 +824,7 @@ def score_best_day_since(
         row = metrics["row"]
         subscores = {
             "age": metrics["age"],
+            "volume": _volume_score(metrics["daily_streams"]),
             "daily_abs_gain": daily_abs_scores.get(track_id, 0.0),
             "daily_pct_gain": daily_pct_scores.get(track_id, 0.0),
             "weekly_pct_gain": weekly_pct_scores.get(track_id, 0.0),

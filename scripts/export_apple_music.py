@@ -664,7 +664,7 @@ def main() -> None:
     genre_rows = read_windowed(GENRE_CSV)
 
     global_current, global_history, _ = build_global(global_rows)
-    top_current, top_history, _ = build_top_songs(top_rows)
+    top_current, top_history, top_dates = build_top_songs(top_rows)
     top_video_current, top_video_history, _ = build_ranked_video_series(top_video_rows)
     country_current, country_history, _ = build_country(country_rows)
     country_album_current, country_album_history, _ = build_country_albums(country_album_rows)
@@ -688,6 +688,12 @@ def main() -> None:
     applemusic_data = {
         "scraped_at": latest_any,
         "dates": all_dates,
+        # ts_page_all.py's composite refreshes once/day (see RUN_HOUR gate), unlike
+        # country/genre charts which genuinely update every collector cycle. Expose
+        # its own real update timestamps separately so the frontend's hour picker
+        # for the "TS Top Songs" tab doesn't offer every-2h slots that just repeat
+        # the same daily snapshot (mirrored onto `dates` for API key consistency).
+        "ts_top_songs_dates": top_dates,
         "last_charted": last_charted,
         "global_chart": global_current,
         "ts_top_songs": top_current,

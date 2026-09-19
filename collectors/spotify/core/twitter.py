@@ -620,6 +620,27 @@ def _choose_schedule_value(page, control, labels: list[str], values: list[str] |
     return False
 
 
+def _media_upload_menu(page):
+    # X's media toolbar now opens a menu before the native file chooser.
+    return page.locator("[data-testid='Dropdown']").get_by_role(
+        "menuitem", name=re.compile(r"^(Upload|Importer|T\u00e9l\u00e9verser)$", re.I)
+    ).first
+
+
+def _dismiss_media_upload_menu(page) -> None:
+    upload = _media_upload_menu(page)
+    if upload.is_visible():
+        page.keyboard.press("Escape")
+        upload.wait_for(state="hidden", timeout=5_000)
+
+
+def _click_tweet_button(page, editor=None, timeout_ms: int = 10_000) -> None:
+    """Submit once, after closing any remaining media upload menu."""
+    _dismiss_media_upload_menu(page)
+    selector = "[data-testid='tweetButton'], [data-testid='tweetButtonInline']"
+    page.locator(selector).first.click(timeout=timeout_ms)
+
+
 def _click_first_visible(page, selectors: list[str], *, timeout_ms: int = 5_000) -> bool:
     deadline = time.time() + timeout_ms / 1000
     while time.time() < deadline:
@@ -813,6 +834,7 @@ def _open_compose_and_wait_editor(page, session_file: Path, index: int = 0, time
 
 
 def _click_thread_add_button(page) -> bool:
+    _dismiss_media_upload_menu(page)
     candidates = [
         "[data-testid='addButton']",
         "[aria-label='Add another post']",
@@ -837,8 +859,9 @@ def _post_compose_text_thread(page, tweets: list[str]) -> bool:
     page.goto("https://x.com/compose/post", wait_until="domcontentloaded")
     time.sleep(2)
 
-    _wait_visible_editor(page, 0).click(timeout=10_000)
-    _wait_visible_editor(page, 0).fill(tweets[0])
+    editor = _wait_visible_editor(page, 0)
+    editor.click(timeout=10_000)
+    editor.fill(tweets[0])
     time.sleep(1)
 
     for i, tweet in enumerate(tweets[1:], 1):
@@ -850,9 +873,7 @@ def _post_compose_text_thread(page, tweets: list[str]) -> bool:
         editor.fill(tweet)
         time.sleep(0.5)
 
-    page.locator(
-        "[data-testid='tweetButton'], [data-testid='tweetButtonInline']"
-    ).first.click(timeout=10_000)
+    _click_tweet_button(page, editor)
     return _wait_post_submitted(page, "\n".join(tweets), timeout_ms=60_000)
 
 
@@ -924,15 +945,29 @@ def _media_button_candidates(root):
 
 def _attach_with_file_chooser(page, root, image_path: Path) -> bool:
     for button in _media_button_candidates(root):
+        if not button.is_visible(timeout=500):
+            continue
         try:
-            if not button.is_visible(timeout=500):
-                continue
             with page.expect_file_chooser(timeout=5_000) as chooser_info:
                 button.click(timeout=5_000)
-            chooser_info.value.set_files(str(image_path))
-            return True
-        except Exception:
-            pass
+        except PlaywrightTimeout:
+            # The current UI opens Upload / Generate with Grok instead of a
+            # chooser. The menu is portalled outside the editor's scope.
+            upload = _media_upload_menu(page)
+            if not upload.is_visible():
+                continue
+            try:
+                with page.expect_file_chooser(timeout=5_000) as chooser_info:
+                    upload.click(timeout=5_000)
+            except PlaywrightTimeout:
+                _dismiss_media_upload_menu(page)
+                return False
+        # A chooser was opened: failures setting the file must propagate, not
+        # retry the upload and risk attaching the same image twice.
+        chooser_info.value.set_files(str(image_path))
+        _dismiss_media_upload_menu(page)
+        return True
+    _dismiss_media_upload_menu(page)
     return False
 
 
@@ -949,6 +984,9 @@ def _attach_image_to_composer(page, editor, image_path: Path, index: int = 0):
     before = _attached_image_count(verify_scope)
     if not _attach_with_file_chooser(page, root, image_path):
         print("X file chooser introuvable, fallback input[type=file]")
+        artifacts = _write_upload_debug_artifacts(page, image_path)
+        if artifacts:
+            print(f"X fallback debug: {' | '.join(artifacts)}")
         file_inputs = root.locator("input[type='file'][accept*='image']")
         count = file_inputs.count()
         if count:
@@ -1125,9 +1163,7 @@ def _post_compose_image_thread(page, posts: list[tuple[str, tuple[Path, ...]]]) 
             return False
 
     print("X compose: clic publication du thread...", flush=True)
-    page.locator(
-        "[data-testid='tweetButton'], [data-testid='tweetButtonInline']"
-    ).first.click(timeout=10_000)
+    _click_tweet_button(page, editor)
     expected = "\n".join(text for text, _ in posts if text)
     print("X compose: attente confirmation X...", flush=True)
     return _wait_post_submitted(page, expected, timeout_ms=90_000)
@@ -1382,9 +1418,7 @@ def post_thread(tweets: list[str], session_file: Path, *, priority: int | None =
                             editor.click(timeout=10_000)
                             editor.fill(tweet)
                             time.sleep(1)
-                            page.locator(
-                                "[data-testid='tweetButton'], [data-testid='tweetButtonInline']"
-                            ).first.click(timeout=10_000)
+                            _click_tweet_button(page, editor)
                             if not _wait_post_submitted(page, tweet):
                                 success = False
                                 break
@@ -1472,9 +1506,7 @@ def post_with_image(tweet: str, image_path: Path, session_file: Path, *, skip_if
                 if _attached_image_count(attach_scope) < 1:
                     raise RuntimeError("image absente du composer juste avant le post — abandon")
 
-                page.locator(
-                    "[data-testid='tweetButton'], [data-testid='tweetButtonInline']"
-                ).first.click(timeout=10_000)
+                _click_tweet_button(page, editor)
                 if not _wait_post_submitted(page, tweet):
                     _set_last_post_error("post non confirme apres clic")
                     return False
@@ -1564,9 +1596,7 @@ def schedule_post(
                         raise RuntimeError("image absente du composer juste avant la programmation — abandon")
 
                 _set_schedule_dialog(page, scheduled_dt)
-                page.locator(
-                    "[data-testid='tweetButton'], [data-testid='tweetButtonInline']"
-                ).first.click(timeout=10_000)
+                _click_tweet_button(page, editor)
                 if not _wait_post_scheduled(page, tweet):
                     return False
 

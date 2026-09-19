@@ -47,7 +47,7 @@ RECAP_HEADERS_DIR = SCRIPT_DIR.parent / "headers" / "best_day_recap"
 # for just that era, before the era's album update card. Songs stay in the
 # global recap too. Once an era recap posts, that era's individual best-day song
 # cards are suppressed for the day (a biggest-day-of-the-year card still posts).
-ERA_RECAP_MIN_SONGS = 5
+ERA_RECAP_MIN_SONGS = 3  # owner decision 2026-09-18 (was 5)
 # Early lane (during collection): at most this many era recaps, tracked with
 # their own lock dir, never spending the individual song early-post quota.
 EARLY_ERA_RECAP_MAX_POSTS = 2
@@ -58,7 +58,7 @@ MAX_BEST_DAY_SONG_POSTS_PER_ALBUM = 3
 # the-year row still bypass the cap entirely.
 POST_COLLECTION_STANDARD_SONG_POSTS = 3
 POST_COLLECTION_MAX_SONG_POSTS = 5
-MIN_SONG_DAILY_STREAMS_TO_POST = 80_000
+MIN_SONG_DAILY_STREAMS_TO_POST = 80_000  # early-lane extra pass; superseded by best_day_since.MIN_SONG_DAILY_STREAMS_FLOOR (200k) below
 EARLY_BEST_DAY_MIN_SCORE = 58.0
 EARLY_BEST_DAY_STANDARD_MAX_POSTS = 3
 EARLY_BEST_DAY_EXCEPTIONAL_MAX_POSTS = 5
@@ -601,10 +601,17 @@ def _passes_song_post_gate(
     if row.get("is_biggest_day_of_year"):
         return True
 
-    if (row.get("days_since") or 0) > ALWAYS_POST_BEST_DAY_SINCE_AFTER_DAYS:
+    days_since = row.get("days_since") or 0
+    daily = int(row.get("daily_streams") or 0)
+
+    # Owner rule (2026-09-18): under the volume floor, only a genuinely stale
+    # (year-plus) record still posts. No other gate below can rescue it.
+    if daily < best_day_since.MIN_SONG_DAILY_STREAMS_FLOOR and days_since < best_day_since.MIN_DAILY_STREAMS_WAIVER_DAYS:
+        return False
+
+    if days_since > ALWAYS_POST_BEST_DAY_SINCE_AFTER_DAYS:
         return True
 
-    daily = int(row.get("daily_streams") or 0)
     if min_daily_streams is not None and daily >= min_daily_streams:
         return True
 

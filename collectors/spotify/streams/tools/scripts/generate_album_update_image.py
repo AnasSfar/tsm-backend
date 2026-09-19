@@ -2922,8 +2922,8 @@ def _format_best_since_long(value: object) -> str:
 def _best_day_post_label(row: dict) -> str:
     if row.get("kind") == "best_ever":
         label = "BEST DAY ever"
-    elif row.get("is_biggest_day_of_year"):
-        label = "BIGGEST DAY of the year"
+    elif row.get("is_biggest_day_of_year") and row.get("kind") == "since":
+        label = f"BIGGEST DAY of the year and BEST DAY since {_format_best_since_long(row.get('best_day_since'))}"
     elif row.get("kind") == "since":
         label = f"BEST DAY since {_format_best_since_long(row.get('best_day_since'))}"
     elif row.get("is_biggest_day_of_month"):
