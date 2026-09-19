@@ -45,13 +45,14 @@ Le runner lance, avec le meme `--scraped-at`:
 
 1. `global.py`
 2. `ts_page.py`
-3. `ts_page_all.py`
-4. `country_all.py`
-5. `genre_all.py`
-6. `scripts/export_apple_music.py`
-7. `generate_country_card_images.py`
-8. `generate_snapshot_images.py`
-9. `scripts/upload_ap_r2.py`, sauf `UPLOAD_TO_R2=0`
+3. `ts_page_all.py` (collecte brute, chaque cycle -> `*_raw.csv`)
+4. `finalize_ts_top_songs_daily.py` (agrege la veille en 1 ligne/chanson si pas deja fait -> CSV canonique)
+5. `country_all.py`
+6. `genre_all.py`
+7. `scripts/export_apple_music.py`
+8. `generate_country_card_images.py`
+9. `generate_snapshot_images.py`
+10. `scripts/upload_ap_r2.py`, sauf `UPLOAD_TO_R2=0`
 
 Options runner:
 
@@ -75,7 +76,13 @@ Scripts combines quotidiens:
   gb=0.70, jp=0.55, de/fr/ca=0.50, ... defaut 0.08 pour les marches non
   listes), somme -> classement global. Sans cette ponderation un #1 dans un
   marche ou TS est marginale compterait comme un #1 US ; garder les deux
-  tables synchronisees si TayBoard change la sienne. Ecrit un CSV **separe**
+  tables synchronisees si TayBoard change la sienne. Depuis le 2026-09-19,
+  TS Top Songs applique en plus `APPLE_MUSIC_TS_IMPORTANT_STOREFRONT_BOOST`
+  (defaut x3) aux 11 storefronts affiches sur les fiches chanson
+  (`us,gb,fr,ca,au,de,jp,br,mx,it,es`) : le rang global reste tous pays, mais
+  doit etre beaucoup plus ancre dans les marches que l'utilisateur peut
+  inspecter, au lieu d'etre propulse par la longue traine de petits stores.
+  Ecrit un CSV **separe**
   (`apple_music_ts_top_songs_global.csv`) : `ts_page.py` garde son fichier
   single-storefront intact car c'est la seule source lue par le scoring
   TayBoard (`_weekly_apple_music_ts_points`) — brancher ce dernier sur le
@@ -103,12 +110,55 @@ Scripts combines quotidiens:
   chanson est classee des qu'elle apparait dans les N premiers d'au moins un
   storefront ; une colonne storefront a `–` = pas dans le top N de ce pays ce
   jour-la (0 point la, jamais une estimation).
-  `ts_page_all.py` garde un gate interne une fois/jour
-  (`APPLE_MUSIC_TS_GLOBAL_HOUR`, defaut `02`), **mais `run_apple_music.py` lui
-  passe `--force` a chaque run depuis le 2026-08-28** (`ca4146fa5`) : le
-  composite tourne a chaque cycle Apple Music, pas une fois/jour. Monter
-  `APPLE_MUSIC_TS_GLOBAL_DEPTH` multiplie donc la pagination sur *tous* ces
-  runs.
+  **Architecture collecte/publication (refonte 2026-09-19)** : `ts_page_all.py`
+  n'a plus de gate horaire — il collecte a **chaque** cycle Apple Music (00h,
+  02h, ..., 22h, comme le reste d'Apple Music), mais ecrit dans un fichier
+  **brut** distinct (`apple_music_ts_top_songs_global_raw.csv`, jamais lu par
+  l'export/le site). Un nouveau script, `finalize_ts_top_songs_daily.py`,
+  tourne juste apres dans `run_apple_music.py` (meme liste `SCRIPTS`) et
+  cible **la veille** par rapport a la date du run — des qu'un jour est
+  termine (son dernier cycle 22h est passe), le prochain run (celui de 00h du
+  lendemain) agrege TOUS les cycles bruts de ce jour en **une seule ligne
+  finale par chanson** dans le CSV canonique
+  (`apple_music_ts_top_songs_global.csv`, celui que l'export lit) — logique
+  d'agregation dans `core/ts_top_songs_daily.py::compute_final_rows` (score
+  jour = somme de `500/rank**0.75` sur tous les cycles ou la chanson est
+  apparue ce jour-la, fusion par ISRC/apple_music_id comme avant). Idempotent :
+  si le CSV canonique du jour a deja des lignes, `finalize_ts_top_songs_daily.py`
+  ne fait rien (sauf `--force`) — l'appeler a chaque cycle est donc sans
+  risque, il ne travaille reellement qu'une fois, au premier cycle du
+  lendemain. `previous_rank` chaine toujours uniquement sur le jour
+  calendaire precedent (jamais intra-jour), donc finaliser un jour ne
+  recalcule que l'annotation `previous_rank` du jour suivant, jamais son
+  classement.
+  **Consequence** : le jour en cours (aujourd'hui) n'a **aucune** ligne dans
+  le CSV canonique tant qu'il n'est pas termine — le site continue d'afficher
+  le dernier jour COMPLET jusqu'a ce que le run de minuit du lendemain
+  finalise. Ancien design (gate `APPLE_MUSIC_TS_GLOBAL_HOUR`, une seule
+  collecte/jour publiee immediatement) abandonne le meme jour : il ne
+  refletait que le cycle tombant sur l'heure du gate, pas la journee entiere.
+  **Backfill historique (2026-09-19, one-off)** :
+  `backfill_ts_top_songs_daily_final.py` a applique retroactivement la meme
+  agregation sur tout l'historique (2026-07-30 -> 2026-09-18, ou chaque jour
+  avait 4 a 45 cycles concurrents faute de la separation brut/final
+  ci-dessus) ; garde un `.bak` par fichier modifie. Ne pas rejouer sauf bug
+  trouve dans l'agregation — le pipeline live n'en a plus besoin.
+  **Piege frontend (corrige le 2026-09-18, toujours vrai)** :
+  `scripts/export_apple_music.py` construit `applemusic.json["dates"]` comme
+  union de TOUTES les sources (global chart, TS composite, country/genre
+  charts) ; ces dernieres tournent bien toutes les 2h en continu, et
+  `_mirror_flat_current_to_latest` recopie le composite TS (inchange) sur
+  chaque heure de cette union pour que l'API `/api/apple-music?date=` ne
+  renvoie jamais un bucket vide a une heure sans vrai run — ce mirroring
+  reste necessaire cote API, donc `dates` continuera de compter chaque cycle
+  de 2h meme si le composite TS lui-meme ne change qu'une fois/jour.
+  `applemusic.json["ts_top_songs_dates"]` (dates reelles, non mirrorees, du
+  CSV composite canonique — 3e valeur de retour de `build_top_songs`,
+  capturee avant tout mirroring) reste la source de verite pour l'affichage :
+  `AppleMusic.jsx` scope son selecteur d'heure (`apple_snapshot_time`) dessus
+  quand `tab === "ts_top_songs"`, donc l'onglet TS Top Songs Global n'affiche
+  jamais plus d'une heure/jour, y compris pour aujourd'hui si le jour n'est
+  pas encore finalise (il n'a alors aucune entree du tout, cf. ci-dessus).
 
 Scripts legacy/manuels:
 
@@ -128,13 +178,15 @@ Outils partages:
 - `core/export.py`: lancement optionnel export.
 - `core/storefronts.py`: decouverte storefronts.
 - `core/r2.py`: upload R2 si change.
+- `core/ts_top_songs_daily.py` (2026-09-19): agregation brut-cycles -> classement final du jour pour TS Top Songs Global, partagee par `finalize_ts_top_songs_daily.py` et `backfill_ts_top_songs_daily_final.py`.
 
 ## Donnees et sorties
 
-CSV principaux dans `db/`:
+CSV principaux dans `db/` (ou le dossier snapshot du jour, `DB_DIR` est date-dependant):
 
 - `apple_music_ts_top_songs.csv` (single-storefront `us`, input TayBoard uniquement)
-- `apple_music_ts_top_songs_global.csv` (composite tous storefronts, alimente l'onglet site "TS Top Songs" via `export_apple_music.py`/`upload_ap_r2.py`)
+- `apple_music_ts_top_songs_global_raw.csv` (2026-09-19, ecrit par `ts_page_all.py` a chaque cycle 2h ; jamais lu par l'export — donnees internes seulement)
+- `apple_music_ts_top_songs_global.csv` (composite final, **une ligne par chanson par jour**, ecrit uniquement par `finalize_ts_top_songs_daily.py` une fois le jour termine ; alimente l'onglet site "TS Top Songs" via `export_apple_music.py`/`upload_ap_r2.py` — aucune ligne pour le jour en cours tant qu'il n'est pas finalise)
 - `apple_music_global.csv`
 - `apple_music_genre_charts.csv`
 - `apple_music_country_charts.csv`

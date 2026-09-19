@@ -11,6 +11,16 @@ purpose: that file is a direct TayBoard scoring input
 must keep reflecting a single storefront so TayBoard's calibrated weekly
 score stays untouched. This composite only feeds the site's "TS Top Songs"
 display (see scripts/export_apple_music.py::TOP_SONGS_CSV).
+
+Runs (collects) every cycle — same cadence as the rest of Apple Music, no
+once-a-day gate — but writes to a RAW file (`..._raw.csv`) that the export
+never reads. `finalize_ts_top_songs_daily.py` aggregates a completed day's
+raw cycles into ONE final ranking in the canonical CSV (`core/csv_utils`'s
+CSV_PATH below), which is the only file the site/export sees. Design
+decision 2026-09-19: an earlier version tried to publish live every cycle
+gated to a single daily run hour — that only ever reflected whichever run
+happened to land on the gate hour, not the whole day's data. See
+`core/ts_top_songs_daily.py` for the aggregation itself.
 """
 
 from __future__ import annotations
@@ -25,22 +35,25 @@ from threading import local
 
 from requests import RequestException
 
-from core.config import ARTIST_ID, DB_DIR, SCRIPTS_DIR, WORKERS
+from core.config import ARTIST_ID, DB_DIR, WORKERS
 from core.csv_utils import load_previous_ranks, read_csv_rows, rewrite_for_snapshot
-from core.export import maybe_run_export
 from core.filters import build_artwork_url, clean_text, rank_key
 from core.http import build_session
 from core.storefronts import resolve_storefronts
 from core.token import TokenManager, build_auth_headers
 
+# Canonical (published) file — read-only here, for previous-day rank lookups.
+# Only `finalize_ts_top_songs_daily.py` ever writes to it.
 CSV_PATH = DB_DIR / "apple_music_ts_top_songs_global.csv"
-EXPORT_SCRIPT = SCRIPTS_DIR / "export_apple_music.py"
+# This cycle's raw collection — never read by the export/site.
+RAW_CSV_PATH = DB_DIR / "apple_music_ts_top_songs_global_raw.csv"
 _THREAD_LOCAL = local()
 
 GLOBAL_STOREFRONT_TAG = "global"
 IMPORTANT_STOREFRONTS = ("us", "gb", "fr", "ca", "au", "de", "jp", "br", "mx", "it", "es")
 MAX_FAILURE_PCT = 5.0
 PAGE_LIMIT = 100
+IMPORTANT_STOREFRONT_BOOST = max(1.0, float(os.getenv("APPLE_MUSIC_TS_IMPORTANT_STOREFRONT_BOOST", "3.0")))
 
 # Tail ranks contribute negligible composite score under the power-law curve
 # below (rank 400 ~= 6 pts vs ~500 pts for rank 1), so capping pagination
@@ -51,16 +64,11 @@ PAGE_LIMIT = 100
 DEPTH_CAP = max(1, int(os.getenv("APPLE_MUSIC_TS_GLOBAL_DEPTH", "400")))
 MAX_PAGES = max(1, -(-DEPTH_CAP // PAGE_LIMIT))
 
-# The site only ever displays the latest snapshot, so this (expensive,
-# 100+ storefront) composite only needs to refresh once/day even though
-# run_apple_music.py itself runs every 4h. Other invocations skip.
-RUN_HOUR = os.getenv("APPLE_MUSIC_TS_GLOBAL_HOUR", "02").strip()
-
-# Same market-weight table as TayBoard's Apple Music scoring
-# (collectors/billboard/swift_top_100.py::AM_MARKET_WEIGHTS), duplicated
-# locally to avoid a cross-collector import — keep in sync if that table
-# ever changes. Without this, a storefront where TS is a niche act would
-# count the same as the US in the composite.
+# Base market-weight table copied from TayBoard's Apple Music scoring
+# (collectors/billboard/swift_top_100.py::AM_MARKET_WEIGHTS). TS Top Songs
+# then boosts the 11 storefronts shown on song detail pages so the published
+# global rank stays anchored to the markets users can inspect, instead of being
+# dominated by the long tail of small storefronts where a track barely charts.
 MARKET_WEIGHT_DEFAULT = 0.08
 MARKET_WEIGHTS: dict[str, float] = {
     # Tier 1
@@ -107,7 +115,10 @@ MARKET_WEIGHTS: dict[str, float] = {
 
 
 def _market_weight(storefront: str) -> float:
-    return MARKET_WEIGHTS.get(storefront, MARKET_WEIGHT_DEFAULT)
+    weight = MARKET_WEIGHTS.get(storefront, MARKET_WEIGHT_DEFAULT)
+    if storefront in IMPORTANT_STOREFRONTS:
+        weight *= IMPORTANT_STOREFRONT_BOOST
+    return weight
 
 FIELDNAMES = [
     "date",
@@ -182,7 +193,6 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument("--date", dest="run_date", default=date.today().isoformat())
     parser.add_argument("--scraped-at", dest="scraped_at", default=None)
-    parser.add_argument("--force", action="store_true", help="Bypass the once-a-day run gate.")
     return parser.parse_args()
 
 
@@ -269,20 +279,16 @@ def main() -> None:
     today = args.run_date
     scraped_at = args.scraped_at or f"{today}T{datetime.now().strftime('%H:%M:%S')}"
 
-    run_hour = scraped_at[11:13] if len(scraped_at) >= 13 else ""
-    if not args.force and run_hour != RUN_HOUR:
-        print(
-            f"[Apple Music TS Global] Skipping — runs once/day at hour {RUN_HOUR} "
-            f"(this run: {run_hour or 'unknown'}). Use --force to override."
-        )
-        return
-
     base_session = build_session()
     manager = TokenManager(base_session)
     base_session.headers.update(build_auth_headers(manager.get()))
 
     storefronts = [s.lower() for s in resolve_storefronts(base_session)]
-    print(f"[Apple Music TS Global] Storefronts: {len(storefronts)} (depth cap {DEPTH_CAP}, {MAX_PAGES} page(s) each)")
+    print(
+        f"[Apple Music TS Global] Storefronts: {len(storefronts)} "
+        f"(depth cap {DEPTH_CAP}, {MAX_PAGES} page(s) each; "
+        f"important storefront boost x{IMPORTANT_STOREFRONT_BOOST:g})"
+    )
     print(f"[Apple Music TS Global] Workers: {WORKERS}")
 
     results: dict[str, list[dict]] = {}
@@ -432,9 +438,8 @@ def main() -> None:
     if len(rows) > 20:
         print(f"... {len(rows) - 20} more row(s)")
 
-    rewrite_for_snapshot(CSV_PATH, FIELDNAMES, scraped_at, rows)
-    print(f"Wrote {len(rows)} rows -> {CSV_PATH}")
-    maybe_run_export(EXPORT_SCRIPT)
+    rewrite_for_snapshot(RAW_CSV_PATH, FIELDNAMES, scraped_at, rows)
+    print(f"Wrote {len(rows)} raw cycle rows -> {RAW_CSV_PATH}")
 
 
 if __name__ == "__main__":

@@ -26,6 +26,7 @@ SCRIPTS = [
     HERE / "global.py",
     HERE / "ts_page.py",
     HERE / "ts_page_all.py",
+    HERE / "finalize_ts_top_songs_daily.py",
     HERE / "country_all.py",
     HERE / "genre_all.py",
 ]
@@ -250,8 +251,7 @@ def main() -> None:
     failures: list[tuple[str, int]] = []
 
     for script in SCRIPTS:
-        extra_args = ["--force"] if script.name == "ts_page_all.py" else None
-        code = run_script(script, scraped_at, extra_args=extra_args)
+        code = run_script(script, scraped_at)
         if code != 0:
             failures.append((script.name, code))
 
