@@ -45,11 +45,6 @@ FEATURES_JSON = DISCOGRAPHY_DIR / "features.json"
 DEFAULT_OUTPUT = WEB_EXPORT_DATA_DIR / "best_day_since.json"
 HISTORY_START_DATE = date(2025, 1, 1)
 DEFAULT_MIN_DAYS = 30
-# A "best day since X" whose beaten day X is at most this many days old counts as
-# a *recent repeat* record (two comparable big days close together, not on
-# consecutive days) - captions then read "has once again earned its best day
-# since X" instead of "earned its best day since X".
-RECENT_REPEAT_RECORD_DAYS = 60
 LIVE_COLLECTION_MIN_DAYS = 30
 LIVE_COLLECTION_MIN_PCT_CHANGE = 10.0
 # Year records must include the full calendar year; holiday carryover in early
@@ -628,12 +623,11 @@ def era_recap_groups(
 
 def best_day_marker_text(row: dict | None) -> str | None:
     """Short "since" marker for a best-day-since row, matching the album update
-    image: "of the year" / "of the month" (no "since" prefix) or a long date
-    like "November 26th, 2025"."""
+    image: a long date like "November 26th, 2025" or "of the month" (no
+    "since" prefix). Biggest-day-of-the-year rows show the beaten date, not
+    "of the year", so album updates do not lose the actual callback."""
     if not row or row.get("kind") not in ("since", "best_ever"):
         return None
-    if row.get("is_biggest_day_of_year"):
-        return "of the year"
     value = row.get("best_day_since")
     if isinstance(value, str) and re.match(r"\d{4}-\d{2}-\d{2}$", value):
         marker_date = date.fromisoformat(value)
@@ -933,32 +927,39 @@ def format_long_date(value: str) -> str:
     return d.strftime("%B {S}, %Y").replace("{S}", ordinal(d.day))
 
 
-def is_recent_repeat_record(
-    row: dict,
-    *,
-    window_days: int = RECENT_REPEAT_RECORD_DAYS,
-) -> bool:
-    """True when this "best day since" beats a *recent* prior day.
+def is_recent_repeat_record(row: dict) -> bool:
+    """True when the SAME track also hit a best-day-since record (kind
+    "since" or "best_ever") on the day right before this one — two record
+    days back-to-back.
 
     Used to switch caption wording from "earned its best day since X" to "has
-    once again earned its best day since X" - the song/album had a comparable
-    big day within ``window_days`` and just did it again (never on consecutive
-    days: ``compute_best_day_since`` already rejects a beaten day <= 1 day old).
-    ``best_ever`` has no beaten day and is never a repeat.
+    once again earned its best day since X". Decision 2026-09-19: replaces an
+    earlier definition (row["days_since"] <= a fixed 60-day window) that the
+    owner rejected — "once again" must mean yesterday repeated the feat, not
+    "the beaten record happens to be under 60 days old" (those are different
+    claims: a record beaten 45 days ago is not "once again" just because 45
+    <= 60, unless the track ALSO set a record yesterday).
     """
-    if row.get("kind") != "since":
+    if row.get("kind") not in ("since", "best_ever"):
         return False
-    days_since = row.get("days_since")
-    return days_since is not None and 0 < int(days_since) <= window_days
+    track_id = row.get("track_id")
+    row_date = row.get("date")
+    if not track_id or not row_date:
+        return False
+    track = load_tracks(include_extras=True).get(track_id)
+    if not track:
+        return False
+    points = load_history().get(track_id) or []
+    previous_date = date.fromisoformat(row_date) - timedelta(days=1)
+    previous_row = compute_best_day_since(track, points, previous_date)
+    return previous_row is not None and previous_row.get("kind") in ("since", "best_ever")
 
 
 def row_label(row: dict) -> str:
-    # Owner rule (2026-09-18): "biggest day of the year" never stands alone -
-    # it always carries the actual since-date (or "ever") alongside it.
+    # Owner rule (2026-09-19): public labels should show the callback date
+    # rather than replacing it with "of the year".
     if row["kind"] == "best_ever":
         label = "best day ever"
-    elif row.get("is_biggest_day_of_year") and row.get("kind") == "since":
-        label = f"biggest day of the year and best day since {format_long_date(row['best_day_since'])}"
     elif row.get("kind") == "since":
         label = f"best day since {format_long_date(row['best_day_since'])}"
     elif row.get("is_biggest_day_of_month"):

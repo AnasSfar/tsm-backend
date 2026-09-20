@@ -67,29 +67,8 @@ def canonical_country(value: Any) -> str:
     return "uk" if country == "gb" else country
 
 
-def discover_countries() -> dict[str, tuple[str, ...]]:
-    countries: dict[str, set[str]] = {key: set(values) for key, values in BASE_COUNTRIES.items()}
-    for path in worldwide_files():
-        try:
-            data = load_json(path)
-        except Exception:
-            continue
-        by_track = data.get("by_track", {}) if isinstance(data, dict) else {}
-        if not isinstance(by_track, dict):
-            continue
-        for entries in by_track.values():
-            if not isinstance(entries, list):
-                continue
-            for entry in entries:
-                if not isinstance(entry, dict):
-                    continue
-                raw_country = str(entry.get("country") or entry.get("country_name") or "").strip().lower()
-                country = canonical_country(raw_country)
-                if not country:
-                    continue
-                countries.setdefault(country, set()).add(raw_country or country)
-                countries[country].add(country)
-    return {country: tuple(sorted(values)) for country, values in sorted(countries.items())}
+def discover_countries(worldwide_index: dict[str, list[dict[str, str]]]) -> set[str]:
+    return set(BASE_COUNTRIES) | set(worldwide_index)
 
 
 def date_from_path(path: Path) -> str:
@@ -139,21 +118,34 @@ def rows_from_regional_snapshot(path: Path) -> list[dict[str, str]]:
     return out
 
 
-def rows_from_worldwide_snapshot(path: Path, chart: str, countries: dict[str, tuple[str, ...]], names: dict[str, str]) -> list[dict[str, str]]:
-    chart_date = date_from_path(path)
-    data = load_json(path)
-    by_track = data.get("by_track", {}) if isinstance(data, dict) else {}
-    wanted = set(countries[chart])
-    out = []
-    for track_id, entries in by_track.items():
-        track_id = str(track_id).strip()
-        name = names.get(track_id, track_id)
-        if not isinstance(entries, list):
+def build_worldwide_index(names: dict[str, str]) -> dict[str, list[dict[str, str]]]:
+    """Parse every worldwide snapshot once and bucket rows by canonical country.
+
+    The naive per-chart approach re-parsed all worldwide snapshot files for
+    every country (2000+ files x ~190 countries), which is what made
+    sync_spotify_country_charts_from_worldwide.py slow. Each file only needs
+    to be read once.
+    """
+    index: dict[str, list[dict[str, str]]] = {}
+    for path in worldwide_files():
+        chart_date = date_from_path(path)
+        data = load_json(path)
+        by_track = data.get("by_track", {}) if isinstance(data, dict) else {}
+        if not isinstance(by_track, dict):
             continue
-        for entry in entries:
-            if isinstance(entry, dict) and canonical_country(entry.get("country") or entry.get("country_name")) in wanted:
-                out.append(csv_row(chart_date, track_id, name, entry))
-    return out
+        for track_id, entries in by_track.items():
+            track_id = str(track_id).strip()
+            name = names.get(track_id, track_id)
+            if not isinstance(entries, list):
+                continue
+            for entry in entries:
+                if not isinstance(entry, dict):
+                    continue
+                chart = canonical_country(entry.get("country") or entry.get("country_name"))
+                if not chart:
+                    continue
+                index.setdefault(chart, []).append(csv_row(chart_date, track_id, name, entry))
+    return index
 
 
 def read_existing(path: Path) -> list[dict[str, str]]:
@@ -181,7 +173,7 @@ def append_csv(path: Path, rows: list[dict[str, str]]) -> None:
         writer.writerows(rows)
 
 
-def sync_chart(chart: str, countries: dict[str, tuple[str, ...]], names: dict[str, str], dry_run: bool) -> tuple[int, str | None, str | None, int]:
+def sync_chart(chart: str, worldwide_index: dict[str, list[dict[str, str]]], dry_run: bool) -> tuple[int, str | None, str | None, int]:
     csv_path = DB_DIR / f"charts_history_{chart}.csv"
     existing_rows = read_existing(csv_path)
     existing_keys: set[tuple[str, str]] = set()
@@ -198,11 +190,10 @@ def sync_chart(chart: str, countries: dict[str, tuple[str, ...]], names: dict[st
                 if key not in existing_keys:
                     additions.setdefault(key, row)
 
-    for path in worldwide_files():
-        for row in rows_from_worldwide_snapshot(path, chart, countries, names):
-            key = (row["date"], row.get("track_id") or row["song_name"])
-            if key not in existing_keys:
-                additions.setdefault(key, row)
+    for row in worldwide_index.get(chart, []):
+        key = (row["date"], row.get("track_id") or row["song_name"])
+        if key not in existing_keys:
+            additions.setdefault(key, row)
 
     new_keys = sorted(additions, key=lambda key: (key[0], to_int(additions[key]["rank"]) or 9999, key[1].casefold()))
     rows = [additions[key] for key in new_keys]
@@ -219,17 +210,18 @@ def main() -> int:
     parser.add_argument("--dry-run", action="store_true")
     args = parser.parse_args()
 
-    countries = discover_countries()
+    names = title_lookup()
+    worldwide_index = build_worldwide_index(names)
+    countries = discover_countries(worldwide_index)
     charts = [canonical_country(chart) for chart in (args.charts or sorted(countries))]
-    unknown = sorted(set(charts) - set(countries))
+    unknown = sorted(set(charts) - countries)
     if unknown:
         raise SystemExit(f"Unknown chart region(s): {', '.join(unknown)}")
 
-    names = title_lookup()
     total_rows = 0
     total_dates = 0
     for chart in charts:
-        added_dates, first, last, added_rows = sync_chart(chart, countries, names, args.dry_run)
+        added_dates, first, last, added_rows = sync_chart(chart, worldwide_index, args.dry_run)
         total_dates += added_dates
         total_rows += added_rows
         print(f"{chart}: +{added_dates} date(s), +{added_rows} row(s), range {first} -> {last}")

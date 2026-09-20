@@ -1355,6 +1355,94 @@ Alertes actives :
 - **`new peak streams`** : **supprimee** (2026-08-27). L'historique charts ne
   remonte pas a 2017, donc pour un titre de catalogue le pic stocke n'est
   qu'un "record depuis le debut du tracking", pas un record all-time.
+- **`best chart position since <date>` (2026-09-19, backend-only)** :
+  `_collect_spcharts_rank_record_since` (dans `run_all_charts.py`, appelee
+  juste apres les alertes ci-dessus dans `_notify_spcharts_events`) lit
+  directement `db/charts_history_<region>.csv` (pas le payload discography)
+  pour les 3 regions de `SPCHARTS_RANKED_HISTORY_REGIONS`. **Premiere version
+  avait une fenetre fixe de 12 mois glissants** (reprise du defaut visible
+  dans l'ancien Records tab de Text Studio) — abandonnee le meme jour car elle
+  produisait des claims trompeurs : Blank Space #57 en global le 2026-09-18
+  ressortait comme "highest in 12 months" alors qu'il avait deja fait #57 (a
+  egalite) le 2023-11-11, largement hors fenetre. Remplacee par le meme
+  algorithme "since" que `streams/best_day_since.py::compute_best_day_since` :
+  remonter tout l'historique (sans limite de fenetre) jusqu'a la derniere
+  date qui egalait/battait deja le rang du jour ; pas de match jamais trouve
+  => vrai record all-time, deja couvert par l'alerte `new peak rank`
+  ci-dessus donc ignore ici (pas de doublon) ; le dernier match trouve hier
+  => pas assez newsworthy, ignore aussi (meme garde-fou que les streams).
+  Verbe "has once again reached" au lieu de "reached" quand la MEME chanson
+  avait DEJA independamment un record (rang ou streaming filtre) la veille —
+  `_spcharts_had_record_yesterday`, mirror de `is_recent_repeat_record` des
+  streams (voir plus bas, decision 2026-09-19 : ce n'est PAS "record battu il
+  y a moins de N jours", c'est "hier etait aussi un record"). **Seuil minimum
+  `SPCHARTS_RANK_RECORD_MIN_DAYS_SINCE` (21 jours, decision 2026-09-19)** :
+  un rang egale/battu il y a moins de 21 jours n'est pas newsworthy, pas de
+  tweet (mirror de `passes_filters(min_days=...)` des streams, dont le
+  defaut est 30 — volontairement plus bas ici car le rang est un signal plus
+  grossier/bruite qu'un chiffre de streams exact). Cas trouve en verifiant :
+  "I Knew It, I Knew You" en UK avait egale son rang seulement 3 jours plus
+  tot -> correctement filtre.
+  **La date "since" est la plus RECENTE qui egale/bat, pas la meilleure
+  valeur historique** : pour Blank Space, #54 le 2023-11-09 est un meilleur
+  rang que #57, mais #57 a aussi ete atteint a nouveau le 2023-11-10 et
+  2023-11-11 — la date correcte est donc le 11 (dernier jour avant
+  aujourd'hui a avoir egale #57), pas le 9. Meme convention que
+  `last_at_or_above` dans `best_day_since.py` (scan reverse-chronologique,
+  s'arrete au premier match).
+  **Piege trouve en verifiant sur les vraies donnees (2026-09-19) : le
+  matching par `track_id` (`_song_key`) casse la continuite historique.**
+  `db/charts_history_<region>.csv` n'a commence a remplir `track_id` qu'a
+  partir de ~2025-09 (775/880 lignes Blank Space/global sans `track_id`) —
+  `_song_key` (track_id d'abord, sinon titre) attribue donc une cle
+  DIFFERENTE aux vieilles lignes (cle titre) et aux lignes recentes (cle
+  track_id) pour la MEME chanson, ce qui empechait toute recherche "since" de
+  remonter avant ~2025-09 (silencieux : pas d'erreur, juste "aucun match
+  trouve" a tort). Corrige avec `_song_title_key` (titre normalise
+  uniquement, ignore `track_id`) utilise specifiquement pour cette recherche
+  historique — le `track_id` de la ligne du jour reste utilise ensuite pour
+  l'URL `Full history:` du tweet.
+  **Le message ntfy envoye EST directement le tweet pret a copier-coller**
+  (via `collectors/twitter/text.py::spotify_chart_rank_record_since_tweet`,
+  prefixe trophee `🏆 |`, meme style que les tweets `best_day_since` des
+  streams) — decision produit : le calcul ET le texte du tweet sont desormais
+  100% back, jamais front.
+  **Combine avec un record "filtered streaming day" du meme jour** :
+  "filtered streams" = le chiffre `streams` que Spotify Charts publie
+  lui-meme par entree de chart (colonne `streams` deja dans
+  `db/charts_history_<region>.csv`) — DIFFERENT du total exact quotidien de
+  `db/streams_history.csv` utilise par `streams/best_day_since.py` (qui a en
+  plus ~2 jours de retard sur charts, donc rarement verifiable pour la meme
+  date). **Piege deja fait puis corrige le meme jour** : une premiere version
+  croisait a tort la sortie de `streams/best_day_since.py`
+  (`WEB_EXPORT_DATA_DIR/best_day_since.json`) en pensant que "filtered
+  streams" = cette metrique-la — mauvaise source, tweet combine construit
+  avec de la donnee fabriquee lors d'un test (jamais poussee en prod).
+  `_spcharts_filtered_streaming_extra_line` calcule desormais tout en
+  autonome, sur les memes `points` deja charges pour la recherche de rang :
+  meme algo "since" (`_spcharts_since_search`, factorise pour rang ET
+  streams) applique a `streams` au lieu de `rank`, memes seuils
+  `SPCHARTS_RANK_RECORD_MIN_DAYS_SINCE`/`SPCHARTS_RANK_RECORD_RECENT_REPEAT_DAYS`.
+  Verifie sur les vraies donnees du 18/09 : les 4 signaux rang ont chacun
+  aussi un vrai record "filtered streaming" ce jour-la (ex. Blank Space :
+  since November 10, 2023, 1,794,478 streams [+10.1%]) — un seul tweet
+  combine les deux plutot que d'en envoyer deux separes pour la meme
+  chanson/jour.
+  **Remplace l'ancien mecanisme frontend** : le Records tab de Text Studio
+  (`tsm-frontend/frontend/src/pages/TextStudio.jsx`) avait un toggle
+  `recordsNotify` qui recalculait un signal similaire (fenetre fixe, pas
+  "since") cote navigateur et postait via `/api/admin/notify` — mais ne se
+  declenchait que si l'onglet Text Studio etait ouvert, le toggle actif (il
+  repartait a `false` a chaque chargement, aucune persistance) ET le signal
+  pas deja vu dans le `localStorage` de ce navigateur precis. Toggle + effet +
+  `postAdminNotification` retires de `TextStudio.jsx` le 2026-09-19 : le
+  Records tab garde uniquement la generation manuelle de texte (`highest_rank`
+  reste un choix de `recordsMetric` pour composer un texte a la main, toujours
+  sur fenetre fixe cote front — pas encore aligne sur la logique "since"),
+  plus aucune notif auto cote front pour aucune des 4 metrics
+  (`total_days`/`peak_streams`/`streak`/`highest_rank`) — `peak_streams` n'a
+  pas d'equivalent back (voir note "new peak streams" ci-dessus) et n'a donc
+  plus de notif du tout.
 
 ## Discography payload + vue "Overall" (par pays)
 

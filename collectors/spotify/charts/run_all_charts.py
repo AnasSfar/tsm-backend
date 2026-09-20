@@ -19,6 +19,7 @@ from pathlib import Path
 CHARTS_ROOT = Path(__file__).resolve().parent
 REPO_ROOT = CHARTS_ROOT.parents[2]
 sys.path.insert(0, str(REPO_ROOT / "collectors" / "spotify"))
+sys.path.insert(0, str(REPO_ROOT / "collectors"))
 
 import requests
 from dotenv import load_dotenv
@@ -29,6 +30,7 @@ from core.git_ops import git_commit_and_push
 from core.notify import send as _notify
 from core.retention import cleanup_generated_artifacts
 from core.swift_top_gate import check_swift_top_gate, mark_swift_top_done
+from twitter.text import date_label, spotify_chart_rank_record_since_tweet
 
 for _stream in (sys.stdout, sys.stderr):
     try:
@@ -1376,6 +1378,20 @@ def _song_title(row: dict) -> str:
     return str(row.get("song_name") or row.get("title") or row.get("track_name") or "Unknown song").strip()
 
 
+def _song_title_key(row: dict) -> str:
+    """Title-only key, ignoring track_id.
+
+    `db/charts_history_<region>.csv` only started populating `track_id` from
+    ~2025-09 (confirmed 2026-09-19: 775/880 Blank Space/global rows have no
+    track_id) — `_song_key` (track_id-first) therefore assigns a DIFFERENT key
+    to old vs new rows for the same song, breaking any search that needs to
+    walk continuous history across that boundary (see
+    `_collect_spcharts_rank_record_since`, which must reach years back).
+    """
+    title = re.sub(r"[^a-z0-9]+", " ", str(row.get("song_name") or "").lower()).strip()
+    return f"title:{title}" if title else ""
+
+
 def _load_discography_region(path: Path) -> dict | None:
     data = _load_json_file(path)
     if isinstance(data, dict) and isinstance(data.get("songs"), list):
@@ -1556,6 +1572,235 @@ def _collect_spcharts_peak_rank_records(current_rows: list[dict], previous_rows:
 # "best since tracking started" value, not an all-time record. Removed 2026-08-27.
 
 
+SPCHARTS_RANK_RECORD_REGION_LABELS = {"global": "Global", "us": "US", "uk": "UK"}
+# Decision 2026-09-19: a beaten record less than this many days old is not
+# newsworthy on its own (matching a rank from a couple weeks back isn't a
+# "record"). Deliberately lower than streams/best_day_since.py's
+# DEFAULT_MIN_DAYS (30) — chart rank is a much coarser, noisier signal
+# (whole-number position among ~200 tracks) than exact daily streams, so a
+# real 3-week-old rank match is already a meaningful gap.
+SPCHARTS_RANK_RECORD_MIN_DAYS_SINCE = 21
+
+
+def _load_charts_history_rows_by_date(region: str) -> dict[str, list[dict]]:
+    path = REPO_ROOT / "db" / f"charts_history_{region}.csv"
+    if not path.exists():
+        return {}
+    rows_by_date: dict[str, list[dict]] = {}
+    with path.open(newline="", encoding="utf-8") as handle:
+        for row in csv.DictReader(handle):
+            row_date = (row.get("date") or "").strip()
+            if not row_date:
+                continue
+            rows_by_date.setdefault(row_date, []).append(row)
+    return rows_by_date
+
+
+def _spcharts_since_search(
+    points: list[tuple[str, int, int | None, dict]],
+    latest_date: str,
+    current_value: int,
+    *,
+    get_value,
+    better_or_equal,
+) -> tuple[str, int] | None:
+    """Most recent (date, value) before `latest_date` where `better_or_equal(value,
+    current_value)` holds. `get_value` picks the field to compare (rank or
+    streams) out of each `points` tuple. Same scan direction/semantics as
+    streams/best_day_since.py::compute_best_day_since's `last_at_or_above`."""
+    for point in reversed(points):
+        row_date = point[0]
+        if row_date >= latest_date:
+            continue
+        value = get_value(point)
+        if value is None:
+            continue
+        if better_or_equal(value, current_value):
+            return (row_date, value)
+    return None
+
+
+def _rank_better_or_equal(value: int, current: int) -> bool:
+    return value <= current
+
+
+def _streams_better_or_equal(value: int, current: int) -> bool:
+    return value >= current
+
+
+def _spcharts_had_record_yesterday(
+    points: list[tuple[str, int, int | None, dict]],
+    target_date: date,
+    *,
+    get_value,
+    better_or_equal,
+    min_days: int,
+) -> bool:
+    """True when the SAME track independently qualified for a "since" record
+    the day before `target_date` too — two record days back-to-back.
+
+    Mirrors streams/best_day_since.py::is_recent_repeat_record (decision
+    2026-09-19): "once again" means yesterday repeated the feat, not "the
+    beaten record happens to be under some fixed number of days old".
+    """
+    yesterday = target_date - timedelta(days=1)
+    yesterday_iso = yesterday.isoformat()
+    yesterday_entries = [p for p in points if p[0] == yesterday_iso]
+    if not yesterday_entries:
+        return False
+    yesterday_value = get_value(yesterday_entries[-1])
+    if yesterday_value is None:
+        return False
+    match = _spcharts_since_search(
+        points, yesterday_iso, yesterday_value, get_value=get_value, better_or_equal=better_or_equal
+    )
+    if match is None:
+        return False
+    match_date, _match_value = match
+    return (yesterday - date.fromisoformat(match_date)).days >= min_days
+
+
+def _spcharts_filtered_streaming_extra_line(
+    points: list[tuple[str, int, int | None, dict]],
+    latest_date: str,
+    target_date: date,
+    current_streams: int | None,
+) -> str | None:
+    """"The song also earned its best filtered streaming day since <date> ..."
+    add-on line, decision 2026-09-19: "filtered streams" = the `streams`
+    figure Spotify Charts itself publishes per chart entry (the `streams`
+    column already in `db/charts_history_<region>.csv`) — a DIFFERENT, coarser
+    number than the exact daily total from `db/streams_history.csv` used by
+    streams/best_day_since.py (that pipeline also lags charts by ~2 days, so
+    it can't even be checked for the same date most of the time). Computed
+    self-contained from the same `points` already loaded for the rank search,
+    same "most recent day that matched/beat" logic and the same
+    `SPCHARTS_RANK_RECORD_MIN_DAYS_SINCE` gate as the chart-rank record above.
+    """
+    if not current_streams or current_streams <= 0:
+        return None
+    match = _spcharts_since_search(
+        points, latest_date, current_streams, get_value=lambda p: p[2], better_or_equal=_streams_better_or_equal
+    )
+    if match is None:
+        return None
+    since_date, _since_streams = match
+    days_since = (target_date - date.fromisoformat(since_date)).days
+    if days_since < SPCHARTS_RANK_RECORD_MIN_DAYS_SINCE:
+        return None
+
+    yesterday_entries = [p for p in points if p[0] == (target_date - timedelta(days=1)).isoformat()]
+    previous_streams = yesterday_entries[-1][2] if yesterday_entries else None
+    pct_text = ""
+    if previous_streams and previous_streams > 0:
+        pct = (current_streams - previous_streams) / previous_streams * 100
+        pct_text = f" [{pct:+.1f}%]"
+    repeat = _spcharts_had_record_yesterday(
+        points,
+        target_date,
+        get_value=lambda p: p[2],
+        better_or_equal=_streams_better_or_equal,
+        min_days=SPCHARTS_RANK_RECORD_MIN_DAYS_SINCE,
+    )
+    verb = "has once again earned" if repeat else "earned"
+    return (
+        f"The song also {verb} its best filtered streaming day since "
+        f"{date_label(since_date)} with {current_streams:,} streams{pct_text}."
+    )
+
+
+def _collect_spcharts_rank_record_since(region: str) -> list[str]:
+    """Ready-to-post "best chart position since <date>" tweets, backend-computed.
+
+    Replaces the earlier fixed 12-month rolling window (2026-09-19) with the
+    same "since" search as streams/best_day_since.py::compute_best_day_since:
+    walk the FULL history backward (no fixed window) for the most recent day
+    that already matched or beat today's rank. A fixed window produced weak
+    or misleading claims — e.g. Blank Space at #57 read as "highest in 12
+    months" when it had actually matched #57 back in 2023-11, just outside a
+    12-month window; the "since" search instead correctly reports "best
+    position since November 11, 2023". No previous match ever in history ->
+    true all-time best, already covered separately by the "new peak rank"
+    alert above, so it is skipped here (not reported as "since").
+
+    Tweet text via `spotify_chart_rank_record_since_tweet` (trophy prefix,
+    same style as the streams best-day-since tweets). Only flags a song when
+    the beaten record is at least `SPCHARTS_RANK_RECORD_MIN_DAYS_SINCE` (21)
+    days old (mirrors streams' `passes_filters(min_days=...)` gate) — a rank
+    matched a couple weeks back isn't a "record". When the song's chart
+    "filtered streams" figure is separately a since-record too, a second
+    "also earned its best filtered streaming day since ..." line is appended
+    (`_spcharts_filtered_streaming_extra_line`) rather than sending two tweets
+    for the same song/day.
+    """
+    rows_by_date = _load_charts_history_rows_by_date(region)
+    if not rows_by_date:
+        return []
+    latest_date = max(rows_by_date)
+    try:
+        target_date = date.fromisoformat(latest_date)
+    except ValueError:
+        return []
+
+    points_by_key: dict[str, list[tuple[str, int, int | None, dict]]] = {}
+    for row_date, day_rows in rows_by_date.items():
+        if row_date > latest_date:
+            continue
+        for row in day_rows:
+            key = _song_title_key(row)
+            rank = _to_int(row.get("rank"))
+            if not key or rank is None or rank <= 0:
+                continue
+            streams = _to_int(row.get("streams"))
+            points_by_key.setdefault(key, []).append((row_date, rank, streams, row))
+
+    region_label = SPCHARTS_RANK_RECORD_REGION_LABELS.get(region, region.upper())
+    tweets = []
+    for key, points in points_by_key.items():
+        points.sort(key=lambda p: p[0])
+        today_entries = [p for p in points if p[0] == latest_date]
+        if not today_entries:
+            continue
+        _, current_rank, current_streams, current_row = today_entries[-1]
+
+        last_at_or_better = _spcharts_since_search(
+            points, latest_date, current_rank, get_value=lambda p: p[1], better_or_equal=_rank_better_or_equal
+        )
+        if last_at_or_better is None:
+            continue  # true all-time best, not a "since" record
+        best_since_date, _best_since_rank = last_at_or_better
+        days_since = (target_date - date.fromisoformat(best_since_date)).days
+        if days_since < SPCHARTS_RANK_RECORD_MIN_DAYS_SINCE:
+            continue  # beaten record too recent to be newsworthy
+
+        track_id = str(current_row.get("track_id") or "").strip()
+        if not track_id:
+            continue
+        extra_line = _spcharts_filtered_streaming_extra_line(
+            points, latest_date, target_date, current_streams
+        )
+        repeat = _spcharts_had_record_yesterday(
+            points,
+            target_date,
+            get_value=lambda p: p[1],
+            better_or_equal=_rank_better_or_equal,
+            min_days=SPCHARTS_RANK_RECORD_MIN_DAYS_SINCE,
+        )
+        tweets.append(
+            spotify_chart_rank_record_since_tweet(
+                title=_song_title(current_row),
+                region=region,
+                region_label=region_label,
+                rank=current_rank,
+                since_date=best_since_date,
+                track_id=track_id,
+                repeat=repeat,
+                extra_line=extra_line,
+            )
+        )
+    return tweets
+
+
 def _notify_spcharts_events(env: dict[str, str]) -> None:
     discography_dir = WEB_EXPORT_DATA_DIR / "charts_discography"
     if not discography_dir.exists():
@@ -1565,6 +1810,9 @@ def _notify_spcharts_events(env: dict[str, str]) -> None:
     total_days_alerts: list[str] = []
     streak_alerts: list[str] = []
     peak_rank_alerts: list[str] = []
+    rank_record_tweets: list[str] = []
+    for region in sorted(SPCHARTS_RANKED_HISTORY_REGIONS):
+        rank_record_tweets.extend(_collect_spcharts_rank_record_since(region))
     for current_path in sorted(discography_dir.glob("*.json")):
         region = current_path.stem
         if region == "index" or region.endswith("_previous"):
@@ -1621,7 +1869,19 @@ def _notify_spcharts_events(env: dict[str, str]) -> None:
             tags="spotify,trophy",
         )
         print(f"[spcharts_notify] peak-rank alerts: {len(peak_rank_alerts)}")
-    if not total_days_alerts and not streak_alerts and not peak_rank_alerts:
+    if rank_record_tweets:
+        shown = rank_record_tweets[:5]
+        message = "\n\n---\n\n".join(shown)
+        if len(rank_record_tweets) > len(shown):
+            message += f"\n\n... +{len(rank_record_tweets) - len(shown)} more"
+        _notify(
+            topic,
+            message,
+            title="Spotify Charts - best position since (tweet ready)",
+            tags="spotify,trophy",
+        )
+        print(f"[spcharts_notify] rank-record-since tweets: {len(rank_record_tweets)}")
+    if not total_days_alerts and not streak_alerts and not peak_rank_alerts and not rank_record_tweets:
         print("[spcharts_notify] no alerts")
 
 

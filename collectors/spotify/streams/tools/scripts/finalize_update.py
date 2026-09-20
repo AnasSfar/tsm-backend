@@ -1051,6 +1051,7 @@ def _post_one_album(
     album: str,
     *,
     post_priority: str | None = None,
+    weekly_only: bool = False,
 ) -> None:
     """Generate + post a single album update card, honoring locks and completeness.
 
@@ -1095,6 +1096,8 @@ def _post_one_album(
 
     print(f"Generating album update image: {album} ...")
     album_cmd = [sys.executable, str(album_img_script), album, ctx.summary["stats_date"]]
+    if weekly_only:
+        album_cmd.append("--weekly-only")
     if not ctx.no_post_mode:
         album_cmd.append("--post")
     try:
@@ -1158,6 +1161,10 @@ def _album_daily_total(album: str, stats_date: str) -> int:
     )
 
 
+def _score_albums_for_posting(albums: list[str], stats_date: str) -> list[dict]:
+    return score_album_update.score_albums(list(albums), date_cls.fromisoformat(stats_date))
+
+
 def _rank_albums_for_posting(albums: list[str], stats_date: str) -> list[str]:
     """Order albums best-first for posting via ``score_album_update`` (same
     scoring shape as the best-day-since song scorer: daily abs/%% gain, weekly
@@ -1165,7 +1172,7 @@ def _rank_albums_for_posting(albums: list[str], stats_date: str) -> list[str]:
     Falls back to a plain daily-total sort if scoring fails — ordering must
     never block a post."""
     try:
-        scored = score_album_update.score_albums(list(albums), date_cls.fromisoformat(stats_date))
+        scored = _score_albums_for_posting(albums, stats_date)
     except Exception as exc:
         print(f"[all-albums] score ranking failed ({exc}); sorting by daily total.")
         return sorted(albums, key=lambda album: _album_daily_total(album, stats_date), reverse=True)
@@ -1183,7 +1190,57 @@ def _rank_albums_for_posting(albums: list[str], stats_date: str) -> list[str]:
     return ranked
 
 
-def _album_post_queue(ctx: FinalizeContext, stats_date: str) -> list[str]:
+def _weekend_album_post_queue(ctx: FinalizeContext, stats_date: str) -> list[str]:
+    """Weekend album cards: post only albums with an exact positive weekly gain.
+
+    The score module already computes album-level weekly_abs_gain from the same
+    history series used for weekday ordering. Albums with missing or nonpositive
+    weekly gain stay unposted instead of being papered over with a fallback.
+    """
+    albums = _all_album_names(ctx)
+    blocked: list[str] = []
+    postable: list[str] = []
+    for album in albums:
+        block_reason = generate_album_update_image.holiday_collection_post_block_reason(album, stats_date)
+        if block_reason:
+            blocked.append(album)
+        else:
+            postable.append(album)
+    if blocked:
+        print(f"[weekend-albums] skipped before ranking (not postable): {', '.join(blocked)}")
+
+    try:
+        scored = _score_albums_for_posting(postable, stats_date)
+    except Exception as exc:
+        print(f"[weekend-albums] score ranking failed ({exc}); no weekly-only album cards posted.")
+        return []
+
+    queue: list[str] = []
+    skipped: list[str] = []
+    for item in scored:
+        album = item.get("album")
+        weekly_abs_gain = item.get("weekly_abs_gain")
+        if item.get("status") == "scored" and weekly_abs_gain is not None and int(weekly_abs_gain) > 0:
+            queue.append(str(album))
+        else:
+            skipped.append(str(album))
+
+    if queue:
+        top = ", ".join(
+            f"{item['album']} +{int(item.get('weekly_abs_gain') or 0):,}"
+            for item in scored
+            if item.get("album") in queue
+        )
+        print(f"[weekend-albums] positive weekly gain queue: {top}")
+    if skipped:
+        print(f"[weekend-albums] skipped (no positive weekly gain): {', '.join(skipped)}")
+    return queue
+
+
+def _album_post_queue(ctx: FinalizeContext, stats_date: str, *, weekend_weekly_only: bool = False) -> list[str]:
+    if weekend_weekly_only:
+        return _weekend_album_post_queue(ctx, stats_date)
+
     """Daily album post order (decision 2026-09-03): score every non-Misc album
     with ``score_album_update``, post the two best, then Showgirl / TTPD if they
     are not already in that top 2, then the rest strictly by score. No targeted
@@ -1232,26 +1289,25 @@ def _album_post_queue(ctx: FinalizeContext, stats_date: str) -> list[str]:
 def _post_all_albums(ctx: FinalizeContext, state: dict[str, float]) -> None:
     """Every non-Misc album, posted independently (not as a thread), in
     ``_album_post_queue`` order (top 2 by score -> Showgirl/TTPD -> rest by
-    score). No album cards on weekend stats dates. In the normal daily run the
-    finalize loop interleaves these with the other post steps; this function is
-    the ``--post-only all-albums`` entrypoint (and the weekday fallback)."""
+    score). Weekend stats dates use weekly-only cards and only include albums
+    with a positive weekly gain. In the normal daily run the finalize loop
+    interleaves these with the other post steps; this function is the
+    ``--post-only all-albums`` entrypoint (and the weekday fallback)."""
     stats_date = ctx.summary["stats_date"]
-    if _is_weekend_stats_date(stats_date):
-        print("All-albums posts skipped: no album cards on weekend stats dates.")
-        return
+    weekend_weekly_only = _is_weekend_stats_date(stats_date)
 
     if not ctx.no_post_mode and not ctx.summary.get("all_done"):
         print("Skipping all-albums posts: not all tracks are done yet.")
         return
 
-    queue = _album_post_queue(ctx, stats_date)
+    queue = _album_post_queue(ctx, stats_date, weekend_weekly_only=weekend_weekly_only)
     if not queue:
         print("[all-albums] No albums found.")
         return
 
     album_img_script = ctx.script_dir / "tools" / "scripts" / "generate_album_update_image.py"
     for album in queue:
-        _post_one_album(ctx, state, album_img_script, album, post_priority="4")
+        _post_one_album(ctx, state, album_img_script, album, post_priority="4", weekly_only=weekend_weekly_only)
 
 
 def _post_debut_releases(ctx: FinalizeContext, state: dict[str, float]) -> None:
@@ -1667,9 +1723,11 @@ def run_final_update_tasks(ctx: FinalizeContext) -> None:
             )
 
         album_queue: list[str] = []
+        weekend_weekly_only_albums = False
         if not ctx.debug_daily_mode and not ctx.local_test_mode:
             if _is_weekend_stats_date(ctx.summary["stats_date"]):
-                print("Album update posts skipped: no album cards on weekend stats dates.")
+                weekend_weekly_only_albums = True
+                album_queue = _album_post_queue(ctx, ctx.summary["stats_date"], weekend_weekly_only=True)
             else:
                 album_queue = _album_post_queue(ctx, ctx.summary["stats_date"])
                 # A same-album overtake posts that album's update as the overtake
@@ -1723,7 +1781,12 @@ def run_final_update_tasks(ctx: FinalizeContext) -> None:
                     _guarded_post_step(
                         f"album update ({album})",
                         lambda album=album: _post_one_album(
-                            ctx, post_state, album_img_script, album, post_priority="4"
+                            ctx,
+                            post_state,
+                            album_img_script,
+                            album,
+                            post_priority="4",
+                            weekly_only=weekend_weekly_only_albums,
                         ),
                     )
             if not other_done:

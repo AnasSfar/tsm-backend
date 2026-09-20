@@ -3,7 +3,7 @@ from __future__ import annotations
 import sys
 from datetime import date
 
-from .links import charts_url, song_url, streams_latest_url
+from .links import chart_song_url, charts_url, song_url, streams_latest_url
 from .prefixes import BEST_DAY_PREFIX, MOST_STREAMED_SONGS_TITLE, OVERTAKE_PREFIX, STREAMS_PREFIX, THREAD_PREFIX, SPOTIFY_CHART_PREFIX, with_prefix
 
 
@@ -90,6 +90,28 @@ def best_day_since_tweet(
         f"Full history: {song_url(track_id)}"
     )
     return with_prefix(body, BEST_DAY_PREFIX)
+
+
+def spotify_chart_rank_record_since_tweet(
+    *,
+    title: str,
+    region: str,
+    region_label: str,
+    rank: int,
+    since_date: str,
+    track_id: str,
+    repeat: bool = False,
+    extra_line: str | None = None,
+) -> str:
+    verb = "has once again reached" if repeat else "reached"
+    lines = [
+        f'"{title}" {verb} its best chart position on the {region_label} Spotify chart '
+        f"since {date_label(since_date)}, at #{int(rank)}."
+    ]
+    if extra_line:
+        lines.append(extra_line)
+    lines.append(f"Full history: {chart_song_url(track_id, region=region)}")
+    return with_prefix("\n\n".join(lines), BEST_DAY_PREFIX)
 
 
 def best_day_since_recap_tweet(*, count: int, stats_date: str) -> str:

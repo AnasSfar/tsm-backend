@@ -58,8 +58,9 @@ MAX_BEST_DAY_SONG_POSTS_PER_ALBUM = 3
 # the-year row still bypass the cap entirely.
 POST_COLLECTION_STANDARD_SONG_POSTS = 3
 POST_COLLECTION_MAX_SONG_POSTS = 5
-MIN_SONG_DAILY_STREAMS_TO_POST = 80_000  # early-lane extra pass; superseded by best_day_since.MIN_SONG_DAILY_STREAMS_FLOOR (200k) below
+MIN_SONG_DAILY_STREAMS_TO_POST = 200_000  # mirrors best_day_since.MIN_SONG_DAILY_STREAMS_FLOOR
 EARLY_BEST_DAY_MIN_SCORE = 58.0
+BATCH_BEST_DAY_MIN_SCORE = 58.0
 EARLY_BEST_DAY_STANDARD_MAX_POSTS = 3
 EARLY_BEST_DAY_EXCEPTIONAL_MAX_POSTS = 5
 EARLY_BEST_DAY_EXCEPTIONAL_MIN_SCORE = 90.0
@@ -339,10 +340,9 @@ def _find_all_rows(target_date: str, *, min_days: int) -> list[dict]:
             or not (row.get("is_biggest_day_of_year") or best_day_since.passes_filters(row, min_days=min_days))
         ):
             continue
-        # A dedicated era recap card already covered this song's era today: no
-        # individual song card for it, unless it is an unconditional biggest
-        # day of the year (that card always posts - owner decision).
-        if not _is_unconditional_best_day(row) and _era_recap_posted_for(track.album, target_date):
+        # A dedicated era recap card already covered this song's era today: the
+        # recap is the post for those songs, so no independent card as well.
+        if _era_recap_posted_for(track.album, target_date):
             print(
                 f"[best_day_since_post] Skipping {row['title']}: {track.album} era recap "
                 f"already posted for {target_date}."
@@ -430,6 +430,25 @@ def _era_recap_posted_for(album: str | None, target_date: str) -> bool:
     if not key:
         return False
     return key in _ERA_RECAP_DONE_THIS_RUN or _era_recap_lock_path(key, target_date).exists()
+
+
+def _era_recap_track_ids_for_date(target_date: str) -> set[str]:
+    """Track IDs covered by a dedicated era recap for this date.
+
+    Includes recaps already posted/locked plus recaps generated in this process
+    during --no-post previews. This is the suppression source for individual
+    song cards: the era recap is the post for those songs.
+    """
+    covered: set[str] = set()
+    active_keys = set(_ERA_RECAP_DONE_THIS_RUN) | _posted_era_recap_keys_for_date(target_date)
+    if not active_keys:
+        return covered
+
+    for group in _era_recap_groups(target_date):
+        era_key = group.get("era_key") or _album_key(group.get("album"))
+        if era_key in active_keys:
+            covered.update(str(track_id) for track_id in (group.get("track_ids") or []) if track_id)
+    return covered
 
 
 def _post_one_era_recap(
@@ -567,17 +586,31 @@ def _pick_rows(
     max_per_album: int = MAX_BEST_DAY_SONG_POSTS_PER_ALBUM,
 ) -> list[dict]:
     rows = _find_all_rows(target_date, min_days=min_days)
+    era_recap_track_ids = _era_recap_track_ids_for_date(target_date)
+    if era_recap_track_ids:
+        kept: list[dict] = []
+        for row in rows:
+            if row["track_id"] in era_recap_track_ids:
+                print(
+                    f"[best_day_since_post] Skipping {row['title']}: already covered "
+                    f"by a dedicated era recap for {target_date}."
+                )
+                continue
+            kept.append(row)
+        rows = kept
     if exclude_ids:
         rows = [row for row in rows if row["track_id"] not in exclude_ids]
-    if min_daily_streams is not None or min_pct_change is not None:
-        rows = [
-            row for row in rows
-            if _passes_song_post_gate(
-                row,
-                min_daily_streams=min_daily_streams,
-                min_pct_change=min_pct_change,
-            )
-        ]
+    effective_min_daily_streams = (
+        MIN_SONG_DAILY_STREAMS_TO_POST if min_daily_streams is None else min_daily_streams
+    )
+    rows = [
+        row for row in rows
+        if _passes_song_post_gate(
+            row,
+            min_daily_streams=effective_min_daily_streams,
+            min_pct_change=min_pct_change,
+        )
+    ]
     rows.sort(key=_song_post_sort_key, reverse=True)
     counts = dict(album_post_counts or {})
 
@@ -610,10 +643,13 @@ def _song_post_sort_key(row: dict) -> tuple[int, int, int, int]:
 
 
 def _is_unconditional_best_day(row: dict) -> bool:
-    """Biggest day of the year: always gets its own card, posted early, with no
-    per-album / per-era / daily-count cap and no score gate (owner decision
-    2026-08-29). Stronger than the >3-month priority below."""
-    return bool(row.get("is_biggest_day_of_year"))
+    """High-volume biggest day of the year: bypasses per-album/daily caps.
+
+    Owner update 2026-09-19: low-volume year records belong in recap surfaces,
+    not standalone cards. They must still clear the same volume floor as other
+    individual best-day posts.
+    """
+    return bool(row.get("is_biggest_day_of_year")) and int(row.get("daily_streams") or 0) >= MIN_SONG_DAILY_STREAMS_TO_POST
 
 
 def _is_priority_best_day_since(row: dict) -> bool:
@@ -633,9 +669,6 @@ def _passes_song_post_gate(
     min_daily_streams: int | None,
     min_pct_change: float | None,
 ) -> bool:
-    if row.get("is_biggest_day_of_year"):
-        return True
-
     days_since = row.get("days_since") or 0
     daily = int(row.get("daily_streams") or 0)
 
@@ -749,7 +782,7 @@ def _post_single_track_early(
 
     is_priority = _is_priority_best_day_since(row)
 
-    if not _is_unconditional_best_day(row) and _era_recap_posted_for(track.get("album"), target_date):
+    if _era_recap_posted_for(track.get("album"), target_date):
         print(
             f"[best_day_since_early] Skipping {track_id}: {track.get('album')} era recap "
             f"already posted for {target_date}."
@@ -880,8 +913,6 @@ def _post_single_track_early(
 
 
 def _best_day_post_label(row: dict) -> str:
-    if row.get("is_biggest_day_of_year") and row.get("kind") == "since":
-        return f"BIGGEST DAY of the year and BEST DAY since {best_day_since.format_long_date(row['best_day_since'])}"
     label = best_day_since.row_label(row)
     return label.replace("best day", "BEST DAY", 1).replace("biggest day", "BIGGEST DAY", 1)
 
@@ -911,25 +942,29 @@ def _validated_song_rows_for_post(
     standard_limit: int = POST_COLLECTION_STANDARD_SONG_POSTS,
     min_days: int = POST_COLLECTION_BEST_DAY_MIN_DAYS,
 ) -> list[dict]:
-    exceptional_score_by_id: dict[str, float] | None = None
+    score_by_id: dict[str, dict] | None = None
+    scoring_failed = False
 
-    def _exceptional_score(track_id: str) -> float:
-        nonlocal exceptional_score_by_id
-        if exceptional_score_by_id is None:
+    def _score_item(track_id: str) -> dict | None:
+        nonlocal score_by_id, scoring_failed
+        if score_by_id is None and not scoring_failed:
             try:
                 result = score_best_day_since.score_best_day_since(
                     date.fromisoformat(target_date),
                     min_days=min_days,
                 )
-                exceptional_score_by_id = {
-                    item["track_id"]: float(item.get("score") or 0.0)
+                score_by_id = {
+                    item["track_id"]: item
                     for item in result.get("items", [])
                 }
-            except Exception as exc:  # scoring must never block a post
-                print(f"[best_day_since_post] Batch scoring unavailable ({exc}); "
-                      f"treating extra-slot candidates as non-exceptional.")
-                exceptional_score_by_id = {}
-        return exceptional_score_by_id.get(track_id, 0.0)
+            except Exception as exc:
+                print(
+                    f"[best_day_since_post] Batch scoring unavailable ({exc}); "
+                    "skipping non-year-record individual best-day posts."
+                )
+                score_by_id = {}
+                scoring_failed = True
+        return (score_by_id or {}).get(track_id)
 
     rows: list[dict] = []
     capped_count = 0
@@ -937,6 +972,38 @@ def _validated_song_rows_for_post(
         is_unconditional = _is_unconditional_best_day(row)
         if not is_unconditional and capped_count >= limit:
             continue
+
+        score_item: dict | None = None
+        numeric_score = 0.0
+        dynamic_min_score = BATCH_BEST_DAY_MIN_SCORE
+        if not is_unconditional:
+            score_item = _score_item(row["track_id"])
+            if not score_item:
+                print(
+                    f"[best_day_since_post] Skipping {row['title']}: no batch score "
+                    f"available for {target_date}."
+                )
+                continue
+            numeric_score = float(score_item.get("score") or 0.0)
+            dynamic_min_score, threshold_adjustments = score_best_day_since.dynamic_early_min_score(
+                score_item,
+                BATCH_BEST_DAY_MIN_SCORE,
+            )
+            if numeric_score < dynamic_min_score:
+                print(
+                    f"[best_day_since_post] Skipping {row['title']}: score "
+                    f"{numeric_score:.2f} < dynamic threshold {dynamic_min_score:.2f}."
+                )
+                continue
+            row["_post_score"] = {
+                "score": round(numeric_score, 3),
+                "dynamic_min_score": dynamic_min_score,
+                "threshold_adjustments": {
+                    key: round(value, 3)
+                    for key, value in threshold_adjustments.items()
+                },
+            }
+
         # Slots beyond the standard batch size are reserved for exceptional
         # records: a >90-day gap (priority), or a score that clears the early
         # lane's exceptional bar. Everything else stops at the standard count.
@@ -945,7 +1012,6 @@ def _validated_song_rows_for_post(
             and capped_count >= standard_limit
             and not _is_priority_best_day_since(row)
         ):
-            numeric_score = _exceptional_score(row["track_id"])
             if numeric_score < EARLY_BEST_DAY_EXCEPTIONAL_MIN_SCORE:
                 print(
                     f"[best_day_since_post] Skipping {row['title']}: batch slot "
@@ -1233,8 +1299,6 @@ def mark_recap_thread_posted(target_date: str, era_groups: list[dict], has_globa
         recap_lock.touch()
 
 def _best_since_badge_text(row: dict) -> str:
-    if row.get("is_biggest_day_of_year") and row.get("kind") == "since":
-        return f"biggest day of the year and best day since {best_day_since.format_long_date(row['best_day_since'])}"
     return best_day_since.row_label(row)
 
 

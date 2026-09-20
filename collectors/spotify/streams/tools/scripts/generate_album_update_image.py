@@ -690,12 +690,18 @@ def load_history_for_album(
     sections: list[dict], target_date: str
 ) -> dict[str, dict]:
     """
-    Returns {track_id: {streams, daily, change, pct}} for target_date.
+    Returns {track_id: {streams, daily, change, pct, weekly_change, weekly_pct}}
+    for target_date.
     change = daily_today - daily_yesterday
     pct    = change / daily_yesterday * 100  (None if yest == 0)
+    weekly_change = daily_today - daily_same_weekday_last_week
+    weekly_pct    = weekly_change / daily_same_weekday_last_week * 100
     """
-    yesterday = str(date_cls.fromisoformat(target_date) - timedelta(days=1))
-    day_before = str(date_cls.fromisoformat(target_date) - timedelta(days=2))
+    target_day = date_cls.fromisoformat(target_date)
+    yesterday = str(target_day - timedelta(days=1))
+    day_before = str(target_day - timedelta(days=2))
+    last_week = str(target_day - timedelta(days=7))
+    last_week_prev = str(target_day - timedelta(days=8))
     all_ids = {t["track_id"] for sec in sections for t in sec["tracks"]}
     release_dates = {
         t["track_id"]: (t.get("release_date") or "")[:10]
@@ -705,6 +711,8 @@ def load_history_for_album(
     today_data: dict[str, dict] = {}
     yest_data: dict[str, dict] = {}
     before_data: dict[str, dict] = {}
+    week_data: dict[str, dict] = {}
+    week_prev_data: dict[str, dict] = {}
 
     def _parse_optional_int(raw: str | None) -> int | None:
         s = (raw or "").strip()
@@ -722,7 +730,7 @@ def load_history_for_album(
                 continue
 
             d = row.get("date") or ""
-            if d not in (target_date, yesterday, day_before):
+            if d not in (target_date, yesterday, day_before, last_week, last_week_prev):
                 continue
 
             entry = {
@@ -734,8 +742,12 @@ def load_history_for_album(
                 today_data[tid] = entry
             elif d == yesterday:
                 yest_data[tid] = entry
-            else:
+            elif d == day_before:
                 before_data[tid] = entry
+            elif d == last_week:
+                week_data[tid] = entry
+            else:
+                week_prev_data[tid] = entry
 
     def _fill_missing_daily(cur: dict[str, dict], prev: dict[str, dict]) -> None:
         for tid, e in cur.items():
@@ -753,6 +765,7 @@ def load_history_for_album(
 
     _fill_missing_daily(today_data, yest_data)
     _fill_missing_daily(yest_data, before_data)
+    _fill_missing_daily(week_data, week_prev_data)
 
     def _is_release_day(tid: str) -> bool:
         # The catalogue release_date is the ground truth for "NEW" (shown on
@@ -774,6 +787,7 @@ def load_history_for_album(
             }
             continue
         y = yest_data.get(tid)
+        w = week_data.get(tid)
         daily = t.get("daily_streams")
         streams = t.get("streams")
         if t.get("estimated_reason") == "admin_override" and daily is not None and daily < 0:
@@ -785,13 +799,24 @@ def load_history_for_album(
             # decision 2026-09-08). Treat as "no update today" here.
             daily = None
         yest_d = (y or {}).get("daily_streams")
+        week_d = (w or {}).get("daily_streams")
+        if (w or {}).get("estimated_reason") == "admin_override" and week_d is not None and week_d < 0:
+            week_d = None
         change = (daily - yest_d) if (daily is not None and yest_d is not None) else None
         pct = (change / yest_d * 100) if (change is not None and yest_d not in (None, 0)) else None
+        weekly_change = (daily - week_d) if (daily is not None and week_d is not None) else None
+        weekly_pct = (
+            (weekly_change / week_d * 100)
+            if (weekly_change is not None and week_d not in (None, 0))
+            else None
+        )
         result[tid] = {
             "streams": streams,
             "daily":   daily,
             "change":  change,
             "pct":     pct,
+            "weekly_change": weekly_change,
+            "weekly_pct": weekly_pct,
             "ever_seen": not _is_release_day(tid),
         }
     return result
@@ -1327,6 +1352,7 @@ def _compute_layout_metrics(
     sections: list[dict],
     show_filter_cols: bool,
     best_day_labels_by_track: dict[str, str] | None = None,
+    weekly_only: bool = False,
 ) -> dict:
     """Compute dynamic grid/body sizing to avoid extra whitespace in final PNG."""
     visible_tracks = [
@@ -1351,7 +1377,19 @@ def _compute_layout_metrics(
     song_buffer_px = 28
     row_padding_px = 18
 
-    if show_filter_cols:
+    if weekly_only:
+        cols = [40, 0, 110, 80, 110]
+        song_col_px = int(max(150, longest_title_px + song_buffer_px))
+        cols[1] = song_col_px
+        grid_cols = f"40px {song_col_px}px 110px 80px 110px"
+        col_heads_html = f"""<div class="col-heads">
+    <span class="center">#</span>
+    <span>{song_header}</span>
+    <span class="right">WEEKLY</span>
+    <span class="right">%</span>
+    <span class="right">TOTAL</span>
+  </div>"""
+    elif show_filter_cols:
         cols = [36, 0, 106, 72, 106, 74, 66, 106]
         song_col_px = int(max(120, longest_title_px + song_buffer_px))
         cols[1] = song_col_px
@@ -1483,6 +1521,7 @@ def build_song_row_html(
     show_filter_cols: bool,
     best_day_labels_by_track: dict[str, str] | None = None,
     *,
+    weekly_only: bool = False,
     movement_html: str = "",
     row_cls_extra: str = "",
 ) -> str:
@@ -1491,6 +1530,8 @@ def build_song_row_html(
     daily = hdata.get("daily")
     change = hdata.get("change")
     pct = hdata.get("pct")
+    weekly_change = hdata.get("weekly_change")
+    weekly_pct = hdata.get("weekly_pct")
     streams = hdata.get("streams")
     f_streams = hdata.get("filtered_streams")
     f_rate = hdata.get("filter_rate")
@@ -1503,6 +1544,23 @@ def build_song_row_html(
         chg_cls = "new"
 
     alt_cls = " alt" if alt else ""
+
+    if weekly_only:
+        weekly_s, weekly_pct_s, weekly_cls = fmt_chg(weekly_change, weekly_pct)
+        if not hdata.get("ever_seen", True):
+            weekly_s = "NEW"
+            weekly_pct_s = "NEW"
+            weekly_cls = "new"
+        return f"""<div class="song-row{alt_cls}{row_cls_extra}">
+    <div class="col-rank">{si + 1}{movement_html}</div>
+    <div class="col-song">
+        <div class="song-title">{title}</div>
+    </div>
+        <div class="col-chg {weekly_cls} chg-col">{weekly_s}</div>
+        <div class="col-pct {weekly_cls} pct-col">{weekly_pct_s}</div>
+    <div class="col-num total-col">{fmt_num(streams)}</div>
+</div>
+"""
 
     if show_filter_cols:
         extra_cells = f"""
@@ -1526,7 +1584,8 @@ def build_song_row_html(
 
 
 def build_section_total_html(sec_name: str, tracks: list[dict],
-                              hist: dict, accent: str, bg: str, show_filter_cols: bool) -> str:
+                              hist: dict, accent: str, bg: str, show_filter_cols: bool,
+                              weekly_only: bool = False) -> str:
     sec_daily  = sum(hist.get(t["track_id"], {}).get("daily") or 0 for t in tracks)
     sec_str    = sum(hist.get(t["track_id"], {}).get("streams") or 0 for t in tracks)
     sec_flt    = sum(hist.get(t["track_id"], {}).get("filtered_streams") or 0 for t in tracks)
@@ -1541,12 +1600,28 @@ def build_section_total_html(sec_name: str, tracks: list[dict],
     sec_change = sum(hist.get(t["track_id"], {}).get("change") or 0 for t in tracks)
     sec_yest   = sec_daily - sec_change
     sec_pct    = (sec_change / sec_yest * 100) if sec_yest != 0 else None
+    sec_weekly_change = sum(hist.get(t["track_id"], {}).get("weekly_change") or 0 for t in tracks)
+    sec_weekly_base = sec_daily - sec_weekly_change
+    sec_weekly_pct = (sec_weekly_change / sec_weekly_base * 100) if sec_weekly_base != 0 else None
 
     chg_s, pct_s, chg_cls = fmt_chg(sec_change, sec_pct)
+    weekly_s, weekly_pct_s, weekly_cls = fmt_chg(sec_weekly_change, sec_weekly_pct)
     if tracks and all(not hist.get(t["track_id"], {}).get("ever_seen", True) for t in tracks):
         chg_s, pct_s, chg_cls = "NEW", "NEW", "new"
     pct_disp = pct_s or "—"
+    if tracks and all(not hist.get(t["track_id"], {}).get("ever_seen", True) for t in tracks):
+        weekly_s, weekly_pct_s, weekly_cls = "NEW", "NEW", "new"
+    weekly_pct_disp = weekly_pct_s or "&mdash;"
     chg_chip_cls = _chip_cls(chg_cls)
+
+    if weekly_only:
+        return f"""<div class="sec-total no-filter" style="--sec-accent:{accent};--sec-bg:{bg}">
+    <div class="sec-label">{sec_name}&nbsp;&nbsp;&mdash;&nbsp;&nbsp;Total</div>
+    <div class="sec-num {weekly_cls}" style="grid-column:3">{weekly_s}</div>
+    <div class="sec-num {weekly_cls}" style="grid-column:4">{weekly_pct_disp}</div>
+    <div class="sec-num" style="grid-column:5">{fmt_num(sec_str)}</div>
+</div>
+"""
 
     if show_filter_cols:
         flt_disp = fmt_optional_num(sec_flt_disp) or "—"
@@ -1602,6 +1677,7 @@ def build_html(
     best_day_labels_by_track: dict[str, str] | None = None,
     movement_by_track: dict[str, int | None] | None = None,
     highlight_track_ids: dict[str, str] | None = None,
+    weekly_only: bool = False,
 ) -> str:
     from datetime import datetime
     highlight_track_ids = highlight_track_ids or {}
@@ -1654,7 +1730,7 @@ def build_html(
     tint_border_css = f"rgba({dr},{dg},{db},0.18)"
 
     best_day_labels_by_track = best_day_labels_by_track or {}
-    layout = layout or _compute_layout_metrics(sections, show_filter_cols, best_day_labels_by_track)
+    layout = layout or _compute_layout_metrics(sections, show_filter_cols, best_day_labels_by_track, weekly_only)
     row_h = layout["row_h"]
     grid_cols = layout["grid_cols"]
     col_heads_html = layout["col_heads_html"]
@@ -1689,14 +1765,15 @@ def build_html(
                 row_extra = " ov-up" if role == "overtaker" else (" ov-down" if role == "passed" else "")
                 rows_html += build_song_row_html(
                     si, track, hd, si % 2 != 0, show_filter_cols, best_day_labels_by_track,
-                    movement_html=move_html, row_cls_extra=row_extra,
+                    weekly_only=weekly_only, movement_html=move_html, row_cls_extra=row_extra,
                 )
         if not sec.get("no_section_total"):
-            rows_html += build_section_total_html(sec["name"], sec["tracks"], hist, accent, bg, show_filter_cols)
+            rows_html += build_section_total_html(sec["name"], sec["tracks"], hist, accent, bg, show_filter_cols, weekly_only)
 
         total_daily = sum(hist.get(t["track_id"], {}).get("daily") or 0 for t in total_tracks)
         total_streams = sum(hist.get(t["track_id"], {}).get("streams") or 0 for t in total_tracks)
         total_change = sum(hist.get(t["track_id"], {}).get("change") or 0 for t in total_tracks)
+        total_weekly_change = sum(hist.get(t["track_id"], {}).get("weekly_change") or 0 for t in total_tracks)
         total_filtered = sum(
             (hist.get(t["track_id"], {}).get("filtered_streams") or 0)
             for t in total_tracks
@@ -1716,13 +1793,25 @@ def build_html(
         total_yest = total_daily - total_change
         total_pct = (total_change / total_yest * 100) if total_yest != 0 else None
         tot_chg_s, tot_pct_s, chg_cls = fmt_chg(total_change, total_pct)
+        total_weekly_base = total_daily - total_weekly_change
+        total_weekly_pct = (total_weekly_change / total_weekly_base * 100) if total_weekly_base != 0 else None
+        tot_weekly_s, tot_weekly_pct_s, weekly_cls = fmt_chg(total_weekly_change, total_weekly_pct)
         if all(
             not hist.get(t["track_id"], {}).get("ever_seen", True)
             for t in total_tracks
         ):
             tot_chg_s, tot_pct_s, chg_cls = "NEW", "NEW", "new"
+            tot_weekly_s, tot_weekly_pct_s, weekly_cls = "NEW", "NEW", "new"
 
-        if show_filter_cols:
+        if weekly_only:
+            era_html = f"""<div class="era-total no-filter">
+    <div class="era-label">{total_label}</div>
+    <div class="era-num {weekly_cls}" style="grid-column:3">{tot_weekly_s}</div>
+    <div class="era-num {weekly_cls}" style="grid-column:4">{tot_weekly_pct_s or "&mdash;"}</div>
+    <div class="era-num" style="grid-column:5">{fmt_num(total_streams)}</div>
+</div>
+"""
+        elif show_filter_cols:
             total_flt_disp = total_filtered if total_filtered_count > 0 else None
             total_rate_disp = (
                 (100 - (total_filtered / total_daily_filtered * 100))
@@ -2542,6 +2631,7 @@ def generate(
     output_suffix: str = "",
     flat_rank_by_total: bool = False,
     highlight_track_ids: dict[str, str] | None = None,
+    weekly_only: bool = False,
 ) -> Path:
     """flat_rank_by_total: same-album overtake variant — collapse the album to a
     single list ranked by all-time total streams, add a rank-movement marker on
@@ -2557,6 +2647,8 @@ def generate(
         raise ValueError(f"Aucune section trouvée pour l'album: {album_name!r}")
     style = effective_album_update_style(album_name, style)
     if flat_rank_by_total:
+        style = "default"
+    if weekly_only:
         style = "default"
     header_variant = "light" if style == "table-light" else "dark"
     print(f"[album_update] {sum(len(s['tracks']) for s in sections)} tracks dans {len(sections)} section(s)")
@@ -2593,6 +2685,8 @@ def generate(
         show_filter_cols = has_same_day_chart and any(
             (v.get("filtered_streams") is not None) for v in hist.values()
         )
+    if weekly_only:
+        show_filter_cols = False
 
     cover_url  = load_cover_url(album_name)
     header_img = header_path or pick_header_image(album_name, header_variant)
@@ -2614,7 +2708,7 @@ def generate(
 
     table_dark_style = style in {"table-dark", "table-light"}
     table_light_style = style == "table-light"
-    layout = _compute_layout_metrics(sections, show_filter_cols, best_day_labels_by_track)
+    layout = _compute_layout_metrics(sections, show_filter_cols, best_day_labels_by_track, weekly_only)
     if table_dark_style:
         hdr_target_w = 2212
         hdr_target_h = 608
@@ -2658,6 +2752,7 @@ def generate(
             best_day_labels_by_track=best_day_labels_by_track,
             movement_by_track=movement_by_track,
             highlight_track_ids=highlight_track_ids,
+            weekly_only=weekly_only,
         )
 
     album_slug = album_update_slug(album_name)
@@ -2666,6 +2761,8 @@ def generate(
     style_suffix = "_table_light" if table_light_style else ("_table_dark" if table_dark_style else "")
     if flat_rank_by_total:
         style_suffix += "_overtake"
+    if weekly_only:
+        style_suffix += "_weekly"
     safe_output_suffix = f"_{_norm(output_suffix)}" if output_suffix else ""
     out_path   = out_dir / f"{album_slug}_update{style_suffix}{safe_output_suffix}.png"
     raw_out_path = out_dir / f"_{album_slug}_update{style_suffix}{safe_output_suffix}_hires.png"
@@ -2776,7 +2873,7 @@ def _daily_summary_for_tracks(tracks: list[dict], hist: dict[str, dict]) -> tupl
     return total_daily, total_pct
 
 
-def _build_album_post_text(album_name: str, target_date: str) -> str:
+def _build_album_post_text(album_name: str, target_date: str, *, weekly_only: bool = False) -> str:
     """Builds the album post text with daily total and biggest gainer/most stable track."""
     from datetime import datetime
 
@@ -2788,11 +2885,14 @@ def _build_album_post_text(album_name: str, target_date: str) -> str:
 
     tracks = _album_total_tracks(sections)
     total_daily, album_pct = _daily_summary_for_tracks(tracks, hist)
+    total_weekly_change = sum(hist.get(t["track_id"], {}).get("weekly_change") or 0 for t in tracks)
+    total_weekly_base = total_daily - total_weekly_change
+    album_weekly_pct = (total_weekly_change / total_weekly_base * 100) if total_weekly_base > 0 else None
 
     scored = []
     for t in tracks:
         h = hist.get(t["track_id"], {})
-        pct = h.get("pct")
+        pct = h.get("weekly_pct") if weekly_only else h.get("pct")
         if pct is None:
             continue
         scored.append({
@@ -2800,6 +2900,7 @@ def _build_album_post_text(album_name: str, target_date: str) -> str:
             "title": t.get("title") or t.get("title_clean") or "Unknown",
             "pct": pct,
             "daily": h.get("daily") or 0,
+            "weekly_change": h.get("weekly_change"),
         })
 
     # Rule: if every available % change is negative, pick the least negative as "most stable".
@@ -2807,6 +2908,7 @@ def _build_album_post_text(album_name: str, target_date: str) -> str:
     selected_song = "Unknown"
     track_daily = 0
     track_pct = None
+    track_weekly_change = None
 
     if scored:
         if all(item["pct"] < 0 for item in scored):
@@ -2814,16 +2916,21 @@ def _build_album_post_text(album_name: str, target_date: str) -> str:
             label = "most stable"
         else:
             best = max(scored, key=lambda x: x["pct"])
-            label = "biggest gainer"
+            label = "biggest weekly gainer" if weekly_only else "biggest gainer"
         selected_song = _shorten_title(best["title"])
         track_daily = best.get("daily", 0)
         track_pct = best.get("pct")
+        track_weekly_change = best.get("weekly_change")
 
     # Format data for tweet
     date_obj = datetime.strptime(target_date, "%Y-%m-%d")
     date_fmt = f"{date_obj.strftime('%A, %B')} {_ordinal(date_obj.day)}, {date_obj.year}"
     total_daily_fmt = f"{int(total_daily):,}"
     track_daily_fmt = f"{int(track_daily):,}"
+    total_weekly_fmt = ("+" if total_weekly_change >= 0 else "−") + f"{abs(int(total_weekly_change)):,}"
+    track_weekly_fmt = ""
+    if track_weekly_change is not None:
+        track_weekly_fmt = ("+" if int(track_weekly_change) >= 0 else "−") + f"{abs(int(track_weekly_change)):,}"
 
     # Format album percentage
     album_pct_str = ""
@@ -2836,6 +2943,22 @@ def _build_album_post_text(album_name: str, target_date: str) -> str:
     if track_pct is not None:
         sign = "+" if track_pct >= 0 else "−"
         track_pct_str = f" ({sign}{abs(track_pct):.1f}%)"
+
+    if weekly_only:
+        weekly_album_pct_str = ""
+        if album_weekly_pct is not None:
+            sign = "+" if album_weekly_pct >= 0 else "−"
+            weekly_album_pct_str = f" ({sign}{abs(album_weekly_pct):.1f}%)"
+        track_metric = track_weekly_fmt or track_daily_fmt
+        first_line = (
+            f'📈 | "{canonical_name}" gained {total_weekly_fmt} streams vs last week '
+            f"on {date_fmt}.{weekly_album_pct_str}"
+        )
+        return (
+            f"{first_line}\n\n"
+            f'"{selected_song}" was the {label} with {track_metric} streams{track_pct_str}.\n\n'
+            f"See full update here : {streams_latest_url()} ❤️‍🔥"
+        )
 
     # TODAY ONLY (2026-04-20): TTPD 2nd anniversary special note
     is_ttpd_anniversary = (
@@ -2938,8 +3061,10 @@ def _best_day_post_label(row: dict) -> str:
     return label
 
 
-def _build_album_post_text(album_name: str, target_date: str) -> str:
-    tweet = _build_album_post_text_base(album_name, target_date)
+def _build_album_post_text(album_name: str, target_date: str, *, weekly_only: bool = False) -> str:
+    tweet = _build_album_post_text_base(album_name, target_date, weekly_only=weekly_only)
+    if weekly_only:
+        return tweet
     sections, _canonical_name = load_album_sections(album_name, target_date)
     if not sections:
         return tweet
@@ -3004,7 +3129,7 @@ def fit_album_post_text(tweet: str) -> str:
     return "\n".join(lines).strip()
 
 
-def post(album_name: str, image_path: Path, target_date: str) -> bool:
+def post(album_name: str, image_path: Path, target_date: str, *, weekly_only: bool = False) -> bool:
     block_reason = holiday_collection_post_block_reason(album_name, target_date)
     if block_reason:
         print(f"[album_update] Post skipped: {block_reason}")
@@ -3021,7 +3146,7 @@ def post(album_name: str, image_path: Path, target_date: str) -> bool:
         return False
 
     try:
-        tweet = _build_album_post_text(album_name, target_date)
+        tweet = _build_album_post_text(album_name, target_date, weekly_only=weekly_only)
         fitted_tweet = fit_album_post_text(tweet)
         if fitted_tweet != tweet:
             print("[album_update] Tweet shortened to fit X limit.")
@@ -3054,9 +3179,13 @@ def main() -> None:
     header_arg = None
     all_headers = False
     all_albums = False
+    weekly_only = False
     clean_args = []
     for arg in args:
         if arg in ("--post", "--no-post"):
+            continue
+        if arg == "--weekly-only":
+            weekly_only = True
             continue
         if arg == "--all-headers":
             all_headers = True
@@ -3098,6 +3227,8 @@ def main() -> None:
     if style not in {"default", "table-dark", "table-light"}:
         print(f"Unknown style: {style!r}. Supported styles: default, table-dark, table-light")
         sys.exit(1)
+    if weekly_only:
+        style = "default"
 
     header_variant = "light" if style == "table-light" else "dark"
 
@@ -3115,7 +3246,14 @@ def main() -> None:
             for header in headers:
                 suffix = f"test_{header.stem}"
                 print(f"[album_update] Test header: {target_album} <- {header.name}")
-                generated.append(generate(target_album, resolved_date, style=style, header_path=header, output_suffix=suffix))
+                generated.append(generate(
+                    target_album,
+                    resolved_date,
+                    style=style,
+                    header_path=header,
+                    output_suffix=suffix,
+                    weekly_only=weekly_only,
+                ))
         print(f"[album_update] {len(generated)} image(s) de test générée(s).")
         for path in generated:
             print(f"  {path}")
@@ -3127,6 +3265,7 @@ def main() -> None:
         style=style,
         header_path=resolve_header_arg(album_name, header_arg, header_variant),
         output_suffix=f"test_{Path(header_arg).stem}" if header_arg else "",
+        weekly_only=weekly_only,
     )
 
     if do_post:
@@ -3134,7 +3273,7 @@ def main() -> None:
             print("[album_update] Experimental styles cannot be posted directly.")
             sys.exit(1)
         lock_path = album_update_lock_path(album_name, resolved_date)
-        ok = post(album_name, image_path, resolved_date)
+        ok = post(album_name, image_path, resolved_date, weekly_only=weekly_only)
         if ok:
             lock_path.write_text(f"posted {resolved_date}\n", encoding="utf-8")
         else:

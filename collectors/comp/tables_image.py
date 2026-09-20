@@ -728,8 +728,8 @@ def masthead_theme_for_date(target_date) -> str:
 def ledger_name_with_best_day(name_html: str, marker_label: str | None) -> str:
     """Wrap a ledger entity name with the '* ... since MM/DD/YYYY' marker used on
     the album update image. ``marker_label`` is best_day_since.best_day_marker_text
-    output ("November 26th, 2025" / "of the year" / "of the month"); "of ..."
-    labels render without the "since" prefix. Empty label -> name unchanged."""
+    output ("November 26th, 2025" / "of the month"); "of ..." labels render
+    without the "since" prefix. Empty label -> name unchanged."""
     if not marker_label:
         return name_html
     text = str(marker_label)
