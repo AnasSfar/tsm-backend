@@ -918,7 +918,9 @@ un `_guarded_post_step` independant) :
    - la **file album** `_album_post_queue(ctx, stats_date)` : `_rank_albums_for_posting`
      (score `score_album_update`) sur **tous** les albums non-Misc, puis
      `[2 meilleurs] + [Showgirl, TTPD s'ils ne sont pas dans le top 2] + [reste par score]`.
-     Vide le week-end / en debug / en local.
+     Vide en debug / en local ; le week-end elle est remplacee par
+     `_weekend_album_post_queue` (weekly-only, gain positif, cap top 4 — voir
+     section « Cards album le week-end » plus bas), plus vide depuis 2026-09-21.
    - les **autres posts**, dans l'ordre : `debut posts`, `best-day-since posts`
      (hors debug/local), `weekend song gainers`, `song overtakes`, `stream milestones`.
    - boucle : album, autre, album, autre… jusqu'a epuisement des deux files.
@@ -1213,7 +1215,61 @@ week-end, en plus de la recap combinee. Gardes weekend supprimees dans
 actuel (cf. « Refonte de l'ordre de post en finalize (2026-09-03) ») : `weekend
 recap card` -> `top eras post` -> `top 20 songs post` -> reste. Ne pas confondre
 avec la regle distincte "pas de cards album individuelles le week-end" (file
-`_album_post_queue` vide le week-end).
+`_album_post_queue` vide le week-end — **revu le 2026-09-21**, voir section
+suivante : le week-end poste desormais une file separee `_weekend_album_post_queue`,
+qui choisit le style de card par album — normal si gain daily positif, sinon
+weekly-only si gain weekly positif).
+
+## Cards album le week-end : style par album (daily d'abord, weekly en repli), cap top 4 (2026-09-21)
+
+Decision proprietaire, affinee le 2026-09-21 : le week-end, les albums ne sont
+plus systematiquement skippes. `_weekend_album_post_queue` (dans
+`finalize_update.py`) scanne tous les albums non-Misc via
+`score_album_update.score_albums` et choisit, **par album** :
+
+1. **`daily_abs_gain > 0`** (le total daily de l'album a progresse vs hier,
+   meme calcul que le CHG de semaine) -> **style normal** (`weekly_only=False`,
+   card identique a un post de semaine : `DAILY | CHG | % | TOTAL`, chg = vs
+   hier).
+2. Sinon, **`weekly_abs_gain > 0`** (progression vs il y a 7 jours) -> **style
+   weekly-only** (`weekly_only=True`) : `generate_album_update_image.generate(...,
+   weekly_only=True)` (CLI `--weekly-only`).
+3. Sinon (ni daily ni weekly positif) -> album non poste.
+
+**Cap `WEEKEND_WEEKLY_ALBUM_LIMIT = 4`** : les candidats (style 1 ou 2) sont
+ordonnes par le score habituel (`score_album_update`, meme classement que la
+semaine) et seuls les 4 premiers sont postes — les logs `[weekend-albums]`
+detaillent la file retenue (`+X (daily)` / `+X (weekly)`) et ce qui est
+"skipped (outside top 4 queue)" vs "skipped (no positive daily or weekly
+gain)".
+
+- **`_album_post_queue`/`_weekend_album_post_queue` retournent desormais des
+  paires `(album, weekly_only)`**, pas juste une liste de noms — le style
+  voyage avec chaque album (avant, un seul booleen `weekend_weekly_only_albums`
+  s'appliquait a toute la file, ce qui forcait tout en weekly-only meme quand
+  le daily etait positif). Consommateurs a jour : boucle d'alternance dans
+  `run_final_update_tasks`, `_post_all_albums` (entrypoint `--post-only
+  all-albums`, aussi fallback semaine).
+- **Colonnes de la card weekly-only** : `# | SONG | DAILY | WEEKLY | % |
+  TOTAL` (6 colonnes, memes largeurs que le layout par defaut de semaine) —
+  la colonne DAILY reste affichee (streams gagnes ce jour-la), a cote WEEKLY
+  (`weekly_change`) et % (`weekly_pct`) chacune sa propre colonne, pour les
+  lignes chanson, les totaux de section et le grand total. Implemente dans
+  `generate_album_update_image.py` : `_compute_layout_metrics(...,
+  weekly_only=)`, `build_song_row_html(..., weekly_only=)`,
+  `build_section_total_html(..., weekly_only=)`, bloc grand total de
+  `build_html` — chacun calcule `daily`/`daily_cls` (via `fmt_signed`) en plus
+  de `weekly_change`/`weekly_pct` (via `fmt_chg`).
+- Tweet week-end weekly-only : `_build_album_post_text(..., weekly_only=True)`
+  dit que l'album a gagne +X streams vs last week, avec le plus gros gainer
+  weekly. Le style normal (daily positif) reutilise le tweet de semaine
+  habituel.
+- **Piege corrige (2026-09-21)** : le tout premier cap `WEEKEND_WEEKLY_ALBUM_LIMIT`
+  avait ete ecrit sans jamais tourner en prod avant le run du 2026-09-19/20 —
+  ce run a poste 14 albums (quasi tout le catalogue) car le fichier sur disque
+  au moment de l'execution n'avait pas encore le cap. Verifie par dry-run
+  (`update_streams.py 2026-09-19 --post-only all-albums --no-post`) apres coup :
+  la file capee a bien 4 entrees.
 
 ## Bug fixe : track chart_extra en erreur API bloquait tout le finalize (2026-08-24)
 

@@ -1378,13 +1378,14 @@ def _compute_layout_metrics(
     row_padding_px = 18
 
     if weekly_only:
-        cols = [40, 0, 110, 80, 110]
-        song_col_px = int(max(150, longest_title_px + song_buffer_px))
+        cols = [40, 0, 120, 80, 80, 110]
+        song_col_px = int(max(130, longest_title_px + song_buffer_px))
         cols[1] = song_col_px
-        grid_cols = f"40px {song_col_px}px 110px 80px 110px"
+        grid_cols = f"40px {song_col_px}px 120px 80px 80px 110px"
         col_heads_html = f"""<div class="col-heads">
     <span class="center">#</span>
     <span>{song_header}</span>
+    <span class="right">DAILY</span>
     <span class="right">WEEKLY</span>
     <span class="right">%</span>
     <span class="right">TOTAL</span>
@@ -1556,6 +1557,7 @@ def build_song_row_html(
     <div class="col-song">
         <div class="song-title">{title}</div>
     </div>
+        <div class="col-num daily-val daily-col {daily_cls}">{daily_s}</div>
         <div class="col-chg {weekly_cls} chg-col">{weekly_s}</div>
         <div class="col-pct {weekly_cls} pct-col">{weekly_pct_s}</div>
     <div class="col-num total-col">{fmt_num(streams)}</div>
@@ -1615,11 +1617,13 @@ def build_section_total_html(sec_name: str, tracks: list[dict],
     chg_chip_cls = _chip_cls(chg_cls)
 
     if weekly_only:
+        sec_daily_s, sec_daily_cls = fmt_signed(sec_daily)
         return f"""<div class="sec-total no-filter" style="--sec-accent:{accent};--sec-bg:{bg}">
     <div class="sec-label">{sec_name}&nbsp;&nbsp;&mdash;&nbsp;&nbsp;Total</div>
-    <div class="sec-num {weekly_cls}" style="grid-column:3">{weekly_s}</div>
-    <div class="sec-num {weekly_cls}" style="grid-column:4">{weekly_pct_disp}</div>
-    <div class="sec-num" style="grid-column:5">{fmt_num(sec_str)}</div>
+    <div class="sec-num {sec_daily_cls}" style="grid-column:3">{sec_daily_s}</div>
+    <div class="sec-num {weekly_cls}" style="grid-column:4">{weekly_s}</div>
+    <div class="sec-num {weekly_cls}" style="grid-column:5">{weekly_pct_disp}</div>
+    <div class="sec-num" style="grid-column:6">{fmt_num(sec_str)}</div>
 </div>
 """
 
@@ -1804,11 +1808,13 @@ def build_html(
             tot_weekly_s, tot_weekly_pct_s, weekly_cls = "NEW", "NEW", "new"
 
         if weekly_only:
+            total_daily_s, total_daily_cls = fmt_signed(total_daily)
             era_html = f"""<div class="era-total no-filter">
     <div class="era-label">{total_label}</div>
-    <div class="era-num {weekly_cls}" style="grid-column:3">{tot_weekly_s}</div>
-    <div class="era-num {weekly_cls}" style="grid-column:4">{tot_weekly_pct_s or "&mdash;"}</div>
-    <div class="era-num" style="grid-column:5">{fmt_num(total_streams)}</div>
+    <div class="era-num {total_daily_cls}" style="grid-column:3">{total_daily_s}</div>
+    <div class="era-num {weekly_cls}" style="grid-column:4">{tot_weekly_s}</div>
+    <div class="era-num {weekly_cls}" style="grid-column:5">{tot_weekly_pct_s or "&mdash;"}</div>
+    <div class="era-num" style="grid-column:6">{fmt_num(total_streams)}</div>
 </div>
 """
         elif show_filter_cols:
