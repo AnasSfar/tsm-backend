@@ -39,7 +39,7 @@ if hasattr(sys.stdout, "reconfigure"):
     sys.stdout.reconfigure(encoding="utf-8")
 
 
-MIN_GAIN_PCT = 10.0
+MIN_GAIN_PCT = 5.0
 DEFAULT_LIMIT = 5
 DEFAULT_MIN_BASELINE = 1_000
 CHARTS_HISTORY_GLOBAL = REPO_ROOT / "db" / "charts_history_global.csv"
@@ -321,11 +321,13 @@ def _pick_weekend_gainers(
     limit: int,
     min_baseline: int,
     min_pct: float,
+    exclude_track_ids: set[str] | None = None,
 ) -> list[dict]:
     history = history_store.HistoryIndex.load()
     baseline_date = str(date.fromisoformat(target_date) - timedelta(days=1))
     best_day_track_ids = _best_day_since_track_ids(target_date)
     charted_track_ids = _global_charted_track_ids(target_date)
+    exclude_track_ids = exclude_track_ids or set()
 
     rows: list[dict] = []
     for track in _load_album_tracks():
@@ -335,6 +337,11 @@ def _pick_weekend_gainers(
             continue
 
         track_id = track["track_id"]
+        if track_id in exclude_track_ids:
+            # Already covered by its own best-day-since post today — one card
+            # per song, not two (decision 2026-09-21).
+            continue
+
         daily_today = history.get_daily_for_date(track_id, target_date)
         daily_baseline = history.get_daily_for_date(track_id, baseline_date)
         total_today = history.get_total_for_date(track_id, target_date)
@@ -348,12 +355,15 @@ def _pick_weekend_gainers(
             continue
         pct = gain / daily_baseline * 100
 
-        # Below the pct bar, a song still qualifies if it hit a best-day-since
-        # record or charted on the Global Top 200 that day (chart placement
-        # is only used as a qualifying signal here — never mentioned in copy).
+        # Below the pct bar, a song still qualifies if it charted on the
+        # Global Top 200 that day (chart placement is only used as a
+        # qualifying signal here — never mentioned in copy). A best-day-since
+        # record alone no longer bypasses the pct floor (decision 2026-09-21)
+        # — that song already gets its own best-day-since card, so letting it
+        # in here too would double-post the same event under +5%.
         had_best_day = track_id in best_day_track_ids
         had_chart_entry = track_id in charted_track_ids
-        if pct < min_pct and not had_best_day and not had_chart_entry:
+        if pct < min_pct and not had_chart_entry:
             continue
 
         rows.append({
@@ -377,8 +387,8 @@ def main() -> int:
     parser = argparse.ArgumentParser(
         description=(
             "Post weekend Spotify song gainers with song_card images. A song qualifies if it "
-            "gained at least --min-pct, or hit a best-day-since record, or charted on the "
-            "Global Top 200 that day."
+            "gained at least --min-pct, or charted on the Global Top 200 that day. Tracks "
+            "already posted as a best-day-since card today are excluded (one card per song)."
         )
     )
     parser.add_argument("date", nargs="?", help="Stats date YYYY-MM-DD. Defaults to yesterday.")
@@ -389,6 +399,11 @@ def main() -> int:
     parser.add_argument("--force", action="store_true", help="Post again even if the lock exists.")
     parser.add_argument("--no-post", action="store_true")
     parser.add_argument("--post-spacing-seconds", type=int, default=0)
+    parser.add_argument(
+        "--exclude-tracks",
+        default="",
+        help="Comma-separated track ids to skip (already posted elsewhere today, e.g. best-day-since).",
+    )
     args = parser.parse_args()
 
     target_date = args.date or str(date.today() - timedelta(days=1))
@@ -413,16 +428,19 @@ def main() -> int:
         print(f"ERROR: Twitter session not found at {TWITTER_SESSION}")
         return 1
 
+    exclude_track_ids = {t.strip() for t in args.exclude_tracks.split(",") if t.strip()}
+
     rows = _pick_weekend_gainers(
         target_date,
         limit=limit,
         min_baseline=max(0, int(args.min_baseline)),
         min_pct=float(args.min_pct),
+        exclude_track_ids=exclude_track_ids,
     )
     if not rows:
         print(
-            f"[weekend_song_gainers] No song gained at least +{float(args.min_pct):.1f}%, "
-            f"hit a best-day-since record, or charted on the Global Top 200 on {target_date}."
+            f"[weekend_song_gainers] No song gained at least +{float(args.min_pct):.1f}% or "
+            f"charted on the Global Top 200 on {target_date}."
         )
         return 0
 

@@ -1407,6 +1407,27 @@ Alertes actives :
   prefixe trophee `🏆 |`, meme style que les tweets `best_day_since` des
   streams) — decision produit : le calcul ET le texte du tweet sont desormais
   100% back, jamais front.
+  **Auto-post carte + tweet (2026-09-21)** : `_notify_spcharts_events`
+  n'envoie plus seulement le texte en ntfy — chaque enregistrement retourne
+  par `_collect_spcharts_rank_record_since` (qui retourne desormais des
+  dicts, pas des `str` bruts : `tweet`/`title`/`region`/`region_label`/
+  `track_id`/`rank`/`streams`/`since_date`/`chart_date`) passe aussi par
+  `_post_spcharts_rank_record_card`, qui rend une card `comp/chart_card.py`
+  en style `record=True` (ruban dore `🏆 Record` + halo/glow gold autour de
+  la card, additif — `record=False` par defaut ne change rien aux autres
+  appelants) et poste automatiquement tweet+image via
+  `core.twitter.post_with_image`, meme mecanisme que les cards immediate
+  NEW/RE de `daily.py::_post_immediate_reentry_card` (retry x3, session
+  Twitter partagee `charts/global/tools/json/twitter_session.json`). Cover
+  via `_spcharts_track_cover_lookup()` : lit `charts_discography/{global,us,uk}.json`
+  (`songs[].track_id`/`image_url`, meme champ deja consomme par le frontend)
+  au lieu de relire `db/discography/*.json` — pas de logique dupliquee.
+  Dedupe par run/jour via un lock fichier `<slug>_rank_record.lock` dans
+  `spotify_chart_dir(region, chart_date)/cards/` (pas de fenetre de temps :
+  un vrai nouveau record un autre jour re-postera, `repeat=True` dans le
+  texte du tweet gere deja ce cas). Un echec de rendu/post est logge et
+  n'interrompt jamais le reste de `_notify_spcharts_events` (le resume texte
+  ntfy part quand meme).
   **Combine avec un record "filtered streaming day" du meme jour** :
   "filtered streams" = le chiffre `streams` que Spotify Charts publie
   lui-meme par entree de chart (colonne `streams` deja dans

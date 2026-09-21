@@ -154,10 +154,17 @@ def render_chart_card(
     logo_svg: str = SPOTIFY_SVG,
     badge_text: str | None = None,
     layout: str = "wide",
+    record: bool = False,
 ) -> str:
+    """`record=True` marks the card as a "best since" record (rank or filtered
+    streams) with a gold ribbon + glow ring, for `run_all_charts.py`'s
+    rank-record-since auto-posts. Purely additive: default False keeps every
+    existing caller's render byte-for-byte unchanged."""
     cover_uri, cover_bytes = image_data_uri(cover_url)
     palette = _cover_palette(cover_bytes)
     art_html = f'<img class="cover" src="{cover_uri}" />' if cover_uri else '<div class="cover cover-ph"></div>'
+    record_badge_html = '<div class="record-badge">🏆 Record</div>' if record else ""
+    record_card_class = " record" if record else ""
 
     rank = _stat_by_label(stats, "Rank")
     streams = _stat_by_label(stats, "Streams")
@@ -204,6 +211,18 @@ body{{
   background:#fff;border:1px solid {palette["border"]};border-radius:42px;
   box-shadow:0 28px 70px rgba(17,24,39,.10);
   overflow:hidden;
+}}
+.card.record{{
+  border-color:#F0B36A;
+  box-shadow:0 28px 70px rgba(17,24,39,.10),0 0 0 4px #F0B36A,0 0 60px 10px rgba(240,179,106,.55);
+}}
+.record-badge{{
+  position:absolute;right:40px;top:40px;z-index:2;
+  display:inline-flex;align-items:center;gap:8px;
+  background:linear-gradient(135deg,#F9DFA8,#D89B3D);
+  color:#3a2405;font-size:20px;font-weight:950;letter-spacing:.04em;
+  border-radius:999px;padding:12px 20px 11px;line-height:1;
+  box-shadow:0 10px 22px rgba(216,155,61,.5);
 }}
 .pill{{
   position:absolute;left:50%;top:56px;transform:translateX(-50%);
@@ -305,7 +324,8 @@ body{{
 """
         return f"""<!doctype html><html><head><meta charset="utf-8"><style>{css}</style></head>
 <body>
-  <div class="card">
+  <div class="card{record_card_class}">
+    {record_badge_html}
     <div class="pill">{logo_svg}<span>{html.escape(pill_text)}</span></div>
     {art_html}
     <div class="song-line">
@@ -343,6 +363,18 @@ body{{
   position:relative;width:888px;height:312px;
   background:#fff;border:1px solid {palette["border"]};border-radius:24px;
   box-shadow:0 18px 38px rgba(17,24,39,.08);
+}}
+.card.record{{
+  border-color:#F0B36A;
+  box-shadow:0 18px 38px rgba(17,24,39,.08),0 0 0 3px #F0B36A,0 0 44px 8px rgba(240,179,106,.55);
+}}
+.record-badge{{
+  position:absolute;right:18px;top:18px;z-index:2;
+  display:inline-flex;align-items:center;gap:6px;
+  background:linear-gradient(135deg,#F9DFA8,#D89B3D);
+  color:#3a2405;font-size:13px;font-weight:950;letter-spacing:.03em;
+  border-radius:999px;padding:8px 13px 7px;line-height:1;
+  box-shadow:0 8px 16px rgba(216,155,61,.5);
 }}
 .cover{{
   position:absolute;left:30px;top:54px;width:190px;height:190px;
@@ -434,7 +466,8 @@ body{{
 
     return f"""<!doctype html><html><head><meta charset="utf-8"><style>{css}</style></head>
 <body>
-  <div class="card">
+  <div class="card{record_card_class}">
+    {record_badge_html}
     {art_html}
     <div class="content">
       <div class="pill">{logo_svg}<span>{html.escape(pill_text)}</span></div>

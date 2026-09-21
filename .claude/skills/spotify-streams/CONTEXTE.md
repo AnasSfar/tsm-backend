@@ -1271,6 +1271,39 @@ gain)".
   (`update_streams.py 2026-09-19 --post-only all-albums --no-post`) apres coup :
   la file capee a bien 4 entrees.
 
+## Weekend song gainers : +5% strict (sauf chart entry), un seul post si aussi best-day-since (2026-09-21)
+
+`post_weekend_song_gainers.py` (`_pick_weekend_gainers`) :
+
+- **`MIN_GAIN_PCT` = 5.0** (defaut du script ; `finalize_update.py` passait
+  deja `--min-pct 5` explicitement). Le bypass "avait un best-day-since
+  record" qui laissait passer un titre sous le seuil est **retire** — ce
+  titre a deja sa propre card best-day-since, le laisser qualifier ici aussi
+  double-postait le meme evenement. Bypass conserve (decision proprietaire
+  explicite) : un titre qui **charte sur le Global Top 200 ce jour-la**
+  reste postable meme sous +5% (`had_chart_entry`, jamais mentionne dans le
+  texte du tweet).
+- **Un seul post par chanson (decision proprietaire)** : `_pick_weekend_gainers(...,
+  exclude_track_ids=)` exclut integralement les track_id deja postes comme
+  best-day-since ce jour-la — pas juste retire du bypass pct, le titre ne
+  ressort plus du tout comme gainer. `finalize_update._post_weekend_song_gainers`
+  passe `--exclude-tracks` avec `ctx.posted_best_day_since_tracks` (accumule
+  au fil du run par `_post_one_best_day_track`). Fonctionne car l'ordre des
+  `other_steps` du week-end place toujours les posts best-day-since
+  individuels **avant** l'etape "weekend song gainers" dans la meme file
+  (`debut posts -> best-day-since candidates -> weekend song gainers ->
+  song overtakes -> stream milestones`), donc le set est deja rempli quand
+  le script tourne.
+- **Limite connue** : l'exclusion ne fonctionne que dans le run automatise
+  complet. Un appel standalone `--post-only weekend-gainers` (ou
+  `post_weekend_song_gainers.py` execute seul) n'a pas acces aux best-day
+  postes ailleurs et ne les exclura pas — `--exclude-tracks` doit alors etre
+  passe a la main si besoin.
+- Verifie par dry-run reel (2026-09-19, `--no-post`) : "Blank Space" +1.9%
+  (sous le seuil, best-day "of the year" ce jour-la) qualifie via son
+  chart entry ; en repassant son track_id dans `--exclude-tracks`, il
+  disparait bien de la file (4 -> 3 tweets).
+
 ## Bug fixe : track chart_extra en erreur API bloquait tout le finalize (2026-08-24)
 
 Incident 2026-08-23/24 : "Love Story - Pop Mix" (`5lA0yK8S5tP3xoaRMCp4Ug`,

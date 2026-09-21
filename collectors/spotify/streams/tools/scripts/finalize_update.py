@@ -914,6 +914,10 @@ def _post_weekend_song_gainers(ctx: FinalizeContext, state: dict[str, float]) ->
         "--post-spacing-seconds",
         str(ctx.post_spacing_seconds),
     ]
+    if ctx.posted_best_day_since_tracks:
+        # One card per song: a track already posted today as a best-day-since
+        # card doesn't also get a weekend gainer card (decision 2026-09-21).
+        cmd.extend(["--exclude-tracks", ",".join(sorted(ctx.posted_best_day_since_tracks))])
     if ctx.no_post_mode:
         cmd.append("--no-post")
 

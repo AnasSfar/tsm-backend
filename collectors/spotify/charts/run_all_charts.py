@@ -30,7 +30,10 @@ from core.git_ops import git_commit_and_push
 from core.notify import send as _notify
 from core.retention import cleanup_generated_artifacts
 from core.swift_top_gate import check_swift_top_gate, mark_swift_top_done
+from core.twitter import post_with_image
 from twitter.text import date_label, spotify_chart_rank_record_since_tweet
+from comp.chart_card import render_chart_card, write_chart_card_png
+from comp.song_card import slugify
 
 for _stream in (sys.stdout, sys.stderr):
     try:
@@ -1581,6 +1584,15 @@ SPCHARTS_RANK_RECORD_REGION_LABELS = {"global": "Global", "us": "US", "uk": "UK"
 # real 3-week-old rank match is already a meaningful gap.
 SPCHARTS_RANK_RECORD_MIN_DAYS_SINCE = 21
 
+# Auto-post card (gold "record" chart_card.py style) + tweet for each rank-record-since
+# tweet collected below — same mechanism as daily.py's immediate NEW/RE reentry cards
+# (post_with_image + a per-song lock so retries within the same chart day don't double-post).
+SPCHARTS_RECORD_TWITTER_SESSION = (
+    REPO_ROOT / "collectors" / "spotify" / "charts" / "global" / "tools" / "json" / "twitter_session.json"
+)
+SPCHARTS_RECORD_POST_MAX_ATTEMPTS = int(os.getenv("SPCHARTS_RECORD_POST_MAX_ATTEMPTS", "3"))
+SPCHARTS_RECORD_POST_RETRY_SECONDS = int(os.getenv("SPCHARTS_RECORD_POST_RETRY_SECONDS", "30"))
+
 
 def _load_charts_history_rows_by_date(region: str) -> dict[str, list[dict]]:
     path = REPO_ROOT / "db" / f"charts_history_{region}.csv"
@@ -1709,8 +1721,13 @@ def _spcharts_filtered_streaming_extra_line(
     )
 
 
-def _collect_spcharts_rank_record_since(region: str) -> list[str]:
-    """Ready-to-post "best chart position since <date>" tweets, backend-computed.
+def _collect_spcharts_rank_record_since(region: str) -> list[dict]:
+    """Ready-to-post "best chart position since <date>" records, backend-computed.
+
+    Returns dicts (`tweet`, `title`, `region`, `region_label`, `track_id`, `rank`,
+    `streams`, `since_date`, `chart_date`) rather than bare tweet strings so the
+    caller can also render+auto-post a gold "record" chart_card.py image
+    (`_post_spcharts_rank_record_card`), not just send the tweet text via ntfy.
 
     Replaces the earlier fixed 12-month rolling window (2026-09-19) with the
     same "since" search as streams/best_day_since.py::compute_best_day_since:
@@ -1755,7 +1772,7 @@ def _collect_spcharts_rank_record_since(region: str) -> list[str]:
             points_by_key.setdefault(key, []).append((row_date, rank, streams, row))
 
     region_label = SPCHARTS_RANK_RECORD_REGION_LABELS.get(region, region.upper())
-    tweets = []
+    records = []
     for key, points in points_by_key.items():
         points.sort(key=lambda p: p[0])
         today_entries = [p for p in points if p[0] == latest_date]
@@ -1786,19 +1803,123 @@ def _collect_spcharts_rank_record_since(region: str) -> list[str]:
             better_or_equal=_rank_better_or_equal,
             min_days=SPCHARTS_RANK_RECORD_MIN_DAYS_SINCE,
         )
-        tweets.append(
-            spotify_chart_rank_record_since_tweet(
-                title=_song_title(current_row),
-                region=region,
-                region_label=region_label,
-                rank=current_rank,
-                since_date=best_since_date,
-                track_id=track_id,
-                repeat=repeat,
-                extra_line=extra_line,
-            )
+        title = _song_title(current_row)
+        tweet = spotify_chart_rank_record_since_tweet(
+            title=title,
+            region=region,
+            region_label=region_label,
+            rank=current_rank,
+            since_date=best_since_date,
+            track_id=track_id,
+            repeat=repeat,
+            extra_line=extra_line,
         )
-    return tweets
+        records.append(
+            {
+                "tweet": tweet,
+                "title": title,
+                "region": region,
+                "region_label": region_label,
+                "track_id": track_id,
+                "rank": current_rank,
+                "streams": current_streams,
+                "since_date": best_since_date,
+                "chart_date": latest_date,
+            }
+        )
+    return records
+
+
+def _spcharts_track_cover_lookup() -> dict[str, str]:
+    """track_id -> image_url, read from whichever curated-region discography
+    JSON is available first (cover art doesn't depend on region). Same
+    `image_url` field the frontend's Overall/Per-Song views already consume
+    from `charts_discography/<region>.json`, so no separate discography read."""
+    discography_dir = WEB_EXPORT_DATA_DIR / "charts_discography"
+    for region in ("global", "us", "uk"):
+        data = _load_json_file(discography_dir / f"{region}.json")
+        songs = data.get("songs") if isinstance(data, dict) else None
+        if not songs:
+            continue
+        lookup: dict[str, str] = {}
+        for song in songs:
+            if not isinstance(song, dict):
+                continue
+            track_id = str(song.get("track_id") or "").strip()
+            image_url = str(song.get("image_url") or "").strip()
+            if track_id and image_url:
+                lookup.setdefault(track_id, image_url)
+        if lookup:
+            return lookup
+    return {}
+
+
+def _post_spcharts_rank_record_card(record: dict, cover_lookup: dict[str, str]) -> None:
+    """Renders the gold "record" chart_card.py style for one rank-record-since
+    entry and auto-posts it with the already-built tweet text, same
+    post_with_image + per-song lock mechanism as daily.py's immediate NEW/RE
+    reentry cards. Never blocks the notify pass: a render/post failure is
+    logged and skipped, the plain-text ntfy summary above still goes out."""
+    region = record["region"]
+    chart_date = record["chart_date"]
+    title = record["title"]
+    slug = slugify(title)
+
+    out_dir = spotify_chart_dir(region, chart_date) / "cards"
+    out_dir.mkdir(parents=True, exist_ok=True)
+    lock_path = out_dir / f"{slug}_rank_record.lock"
+    if lock_path.exists():
+        return
+
+    try:
+        chart_dt = datetime.strptime(chart_date, "%Y-%m-%d")
+        footer_date = chart_dt.strftime("%B %d, %Y")
+    except ValueError:
+        footer_date = chart_date
+    streams = record["streams"]
+
+    html_content = render_chart_card(
+        title=title,
+        eyebrow=f"Spotify {record['region_label']} Charts",
+        subtitle=f"Best position since {date_label(record['since_date'])}",
+        stats=[
+            {"label": "Rank", "value": f"#{record['rank']}", "badge": "", "badge_class": "flat"},
+            {
+                "label": "Streams",
+                "value": f"{int(streams):,}" if streams else "-",
+                "badge": "",
+                "badge_class": "flat",
+            },
+        ],
+        cover_url=cover_lookup.get(record["track_id"]),
+        footer_left="@swiftiescharts",
+        footer_right=footer_date,
+        extra=record["region_label"],
+        badge_text=f"Spotify {record['region_label']} Charts",
+        record=True,
+    )
+    out_path = out_dir / f"{slug}_rank_record_card.png"
+    tmp_path = out_dir / f"{slug}_rank_record_card.html"
+    try:
+        write_chart_card_png(html_content, out_path, tmp_path, width=920, height=344, export_frame=True)
+    except Exception as exc:
+        print(f"[WARN] Rank-record card render failed for {title!r} ({region}): {exc}", flush=True)
+        return
+
+    tweet = record["tweet"]
+    for attempt in range(1, SPCHARTS_RECORD_POST_MAX_ATTEMPTS + 1):
+        if post_with_image(tweet, out_path, SPCHARTS_RECORD_TWITTER_SESSION, skip_if=lambda: lock_path.exists()):
+            lock_path.write_text(datetime.utcnow().isoformat(), encoding="utf-8")
+            print(f"[INFO] Posted rank-record card: {title!r} ({region})", flush=True)
+            return
+        print(
+            f"[WARN] Rank-record post failed for {title!r} ({region}), "
+            f"tentative {attempt}/{SPCHARTS_RECORD_POST_MAX_ATTEMPTS}",
+            flush=True,
+        )
+        if attempt < SPCHARTS_RECORD_POST_MAX_ATTEMPTS:
+            time.sleep(SPCHARTS_RECORD_POST_RETRY_SECONDS)
+    print(f"[WARN] Rank-record post abandoned for {title!r} ({region})", flush=True)
 
 
 def _notify_spcharts_events(env: dict[str, str]) -> None:
@@ -1810,9 +1931,10 @@ def _notify_spcharts_events(env: dict[str, str]) -> None:
     total_days_alerts: list[str] = []
     streak_alerts: list[str] = []
     peak_rank_alerts: list[str] = []
-    rank_record_tweets: list[str] = []
+    rank_records: list[dict] = []
     for region in sorted(SPCHARTS_RANKED_HISTORY_REGIONS):
-        rank_record_tweets.extend(_collect_spcharts_rank_record_since(region))
+        rank_records.extend(_collect_spcharts_rank_record_since(region))
+    rank_record_tweets = [record["tweet"] for record in rank_records]
     for current_path in sorted(discography_dir.glob("*.json")):
         region = current_path.stem
         if region == "index" or region.endswith("_previous"):
@@ -1881,6 +2003,10 @@ def _notify_spcharts_events(env: dict[str, str]) -> None:
             tags="spotify,trophy",
         )
         print(f"[spcharts_notify] rank-record-since tweets: {len(rank_record_tweets)}")
+    if rank_records:
+        cover_lookup = _spcharts_track_cover_lookup()
+        for record in rank_records:
+            _post_spcharts_rank_record_card(record, cover_lookup)
     if not total_days_alerts and not streak_alerts and not peak_rank_alerts and not rank_record_tweets:
         print("[spcharts_notify] no alerts")
 

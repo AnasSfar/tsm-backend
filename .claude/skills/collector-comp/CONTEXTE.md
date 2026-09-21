@@ -16,7 +16,13 @@ Modifier ce dossier peut affecter:
 
 ## Fichiers
 
-- `chart_card.py`: rendu HTML/PNG de cards chart.
+- `chart_card.py`: rendu HTML/PNG de cards chart. `render_chart_card(..., record=True)`
+  (2026-09-21) ajoute un style "record" additif — ruban dore `🏆 Record` +
+  halo/glow gold autour de la card — pour les layouts `wide` et `square`.
+  Utilise par `run_all_charts.py::_post_spcharts_rank_record_card` pour les
+  auto-posts "best rank since"/"best filtered streams since" (voir skill
+  `spotify-charts`). `record=False` par defaut : aucun rendu existant ne
+  change.
 - `song_card_chart_sheet.py`: **la card chanson réellement postée en prod**
   depuis le 2026-08-26 (`render_chart_sheet_card()` +
   `write_chart_sheet_card_png()`) — remplace l'ancien style best_since de
