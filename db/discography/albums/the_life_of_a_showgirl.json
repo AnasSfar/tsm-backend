@@ -1050,19 +1050,25 @@
           "album": "The Life of a Showgirl",
           "primary_artist": "Taylor Swift",
           "featured_artists": [],
-          "artists": ["Taylor Swift"],
+          "artists": [
+            "Taylor Swift"
+          ],
           "title_clean": "Patient Zero",
           "song_family": "patient_zero",
           "version_tag": "standard",
           "release_date": "2026-09-25T00:00:00Z",
-          "filter_tags": ["solo", "album_track"],
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
           "on_album": true,
           "role": "album_track",
           "release_edition": "the_encore",
           "tags": [],
           "catalog_category": "standard",
           "music_track": true,
-          "announced": true
+          "announced": true,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273d7812467811a7da6e6a44902"
         },
         {
           "title": "Cleveland!",
@@ -1075,19 +1081,25 @@
           "album": "The Life of a Showgirl",
           "primary_artist": "Taylor Swift",
           "featured_artists": [],
-          "artists": ["Taylor Swift"],
+          "artists": [
+            "Taylor Swift"
+          ],
           "title_clean": "Cleveland!",
           "song_family": "cleveland",
           "version_tag": "standard",
           "release_date": "2026-09-25T00:00:00Z",
-          "filter_tags": ["solo", "album_track"],
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
           "on_album": true,
           "role": "album_track",
           "release_edition": "the_encore",
           "tags": [],
           "catalog_category": "standard",
           "music_track": true,
-          "announced": true
+          "announced": true,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273d7812467811a7da6e6a44902"
         },
         {
           "title": "Pink Clouding",
@@ -1100,19 +1112,25 @@
           "album": "The Life of a Showgirl",
           "primary_artist": "Taylor Swift",
           "featured_artists": [],
-          "artists": ["Taylor Swift"],
+          "artists": [
+            "Taylor Swift"
+          ],
           "title_clean": "Pink Clouding",
           "song_family": "pink_clouding",
           "version_tag": "standard",
           "release_date": "2026-09-25T00:00:00Z",
-          "filter_tags": ["solo", "album_track"],
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
           "on_album": true,
           "role": "album_track",
           "release_edition": "the_encore",
           "tags": [],
           "catalog_category": "standard",
           "music_track": true,
-          "announced": true
+          "announced": true,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273d7812467811a7da6e6a44902"
         },
         {
           "title": "Babylon",
@@ -1125,19 +1143,25 @@
           "album": "The Life of a Showgirl",
           "primary_artist": "Taylor Swift",
           "featured_artists": [],
-          "artists": ["Taylor Swift"],
+          "artists": [
+            "Taylor Swift"
+          ],
           "title_clean": "Babylon",
           "song_family": "babylon",
           "version_tag": "standard",
           "release_date": "2026-09-25T00:00:00Z",
-          "filter_tags": ["solo", "album_track"],
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
           "on_album": true,
           "role": "album_track",
           "release_edition": "the_encore",
           "tags": [],
           "catalog_category": "standard",
           "music_track": true,
-          "announced": true
+          "announced": true,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273d7812467811a7da6e6a44902"
         }
       ]
     },
