@@ -27,6 +27,9 @@ sys.path.insert(0, str(_SCRIPT_DIR.parents[0]))  # collectors/spotify/ for core.
 sys.path.insert(0, str(_SCRIPT_DIR / "tools" / "scripts"))
 sys.path.insert(0, str(_SCRIPT_DIR / "extras"))
 sys.path.insert(0, str(_REPO_ROOT / "collectors" / "comp"))
+sys.path.insert(0, str(_REPO_ROOT / "collectors" / "billboard"))
+
+from live_trigger import trigger_live_projection  # noqa: E402
 
 import export_for_web
 from backfill_discography_from_spotify import run_backfill as run_discography_backfill
@@ -212,8 +215,7 @@ MAX_ESTIMATED_STREAM_GAP_DAYS = 4
 ESTIMATED_MISSING_DAY_REASON = "missing_daily_gap"
 
 # --admin: accept whatever total Spotify shows as-is, writing the raw diff as
-# daily_streams even when negative (unlike --over, which still clamps a
-# negative diff to blank via compute_daily). Set once in main() from argv.
+# daily_streams. Set once in main() from argv.
 ADMIN_OVERRIDE_MODE = False
 NEW_RELEASE_RETRY_ATTEMPTS = int(os.getenv("NEW_RELEASE_RETRY_ATTEMPTS", "12"))
 NEW_RELEASE_RETRY_SLEEP_SECONDS = int(os.getenv("NEW_RELEASE_RETRY_SLEEP_SECONDS", "10"))
@@ -549,20 +551,19 @@ Usage:
       Scrape only. No writes anywhere.
 
   python update_streams.py YYYY-MM-DD --over
-      Override the reject-on-decrease guard for this run. Still clamps a negative
-      delta to a blank daily_streams (compute_daily) â€” use --admin instead if the
-      raw total decreased and that decrease itself should be recorded.
+      Override the missing-previous-day-baseline / anomaly-delta guards for
+      this run (a real Spotify-side total decrease is already accepted as-is
+      by default, recorded as a negative daily_streams).
 
   python update_streams.py YYYY-MM-DD --admin
-      Accept the raw Spotify total as-is with no clamp at all (implies --over
-      AND --force â€” a track already holding a blank/partial row for this date
-      is otherwise skipped as "already done" before the override ever runs):
-      writes daily_streams as the literal (possibly negative) diff, tagged
-      estimated_reason=admin_override so the completeness gate counts it as done
-      despite the negative/blank value. Use only for a verified Spotify-side
-      merge/relink/correction you're vouching for by hand â€” it bypasses the
-      "never publish a negative daily" guarantee. Forces a full re-scrape of
-      every track for that date (via --force), so expect the full run time.
+      Accept the raw Spotify total as-is (implies --over AND --force â€” a
+      track already holding a blank/partial row for this date is otherwise
+      skipped as "already done" before the override ever runs): writes
+      daily_streams as the literal diff, tagged estimated_reason=admin_override
+      so the completeness gate counts it as done. Use for a verified
+      Spotify-side merge/relink/correction you're vouching for by hand. Forces
+      a full re-scrape of every track for that date (via --force), so expect
+      the full run time.
 
   python update_streams.py --local-test YYYY-MM-DD
       Force re-scrape even if the date already exists, but skip history writes,
@@ -802,21 +803,11 @@ def try_apply_track_update(
             # hasn't caught up to that figure yet, this isn't a real regression.
             reason = "missing_previous_day_total"
             real_update = False
-        elif track.get("chart_extra"):
-            # Extras (covers, wind ensemble versions, etc.) aren't posted and
-            # aren't subject to the "streams never decrease" guarantee we hold
-            # non-extra actives to â€” a real total drop here is accepted as-is
-            # instead of blocking the run forever waiting for month-start.
-            reason = "lower_than_previous_extra"
-            real_update = True
         else:
-            reason = "lower_than_previous"
-            try:
-                real_update = date.fromisoformat(stats_date).day == 1
-            except ValueError:
-                real_update = False
-            if not real_update:
-                reason = "lower_than_previous_not_month_start"
+            # A real Spotify-side total drop is accepted as-is and recorded
+            # with a negative daily_streams (shown in red on generated images).
+            reason = "lower_than_previous_extra" if track.get("chart_extra") else "lower_than_previous"
+            real_update = True
     elif total - last_total > MAX_DAILY_INCREASE:
         reason = f"anomaly_delta_gt_{MAX_DAILY_INCREASE}"
         real_update = False
@@ -3834,6 +3825,7 @@ def main():
         while True:
             active_track_ids_for_check = load_active_track_ids_from_discography()
             all_tracks_for_check = load_tracks_from_discography(active_track_ids_for_check)
+            all_tracks_for_check = filter_tracks_released_for_stats_date(all_tracks_for_check, stats_date)
             non_extra_ids = {t["track_id"] for t in all_tracks_for_check if not t.get("chart_extra")}
             done_ids_for_date = load_history_track_ids_with_daily_for_date(stats_date)
             missing_non_extra = non_extra_ids - done_ids_for_date - infinite_retry_track_ids
@@ -4070,6 +4062,7 @@ def main():
             title="Taylor Swift - Streams updated",
             tags="white_check_mark,chart_increasing",
         )
+        trigger_live_projection(log=print)
 
 
 if __name__ == "__main__":

@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import hashlib
+import io
 import json
 import mimetypes
 import os
@@ -10,6 +11,7 @@ from typing import Any
 
 import boto3
 from botocore.client import BaseClient
+from botocore.config import Config
 
 
 def get_env(name: str) -> str:
@@ -32,6 +34,12 @@ def get_r2_client() -> BaseClient:
         aws_access_key_id=access_key_id,
         aws_secret_access_key=secret_access_key,
         region_name="auto",
+        # No timeout = a stalled R2 socket hangs the hourly cycle forever.
+        config=Config(
+            connect_timeout=10,
+            read_timeout=60,
+            retries={"max_attempts": 3, "mode": "standard"},
+        ),
     )
 
 
@@ -78,7 +86,7 @@ def upload_bytes_if_changed(
     client.put_object(
         Bucket=bucket,
         Key=key,
-        Body=data,
+        Body=io.BytesIO(data),  # chunked send: timeout per chunk, not per file
         ContentType=content_type or guess_content_type(key),
         Metadata={"sha256": local_hash},
     )

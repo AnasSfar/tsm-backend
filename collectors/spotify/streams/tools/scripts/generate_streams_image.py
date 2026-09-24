@@ -242,9 +242,7 @@ def load_history(target_date: str) -> tuple[list[dict], list[dict], list[dict]]:
             p = prev.get(tid)
             if not p:
                 continue
-            diff = e.get("streams", 0) - p.get("streams", 0)
-            if diff >= 0:
-                e["daily_streams"] = diff
+            e["daily_streams"] = e.get("streams", 0) - p.get("streams", 0)
 
     _fill_missing_daily(today_rows, yesterday_rows)
     _fill_missing_daily(yesterday_rows, before_rows)
@@ -258,9 +256,7 @@ def load_history(target_date: str) -> tuple[list[dict], list[dict], list[dict]]:
             prior = prior_totals.get(tid)
             if prior is None:
                 continue
-            diff = e.get("streams", 0) - prior[1]
-            if diff >= 0:
-                e["daily_streams"] = diff
+            e["daily_streams"] = e.get("streams", 0) - prior[1]
 
     _fill_missing_daily_from_latest(today_rows, "today")
     _fill_missing_daily_from_latest(yesterday_rows, "yesterday")

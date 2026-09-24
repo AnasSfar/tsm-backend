@@ -11,18 +11,47 @@
 - images de snapshots et cards pays;
 - export JSON puis upload R2.
 
-Le pipeline ne poste pas sur X. `--no-post` existe dans le runner mais n'est pas
-un controle de publication Twitter. Ne fait jamais de commit/push git (seul
-l'upload R2 distribue la donnee).
+Le pipeline coeur (`run_apple_music.py`) ne poste pas sur X. `--no-post` existe
+dans le runner mais n'est pas un controle de publication Twitter. Ne fait
+jamais de commit/push git (seul l'upload R2 distribue la donnee).
+**Exception depuis le 2026-09-24** : `post_new_release_progression.py`, lance
+en 3e ligne du `.bat`, poste sur X — voir section « Progression horaire des
+nouvelles sorties » plus bas.
 
 Scheduler : prod tourne **en local via le Planificateur de taches Windows**
-(`TSM Apple Music Every 4 Hours`, action = `run_apple_music_hidden.vbs` ->
-`run_apple_music.bat`, repeat toutes les 2h). Ni GitHub Actions ni VPS.
+(`TSM Apple Music Every 4 Hours` — nom historique desormais trompeur, action =
+`run_apple_music_hidden.vbs` -> `run_apple_music.bat`, repeat **toutes les
+heures depuis le 2026-09-24**, avant ca 2h). Ni GitHub Actions ni VPS.
+**`build_scraped_at()` arrondit toujours au dernier creneau de
+`APPLE_MUSIC_SNAPSHOT_HOURS` (defaut code = heures paires seulement)** — le
+simple changement de cadence du Planificateur ne suffisait pas : sans
+override, les runs des heures impaires auraient juste re-arrondi vers le
+creneau pair precedent (pas de nouvelle donnee, juste une recollecte gaspillee
+sur l'API Apple). Fix applique le 2026-09-24 : `.env` fixe
+`APPLE_MUSIC_SNAPSHOT_HOURS=0,1,...,23` (et `ITUNES_SNAPSHOT_HOURS` pareil,
+cf. skill `collector-itunes`) pour que chaque heure produise reellement son
+propre snapshot.
 **Depuis le 2026-09-09, `run_apple_music.bat` lance aussi `collectors/itunes/run_itunes.py`
 juste apres** (charts d'achats iTunes Store — collecteur separe, skill
 `collector-itunes`, meme cadence, log `collectors/itunes/run_itunes.log`,
 tourne quel que soit le code de sortie d'Apple Music). Ne pas casser la 2e
-ligne du `.bat` en modifiant la 1re.
+ligne du `.bat` en modifiant la 1re. **Les deux appels python du `.bat`
+utilisent `-u` (stdout non bufferise) depuis le 2026-09-24** — sans ca, le
+log paraissait fige/mort pendant tout le run (10-20 min de silence), meme
+piege deja rencontre et corrige sur Spotify Streams (skill `pipeline-ops`).
+**Diagnostic "export R2 manquant" (2026-09-24)** : verifie sur R2 (pas
+seulement le log local) que le run de minuit uploade bien chaque jour
+(`apple-music/snapshots/<date>T00:00:00+02:00.json` present sur toutes les
+~2 dernieres semaines a la date de cette note) — le vrai probleme observe
+etait des trous eparpilles (~1-3 creneaux/jour sur 12, dus a des cycles qui
+debordent sur le creneau suivant + `MultipleInstances=IgnoreNew` qui saute
+alors silencieusement le trigger suivant), pas un trou systematique a
+minuit. Si un site parait ne pas avoir la derniere donnee juste apres
+l'heure pile, le run est probablement juste encore en cours (bufferise avant
+le fix ci-dessus) plutot que casse. Pour verifier directement sans attendre
+le prochain run visible sur le site : lister `apple-music/snapshots/` /
+`itunes/snapshots/` sur R2 via `core/r2.py::get_r2_client()` +
+`list_objects_v2` pagine (`ContinuationToken`, >1000 objets desormais).
 Tente sur GitHub Actions le 2026-08-28 (`run-data-only-collectors.yml` +
 `scripts/ci_data_collector_gate.py`), re-bascule en local le 2026-08-29 :
 le `schedule:` natif de GitHub est trop peu fiable pour une cadence 2h
@@ -32,6 +61,142 @@ le `schedule:` natif de GitHub est trop peu fiable pour une cadence 2h
 rattrapage quand le PC est eteint (utilise `ci_data_collector_gate.py` pour
 router les inputs). Historique VPS OVH (2026-07-30 -> 2026-08-17) :
 `REPO_CONTEXT.md` section « Deploiement VPS OVH » et `OVH.md`.
+
+## Progression horaire des nouvelles sorties (`post_new_release_progression.py`, ajoute 2026-09-24)
+
+Cas d'usage : 4 titres inedits (Patient Zero, Cleveland!, Pink Clouding,
+Babylon — The Encore, `db/discography/albums/the_life_of_a_showgirl.json`,
+`release_date: 2026-09-25`) sans historique de la veille -> les marqueurs
+jour-a-jour habituels (`core/csv_utils.py::load_previous_ranks`, toujours
+« vs hier ») ne peuvent rien afficher le jour de sortie. Ce script maintient
+son **propre** etat « dernier rang vu » par (titre, chart, pays) au lieu de
+reutiliser le champ `previous_rank` des CSV (dont la semantique differe deja
+entre Global — vs hier — et pays/iTunes — vs le cycle precedent) :
+
+- **Detection** : `core/discography.py::iter_catalog_tracks()` (factorise
+  depuis `generate_snapshot_images.py` le meme jour) -> tout titre dont
+  `release_date` tombe dans les dernieres `APPLE_MUSIC_DEBUT_WINDOW_HOURS`
+  (defaut 72h) avant `now`, jamais dans le futur. Matching par titre
+  (`song_key_candidates`), pas par `apple_music_id` (absent pour un titre tout
+  juste sorti).
+- **Sources verifiees** : Apple Music Global + Apple Music/iTunes pour
+  `APPLE_MUSIC_DEBUT_KEY_COUNTRIES` (defaut `us,gb,fr,ca,au`) — lit
+  directement le CSV du jour (`apple_music_daily_csv`/`itunes_daily_csv`),
+  prend le cycle le plus recent present (`_latest_cycle_rows`), independant
+  pour chaque source (Apple Music et iTunes arrondissent `scraped_at`
+  separement, pas garanti identique a la seconde pres).
+- **Apple Music et iTunes SEPARES : une card + un post par (titre,
+  plateforme, cycle)** (3e correction proprietaire 2026-09-24 : « itunes
+  needs to be seperated from apple music »). `PLATFORMS` dans le script ;
+  chaque source porte un champ `platform` (`apple_music` = Global + pays
+  cles, `itunes` = pays cles). Le declenchement « a bouge » est evalue par
+  plateforme (un mouvement iTunes seul ne reposte pas la card Apple Music),
+  lock/slug PNG incluent la plateforme, lien du tweet = `amcharts/applemusic`
+  ou `amcharts/itunes`. Tableau "Region/Ranking" (lignes = "Global", "United
+  States"…, sans prefixe plateforme), kicker "Apple Music · New Release
+  Progress" / "iTunes · New Release Progress".
+- **Cover + titre d'album** : cover = `db/discography/covers.json` pour
+  l'album (via `comp.discography.build_cover_map`, donc la cover The Encore
+  pour Showgirl), fallback sur l'`image_url` par titre du catalogue (qui
+  pointe encore sur la cover standard). Nom d'album affiche via
+  `comp.discography.display_title_for_album` (-> "The Life of a Showgirl:
+  The Encore"). Le theme couleur reste calcule sur le vrai nom catalogue.
+- **Dans une plateforme, une seule card par titre par cycle, listant TOUS ses
+  charts** (decision proprietaire 2026-09-24, 2e correction — la 1re version postait une card
+  distincte par (titre, chart, cycle), rejetée : « on mets toutes les régions
+  dans une seule card... comme ça » en pointant `country_cards/`). Post
+  seulement si **au moins un** chart de ce titre a bougé ce cycle (sinon
+  volume ingerable) ; la card montre alors la ligne de **tous** les charts où
+  le titre apparaît actuellement (pas seulement ceux qui ont bougé), triés
+  bougé-d'abord puis par rang — premiere apparition = badge "(NEW)", sinon
+  delta vs dernier rang connu dans l'etat
+  (`tools/json/new_release_progression_state.json`), jamais egal -> pas
+  inclus dans le déclenchement (mais toujours affiché dans la ligne du
+  tableau s'il apparaît).
+- **Card = la share image du site (4e correction proprietaire 2026-09-24 :
+  « match the frontend's actual design »)**. `_build_progression_card_html`
+  est un portage HTML/CSS du `.overall-song-block` du frontend tel que capture
+  par `ShareImageButton` (`is-share-image-capturing`) :
+  `pages/AppleMusic.jsx::AppleMusicOverallBlock` / `pages/ITunes.jsx` —
+  header cover 52px + titre + album, a droite rangee logo + "APPLE MUSIC"
+  (`public/icons/apple-music-logo.webp`) ou logo + "ITUNES" (logo officiel
+  Wikimedia `ITunes_logo.svg` stocke dans
+  `collectors/apple_music/itunes_logo.svg` — le site n'a pas d'asset iTunes ;
+  le proprietaire a demande la meme rangee que Apple Music au lieu des
+  pastilles "N COUNTRIES / #1 / top N" de la page iTunes) + ligne date ·
+  heure du cycle (ex. "Sep 25, 2026 · 2:00 AM CEST") + "vs <heure du cycle
+  precedent>" + **toujours** 4 pastilles (meme a 0, demande proprietaire
+  2026-09-24) : "X #1" (accent si >0), "X top 10", "X top 50", "X charting"
+  (nb de charts de la plateforme ou le titre apparait),
+  tableaux Chart|Country / Ranking decoupes comme `splitPlacementsIntoColumns`
+  (1 col <6 lignes, 2 cols >=6, 4 cols >=12), drapeaux flagcdn (globe pour
+  Global, via `comp.img_fetch`), deltas `(▲ n)`/`(▼ n)`/`(NEW)` et **rien si
+  inchange** (comme le site), footer "Apple Music Charts - <date> - <heure>" /
+  "iTunes Store Charts - <date>" + "@swiftiescharts" (a la place du
+  "THE TAYLOR SWIFT MUSEUM : A Taylor Swift fan project" du site, demande
+  proprietaire) + logo `public/logo.png` en **mask recolore en --text**
+  (`.brand-logo` du site — le logo est blanc, un `<img>` brut est invisible
+  sur fond clair : c'etait le trou blanc du footer des anciennes cards).
+  Tokens = `:root` par defaut de `variables.css`. **Accent = couleur de la
+  cover** (demande proprietaire 2026-09-24 : pas de violet Apple Music / vert
+  iTunes fixes) via `_cover_accent` -> `comp.chart_card._cover_palette`
+  (meme extraction que les cards Spotify Charts, lisible sur fond clair ;
+  ex. cover The Encore -> #7c062e, cover standard Showgirl -> #9c7a29).
+  Sert aux noms de pays, pastille "#1", badges NEW / NEW PEAK. Fleches
+  ▲/▼ restent vert/rouge (convention du site).
+  Valeurs CSS recopiees de `Charts.css`/`calendar.css`/`ITunes.css`/
+  `RegionFlag.css` : si la card du site change, resynchroniser ce gabarit.
+  Largeur 780px (1 col) / 860px (2 cols) / 1280px (4 cols). Lit des fichiers
+  de `tsm-frontend/frontend/public` (repo voisin, deja requis par
+  `core/card_theme.py`). L'ancien gabarit (theme par album de
+  `generate_country_card_images.py`, kicker, pill date, @swiftiescharts) n'est
+  plus utilise par ce script.
+- **Colonne PEAK** (demande proprietaire 2026-09-24) : meilleur rang du
+  titre sur CE chart depuis sa sortie = min de (rang actuel, toutes les
+  lignes de tous les cycles des CSV journaliers du jour de sortie (Paris) a
+  aujourd'hui — `_peak_since_release`, via `source["path_for"](date)` —, champ
+  `peak` deja stocke dans l'etat). Donnees reelles uniquement, jamais
+  inferees. Tableau = Chart|Country / Ranking / Peak.
+  **Badge "NEW PEAK"** (pastille couleur accent dans la cellule Peak) quand
+  le rang actuel bat strictement le peak d'AVANT ce cycle (CSV hors lignes du
+  `scraped_at` courant + `peak` de l'etat). **1re apparition sur un chart**
+  (aucun rang anterieur, ni dans l'etat ni dans les CSV — `is_first_run`) :
+  badge **"NEW"** dans la cellule Peak (+ "(NEW)" dans Ranking), jamais
+  "NEW PEAK" (demande proprietaire 2026-09-24). Un titre deja vu dans les CSV
+  mais absent de l'etat (1er run du script tardif) n'est PAS un "NEW".
+- **Post X** : compte `@swiftiescharts` (meme session que le chart Global,
+  `collectors/spotify/charts/global/tools/json/twitter_session.json`),
+  `TWITTER_POST_PRIORITY` = `APPLE_MUSIC_DEBUT_POST_PRIORITY` (defaut **1**,
+  niveau « tweets charts » du bareme data-rules — n'attend pas derriere les
+  posts streams/charts, mais ne coupe pas la file early priority 0). Lock par
+  (titre, plateforme, cycle) dans `tools/locks/new_release_progression/`.
+- **S'eteint tout seul** : plus aucun titre dans la fenetre -> le script sort
+  immediatement sans rien lire/poster. Aucune tache planifiee dediee, aucun
+  nettoyage manuel a faire apres le week-end de sortie.
+- **Emoji dans les prints** : le script force `sys.stdout.reconfigure(encoding="utf-8")`
+  au demarrage — sans ca, `print()` d'un tweet contenant un emoji (ex. 🎧,
+  U+1F3A7, hors cp1252) plante le script des qu'il tourne via le `.bat`
+  (stdout redirige vers un fichier = codepage console Windows par defaut, pas
+  UTF-8). Piege decouvert en testant ce script, a garder present pour tout
+  futur script du pipeline qui imprime un tweet/texte avec emoji.
+- **Card album Global en plus (demande proprietaire 2026-09-24)** : pour
+  chaque album ayant un titre dans la fenetre, le script poste aussi la card
+  `generate_snapshot_images.py --region global --album <album>` (tous les
+  titres de l'album sur le Global, ex. Encore + Ophelia/Opalite, rangs reels,
+  deltas **vs dernier snapshot de la veille** — donc les titres Encore restent
+  "NEW" tout le jour de sortie, contrairement aux cards par titre qui
+  comparent au cycle precedent). Declenchement : seulement si le classement
+  de l'album sur le Global (signature {titre: rang}) differe du dernier poste
+  (`album_snapshot|<album>|global` dans l'etat) — le Global ne bouge
+  qu'environ 1x/jour, poster chaque heure l'image identique serait du spam.
+  Etat ecrit seulement apres un post reussi (un slot X occupe retente au
+  cycle suivant). Lock `album_snapshot_<album>_<scraped_at>.lock`, PNG
+  `album_snapshot_<album>_<scraped_at>.png` dans `OUT_DIR`, tweet
+  `🎧 | "<album affiche>" songs on the Global Apple Music chart (<date · heure>).`
+  + lien `amcharts/applemusic`. Poste apres les cards par titre du cycle.
+  Simulee dans `previews_and_sims/apple-music-debut-progression/simulate.py`
+  (fixtures/<date>/ + copie reelle du Global 09-24 comme baseline).
+- Log dedie : `collectors/apple_music/post_new_release_progression.log`.
 
 ## Entrypoint
 
@@ -51,7 +216,20 @@ Le runner lance, avec le meme `--scraped-at`:
 6. `genre_all.py`
 7. `scripts/export_apple_music.py`
 8. `generate_country_card_images.py`
-9. `generate_snapshot_images.py`
+9. `generate_snapshot_images.py` — depuis le 2026-09-24 : sous-titre =
+   "Chart Snapshot · <date · heure du snapshot> · vs <date · heure du snapshot
+   compare>" (heure de Paris, ex. "11:00 AM CEST"), footer = date + heure.
+   Toutes les regions comparent au **dernier snapshot du jour precedent**
+   (recalcule dans le script depuis les CSV, recherche jusqu'a 7 j en arriere —
+   meme semantique que `previous_rank`, verifie identique sur US/genres ; avant,
+   seul Global le recalculait). Flag manuel `--album <nom|slug|sous-chaine>`
+   (ex. `--album showgirl`) : garde seulement les titres de l'album (matching
+   par `title` du catalogue `db/discography/albums/*.json`, toutes sections,
+   via `core/discography.py::resolve_album_filter` — jamais `base_title`, sinon
+   un filtre Fearless TV attraperait "Love Story" original), rangs du chart
+   inchanges, titre = nom d'album affiche (`display_title_for_album`), PNG
+   suffixe (`global_the-life-of-a-showgirl.png`) pour ne pas ecraser l'image
+   standard. Le runner ne passe pas `--album` (usage manuel uniquement).
 10. `scripts/upload_ap_r2.py`, sauf `UPLOAD_TO_R2=0`
 
 Options runner:
@@ -205,11 +383,47 @@ Exports:
 Les CSV sont la source complete. Les JSON frontend peuvent etre fenetres ou
 precalcules.
 
+### Objets history-by-song + gzip R2 (2026-09-24)
+
+`upload_ap_r2.py::finalize_payload` applique maintenant, par source :
+1. **Dedup des points identiques** : `read_csv()` unit `db/`, `_archive/` et
+   tous les CSV quotidiens, la meme ligne y figurait 2-3 fois (27 % des
+   points Global) -> la fiche chanson affichait des hits en double (247
+   chansons concernees).
+2. **Allegement** : `image_url`, `url`, `apple_music_id`, `album_name`,
+   `song_name`, `storefront_ranks` ne sont gardes que sur les points portant
+   la date la plus recente avec `image_url` (ex aequo inclus) — le seul que
+   lit `tsm-frontend api/routes/apple_music.py::_song_history_rows_from_r2`
+   pour les metadonnees. Si l'API se met a lire un de ces champs sur d'autres
+   points, revoir `_POINT_META_FIELDS`.
+3. **Gzip** (`upload_json_if_changed(..., compress=True)`, `ContentEncoding:
+   gzip`) pour les per-song et `data/applemusic_history.json` ;
+   `applemusic.json`, snapshots et history-by-date restent en clair. Le hash
+   `Metadata.sha256` porte toujours sur le JSON **non compresse** (meme
+   serialisation que `scripts/r2.py`, donc pas de re-upload en boucle).
+   Lecteur : `tsm-frontend api/data/loader.py::_r2_json` degzippe sur les
+   octets magiques `1f 8b` (deploye AVANT l'activation cote backend — ordre a
+   respecter pour tout futur objet compresse). Tout nouveau lecteur boto3 de
+   ces cles doit faire pareil (boto3 ne decompresse pas).
+Verifie avant activation : les 705 objets reconstruits ancien/nouveau format
+passes par la vraie fonction de l'API donnent une sortie identique, hors
+suppression des doublons ; 1 028 Mo -> 330 Mo en clair -> **16,8 Mo gzip**
+(Fate of Ophelia 52 Mo -> 0,77 Mo). Canari en prod (objet `Style` gzippe)
+OK.
+
 ## Variables
 
 - `APPLE_MUSIC_COUNTRIES`: limite les storefronts (`us,fr,gb,...`).
 - `APPLE_MUSIC_CHART_LIMIT`: profondeur des charts, souvent 200.
-- `APPLE_MUSIC_WORKERS`: concurrence.
+- `APPLE_MUSIC_WORKERS`: concurrence par collecteur (defaut **32** depuis le
+  2026-09-24, avant 12). Benchmark lecture seule du jour : aucun 429 a 12/32/64,
+  debit plafonne ~44 req/s des 32 (bande passante), 64 n'ajoute que de la latence.
+- `APPLE_MUSIC_FAILURE_RETRY_ROUNDS` (defaut 2) : storefronts/paires en echec
+  re-tentes (`core/http.py::retry_failed`, pause 2s/4s, 8 workers) AVANT d'etre
+  comptes `skipped` dans `country_all`, `genre_all`, `ts_page_all`. Un blip
+  DNS ne coute plus un storefront (ni le composite TS entier au-dela de 5 %).
+- `APPLE_MUSIC_PARALLEL_SCRIPTS` (defaut 1) : collecteurs en groupes paralleles.
+- `APPLE_MUSIC_R2_WORKERS` (defaut 24) : concurrence de `upload_ap_r2.py`.
 - `APPLE_MUSIC_TIMEOUT`
 - `APPLE_MUSIC_RETRY_TOTAL`
 - `APPLE_MUSIC_RETRY_BACKOFF`
@@ -329,3 +543,141 @@ ici. Seuils/decisions produit → skill `data-rules` § "Home highlights".
   pour le chemin notif-only qui n'envoie qu'un texte ntfy. Corrige en rendant
   l'import `tables_image` lazy (dans `_rows_html` et `generate()`). En local
   le probleme ne se voit pas (venv complet), mais garder l'import lazy.
+- **Bug corrige (2026-09-24) : trou de plusieurs heures dans le selecteur
+  d'heure du site (ex. 2AM-7AM invisible) malgre un pipeline local qui tourne
+  bien chaque heure et un upload R2 qui reussit.** Cause : `export_apple_music.py`
+  construisait `dates` (JSON principal) et `history_dates` (JSON historique,
+  d'ou `applemusic_history_dates/index.json` que `get_apple_music()` cote API
+  privilegie sur les dates du JSON principal) uniquement a partir des lignes
+  CSV physiquement ecrites + le timestamp du run EN COURS. Or une heure ou
+  aucun des 7 types de chart n'a change n'ecrit aucune ligne CSV (dedup
+  volontaire, cf. `[skip] snapshot identique`) — cette heure n'existe alors
+  que dans SA PROPRE execution (mirroring `_mirror_*_current_to_latest` vers
+  `latest_any`), jamais persistee. Le run suivant recalcule `dates`/`history_dates`
+  from scratch et perd silencieusement cette heure, bien que son snapshot
+  individuel (`apple-music/snapshots/<heure>.json`) reste sur R2 pour
+  toujours (jamais supprime, juste plus reference). Sous l'ancienne cadence
+  2h c'etait rare (1-3 creneaux/jour, lu comme du bruit dans le piège
+  ci-dessus) ; en cadence horaire (depuis le 2026-09-24), plusieurs heures
+  consecutives sans le moindre changement (nuit) sont courantes -> trou
+  visible de plusieurs heures. **Fix** : les deux listes recuperent
+  maintenant en plus les dates de l'export precedent (`prev_data`/`prev_history_data`,
+  deja charges pour le backfill de `previous_rank`) avant d'etre recalculees,
+  **mais seulement celles du jour courant** (`d[:10] == today_day`, corrige le
+  meme jour apres audit). La 1re version reprenait toutes les dates sans
+  filtre : des le lendemain, les heures de la veille (dont `window_rows` ne
+  garde que le dernier snapshot par chart) seraient restees dans l'index en
+  pointant sur le DERNIER snapshot du jour sous une etiquette plus ancienne,
+  et plus rien ne serait jamais sorti de l'index (meme sous `HISTORY_CUTOFF`).
+  Pour le jour courant c'est sur : `history_value_for_day()` retombe sur la
+  cle la plus proche <= heure demandee du meme jour (toujours presente, le 1er
+  run du jour ecrit toujours). Les jours passes gardent donc leur forme
+  compactee d'avant (quelques heures/jour), c'est voulu.
+  **Pendant cote `upload_ap_r2.py::upload_snapshot_jsons` (meme jour)** :
+  `_snapshot_payload` ne lisait que la cle exacte -> toute heure sans ligne
+  CSV propre partait sur R2 avec des listes vides, ecrasant le bon objet
+  mirrore (vu : 03h-06h et 09h entierement vides, 02h/07h/08h partiels ; les
+  jours passes avaient deja des objets partiels avant ce fix). Maintenant :
+  meme repli "derniere cle <= heure, meme jour" (jamais une cle plus tardive),
+  pas d'upload si aucun chart n'a de donnee, et **un jour passe n'est jamais
+  re-uploade s'il existe deja** sur R2 (le recalcul a partir de l'export
+  compacte serait plus pauvre que ce qui a ete uploade ce jour-la). Les 8
+  snapshots du 2026-09-24 ont ete re-uploades corrects a la main.
+  **Rattrapage ponctuel 2026-09-24** : heures 03h-06h du jour
+  deja perdues avant le fix (le carry-forward ne peut pas resusciter ce que
+  le fichier precedent n'avait deja plus) -> reinjectees a la main dans
+  `applemusic.json`/`applemusic_history.json` locaux avant un rerun d'export +
+  upload R2. Si un autre trou de plusieurs heures apparait malgre ce fix,
+  verifier `runtime/exports/web/site/data/applemusic_history_dates/index.json`
+  (source que le site utilise en priorite) plutot que seulement
+  `applemusic.json`.
+- **Trou "run manquant" du 2026-09-24T10:00 : pas un bug du script, PC en
+  veille.** Contrairement au piege ci-dessus (heure existante mais non
+  persistee), ce cas n'a produit AUCUNE donnee nulle part (ni CSV local, ni
+  objet R2) : `Get-ScheduledTaskInfo` a rapporte `NumberOfMissedRuns: 1` et le
+  journal `Microsoft-Windows-TaskScheduler/Operational` n'a aucune entree
+  entre le run de 9h00 et celui de 11h00 (donc le trigger de 10h n'a jamais
+  ete lance). Cause trouvee dans le journal `System` : le PC est parti en
+  veille a 09:25 (`Sleep Reason: Button or Lid`), reveil bref a 09:55 suivi
+  d'une re-hibernation immediate, reveil complet seulement a 10:06 — trop
+  tard pour le trigger de 10h malgre `WakeToRun=True` sur la tache. Rien a
+  reparer cote export : une heure sans le moindre run n'a pas de snapshot R2
+  a retrouver. **Fix applique le 2026-09-24** : `powercfg /change
+  standby-timeout-ac 0`, `standby-timeout-dc 0`, `hibernate-timeout-ac 0`,
+  `hibernate-timeout-dc 0` (plus aucune veille auto, secteur ou batterie). Si
+  un trou similaire (aucun objet R2 du tout sur un creneau, contrairement au
+  cas "objet R2 present mais absent de `dates`") revient malgre ca, verifier
+  d'abord le journal `System` (`Get-WinEvent -LogName System -Id 1,42`) pour
+  un evenement veille/reveil avant de suspecter le code.
+- **Upload R2 bloque a l'infini, cycle 11h du 2026-09-24 (corrige le meme
+  jour).** `upload_ap_r2.py` est reste ~10 min fige dans la phase per-song :
+  py-spy montrait les 8 workers bloques dans `ssl.sendall` (put_object),
+  aucune sortie dans le log. Causes et fixes :
+  - **Aucun timeout boto3** (`upload_ap_r2.py`, `core/r2.py`,
+    `upload_itunes_r2.py`, `generate_home_highlights.py`) -> tous ont
+    maintenant `Config(connect_timeout=10, read_timeout=60, retries standard
+    x3)`. **Piege** : urllib3 applique le `connect_timeout` a tout l'envoi, et
+    un body `bytes` part en UN `sendall` dont le timeout couvre le fichier
+    entier -> avec 10s, tout objet > ~50 Mo (`applemusic_history.json` 125
+    Mo, per-song Fate of Ophelia 52 Mo) echouerait a chaque fois. D'ou
+    `Body=io.BytesIO(...)` partout : envoi par blocs de 16 Ko, timeout par bloc
+    (un vrai blocage coupe en 10s, un gros fichier passe). Teste : 125 Mo
+    envoyes en 192s sans erreur (~0,65 Mo/s depuis ce PC).
+  - **Aucun timeout sur les sous-process** de `run_apple_music.py` /
+    `run_itunes.py` -> `run_child()` avec plafond par etape (collecteurs
+    1200s/900s, export 900s, upload 1800s, images 900s, notif 300s,
+    highlights 600s) ; `live_trigger.py` 600s par script. Un enfant bloque ne
+    peut plus tenir le cycle au-dela du trigger suivant (IgnoreNew).
+  - **Stdout des enfants bufferise** (le `-u` du `.bat` ne couvre que le
+    parent) -> `child_env()` fixe `PYTHONUNBUFFERED=1`.
+  - **Une image ratee bloquait l'upload R2** -> les images ne font plus que
+    logger (cosmetique, la donnee passe avant). Un upload rate lance quand
+    meme highlights + live projection, puis sort en code d'erreur.
+  - `post_new_release_progression.py` pouvait attendre 30 min par tweet le
+    slot `@swiftiescharts` (defaut `TWITTER_POST_LOCK_TIMEOUT`) -> nouveau
+    kwarg `slot_timeout` dans `collectors/spotify/core/twitter.py::post_with_image`
+    (defaut inchange pour les autres appelants), ici
+    `APPLE_MUSIC_DEBUT_POST_SLOT_TIMEOUT` (defaut 180s) ; slot occupe = post
+    saute (WARN), pas de blocage.
+  - **Mode « Last snapshot » du site (tsm-frontend, 2026-09-24)** : Apple ne
+    rafraichit pas chaque chart chaque heure, et le mirroring
+    `_mirror_*_current_to_latest` recopie un chart inchange sur l'heure du
+    run -> comparer a « l'heure d'avant » donnait souvent un chart compare a
+    lui-meme (aucun mouvement affiche). L'API
+    (`api/routes/apple_music.py::_last_distinct_bucket_payloads`) remonte
+    maintenant, par famille de chart, jusqu'au dernier snapshot dont les
+    POSITIONS different (signature (entree, rang), pas le contenu brut : la
+    copie mirroree differe sur des champs annexes) ; heure reelle exposee dans
+    `compared_to_by_bucket` et affichee sous chaque carte. Ne pas supprimer le
+    mirroring pour « simplifier » : l'onglet TS Top Songs du jour n'a que la
+    cle mirroree.
+  - **`ts_page_all.py` / `finalize_ts_top_songs_daily.py` non bloquants**
+    (`NON_BLOCKING_SCRIPTS`, cycle 12h du meme jour) : un echec DNS sur 12/168
+    storefronts a fait echouer `ts_page_all.py` (garde anti-composite partiel,
+    normal), et le runner sortait alors AVANT l'export -> heure entiere
+    absente du site alors que global/pays/genres etaient complets. Leur
+    sortie (CSV brut / finalisation idempotente de la veille) n'est jamais lue
+    par l'export horaire, donc echec = WARN et on continue. Les autres
+    collecteurs restent bloquants.
+  - **Per-song allegé le meme jour** (voir section « Objets history-by-song »
+    ci-dessous) : ~1 Go/h -> ~17 Mo pour les 705 objets.
+  - **Acceleration SANS rien sauter (2026-09-24, demande explicite : « plus
+    vite » = paralleliser, jamais supprimer une etape/donnee)** : collecteurs
+    en 4 groupes paralleles (~3m20 -> ~41s mesures, ecritures desactivees),
+    workers 12 -> 32, retry des echecs au lieu du skip,
+    `csv_utils.load_previous_ranks` ne lit plus 30 jours x2 (walk-back jusqu'au
+    1er jour passe avec snapshot + cache process ; resultats identiques
+    verifies sur 21 cas, genre 12s -> 0,5s), images en parallele de l'upload,
+    `upload_ap_r2` : slugify/normalize memoises + dedup sans `json.dumps` par
+    point (705 objets identiques octet pour octet, build 52s -> 31s), build
+    per-song en fond pendant les premieres phases. Jeton MusicKit : ecriture
+    atomique du cache (processus paralleles).
+  - Diagnostic rapide si le log parait fige : `Get-CimInstance Win32_Process`
+    filtre sur `upload_ap_r2|run_apple_music` (nom de process = `python3.13.exe`,
+    pas `python.exe`), puis `py-spy dump --pid <PID>`.
+- **Live projection trigger (ajoute 2026-09-23)** : `run_apple_music.py::main()`
+  appelle `collectors/billboard/live_trigger.py::trigger_live_projection()`
+  juste apres `regenerate_home_highlights_cache()`, uniquement sur le chemin
+  de succes complet (scripts + export + upload R2 OK). Best-effort, jamais
+  bloquant. Voir `collector-billboard/CONTEXTE.md` § "Live projection" pour
+  le detail du declenchement multi-collecteurs.

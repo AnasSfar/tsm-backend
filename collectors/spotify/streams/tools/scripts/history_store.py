@@ -334,13 +334,19 @@ def _counts_in_album_total(track: dict) -> bool:
     return _as_bool(track.get("on_album")) is not False
 
 
-def load_album_track_ids() -> set[str]:
-    """Returns track IDs from album files only, excluding chart_extra/non-album tracks."""
+def load_album_track_ids(stats_date: str | None = None) -> set[str]:
+    """Returns track IDs from album files only, excluding chart_extra/non-album tracks.
+
+    ``stats_date``, when given, also excludes tracks not yet released as of
+    that date — see `load_album_track_ids_for_album` for why.
+    """
     sections = load_album_sections_flat()
     ids = set()
     for section in sections:
         for track in section.get("tracks", []):
             if _is_chart_extra(section, track) or not _counts_in_album_total(track):
+                continue
+            if stats_date is not None and not track_is_released_for_stats_date(track, stats_date):
                 continue
             url = (track.get("url") or track.get("spotify_url") or "").strip()
             tid = extract_track_id(url)
@@ -348,8 +354,15 @@ def load_album_track_ids() -> set[str]:
                 ids.add(tid)
     return ids
 
-def load_album_track_ids_for_album(album_name: str) -> set[str]:
-    """Returns track IDs from one album, excluding chart_extra/non-album tracks."""
+def load_album_track_ids_for_album(album_name: str, stats_date: str | None = None) -> set[str]:
+    """Returns track IDs from one album, excluding chart_extra/non-album tracks.
+
+    ``stats_date``, when given, also excludes tracks not yet released as of
+    that date (e.g. an announced-but-unreleased deluxe/edition section) — a
+    track that can never have stream data for that date must never gate the
+    album's daily completeness check (data-rules #11: no card ever waits on
+    a section before its release_date).
+    """
     sections = load_album_sections_flat()
     ids = set()
     for section in sections:
@@ -357,6 +370,8 @@ def load_album_track_ids_for_album(album_name: str) -> set[str]:
             continue
         for track in section.get("tracks", []):
             if _is_chart_extra(section, track) or not _counts_in_album_total(track):
+                continue
+            if stats_date is not None and not track_is_released_for_stats_date(track, stats_date):
                 continue
             tid = extract_track_id(track.get("url") or track.get("spotify_url") or "")
             if tid:
@@ -423,16 +438,19 @@ def find_biggest_album_gainer_for_spotlight(
     return best
 
 def all_album_tracks_done(stats_date: str) -> bool:
-    """Returns True when every album-file track has a real daily_streams value for stats_date."""
-    album_ids = load_album_track_ids()
+    """Returns True when every released album-file track has a real
+    daily_streams value for stats_date (unreleased tracks never block this)."""
+    album_ids = load_album_track_ids(stats_date)
     if not album_ids:
         return True
     done_ids = load_history_track_ids_with_daily_for_date(stats_date)
     return album_ids.issubset(done_ids)
 
 def album_tracks_done_for(album_name: str, stats_date: str) -> bool:
-    """Returns True when every track from the given album has a real daily_streams value for stats_date."""
-    album_ids = load_album_track_ids_for_album(album_name)
+    """Returns True when every released track from the given album has a real
+    daily_streams value for stats_date (unreleased tracks, e.g. an announced
+    upcoming edition, never block this)."""
+    album_ids = load_album_track_ids_for_album(album_name, stats_date)
     if not album_ids:
         return False
     done_ids = load_history_track_ids_with_daily_for_date(stats_date)
@@ -536,7 +554,14 @@ def validate_released_active_history_complete(
                 continue
             daily_raw = str(cur.get("daily_streams") or "").strip()
             title = track.get("title") or track_id
-            if check_day.day != 1:
+            reason = str(cur.get("estimated_reason") or "").strip()
+            if check_day.day != 1 and not reason.startswith("admin_override"):
+                # An `admin_override` negative daily is a deliberate operator
+                # write (--admin), not scraping corruption -- Spotify's raw
+                # total is accepted as ground truth and shown as-is (owner
+                # decision 2026-09-23, cf. skill spotify-streams). Blocking
+                # every publishable artifact on it would just hide a real
+                # number behind a completeness error.
                 try:
                     if int(daily_raw) < 0:
                         negative_titles.append(title)
@@ -1250,10 +1275,7 @@ def has_real_update(previous_streams: int | None, new_streams: int) -> bool:
 def compute_daily(previous_streams: int | None, new_streams: int) -> int | None:
     if previous_streams is None:
         return None
-    diff = new_streams - previous_streams
-    if diff < 0:
-        return None
-    return diff
+    return new_streams - previous_streams
 
 def load_tracks_from_discography(active_track_ids: set[str] | None = None) -> list[dict]:
     seen: dict[str, dict] = {}

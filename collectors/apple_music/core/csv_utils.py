@@ -139,6 +139,49 @@ def _snapshot_key(row: dict) -> str:
     return row.get("scraped_at") or row.get("date", "")
 
 
+_PREVIOUS_SNAPSHOT_CACHE: dict[tuple[str, str], tuple[bool, str | None, list[dict[str, str]]]] = {}
+
+
+def _previous_day_snapshot(csv_path: Path, current_day: str) -> tuple[bool, str | None, list[dict[str, str]]]:
+    """(any history found, latest snapshot key strictly before current_day, its rows).
+
+    Reads the base + archive files, then daily files newest-first and stops at
+    the first past day that has a snapshot: a daily file only ever holds its own
+    day's rows, so older files cannot hold a later key. Same result as scanning
+    the whole PREV_RANK_WINDOW_DAYS window, without reading ~1M rows. Cached per
+    process (collectors call this 2x per CSV: by id and by name).
+    """
+    cache_key = (str(csv_path), current_day)
+    if cache_key in _PREVIOUS_SNAPSHOT_CACHE:
+        return _PREVIOUS_SNAPSHOT_CACHE[cache_key]
+
+    base_rows = read_csv_rows(csv_path)
+    seen = {csv_path.resolve(), (ARCHIVE_DB_DIR / csv_path.name).resolve()}
+    daily = [p for p in _daily_csv_paths(csv_path, days=PREV_RANK_WINDOW_DAYS) if p.resolve() not in seen]
+    daily.sort(key=_path_day, reverse=True)
+
+    rows = list(base_rows)
+    found_any = bool(rows)
+    for path in daily:
+        if not path.exists() or path.stat().st_size == 0:
+            continue
+        with path.open(newline="", encoding="utf-8-sig") as handle:
+            day_rows = list(csv.DictReader(handle))
+        if day_rows:
+            found_any = True
+        rows.extend(day_rows)
+        if _path_day(path) < current_day and any(
+            _snapshot_key(r) and _snapshot_key(r)[:10] < current_day for r in day_rows
+        ):
+            break
+
+    keys = {_snapshot_key(r) for r in rows if _snapshot_key(r) and _snapshot_key(r)[:10] < current_day}
+    latest = max(keys) if keys else None
+    result = (found_any, latest, [r for r in rows if latest is not None and _snapshot_key(r) == latest])
+    _PREVIOUS_SNAPSHOT_CACHE[cache_key] = result
+    return result
+
+
 def load_previous_ranks(
     csv_path: Path,
     key_fields: list[str],
@@ -152,34 +195,25 @@ def load_previous_ranks(
     always mean "vs yesterday", not "vs this morning's rerun".
     """
     require_previous = os.getenv("APPLE_MUSIC_REQUIRE_PREVIOUS_RANKS", "").strip().lower() in ("1", "true", "yes")
-    rows = read_csv_rows(csv_path, include_daily_history=True, history_days=PREV_RANK_WINDOW_DAYS)
-    if not rows:
+    current_day = (today or "")[:10]
+    found_any, latest, latest_rows = _previous_day_snapshot(csv_path, current_day)
+    if not found_any:
         if require_previous:
             raise RuntimeError(
                 f"Apple Music previous-rank history missing for {csv_path.name}; "
                 "refusing to publish movements without a verified prior snapshot"
             )
         return {}
-
-    current_day = (today or "")[:10]
-    all_keys = sorted(
-        {_snapshot_key(r) for r in rows if _snapshot_key(r) and _snapshot_key(r)[:10] < current_day},
-        reverse=True,
-    )
-    if not all_keys:
+    if latest is None:
         if require_previous:
-            current_day = (today or "")[:10]
             raise RuntimeError(
                 f"Apple Music previous-day snapshot missing for {csv_path.name} before {current_day}; "
                 "refusing to publish movements without a verified prior snapshot"
             )
         return {}
-    latest = all_keys[0]
 
     previous: dict[tuple[str, ...], int] = {}
-    for row in rows:
-        if _snapshot_key(row) != latest:
-            continue
+    for row in latest_rows:
         try:
             rank = int(row.get(rank_field, ""))
         except (TypeError, ValueError):

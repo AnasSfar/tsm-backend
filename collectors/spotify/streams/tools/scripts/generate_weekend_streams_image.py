@@ -38,6 +38,7 @@ import generate_albums_image
 import generate_streams_image
 
 from comp.tables_image import masthead_theme_for_date
+from comp.discography import display_title_for_album
 
 
 ROOT = generate_streams_image.ROOT
@@ -348,7 +349,7 @@ def _row_html(kind: str, rows: list[dict], image_cache: dict[str, str], cover_ma
             cover_url = generate_streams_image.get_cover_url(row, cover_map, track_album_map)
             cover = image_cache.get(cover_url, cover_url) if cover_url else ""
         else:
-            title = row.get("album") or ""
+            title = display_title_for_album(row.get("album") or "")
             daily = row.get("daily_streams")
             yest = row.get("yest_daily")
             week = row.get("week_daily")
@@ -557,8 +558,17 @@ body{
 """.replace("__SANS__", _SANS).replace("__DISPLAY__", _DISPLAY)
 
 
-def _mh_move(rank: int, prev_rank) -> tuple[str, str]:
+def _mh_move(rank: int, prev_rank, yest_daily=...) -> tuple[str, str]:
     if prev_rank is None:
+        # `yest_daily is None` (as opposed to 0/missing) means the previous
+        # day's total for this era/song could not be trusted (e.g. a
+        # negative `admin_override` daily on one of its tracks poisoned the
+        # aggregate — see generate_albums_image.build_album_rows) rather
+        # than the entity genuinely being absent from yesterday's data. Never
+        # label that "NEW" (which implies a real debut) — show the same
+        # "no comparison available" dash as the Delta Day column instead.
+        if yest_daily is None and yest_daily is not ...:
+            return "&ndash;", "eq"
         return "NEW", "new"
     delta = int(prev_rank) - int(rank)
     if delta > 0:
@@ -574,7 +584,6 @@ def _mh_rows_html(kind: str, rows: list[dict], image_cache: dict[str, str],
     for idx, row in enumerate(rows):
         rank = idx + 1
         row_cls = "mh-tr first" if rank == 1 else ("mh-tr odd" if idx % 2 else "mh-tr")
-        mv_txt, mv_cls = _mh_move(rank, row.get("prev_rank"))
 
         if kind == "song":
             title = row.get("title") or ""
@@ -582,12 +591,14 @@ def _mh_rows_html(kind: str, rows: list[dict], image_cache: dict[str, str],
             yest = row.get("daily_streams_yesterday")
             week = row.get("daily_streams_last_week")
             cover_url = generate_streams_image.get_cover_url(row, cover_map, track_album_map)
+            mv_txt, mv_cls = _mh_move(rank, row.get("prev_rank"))
         else:
-            title = row.get("album") or ""
+            title = display_title_for_album(row.get("album") or "")
             daily = row.get("daily_streams")
             yest = row.get("yest_daily")
             week = row.get("week_daily")
             cover_url = row.get("cover_url") or ""
+            mv_txt, mv_cls = _mh_move(rank, row.get("prev_rank"), yest)
         total = row.get("streams")
         cover = image_cache.get(cover_url, cover_url) if cover_url else ""
 

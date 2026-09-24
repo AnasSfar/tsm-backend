@@ -25,7 +25,7 @@ from core.config import CHART_LIMIT, DB_DIR, SCRIPTS_DIR, WORKERS
 from core.csv_utils import load_previous_ranks, rewrite_for_snapshot
 from core.export import maybe_run_export
 from core.filters import build_artwork_url, clean_text, is_taylor_swift_song, rank_key
-from core.http import build_session
+from core.http import build_session, retry_failed
 from core.storefronts import resolve_storefronts
 from core.token import TokenManager, build_auth_headers
 
@@ -263,6 +263,17 @@ def main() -> None:
                 results[country] = result
                 songs, albums = result
                 print(f"{country}: {len(songs)} song(s), {len(albums)} album(s)")
+
+    if failures:
+        recovered, failures = retry_failed(
+            [country for country, _error in failures],
+            lambda country: fetch_country(worker_session(), manager, country),
+            label="[Apple Music]",
+        )
+        for country, result in recovered.items():
+            results[country] = result
+            songs, albums = result
+            print(f"{country}: {len(songs)} song(s), {len(albums)} album(s) (after retry)")
 
     if failures:
         for country, error in failures:

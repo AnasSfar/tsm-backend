@@ -890,13 +890,19 @@ def _weekly_charts_streams_by_title(
     week_dates: set[str],
     tracks: dict[str, TrackMeta],
     logger: Logger,
-) -> dict[str, int]:
+    return_daily: bool = False,
+) -> dict[str, int] | tuple[dict[str, int], dict[str, dict[str, int]]]:
     """Return normalized_title -> total Spotify chart streams over the week.
 
     Prefer worldwide snapshots so every country placement counts. Regional CSVs
     are only used as a fallback for days without a worldwide snapshot.
+
+    When return_daily=True, also return normalized_title -> {date: streams}
+    (used by swift_top_100_live.py to restrict actuals to days_actual only —
+    original single-value return kept for every existing caller).
     """
     totals: dict[str, int] = {}
+    daily: dict[str, dict[str, int]] = {}
 
     track_keys: dict[str, str] = {}
     for track in tracks.values():
@@ -969,6 +975,8 @@ def _weekly_charts_streams_by_title(
             chart_streams = global_streams if global_streams > 0 else regional_streams
             if chart_streams > 0:
                 totals[key] = totals.get(key, 0) + chart_streams
+                if return_daily:
+                    daily.setdefault(key, {})[day] = daily.get(key, {}).get(day, 0) + chart_streams
 
     fallback_days = week_dates - worldwide_days
     active_paths = [path for path in CHARTS_REGION_CSVS if path.exists()]
@@ -1010,6 +1018,8 @@ def _weekly_charts_streams_by_title(
             chart_streams = bucket["global"] if bucket["global"] > 0 else bucket["regional"]
             if chart_streams > 0:
                 totals[key] = totals.get(key, 0) + chart_streams
+                if return_daily:
+                    daily.setdefault(key, {})[_day] = daily.get(key, {}).get(_day, 0) + chart_streams
 
     logger.log(
         "  spotify_units  : "
@@ -1018,6 +1028,8 @@ def _weekly_charts_streams_by_title(
         + (f", {csv_skipped_without_track_id} csv rows skipped without track_id" if csv_skipped_without_track_id else "")
         + (f", {skipped_tracks} unmapped worldwide track(s)" if skipped_tracks else "")
     )
+    if return_daily:
+        return totals, daily
     return totals
 
 
@@ -1056,19 +1068,25 @@ def _apple_music_ts_floor_score(week_dates: set[str]) -> float:
     return _rank_to_am_units_score(rank) * max(1, len(week_dates))
 
 
-def _weekly_apple_music_global_points(*, week_dates: set[str], logger: Logger) -> dict[str, float]:
+def _weekly_apple_music_global_points(
+    *, week_dates: set[str], logger: Logger, return_daily: bool = False
+) -> dict[str, float] | tuple[dict[str, float], dict[str, dict[str, float]]]:
     """Return normalized_title -> sum of daily AM Global raw scores over the week.
 
     Formula: (500 / rank^0.75) * AM_GLOBAL_WEIGHT per day.
     Best rank per (title, day) kept. This is the worldwide Apple Music chart,
     so its default weight is higher than regional country and genre charts.
     Multiply by 1000 externally when computing units_am.
+
+    When return_daily=True, also return normalized_title -> {date: raw_score}
+    (single best-rank score per day, no aggregation needed) — original single
+    return value kept for every existing caller.
     """
     scores: dict[str, float] = {}
     active_paths = _active_apple_music_csvs(APPLE_MUSIC_GLOBAL_CSV)
     if not active_paths:
         logger.log("  apple_global   : missing — AM disabled")
-        return scores
+        return (scores, {}) if return_daily else scores
 
     def _to_int(v: str | None) -> int | None:
         try:
@@ -1100,14 +1118,22 @@ def _weekly_apple_music_global_points(*, week_dates: set[str], logger: Logger) -
                     best_per_day[cell] = rank
                 matched_rows += 1
 
-    for (key, _day), rank in best_per_day.items():
-        scores[key] = scores.get(key, 0.0) + (_rank_to_am_units_score(rank) * AM_GLOBAL_WEIGHT)
+    daily: dict[str, dict[str, float]] = {}
+    for (key, day), rank in best_per_day.items():
+        value = _rank_to_am_units_score(rank) * AM_GLOBAL_WEIGHT
+        scores[key] = scores.get(key, 0.0) + value
+        if return_daily:
+            daily.setdefault(key, {})[day] = value
 
     logger.log(f"  apple_global   : {matched_rows} rows ({len(active_paths)} file(s), weight={AM_GLOBAL_WEIGHT:g})")
+    if return_daily:
+        return scores, daily
     return scores
 
 
-def _weekly_apple_music_country_points(*, week_dates: set[str], logger: Logger) -> dict[str, float]:
+def _weekly_apple_music_country_points(
+    *, week_dates: set[str], logger: Logger, return_daily: bool = False
+) -> dict[str, float] | tuple[dict[str, float], dict[str, dict[str, float]]]:
     """Return normalized_title -> weighted sum of daily AM country-chart scores.
 
     Formula: (500 / rank^0.75) * AM_COUNTRY_WEIGHT * market_weight
@@ -1115,12 +1141,16 @@ def _weekly_apple_music_country_points(*, week_dates: set[str], logger: Logger) 
     This is the general Top Songs chart inside each region, not the worldwide
     Apple Music global chart.
     Best rank per (title, country, day) is kept.
+
+    When return_daily=True, also return normalized_title -> {date: raw_score}
+    (summed across countries for that day) — original single return value
+    kept for every existing caller.
     """
     scores: dict[str, float] = {}
     active_paths = _active_apple_music_csvs(APPLE_MUSIC_COUNTRY_CSV)
     if not active_paths:
         logger.log("  apple_country  : missing - country score disabled")
-        return scores
+        return (scores, {}) if return_daily else scores
 
     def _to_int(v: str | None) -> int | None:
         try:
@@ -1153,30 +1183,40 @@ def _weekly_apple_music_country_points(*, week_dates: set[str], logger: Logger) 
                     best_per_country_day[cell] = rank
                 matched_rows += 1
 
-    for (key, country, _day), rank in best_per_country_day.items():
-        scores[key] = scores.get(key, 0.0) + (
-            _rank_to_am_units_score(rank) * AM_COUNTRY_WEIGHT * _apple_music_market_weight(country)
-        )
+    daily: dict[str, dict[str, float]] = {}
+    for (key, country, day), rank in best_per_country_day.items():
+        value = _rank_to_am_units_score(rank) * AM_COUNTRY_WEIGHT * _apple_music_market_weight(country)
+        scores[key] = scores.get(key, 0.0) + value
+        if return_daily:
+            daily.setdefault(key, {})[day] = daily.get(key, {}).get(day, 0.0) + value
 
     logger.log(
         "  apple_country  : "
         f"{matched_rows} rows ({len(active_paths)} file(s), weight={AM_COUNTRY_WEIGHT:g}, market-weighted)"
     )
+    if return_daily:
+        return scores, daily
     return scores
 
 
-def _weekly_apple_music_genre_points(*, week_dates: set[str], logger: Logger) -> dict[str, float]:
+def _weekly_apple_music_genre_points(
+    *, week_dates: set[str], logger: Logger, return_daily: bool = False
+) -> dict[str, float] | tuple[dict[str, float], dict[str, dict[str, float]]]:
     """Return normalized_title -> weighted sum of daily AM country-genre scores.
 
     Formula: (500 / rank^0.75) * AM_GENRE_WEIGHT * market_weight
     for each country/day with a genre placement.
     Best genre rank per (title, country, day) is kept so multiple genre charts do not stack.
+
+    When return_daily=True, also return normalized_title -> {date: raw_score}
+    (summed across countries/genres for that day) — original single return
+    value kept for every existing caller.
     """
     scores: dict[str, float] = {}
     active_paths = _active_apple_music_csvs(APPLE_MUSIC_GENRE_CSV)
     if not active_paths:
         logger.log("  apple_genre    : missing - genre score disabled")
-        return scores
+        return (scores, {}) if return_daily else scores
 
     def _to_int(v: str | None) -> int | None:
         try:
@@ -1210,29 +1250,39 @@ def _weekly_apple_music_genre_points(*, week_dates: set[str], logger: Logger) ->
                     best_per_genre_day[cell] = rank
                 matched_rows += 1
 
-    for (key, country, _day), rank in best_per_genre_day.items():
-        scores[key] = scores.get(key, 0.0) + (
-            _rank_to_am_units_score(rank) * AM_GENRE_WEIGHT * _apple_music_market_weight(country)
-        )
+    daily: dict[str, dict[str, float]] = {}
+    for (key, country, day), rank in best_per_genre_day.items():
+        value = _rank_to_am_units_score(rank) * AM_GENRE_WEIGHT * _apple_music_market_weight(country)
+        scores[key] = scores.get(key, 0.0) + value
+        if return_daily:
+            daily.setdefault(key, {})[day] = daily.get(key, {}).get(day, 0.0) + value
 
     logger.log(
         "  apple_genre    : "
         f"{matched_rows} rows ({len(active_paths)} file(s), weight={AM_GENRE_WEIGHT:g}, market-weighted)"
     )
+    if return_daily:
+        return scores, daily
     return scores
 
 
-def _weekly_apple_music_ts_points(*, week_dates: set[str], logger: Logger) -> dict[str, float]:
+def _weekly_apple_music_ts_points(
+    *, week_dates: set[str], logger: Logger, return_daily: bool = False
+) -> dict[str, float] | tuple[dict[str, float], dict[str, dict[str, float]]]:
     """Return normalized_title -> sum of daily AM TS Top Songs raw scores over the week.
 
     Formula: 500 / rank^0.75 per day (power law). Best rank per (title, day) kept.
     Multiply by 1000 externally when computing units_am.
+
+    When return_daily=True, also return normalized_title -> {date: raw_score}
+    (single best-rank score per day, no aggregation needed) — original single
+    return value kept for every existing caller.
     """
     scores: dict[str, float] = {}
     active_paths = _active_apple_music_csvs(APPLE_MUSIC_TS_TOP_SONGS_CSV)
     if not active_paths:
         logger.log("  apple_ts       : missing — AM TS disabled")
-        return scores
+        return (scores, {}) if return_daily else scores
 
     def _to_int(v: str | None) -> int | None:
         try:
@@ -1261,10 +1311,16 @@ def _weekly_apple_music_ts_points(*, week_dates: set[str], logger: Logger) -> di
                     best_per_day[cell] = rank
                 matched_rows += 1
 
-    for (key, _day), rank in best_per_day.items():
-        scores[key] = scores.get(key, 0.0) + _rank_to_am_units_score(rank)
+    daily: dict[str, dict[str, float]] = {}
+    for (key, day), rank in best_per_day.items():
+        value = _rank_to_am_units_score(rank)
+        scores[key] = scores.get(key, 0.0) + value
+        if return_daily:
+            daily.setdefault(key, {})[day] = value
 
     logger.log(f"  apple_ts       : {matched_rows} rows ({len(active_paths)} file(s))")
+    if return_daily:
+        return scores, daily
     return scores
 
 
@@ -1284,7 +1340,9 @@ def _weekly_apple_music_ts_points(*, week_dates: set[str], logger: Logger) -> di
 _YOUTUBE_FEAT_SUFFIX_RE = re.compile(r"\s+(?:ft\.?|feat\.?|featuring)\s+.+$", re.IGNORECASE)
 
 
-def _weekly_youtube_views(*, week_dates: set[str], logger: Logger) -> dict[str, int]:
+def _weekly_youtube_views(
+    *, week_dates: set[str], logger: Logger, return_daily: bool = False
+) -> dict[str, int] | tuple[dict[str, int], dict[str, dict[str, int]]]:
     """Return normalized_title -> sum of exact daily YouTube views over the week.
 
     Unlike Apple Music/Deezer (rank-limited charts), db/youtube_title_history.csv
@@ -1297,11 +1355,15 @@ def _weekly_youtube_views(*, week_dates: set[str], logger: Logger) -> dict[str, 
     (see _YOUTUBE_FEAT_SUFFIX_RE) so those groups merge with their
     plain-titled counterpart instead of scoring separately/missing entirely.
     Multiply by YOUTUBE_WEIGHT externally.
+
+    When return_daily=True, also return normalized_title -> {date: views}
+    (summed across matching video groups for that day) — original single
+    return value kept for every existing caller.
     """
     totals: dict[str, int] = {}
     if not YOUTUBE_TITLE_HISTORY_CSV.exists():
         logger.log("  youtube        : missing — YouTube disabled")
-        return totals
+        return (totals, {}) if return_daily else totals
 
     def _to_int(v: str | None) -> int | None:
         v = (v or "").strip()
@@ -1313,6 +1375,7 @@ def _weekly_youtube_views(*, week_dates: set[str], logger: Logger) -> dict[str, 
             return None
 
     matched_rows = 0
+    daily: dict[str, dict[str, int]] = {}
     with YOUTUBE_TITLE_HISTORY_CSV.open("r", newline="", encoding="utf-8-sig") as f:
         reader = csv.DictReader(f)
         for row in reader:
@@ -1334,9 +1397,13 @@ def _weekly_youtube_views(*, week_dates: set[str], logger: Logger) -> dict[str, 
             if not key:
                 continue
             totals[key] = totals.get(key, 0) + views
+            if return_daily:
+                daily.setdefault(key, {})[day] = daily.get(key, {}).get(day, 0) + views
             matched_rows += 1
 
     logger.log(f"  youtube        : {matched_rows} rows, weight={YOUTUBE_WEIGHT:g}")
+    if return_daily:
+        return totals, daily
     return totals
 
 
@@ -1895,6 +1962,41 @@ def _build_week_chart(
     return points_by_track, rank_by_track
 
 
+def compute_track_units(
+    *,
+    weekly_streams: int,
+    raw_units_charts: int,
+    am_ts_raw: float,
+    am_overall_raw: float,
+    weekly_youtube_views: int,
+) -> dict[str, int]:
+    """Combine the four platform inputs into the final units/total_units breakdown.
+
+    Extracted verbatim from the math that used to be inlined in run() (same
+    formula, same rounding order) so both the official weekly run and
+    swift_top_100_live.py's day-of-week projection share one implementation.
+    `am_ts_raw`/`am_overall_raw` are already the AM_* per-platform raw scores
+    summed for the period being scored (a full week for run(), an actual-so-far
+    or actual+projected sum for the live script); YOUTUBE_WEIGHT/AM_WEIGHT/
+    SPOTIFY_WEIGHT below apply on top exactly as documented in
+    collector-billboard/CONTEXTE.md § "Poids plateforme".
+    """
+    units_am = round((am_ts_raw + am_overall_raw) * 1000 * AM_WEIGHT)
+    units_youtube = round(weekly_youtube_views * YOUTUBE_WEIGHT)
+    units_charts = min(raw_units_charts, weekly_streams)
+    units_surplus = max(0, weekly_streams - units_charts)
+    units_spotify = round((units_charts + units_surplus * 0.7) * SPOTIFY_WEIGHT)
+    total_units = units_spotify + units_am + units_youtube
+    return {
+        "units_spotify": units_spotify,
+        "units_am": units_am,
+        "units_youtube": units_youtube,
+        "units_charts": units_charts,
+        "units_surplus": units_surplus,
+        "total_units": total_units,
+    }
+
+
 def run(
     *,
     chart_date: date | None,
@@ -2105,20 +2207,26 @@ def run(
             am_global_raw = 0.0
             am_country_raw = 0.0
         am_overall_raw = am_global_raw + am_country_raw
-        units_am = round((am_ts_raw + am_overall_raw) * 1000 * AM_WEIGHT)
 
-        # YouTube units (vues exactes × poids — pas de loi de puissance, on a le volume réel)
+        # YouTube raw weekly views (vues exactes — pas de loi de puissance, on a le volume réel)
         weekly_youtube_views = youtube_views_by_title.get(key, 0)
-        units_youtube = round(weekly_youtube_views * YOUTUBE_WEIGHT)
 
-        # Spotify units (on-chart + surplus × 0.7, puis × poids plateforme)
+        # Spotify raw chart streams (on-chart vs surplus split done inside compute_track_units)
         raw_units_charts = charts_streams_by_title.get(key, 0)
-        units_charts = min(raw_units_charts, weekly_streams)
-        units_surplus = max(0, weekly_streams - units_charts)
-        units_spotify = round((units_charts + units_surplus * 0.7) * SPOTIFY_WEIGHT)
 
-        # Total (pas de données iTunes)
-        total_units = units_spotify + units_am + units_youtube
+        unit_breakdown = compute_track_units(
+            weekly_streams=weekly_streams,
+            raw_units_charts=raw_units_charts,
+            am_ts_raw=am_ts_raw,
+            am_overall_raw=am_overall_raw,
+            weekly_youtube_views=weekly_youtube_views,
+        )
+        units_spotify = unit_breakdown["units_spotify"]
+        units_am = unit_breakdown["units_am"]
+        units_youtube = unit_breakdown["units_youtube"]
+        units_charts = unit_breakdown["units_charts"]
+        units_surplus = unit_breakdown["units_surplus"]
+        total_units = unit_breakdown["total_units"]
 
         # % de variation des total_units semaine sur semaine
         pct_change = None

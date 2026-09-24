@@ -26,6 +26,8 @@ python collectors/comp/preview.py [--only FAMILLE] [--date D] [--keep-html]
 ```
 génère les previews de **tous les cas possibles** de song_card + tables_image → **regarder les PNG générés** (`collectors/comp/previews/`) avant de conclure. Le propriétaire vérifie visuellement ; « ça compile » ne suffit pas. Si les previews ne changent pas alors que le code a changé, c'est un cache/mauvais fichier — investiguer.
 
+Pour tester un **nouveau** générateur/pipeline avec des données fictives (feature pas encore live, simulation d'une sortie future) plutôt qu'une retouche visuelle sur un générateur existant → skill `previews-and-sims` (dossier `previews_and_sims/<slug>/`), pas `collectors/comp/previews/` (réservé aux cas déjà couverts par `preview.py`).
+
 ## Pièges de layout corrigés plusieurs fois (ne pas régresser)
 
 - **Titres longs** : la taille de police doit s'adapter au nombre de caractères — un titre ne déborde JAMAIS du cadre (ni le @handle en bas). Ne jamais s'appuyer sur `white-space:nowrap;overflow:hidden` seul sans filet de sécurité — incident réel (2026-08-26, Chart Sheet) : un titre de 74 caractères a été tronqué en plein mot, sans ellipse ni indication, repéré uniquement en générant une vraie card (pas dans le mockup). Toujours combiner bucket de taille de police + `-webkit-line-clamp` (2 lignes) en filet de sécurité.
@@ -118,6 +120,49 @@ tout misc.json ; sélection différente à chaque génération. Rendu via
 quand `row["collage_covers"]` est présent. `prefetch_covers` télécharge aussi
 ces 4 URLs.
 
+## Section "annoncée" (édition pas encore sortie) dans l'image album update
+
+`generate_album_update_image.py` supporte une section catalogue marquée `"announced": true` (+ `"announced_text"` optionnel, sinon "COMING SOON") dans `db/discography/albums/<slug>.json` — cas d'usage : annoncer les titres d'une deluxe/édition pas encore sortie sur la card quotidienne, sans jamais afficher de streams inventés (règle n°1 `data-rules`). Ajouté 2026-09-23 pour "The Encore" (`the_life_of_a_showgirl.json`, section `the_encore`, 4 tracks, `release_date: 2026-09-25`, `announced_text: "OUT THIS FRIDAY, SEPTEMBER 25TH 2026"`).
+
+- **Bypass volontaire du gate `release_date`** : `load_album_sections` exclut normalement toute section dont `release_date > target_date` (règle n°11 data-rules — jamais une section avant sa sortie). Une section `announced: true` est une exception explicite et assumée : ses tracks s'affichent quand même, mais **jamais avec un chiffre** — `build_table_dark_html` remplace les 4 colonnes numériques par une bannière texte (`.td.announced-banner{grid-column:span 4}`) tant que `track["announced"]` est vrai.
+- **`announced` est maintenant auto-gaté par date, pas juste par le flag DB brut (fix 2026-09-23)** : `load_album_sections` calcule `track["announced"]` comme `(flag DB section/track) AND target_date < track["release_date"]` — dès que `target_date` atteint la vraie `release_date` du track, la bannière disparaît et le rendu normal (hist réel + `★`/`NEW`) prend le relais **automatiquement**, même si `"announced": true` traîne encore dans le JSON. Avant ce fix, le flag DB brut était utilisé tel quel (`bool(t.get("announced")) or bool(sec.get("announced"))`) — il fallait le retirer manuellement du JSON le jour de sortie sous peine de masquer les vraies données indéfiniment. Le nettoyage manuel du flag reste une bonne pratique (clarté du JSON) mais n'est plus une dépendance bloquante.
+- **`announced_text` bascule automatiquement sur "OUT NOW" la veille de la sortie** (même fix) : `load_album_sections` compare `target_date` à la `release_date` de la section (min des `release_date` de ses tracks) — dès que `target_date >= release_date - 1 jour`, le texte stocké en DB (ex. `"OUT THIS FRIDAY, SEPTEMBER 25TH 2026"`) est remplacé par `"OUT NOW"` au rendu, sans toucher au JSON. Ça couvre exactement le cas "on poste le snapshot du jeudi le vendredi matin, l'ancien texte annonçant vendredi est déjà périmé". Le texte DB reste affiché tel quel pour tous les jours avant la veille.
+- **Pas de sous-total pour une section annoncée** (`_table_dark_section_row` skip si `section.get("announced")`) — un total à 0 serait trompeur.
+- Les tracks annoncés comptent quand même dans `_counts_in_album_total`/`_display_total_tracks` (via `on_album`/`chart_extra` normaux) mais contribuent 0 puisque `hist` n'a aucune ligne pour eux — le TOTAL global reste donc exact, basé uniquement sur les tracks réellement sortis.
+- Ajouté 2026-09-23 pour "The Encore" (`the_life_of_a_showgirl.json`, section `the_encore`, 4 tracks, `release_date: 2026-09-25`). Voir mémoire projet `showgirl-encore-deluxe-release` pour le suivi de ce cas précis.
+
+## Cover d'une card debut release (`post_debut_releases.py`) : fallback en 3 niveaux (2026-09-23)
+
+Un titre tout juste ajouté au catalogue peut ne pas encore avoir de `image_url` en DB (le backfill catalogue peut être en retard sur la première collecte réussie — cas "The Encore"). `_resolve_image_url(ids, meta, cover_cache)` dans `post_debut_releases.py` essaie, dans l'ordre :
+1. `image_url` du/des track_id(s) directement en DB (`db/discography/albums/*.json`).
+2. `db/discography/track_cover_cache.json` (`track_cover_cache.get_cached_cover`) — **rempli automatiquement par `update_streams.py`** à chaque scrape réussi (le call `fetch_playcount_api` renvoie déjà `cover_url` dans ses metrics, `merge_track_cover_cache` l'écrit après chaque run, indépendamment du backfill catalogue). Un track dont le total du jour a été scrapé avec succès (condition déjà requise pour qu'un post debut se déclenche, `tid in day_rows`) a donc quasi toujours une entrée ici, même sans `image_url` catalogue.
+3. La cover de l'**album** du track (`spotlight.load_covers()`, `db/discography/covers.json`), en dernier recours.
+- Choix délibéré de **ne pas** croiser avec Apple Music/Spotify Charts par titre : matching fragile (mismatch possible), alors que les 2 fallbacks ci-dessus restent la même source (Spotify) déjà exacte et déjà câblée dans le pipeline.
+- Si les 3 échouent (track jamais scrapé + pas de cover d'album connue), `image_url=None` → `_build_debut_html` retombe sur le placeholder gris `.debut-cover-ph`, comme avant.
+
+## Renommage d'affichage d'un album sans toucher aux clés de matching
+
+`comp/discography.py::ALBUM_DISPLAY_TITLE_OVERRIDES` / `display_title_for_album()` (ajouté 2026-09-23 dans `generate_album_update_image.py`, cas "The Life of a Showgirl" → "The Life of a Showgirl: The Encore" à l'annonce du deluxe, avant même le backfill catalogue du 2026-09-25 ; **déplacé dans `comp/discography.py` le 2026-09-23 même jour** pour être partagé entre générateurs) : override **texte affiché uniquement**, appliqué juste avant le rendu, jamais sur la clé de matching/tri/lookup :
+- `generate_album_update_image.py` : titre de la card `hdr-title`/`album-title` + première ligne du tweet (`display_name = display_title_for_album(album_name)` passé à `build_html`/`build_table_dark_html`, substitué à `canonical_name` dans les f-strings de `_build_album_post_text`).
+- `generate_albums_image.py` (Top Eras / Top Albums, `build_rows_html`) : le nom réel (`row["album"]`) sert à `era_accent_color`, au lookup `best_day_labels` et au tri/rank ; seule la variable locale passée à `ledger_name_with_best_day` (texte de la ligne) est overridée — ne jamais appliquer `display_title_for_album` avant ces lookups, seulement juste avant l'injection HTML.
+- `generate_weekend_streams_image.py` (card combinée « Streams Recap » postée **chaque jour**, pas seulement le week-end) : **a ses propres renderers de ligne**, `_row_html` (réutilisé par `post_throwback_thread.py`) et `_mh_rows_html` (le masthead recap lui-même) — ni l'un ni l'autre ne passe par `generate_albums_image.build_rows_html`, donc oublié au premier passage du rename "The Encore" (repéré par le propriétaire sur un vrai post généré). Même pattern : `title = display_title_for_album(row.get("album") or "")` juste avant l'injection HTML, dans les deux fonctions.
+- `post_albums_twitter.py::build_tweet_with_best_day` (phrase « biggest gainer » du tweet Top Eras) : `row["album"]` sert à la fois au lookup emoji (`album_emoji`, match par sous-chaîne donc insensible au override) et au texte affiché (`_short_album`) — séparé en `album` (réel, lookups) / `display_album` (texte imprimé).
+- **`comp/song_card_chart_sheet.py::render_chart_sheet_card`** (la card chanson réellement postée — best-day-since single, weekend gainer) a un `.sc-subtitle` qui affiche le nom d'album passé par l'appelant. Overridé **au centre**, dans le composant partagé (`display_title_for_album(album)` au seul point de rendu), pas chez chacun de ses 2 appelants — `album` n'a aucun autre usage (lookup/matching) dans ce fichier.
+- `post_best_day_since_twitter.py::_recap_row_html` (subtitle par chanson du tableau recap best-day-since, global + par-ère) et le titre/tweet de la card recap par-ère (`f"{era_display} - Best Day Recap"`, `best_day_since_era_recap_tweet(era=...)`) : override appliqué seulement à la valeur imprimée, `era_display` reste intact pour `header_images_for_album`, `_album_key`, le check `"holiday collection" in era_display.casefold()`.
+- `post_stream_highlights_thread.py` (tableau Spotlight/GAINERS) : subtitle `album` par ligne overridé, `era_accent_color(...)` juste après continue de lire le nom réel (non overridé).
+- **Réflexe pour tout nouveau renommage d'affichage similaire** : ce genre de rename touche au moins 3 chemins de rendu de ligne indépendants pour "Top Eras" (`generate_albums_image.build_rows_html`, `generate_weekend_streams_image._row_html`, `._mh_rows_html`) + la card chanson partagée (`song_card_chart_sheet.py`) + des caption/subtitle builders (`post_albums_twitter.py`, `post_best_day_since_twitter.py`, `post_stream_highlights_thread.py`) qui lisent tous `row["album"]`/`row.get("album")`/`track.get("album")` directement — grep `\.get\("album"\)|row\["album"\]|track\.get\("album"\)|\["album"\]` sur `collectors/spotify/streams/tools/scripts/*.py` **et** `collectors/comp/*.py` avant de considérer un rename comme terminé, ne pas supposer qu'une seule fonction partagée couvre toutes les surfaces.
+
+Le nom catalogue réel (`album` dans `db/discography/albums/*.json`) reste inchangé partout ailleurs — dossier headers, `load_cover_url`, `ERA_MAP`/`ERA_COVER_PRIORITY`, index best-day-since, `album_update_slug`/locks, `_era_best_day_row`/`_album_best_day_row` (lookups) — donc aucun risque de casser un matching en changeant juste le nom public. Pour un renommage similaire (ex. suffixe "(Taylor's Version)", ère qui prend un sous-titre) : ajouter une entrée à ce dict dans `comp/discography.py` plutôt que de renommer le champ `album` dans le JSON (blast radius bien plus large : ~40+ occurrences par album, dossier headers, TayBoard, catalog_index...), et appliquer `display_title_for_album()` au tout dernier moment dans chaque nouveau générateur qui affiche un nom d'album/ère.
+
+**Cover d'album mise à jour dans `db/discography/covers.json` (2026-09-23)** : `cover_url` de `"The Life of a Showgirl"` remplacé par le vrai artwork de l'édition Encore (`https://i.scdn.co/image/ab67616d0000b2733c9ea57c5fce6677a860a6e2`, résolu via l'oEmbed Spotify public de l'album deluxe `4hF2gTGuPYlykYuphDxi8J` — distinct du cover standard `...d7812467811a7da6e6a44902`). `covers.json` est la source unique lue par `comp.discography.build_cover_map`/`get_album_cover` et par `load_cover_url` (album update) — ce seul changement propage la nouvelle cover à la card album update, à Top Eras/Top Albums, et à tout fallback cover de track de cet album, sans toucher aux covers par-track (`image_url` catalogue, prioritaires).
+
+Header épinglé pour cet album : `db/discography/headers/preferences.json` → `the life of a showgirl/the_encore_header_v2.png` (remplace l'ancien pin, pas d'ajout à la rotation aléatoire).
+
+Thème `_table_dark_theme()` clé `"the life of a showgirl"` refait le 2026-09-23 pour coller au header "Encore" :
+- **`hero-filter: none`, `hero-opacity: 1`** — le header est déjà saturé/vif avec seulement quelques zones sombres ; tout filtre CSS dessus l'assourdissait à tort. Overlay réduit à un simple fondu bas → `page-bg` (plus de vignette colorée sur les côtés).
+- **Palette fixée en dur sur 3 hex fournis par le propriétaire** (pas dérivée de `header_accent`/dominante auto-échantillonnée — une 1ère tentative de dérivation automatique donnait un ton trop terne) : `bright #df024f` (accent, chiffres, TOTAL), `mid #960133` (haut du dégradé card-bg, hero-bg), `deep #760125` (bas du dégradé, base des cell-bg/head-bg/grid-line via `_mix_hex(deep, "#000000", …)`). Si le header change à nouveau, redemander les 3 tons au propriétaire plutôt que de ré-essayer une extraction automatique pour cette clé précise — ça a déjà été tenté et rejeté deux fois sur ce header.
+- Section "The Encore" (voir plus bas) : ligne de sous-total repositionnée après le dernier track de chaque édition (pas avant), et rendue avec les mêmes classes `.td` que le tableau principal (`section-name{grid-column:1/3}`) plutôt qu'un grid CSS séparé recalculé à la main — un ancien essai avec des largeurs de colonnes indépendantes causait un léger décalage horizontal avec le tableau, corrigé en réutilisant le grid parent (même pattern que `.total-label{grid-column:1/3}`).
+
 ## Albums au branding noir et blanc (folklore, reputation)
 
 `generate_album_update_image.py` extrait normalement l'accent (couleur de la barre "Total" de section et du handle @) depuis l'image header/cover, mais ses helpers (`_header_accent_color`, `_section_palette_colors`) forcent un plancher de saturation et **excluent volontairement les tons gris** pour rester "vifs" — sur un header quasi monochrome (folklore, reputation), ça fait remonter une couleur chair/tache chaude résiduelle (rose/beige) au lieu du gris attendu (fix 24/07/2026). `MONOCHROME_ALBUM_ACCENTS` dans ce fichier force un accent gris neutre (`#6b6b6b`) pour ces albums, cohérent avec le gris déjà codé en dur côté frontend (`tsm-frontend/frontend/src/utils/anniversaries.js` + `themes.css`, thèmes `theme-folklore`/`theme-reputation`). Si un autre album au cover très désaturé fait remonter une teinte parasite, l'ajouter à ce dict plutôt que de retoucher l'algo d'extraction (qui doit rester vif pour les covers colorées).
@@ -157,6 +202,53 @@ CSS (même famille que l'incident spotlight `.stat-card.highlight` ci-dessous) :
 défaut à spécificité égale ou supérieure à `.neg` seul — il faut une règle
 dédiée par contexte (`.col-num.daily-val.neg`, `.sec-num.neg`, `.era-num.neg`)
 placée après la règle de base, pas compter sur `.neg` seul.
+
+### Top Eras : un daily négatif ne doit plus poisonner ni bloquer l'agrégat (2026-09-23)
+
+Incident réel (Red, 2026-09-22) : un run `--admin` a rescrapé tout le
+catalogue les 09-21/09-22, et plusieurs tracks (Red: "The Last Time" ;
+Fearless: "The Best Day" ; Midnights: "Karma (feat. Ice Spice)" ; Speak Now:
+"Ours"...) ont reçu un `daily` négatif (`admin_override`) le 09-21. Deux bugs
+en cascade :
+
+1. **Faux badge "NEW"** — `generate_albums_image.build_album_rows`,
+   `_usable_daily` rejetait tout daily négatif ; comme le track concerné est
+   non-extra et déjà sorti (`required=True`), `_add_comparison_daily` mettait
+   **tout le `yest_daily` de l'album à `None`**, propagé à l'ère combinée. La
+   card affichait donc `Δ Day = "-"` **et** un badge `+/- = "NEW"` (faux —
+   Red existe depuis 2012).
+2. **Post bloqué entièrement** — `history_store.validate_released_active_history_complete`
+   (le gate de complétude appelé avant tout artefact publiable) traite tout
+   daily négatif hors 1er du mois comme une donnée invalide et lève
+   `IncompleteHistoryError` → "albums post blocked... top eras image failed".
+   Observé le 2026-09-23 avec 4 tracks (Karma feat. Ice Spice, Ours, The Best
+   Day, The Last Time) le 09-21, bloquant le post du jour suivant.
+
+**Décision propriétaire (2026-09-23) : ne pas masquer/bloquer, afficher le
+vrai chiffre même négatif** — un daily `admin_override` négatif est déjà un
+choix opérateur délibéré d'accepter le total brut Spotify tel quel (cf. skill
+`spotify-streams`, "daily negatif admin_override" — "on ne fabrique jamais un
+chiffre different de ce que Spotify a renvoye"). Le cacher derrière un "-" ou
+bloquer le post entier contredisait cette règle déjà actée.
+
+Fix :
+- `generate_albums_image._usable_daily` **n'exclut plus les valeurs
+  négatives** — elles sont sommées telles quelles dans `yest_daily`/`week_daily`,
+  donc `Δ Day`/`Δ Week` et le badge de rang (`prev_rank`) reflètent le vrai
+  mouvement (éventuellement réduit par la valeur négative), sans jamais
+  retomber sur `None`/"NEW" à cause de ça.
+- `history_store.validate_released_active_history_complete` **exempte les
+  lignes `estimated_reason` commençant par `admin_override`** du check "daily
+  négatif hors 1er du mois" — un négatif issu d'un scrape normal (pas
+  `--admin`) bloque toujours (vraie corruption de scraping, pas une décision
+  opérateur).
+- Garde-fou restant (inchangé) : `generate_albums_image.build_rows_html` /
+  `generate_weekend_streams_image._mh_move` affichent toujours un badge
+  neutre `"–"` (pas "NEW") si `yest_daily` est explicitement `None` — ce cas
+  peut encore arriver pour une raison différente (track vraiment manquant ce
+  jour-là, pas juste négatif). Le `rank_change` **partagé**
+  (`comp/tables_image.py`, aussi utilisé par Spotify Charts pour NEW/RE) n'a
+  pas été touché.
 
 ## Deltas de rang
 
@@ -208,11 +300,25 @@ inutile de les neutraliser. Le récap quotidien
 (`generate_weekend_streams_image.py`) a son **propre** masthead (`.mh-head`,
 `.mh-head-in h1`), non concerné par ce réglage.
 
+## `chart_card.py::render_chart_card` — bloc Streams optionnel (2026-09-24)
+
+Le bloc `.metric-row`/`.streams-label`/`.change-row` (nombre de streams + delta
++ %) ne s'affiche plus que si `stats` contient une entree `{"label": "Streams",
+...}`. Avant ce fix, un appelant qui ne fournit qu'un `Rank` (cas
+`post_new_release_progression.py`, cards Apple Music/iTunes qui n'ont pas de
+metrique streams) affichait quand meme le bloc avec `streams_value="-"` — un
+gros tiret gras dans la couleur accent, illisible/confus (repere en generant
+une vraie card via simulation, pas en relisant le code). Callers existants
+(rank-record Spotify Charts) fournissent toujours un stat `Streams` -> `has_streams=True`
+-> rendu strictement inchange. Nouveau caller sans metrique streams -> carte
+juste plus courte (le contenu ne remplit plus tout le bas de la card), pas de
+bloc vide.
+
 ## Sortie & posting
 
 - PNG écrits dans `snapshots/<source>/YYYY/MM/YYYY-MM-DD/…`.
 - Posting via `collectors/spotify/core/twitter.py` (Playwright, sessions par compte) — tout sur @swiftiescharts sauf FR ; locks et règles de complétude → skill `data-rules`.
-- Logo Apple Music dispo : `collectors/apple_music/Apple_Music_icon.svg.webp`.
+- Logo Apple Music dispo : `collectors/apple_music/Apple_Music_icon.svg.webp` ; logo iTunes officiel (Wikimedia) : `collectors/apple_music/itunes_logo.svg`.
 
 ## Maintenance (obligatoire)
 Nouveau composant dans `comp/`, nouvelle famille de previews, changement de politique covers/deltas → mets cette skill à jour dans la même session.

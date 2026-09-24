@@ -22,7 +22,16 @@ Modifier ce dossier peut affecter:
   Utilise par `run_all_charts.py::_post_spcharts_rank_record_card` pour les
   auto-posts "best rank since"/"best filtered streams since" (voir skill
   `spotify-charts`). `record=False` par defaut : aucun rendu existant ne
-  change.
+  change. Extensions 2026-09-23 (toutes additives, gatees par `record=True`
+  ou un param optionnel vide par defaut, voir detail produit dans la skill
+  `spotify-charts`) : `extra_icon_svg` (icone SVG inline devant le texte
+  `extra`, ex. drapeau pays — PAS d'emoji drapeau, Windows/Chromium headless
+  ne les rend pas, verifie par un rendu reel), `metric_note` (ligne de texte
+  sous le bloc streams), et `RECORD_CARD_EXTRA_HEIGHT = 70` (constante
+  exportee, a ajouter a la hauteur passee a `write_chart_card_png` quand
+  `record=True` — le bloc streams passe de `position:absolute` (bas de card)
+  a flux normal pour ce style via `.card.record .metric-row`, pour ne plus
+  chevaucher un titre qui wrap sur 2 lignes).
 - `song_card_chart_sheet.py`: **la card chanson réellement postée en prod**
   depuis le 2026-08-26 (`render_chart_sheet_card()` +
   `write_chart_sheet_card_png()`) — remplace l'ancien style best_since de

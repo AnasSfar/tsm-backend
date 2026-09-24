@@ -442,3 +442,9 @@ minute) :**
   souci (`run_post_first_day` planté avant `_unschedule_first_day_task`,
   ou le run correspondant jamais arrivé) : vérifier via `Get-ScheduledTask
   -TaskName 'TSM_YouTube_FirstDay_*'` en PowerShell.
+- **Live projection trigger (ajoute 2026-09-23)** : `update_youtube.py::main()`
+  appelle `collectors/billboard/live_trigger.py::trigger_live_projection()`
+  juste avant le print final `[OK] Collecte terminée.`, apres
+  `maybe_upload_youtube_to_r2()`. Deja hors d'atteinte en `--dry-run`/
+  `--preview` (ces modes retournent plus tot dans `main()`). Best-effort,
+  jamais bloquant. Voir `collector-billboard/CONTEXTE.md` § "Live projection".

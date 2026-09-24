@@ -36,6 +36,7 @@ from core.twitter import post_with_image
 
 import generate_albums_image
 import history_store
+from comp.discography import display_title_for_album
 from post_locks import mark_posted, should_skip_post
 
 TWITTER_MAX = 280
@@ -253,7 +254,8 @@ def build_tweet_with_best_day(rows: list[dict], target_date: str, track_map: dic
         return tweet
 
     album = row["album"]
-    return f'{tweet}\n\n{album_emoji(album)} "{_short_album(album)}" was the biggest gainer and earned its {label}.'
+    display_album = display_title_for_album(album)
+    return f'{tweet}\n\n{album_emoji(album)} "{_short_album(display_album)}" was the biggest gainer and earned its {label}.'
 
 
 def main():

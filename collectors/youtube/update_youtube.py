@@ -989,6 +989,11 @@ def main() -> int:
         _notify(title=f"YouTube Views {activity_date}", message="\n".join(lines))
         print("[INFO] Notification envoyée.")
 
+    sys.path.insert(0, str(REPO_ROOT / "collectors" / "billboard"))
+    from live_trigger import trigger_live_projection
+
+    trigger_live_projection(log=print)
+
     print("\n[OK] Collecte terminée.")
     return 0
 

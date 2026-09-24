@@ -70,7 +70,49 @@ Rules:
 - Tweet text lives in `collectors/twitter/text.py::spotify_chart_rank_record_since_tweet` — same trophy prefix (`🏆 |`) as the streams best-day-since tweets, `Full history: {chart_song_url(track_id, region=region)}` footer. **No stream count** in the main line — unlike the streams best-day-since tweets, the chart-position claim is rank-only (`at #{rank}`); the "filtered streaming" record (see below) is what carries a stream count. The ntfy notification body sent by `_notify_spcharts_events` IS this ready-to-copy tweet text, not a plain alert line.
 - **Link: use `chart_song_url`, never `song_url`, for this caption (bug found and fixed 2026-09-19).** `collectors/twitter/links.py::song_url` points to the Spotify *streams* song page (`/songs/:id`, legacy-redirected to `/spotifystreams/songs/:id`) — correct for every other song tweet (best-day-since, overtakes), but wrong here: a chart-rank record must link to the Spotify *Charts* song page instead (`chart_song_url(track_id, region=region)` -> `/spotifycharts/charts/songs/:id?region=<global|us|uk>`). Pass the raw region key (`region`), not the display label (`region_label`) — the URL query param needs `global`/`us`/`uk` lowercase, not "Global"/"US"/"UK".
 - The old frontend path (Text Studio Records tab `recordsNotify` toggle + `/api/admin/notify`) is removed — it depended on the admin page being open and never persisted the toggle. Text Studio's Records tab still lets you compose the `highest_rank` caption manually (still fixed-window, not yet aligned on the "since" logic), but sends no auto-notification anymore for any of its 4 metrics.
-- **Combined with a same-day "filtered streaming" record (decision 2026-09-19):** "filtered streams" = the `streams` figure Spotify Charts itself publishes per chart entry — the `streams` column already in `db/charts_history_<region>.csv` — a DIFFERENT, coarser number than the exact daily total in `db/streams_history.csv` used by `streams/best_day_since.py` (that pipeline also lags charts by ~2 days, so it usually can't even be checked for the same date). **Do not confuse the two** — an earlier version of this feature wrongly cross-checked `streams/best_day_since.py`'s output for this, which is a different metric on a different schedule. `_spcharts_filtered_streaming_extra_line` computes it self-contained from the same chart-history `points` already loaded for the rank search: same "since" algorithm applied to `streams` instead of `rank` (most recent day with a streams figure `>=` today's), same `SPCHARTS_RANK_RECORD_MIN_DAYS_SINCE`/`SPCHARTS_RANK_RECORD_RECENT_REPEAT_DAYS` gates. When it fires alongside the rank record, the tweet gets a second paragraph — `"The song also earned its best filtered streaming day since <date> with <streams> streams [<pct>]."` (verb "has once again earned" under the repeat-days rule) — one tweet instead of two for the same song/day.
+- **Combined with a same-day "filtered streaming" record (decision 2026-09-19):** "filtered streams" = the `streams` figure Spotify Charts itself publishes per chart entry — the `streams` column already in `db/charts_history_<region>.csv` — a DIFFERENT, coarser number than the exact daily total in `db/streams_history.csv` used by `streams/best_day_since.py` (that pipeline also lags charts by ~2 days, so it usually can't even be checked for the same date). **Do not confuse the two** — an earlier version of this feature wrongly cross-checked `streams/best_day_since.py`'s output for this, which is a different metric on a different schedule. `_spcharts_streams_record_lookup` computes it self-contained from the same chart-history `points` already loaded for the rank search: same "since" algorithm applied to `streams` instead of `rank` (most recent day with a streams figure `>=` today's), same `SPCHARTS_RANK_RECORD_MIN_DAYS_SINCE`/`SPCHARTS_RANK_RECORD_RECENT_REPEAT_DAYS` gates. When it fires alongside the rank record, the tweet gets a second paragraph via `_spcharts_filtered_streaming_extra_line` — `"The song also earned its best filtered streaming day since <date> with <streams> streams [<pct>]."` (verb "has once again earned" under the repeat-days rule) — one tweet instead of two for the same song/day.
+- **Standalone filtered-streams record, no rank record the same day (decision 2026-09-23):** previously a day where only the filtered-streams figure cleared a record (rank didn't) posted nothing at all — the streams check only ever ran as an add-on inside the rank-record branch. Real case caught in testing: "The Fate of Ophelia" FR had a genuine filtered-streams-only record every day from 2026-09-01 through 2026-09-18 (rank never itself a record in that window) that silently posted nothing. Fixed: `_collect_spcharts_rank_record_since` now evaluates the rank record and the streams record independently; when only the streams one qualifies, it posts on its own via `collectors/twitter/text.py::spotify_chart_filtered_streams_record_tweet` — `"<title>" earned/has once again earned its best filtered streaming day since <date> on the <region> Spotify chart with <streams> streams, currently at #<rank>.` (no rank-record preamble, still the 🏆 prefix and `Full history:` footer). Card scope: main stores only — `SPCHARTS_RANK_RECORD_REGIONS = {global, us, uk, fr}` (separate from `SPCHARTS_RANKED_HISTORY_REGIONS`, which stays `{global, us, uk}` and only gates the total-days/streak alerts, not this feature).
+- **Rank-record card visuals (2026-09-23):** region shown as a full country name + inline SVG flag icon (`extra`/`extra_icon_svg` on `render_chart_card`) — deliberately NOT a flag emoji, confirmed by a real render that Windows/Chromium headless does not draw flag emoji sequences (shows the bare "US"/"GB" fallback text instead; a plain emoji like 🌍 renders fine, it's specifically country flags Windows refuses). Card also shows day-over-day rank change (`▲N`/`▼N`/`=`) and streams change (signed count + signed `%`), `None`/no badge when yesterday's row is missing rather than a fabricated `0`. Whenever a filtered-streams record qualifies (combined with a rank record, or standalone), the card also shows `"Best filtered streaming day since <date>"` under the streams number (`metric_note` param) — not just in the tweet text.
+
+## Apple Music / iTunes debut chart-movement posts (2026-09-24)
+
+`collectors/apple_music/post_new_release_progression.py` is the first Apple
+Music/iTunes script that posts to X (that pipeline is otherwise data-only —
+see `collector-apple-music`). Convention for this post type only:
+
+- Chart emoji prefix: `🎧 |` (distinct from the streams gainer `📈 |` and the
+  Spotify Charts rank-record `🏆 |`).
+- **Apple Music and iTunes are posted separately** (3rd correction
+  2026-09-24): one card + one tweet per (track, platform, cycle). Tweet names
+  the platform (`"<title>" moves on 6 Apple Music charts`, `debuts at #3 on
+  iTunes United States`) and links `amcharts/applemusic` or `amcharts/itunes`.
+  Album subtitle uses `display_title_for_album` and the covers.json album
+  cover (The Encore art/title for Showgirl).
+- **Within a platform, one card per track per cycle, listing every chart it
+  currently places on** (decision 2026-09-24, 2nd correction — a 1st version split one card
+  per chart/region, rejected: "on mets toutes les régions dans une seule
+  card"). Only posts when at least one of that track's charts moved this
+  cycle; the card then shows every chart it's currently on (moved or not),
+  moved ones sorted first. Tweet text stays short (`"<title>" debuts on N
+  charts` / `"<title>" moves on N charts` / a specific single-chart sentence
+  when only one exists) — the per-chart numbers live in the card table, not
+  spelled out in the tweet.
+- Card = port of the site's own Apple Music / iTunes share image
+  (`.overall-song-block` from `pages/AppleMusic.jsx` / `pages/ITunes.jsx`,
+  decision 2026-09-24 "match the frontend's actual design") — see
+  `collector-apple-music` CONTEXTE for the details. Two deliberate deviations from the site
+  card: footer says `@swiftiescharts` (not "THE TAYLOR SWIFT MUSEUM : A
+  Taylor Swift fan project"), and the iTunes card uses the same logo+name
+  brand row as Apple Music (`collectors/apple_music/itunes_logo.svg`). Both headers' right side: logo + platform
+  name, date · hour of the cycle, "vs <previous time>", then always the 4
+  pills "X #1 / X top 10 / X top 50 / X charting" (shown even at 0). Table has a
+  PEAK column (best rank on that chart since release, from real collected
+  cycles). A "NEW PEAK" badge marks a rank that beats the previous
+  peak; a first appearance on a chart gets a "NEW" badge there instead,
+  never "NEW PEAK". Accent color comes from the cover
+  (`comp.chart_card._cover_palette`), not a fixed per-platform color. **Not**
+  `chart_card.py::render_chart_card` (Spotify Charts branding).
+- Link footer: `collectors/twitter/links.py::amcharts_url("applemusic"|"itunes")`.
 
 ## Validation
 

@@ -1436,7 +1436,15 @@ def post_thread(tweets: list[str], session_file: Path, *, priority: int | None =
             return success
 
 
-def post_with_image(tweet: str, image_path: Path, session_file: Path, *, skip_if=None, priority: int | None = None) -> bool:
+def post_with_image(
+    tweet: str,
+    image_path: Path,
+    session_file: Path,
+    *,
+    skip_if=None,
+    priority: int | None = None,
+    slot_timeout: int | None = None,
+) -> bool:
     """Post a single tweet with one image attached.
 
     skip_if : callable optionnelle re-évaluée APRES l'acquisition du slot de compte.
@@ -1458,7 +1466,9 @@ def post_with_image(tweet: str, image_path: Path, session_file: Path, *, skip_if
         return False
 
     print("X: attente du slot de post (verrou compte)...", flush=True)
-    with _twitter_account_slot(session_file, priority=priority) as account_key:
+    with _twitter_account_slot(
+        session_file, slot_timeout or TWITTER_POST_LOCK_TIMEOUT, priority=priority
+    ) as account_key:
         if skip_if is not None:
             try:
                 already = bool(skip_if())

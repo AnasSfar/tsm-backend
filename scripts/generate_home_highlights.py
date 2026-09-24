@@ -28,6 +28,7 @@ from __future__ import annotations
 
 import argparse
 import csv
+import io
 import json
 import os
 import random
@@ -37,6 +38,7 @@ from datetime import date as _date
 from pathlib import Path
 
 import boto3
+from botocore.config import Config
 from dotenv import load_dotenv
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -114,6 +116,8 @@ def get_r2_client():
         aws_access_key_id=access_key_id,
         aws_secret_access_key=secret_access_key,
         region_name="auto",
+        # Called at the end of several scheduled pipelines: never hang them.
+        config=Config(connect_timeout=10, read_timeout=60, retries={"max_attempts": 3, "mode": "standard"}),
     )
 
 
@@ -125,7 +129,7 @@ def upload_cache_json(client, bucket: str, key: str, payload: dict) -> None:
     body = dict(payload)
     body["_cache_generated_at"] = time.time()
     data = json.dumps(body, ensure_ascii=False, separators=(",", ":")).encode("utf-8")
-    client.put_object(Bucket=bucket, Key=key, Body=data, ContentType="application/json; charset=utf-8")
+    client.put_object(Bucket=bucket, Key=key, Body=io.BytesIO(data), ContentType="application/json; charset=utf-8")
 
 
 def get_cache_json(client, bucket: str, key: str) -> dict | None:

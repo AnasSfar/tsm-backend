@@ -1755,6 +1755,63 @@ def _post_immediate_reentry_card(
     print(f"[WARN] Immediate {badge_text} post abandoned for {title!r} ({region})", flush=True)
 
 
+_debut_track_ids_cache: dict[str, set[str]] = {}
+
+
+def _parse_iso_date_only(value: str | None):
+    if not value:
+        return None
+    text = str(value).strip()
+    if not text:
+        return None
+    try:
+        return datetime.fromisoformat(text.replace("Z", "+00:00")).date()
+    except ValueError:
+        try:
+            return datetime.strptime(text[:10], "%Y-%m-%d").date()
+        except ValueError:
+            return None
+
+
+def _debut_track_ids_for_date(chart_date: str) -> set[str]:
+    """track_ids whose catalog release_date == chart_date, across every
+    album in db/discography/albums/. These get their own dedicated
+    "album debut" cards later in the run (post_album_debut_chart.py, full
+    multi-country breakdown per song) — the live immediate-reentry mechanism
+    below should skip them to avoid a redundant single-country card on top of
+    that fuller one (decision 2026-09-23). Minimal standalone lookup, kept in
+    sync by convention with post_album_debut_chart.py::find_debut_album, not
+    a shared import (different pipeline stage/process)."""
+    if chart_date in _debut_track_ids_cache:
+        return _debut_track_ids_cache[chart_date]
+    target = _parse_iso_date_only(chart_date)
+    track_ids: set[str] = set()
+    if target is not None:
+        albums_dir = ROOT / "db" / "discography" / "albums"
+        if albums_dir.exists():
+            for path in sorted(albums_dir.glob("*.json")):
+                try:
+                    payload = json.loads(path.read_text(encoding="utf-8-sig"))
+                except Exception:
+                    continue
+                if not isinstance(payload, dict):
+                    continue
+                for section in payload.get("sections") or []:
+                    for track in section.get("tracks") or []:
+                        if not isinstance(track, dict):
+                            continue
+                        if _parse_iso_date_only(track.get("release_date")) != target:
+                            continue
+                        tid = str(track.get("track_id") or "").strip()
+                        if not tid:
+                            match = re.search(r"track/([A-Za-z0-9]+)", str(track.get("url") or ""))
+                            tid = match.group(1) if match else ""
+                        if tid:
+                            track_ids.add(tid)
+    _debut_track_ids_cache[chart_date] = track_ids
+    return track_ids
+
+
 def _maybe_trigger_immediate_reentries(
     chart_date: str,
     region: str,
@@ -1769,6 +1826,7 @@ def _maybe_trigger_immediate_reentries(
 ) -> None:
     if region == "global" or not has_prev_snapshot or not rows:
         return
+    debut_track_ids = _debut_track_ids_for_date(chart_date)
     for row in rows:
         movement = str(row.get("movement") or "").strip().upper()
         if movement not in ("RE", "NEW") and not row.get("is_re_entry") and not row.get("is_new"):
@@ -1777,6 +1835,8 @@ def _maybe_trigger_immediate_reentries(
         track_id = canonical_chart_track_id(track_id, historical_lookup)
         if not track_id:
             continue
+        if track_id in debut_track_ids:
+            continue  # covered by post_album_debut_chart.py's fuller per-song card instead
         if int(prev_country_counts.get(track_id, 0) or 0) != 0:
             continue
         title = row.get("track_name") or track_id
@@ -1880,6 +1940,59 @@ def _sync_region_csv_immediately(
             added = len(new_rows)
     if added:
         print(f"[INFO] Synced {added} row(s) → db/charts_history_{csv_region}.csv", flush=True)
+
+
+def _post_pending_rank_records(chart_date: str, regions: list[str]) -> None:
+    """"Best chart rank since"/"best filtered streaming day since" tweets must
+    go out BEFORE the routine Global/US/FR chart card (decision 2026-09-23) —
+    but those routine cards are posted from right here, in `_post_regional`,
+    within seconds of Phase 1 finishing (see call site below), which is far
+    earlier than `run_all_charts.py::main` ever gets to run its own
+    post-collection rank-record check. A first attempt left that check in
+    `run_all_charts.py` only, reasoning it ran "before the Global post" —
+    wrong: caught live (2026-09-23) when the Global/US card had already
+    posted minutes before `run_all_charts.py` even got there. The real fix is
+    here, synchronous, called just before `_posting_thread` starts below.
+
+    Safe to call this early: `_sync_region_csv_immediately` (this module) has
+    already appended today's row to `db/charts_history_<region>.csv` for
+    every region in `priority_results` (global/us/fr) by the time Phase 1
+    completes, same file/schema `sync_spotify_country_charts_from_worldwide.py`
+    produces — `_collect_spcharts_rank_record_since` doesn't care which of the
+    two wrote the row.
+
+    Imports `run_all_charts.py` lazily (only when there's something to post)
+    to reuse its rank-record detection/posting code instead of duplicating
+    it — that module self-configures its own sys.path from its own file
+    location, so it works regardless of this module's cwd/sys.path. Never
+    blocking: any failure here is logged and swallowed, the routine chart
+    card posts continue regardless (`_post_regional` unaffected)."""
+    try:
+        run_all_charts_path = ROOT / "collectors" / "spotify" / "charts" / "run_all_charts.py"
+        charts_root = run_all_charts_path.parent
+        if str(charts_root) not in sys.path:
+            sys.path.insert(0, str(charts_root))
+        import run_all_charts as _rac
+
+        cover_lookup = _rac._spcharts_track_cover_lookup()
+        for region in regions:
+            try:
+                records = _rac._collect_spcharts_rank_record_since(region)
+            except Exception as exc:
+                print(f"[WARN] rank-record check failed for {region}: {exc}", flush=True)
+                continue
+            for record in records:
+                if record.get("chart_date") != chart_date:
+                    continue
+                try:
+                    _rac._post_spcharts_rank_record_card(record, cover_lookup)
+                except Exception as exc:
+                    print(
+                        f"[WARN] rank-record post failed for {record.get('title')!r} ({region}): {exc}",
+                        flush=True,
+                    )
+    except Exception as exc:
+        print(f"[WARN] rank-record check setup failed: {exc}", flush=True)
 
 
 def _build_id_to_name() -> dict[str, str]:
@@ -2390,6 +2503,9 @@ def main() -> int:
     else:
         regions_to_post = [region for region in PRIORITY_POST_REGIONS if region in priority_to_fetch]
     regions_to_post = [region for region in regions_to_post if region in priority_results and priority_results[region]]
+    if regions_to_post and not args.no_post:
+        print("[INFO] Rank-record check (before routine chart cards)...", flush=True)
+        _post_pending_rank_records(chart_date, regions_to_post)
     if regions_to_post:
         def _post_regional() -> None:
             if _priority_card_thread is not None and _priority_card_thread.is_alive():

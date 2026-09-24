@@ -20,6 +20,7 @@ CHARTS_ROOT = Path(__file__).resolve().parent
 REPO_ROOT = CHARTS_ROOT.parents[2]
 sys.path.insert(0, str(REPO_ROOT / "collectors" / "spotify"))
 sys.path.insert(0, str(REPO_ROOT / "collectors"))
+sys.path.insert(0, str(REPO_ROOT / "collectors" / "billboard"))
 
 import requests
 from dotenv import load_dotenv
@@ -31,8 +32,9 @@ from core.notify import send as _notify
 from core.retention import cleanup_generated_artifacts
 from core.swift_top_gate import check_swift_top_gate, mark_swift_top_done
 from core.twitter import post_with_image
-from twitter.text import date_label, spotify_chart_rank_record_since_tweet
-from comp.chart_card import render_chart_card, write_chart_card_png
+from live_trigger import trigger_live_projection
+from twitter.text import date_label, spotify_chart_filtered_streams_record_tweet, spotify_chart_rank_record_since_tweet
+from comp.chart_card import RECORD_CARD_EXTRA_HEIGHT, render_chart_card, write_chart_card_png
 from comp.song_card import slugify
 
 for _stream in (sys.stdout, sys.stderr):
@@ -47,6 +49,13 @@ NTFY_TOPIC_SPCHARTS_DEFAULT = "tsm-spcharts"
 # a deep, continuous chart history. Restrict them to the three curated regions;
 # every other region's history is partial and/or frozen (see stale-region skip).
 SPCHARTS_RANKED_HISTORY_REGIONS = {"global", "us", "uk"}
+# Main-stores scope for the rank-record-since / filtered-streams-record
+# feature specifically (decision 2026-09-23: fr added). Separate from
+# `SPCHARTS_RANKED_HISTORY_REGIONS` above on purpose — that one also gates
+# total-days-overtake/streak alerts, which rely on a full continuous history
+# only verified for global/us/uk; widening it to fr would silently turn those
+# on for fr too without the same verification.
+SPCHARTS_RANK_RECORD_REGIONS = {"global", "us", "uk", "fr"}
 
 _WARP_CLI = Path(r"C:\Program Files\Cloudflare\Cloudflare WARP\warp-cli.exe")
 
@@ -1167,6 +1176,11 @@ def _run_swift_top_charts_if_ready(target_date: date, *, env: dict[str, str], ve
     return True
 
 
+def _trigger_live_projection_after_charts() -> None:
+    print("[Swift Top Live] refresh projection after Spotify Charts...")
+    trigger_live_projection(log=lambda message: print(f"[Swift Top Live] {message}"))
+
+
 def _run_parallel(
     runners: list[tuple[str, Path, list[str]]],
     *,
@@ -1381,6 +1395,83 @@ def _song_title(row: dict) -> str:
     return str(row.get("song_name") or row.get("title") or row.get("track_name") or "Unknown song").strip()
 
 
+# Decision 2026-09-23: a brand-new release naturally climbs the charts for
+# its first few weeks, so "new peak rank" would fire almost every day for a
+# song that just came out — a real Spotify-verified peak, but not newsworthy.
+# Mirrors SPCHARTS_RANK_RECORD_MIN_DAYS_SINCE (21 days), the same threshold
+# already used for "best chart position since" so the two alerts agree on
+# what counts as "too fresh to be a record".
+# Kept as a plain literal (not a reference to SPCHARTS_RANK_RECORD_MIN_DAYS_SINCE,
+# defined further below) so this stays usable regardless of definition order;
+# the two constants are meant to be kept equal by convention.
+NEW_RELEASE_RECORD_GRACE_DAYS = 21
+
+
+def _parse_iso_date(value: str | None) -> date | None:
+    if not value:
+        return None
+    text = str(value).strip()
+    if not text:
+        return None
+    try:
+        return datetime.fromisoformat(text.replace("Z", "+00:00")).date()
+    except ValueError:
+        try:
+            return datetime.strptime(text[:10], "%Y-%m-%d").date()
+        except ValueError:
+            return None
+
+
+def _spcharts_track_release_date_lookup() -> dict[str, date]:
+    """track_id -> catalog release_date, read straight from db/discography.
+
+    Used only to suppress "new peak rank" alerts during a recent release's
+    natural climb (see NEW_RELEASE_RECORD_GRACE_DAYS) — not sourced from the
+    charts-specific discography export (`charts_discography/<region>.json`),
+    which doesn't carry release_date. Track dicts in db/discography store a
+    Spotify `url`, not a bare `track_id` — same extraction pattern as
+    `post_global_new_releases.py::_track_id_from_url`.
+    """
+    discography_dir = REPO_ROOT / "db" / "discography"
+    lookup: dict[str, date] = {}
+
+    def _track_id(track: dict) -> str:
+        tid = str(track.get("track_id") or "").strip()
+        if tid:
+            return tid
+        match = re.search(r"track/([A-Za-z0-9]+)", str(track.get("url") or ""))
+        return match.group(1) if match else ""
+
+    def _remember(track: dict) -> None:
+        tid = _track_id(track)
+        parsed = _parse_iso_date(track.get("release_date"))
+        if tid and parsed and tid not in lookup:
+            lookup[tid] = parsed
+
+    albums_dir = discography_dir / "albums"
+    if albums_dir.exists():
+        for path in sorted(albums_dir.glob("*.json")):
+            payload = _load_json_file(path)
+            if not isinstance(payload, dict):
+                continue
+            for section in payload.get("sections") or []:
+                for track in section.get("tracks") or []:
+                    if isinstance(track, dict):
+                        _remember(track)
+
+    for name in ("songs.json", "features.json", "misc.json"):
+        payload = _load_json_file(discography_dir / name)
+        sections = payload if isinstance(payload, list) else []
+        for section in sections:
+            if not isinstance(section, dict):
+                continue
+            for track in section.get("tracks") or []:
+                if isinstance(track, dict):
+                    _remember(track)
+
+    return lookup
+
+
 def _song_title_key(row: dict) -> str:
     """Title-only key, ignoring track_id.
 
@@ -1547,7 +1638,13 @@ def _collect_spcharts_streak_deactivations(current_rows: list[dict], previous_ro
     return sorted(set(alerts))
 
 
-def _collect_spcharts_peak_rank_records(current_rows: list[dict], previous_rows: list[dict]) -> list[str]:
+def _collect_spcharts_peak_rank_records(
+    current_rows: list[dict],
+    previous_rows: list[dict],
+    *,
+    release_date_lookup: dict[str, date] | None = None,
+    today: date | None = None,
+) -> list[str]:
     previous_by_key = {
         key: row
         for row in previous_rows
@@ -1555,6 +1652,8 @@ def _collect_spcharts_peak_rank_records(current_rows: list[dict], previous_rows:
         for key in [_song_key(row)]
         if key
     }
+    today = today or date.today()
+    release_date_lookup = release_date_lookup or {}
     alerts = []
     for row in current_rows:
         if not isinstance(row, dict):
@@ -1565,6 +1664,13 @@ def _collect_spcharts_peak_rank_records(current_rows: list[dict], previous_rows:
         current_peak = _to_int(row.get("peak_rank"))
         previous_peak = _to_int(previous.get("peak_rank"))
         if current_peak is None or previous_peak is None or current_peak >= previous_peak:
+            continue
+        track_id = str(row.get("track_id") or "").strip()
+        release_day = release_date_lookup.get(track_id)
+        if release_day and (today - release_day).days < NEW_RELEASE_RECORD_GRACE_DAYS:
+            # Too soon after release: a brand-new song climbing the charts
+            # hits a "new peak" almost every day by construction, which isn't
+            # a meaningful record yet (decision 2026-09-23).
             continue
         alerts.append(f"{_song_title(row)} reached a new peak rank: #{current_peak} (was #{previous_peak})")
     return sorted(set(alerts))
@@ -1672,23 +1778,26 @@ def _spcharts_had_record_yesterday(
     return (yesterday - date.fromisoformat(match_date)).days >= min_days
 
 
-def _spcharts_filtered_streaming_extra_line(
+def _spcharts_streams_record_lookup(
     points: list[tuple[str, int, int | None, dict]],
     latest_date: str,
     target_date: date,
     current_streams: int | None,
-) -> str | None:
-    """"The song also earned its best filtered streaming day since <date> ..."
-    add-on line, decision 2026-09-19: "filtered streams" = the `streams`
-    figure Spotify Charts itself publishes per chart entry (the `streams`
-    column already in `db/charts_history_<region>.csv`) — a DIFFERENT, coarser
-    number than the exact daily total from `db/streams_history.csv` used by
+) -> dict | None:
+    """"Best filtered streaming day since <date>" lookup, decision 2026-09-19:
+    "filtered streams" = the `streams` figure Spotify Charts itself publishes
+    per chart entry (the `streams` column already in
+    `db/charts_history_<region>.csv`) — a DIFFERENT, coarser number than the
+    exact daily total from `db/streams_history.csv` used by
     streams/best_day_since.py (that pipeline also lags charts by ~2 days, so
     it can't even be checked for the same date most of the time). Computed
     self-contained from the same `points` already loaded for the rank search,
     same "most recent day that matched/beat" logic and the same
     `SPCHARTS_RANK_RECORD_MIN_DAYS_SINCE` gate as the chart-rank record above.
-    """
+    Returns `None` when no qualifying record, else `{since_date, pct, repeat}`
+    — used both to build the 2nd-paragraph line on a rank-record tweet AND
+    (2026-09-23) as a standalone record on its own when no rank record fired
+    the same day."""
     if not current_streams or current_streams <= 0:
         return None
     match = _spcharts_since_search(
@@ -1703,10 +1812,9 @@ def _spcharts_filtered_streaming_extra_line(
 
     yesterday_entries = [p for p in points if p[0] == (target_date - timedelta(days=1)).isoformat()]
     previous_streams = yesterday_entries[-1][2] if yesterday_entries else None
-    pct_text = ""
+    pct = None
     if previous_streams and previous_streams > 0:
         pct = (current_streams - previous_streams) / previous_streams * 100
-        pct_text = f" [{pct:+.1f}%]"
     repeat = _spcharts_had_record_yesterday(
         points,
         target_date,
@@ -1714,10 +1822,18 @@ def _spcharts_filtered_streaming_extra_line(
         better_or_equal=_streams_better_or_equal,
         min_days=SPCHARTS_RANK_RECORD_MIN_DAYS_SINCE,
     )
-    verb = "has once again earned" if repeat else "earned"
+    return {"since_date": since_date, "pct": pct, "repeat": repeat}
+
+
+def _spcharts_filtered_streaming_extra_line(streams_record: dict, current_streams: int) -> str:
+    """2nd-paragraph line appended to a rank-record tweet when the same song
+    also clears the filtered-streams record the same day."""
+    pct = streams_record["pct"]
+    pct_text = f" [{pct:+.1f}%]" if pct is not None else ""
+    verb = "has once again earned" if streams_record["repeat"] else "earned"
     return (
         f"The song also {verb} its best filtered streaming day since "
-        f"{date_label(since_date)} with {current_streams:,} streams{pct_text}."
+        f"{date_label(streams_record['since_date'])} with {current_streams:,} streams{pct_text}."
     )
 
 
@@ -1725,9 +1841,10 @@ def _collect_spcharts_rank_record_since(region: str) -> list[dict]:
     """Ready-to-post "best chart position since <date>" records, backend-computed.
 
     Returns dicts (`tweet`, `title`, `region`, `region_label`, `track_id`, `rank`,
-    `streams`, `since_date`, `chart_date`) rather than bare tweet strings so the
-    caller can also render+auto-post a gold "record" chart_card.py image
-    (`_post_spcharts_rank_record_card`), not just send the tweet text via ntfy.
+    `streams`, `since_date`, `streams_since_date`, `chart_date`, `kind`) rather
+    than bare tweet strings so the caller can also render+auto-post a gold
+    "record" chart_card.py image (`_post_spcharts_rank_record_card`), not just
+    send the tweet text via ntfy.
 
     Replaces the earlier fixed 12-month rolling window (2026-09-19) with the
     same "since" search as streams/best_day_since.py::compute_best_day_since:
@@ -1748,7 +1865,15 @@ def _collect_spcharts_rank_record_since(region: str) -> list[dict]:
     "filtered streams" figure is separately a since-record too, a second
     "also earned its best filtered streaming day since ..." line is appended
     (`_spcharts_filtered_streaming_extra_line`) rather than sending two tweets
-    for the same song/day.
+    for the same song/day (`kind="rank"`).
+
+    Decision 2026-09-23: a song that clears the filtered-streams record
+    WITHOUT also clearing a rank record used to post nothing at all (the
+    streams check only ever ran as a 2nd-paragraph add-on to a rank-record
+    tweet). It now posts on its own via
+    `spotify_chart_filtered_streams_record_tweet` (`kind="streams"`,
+    `since_date` is `None` for these rows — there's no rank-record subtitle
+    to show, only `streams_since_date`).
     """
     rows_by_date = _load_charts_history_rows_by_date(region)
     if not rows_by_date:
@@ -1783,37 +1908,90 @@ def _collect_spcharts_rank_record_since(region: str) -> list[dict]:
         last_at_or_better = _spcharts_since_search(
             points, latest_date, current_rank, get_value=lambda p: p[1], better_or_equal=_rank_better_or_equal
         )
-        if last_at_or_better is None:
-            continue  # true all-time best, not a "since" record
-        best_since_date, _best_since_rank = last_at_or_better
-        days_since = (target_date - date.fromisoformat(best_since_date)).days
-        if days_since < SPCHARTS_RANK_RECORD_MIN_DAYS_SINCE:
-            continue  # beaten record too recent to be newsworthy
+        best_since_date: str | None = None
+        has_rank_record = False
+        if last_at_or_better is not None:
+            candidate_since_date, _best_since_rank = last_at_or_better
+            days_since = (target_date - date.fromisoformat(candidate_since_date)).days
+            if days_since >= SPCHARTS_RANK_RECORD_MIN_DAYS_SINCE:
+                best_since_date = candidate_since_date
+                has_rank_record = True
+
+        streams_record = _spcharts_streams_record_lookup(points, latest_date, target_date, current_streams)
+
+        # Decision 2026-09-23: a filtered-streams record used to only ever
+        # surface as a 2nd paragraph on a rank-record tweet — a day where
+        # ONLY the streams record clears (no rank record) posted nothing at
+        # all. Now it posts on its own via
+        # `spotify_chart_filtered_streams_record_tweet`.
+        if not has_rank_record and streams_record is None:
+            continue  # neither record qualifies today
 
         track_id = str(current_row.get("track_id") or "").strip()
         if not track_id:
             continue
-        extra_line = _spcharts_filtered_streaming_extra_line(
-            points, latest_date, target_date, current_streams
+
+        # Day-over-day deltas for the card (decision 2026-09-23) — positive
+        # rank_change = moved up (lower rank number), matching the sign
+        # convention already used for chart-card rank badges elsewhere
+        # (`post_global_new_releases.py::_fmt_change`). None when yesterday's
+        # row is missing (gap day) rather than a fabricated 0.
+        yesterday_iso = (target_date - timedelta(days=1)).isoformat()
+        yesterday_entries = [p for p in points if p[0] == yesterday_iso]
+        previous_rank = yesterday_entries[-1][1] if yesterday_entries else None
+        previous_streams = yesterday_entries[-1][2] if yesterday_entries else None
+        rank_change = (previous_rank - current_rank) if previous_rank is not None else None
+        streams_change = (
+            current_streams - previous_streams
+            if current_streams is not None and previous_streams is not None
+            else None
         )
-        repeat = _spcharts_had_record_yesterday(
-            points,
-            target_date,
-            get_value=lambda p: p[1],
-            better_or_equal=_rank_better_or_equal,
-            min_days=SPCHARTS_RANK_RECORD_MIN_DAYS_SINCE,
+        streams_pct = (
+            (streams_change / previous_streams * 100)
+            if streams_change is not None and previous_streams
+            else None
         )
         title = _song_title(current_row)
-        tweet = spotify_chart_rank_record_since_tweet(
-            title=title,
-            region=region,
-            region_label=region_label,
-            rank=current_rank,
-            since_date=best_since_date,
-            track_id=track_id,
-            repeat=repeat,
-            extra_line=extra_line,
-        )
+
+        if has_rank_record:
+            extra_line = (
+                _spcharts_filtered_streaming_extra_line(streams_record, current_streams)
+                if streams_record is not None
+                else None
+            )
+            repeat = _spcharts_had_record_yesterday(
+                points,
+                target_date,
+                get_value=lambda p: p[1],
+                better_or_equal=_rank_better_or_equal,
+                min_days=SPCHARTS_RANK_RECORD_MIN_DAYS_SINCE,
+            )
+            tweet = spotify_chart_rank_record_since_tweet(
+                title=title,
+                region=region,
+                region_label=region_label,
+                rank=current_rank,
+                since_date=best_since_date,
+                track_id=track_id,
+                repeat=repeat,
+                extra_line=extra_line,
+            )
+            kind = "rank"
+        else:
+            # streams_record is guaranteed set here (the `continue` above
+            # skips anything with neither record).
+            tweet = spotify_chart_filtered_streams_record_tweet(
+                title=title,
+                region=region,
+                region_label=region_label,
+                rank=current_rank,
+                streams=current_streams,
+                since_date=streams_record["since_date"],
+                track_id=track_id,
+                repeat=streams_record["repeat"],
+            )
+            kind = "streams"
+
         records.append(
             {
                 "tweet": tweet,
@@ -1824,7 +2002,13 @@ def _collect_spcharts_rank_record_since(region: str) -> list[dict]:
                 "rank": current_rank,
                 "streams": current_streams,
                 "since_date": best_since_date,
+                "streams_since_date": streams_record["since_date"] if streams_record is not None else None,
                 "chart_date": latest_date,
+                "rank_change": rank_change,
+                "streams_change": streams_change,
+                "streams_pct": streams_pct,
+                "kind": kind,
+                "movement": str(current_row.get("movement") or "").strip().upper(),
             }
         )
     return records
@@ -1878,30 +2062,71 @@ def _post_spcharts_rank_record_card(record: dict, cover_lookup: dict[str, str]) 
         footer_date = chart_date
     streams = record["streams"]
 
+    # Day-over-day rank badge ("+N"/"-N"/"0" -> `_format_rank_badge` turns
+    # that into "▲ N"/"▼ N"/"="), same sign convention (positive = moved up)
+    # as the rest of the pipeline's chart cards. None (gap day) -> no badge.
+    # A same-day re-entry ("movement" from the chart-history row) takes
+    # priority over the numeric delta — decision 2026-09-23, matches the
+    # NEW/RE badge already used by the routine daily chart cards.
+    movement = record.get("movement")
+    rank_change = record.get("rank_change")
+    if movement in {"NEW", "RE"}:
+        rank_badge, rank_badge_class = movement, movement.lower()
+    elif rank_change is None:
+        rank_badge, rank_badge_class = "", "flat"
+    else:
+        rank_badge = f"{rank_change:+d}" if rank_change != 0 else "0"
+        rank_badge_class = "up" if rank_change > 0 else "down" if rank_change < 0 else "flat"
+
+    streams_change = record.get("streams_change")
+    streams_pct = record.get("streams_pct")
+    if streams_change is None:
+        streams_delta, streams_delta_class = "", "flat"
+    else:
+        streams_delta = f"{streams_change:+,}"
+        streams_delta_class = "up" if streams_change > 0 else "down" if streams_change < 0 else "flat"
+    streams_pct_badge = f"{streams_pct:+.1f}%" if streams_pct is not None else ""
+
+    # `kind="rank"` -> normal subtitle. `kind="streams"` -> no rank record
+    # today, so no "Best position since" subtitle to show.
+    subtitle = f"Best position since {date_label(record['since_date'])}" if record.get("since_date") else ""
+    # Whenever the filtered-streams record also cleared (either alongside a
+    # rank record, or standalone) show it under the streams block, decision
+    # 2026-09-23.
+    metric_note = (
+        f"Best filtered streaming day since {date_label(record['streams_since_date'])}"
+        if record.get("streams_since_date")
+        else ""
+    )
+
     html_content = render_chart_card(
         title=title,
         eyebrow=f"Spotify {record['region_label']} Charts",
-        subtitle=f"Best position since {date_label(record['since_date'])}",
+        subtitle=subtitle,
         stats=[
-            {"label": "Rank", "value": f"#{record['rank']}", "badge": "", "badge_class": "flat"},
+            {"label": "Rank", "value": f"#{record['rank']}", "badge": rank_badge, "badge_class": rank_badge_class},
             {
                 "label": "Streams",
                 "value": f"{int(streams):,}" if streams else "-",
-                "badge": "",
-                "badge_class": "flat",
+                "delta": streams_delta,
+                "delta_class": streams_delta_class,
+                "badge": streams_pct_badge,
+                "badge_class": streams_delta_class,
             },
         ],
         cover_url=cover_lookup.get(record["track_id"]),
         footer_left="@swiftiescharts",
         footer_right=footer_date,
-        extra=record["region_label"],
+        metric_note=metric_note,
         badge_text=f"Spotify {record['region_label']} Charts",
         record=True,
     )
     out_path = out_dir / f"{slug}_rank_record_card.png"
     tmp_path = out_dir / f"{slug}_rank_record_card.html"
     try:
-        write_chart_card_png(html_content, out_path, tmp_path, width=920, height=344, export_frame=True)
+        write_chart_card_png(
+            html_content, out_path, tmp_path, width=920, height=344 + RECORD_CARD_EXTRA_HEIGHT, export_frame=True
+        )
     except Exception as exc:
         print(f"[WARN] Rank-record card render failed for {title!r} ({region}): {exc}", flush=True)
         return
@@ -1931,8 +2156,9 @@ def _notify_spcharts_events(env: dict[str, str]) -> None:
     total_days_alerts: list[str] = []
     streak_alerts: list[str] = []
     peak_rank_alerts: list[str] = []
+    release_date_lookup = _spcharts_track_release_date_lookup()
     rank_records: list[dict] = []
-    for region in sorted(SPCHARTS_RANKED_HISTORY_REGIONS):
+    for region in sorted(SPCHARTS_RANK_RECORD_REGIONS):
         rank_records.extend(_collect_spcharts_rank_record_since(region))
     rank_record_tweets = [record["tweet"] for record in rank_records]
     for current_path in sorted(discography_dir.glob("*.json")):
@@ -1962,7 +2188,9 @@ def _notify_spcharts_events(env: dict[str, str]) -> None:
             )
         peak_rank_alerts.extend(
             f"[{region_label}] {line}"
-            for line in _collect_spcharts_peak_rank_records(current_rows, previous_rows)
+            for line in _collect_spcharts_peak_rank_records(
+                current_rows, previous_rows, release_date_lookup=release_date_lookup
+            )
         )
 
     topic = _notify_spcharts_topic(env)
@@ -2139,6 +2367,33 @@ def _ensure_card_regional_data(target_date: date, *, env: dict[str, str], verbos
         )
         return False
     return True
+
+
+def _post_album_debut_cards(
+    target_date: date,
+    *,
+    force: bool,
+    env: dict[str, str],
+    verbose: bool,
+) -> tuple[str, int] | None:
+    """Runs post_album_debut_chart.py — a no-op most days (returns 0
+    immediately when no album has a track with release_date == target_date).
+    Must run BEFORE _post_priority_global_cards / _verify_regional_posts so
+    an album-wide debut highlight (see that script's docstring) goes out
+    ahead of the regular Global/US chart posts and the worldwide cards
+    thread (decision 2026-09-23, prep "The Life of a Showgirl: The Encore")."""
+    args = [str(target_date), "--post"]
+    if force:
+        args.append("--force")
+    rc = _run(
+        "album-debut-cards",
+        CHARTS_ROOT / "worldwide" / "tools" / "scripts" / "post_album_debut_chart.py",
+        args,
+        dry_run=False,
+        env=env,
+        verbose=verbose,
+    )
+    return None if rc == 0 else ("album-debut-cards", rc)
 
 
 def _post_priority_global_cards(
@@ -2606,6 +2861,18 @@ def main() -> int:
         elif not _ensure_global_entries_in_worldwide_snapshot(target_date):
             failures.append(("cards-global-data", 1))
 
+    # Album debut highlight (Global + US table, then per-song standalone
+    # cards) goes out before anything else in this phase — no-op most days.
+    if not args.dry_run and not args.no_post and should_post_cards and "global" in post_parts and not failures:
+        debut_failure = _post_album_debut_cards(
+            target_date,
+            force=args.force_cards or args.force,
+            env=env,
+            verbose=args.verbose,
+        )
+        if debut_failure:
+            failures.append(debut_failure)
+
     # Les priority cards Global (NEW/RE) restent prioritaires pour le post,
     # mais seulement apres collecte effective du chart Global.
     if not args.dry_run and not args.no_post and should_post_cards and "global" in post_parts and not failures:
@@ -2703,34 +2970,50 @@ def main() -> int:
         if best_day_failure:
             failures.append(best_day_failure)
 
-    if not args.dry_run and needs_collect and worldwide_ready_for_final_sync:
-        print("\n[FINAL] sync Spotify country chart history for all worldwide regions...")
-        rc_sync = _run(
-            "sync-country-charts",
-            REPO_ROOT / "scripts" / "sync_spotify_country_charts_from_worldwide.py",
-            [],
-            dry_run=False,
-            env=env,
-            verbose=args.verbose,
-        )
-        if rc_sync != 0:
-            failures.append(("sync-country-charts", rc_sync))
+    final_export_needed = (
+        not args.dry_run
+        and not failures
+        and (args.force or not _r2_export_is_fresh(target_date))
+    )
+    final_sync_needed = (
+        not args.dry_run
+        and not failures
+        and (worldwide_ready_for_final_sync or final_export_needed)
+    )
+
+    if final_sync_needed:
+        ok, detail = _validate_worldwide_snapshot(target_date)
+        if not ok:
+            failures.append(("worldwide-final-data", 1))
+            print(f"[FAIL] final sync/export bloque: {detail}")
         else:
-            rc_discography = _run(
-                "build-country-discography",
-                REPO_ROOT / "scripts" / "build_spotify_chart_discography.py",
+            print("\n[FINAL] sync Spotify country chart history for all worldwide regions...")
+            rc_sync = _run(
+                "sync-country-charts",
+                REPO_ROOT / "scripts" / "sync_spotify_country_charts_from_worldwide.py",
                 [],
                 dry_run=False,
                 env=env,
                 verbose=args.verbose,
             )
-            if rc_discography != 0:
-                failures.append(("build-country-discography", rc_discography))
+            if rc_sync != 0:
+                failures.append(("sync-country-charts", rc_sync))
             else:
-                try:
-                    _notify_spcharts_events(env)
-                except Exception as exc:
-                    print(f"[spcharts_notify] failed: {exc}")
+                rc_discography = _run(
+                    "build-country-discography",
+                    REPO_ROOT / "scripts" / "build_spotify_chart_discography.py",
+                    [],
+                    dry_run=False,
+                    env=env,
+                    verbose=args.verbose,
+                )
+                if rc_discography != 0:
+                    failures.append(("build-country-discography", rc_discography))
+                else:
+                    try:
+                        _notify_spcharts_events(env)
+                    except Exception as exc:
+                        print(f"[spcharts_notify] failed: {exc}")
 
         if not failures:
             if _r2_export_is_fresh(target_date) and not args.force:
@@ -2773,6 +3056,8 @@ def main() -> int:
         print(f"[ OK ] tout termine — {total} (posts a retenter: {', '.join(n for n, _ in regional_post_failures)})")
     else:
         print(f"[ OK ] tout termine — {total}")
+    if not args.dry_run:
+        _trigger_live_projection_after_charts()
     if not args.dry_run and ran_collect:
         cleanup_generated_artifacts()
         git_commit_and_push(REPO_ROOT, f"charts run all {target_date.isoformat()}")

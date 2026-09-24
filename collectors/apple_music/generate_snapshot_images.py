@@ -18,8 +18,18 @@ Usage:
   python generate_snapshot_images.py --region fr --genre alternative --date 2026-07-03
       -> génère uniquement l'image demandée.
 
+  python generate_snapshot_images.py --region global --album showgirl
+      -> seulement les titres de l'album (nom, slug de fichier db/discography/albums
+         ou sous-chaine unique), rangs du chart d'origine conserves ; PNG suffixe
+         par l'album (global_the-life-of-a-showgirl.png). Combinable avec les
+         cibles par defaut.
+
   python generate_snapshot_images.py --list-genres
       -> liste les genres disponibles.
+
+Chaque image affiche l'heure du snapshot et celle du snapshot de comparaison
+(dernier snapshot du jour precedent, meme semantique que previous_rank des CSV),
+en heure de Paris.
 """
 from __future__ import annotations
 
@@ -35,6 +45,7 @@ import unicodedata
 from collections.abc import Callable
 from datetime import date, datetime, timedelta
 from pathlib import Path
+from zoneinfo import ZoneInfo
 
 HERE = Path(__file__).resolve().parent
 REPO_ROOT = HERE.parents[1]
@@ -49,6 +60,13 @@ from collectors.spotify.core.notify import send as notify_send  # noqa: E402
 # helpers below -- it pulls in playwright / Pillow, which the data-only CI
 # path (--notify-global-only) has no reason to install.
 from core.config import GENRES  # noqa: E402
+from core.discography import (  # noqa: E402
+    iter_catalog_tracks as _iter_catalog_tracks,
+    load_release_dates as _load_release_dates,
+    resolve_album_filter as _resolve_album_filter,
+    song_key_candidates as _song_key_candidates,
+    song_name_key as _song_name_key,
+)
 
 DISCOGRAPHY_DIR = REPO_ROOT / "db" / "discography"
 
@@ -79,16 +97,18 @@ DEFAULT_TARGETS = [
 ]
 
 
-def _read_latest_rows(csv_path: Path, chart_date: str) -> list[dict]:
+def _read_latest_rows(csv_path: Path, chart_date: str) -> tuple[list[dict], str | None]:
+    """Rows of the day's last snapshot + that snapshot's scraped_at (file-level,
+    so it stays known even when the region has no Taylor Swift entry)."""
     if not csv_path.exists():
-        return []
+        return [], None
     with csv_path.open("r", encoding="utf-8-sig", newline="") as fh:
         rows = [dict(row) for row in csv.DictReader(fh)]
     day_rows = [row for row in rows if str(row.get("date") or "").strip() == chart_date]
     if not day_rows:
-        return []
+        return [], None
     latest = max(str(row.get("scraped_at") or "") for row in day_rows)
-    return [row for row in day_rows if str(row.get("scraped_at") or "") == latest]
+    return [row for row in day_rows if str(row.get("scraped_at") or "") == latest], (latest or None)
 
 
 def _rank_int(value: object) -> int | None:
@@ -99,83 +119,6 @@ def _rank_int(value: object) -> int | None:
         return int(float(text))
     except ValueError:
         return None
-
-
-def _song_name_key(value: object) -> str:
-    text = unicodedata.normalize("NFKC", str(value or "")).strip().lower()
-    text = text.replace("’", "'").replace("“", '"').replace("”", '"')
-    text = re.sub(r"\s+", " ", text)
-    return text
-
-
-def _song_key_candidates(value: object) -> list[str]:
-    """Apple sometimes retitles a track with a soundtrack/feature suffix
-    (e.g. 'Song (From "Movie")') that our catalog doesn't have -> also try
-    the key with that trailing parenthetical stripped."""
-    key = _song_name_key(value)
-    candidates = [key]
-    stripped = re.sub(r"\s*\(from\b[^)]*\)\s*$", "", key).strip()
-    if stripped and stripped != key:
-        candidates.append(stripped)
-    return candidates
-
-
-def _iter_catalog_tracks() -> list[dict]:
-    """Every track dict from the discography source-of-truth files
-    (db/discography/, committed to git — unlike the runtime web export,
-    which only exists on hosts that also ran the Spotify streams export,
-    not the case on the Apple Music-only VPS)."""
-    tracks: list[dict] = []
-
-    def _collect(sections: object) -> None:
-        if not isinstance(sections, list):
-            return
-        for section in sections:
-            if not isinstance(section, dict):
-                continue
-            section_tracks = section.get("tracks")
-            if isinstance(section_tracks, list):
-                tracks.extend(t for t in section_tracks if isinstance(t, dict))
-
-    albums_dir = DISCOGRAPHY_DIR / "albums"
-    if albums_dir.is_dir():
-        for path in sorted(albums_dir.glob("*.json")):
-            try:
-                payload = json.loads(path.read_text(encoding="utf-8-sig"))
-            except Exception:
-                continue
-            if isinstance(payload, dict):
-                _collect(payload.get("sections"))
-
-    for name in ("songs.json", "features.json", "misc.json"):
-        path = DISCOGRAPHY_DIR / name
-        if not path.exists():
-            continue
-        try:
-            payload = json.loads(path.read_text(encoding="utf-8-sig"))
-        except Exception:
-            continue
-        if isinstance(payload, list):
-            _collect(payload)
-
-    return tracks
-
-
-def _load_release_dates() -> dict[str, str]:
-    """Map every known song-title key -> its catalog release_date, so a
-    missing previous_rank can be told apart between a genuine new release
-    and a re-entry (data-rules: never infer NEW for an already-released
-    song)."""
-    dates: dict[str, str] = {}
-    for track in _iter_catalog_tracks():
-        release_date = str(track.get("release_date") or "").strip()
-        if not release_date:
-            continue
-        for field in ("title", "base_title"):
-            key = _song_name_key(track.get(field))
-            if key and key not in dates:
-                dates[key] = release_date
-    return dates
 
 
 RELEASE_DATES = _load_release_dates()
@@ -211,25 +154,28 @@ def _rank_change(rank: int, previous_rank: int | None, is_new_release: bool) -> 
     return "=", "chg-eq"
 
 
-def get_region_rows(chart_date: str, region: str, genre: str | None) -> list[dict]:
+def get_region_rows(chart_date: str, region: str, genre: str | None) -> tuple[list[dict], str | None]:
     region = region.lower().strip()
     if region == "global":
         path = apple_music_charts_dir(chart_date) / "apple_music_global.csv"
-        rows = [r for r in _read_latest_rows(path, chart_date) if r.get("chart_type") == "global"]
+        latest_rows, scraped_at = _read_latest_rows(path, chart_date)
+        rows = [r for r in latest_rows if r.get("chart_type") == "global"]
     elif genre:
         path = apple_music_charts_dir(chart_date) / "apple_music_genre_charts.csv"
         genre_norm = genre.strip().lower()
+        latest_rows, scraped_at = _read_latest_rows(path, chart_date)
         rows = [
-            r for r in _read_latest_rows(path, chart_date)
+            r for r in latest_rows
             if str(r.get("country") or "").lower() == region
             and str(r.get("genre_name") or "").lower() == genre_norm
         ]
     else:
         path = apple_music_charts_dir(chart_date) / "apple_music_country_charts.csv"
-        rows = [r for r in _read_latest_rows(path, chart_date) if str(r.get("country") or "").lower() == region]
+        latest_rows, scraped_at = _read_latest_rows(path, chart_date)
+        rows = [r for r in latest_rows if str(r.get("country") or "").lower() == region]
 
     rows.sort(key=lambda r: _rank_int(r.get("rank")) or 9999)
-    return rows
+    return rows, scraped_at
 
 
 def _track_key(row: dict) -> str:
@@ -237,26 +183,61 @@ def _track_key(row: dict) -> str:
     return track_id or str(row.get("song_name") or "").strip().lower()
 
 
-def get_previous_day_ranks(chart_date: str, region: str, genre: str | None) -> dict[str, int]:
-    """Rank map from yesterday's last snapshot, for day-over-day deltas."""
-    yesterday = str(datetime.strptime(chart_date, "%Y-%m-%d").date() - timedelta(days=1))
-    mapping: dict[str, int] = {}
-    for row in get_region_rows(yesterday, region, genre):
-        rank = _rank_int(row.get("rank"))
-        key = _track_key(row)
-        if rank is not None and key:
-            mapping[key] = rank
-    return mapping
+PREVIOUS_SNAPSHOT_LOOKBACK_DAYS = 7
 
 
-def make_prev_rank_resolver(chart_date: str, region: str, genre: str | None) -> Callable[[dict], int | None]:
-    """Global only updates once/day, so a run-over-run diff sits on "=" for
-    hours -> compare vs yesterday. US/genre charts update near-hourly, so
-    run-over-run (the CSV's own previous_rank) shows the real movement."""
-    if region.lower().strip() == "global":
-        previous_day_ranks = get_previous_day_ranks(chart_date, region, genre)
-        return lambda row: previous_day_ranks.get(_track_key(row))
-    return lambda row: _rank_int(row.get("previous_rank"))
+def get_previous_day_ranks(chart_date: str, region: str, genre: str | None) -> tuple[dict[str, int], str | None]:
+    """Rank map from the last snapshot of the most recent previous day that has
+    one (same semantics as core/csv_utils.load_previous_ranks, which fills the
+    CSVs' previous_rank), plus that snapshot's scraped_at for the "vs" label."""
+    day = datetime.strptime(chart_date, "%Y-%m-%d").date()
+    for back in range(1, PREVIOUS_SNAPSHOT_LOOKBACK_DAYS + 1):
+        rows, scraped_at = get_region_rows(str(day - timedelta(days=back)), region, genre)
+        if scraped_at is None:
+            continue
+        mapping: dict[str, int] = {}
+        for row in rows:
+            rank = _rank_int(row.get("rank"))
+            key = _track_key(row)
+            if rank is not None and key:
+                mapping[key] = rank
+        return mapping, scraped_at
+    return {}, None
+
+
+def make_prev_rank_resolver(
+    chart_date: str, region: str, genre: str | None,
+) -> tuple[Callable[[dict], int | None], str | None]:
+    """Every chart compares vs the previous day's last snapshot (Global only
+    updates once/day; country/genre previous_rank already means "vs
+    yesterday"). Computed here rather than read from previous_rank so the
+    deltas and the "vs <hour>" label come from the very same snapshot."""
+    previous_day_ranks, previous_scraped_at = get_previous_day_ranks(chart_date, region, genre)
+    return (lambda row: previous_day_ranks.get(_track_key(row))), previous_scraped_at
+
+
+def _filter_album(rows: list[dict], album_keys: set[str] | None) -> list[dict]:
+    if album_keys is None:
+        return rows
+    return [
+        r for r in rows
+        if any(key in album_keys for key in _song_key_candidates(r.get("song_name")))
+    ]
+
+
+def _format_snapshot_time(scraped_at: str | None) -> str:
+    """'Sep 24, 2026 · 11:00 AM CEST' in Europe/Paris (a PNG has no viewer tz)."""
+    if not scraped_at:
+        return ""
+    try:
+        dt = datetime.fromisoformat(str(scraped_at).replace("Z", "+00:00"))
+        if dt.tzinfo is None:
+            dt = dt.replace(tzinfo=ZoneInfo("Europe/Paris"))
+        dt = dt.astimezone(ZoneInfo("Europe/Paris"))
+    except ValueError:
+        return str(scraped_at)
+    clock = f"{dt.hour % 12 or 12}:{dt.minute:02d} {'AM' if dt.hour < 12 else 'PM'} {dt.tzname() or ''}".strip()
+    return f"{dt.strftime('%b')} {dt.day}, {dt.year} · {clock}"
 
 
 def _compute_entries(
@@ -375,47 +356,64 @@ def _label_for(region: str, genre: str | None) -> str:
     return label
 
 
-def _filename_for(region: str, genre: str | None) -> str:
+def _filename_for(region: str, genre: str | None, album: str | None = None) -> str:
     name = region.lower()
     if genre:
         name += f"_{genre.strip().lower().replace('/', '-').replace(' ', '-')}"
+    if album:
+        name += "_" + re.sub(r"[^a-z0-9]+", "-", unicodedata.normalize("NFKD", album).lower()).strip("-")
     return name
 
 
 def notify_global_for_date(chart_date: str) -> None:
-    rows = get_region_rows(chart_date, "global", None)
-    prev_rank_fn = make_prev_rank_resolver(chart_date, "global", None)
+    rows, _scraped_at = get_region_rows(chart_date, "global", None)
+    prev_rank_fn, _previous_scraped_at = make_prev_rank_resolver(chart_date, "global", None)
     entries = _compute_entries(rows, prev_rank_fn, chart_date)
     date_fmt = datetime.strptime(chart_date, "%Y-%m-%d").strftime("%B %d, %Y")
     maybe_notify_global_update(entries, date_fmt)
 
 
-def generate(chart_date: str, region: str, genre: str | None, out_dir: Path) -> Path:
+def generate(
+    chart_date: str,
+    region: str,
+    genre: str | None,
+    out_dir: Path,
+    album: tuple[str, set[str]] | None = None,
+) -> Path:
+    from collectors.comp.discography import display_title_for_album
     from collectors.comp.tables_image import build_table_html, render_html_to_png
 
-    rows = get_region_rows(chart_date, region, genre)
-    prev_rank_fn = make_prev_rank_resolver(chart_date, region, genre)
+    album_name, album_keys = album if album else (None, None)
+    rows, scraped_at = get_region_rows(chart_date, region, genre)
+    rows = _filter_album(rows, album_keys)
+    prev_rank_fn, previous_scraped_at = make_prev_rank_resolver(chart_date, region, genre)
     entries = _compute_entries(rows, prev_rank_fn, chart_date)
     label = _label_for(region, genre)
 
     date_fmt = datetime.strptime(chart_date, "%Y-%m-%d").strftime("%B %d, %Y")
-    title = f"Taylor Swift · {label} Apple Music"
+    heading = display_title_for_album(album_name) if album_name else "Taylor Swift"
+    title = f"{heading} · {label} Apple Music"
     rows_html = _rows_html(entries)
+
+    snapshot_label = _format_snapshot_time(scraped_at) or date_fmt
+    subtitle = f"Chart Snapshot · {snapshot_label}"
+    if previous_scraped_at:
+        subtitle += f" · vs {_format_snapshot_time(previous_scraped_at)}"
 
     html_doc = build_table_html(
         title=title,
-        subtitle=f"Chart Snapshot · {date_fmt}",
+        subtitle=subtitle,
         col_heads=[("Pos", False), ("+/-", False), ("Track", False)],
         grid_cols="52px 64px minmax(240px,1fr)",
         rows_html=rows_html,
         handle=HANDLE,
-        date_str=date_fmt,
+        date_str=snapshot_label,
         headers_dir=HERE,
         header_background=HEADER_BG,
         logo_svg=APPLE_MUSIC_LOGO_HTML,
     )
 
-    filename = _filename_for(region, genre)
+    filename = _filename_for(region, genre, album_name)
     out_path = out_dir / f"{filename}.png"
     render_html_to_png(html_doc, out_path, out_dir / f"_{filename}_tmp.html")
     print(f"[OK] {label}: {len(rows)} entrée(s) -> {out_path}")
@@ -427,6 +425,12 @@ def main() -> int:
     parser.add_argument("--date", dest="chart_date", default=None, metavar="YYYY-MM-DD")
     parser.add_argument("--region", default=None, help="Country code (e.g. us, fr, gb) or 'global'")
     parser.add_argument("--genre", default=None, help="Genre name (e.g. Pop, Country, Alternative); requires --region")
+    parser.add_argument(
+        "--album",
+        default=None,
+        help="Keep only this album's songs (name, db/discography/albums file slug or unique substring, "
+        "e.g. 'showgirl'); chart ranks are kept as-is and the PNG name gets an album suffix",
+    )
     parser.add_argument("--list-genres", action="store_true", help="List available genre names and exit")
     parser.add_argument("--out-dir", default=None, help="Override output directory")
     parser.add_argument(
@@ -459,12 +463,20 @@ def main() -> int:
     out_dir = Path(args.out_dir) if args.out_dir else apple_music_charts_dir(chart_date) / "snapshot_images"
     out_dir.mkdir(parents=True, exist_ok=True)
 
+    album = None
+    if args.album:
+        try:
+            album = _resolve_album_filter(args.album)
+        except ValueError as exc:
+            print(f"[ERROR] --album: {exc}")
+            return 1
+
     targets = [{"region": args.region, "genre": args.genre}] if args.region else DEFAULT_TARGETS
 
     failures = 0
     for target in targets:
         try:
-            generate(chart_date, target["region"], target["genre"], out_dir)
+            generate(chart_date, target["region"], target["genre"], out_dir, album)
         except Exception as exc:
             failures += 1
             print(f"[ERROR] {target['region']} {target['genre'] or ''}: {exc}")

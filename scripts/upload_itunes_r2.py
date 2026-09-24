@@ -15,6 +15,7 @@ from __future__ import annotations
 
 import argparse
 import hashlib
+import io
 import json
 import os
 import sys
@@ -25,6 +26,7 @@ from typing import Any
 
 import boto3
 from botocore.client import BaseClient
+from botocore.config import Config
 from dotenv import load_dotenv
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -65,6 +67,8 @@ def get_r2_client() -> BaseClient:
         aws_access_key_id=get_env("R2_ACCESS_KEY_ID"),
         aws_secret_access_key=get_env("R2_SECRET_ACCESS_KEY"),
         region_name="auto",
+        # No timeout = a stalled R2 socket hangs the hourly .bat forever.
+        config=Config(connect_timeout=10, read_timeout=60, retries={"max_attempts": 3, "mode": "standard"}),
     )
 
 
@@ -94,7 +98,7 @@ def _put(client: BaseClient, bucket: str, key: str, body: bytes, content_type: s
             client.put_object(
                 Bucket=bucket,
                 Key=key,
-                Body=body,
+                Body=io.BytesIO(body),  # chunked send: timeout per chunk, not per file
                 ContentType=content_type,
                 CacheControl=NO_CACHE_CONTROL,
                 Metadata={"sha256": local_hash},

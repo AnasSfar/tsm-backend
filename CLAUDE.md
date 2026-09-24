@@ -14,6 +14,10 @@ After ANY change, update the impacted docs in the same session — stale docs ar
 - New product decision that isn't written anywhere → write it into the closest skill or context doc.
 Never end a session leaving a context file that contradicts the code.
 
+## Testing & simulation (mandatory)
+
+Before running ANY test, preview, or simulation that uses fake/fabricated data (new feature not live yet, dry-run of a pipeline change, "simule vendredi" type requests), load skill `previews-and-sims` first and follow it: work happens under `previews_and_sims/<slug>/` at repo root, never by writing fake data into `db/`, `snapshots/`, `runtime/`, or any real `tools/json`/`tools/locks` state file.
+
 ## TSM Frontend Rule
 
 When the user says "frontend" for TSM, always work in:

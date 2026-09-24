@@ -104,14 +104,60 @@ def spotify_chart_rank_record_since_tweet(
     extra_line: str | None = None,
 ) -> str:
     verb = "has once again reached" if repeat else "reached"
-    lines = [
+    base_line = (
         f'"{title}" {verb} its best chart position on the {region_label} Spotify chart '
         f"since {date_label(since_date)}, at #{int(rank)}."
-    ]
+    )
+    footer = f"Full history: {chart_song_url(track_id, region=region)}"
+
+    def build(lines: list[str]) -> str:
+        return with_prefix("\n\n".join(lines), BEST_DAY_PREFIX)
+
     if extra_line:
-        lines.append(extra_line)
-    lines.append(f"Full history: {chart_song_url(track_id, region=region)}")
-    return with_prefix("\n\n".join(lines), BEST_DAY_PREFIX)
+        tweet = build([base_line, extra_line, footer])
+        if len(tweet) <= 280:
+            return tweet
+        # Real failure caught live (2026-09-23): combining both clauses can
+        # blow past 280 even for a plain 20-char title once the long
+        # chart_song_url footer is added — drop the filtered-streams add-on
+        # rather than fail to post at all (same fallback pattern as
+        # `song_overtake_tweet` above).
+    return build([base_line, footer])
+
+
+def spotify_chart_filtered_streams_record_tweet(
+    *,
+    title: str,
+    region: str,
+    region_label: str,
+    rank: int,
+    streams: int,
+    since_date: str,
+    track_id: str,
+    repeat: bool = False,
+) -> str:
+    """Standalone version of the "best filtered streaming day since" claim,
+    for a song that clears the filtered-streams record but NOT a chart-rank
+    record the same day (decision 2026-09-23) — previously this line only
+    ever appeared as a 2nd paragraph tacked onto a rank-record tweet
+    (`spotify_chart_rank_record_since_tweet`'s `extra_line`), so a
+    streams-only record silently posted nothing at all."""
+    verb = "has once again earned" if repeat else "earned"
+    footer = f"Full history: {chart_song_url(track_id, region=region)}"
+    full_line = (
+        f'"{title}" {verb} its best filtered streaming day since {date_label(since_date)} '
+        f"on the {region_label} Spotify chart with {int(streams):,} streams, currently at #{int(rank)}."
+    )
+    tweet = with_prefix("\n\n".join([full_line, footer]), BEST_DAY_PREFIX)
+    if len(tweet) <= 280:
+        return tweet
+    # Same 280-char safety net as the rank-record tweet above: a long title
+    # can push the full sentence past the limit — fall back to a compact form.
+    compact_line = (
+        f'"{title}" {verb} its best filtered streaming day since {date_label(since_date)}: '
+        f"{int(streams):,} streams (#{int(rank)}, {region_label})."
+    )
+    return with_prefix("\n\n".join([compact_line, footer]), BEST_DAY_PREFIX)
 
 
 def best_day_since_recap_tweet(*, count: int, stats_date: str) -> str:

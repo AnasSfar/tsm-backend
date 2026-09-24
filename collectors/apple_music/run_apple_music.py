@@ -5,8 +5,13 @@ import argparse
 import os
 import subprocess
 import sys
+import threading
+from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, timedelta
 from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "billboard"))
+from live_trigger import trigger_live_projection  # noqa: E402
 
 try:
     from zoneinfo import ZoneInfo
@@ -30,6 +35,28 @@ SCRIPTS = [
     HERE / "country_all.py",
     HERE / "genre_all.py",
 ]
+
+# The collectors write disjoint CSVs, so independent groups run in parallel
+# (was fully sequential, ~3.5 min/cycle). Order is kept inside a group:
+# finalize_ts_top_songs_daily.py reads ts_page_all.py's raw CSV. genre_all is
+# the long pole (~1.3k requests); everything else runs alongside it.
+# APPLE_MUSIC_PARALLEL_SCRIPTS=0 goes back to one-by-one.
+SCRIPT_GROUPS = [
+    [HERE / "genre_all.py"],
+    [HERE / "ts_page_all.py", HERE / "finalize_ts_top_songs_daily.py"],
+    [HERE / "country_all.py"],
+    [HERE / "global.py", HERE / "ts_page.py"],
+]
+assert sorted(p.name for g in SCRIPT_GROUPS for p in g) == sorted(p.name for p in SCRIPTS)
+
+_PRINT_LOCK = threading.Lock()
+
+# Their output is never read by the hourly export (raw TS composite cycles /
+# idempotent next-day finalization, retried every run), and ts_page_all.py
+# already refuses to write a partial composite. A failure there (e.g. a DNS
+# blip on 12/168 storefronts, 2026-09-24 12h) must not drop the whole hour's
+# global/country/genre data from the site.
+NON_BLOCKING_SCRIPTS = {"ts_page_all.py", "finalize_ts_top_songs_daily.py"}
 
 
 def _truthy_env(name: str, default: bool = False) -> bool:
@@ -104,10 +131,37 @@ def child_env() -> dict[str, str]:
     if existing:
         pythonpath_parts.append(existing)
     env["PYTHONPATH"] = os.pathsep.join(pythonpath_parts)
+    # The .bat's -u only covers this process; without this, children's output
+    # sits in a block buffer and a hung child leaves the log silent.
+    env["PYTHONUNBUFFERED"] = "1"
     return env
 
 
-def export_apple_music() -> int:
+def run_child(cmd: list[str], timeout: int, env: dict[str, str] | None = None) -> int:
+    # Hard cap per step: a hung child must not hold the hourly cycle past the
+    # next trigger (Task Scheduler IgnoreNew silently skips it -> missing hour).
+    try:
+        return subprocess.run(cmd, cwd=REPO_ROOT, env=env or child_env(), check=False, timeout=timeout).returncode
+    except subprocess.TimeoutExpired:
+        print(f"[Apple Music] TIMEOUT after {timeout}s, killed: {' '.join(str(c) for c in cmd[1:])}")
+        return 124
+
+
+def run_child_captured(cmd: list[str], timeout: int) -> tuple[int, str]:
+    # Same cap as run_child, but output comes back as one block so children
+    # running in parallel don't interleave line by line in the log.
+    try:
+        result = subprocess.run(
+            cmd, cwd=REPO_ROOT, env=child_env(), check=False, timeout=timeout,
+            stdout=subprocess.PIPE, stderr=subprocess.STDOUT, encoding="utf-8", errors="replace",
+        )
+        return result.returncode, result.stdout or ""
+    except subprocess.TimeoutExpired as exc:
+        partial = exc.stdout.decode("utf-8", "replace") if isinstance(exc.stdout, bytes) else (exc.stdout or "")
+        return 124, f"{partial}\n[Apple Music] TIMEOUT after {timeout}s, killed: {' '.join(str(c) for c in cmd[1:])}"
+
+
+def export_apple_music(scraped_at: str) -> int:
     """Generate JSON files from CSV data."""
     export_script = REPO_ROOT / "scripts" / "export_apple_music.py"
     if not export_script.exists():
@@ -115,8 +169,10 @@ def export_apple_music() -> int:
         return 1
 
     print("[Apple Music] Exporting CSV to JSON...")
-    result = subprocess.run([sys.executable, str(export_script)], cwd=REPO_ROOT, env=child_env(), check=False)
-    if result.returncode == 0:
+    env = child_env()
+    env["APPLE_MUSIC_RUN_SCRAPED_AT"] = scraped_at
+    returncode = run_child([sys.executable, str(export_script)], timeout=900, env=env)
+    if returncode == 0:
         for rel_path in (
             Path("runtime/exports/web/site/data/applemusic.json"),
             Path("runtime/exports/web/site/data/applemusic_history.json"),
@@ -126,7 +182,7 @@ def export_apple_music() -> int:
                 print(f"[Apple Music] Exported {rel_path} ({path.stat().st_size} bytes)")
             else:
                 print(f"[Apple Music] Export missing after export: {rel_path}")
-    return result.returncode
+    return returncode
 
 
 def maybe_upload_to_r2() -> int:
@@ -139,9 +195,10 @@ def maybe_upload_to_r2() -> int:
         print(f"[Apple Music] R2 upload script missing: {upload_script}")
         return 1
 
-    print("[Apple Music] Uploading history-by-song to R2...")
-    result = subprocess.run([sys.executable, str(upload_script)], cwd=REPO_ROOT, env=child_env(), check=False)
-    return result.returncode
+    print("[Apple Music] Uploading to R2...")
+    # Critical files (main JSON, snapshots, history-by-date) go first; the cap
+    # only ever cuts the per-song phase, which the next run catches up on.
+    return run_child([sys.executable, str(upload_script)], timeout=1800)
 
 
 def regenerate_home_highlights_cache() -> None:
@@ -156,11 +213,9 @@ def regenerate_home_highlights_cache() -> None:
         return
 
     print("[Apple Music] Refreshing home highlights/version R2 cache...")
-    result = subprocess.run(
-        [sys.executable, str(script), "--quiet"], cwd=REPO_ROOT, env=child_env(), check=False
-    )
-    if result.returncode != 0:
-        print(f"[Apple Music] Home highlights cache refresh exited with code {result.returncode}")
+    returncode = run_child([sys.executable, str(script), "--quiet"], timeout=600)
+    if returncode != 0:
+        print(f"[Apple Music] Home highlights cache refresh exited with code {returncode}")
 
 
 def generate_country_cards(scraped_at: str, force: bool = False) -> int:
@@ -174,9 +229,7 @@ def generate_country_cards(scraped_at: str, force: bool = False) -> int:
     if force:
         args.append("--force")
 
-    print("[Apple Music] Generating country chart card images...")
-    result = subprocess.run(args, cwd=REPO_ROOT, env=child_env(), check=False)
-    return result.returncode
+    return _run_logged_block("Generating country chart card images", args, timeout=900)
 
 
 def generate_snapshot_images(scraped_at: str) -> int:
@@ -188,9 +241,18 @@ def generate_snapshot_images(scraped_at: str) -> int:
     chart_date = scraped_at.split("T", 1)[0]
     args = [sys.executable, str(script), "--date", chart_date]
 
-    print("[Apple Music] Generating snapshot images (Global, US, US Pop, US Country, US Alternative)...")
-    result = subprocess.run(args, cwd=REPO_ROOT, env=child_env(), check=False)
-    return result.returncode
+    return _run_logged_block(
+        "Generating snapshot images (Global, US, US Pop, US Country, US Alternative)", args, timeout=900
+    )
+
+
+def _run_logged_block(title: str, args: list[str], timeout: int) -> int:
+    # Images render while the R2 upload runs: print each as one block.
+    returncode, output = run_child_captured(args, timeout=timeout)
+    with _PRINT_LOCK:
+        print(f"[Apple Music] {title}...")
+        print(output.rstrip(), flush=True)
+    return returncode
 
 
 def notify_global_update(scraped_at: str) -> int:
@@ -203,37 +265,39 @@ def notify_global_update(scraped_at: str) -> int:
     args = [sys.executable, str(script), "--date", chart_date, "--notify-global-only"]
 
     print("[Apple Music] Sending Global Apple Music notification after data export...")
-    result = subprocess.run(args, cwd=REPO_ROOT, env=child_env(), check=False)
-    return result.returncode
+    return run_child(args, timeout=300)
 
 
 def run_script(script_path: Path, scraped_at: str, extra_args: list[str] | None = None) -> int:
     if not script_path.exists():
-        print(f"[ERROR] Missing script: {script_path}")
+        with _PRINT_LOCK:
+            print(f"[ERROR] Missing script: {script_path}")
         return 1
-
-    print(f"\n{'=' * 80}")
-    print(f"Running: {script_path.relative_to(REPO_ROOT)}")
-    print(f"{'=' * 80}")
 
     chart_date = scraped_at.split("T", 1)[0]
     cmd = [sys.executable, str(script_path), "--date", chart_date, "--scraped-at", scraped_at]
     if extra_args:
         cmd.extend(extra_args)
 
-    result = subprocess.run(
-        cmd,
-        cwd=REPO_ROOT,
-        env=child_env(),
-        check=False,
-    )
+    started = datetime.now()
+    returncode, output = run_child_captured(cmd, timeout=1200)
+    elapsed = (datetime.now() - started).total_seconds()
 
-    if result.returncode == 0:
-        print(f"[OK] {script_path.name}")
-    else:
-        print(f"[ERROR] {script_path.name} failed with code {result.returncode}")
+    with _PRINT_LOCK:
+        print(f"\n{'=' * 80}")
+        print(f"Running: {script_path.relative_to(REPO_ROOT)} (started {started:%H:%M:%S}, took {elapsed:.0f}s)")
+        print(f"{'=' * 80}")
+        print(output.rstrip())
+        if returncode == 0:
+            print(f"[OK] {script_path.name}", flush=True)
+        else:
+            print(f"[ERROR] {script_path.name} failed with code {returncode}", flush=True)
 
-    return result.returncode
+    return returncode
+
+
+def run_group(group: list[Path], scraped_at: str) -> list[tuple[str, int]]:
+    return [(script.name, run_script(script, scraped_at)) for script in group]
 
 
 def main() -> None:
@@ -250,10 +314,21 @@ def main() -> None:
 
     failures: list[tuple[str, int]] = []
 
-    for script in SCRIPTS:
-        code = run_script(script, scraped_at)
+    collect_started = datetime.now()
+    if _truthy_env("APPLE_MUSIC_PARALLEL_SCRIPTS", default=True):
+        with ThreadPoolExecutor(max_workers=len(SCRIPT_GROUPS)) as executor:
+            grouped = list(executor.map(lambda group: run_group(group, scraped_at), SCRIPT_GROUPS))
+        outcomes = [outcome for group in grouped for outcome in group]
+    else:
+        outcomes = [(script.name, run_script(script, scraped_at)) for script in SCRIPTS]
+    print(f"[Apple Music] Collectors done in {(datetime.now() - collect_started).total_seconds():.0f}s")
+
+    for name, code in outcomes:
         if code != 0:
-            failures.append((script.name, code))
+            if name in NON_BLOCKING_SCRIPTS:
+                print(f"[Apple Music] WARN: {name} failed ({code}), continuing (not part of the hourly export)")
+            else:
+                failures.append((name, code))
 
     print(f"\n{'=' * 80}")
     if failures:
@@ -265,7 +340,7 @@ def main() -> None:
         print("[Apple Music] All scripts completed successfully")
         
         # Export CSV to JSON for API/website
-        export_code = export_apple_music()
+        export_code = export_apple_music(scraped_at)
         if export_code != 0:
             print("[Apple Music] Export failed, skipping R2 upload")
             sys.exit(1)
@@ -278,23 +353,31 @@ def main() -> None:
         else:
             print("[Apple Music] Global notification skipped (--no-post)")
 
+        # Images are cosmetic (a failure must not keep the hour's data off the
+        # site) and the R2 upload never reads them: render both while uploading.
+        image_pool = ThreadPoolExecutor(max_workers=2)
+        image_jobs = {}
         if not args.no_images:
-            cards_code = generate_country_cards(scraped_at, force=args.force_images)
-            if cards_code != 0:
-                print("[Apple Music] Card image generation failed, skipping R2 upload")
-                sys.exit(1)
-
-            snapshot_code = generate_snapshot_images(scraped_at)
-            if snapshot_code != 0:
-                print("[Apple Music] Snapshot image generation failed, skipping R2 upload")
-                sys.exit(1)
+            image_jobs = {
+                "Card": image_pool.submit(generate_country_cards, scraped_at, args.force_images),
+                "Snapshot": image_pool.submit(generate_snapshot_images, scraped_at),
+            }
 
         upload_code = maybe_upload_to_r2()
+
+        for kind, job in image_jobs.items():
+            if job.result() != 0:
+                print(f"[Apple Music] {kind} image generation failed (data upload unaffected)")
+        image_pool.shutdown()
         if upload_code != 0:
+            # Main JSON / history-by-date upload first, so the hour is usually
+            # already live even when the per-song phase failed.
             print("[Apple Music] R2 upload failed")
-            sys.exit(upload_code)
         regenerate_home_highlights_cache()
+        trigger_live_projection(log=print)
         print(f"{'=' * 80}")
+        if upload_code != 0:
+            sys.exit(upload_code)
 
 
 if __name__ == "__main__":

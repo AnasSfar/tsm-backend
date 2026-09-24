@@ -91,7 +91,18 @@ def child_env() -> dict[str, str]:
     if existing:
         parts.append(existing)
     env["PYTHONPATH"] = os.pathsep.join(parts)
+    env["PYTHONUNBUFFERED"] = "1"
     return env
+
+
+def run_child(cmd: list[str], timeout: int) -> int:
+    # Same hourly .bat as Apple Music: a hung step must not make Task Scheduler
+    # (IgnoreNew) skip the next hour.
+    try:
+        return subprocess.run(cmd, cwd=REPO_ROOT, env=child_env(), check=False, timeout=timeout).returncode
+    except subprocess.TimeoutExpired:
+        print(f"[iTunes] TIMEOUT after {timeout}s, killed: {' '.join(str(c) for c in cmd[1:])}")
+        return 124
 
 
 def run_script(script_path: Path, scraped_at: str) -> int:
@@ -101,15 +112,13 @@ def run_script(script_path: Path, scraped_at: str) -> int:
 
     print(f"\n{'=' * 80}\nRunning: {script_path.relative_to(REPO_ROOT)}\n{'=' * 80}")
     chart_date = scraped_at.split("T", 1)[0]
-    result = subprocess.run(
+    returncode = run_child(
         [sys.executable, str(script_path), "--date", chart_date, "--scraped-at", scraped_at],
-        cwd=REPO_ROOT,
-        env=child_env(),
-        check=False,
+        timeout=900,
     )
-    print(f"[OK] {script_path.name}" if result.returncode == 0
-          else f"[ERROR] {script_path.name} failed with code {result.returncode}")
-    return result.returncode
+    print(f"[OK] {script_path.name}" if returncode == 0
+          else f"[ERROR] {script_path.name} failed with code {returncode}")
+    return returncode
 
 
 def _run_repo_script(rel: str) -> int:
@@ -117,9 +126,7 @@ def _run_repo_script(rel: str) -> int:
     if not script.exists():
         print(f"[iTunes] Script missing: {rel}")
         return 1
-    return subprocess.run(
-        [sys.executable, str(script)], cwd=REPO_ROOT, env=child_env(), check=False
-    ).returncode
+    return run_child([sys.executable, str(script)], timeout=900)
 
 
 def export_itunes() -> int:

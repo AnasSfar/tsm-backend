@@ -50,6 +50,7 @@ sys.path.insert(0, str(ROOT.parent))   # collectors/spotify/ for core.*
 
 from core.data_paths import first_existing_db_history, update_streams_dir
 from comp.img_fetch import fetch_data_uri
+from comp.discography import display_title_for_album
 from twitter.links import streams_latest_url
 from twitter.prefixes import DEFAULT_POST_PREFIX
 import history_store
@@ -166,6 +167,10 @@ MONOCHROME_ALBUM_ACCENTS = {
     "folklore": "#6b6b6b",
     "reputation": "#6b6b6b",
 }
+
+# ALBUM_DISPLAY_TITLE_OVERRIDES / display_title_for_album now live in
+# comp.discography (shared across every generator that renders an album/era
+# name) — see that module for the rationale. Imported above.
 
 TABLE_DARK_DEFAULT_ALBUMS = {
     "reputation",
@@ -616,16 +621,30 @@ def load_album_sections(album_name: str, target_date: str | None = None) -> list
             except Exception:
                 display_order = 9999
 
+            track_release_date = (t.get("release_date") or "").strip()
+            track_announced_flag = bool(t.get("announced")) or bool(sec.get("announced"))
+            # An "announced" flag only means "no real data expected yet" — once
+            # target_date reaches the track's own release_date, real hist rows
+            # exist and must be shown even if the DB flag was never manually
+            # cleared (see image-gen skill "Section annoncée").
+            track_announced = track_announced_flag
+            if track_announced_flag and target_date and track_release_date:
+                try:
+                    track_announced = date_cls.fromisoformat(target_date[:10]) < date_cls.fromisoformat(track_release_date[:10])
+                except ValueError:
+                    pass
+
             track_item = {
                 "track_id":     track_id,
                 "title":        (t.get("title") or t.get("title_clean") or "").strip(),
                 "title_clean":  (t.get("title_clean") or t.get("title") or "").strip(),
-                "release_date":  (t.get("release_date") or "").strip(),
+                "release_date":  track_release_date,
                 "version_tag":  (t.get("version_tag") or "").strip(),
                 "display_order": display_order,
                 "image_url":    (t.get("image_url") or "").strip(),
                 "on_album":     _as_bool(t.get("on_album")),
                 "chart_extra":  chart_extra,
+                "announced":    track_announced,
             }
             if chart_extra:
                 extra_total_tracks.append(track_item)
@@ -643,11 +662,28 @@ def load_album_sections(album_name: str, target_date: str | None = None) -> list
             for t in tracks
             if re.match(r"\d{4}-\d{2}-\d{2}", str(t.get("release_date") or ""))
         ]
+        section_release_date = min(release_dates) if release_dates else ""
+        announced_text = (sec.get("announced_text") or "").strip()
+        # The day right before release ("out this Friday" becomes stale once
+        # we're posting the eve's snapshot the morning of release day), the
+        # stored teaser copy auto-switches to "OUT NOW" instead of requiring a
+        # manually-timed DB edit.
+        if section_release_date and target_date:
+            try:
+                release_day = date_cls.fromisoformat(section_release_date)
+                target_day = date_cls.fromisoformat(target_date[:10])
+            except ValueError:
+                pass
+            else:
+                if target_day >= release_day - timedelta(days=1):
+                    announced_text = "OUT NOW"
         sections.append({
             "name": name,
             "tracks": tracks,
-            "release_date": min(release_dates) if release_dates else "",
+            "release_date": section_release_date,
             "source_order": len(sections),
+            "announced": bool(sec.get("announced")),
+            "announced_text": announced_text,
         })
 
     # Keep album update sections in release-date order; preserve DB order for ties.
@@ -658,7 +694,7 @@ def load_album_sections(album_name: str, target_date: str | None = None) -> list
     if target_date:
         sections = [
             sec for sec in sections
-            if not sec.get("release_date") or sec["release_date"] <= target_date
+            if sec.get("announced") or not sec.get("release_date") or sec["release_date"] <= target_date
         ]
 
     if is_reputation and extra_total_tracks:
@@ -759,9 +795,7 @@ def load_history_for_album(
             p = prev.get(tid)
             if not p:
                 continue
-            diff = e.get("streams", 0) - p.get("streams", 0)
-            if diff >= 0:
-                e["daily_streams"] = diff
+            e["daily_streams"] = e.get("streams", 0) - p.get("streams", 0)
 
     _fill_missing_daily(today_data, yest_data)
     _fill_missing_daily(yest_data, before_data)
@@ -790,18 +824,8 @@ def load_history_for_album(
         w = week_data.get(tid)
         daily = t.get("daily_streams")
         streams = t.get("streams")
-        if t.get("estimated_reason") == "admin_override" and daily is not None and daily < 0:
-            # Operator-forced correction for an unverified Spotify total drop
-            # (--admin, e.g. "The Best Day" 2026-09-06): the real cumulative
-            # total stays visible, but the negative delta itself must never
-            # be surfaced as this song's day in song/album/era-facing content
-            # — only in aggregates where it just sinks out of view (data-rules
-            # decision 2026-09-08). Treat as "no update today" here.
-            daily = None
         yest_d = (y or {}).get("daily_streams")
         week_d = (w or {}).get("daily_streams")
-        if (w or {}).get("estimated_reason") == "admin_override" and week_d is not None and week_d < 0:
-            week_d = None
         change = (daily - yest_d) if (daily is not None and yest_d is not None) else None
         pct = (change / yest_d * 100) if (change is not None and yest_d not in (None, 0)) else None
         weekly_change = (daily - week_d) if (daily is not None and week_d is not None) else None
@@ -1913,13 +1937,14 @@ body{width:1106px;background:var(--page-bg);color:var(--text);font-family:Inter,
 .track{padding:0 15px;text-align:center;font-size:19px}
 .daily{color:var(--daily-text)}.pos{color:#1f9d55}.neg{color:#d64545}
 .td.total-row{min-height:48px;background:var(--head-bg);color:var(--accent);font-weight:900}
+.td.total-row.total-num{color:#fff7df}
 .total-label{grid-column:1/3}
-.section-row{grid-column:1/7;min-height:34px;display:grid;grid-template-columns:470px 190px 170px 128px 138px;gap:4px;margin-top:4px}
-.section-cell{display:flex;align-items:center;justify-content:center;background:color-mix(in srgb,var(--accent) 16%,var(--head-bg));box-shadow:inset 0 0 0 2px var(--grid-line);color:var(--accent);font-size:15px;font-weight:950;text-transform:uppercase;letter-spacing:.08em}
-.section-name{justify-content:flex-start;padding-left:21px}
-.section-num{font-size:15px;letter-spacing:0;text-transform:none}
-.section-cell.pos{color:#1f9d55}
-.section-cell.neg{color:#d64545}
+.td.announced-banner{grid-column:span 4;color:var(--accent);font-weight:900;font-size:18px;letter-spacing:.05em}
+.td.section-cell{margin-top:4px;background:color-mix(in srgb,var(--accent) 16%,var(--head-bg));color:var(--accent);font-size:15px;font-weight:950;text-transform:uppercase;letter-spacing:.08em}
+.section-name{grid-column:1/3;justify-content:flex-start;padding-left:21px}
+.td.section-cell.section-num{font-size:15px;letter-spacing:0;text-transform:none;color:#fff7df}
+.td.section-cell.section-num.pos{color:#1f9d55}
+.td.section-cell.section-num.neg{color:#d64545}
 """
 
 
@@ -2258,28 +2283,39 @@ def _table_dark_theme(album_name: str, header_accent: str | None = None, variant
             "grid-line": "rgba(5,5,17,.72)",
         })
     elif key == "the life of a showgirl":
+        # Fixed magenta/crimson palette matching the "Encore" curtain header
+        # art (owner-supplied hexes, 2026-09-23) — the header photo itself is
+        # vivid/saturated with only a few dark pockets, so deriving the whole
+        # card from one auto-sampled dominant color (which skewed too dark)
+        # undersold it. bright = accent/highlights, mid = curtain midtone,
+        # deep = darkest curtain folds.
+        bright = "#df024f"
+        mid = "#960133"
+        deep = "#760125"
+        page_bg = _mix_hex(deep, "#000000", 0.62)
+        deep_bg = _mix_hex(deep, "#000000", 0.80)
         base.update({
-            "page-bg": "#2c1208",
+            "page-bg": page_bg,
             "text": "#fff7df",
-            "card-bg": "linear-gradient(180deg,#6e2b0d 0%,#2c1208 35%,#170804 100%)",
-            "hero-bg": "#6e2b0d",
+            "card-bg": f"linear-gradient(180deg,{_mix_hex(mid, '#000000', 0.25)} 0%,{page_bg} 35%,{deep_bg} 100%)",
+            "hero-bg": _mix_hex(mid, "#000000", 0.15),
             "hero-pos": "center 30%",
-            "hero-opacity": ".86",
-            "hero-filter": "saturate(.95) sepia(.12) contrast(1.07) brightness(.82)",
-            "hero-overlay": "linear-gradient(90deg,#2c1208 0%,rgba(44,18,8,.38) 18%,rgba(44,18,8,.10) 50%,rgba(44,18,8,.38) 84%,#2c1208 100%),linear-gradient(180deg,rgba(23,8,4,.02) 0%,rgba(23,8,4,.16) 55%,#2c1208 100%)",
-            "hero-text": "#ffd47b",
+            "hero-opacity": ".95",
+            "hero-filter": "saturate(1.0) contrast(1.02) brightness(.94)",
+            "hero-overlay": f"linear-gradient(180deg,rgba(0,0,0,0) 0%,rgba(0,0,0,.08) 60%,{page_bg} 100%)",
+            "hero-text": "#fff2df",
             "title-font": "Georgia,'Times New Roman',serif",
             "title-size": "44px",
             "title-spacing": "3px",
-            "title-color": "#ffd47b",
-            "title-shadow": "0 2px 0 #160704,0 9px 19px rgba(0,0,0,.76)",
-            "accent": "#f59e0b",
+            "title-color": "#fff7df",
+            "title-shadow": "0 2px 0 #0a0403,0 9px 19px rgba(0,0,0,.76)",
+            "accent": bright,
             "cell-text": "#fff7df",
             "daily-text": "#fff9ea",
-            "cell-bg": "#3a1a0d",
-            "cell-bg-alt": "#44200f",
-            "head-bg": "#130603",
-            "grid-line": "rgba(10,3,1,.72)",
+            "cell-bg": _mix_hex(deep, "#000000", 0.62),
+            "cell-bg-alt": _mix_hex(deep, "#000000", 0.52),
+            "head-bg": deep_bg,
+            "grid-line": _mix_hex(deep, "#000000", 0.82),
         })
     elif key == "the taylor swift holiday collection":
         base.update({
@@ -2388,13 +2424,18 @@ def _table_dark_section_row(section: dict, hist: dict) -> str:
     pct_text = "-" if sec_pct is None else f"{sec_pct:+.2f}%"
     state_cls = "pos" if sec_change >= 0 else "neg"
     name = html.escape(_format_section_name(section.get("name") or "Section"))
-    return f"""<div class="section-row">
-    <div class="section-cell section-name">{name}</div>
-    <div class="section-cell section-num">{fmt_comma_num(sec_streams)}</div>
-    <div class="section-cell section-num">+{fmt_comma_num(sec_daily)}</div>
-    <div class="section-cell section-num {state_cls}">{pct_text}</div>
-    <div class="section-cell section-num {state_cls}">{sec_change:+,}</div>
-  </div>"""
+    return f"""<div class="td section-cell section-name">{name}</div>
+    <div class="td section-cell section-num">{fmt_comma_num(sec_streams)}</div>
+    <div class="td section-cell section-num">+{fmt_comma_num(sec_daily)}</div>
+    <div class="td section-cell section-num {state_cls}">{pct_text}</div>
+    <div class="td section-cell section-num {state_cls}">{sec_change:+,}</div>"""
+
+
+def _table_dark_section_announced_row(section: dict) -> str:
+    name = html.escape(_format_section_name(section.get("name") or "Section"))
+    text = html.escape(section.get("announced_text") or "COMING SOON")
+    return f"""<div class="td section-cell section-name">{name}</div>
+    <div class="td section-cell announced-banner">{text}</div>"""
 
 
 def build_table_dark_html(
@@ -2406,7 +2447,9 @@ def build_table_dark_html(
     handle_icon_uri: str = "",
     header_accent: str | None = None,
     theme_variant: str = "dark",
+    display_name: str | None = None,
 ) -> str:
+    title_text = display_name if display_name is not None else album_name
     from datetime import datetime
 
     date_obj = datetime.strptime(target_date, "%Y-%m-%d")
@@ -2428,12 +2471,25 @@ def build_table_dark_html(
         tracks = section.get("tracks", [])
         if not tracks:
             continue
-        if show_sections:
-            rows.append(_table_dark_section_row(section, hist))
         if section.get("totals_only"):
+            if show_sections:
+                if section.get("announced"):
+                    rows.append(_table_dark_section_announced_row(section))
+                else:
+                    rows.append(_table_dark_section_row(section, hist))
             continue
+        announced_text = html.escape(
+            section.get("announced_text") or "COMING SOON"
+        )
         for track in tracks:
             idx += 1
+            alt_cls = " alt" if idx % 2 == 0 else ""
+            title = html.escape(_shorten_title(track.get("title") or track.get("title_clean") or ""))
+            if track.get("announced"):
+                rows.append(f"""<div class="td rank{alt_cls}">{idx}</div>
+    <div class="td track{alt_cls}">{title}</div>
+    <div class="td announced-banner{alt_cls}">{announced_text}</div>""")
+                continue
             hdata = hist.get(track["track_id"], {})
             streams = hdata.get("streams")
             daily = hdata.get("daily")
@@ -2447,14 +2503,17 @@ def build_table_dark_html(
             delta_text = "-" if change is None else f"{change:+,}"
             state_cls = "pos" if (change or 0) >= 0 else "neg"
             daily_text = "-" if daily is None else f"+{fmt_comma_num(daily)}"
-            title = html.escape(_shorten_title(track.get("title") or track.get("title_clean") or ""))
-            alt_cls = " alt" if idx % 2 == 0 else ""
             rows.append(f"""<div class="td rank{alt_cls}">{idx}</div>
     <div class="td track{alt_cls}">{title}</div>
     <div class="td total{alt_cls}">{fmt_comma_num(streams)}</div>
     <div class="td daily{alt_cls}">{daily_text}</div>
     <div class="td pct {state_cls}{alt_cls}">{pct_text}</div>
     <div class="td delta {state_cls}{alt_cls}">{delta_text}</div>""")
+        if show_sections:
+            if section.get("announced"):
+                rows.append(_table_dark_section_announced_row(section))
+            else:
+                rows.append(_table_dark_section_row(section, hist))
     total_tracks = _display_total_tracks(sections)
     total_label = "TOTAL ERA" if _has_era_context(sections) else "TOTAL"
     total_streams = sum(hist.get(track["track_id"], {}).get("streams") or 0 for track in total_tracks)
@@ -2467,11 +2526,11 @@ def build_table_dark_html(
     return f"""<!DOCTYPE html>
 <html><head><meta charset="utf-8"><style>{TABLE_DARK_CSS}</style></head><body>
 <div class="dark-card" style="{theme_vars}">
-  <div class="hero"><div class="hero-img" style="{hero_bg}"></div>{brand}<div class="hero-date">{display_date}{day_label}</div><div class="album-title">{html.escape(album_name)}</div></div>
+  <div class="hero"><div class="hero-img" style="{hero_bg}"></div>{brand}<div class="hero-date">{display_date}{day_label}</div><div class="album-title">{html.escape(title_text)}</div></div>
   <div class="table">
     <div class="th">#</div><div class="th">Track</div><div class="th">Total Streams</div><div class="th">Daily Streams</div><div class="th change-head">Change</div>
     {"".join(rows)}
-    <div class="td total-row total-label">{total_label}</div><div class="td total-row">{fmt_comma_num(total_streams)}</div><div class="td total-row">+{fmt_comma_num(total_daily)}</div><div class="td total-row {total_state_cls}">{total_pct_text}</div><div class="td total-row {total_state_cls}">{total_change:+,}</div>
+    <div class="td total-row total-label">{total_label}</div><div class="td total-row total-num">{fmt_comma_num(total_streams)}</div><div class="td total-row total-num">+{fmt_comma_num(total_daily)}</div><div class="td total-row {total_state_cls}">{total_pct_text}</div><div class="td total-row {total_state_cls}">{total_change:+,}</div>
   </div>
 </div>
 </body></html>"""
@@ -2731,6 +2790,8 @@ def generate(
     # Nouveau : icône du handle
     handle_icon_uri = _file_to_data_uri(HANDLE_ICON_PATH)
 
+    display_name = display_title_for_album(album_name)
+
     if table_dark_style:
         html = build_table_dark_html(
             album_name,
@@ -2741,10 +2802,11 @@ def generate(
             handle_icon_uri=handle_icon_uri,
             header_accent=dominant_hex,
             theme_variant="light" if table_light_style else "dark",
+            display_name=display_name,
         )
     else:
         html = build_html(
-            album_name,
+            display_name,
             sections,
             hist,
             target_date,
@@ -2887,6 +2949,7 @@ def _build_album_post_text(album_name: str, target_date: str, *, weekly_only: bo
     if not sections:
         raise ValueError(f"Aucune section trouvée pour l'album: {album_name!r}")
 
+    display_name = display_title_for_album(canonical_name)
     hist = load_history_for_album(sections, target_date)
 
     tracks = _album_total_tracks(sections)
@@ -2957,7 +3020,7 @@ def _build_album_post_text(album_name: str, target_date: str, *, weekly_only: bo
             weekly_album_pct_str = f" ({sign}{abs(album_weekly_pct):.1f}%)"
         track_metric = track_weekly_fmt or track_daily_fmt
         first_line = (
-            f'📈 | "{canonical_name}" gained {total_weekly_fmt} streams vs last week '
+            f'📈 | "{display_name}" gained {total_weekly_fmt} streams vs last week '
             f"on {date_fmt}.{weekly_album_pct_str}"
         )
         return (
@@ -2972,7 +3035,7 @@ def _build_album_post_text(album_name: str, target_date: str, *, weekly_only: bo
         and "tortured poets" in canonical_name.lower()
     )
     if is_ttpd_anniversary:
-        first_line = f'📈| "{canonical_name}" received {total_daily_fmt} streams on its second anniversary, April 19th 2026.{album_pct_str}'
+        first_line = f'📈| "{display_name}" received {total_daily_fmt} streams on its second anniversary, April 19th 2026.{album_pct_str}'
     else:
         when = f"on {date_fmt}"
         best_day_row = _era_best_day_row(canonical_name, sections, target_date)
@@ -2983,10 +3046,10 @@ def _build_album_post_text(album_name: str, target_date: str, *, weekly_only: bo
             if era_pct is not None:
                 sign = "+" if era_pct >= 0 else "-"
                 album_pct_str = f" ({sign}{abs(era_pct):.1f}%)"
-            subject = f'The "{canonical_name}" era'
+            subject = f'The "{display_name}" era'
         else:
             best_day_row = _album_best_day_row(album_name, canonical_name, target_date)
-            subject = f'"{canonical_name}"'
+            subject = f'"{display_name}"'
         if best_day_row:
             verb = (
                 "has once again earned"
@@ -2999,7 +3062,7 @@ def _build_album_post_text(album_name: str, target_date: str, *, weekly_only: bo
                 f'{total_daily_fmt} streams {when}.{album_pct_str}'
             )
         else:
-            first_line = f'📈| "{canonical_name}" received {total_daily_fmt} streams {when}.{album_pct_str}'
+            first_line = f'📈| "{display_name}" received {total_daily_fmt} streams {when}.{album_pct_str}'
 
     return (
         f"{first_line}\n\n"

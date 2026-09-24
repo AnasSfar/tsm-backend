@@ -72,6 +72,10 @@ def clean_str(value: Any) -> str:
     return "" if value is None else str(value).strip()
 
 
+def run_scraped_at() -> str:
+    return clean_str(os.getenv("APPLE_MUSIC_RUN_SCRAPED_AT"))
+
+
 def normalize_date(row: dict[str, Any]) -> str:
     # Prefer scraped_at (datetime) so multiple daily snapshots are preserved
     for key in ("scraped_at", "date", "chart_date", "day"):
@@ -671,6 +675,26 @@ def main() -> None:
     genre_album_current, genre_album_history, _ = build_genre_albums(genre_album_rows)
     genre_current, genre_history, _ = build_genre(genre_rows)
 
+    run_timestamp = run_scraped_at()
+    if run_timestamp:
+        all_dates_set.add(run_timestamp)
+
+    # A cycle where every chart type is unchanged writes no CSV row at all (see
+    # window_rows above), so its own scraped_at only ever enters all_dates_set
+    # during THAT run (via run_timestamp, right above). Without carrying the
+    # previous export's "dates" forward, the next run recomputes purely from
+    # CSV + its own timestamp and silently drops that hour forever, even though
+    # its mirrored per-hour snapshot already made it to R2 (upload_ap_r2.py
+    # never deletes stale objects). Under the old 2h cadence this was rare
+    # enough (1-3 slots/day) to read as noise; hourly makes multi-hour
+    # all-unchanged streaks (e.g. overnight) common, producing a visible block
+    # of missing hours in the site's hour picker. Fixed 2026-09-24.
+    # Today only: past days are collapsed by window_rows(), so a carried past
+    # hour would have no data of its own and would never age out.
+    for prev_date in prev_data.get("dates") or []:
+        if isinstance(prev_date, str) and prev_date[:10] == today_day:
+            all_dates_set.add(prev_date)
+
     all_dates = sorted(all_dates_set)
     latest_any = all_dates[-1] if all_dates else None
 
@@ -705,10 +729,26 @@ def main() -> None:
         "genre_charts": genre_current,
     }
 
-    history_dates = sorted(
-        set(global_history) | set(top_history) | set(top_video_history) | set(country_history)
+    history_dates_set = set(global_history) | set(top_history) | set(top_video_history) | set(country_history) \
         | set(country_album_history) | set(genre_album_history) | set(genre_history)
-    )
+    # Same all-unchanged-hour gap as all_dates_set above: an hour with zero
+    # changed rows across every chart type never gets a key in these history
+    # dicts, so write_history_by_date() below would never emit/list a
+    # split-by-date file for it either, permanently hiding it from the site
+    # (this is the list get_apple_music() actually trusts over applemusic.json's
+    # own "dates"). Carry the previous export's history "dates" forward so the
+    # hour stays listed; history_value_for_day() already falls back to the
+    # nearest earlier same-day key when the exact hour has no row, so the
+    # rebuilt split file just repeats the last real snapshot (same behavior a
+    # human would expect from "nothing changed this hour"). Fixed 2026-09-24.
+    prev_history_data = _load_prev_snapshot(first_existing(OUT_HISTORY, LEGACY_WEBSITE_DATA_DIR / "applemusic_history.json"))
+    # Today only (same reason as all_dates_set): a carried past-day hour would
+    # resolve to that day's LAST snapshot under an earlier label, and would
+    # never leave the index even after HISTORY_CUTOFF.
+    for prev_date in prev_history_data.get("dates") or []:
+        if isinstance(prev_date, str) and prev_date[:10] == today_day:
+            history_dates_set.add(prev_date)
+    history_dates = sorted(history_dates_set)
     applemusic_history = {
         "dates": history_dates,
         "global": global_history,

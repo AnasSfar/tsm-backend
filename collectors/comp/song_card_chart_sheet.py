@@ -25,11 +25,13 @@ from playwright.sync_api import sync_playwright
 
 try:
     from .song_card import image_data_uri, slugify, _tsm_logo_data_uri
+    from .discography import display_title_for_album
 except ImportError:
     import sys
 
     sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
     from comp.song_card import image_data_uri, slugify, _tsm_logo_data_uri  # type: ignore
+    from comp.discography import display_title_for_album  # type: ignore
 
 __all__ = [
     "render_chart_sheet_card",
@@ -195,7 +197,7 @@ body{{font-family:Inter,-apple-system,'Helvetica Neue',Arial,sans-serif}}
       <div class="sc-thumb"></div>
       <div class="sc-hdr-text">
         <div class="sc-title">{html.escape(title)}</div>
-        <div class="sc-subtitle">{html.escape(album)}</div>
+        <div class="sc-subtitle">{html.escape(display_title_for_album(album))}</div>
       </div>
       <div class="sc-date">{html.escape(date_text)}</div>
     </div>

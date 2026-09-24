@@ -35,6 +35,7 @@ from core.config import (
 from core.csv_utils import load_previous_ranks, rewrite_for_snapshot
 from core.export import maybe_run_export
 from core.http import build_session
+from core.lookup import resolve_explicitness
 from core.rss import ITunesFeedError, fetch_storefront
 from core.storefronts import resolve_storefronts
 
@@ -61,6 +62,7 @@ SONG_FIELDNAMES = [
     "album_name",
     "genre_names",
     "release_date",
+    "explicitness",
 ]
 ALBUM_FIELDNAMES = [
     "date",
@@ -120,6 +122,7 @@ def build_song_row(*, today, scraped_at, country, song, previous_by_id, previous
         "album_name": song["album_name"],
         "genre_names": song["genre_names"],
         "release_date": song["release_date"],
+        "explicitness": "",
     }
 
 
@@ -266,6 +269,21 @@ def main() -> None:
                     previous_by_name=previous["albums_by_name"],
                 )
             )
+
+    # Same song can chart under two distinct apple_music_id (e.g. a track sold
+    # as both an "explicit" and a "cleaned" album edition) while sharing the
+    # same displayed song/album name — resolve which is which with a single
+    # batched Lookup API call, only for the ids that are actually ambiguous.
+    dup_key_ids: dict[tuple[str, str, str], set[str]] = {}
+    for row in song_rows:
+        key = (row["country"], rank_key(row["song_name"]), row["album_name"])
+        dup_key_ids.setdefault(key, set()).add(row["apple_music_id"])
+    dup_ids = {i for ids in dup_key_ids.values() if len(ids) > 1 for i in ids}
+    if dup_ids:
+        print(f"[iTunes] Resolving explicit/clean edition for {len(dup_ids)} ambiguous id(s)")
+        explicitness_by_id = resolve_explicitness(worker_session(), dup_ids)
+        for row in song_rows:
+            row["explicitness"] = explicitness_by_id.get(row["apple_music_id"], "")
 
     day = scraped_at[:10]
     rewrite_for_snapshot(SONGS_CSV, SONG_FIELDNAMES, scraped_at, song_rows)

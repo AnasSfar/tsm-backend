@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import os
 import re
 from datetime import datetime, timezone
 from threading import Lock
@@ -53,7 +54,15 @@ def _save_cached_token(token: str) -> None:
         "updated_at": datetime.now(timezone.utc).isoformat(),
     }
     TOKEN_CACHE_PATH.parent.mkdir(parents=True, exist_ok=True)
-    TOKEN_CACHE_PATH.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
+    # Atomic: collectors now run as parallel processes sharing this cache, a
+    # reader must never see a half-written file.
+    tmp_path = TOKEN_CACHE_PATH.with_name(f"{TOKEN_CACHE_PATH.name}.{os.getpid()}.tmp")
+    tmp_path.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
+    try:
+        os.replace(tmp_path, TOKEN_CACHE_PATH)
+    except OSError:
+        # Windows: another process holds the target open; its token is as good.
+        tmp_path.unlink(missing_ok=True)
 
 
 

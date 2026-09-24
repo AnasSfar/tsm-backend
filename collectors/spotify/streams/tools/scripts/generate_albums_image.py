@@ -39,7 +39,7 @@ sys.path.insert(0, str(ROOT.parent.parent))  # collectors/ for comp.*
 
 from core.data_paths import first_existing_db_history, update_streams_dir  # noqa: E402
 from comp.fmt import fmt_num, fmt_delta, fmt_signed  # noqa: E402
-from comp.discography import build_cover_map  # noqa: E402
+from comp.discography import build_cover_map, display_title_for_album  # noqa: E402
 from comp.tables_image import (  # noqa: E402
     download_as_data_uri, pick_header_image, get_dominant_color,
     rank_change, SPOTIFY_SVG, build_table_html, era_accent_color, dominant_color_from_data_uri,
@@ -338,9 +338,7 @@ def load_history(target_date: str) -> tuple[dict, dict, dict]:
             p = prev.get(tid)
             if not p:
                 continue
-            diff = e.get("streams", 0) - p.get("streams", 0)
-            if diff >= 0:
-                e["daily_streams"] = diff
+            e["daily_streams"] = e.get("streams", 0) - p.get("streams", 0)
 
     _fill_missing_daily(today, yest)
     _fill_missing_daily(yest, before)
@@ -400,8 +398,12 @@ def build_album_rows(
             daily = int(value)
         except (TypeError, ValueError):
             return None
-        if daily < 0:
-            return None
+        # A negative daily here is a real (if unusual) `--admin` write -- the
+        # operator already accepted Spotify's raw total as ground truth (cf.
+        # skill spotify-streams, "daily negatif admin_override"). Owner
+        # decision 2026-09-23: show the actual number, including negative,
+        # rather than dropping it and poisoning the whole era's comparison
+        # to "-" (this used to also mislabel the era as "NEW").
         return daily
 
     def _add_comparison_daily(bucket: dict, key: str, row: dict | None, required: bool) -> None:
@@ -613,6 +615,7 @@ def build_rows_html(rows: list[dict], image_cache: dict[str, str], total_row: di
     for i, row in enumerate(render_rows):
         rank = row.get("rank")
         album = row["album"]
+        best_day_label = best_day_labels.get(album)
         daily = row["daily_streams"]
         total = row["streams"]
         yest  = row["yest_daily"]
@@ -637,14 +640,23 @@ def build_rows_html(rows: list[dict], image_cache: dict[str, str], total_row: di
         delta_num, delta_pct, delta_cls = fmt_delta(daily, yest)
         week_num, week_pct, week_cls = fmt_delta(daily, week)
         rank_label = f"{rank}" if rank else ""
-        chg_text, chg_css = rank_change(rank, row.get("prev_rank")) if rank else ("", "neutral")
+        if rank and row.get("prev_rank") is None and row.get("yest_daily") is None:
+            # yest_daily explicitly None means one of this era's tracks had
+            # an unusable (e.g. negative admin_override) daily yesterday,
+            # poisoning the whole aggregate -- not a genuine new entry. Show
+            # the same "no comparison available" dash as the Delta Day cell
+            # instead of a misleading "NEW".
+            chg_text, chg_css = "&ndash;", "chg-eq"
+        else:
+            chg_text, chg_css = rank_change(rank, row.get("prev_rank")) if rank else ("", "neutral")
         daily_signed, _ = fmt_signed(daily)
 
         rank_color = era_accent_color(album) or dominant_color_from_data_uri(cover_uri)
         rank_style = f' style="color:{rank_color}"' if rank_color else ""
 
+        display_album = display_title_for_album(album)
         row_cls = "ledger-row ledger-row-total" if row.get("is_total") else "ledger-row"
-        name_html = album if row.get("is_total") else ledger_name_with_best_day(album, best_day_labels.get(album))
+        name_html = display_album if row.get("is_total") else ledger_name_with_best_day(display_album, best_day_label)
         html += f"""<div class="{row_cls}">
   <div class="ledger-rank"{rank_style}>{rank_label}</div>
   <div class="ledger-chg {chg_css}">{chg_text}</div>

@@ -82,6 +82,7 @@ sys.path.insert(0, str(ROOT.parent))                  # collectors/spotify/
 from comp.song_card_chart_sheet import format_change_html, render_chart_sheet_card, slugify, write_chart_sheet_card_png  # noqa: E402
 from comp.tables_image import build_table_html, masthead_theme_for_date, render_html_to_png, url_to_data_uri  # noqa: E402
 from comp.fmt import fmt_streams, fmt_pct, pct_cls, get_pct  # noqa: E402
+from comp.discography import display_title_for_album  # noqa: E402
 from core.twitter import post_image_thread, post_with_image  # noqa: E402
 from core.data_paths import update_streams_dir  # noqa: E402
 from core.notify import send as notify  # noqa: E402
@@ -497,7 +498,7 @@ def _post_one_era_recap(
         covers=covers,
         era_display=era_display,
     )
-    tweet = best_day_since_era_recap_tweet(era=era_display, count=len(rows), stats_date=target_date)
+    tweet = best_day_since_era_recap_tweet(era=display_title_for_album(era_display), count=len(rows), stats_date=target_date)
     print(f"[best_day_since_era_recap] {era_display}: {len(rows)} song(s), {len(image_paths)} image(s).")
     print(f"[best_day_since_era_recap] Tweet ({len(tweet)} chars):\n{tweet}")
     for image_path in image_paths:
@@ -1051,7 +1052,7 @@ def _recap_row_html(index: int, row: dict, track: dict, cover_url: str, daily: i
     row_class = "data-row row-gold" if index == 1 else ("data-row row-odd" if index % 2 else "data-row")
     since_txt = best_day_since.format_long_date(row["best_day_since"])
     title = html.escape(track.get("title") or row["title"])
-    subtitle = html.escape(track.get("album") or row.get("album") or "")
+    subtitle = html.escape(display_title_for_album(track.get("album") or row.get("album") or ""))
     return f"""<div class="{row_class}">
   <div class="col-rank">#{index}</div>
   <div class="col-entity">
@@ -1149,7 +1150,7 @@ def _generate_recap_image(
             if _album_key((tracks_by_id.get(row["track_id"]) or {}).get("album") or row.get("album"))
             == _album_key(era_display)
         )
-        title = f"{era_display} - Best Day Recap"
+        title = f"{display_title_for_album(era_display)} - Best Day Recap"
         subtitle = f"{themed_count} songs from the era hit a best-day-since record - {date_text}"
         # The per-era recap is an era-themed card: force the dark masthead every
         # day (not the weekday light/dark rule) so the era's header photo reads
@@ -1263,7 +1264,7 @@ def build_recap_thread_posts(
             covers=covers,
             era_display=era_display,
         )
-        tweet = best_day_since_era_recap_tweet(era=era_display, count=len(rows), stats_date=target_date)
+        tweet = best_day_since_era_recap_tweet(era=display_title_for_album(era_display), count=len(rows), stats_date=target_date)
         posts.append((tweet, image_paths))
         era_groups.append(group)
 

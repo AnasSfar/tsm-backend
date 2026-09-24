@@ -16,6 +16,23 @@ def _norm(s: str) -> str:
     return re.sub(r"[^a-z0-9]+", "_", (s or "").lower()).strip("_")
 
 
+# Rendered-text-only override: any image/tweet that displays an album/era name
+# shows this instead of the catalog album name, without touching any
+# matching/lookup key (headers folder, cover lookup, best-day-since index,
+# slug/lock paths, ERA_MAP keys all keep using the real catalog name).
+# Decision 2026-09-23: post as "The Life of a Showgirl: The Encore" starting
+# immediately, ahead of the actual deluxe release (2026-09-25) — see memory
+# showgirl-encore-deluxe-release. Extended 2026-09-23 to every album-name
+# display surface (Top Eras / Top Albums image), not just the daily album card.
+ALBUM_DISPLAY_TITLE_OVERRIDES = {
+    "the life of a showgirl": "The Life of a Showgirl: The Encore",
+}
+
+
+def display_title_for_album(name: str) -> str:
+    return ALBUM_DISPLAY_TITLE_OVERRIDES.get((name or "").strip().casefold(), name)
+
+
 def _title_lookup_keys(title: str) -> list[str]:
     """Normalized keys for chart titles that may include source subtitles."""
     keys: list[str] = []

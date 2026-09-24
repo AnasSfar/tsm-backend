@@ -59,7 +59,12 @@ RETRY_BACKOFF = _float_from_env("APPLE_MUSIC_RETRY_BACKOFF", 1.0)
 RETRY_STATUS_FORCELIST = (429, 500, 502, 503, 504)
 TOKEN_CACHE_PATH = TOOLS_JSON_DIR / "apple_music_token.json"
 CHART_LIMIT = _int_from_env("APPLE_MUSIC_CHART_LIMIT", 200)
-WORKERS = max(1, _int_from_env("APPLE_MUSIC_WORKERS", 12))
+# 2026-09-24 benchmark (read-only, genre charts): no 429 at 12/32/64 workers;
+# throughput plateaus ~44 req/s from 32 (12 -> ~24 req/s), 64 only adds latency.
+WORKERS = max(1, _int_from_env("APPLE_MUSIC_WORKERS", 32))
+# Failed storefronts/pairs are retried this many extra rounds before being
+# counted as skipped (a DNS/network blip must not cost a storefront).
+FAILURE_RETRY_ROUNDS = max(0, _int_from_env("APPLE_MUSIC_FAILURE_RETRY_ROUNDS", 2))
 
 HEADERS = {
     "User-Agent": (

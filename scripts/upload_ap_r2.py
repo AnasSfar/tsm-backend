@@ -2,8 +2,11 @@
 from __future__ import annotations
 
 import argparse
+import functools
 import csv
+import gzip
 import hashlib
+import io
 import json
 import os
 import re
@@ -16,6 +19,7 @@ from typing import Any
 
 import boto3
 from botocore.client import BaseClient
+from botocore.config import Config
 from dotenv import load_dotenv
 
 
@@ -61,6 +65,11 @@ def get_env(name: str) -> str:
     return value
 
 
+# Parallel R2 requests per phase (was 4-8). R2 has no practical per-client
+# request cap at this volume; most per-song objects are a HEAD + skip.
+R2_WORKERS = max(1, int(os.getenv("APPLE_MUSIC_R2_WORKERS", "24")))
+
+
 def get_r2_client() -> BaseClient:
     account_id = get_env("R2_ACCOUNT_ID")
     access_key_id = get_env("R2_ACCESS_KEY_ID")
@@ -68,12 +77,21 @@ def get_r2_client() -> BaseClient:
 
     endpoint_url = f"https://{account_id}.r2.cloudflarestorage.com"
 
+    # Without socket timeouts a stalled R2 connection blocks put_object forever
+    # (2026-09-24 11h: all 8 workers stuck in ssl.sendall, cycle never ended and
+    # IgnoreNew would have skipped the next hourly trigger).
     return boto3.client(
         "s3",
         endpoint_url=endpoint_url,
         aws_access_key_id=access_key_id,
         aws_secret_access_key=secret_access_key,
         region_name="auto",
+        config=Config(
+            connect_timeout=10,
+            read_timeout=60,
+            retries={"max_attempts": 3, "mode": "standard"},
+            max_pool_connections=R2_WORKERS + 8,
+        ),
     )
 
 
@@ -81,6 +99,9 @@ def get_bucket_name() -> str:
     return os.getenv("R2_BUCKET", "taylor-data").strip() or "taylor-data"
 
 
+# Pure string functions called ~2.3M times per run on a few thousand distinct
+# titles: memoized (was ~19s of the per-song build).
+@functools.lru_cache(maxsize=None)
 def normalize_text(value: str) -> str:
     if not value:
         return ""
@@ -92,6 +113,7 @@ def normalize_text(value: str) -> str:
     return value
 
 
+@functools.lru_cache(maxsize=None)
 def slugify(value: str) -> str:
     value = normalize_text(value)
     value = re.sub(r"[^a-z0-9]+", "_", value)
@@ -161,8 +183,11 @@ def upload_json_if_changed(
     *,
     dry_run: bool,
     retries: int = 3,
+    compress: bool = False,
 ) -> bool:
     body = json.dumps(payload, ensure_ascii=False, separators=(",", ":")).encode("utf-8")
+    # Hash of the uncompressed JSON either way, so switching an object to gzip
+    # doesn't force a re-upload and r2.py (same serialization) still matches.
     local_hash = hashlib.sha256(body).hexdigest()
 
     if object_has_same_body_hash(client, bucket, key, body):
@@ -172,15 +197,26 @@ def upload_json_if_changed(
         print(f"[dry-run][upload] {key}")
         return True
 
+    extra: dict[str, str] = {}
+    if compress:
+        # ~10x smaller. Readers: tsm-frontend api/data/loader.py::_r2_json
+        # gunzips on the magic bytes; public/CDN fetches honor Content-Encoding.
+        body = gzip.compress(body, compresslevel=6, mtime=0)
+        extra["ContentEncoding"] = "gzip"
+
     for attempt in range(1, retries + 1):
         try:
             client.put_object(
                 Bucket=bucket,
                 Key=key,
-                Body=body,
+                # A file-like body is sent in 16 KB chunks, so the socket timeout
+                # applies per chunk: a stall aborts fast, a big file still fits.
+                # (Raw bytes go out in one sendall bounded by the 10s timeout.)
+                Body=io.BytesIO(body),
                 ContentType="application/json; charset=utf-8",
                 CacheControl=NO_CACHE_CONTROL,
                 Metadata={"sha256": local_hash},
+                **extra,
             )
             break
         except Exception:
@@ -260,9 +296,56 @@ def sort_points(points: list[dict[str, str]]) -> list[dict[str, str]]:
     return sorted(points, key=key)
 
 
+# Only read by tsm-frontend api/routes/apple_music.py::_song_history_rows_from_r2
+# from the most recent point carrying an image_url; every other point only
+# needs its date/rank/previous_rank/country/genre.
+_POINT_META_FIELDS = ("image_url", "url", "apple_music_id", "album_name", "song_name", "storefront_ranks")
+
+
+def _point_date_key(point: dict[str, Any]) -> str:
+    # Same key the API uses to pick the metadata point.
+    return str(point.get("scraped_at") or point.get("date") or "").strip()
+
+
+def _dedupe_points(points: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    # read_csv() unions db/, _archive/ and every daily CSV, so the same row can
+    # appear 2-3 times (27% of Global points) and showed up as repeated hits.
+    seen: set[Any] = set()
+    unique: list[dict[str, Any]] = []
+    for point in points:
+        # Same identity as a sorted-keys JSON dump, without serializing every
+        # point (was ~30s/run); JSON only for points holding parsed dict/list.
+        fingerprint: Any = tuple(sorted(point.items()))
+        try:
+            hash(fingerprint)
+        except TypeError:
+            fingerprint = json.dumps(point, sort_keys=True, ensure_ascii=False)
+        if fingerprint in seen:
+            continue
+        seen.add(fingerprint)
+        unique.append(point)
+    return unique
+
+
+def _slim_points(points: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    # Keep metadata only on the points the API can pick it from (latest date
+    # key with an image_url, all ties kept so its first-match choice is
+    # unchanged); strip it everywhere else (~60% of each object).
+    meta_key = max(
+        (_point_date_key(p) for p in points if p.get("image_url") and _point_date_key(p)),
+        default=None,
+    )
+    for point in points:
+        if meta_key is not None and point.get("image_url") and _point_date_key(point) == meta_key:
+            continue
+        for field in _POINT_META_FIELDS:
+            point.pop(field, None)
+    return points
+
+
 def finalize_payload(payload: dict[str, Any]) -> dict[str, Any]:
     for source_name, points in payload["sources"].items():
-        payload["sources"][source_name] = sort_points(points)
+        payload["sources"][source_name] = _slim_points(sort_points(_dedupe_points(points)))
     return payload
 
 
@@ -330,7 +413,12 @@ def upload_main_json_files(client: BaseClient, bucket: str, dry_run: bool) -> in
         if not local_path.exists():
             return r2_key, None
         payload = json.loads(local_path.read_text(encoding="utf-8-sig"))
-        changed = upload_json_if_changed(client, bucket, r2_key, payload, dry_run=dry_run)
+        # applemusic_history.json is ~125 MB raw: gzip it (API fallback reader
+        # handles both). applemusic.json stays plain.
+        changed = upload_json_if_changed(
+            client, bucket, r2_key, payload, dry_run=dry_run,
+            compress=r2_key.endswith("applemusic_history.json"),
+        )
         return r2_key, changed
 
     uploaded = 0
@@ -370,7 +458,7 @@ def upload_daily_csvs(client: BaseClient, bucket: str, dry_run: bool) -> int:
                 client.put_object(
                     Bucket=bucket,
                     Key=key,
-                    Body=body,
+                    Body=io.BytesIO(body),
                     ContentType="text/csv; charset=utf-8",
                     CacheControl=NO_CACHE_CONTROL,
                     Metadata={"sha256": local_hash},
@@ -385,20 +473,40 @@ def upload_daily_csvs(client: BaseClient, bucket: str, dry_run: bool) -> int:
     return uploaded
 
 
-def _snapshot_payload(history: dict[str, Any], snapshot_key: str) -> dict[str, Any]:
-    return {
-        "date": snapshot_key,
-        "scraped_at": snapshot_key,
-        "global_chart": (history.get("global") or {}).get(snapshot_key, []),
-        "global_album_chart": (history.get("global_albums") or {}).get(snapshot_key, []),
-        "ts_top_songs": (history.get("top_songs") or {}).get(snapshot_key, []),
-        "top_videos": (history.get("top_videos") or {}).get(snapshot_key, []),
-        "country_charts": (history.get("country") or {}).get(snapshot_key, {}),
-        "country_album_charts": (history.get("country_albums") or {}).get(snapshot_key, {}),
-        "genre_charts": (history.get("genre") or {}).get(snapshot_key, {}),
-        "genre_album_charts": (history.get("genre_albums") or {}).get(snapshot_key, {}),
-        "music_video_charts": {},
-    }
+def _bucket_value_at(history: dict[str, Any], bucket: str, snapshot_key: str, default: Any) -> tuple[Any, bool]:
+    # An unchanged chart writes no CSV row for its hour, so the exact key is often
+    # missing: use the latest same-day snapshot at or before it (never a later one).
+    source = history.get(bucket) or {}
+    if not isinstance(source, dict):
+        return default, False
+    if snapshot_key in source:
+        return source[snapshot_key], True
+    day = snapshot_key[:10]
+    earlier = [k for k in source if isinstance(k, str) and k[:10] == day and k <= snapshot_key]
+    if not earlier:
+        return default, False
+    return source[max(earlier)], True
+
+
+def _snapshot_payload(history: dict[str, Any], snapshot_key: str) -> dict[str, Any] | None:
+    fields = (
+        ("global_chart", "global", []),
+        ("global_album_chart", "global_albums", []),
+        ("ts_top_songs", "top_songs", []),
+        ("top_videos", "top_videos", []),
+        ("country_charts", "country", {}),
+        ("country_album_charts", "country_albums", {}),
+        ("genre_charts", "genre", {}),
+        ("genre_album_charts", "genre_albums", {}),
+    )
+    payload: dict[str, Any] = {"date": snapshot_key, "scraped_at": snapshot_key}
+    found_any = False
+    for field, bucket, default in fields:
+        value, found = _bucket_value_at(history, bucket, snapshot_key, default)
+        payload[field] = value
+        found_any = found_any or found
+    payload["music_video_charts"] = {}
+    return payload if found_any else None
 
 
 def upload_snapshot_jsons(client: BaseClient, bucket: str, dry_run: bool) -> int:
@@ -415,14 +523,21 @@ def upload_snapshot_jsons(client: BaseClient, bucket: str, dry_run: bool) -> int
 
     uploaded = 0
     unchanged = 0
+    current_day = max(dates)[:10]
 
     def _upload(snapshot_key: str) -> tuple[str, bool]:
-        payload = _snapshot_payload(history, snapshot_key)
         r2_key = f"{SNAPSHOT_R2_PREFIX}/{snapshot_key}.json"
+        # Past days are collapsed to one snapshot per chart in the export, so
+        # rebuilding them now would be poorer than what was uploaded that day.
+        if snapshot_key[:10] != current_day and head_object_safe(client, bucket, r2_key):
+            return r2_key, False
+        payload = _snapshot_payload(history, snapshot_key)
+        if payload is None:
+            return r2_key, False
         changed = upload_json_if_changed(client, bucket, r2_key, payload, dry_run=dry_run)
         return r2_key, changed
 
-    with ThreadPoolExecutor(max_workers=4) as pool:
+    with ThreadPoolExecutor(max_workers=R2_WORKERS) as pool:
         for r2_key, changed in pool.map(_upload, dates):
             if changed:
                 print(f"[uploaded] {r2_key}")
@@ -454,7 +569,7 @@ def upload_history_by_date_jsons(client: BaseClient, bucket: str, dry_run: bool)
         changed = upload_json_if_changed(client, bucket, r2_key, payload, dry_run=dry_run)
         return r2_key, changed
 
-    with ThreadPoolExecutor(max_workers=4) as pool:
+    with ThreadPoolExecutor(max_workers=R2_WORKERS) as pool:
         for r2_key, changed in pool.map(_upload, files):
             if changed:
                 print(f"[uploaded] {r2_key}")
@@ -473,6 +588,12 @@ def main() -> None:
     client = get_r2_client()
     bucket = args.bucket
 
+    # The per-song build (~30s parsing ~2.3M CSV rows) doesn't depend on the
+    # phases below, which mostly wait on R2: build it alongside them. Upload
+    # order is unchanged (critical files still go first).
+    history_builder = ThreadPoolExecutor(max_workers=1)
+    history_future = history_builder.submit(build_history_objects)
+
     # Upload main JSON files first (what the API reads)
     print("\n=== Uploading main Apple Music JSON files ===")
     upload_main_json_files(client, bucket, args.dry_run)
@@ -489,7 +610,8 @@ def main() -> None:
 
     # Upload per-song history objects
     print("\n=== Uploading per-song history objects ===")
-    objects = build_history_objects()
+    objects = history_future.result()
+    history_builder.shutdown()
 
     if not objects:
         print("[error] no Apple Music history data found")
@@ -503,13 +625,13 @@ def main() -> None:
     def _upload_one(args_tuple: tuple) -> tuple:
         c, b, payload, dry_run, prefix = args_tuple
         r2_key = object_key(payload, prefix)
-        changed = upload_json_if_changed(c, b, r2_key, payload, dry_run=dry_run)
+        changed = upload_json_if_changed(c, b, r2_key, payload, dry_run=dry_run, compress=True)
         return r2_key, changed
 
     uploaded = 0
     unchanged = 0
 
-    with ThreadPoolExecutor(max_workers=8) as pool:
+    with ThreadPoolExecutor(max_workers=R2_WORKERS) as pool:
         for r2_key, changed in pool.map(_upload_one, tasks):
             if changed:
                 print(f"[uploaded] {r2_key}")

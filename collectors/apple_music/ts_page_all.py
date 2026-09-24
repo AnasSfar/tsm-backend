@@ -38,7 +38,7 @@ from requests import RequestException
 from core.config import ARTIST_ID, DB_DIR, WORKERS
 from core.csv_utils import load_previous_ranks, read_csv_rows, rewrite_for_snapshot
 from core.filters import build_artwork_url, clean_text, rank_key
-from core.http import build_session
+from core.http import build_session, retry_failed
 from core.storefronts import resolve_storefronts
 from core.token import TokenManager, build_auth_headers
 
@@ -314,6 +314,16 @@ def main() -> None:
                     continue
                 results[storefront] = songs
                 print(f"{storefront}: {len(songs)} song(s)")
+
+    if failures:
+        recovered, failures = retry_failed(
+            [storefront for storefront, _error in failures],
+            lambda storefront: fetch_storefront_top_songs(worker_session(), manager, storefront),
+            label="[Apple Music TS Global]",
+        )
+        for storefront, songs in recovered.items():
+            results[storefront] = songs
+            print(f"{storefront}: {len(songs)} song(s) (after retry)")
 
     if failures:
         for storefront, error in failures:

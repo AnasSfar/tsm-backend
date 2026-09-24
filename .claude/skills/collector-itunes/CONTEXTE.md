@@ -108,9 +108,29 @@ CSV (idempotents par `scraped_at`, chemin réel
 
 - `itunes_top_songs.csv` — colonnes : `date, scraped_at, country, chart_type
   (itunes_country), song_name, apple_music_id, rank, previous_rank,
-  image_url, url, artist_name, album_name, genre_names, release_date`
-- `itunes_top_albums.csv` — idem sans `album_name`, `chart_type =
-  itunes_country_albums`
+  image_url, url, artist_name, album_name, genre_names, release_date,
+  explicitness`
+- `itunes_top_albums.csv` — idem sans `album_name`/`explicitness`, `chart_type
+  = itunes_country_albums`
+
+### Doublons explicit/clean (2026-09-24)
+
+Un même titre peut apparaître deux fois dans un même pays avec le **même**
+`album_name` mais un `apple_music_id` différent : Apple vend l'album en
+édition "explicit" et "cleaned" séparément (deux fiches catalogue distinctes),
+et le flux RSS ne porte **aucun** flag explicit/clean (`im:explicit` absent du
+feed topsongs — vérifié en direct). Ce n'est pas un bug de collecte, c'est
+fidèle au chart réel.
+
+`charts.py::main()` détecte ces doublons après collecte (même
+`(country, song_name normalisé, album_name)`, id différent) et résout
+`collectionExplicitness` en un **seul appel groupé** (`core/lookup.py::
+resolve_explicitness`, iTunes Lookup API `/lookup?id=...`) — jamais un appel
+par entrée : coûteux en throttle sinon, et l'ambiguïté est rare. Résultat
+écrit dans la colonne `explicitness` (`explicit` / `clean` / vide si non
+ambigu ou non résolu). Le frontend (`ITunes.jsx`) groupe les "éditions" par
+`(album_name, explicitness)` au lieu de `album_name` seul, pour ne pas fusionner
+à tort ces deux entrées, et affiche un badge "E" sur l'édition explicite.
 
 `previous_rank` : dernier snapshot d'un **jour antérieur** (jamais un rerun
 du même jour), via `core/csv_utils.load_previous_ranks` (copie de la version
@@ -154,8 +174,15 @@ mirrorés `tsm-frontend/api/data/r2_keys.py`) :
 ## Scheduler
 
 **Pas de tâche dédiée.** `collectors/apple_music/run_apple_music.bat` (tâche
-`TSM Apple Music Every 4 Hours`, repeat 2 h) lance `run_itunes.py` **juste
-après** `run_apple_music.py`, dans le même `.bat` :
+`TSM Apple Music Every 4 Hours`, repeat **1 h depuis le 2026-09-24**, avant ça
+2 h) lance `run_itunes.py` **juste après** `run_apple_music.py`, dans le même
+`.bat` :
+
+**`ITUNES_SNAPSHOT_HOURS` défaut code = heures paires seulement** — comme pour
+Apple Music, le passage à une cadence horaire du Planificateur ne suffisait
+pas seul (les runs impairs auraient juste ré-arrondi au créneau pair
+précédent). Fix 2026-09-24 : `.env` fixe
+`ITUNES_SNAPSHOT_HOURS=0,1,...,23`.
 
 - séquentiel après Apple Music → le jeton MusicKit du cache est déjà frais
   quand `resolve_storefronts` le lit ;
@@ -188,6 +215,12 @@ lancement manuel / rattrapage, **pas** branchés à une tâche.
   s'en servir pour un badge NEW, utiliser `db/discography` comme Apple Music.
 - Changement de schéma CSV → répercuter dans `export_itunes.py`,
   `upload_itunes_r2.py`, et le futur `api/routes/itunes.py` + page React.
+- **Timeouts (2026-09-24)** : `run_itunes.py::run_child()` plafonne chaque
+  sous-script à 900s et force `PYTHONUNBUFFERED=1` ; `upload_itunes_r2.py` a
+  un client boto3 avec timeouts + `Body=io.BytesIO(...)` (ne jamais repasser
+  un body `bytes` brut : le timeout couvrirait tout l'envoi). Même .bat
+  horaire qu'Apple Music, un blocage ici fait sauter l'heure suivante (IgnoreNew).
+  Détail : skill `collector-apple-music`, piège « Upload R2 bloqué à l'infini ».
 
 ## Frontend (câblé le 2026-09-09)
 

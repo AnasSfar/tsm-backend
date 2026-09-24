@@ -27,7 +27,7 @@ from core.config import CHART_LIMIT, DB_DIR, GENRES, SCRIPTS_DIR, WORKERS
 from core.csv_utils import load_previous_ranks, rewrite_for_snapshot
 from core.export import maybe_run_export
 from core.filters import build_artwork_url, clean_text, is_taylor_swift_song, rank_key
-from core.http import build_session
+from core.http import build_session, retry_failed
 from core.storefronts import resolve_storefronts
 from core.token import TokenManager, build_auth_headers
 
@@ -327,6 +327,18 @@ def main() -> None:
                 remaining_by_country[country] -= 1
                 if remaining_by_country[country] == 0:
                     log_country_summary(country, results[country])
+
+    if failures:
+        genre_names = dict(GENRES)
+        recovered, still_failed = retry_failed(
+            [(country, genre_id) for country, genre_id, _error in failures],
+            lambda pair: fetch_genre(worker_session(), manager, pair[0], pair[1]),
+            label="[Apple Music]",
+        )
+        for (country, genre_id), (songs, albums) in recovered.items():
+            results[country][genre_id] = (genre_names[genre_id], songs, albums)
+            print(f"{country}/{genre_id}: recovered after retry")
+        failures = [(country, genre_id, error) for (country, genre_id), error in still_failed]
 
     if failures:
         for country, genre_id, error in failures:

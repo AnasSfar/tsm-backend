@@ -484,8 +484,6 @@ def normalize_daily_streams_from_totals(by_date: dict[str, dict[str, dict]]) -> 
             if current_total is None or previous_total is None:
                 continue
             expected_daily = current_total - previous_total
-            if expected_daily < 0:
-                continue
             if values.get("daily_streams") != expected_daily:
                 values["daily_streams"] = expected_daily
                 corrected += 1

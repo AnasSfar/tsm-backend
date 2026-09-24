@@ -1201,6 +1201,66 @@ mais desactive en `--backfill-mode`/`--dates`/`--dates-file` (pipeline de sync
 dedie a la place). Variables : `SPOTIFY_IMMEDIATE_REENTRY_POST_MAX_ATTEMPTS`/
 `_RETRY_SECONDS` partagees avec le mecanisme de post immediat ci-dessus.
 
+**Album debut highlight (decision 2026-09-23, prep "The Life of a Showgirl:
+The Encore") :** `worldwide/tools/scripts/post_album_debut_chart.py`, appele
+par `run_all_charts.py::_post_album_debut_cards` juste avant
+`_post_priority_global_cards`/`_verify_regional_posts` (donc avant tout post
+Global/US normal et avant le thread `cards`), condition `"global" in
+post_parts and not failures` — no-op silencieux (exit 0) la plupart des
+jours. Declenchement generique, pas hardcode a un album : scanne
+`db/discography/albums/*.json`, cherche un album ou au moins un track a
+`release_date == target_date` (le meme champ deja utilise partout ailleurs
+pour le gating release) ; les track_id trouves ce jour-la = "les titres du
+debut". Ordre de post :
+
+1. Table "album debut" Global — uniquement les tracks de cet album (edition
+   standard + nouvelle edition ensemble), classee par rang Global du jour,
+   rendue via `comp/tables_image.py` en reutilisant directement les fonctions
+   de `global/tools/script/generate_chart_image.py` (`build_rows_html`,
+   `CSS`, `COL_HEADS_HTML`, `render_html_to_png`) avec un titre custom
+   (`display_title_for_album`, meme helper que les cards streams) au lieu du
+   header "Taylor Swift · Global Spotify" standard. Caption : `"{titre}"
+   debuts with {X} streams on the {Global|US} Spotify charts.` — X = somme du
+   champ `streams` (streams filtres Spotify Charts, la colonne deja affichee
+   dans le tableau juste en dessous) sur les tracks de l'album presents ce
+   jour-la, PAS le total exact du pipeline streams (metrique differente, pas
+   forcement prete au meme moment). Si `ts_chart_{date}.json` n'a pas encore
+   les donnees de la region (pas encore charte), skip silencieux de cette
+   region seule (pas un echec).
+2. Meme table, region US.
+3. Une card standalone par titre du debut, avec **toutes** ses regions —
+   reutilise directement (import du module, pas de duplication)
+   `generate_card_images.py::_build_card_html`/`_build_tweet`/
+   `_palette_for_song`/`_with_out_regions`/`_slugify`, juste postee
+   individuellement au lieu d'etre noyee dans le thread `cards` de ~80
+   images. Verrou partage avec ce thread : les slugs postes ici sont ecrits
+   dans le MEME `cards/posted_cards.json` (`worldwide`) que celui-ci lit,
+   donc quand `generate_card_images.py --post` tourne plus tard dans le meme
+   run, il saute ces titres (pas de double-post dans le thread).
+4. (inchange) le post Global normal avec toutes les chansons qui chartent —
+   deja existant, tourne juste apres dans la sequence normale.
+
+**Desactivation du post immediat par pays pour ces titres (fix 2026-09-23,
+suite retour proprietaire "pour les nouvelles chansons on ne poste pas") :**
+le mecanisme live "Immediate NEW/RE posting" (voir plus haut) postait
+initialement quand meme, pendant la collecte, UNE card standalone par titre
+des le premier pays detecte — en plus du recap multi-pays complet de
+`post_album_debut_chart.py`, donc 2 posts par titre. Corrige :
+`worldwide/daily.py::_maybe_trigger_immediate_reentries` calcule desormais
+`_debut_track_ids_for_date(chart_date)` (meme lookup minimal, "tracks dont le
+`release_date` catalogue == la date du jour", cache par date) et **saute**
+purement et simplement ces track_id — aucun post immediat pour eux, seul le
+recap complet de `post_album_debut_chart.py` part, plus tard dans le run.
+Duplication volontaire du lookup (pas d'import partage avec
+`post_album_debut_chart.py::find_debut_album` : process/etape de pipeline
+differents) — a garder synchronises par convention si la logique de
+detection change.
+
+**Verrou propre** : `cards/album_debut_posted.json` (dossier `global`),
+`{"posted": ["<display_title>", ...]}` — evite de reposter les tables album
+sur un rerun du meme jour ; `--force` l'ignore. Les cards par chanson ont leur
+propre garde via `posted_cards.json` (deja decrit ci-dessus).
+
 Priority Global NEW/RE cards:
 
 ```text
@@ -1351,7 +1411,26 @@ Alertes actives :
   (ex. flood `[GR] I Knew It, I Knew You passed ...` : GR gele au 2026-06-06 +
   ligne worldwide corrompue `total_days: 24` au lieu de ~2).
 - **`new peak rank`** : toutes regions (un meilleur pic reste vrai meme si la
-  baseline "was #Y" peut etre imparfaite).
+  baseline "was #Y" peut etre imparfaite). **Suppression sur sortie recente
+  (decision 2026-09-23, prep "The Life of a Showgirl: The Encore")** : un
+  titre qui vient de sortir grimpe naturellement les charts ses premieres
+  semaines -> `peak_rank` (le pic officiel Spotify) s'ameliore quasi tous les
+  jours, ce qui declenchait cette alerte en continu pour un evenement pas
+  vraiment "record". `_collect_spcharts_peak_rank_records` recoit desormais
+  `release_date_lookup` (nouveau helper `_spcharts_track_release_date_lookup`,
+  lit directement `db/discography/albums/*.json` + `songs.json`/`features.json`/
+  `misc.json`, extrait le `track_id` depuis le champ `url` si absent) et
+  ignore un match si `today - release_date < NEW_RELEASE_RECORD_GRACE_DAYS`
+  (21 jours, aligne sur `SPCHARTS_RANK_RECORD_MIN_DAYS_SINCE` ci-dessous par
+  convention, pas par reference partagee). `_collect_spcharts_rank_record_since`
+  ("best chart position since") n'a pas eu besoin du meme fix : son plancher
+  `days_since >= 21` protege deja nativement un titre qui vient de sortir (pas
+  assez d'historique pour matcher "since" avant 3 semaines). Cote streams,
+  meme probleme identifie sur `best_day_since.py` (le kind `"best_ever"`
+  contourne `DEFAULT_MIN_DAYS` sans aucun garde-fou, et `is_biggest_day_of_year`/
+  `_month` aussi) -> meme fenetre `NEW_RELEASE_RECORD_GRACE_DAYS = 21` ajoutee
+  dans `compute_best_day_since` (skip du kind `best_ever` + force les deux
+  flags a `False` pendant la fenetre). Detail streams -> skill `spotify-streams`.
 - **`new peak streams`** : **supprimee** (2026-08-27). L'historique charts ne
   remonte pas a 2017, donc pour un titre de catalogue le pic stocke n'est
   qu'un "record depuis le debut du tracking", pas un record all-time.
@@ -1464,6 +1543,134 @@ Alertes actives :
   (`total_days`/`peak_streams`/`streak`/`highest_rank`) — `peak_streams` n'a
   pas d'equivalent back (voir note "new peak streams" ci-dessus) et n'a donc
   plus de notif du tout.
+
+## Rank-record poste AVANT le post routinier Global/US/FR (decision 2026-09-23, corrige le meme jour)
+
+Decision proprietaire : quand une chanson decroche un "best chart position
+since" et/ou un "best filtered streaming day since" le jour meme, ce tweet
+doit sortir **avant** le post routinier (la chart card quotidienne).
+
+**Premiere version fausse, trouvee en prod le jour meme** : un premier fix
+plaçait le check anticipe dans `run_all_charts.py::main`, juste avant
+`_post_priority_global_cards`/`_verify_regional_posts` — en partant du principe
+que c'est la que partait le post Global. **Faux** : verifie sur un run reel
+(2026-09-23), le post Global/US/FR routinier part en realite depuis
+**l'interieur meme du subprocess `worldwide/daily.py`**, dans un thread
+lance juste apres la Phase 1 (`_post_regional`, variable `regions_to_post`
+qui contient toujours `global`+`us`+`fr` des que le posting n'est pas
+desactive — `_PRIORITY` les inclut inconditionnellement, ligne ~2322) —
+donc **quelques secondes** apres le debut de la collecte, pendant que la
+Phase 2 (les ~70 autres pays) tourne encore en arriere-plan. `run_all_charts.py`
+ne reprend la main qu'une fois **tout** `worldwide/daily.py` termine (75
+regions), largement APRES que ces posts routiniers soient deja partis — le
+hook place la ne pouvait donc jamais arriver a temps. Observe en direct :
+le Global du 2026-09-22 a poste a 15:58:31-46 alors que la Phase 2 n'etait
+qu'a la lettre "fr" sur 75 regions.
+
+**Vrai fix : dans `worldwide/daily.py`**, nouvelle fonction
+`_post_pending_rank_records(chart_date, regions)`, appelee juste avant que
+`_posting_thread` (qui poste les cards routinieres) soit demarre — donc
+strictement avant, de maniere synchrone, pour les regions sur le point de
+poster (`regions_to_post`, sous-ensemble de `global`/`us`/`fr`). Elle importe
+paresseusement `run_all_charts.py` (celui-ci auto-configure son propre
+`sys.path` depuis son propre chemin de fichier, donc l'import marche peu
+importe le cwd/sys.path de `daily.py` — verifie par un run reel) et reutilise
+directement `_collect_spcharts_rank_record_since`/`_post_spcharts_rank_record_card`/
+`_spcharts_track_cover_lookup`, sans dupliquer la logique.
+
+**Pourquoi la donnee est deja prete a ce stade** : `_sync_region_csv_immediately`
+(meme fichier `worldwide/daily.py`, section "Incremental per-country CSV sync")
+ecrit deja la ligne du jour dans `db/charts_history_<region>.csv` **des que
+chaque region de la Phase 1 est fetchee** (meme fichier/schema que
+`sync_spotify_country_charts_from_worldwide.py`) — confirme par les logs
+`[INFO] Synced N row(s) → db/charts_history_global.csv` qui apparaissent
+juste apres le fetch Phase 1, avant meme le premier post routinier. Donc pas
+besoin d'un sync complet anticipe (l'ancienne version le faisait, en double
+travail avec ce sync incremental deja existant) : `_collect_spcharts_rank_record_since`
+peut lire une donnee a jour immediatement.
+
+Idempotent par construction : `_notify_spcharts_events` (fin de run,
+`SPCHARTS_RANK_RECORD_REGIONS`) retombe sur les memes chansons plus tard mais
+le lock `<slug>_rank_record.lock` de `_post_spcharts_rank_record_card` bloque
+tout repost — pas de tweet en double. Reste un filet de secours utile pour
+les scenarios ou `worldwide/daily.py` n'a pas tourne du tout ce jour-la
+(post-only/catchup sans recollecte).
+
+Jamais bloquant : tout `Exception` dans `_post_pending_rank_records` (import,
+lookup, post) est loggee (`[WARN]`) et avalee — les cards routinieres partent
+quand meme via `_post_regional`, inchange.
+
+## Rank-record : scope main-stores, drapeau+pays, deltas jour/jour, record filtered-streams independant (decision 2026-09-23)
+
+Suite de session sur la meme feature ci-dessus, 4 changements proprietaire :
+
+- **Scope elargi a FR** : nouvelle constante `SPCHARTS_RANK_RECORD_REGIONS =
+  {"global", "us", "uk", "fr"}`, utilisee UNIQUEMENT par la boucle
+  `_collect_spcharts_rank_record_since` dans `_notify_spcharts_events`.
+  Distincte de `SPCHARTS_RANKED_HISTORY_REGIONS` (reste `{global, us, uk}`,
+  inchangee) qui gate en plus les alertes total-days-overtake/streak —
+  celles-la dependent d'un historique continu jamais verifie pour FR, donc
+  pas elargies pour eviter d'activer silencieusement une alerte non fiable.
+  FR reste par ailleurs en pause pour son propre post de chart quotidien
+  (`_PAUSED_POST_PARTS`) — seul le rank-record FR peut sortir.
+- **Drapeau + nom du pays sur la card** (pas dans le tweet, deja text-only) :
+  `extra` passe de `"GLOBAL"`/`"US"`/`"UK"` a un nom complet
+  (`SPCHARTS_RANK_RECORD_REGION_NAMES` : Worldwide/United States/United
+  Kingdom/France) + une icone via le nouveau param `extra_icon_svg` de
+  `render_chart_card`. **En SVG inline, pas en emoji drapeau** — verifie par
+  un rendu reel : Windows/Chromium (le renderer headless
+  `write_chart_card_png`/Playwright de ce pipeline) ne dessine PAS les
+  sequences emoji drapeau (regional indicators), affiche juste le fallback
+  texte "US"/"GB" a la place ; un emoji simple comme 🌍 s'affiche bien, c'est
+  specifiquement les drapeaux pays qui cassent. `_SPCHARTS_REGION_FLAG_SVG`
+  (drapeaux US/UK/FR + globe pour Global) et `_spcharts_region_display_name`/
+  `_spcharts_region_flag_svg` dans `run_all_charts.py`.
+- **Deltas jour/jour sur la card** : `rank_change` (badge `▲N`/`▼N`/`=` via
+  `_format_rank_badge`, positif = rang ameliore, meme convention que
+  `post_global_new_releases.py::_fmt_change`) et `streams_change`/
+  `streams_pct` (montant signe + `%` signe) calcules dans
+  `_collect_spcharts_rank_record_since` en comparant a la ligne de la veille
+  dans les memes `points` deja charges. `None` (pas de badge affiche, jamais
+  un `0` fabrique) si la ligne de la veille manque (jour de gap).
+- **Record filtered-streams independant du rank-record** (bug trouve en
+  testant, corrige le meme jour) : avant, `_spcharts_filtered_streaming_extra_line`
+  n'etait JAMAIS appele si le rang du jour n'etait pas lui-meme un record —
+  un jour ou SEUL le filtered-streams battait un record (rang, non) ne
+  postait donc rien du tout, silencieusement. Verifie sur donnees reelles :
+  "The Fate of Ophelia" en FR a un vrai record filtered-streams-only du
+  2026-09-01 au 2026-09-18 (rang FR jamais record sur cette fenetre) qui ne
+  postait rien avant ce fix. Refactor : `_spcharts_filtered_streaming_extra_line`
+  eclatee en `_spcharts_streams_record_lookup` (lookup pur, reutilisable) +
+  `_spcharts_filtered_streaming_extra_line(streams_record, current_streams)`
+  (formatage de la 2e ligne, cas combine inchange). La boucle calcule
+  desormais le rank-record ET le streams-record independamment ; si SEUL le
+  streams-record qualifie, nouveau tweet standalone via
+  `collectors/twitter/text.py::spotify_chart_filtered_streams_record_tweet`
+  (`kind="streams"` sur le dict retourne, pas de prefixe rang-record — "has
+  earned/has once again earned its best filtered streaming day since ...
+  with N streams, currently at #R"). `since_date` est `None` pour ces rows
+  (pas de rank-record a montrer), `streams_since_date` est toujours peuple
+  des que le streams-record qualifie (`kind="rank"` ou `"streams"`).
+- **Texte "Best filtered streaming day since <date>" sur la card elle-meme**
+  (pas juste dans le tweet) : nouveau param `metric_note` de
+  `render_chart_card`, rendu sous le bloc streams (sous le nombre + delta/pct),
+  rempli des que `record["streams_since_date"]` existe — donc pour un
+  rank-record combine ET pour un streams-record standalone.
+- **Bug de layout trouve en testant, corrige au meme endroit** : le bloc
+  streams (`.metric-row`) des cards `chart_card.py` layout `wide` est en
+  temps normal `position:absolute;bottom:22px` (ancre au bas de la card),
+  pendant que titre/sous-titre/pays s'empilent en flux normal depuis le haut
+  — un titre qui wrap sur 2 lignes (ex. "The Fate of Ophelia") pousse le
+  sous-titre/pays vers le bas ET chevauche le bloc streams ancre au bas
+  (verifie visuellement : "UNITED STATES"/streams superposes). Corrige,
+  scope uniquement aux cards `record=True` (les autres appelants, non
+  affectes, gardent l'ancrage bas d'origine) : `.card.record .metric-row`
+  passe en flux normal (`position:static`), et `RECORD_CARD_EXTRA_HEIGHT =
+  70` (exporte par `chart_card.py`) ajoute 70px a la hauteur body/card pour
+  les deux layouts `wide`/`square` quand `record=True` — laisse la place au
+  titre 2 lignes + a la nouvelle ligne `metric_note`. Les appelants doivent
+  passer `height=344 + RECORD_CARD_EXTRA_HEIGHT` (pas juste `344`) a
+  `write_chart_card_png` pour ce style de card.
 
 ## Discography payload + vue "Overall" (par pays)
 

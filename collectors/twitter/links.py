@@ -30,3 +30,7 @@ def charts_url(*, region: str = "global", view: str = "today") -> str:
 
 def albums_latest_url() -> str:
     return site_url('albums/date/latest')
+
+
+def amcharts_url(source: str = "applemusic") -> str:
+    return site_url(f"amcharts/{str(source).strip().lower()}")

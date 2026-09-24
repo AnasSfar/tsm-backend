@@ -36,9 +36,8 @@ Modes visibles dans les logs/code:
 
 - `--dry-run`: scraping uniquement, aucune modification.
 - `--admin` (ajoute 2026-08-19, implique `--over` ET `--force`): accepte le
-  total Spotify brut tel quel, daily inclus s'il est negatif (pas de clamp
-  `compute_daily`). Ecrit `estimated_reason=admin_override`, ce qui fait
-  aussi compter la ligne comme "faite" dans le check de completude
+  total Spotify brut tel quel. Ecrit `estimated_reason=admin_override`, ce qui
+  fait aussi compter la ligne comme "faite" dans le check de completude
   (`load_history_track_ids_with_daily_for_date`) malgre un daily
   negatif/vide. Implique `--force` (ajoute 2026-08-20) car un track qui a
   deja une ligne partielle/vide pour cette date (ecrite par un run precedent
@@ -52,8 +51,7 @@ Modes visibles dans les logs/code:
   `daily=0` qu'apres 5 rounds de retry
   (`admin_override_same_total_after_retries`) ; l'override brut ne ferme plus
   un same-total au premier passage. Reserve a un cas verifie a la main (fusion/split cote Spotify, cf.
-  incident Karma 2026-08-17 dans `pipeline-ops`) — ca contourne la garantie
-  "jamais de daily negatif publie".
+  incident Karma 2026-08-17 dans `pipeline-ops`).
 - `--debug-daily`: retry de tracks inacheves, ecrit l'history, pas de
   Twitter/git/forecast/images/notify.
 - `--debug-total YYYY-MM-DD`: remplace des totals sur une date existante.
@@ -64,46 +62,58 @@ Modes visibles dans les logs/code:
 
 Avant de conseiller une option non listee ici, verifier `update_streams.py`.
 
-## Regle : daily negatif `admin_override` non verifie ne doit jamais etre mis en avant (2026-09-08)
+## Regle (REMPLACEE 2026-09-23) : daily negatif accepte tel quel, jamais bloque/masque — affiche en rouge
+
+Decision proprietaire 2026-09-23 : les gates/garde-fous qui bloquaient ou
+masquaient un total Spotify en baisse etaient inutiles — un total qui
+diminue est desormais accepte comme une donnee reelle, comme n'importe quel
+autre jour, et le daily/change negatif qui en resulte s'affiche simplement
+en rouge (classe CSS `.neg` deja presente partout via `comp/fmt.py::fmt_signed`
+/ `fmt_delta`) au lieu d'etre bloque ou cache. Ca remplace la regle du
+2026-09-08 ci-dessous (gardee pour l'historique de l'incident qui l'avait
+motivee) :
+
+- `update_streams.py::try_apply_track_update` : le cas `total < last_total`
+  (hors gap `missing_previous_day_total`) est maintenant toujours
+  `real_update = True`, extra ou non — plus de restriction "1er du mois
+  seulement" (`lower_than_previous_not_month_start` supprime). Le daily
+  negatif est ecrit tel quel.
+- `history_store.compute_daily` ne clampe plus un diff negatif a `None` —
+  retourne le diff brut (positif ou negatif) des que `previous_streams` est
+  connu. Meme chose pour les fonctions `_fill_missing_daily` locales de
+  `generate_album_update_image.py`, `generate_albums_image.py`,
+  `generate_streams_image.py` (avant : `if diff >= 0: ...`).
+- La suppression specifique a `estimated_reason == "admin_override" and
+  daily < 0` dans `generate_album_update_image.load_history_for_album` (qui
+  mettait le daily/change/pct a `None` pour ce cas) est retiree — le chiffre
+  reel s'affiche, en rouge.
+- `generate_albums_image.build_album_rows::_usable_daily` : `if daily < 0:
+  return None` deja retire le 2026-09-23 (avant cette regle) — cf. commentaire
+  dans le fichier. `_mh_move` (`generate_albums_image.py` /
+  `generate_weekend_streams_image.py`) traite toujours un agregat d'ere sans
+  comparaison veille utilisable (`yest_daily is None`) comme "pas de
+  comparaison" (tiret) plutot que "NEW" — ca reste correct et n'est pas
+  concerne par cette regle (evite un vrai faux-NEW, pas un masquage de
+  baisse).
+- `export_for_web.normalize_daily_streams_from_totals` ne skip plus la
+  correction quand `expected_daily < 0` — le daily exporte est toujours force
+  a correspondre a l'invariant `total(J) = total(J-1) + daily(J)`, negatif
+  inclus.
+- `post_song_overtakes.find_overtakes` garde son exclusion
+  `admin_negative_ids` (baisses `admin_override` exclues d'un overtake) —
+  c'est une regle de contenu de post (eviter un tweet "X a depasse Y" fabrique
+  par une correction manuelle non verifiee), pas un garde-fou sur l'affichage
+  du chiffre ; non concernee par ce changement.
+
+### Historique (regle remplacee, 2026-09-08)
 
 Decision proprietaire, suite a l'incident "The Best Day" 2026-09-06 (total Spotify
 baisse de 46 954 641 a 46 932 431, `--admin` utilise sans verification manuelle
-prealable d'une fusion/split Spotify reelle, contrairement au cas Karma).
-
-- Le total reste ecrit tel quel (`daily=-22210`, `estimated_reason=admin_override`)
-  — on ne fabrique jamais un chiffre different de ce que Spotify a renvoye.
-- `load_history_track_ids_with_daily_for_date` (`history_store.py`) compte
-  desormais une ligne `admin_override` comme "faite" meme avec un daily
-  negatif/vide, pour ne plus jamais bloquer indefiniment le completeness-check
-  de fin de collecte (observe : round 41+ sur 2026-09-07/08). Avant ce fix,
-  la fonction faisait `if int(daily_raw) < 0: continue`, contredisant ce que
-  documentait deja ce fichier.
-- **Mais** ce daily negatif ne doit jamais etre affiche comme si c'etait un
-  vrai evenement du jour dans un post ou la chanson est nommee/mise en avant :
-  - `generate_album_update_image.load_history_for_album` : si
-    `estimated_reason == "admin_override"` et `daily < 0`, le daily/change/pct
-    du track sont traites comme "pas de donnee aujourd'hui" (`daily = None`)
-    — le total cumule reste affiche normalement, seul le delta du jour est
-    masque. Impacte la card update album (et donc l'eventuelle ligne best-day
-    album qui s'appuie sur les memes chiffres).
-  - `post_song_overtakes.find_overtakes` : un track avec cette signature pour
-    `stats_date` est exclu des deux cotes d'un overtake (`admin_negative_ids`)
-    — un swap de rang cause par cette baisse artificielle n'est pas de la
-    vraie ecoute organique.
-  - Milestones (`post_stream_milestones.py`) : naturellement sans risque, un
-    milestone ne se declenche qu'a la hausse. Era recap best-day-since :
-    naturellement sans risque aussi, un `best_day_since` ne peut jamais se
-    declencher sur une baisse.
-  - Agregats/classements generaux (Top Songs, Top 45, Biggest Gainers,
-    export web `rank_total`/`rank_daily`/album aggregates) : **pas touches**,
-    ok de poster sans changement — un daily negatif ne remonte de toute façon
-    jamais en haut d'un classement par gain, et un total en baisse infime ne
-    change quasi jamais un classement par total. Cf. `merge_losers` dans
-    `export_for_web.py` pour le mecanisme equivalent (mais different, ne pas
-    confondre) reserve aux fusions Spotify actives.
-- Reflexe a garder : si un futur `--admin` negatif touche un post non couvert
-  ci-dessus (nouveau type de card), verifier `estimated_reason=="admin_override"
-  and daily<0` avant d'afficher/nommer la chanson.
+prealable d'une fusion/split Spotify reelle, contrairement au cas Karma) : le
+daily negatif `admin_override` non verifie etait masque (`daily = None`) dans
+la card album update, pour ne jamais etre "mis en avant comme un vrai
+evenement du jour". Remplacee ci-dessus : le chiffre s'affiche desormais,
+en rouge, comme toute autre baisse.
 
 ## Incident : perte de ~19 mois de `db/streams_history.csv` + propagation R2 (2026-09-08)
 
@@ -548,6 +558,43 @@ predicat `_is_unconditional_best_day(row)` dans `post_best_day_since_twitter.py`
 Limite connue : un record annuel sur une chanson < 20k/j n'est pas surveille
 en early (pas de spawn subprocess pour lui pendant la collecte) mais reste
 poste individuellement et sans cap dans le batch best-day-since de finalize.
+
+## Garde-fou sortie recente : pas de "best_ever"/biggest-day trivial (2026-09-23)
+
+Prep "The Life of a Showgirl: The Encore" (4 titres inedits + 12 reedites
+2026-09-25) : `kind="best_ever"` dans `compute_best_day_since` contourne
+`DEFAULT_MIN_DAYS` sans aucun garde-fou (`passes_filters` : `if row["kind"]
+== "best_ever": return True`), et `is_biggest_day_of_year`/`_month`
+(`period_record_flags`) font pareil ailleurs (`row.get("is_biggest_day_of_year")
+or passes_filters(...)` a plusieurs endroits) — correct pour un titre de
+catalogue avec des annees d'historique reel a battre, mais pour un titre qui
+vient tout juste de sortir, **chaque jour de ses premieres semaines est
+trivialement son propre "record"** (rien avant a comparer) : `is_unconditional`
+(voir "Biggest day of the year" ci-dessus) aurait donc poste une card
+inconditionnelle en early quasiment tous les jours pour ces 16 titres.
+Nouvelle constante `NEW_RELEASE_RECORD_GRACE_DAYS = 21` dans `best_day_since.py`
+(alignee par convention, pas par import partage, sur `SPCHARTS_RANK_RECORD_MIN_DAYS_SINCE`
+du pipeline charts — meme fix la-bas pour "new peak rank", voir skill
+`spotify-charts`) : dans `compute_best_day_since`, si
+`(target_date - track.release_date).days < 21`, le kind `best_ever` est
+court-circuite (`return None`) et `is_biggest_day_of_year`/`_month` sont forces
+a `False` sur la row retournee. Le kind `"since"` n'avait pas besoin du meme
+fix : son `days_since >= min_days` (30 par defaut) protege deja nativement un
+titre qui vient de sortir (pas assez d'historique pour matcher "since" avant
+plusieurs semaines).
+
+## Completeness check : exclut les titres pas encore sortis (2026-09-23)
+
+`update_streams.py` (boucle finale de retry, autour de `missing_non_extra`)
+comparait `non_extra_ids` (tout le catalogue actif non-extra) a
+`done_ids_for_date` sans filtrer par date de sortie — un titre du deluxe "The
+Encore" (sortie 2026-09-25) apparaissait donc `still missing` dans les logs
+tous les jours avant sa sortie, forcant des rounds de retry infinis pour
+rien. Fix : `all_tracks_for_check` passe desormais par
+`filter_tracks_released_for_stats_date(..., stats_date)` (meme helper deja
+utilise partout ailleurs dans le fichier, ex. ligne ~2110/2767/2804/2966/2990)
+avant de calculer `non_extra_ids`. Un titre dont `release_date > stats_date`
+n'est plus compte comme manquant.
 
 ## Batch best-day-since finalize : 3 standard / 5 max (2026-09-03)
 
@@ -1923,3 +1970,57 @@ Ce signal ne sert **qu'a l'ordre de verification de la watchlist early**
 daily exact arrive) — jamais poste ni affiche tel quel, jamais utilise comme
 donnee publique (regle exact-data : seul le daily exact scrape par
 `update_streams.py` compte, le chart daily n'est qu'un indice de priorite).
+
+- **Live projection trigger (ajoute 2026-09-23)** : `update_streams.py::main()`
+  appelle `collectors/billboard/live_trigger.py::trigger_live_projection()`
+  dans le meme bloc que le `notify()` final (`if not debug_daily_mode and not
+  local_test_mode and not throwback_mode:`), donc jamais en
+  `--local-test`/`--throwback`/`--debug-daily`. Best-effort, jamais
+  bloquant. Voir `collector-billboard/CONTEXTE.md` § "Live projection".
+
+## Bug fixe : gates de complétude album bloqués par une section "announced" pas encore sortie (2026-09-23)
+
+`history_store.py::album_tracks_done_for(album, stats_date)` (gate de
+`finalize_update.py::_post_one_album`, bloque la card daily d'un album) et
+`::all_album_tracks_done(stats_date)` (gate de `_post_spotlight_gainers`,
+bloque le tableau Spotlight/GAINERS) exigeaient un `daily_streams` réel pour
+**tous** les tracks présents dans les fichiers `db/discography/albums/*.json`
+d'un album, sans jamais filtrer par `release_date` — aucun album n'avait
+jamais eu de tracks pas-encore-sortis dans son JSON catalogue avant le
+2026-09-23 (voir mémoire `showgirl-encore-deluxe-release`, section
+`the_encore` de The Life of a Showgirl, 4 tracks `release_date: 2026-09-25`,
+flag `announced: true`). Résultat : dès que cette section a été ajoutée, ces
+deux gates sont devenus **définitivement bloqués** jusqu'au jour de sortie —
+`Album update skipped (The Life of a Showgirl): 6/46 tracks manquants.` et
+`Stream highlights skipped: not all album tracks are done yet.` tous les
+jours, sans jamais se débloquer tout seuls (contrairement au reste du run qui
+retry/skip proprement). Repéré le 2026-09-23 soir : le propriétaire a signalé
+que la card Showgirl n'était pas sortie pour le 2026-09-22.
+
+**Fix** : `load_album_track_ids()` / `load_album_track_ids_for_album()` ont un
+paramètre optionnel `stats_date` (défaut `None` = comportement inchangé pour
+tous les autres appelants — `gap_estimate.py`, `post_gainer_thread.py`,
+`post_weekend_song_gainers.py`, `reconcile_gap_catchup.py`, les usages internes
+de `update_streams.py`) qui exclut les tracks non sortis via
+`track_is_released_for_stats_date()` (même check que le badge `announced`
+d'`image-gen`). `album_tracks_done_for`/`all_album_tracks_done` passent
+maintenant leur `stats_date` à travers ces loaders.
+
+**Rattrapage effectué le 2026-09-23** : re-run manuel de
+`generate_album_update_image.py "The Life of a Showgirl" 2026-09-22 --post`
+et `post_stream_highlights_thread.py 2026-09-22 --limit 10
+--post-spacing-seconds 60` une fois le fix en place — les deux ont posté avec
+succès. **Piège rencontré au passage** : ces deux scripts affichent des emoji
+(📈, ★) dans leurs prints — sur ce poste, la console Git Bash/Windows est en
+cp1252 par défaut, donc un run manuel interactif crashe sur `UnicodeEncodeError`
+**avant** l'appel `post_with_image` réel (donc rien n'est posté, malgré des
+lignes de sortie qui donnent l'impression que ça a presque marché) — préfixer
+`PYTHONIOENCODING=utf-8` pour tout run manuel interactif de ces scripts. Les
+runs planifiés (Task Scheduler) ne sont pas concernés (sortie redirigée/loggée).
+
+**Réflexe pour toute prochaine section catalogue "announced pas encore sortie"** :
+grep `album_tracks_done_for|all_album_tracks_done|load_album_track_ids\b` avant
+d'ajouter des tracks futurs à un album existant — ces deux gates de posting
+sont le seul endroit qui sommait encore "tous les tracks du JSON" sans passer
+par le filtre `release_date`, tout le reste (badge `announced`, override
+d'affichage, complétude `update_streams.py`) était déjà correctement gated.

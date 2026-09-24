@@ -91,6 +91,7 @@ def normalize_song_entry(row: dict[str, Any]) -> dict[str, Any]:
         "album_name": clean_str(row.get("album_name")),
         "release_date": clean_str(row.get("release_date")),
         "genre_names": [p.strip() for p in genre_raw.split("|") if p.strip()] if genre_raw else [],
+        "explicitness": clean_str(row.get("explicitness")),
     }
 
 

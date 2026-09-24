@@ -1,11 +1,17 @@
 from __future__ import annotations
 
-from requests import Session
+import time
+from collections.abc import Callable, Hashable
+from concurrent.futures import ThreadPoolExecutor
+from typing import Any
+
+from requests import RequestException, Session
 from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
 
 from .config import (
     DEFAULT_TIMEOUT,
+    FAILURE_RETRY_ROUNDS,
     HEADERS,
     RETRY_BACKOFF,
     RETRY_STATUS_FORCELIST,
@@ -43,3 +49,42 @@ def build_session(
     session.mount("http://", adapter)
     session.headers.update(HEADERS)
     return session
+
+
+def retry_failed(
+    failed: list[Hashable],
+    fetch: Callable[[Any], Any],
+    *,
+    label: str,
+    rounds: int = FAILURE_RETRY_ROUNDS,
+    workers: int = 8,
+) -> tuple[dict[Any, Any], list[tuple[Any, str]]]:
+    """Re-fetch items that failed in the main pool (few, low concurrency, with
+    a pause between rounds) instead of skipping them on the first error.
+    Returns (recovered results by item, still-failed (item, error))."""
+    recovered: dict[Any, Any] = {}
+    pending = list(failed)
+    errors: dict[Any, str] = {}
+    for round_no in range(1, rounds + 1):
+        if not pending:
+            break
+        time.sleep(2.0 * round_no)
+        print(f"{label} Retrying {len(pending)} failed item(s), round {round_no}/{rounds}")
+
+        def _one(item):
+            try:
+                return item, fetch(item), None
+            except (RequestException, RuntimeError) as exc:
+                return item, None, str(exc)
+
+        with ThreadPoolExecutor(max_workers=max(1, min(workers, len(pending)))) as executor:
+            outcomes = list(executor.map(_one, pending))
+        pending = []
+        for item, result, error in outcomes:
+            if error is None:
+                recovered[item] = result
+                errors.pop(item, None)
+            else:
+                errors[item] = error
+                pending.append(item)
+    return recovered, [(item, errors.get(item, "failed")) for item in pending]

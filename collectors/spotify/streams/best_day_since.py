@@ -44,6 +44,14 @@ MISC_JSON = DISCOGRAPHY_DIR / "misc.json"
 FEATURES_JSON = DISCOGRAPHY_DIR / "features.json"
 DEFAULT_OUTPUT = WEB_EXPORT_DATA_DIR / "best_day_since.json"
 HISTORY_START_DATE = date(2025, 1, 1)
+# Decision 2026-09-23: a "best_ever" record bypasses DEFAULT_MIN_DAYS
+# entirely (see passes_filters) - fine for a catalog song with years of real
+# comparison history, but for a track that JUST released, every day of its
+# first stretch is trivially its own "best ever" (no prior data to beat) -
+# not a meaningful record. Mirrors NEW_RELEASE_RECORD_GRACE_DAYS in
+# collectors/spotify/charts/run_all_charts.py (kept in sync by convention,
+# not a shared import - different pipelines).
+NEW_RELEASE_RECORD_GRACE_DAYS = 21
 DEFAULT_MIN_DAYS = 30
 LIVE_COLLECTION_MIN_DAYS = 30
 LIVE_COLLECTION_MIN_PCT_CHANGE = 10.0
@@ -777,6 +785,15 @@ def compute_best_day_since(track: Track, points: list[Point], target_date: date)
     if previous_day is None or previous_day.total is None:
         return None
     record_flags = period_record_flags(points, target_date, current.daily)
+    if (
+        track.release_date is not None
+        and (target_date - track.release_date).days < NEW_RELEASE_RECORD_GRACE_DAYS
+    ):
+        # A brand-new track trivially "beats" its own sparse recent history -
+        # is_biggest_day_of_year/_month bypass DEFAULT_MIN_DAYS in
+        # passes_filters(), so without this they'd fire on almost every day
+        # of a song's first few weeks (decision 2026-09-23).
+        record_flags = {**record_flags, "is_biggest_day_of_year": False, "is_biggest_day_of_month": False}
 
     previous_points = [point for point in points if point.day < target_date and point.daily is not None]
     if not previous_points:
@@ -791,6 +808,8 @@ def compute_best_day_since(track: Track, points: list[Point], target_date: date)
     if last_at_or_above is None:
         first_available_date = previous_points[0].day if previous_points else target_date
         if track.release_date is not None and track.release_date >= HISTORY_START_DATE:
+            if (target_date - track.release_date).days < NEW_RELEASE_RECORD_GRACE_DAYS:
+                return None
             kind = "best_ever"
             best_day_since = "ever"
         else:

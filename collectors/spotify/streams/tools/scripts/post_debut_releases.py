@@ -43,6 +43,7 @@ sys.path.insert(0, str(REPO_ROOT))
 from core.data_paths import first_existing_db_history, update_streams_dir  # noqa: E402
 from core.twitter import post_image_thread, post_with_image  # noqa: E402
 from collectors.comp import tables_image  # noqa: E402
+from collectors.comp.track_cover_cache import get_cached_cover, load_track_cover_cache  # noqa: E402
 from twitter.links import streams_latest_url  # noqa: E402
 from twitter.sessions import default_twitter_session  # noqa: E402
 TWITTER_SESSION = default_twitter_session(REPO_ROOT)
@@ -980,6 +981,28 @@ def _generate_debut_image(
     return _render_html_image(html_text, out_path, f"_{safe_slug}_debut_tmp.html")
 
 
+def _resolve_image_url(ids: list[str], meta: dict[str, dict], cover_cache: dict[str, dict]) -> str | None:
+    """Cover for a debut post: catalogue image_url first, then the Spotify
+    cover cache (captured live during today's streams scrape, so it's already
+    populated even when the catalogue JSON hasn't been backfilled with
+    image_url yet — see image-gen skill), then the track's own album cover."""
+    for tid in ids:
+        url = meta.get(tid, {}).get("image_url")
+        if url:
+            return url
+    for tid in ids:
+        url = get_cached_cover(cover_cache, tid)
+        if url:
+            return url
+    albums = spotlight.load_covers()
+    for tid in ids:
+        album = meta.get(tid, {}).get("album") or ""
+        url = albums.get(spotlight._norm(album), "") if album else ""
+        if url:
+            return url
+    return None
+
+
 def _build_post_threads(
     target_date: str,
     *,
@@ -988,6 +1011,7 @@ def _build_post_threads(
 ) -> list[list[tuple[str, str, Path | None]]]:
     album_tracks, meta = _load_album_tracks()
     _load_misc_tracks(meta)
+    cover_cache = load_track_cover_cache()
     day_rows = _load_rows_for_date(target_date)
     previous_date = str(date.fromisoformat(target_date) - timedelta(days=1))
     previous_rows = _load_rows_for_date(previous_date)
@@ -1051,7 +1075,7 @@ def _build_post_threads(
         if daily_streams <= 0:
             print(f"[debut_releases] Skip {title}: daily streams is 0.")
             continue
-        image_url = next((meta.get(tid, {}).get("image_url") for tid in ids if meta.get(tid, {}).get("image_url")), None)
+        image_url = _resolve_image_url(ids, meta, cover_cache)
         version_count = len(ids)
         versions = [
             {

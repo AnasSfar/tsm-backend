@@ -22,8 +22,33 @@ except ImportError:
     _PIL = False
 
 
-def _title_font_size(title: str) -> int:
+# Extra px added to card/body height when `record=True`, both layouts —
+# room for a title wrapping to 2 lines plus the optional `metric_note` line,
+# without the streams block (bottom-pinned on non-record cards) overlapping
+# the flow content above it. Exported so callers know what height to request
+# from `write_chart_card_png` (e.g. `run_all_charts.py::_post_spcharts_rank_record_card`).
+RECORD_CARD_EXTRA_HEIGHT = 70
+
+
+def _title_font_size(title: str, *, narrow: bool = False) -> int:
+    """`narrow=True` (2026-09-23): tighter buckets for the wide layout when a
+    rank-badge (`▲ N`/`▼ N`/`NEW`/`RE`) is also shown next to the rank number
+    — the badge eats ~70-90px of the same title-row width the buckets below
+    were calibrated for without one, so a mid-length title like "The Fate of
+    Ophelia" (20 chars, 40px bucket) wrapped to 2 lines and, on a `record=True`
+    card, collided with the streams block. `-webkit-line-clamp:2` on `.title`
+    remains the safety net regardless — this only makes hitting it rarer."""
     n = len(title or "")
+    if narrow:
+        if n <= 14:
+            return 46
+        if n <= 20:
+            return 34
+        if n <= 30:
+            return 28
+        if n <= 44:
+            return 24
+        return 21
     if n <= 18:
         return 50
     if n <= 26:
@@ -151,6 +176,8 @@ def render_chart_card(
     footer_left: str,
     footer_right: str,
     extra: str = "",
+    extra_icon_svg: str = "",
+    metric_note: str = "",
     logo_svg: str = SPOTIFY_SVG,
     badge_text: str | None = None,
     layout: str = "wide",
@@ -159,7 +186,18 @@ def render_chart_card(
     """`record=True` marks the card as a "best since" record (rank or filtered
     streams) with a gold ribbon + glow ring, for `run_all_charts.py`'s
     rank-record-since auto-posts. Purely additive: default False keeps every
-    existing caller's render byte-for-byte unchanged."""
+    existing caller's render byte-for-byte unchanged.
+
+    `metric_note` (2026-09-23): optional line rendered under the streams
+    block, for the "Best filtered streaming day since <date>" callout on
+    rank-record cards. When `record=True`, the card is also given extra
+    height and the streams block switches from an absolute bottom-pin to
+    normal document flow (`.card.record .metric-row`) — the bottom-pin
+    otherwise overlaps a title that wraps to 2 lines, since title/subtitle/
+    extra all flow from the top while the streams block used to be pinned to
+    a fixed offset from the bottom regardless of how tall the flow above it
+    got. Non-record callers are unaffected (still absolute-bottom, fixed
+    height) since this override is scoped to the `.record` class."""
     cover_uri, cover_bytes = image_data_uri(cover_url)
     palette = _cover_palette(cover_bytes)
     art_html = f'<img class="cover" src="{cover_uri}" />' if cover_uri else '<div class="cover cover-ph"></div>'
@@ -168,6 +206,7 @@ def render_chart_card(
 
     rank = _stat_by_label(stats, "Rank")
     streams = _stat_by_label(stats, "Streams")
+    has_streams = bool(streams)
     rank_value = str(rank.get("value") or "-")
     rank_badge = _format_rank_badge(str(rank.get("badge") or ""))
     rank_badge_class = html.escape(str(rank.get("badge_class") or "flat"))
@@ -177,7 +216,12 @@ def render_chart_card(
     streams_pct = str(streams.get("badge") or "").strip()
     streams_pct_class = html.escape(str(streams.get("badge_class") or "flat"))
 
-    extra_html = f'<div class="extra">{html.escape(extra)}</div>' if extra else ""
+    extra_html = (
+        f'<div class="extra">{extra_icon_svg}<span>{html.escape(extra)}</span></div>' if extra else ""
+    )
+    metric_note_html = f'<div class="metric-note">{html.escape(metric_note)}</div>' if metric_note else ""
+    subtitle_html = f'<div class="subtitle">{html.escape(subtitle)}</div>' if subtitle else ""
+    record_extra_height = RECORD_CARD_EXTRA_HEIGHT if record else 0
     rank_badge_html = (
         f'<span class="rank-badge {rank_badge_class}">{html.escape(rank_badge)}</span>'
         if rank_badge
@@ -197,17 +241,19 @@ def render_chart_card(
     footer_date = html.escape(footer_right)
 
     if layout == "square":
+        square_size = 1080 + record_extra_height
+        square_card_size = 984 + record_extra_height
         css = f"""
 *{{margin:0;padding:0;box-sizing:border-box}}
 body{{
-  width:1080px;height:1080px;
+  width:1080px;height:{square_size}px;
   background:{palette["outer_bg"]};
   font-family:Inter,-apple-system,'Helvetica Neue',Arial,sans-serif;
   color:#111827;overflow:hidden;
   display:flex;align-items:center;justify-content:center;
 }}
 .card{{
-  position:relative;width:984px;height:984px;
+  position:relative;width:984px;height:{square_card_size}px;
   background:#fff;border:1px solid {palette["border"]};border-radius:42px;
   box-shadow:0 28px 70px rgba(17,24,39,.10);
   overflow:hidden;
@@ -279,8 +325,9 @@ body{{
   position:absolute;left:72px;right:72px;top:666px;
   color:#6b7280;font-size:20px;font-weight:780;text-transform:uppercase;
   letter-spacing:.06em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
-  text-align:center;
+  text-align:center;display:flex;align-items:center;justify-content:center;gap:10px;
 }}
+.extra svg{{width:26px;height:19px;flex-shrink:0;border-radius:3px}}
 .metric-row{{
   position:absolute;left:72px;right:72px;top:718px;
   display:flex;align-items:center;justify-content:center;white-space:nowrap;
@@ -310,6 +357,12 @@ body{{
 }}
 .stream-pct.up{{color:#16a34a;background:#ecfdf3}}
 .stream-pct.flat{{color:#717989;background:#f3f4f6}}
+.metric-note{{
+  position:absolute;left:72px;right:72px;top:904px;
+  color:{palette["accent_dark"]};font-size:20px;font-weight:850;text-align:center;
+  text-transform:uppercase;letter-spacing:.03em;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}}
 .footer{{
   position:absolute;left:72px;right:72px;bottom:56px;
   display:flex;align-items:center;justify-content:space-between;
@@ -322,6 +375,18 @@ body{{
 }}
 .date{{font-weight:840;color:#8b95a1}}
 """
+        square_metric_block_html = (
+            f"""<div class="metric-row">
+      <span class="streams">{html.escape(streams_value)}</span>
+    </div>
+    <div class="streams-label">Streams</div>
+    <div class="change-row">
+      {delta_html}
+      {pct_html}
+    </div>"""
+            if has_streams
+            else ""
+        )
         return f"""<!doctype html><html><head><meta charset="utf-8"><style>{css}</style></head>
 <body>
   <div class="card{record_card_class}">
@@ -333,16 +398,10 @@ body{{
       {rank_badge_html}
       <span class="title">{html.escape(title)}</span>
     </div>
-    <div class="subtitle">{html.escape(subtitle)}</div>
+    {subtitle_html}
     {extra_html}
-    <div class="metric-row">
-      <span class="streams">{html.escape(streams_value)}</span>
-    </div>
-    <div class="streams-label">Streams</div>
-    <div class="change-row">
-      {delta_html}
-      {pct_html}
-    </div>
+    {square_metric_block_html}
+    {metric_note_html}
     <div class="footer">
       {_brand_html(footer_left)}
       <span class="date">{footer_date}</span>
@@ -350,17 +409,19 @@ body{{
   </div>
 </body></html>"""
 
+    wide_height = 344 + record_extra_height
+    wide_card_height = 312 + record_extra_height
     css = f"""
 *{{margin:0;padding:0;box-sizing:border-box}}
 body{{
-  width:920px;height:344px;
+  width:920px;height:{wide_height}px;
   background:{palette["outer_bg"]};
   font-family:Inter,-apple-system,'Helvetica Neue',Arial,sans-serif;
   color:#111827;overflow:hidden;
   display:flex;align-items:center;justify-content:center;
 }}
 .card{{
-  position:relative;width:888px;height:312px;
+  position:relative;width:888px;height:{wide_card_height}px;
   background:#fff;border:1px solid {palette["border"]};border-radius:24px;
   box-shadow:0 18px 38px rgba(17,24,39,.08);
 }}
@@ -381,8 +442,10 @@ body{{
   object-fit:cover;border-radius:19px;
   box-shadow:0 16px 28px rgba(17,24,39,.18);
 }}
+.card.record .cover{{top:50%;transform:translateY(-50%)}}
 .cover-ph{{background:#d9e4de}}
 .content{{position:absolute;left:272px;right:36px;top:30px;bottom:30px}}
+.card.record .content{{display:flex;flex-direction:column;justify-content:center;align-items:flex-start}}
 .pill{{
   display:inline-flex;align-items:center;gap:8px;
   background:{palette["accent"]};color:#fff;border-radius:999px;
@@ -414,7 +477,7 @@ body{{
 .rank-badge.down{{background:#fee2e2;color:#b91c1c;border-radius:999px;padding:6px 10px;font-size:19px;display:inline-flex;align-items:center;justify-content:center}}
 .rank-badge.flat{{background:#f1f5f9;color:#64748b;border-radius:999px;padding:6px 10px;font-size:19px;display:inline-flex;align-items:center;justify-content:center}}
 .title{{
-  color:#101827;font-size:{_title_font_size(title)}px;font-weight:950;
+  color:#101827;font-size:{_title_font_size(title, narrow=bool(rank_badge))}px;font-weight:950;
   line-height:1.02;letter-spacing:0;min-width:0;overflow:hidden;
   white-space:normal;display:-webkit-box;-webkit-line-clamp:2;
   -webkit-box-orient:vertical;
@@ -424,13 +487,30 @@ body{{
   line-height:1.1;
   max-width:570px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
 }}
+.card.record .subtitle{{
+  display:inline-flex;max-width:100%;text-transform:uppercase;letter-spacing:.03em;
+  background:{palette["accent_soft"]};color:{palette["accent_dark"]};
+  border-radius:10px;padding:8px 14px;font-size:16px;font-weight:850;
+  box-sizing:border-box;
+}}
 .extra{{
   margin-top:8px;color:#6b7280;font-size:14px;font-weight:750;
   text-transform:uppercase;letter-spacing:.05em;
+  display:flex;align-items:center;gap:8px;
 }}
+.extra svg{{width:20px;height:14px;flex-shrink:0;border-radius:2px}}
 .metric-row{{
   position:absolute;left:0;right:0;bottom:22px;
   display:flex;align-items:baseline;gap:16px;white-space:nowrap;
+}}
+.card.record .metric-row{{
+  position:static;margin-top:16px;
+}}
+.metric-note{{
+  display:inline-flex;max-width:100%;margin-top:8px;text-transform:uppercase;letter-spacing:.03em;
+  background:{palette["accent_soft"]};color:{palette["accent_dark"]};
+  border-radius:10px;padding:7px 13px;font-size:14px;font-weight:800;
+  box-sizing:border-box;
 }}
 .streams{{
   color:{palette["accent"]};font-size:46px;font-weight:950;line-height:1;
@@ -464,6 +544,16 @@ body{{
 .date{{font-weight:800;color:#8b95a1}}
 """
 
+    wide_metric_block_html = (
+        f"""<div class="metric-row">
+        <span class="streams">{html.escape(streams_value)}</span>
+        <span class="streams-label">Streams</span>
+        {delta_html}
+        {pct_html}
+      </div>"""
+        if has_streams
+        else ""
+    )
     return f"""<!doctype html><html><head><meta charset="utf-8"><style>{css}</style></head>
 <body>
   <div class="card{record_card_class}">
@@ -476,14 +566,10 @@ body{{
         {rank_badge_html}
         <span class="title">{html.escape(title)}</span>
       </div>
-      <div class="subtitle">{html.escape(subtitle)}</div>
+      {subtitle_html}
       {extra_html}
-      <div class="metric-row">
-        <span class="streams">{html.escape(streams_value)}</span>
-        <span class="streams-label">Streams</span>
-        {delta_html}
-        {pct_html}
-      </div>
+      {wide_metric_block_html}
+      {metric_note_html}
     </div>
     <div class="footer">
       {_brand_html(footer_left)}

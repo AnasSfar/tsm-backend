@@ -35,6 +35,7 @@ TWITTER_SESSION = default_twitter_session(REPO_ROOT)
 from twitter.text import stream_gainers_table_tweet, track_history_line  # noqa: E402
 from core.twitter import post_image_thread, post_with_image  # noqa: E402
 from comp.fmt import fmt_delta, fmt_num, fmt_signed  # noqa: E402
+from comp.discography import display_title_for_album  # noqa: E402
 from comp.tables_image import build_table_html, dominant_color_from_data_uri, era_accent_color, ledger_name_with_best_day, masthead_theme_for_date, render_html_to_png  # noqa: E402
 import best_day_since  # noqa: E402
 import generate_streams_image  # noqa: E402
@@ -199,7 +200,7 @@ def _build_gainer_ledger_rows_html(
             html.escape(str(entry.get("title") or row["track_id"])),
             best_day_labels.get(row["track_id"]),
         )
-        album = html.escape(str(entry.get("album") or row["track"].get("album") or "Taylor Swift"))
+        album = html.escape(display_title_for_album(str(entry.get("album") or row["track"].get("album") or "Taylor Swift")))
         cover_url = generate_streams_image.get_cover_url(entry, cover_map, track_album_map)
         cover = image_cache.get(cover_url, cover_url) if cover_url else ""
         art_html = (
