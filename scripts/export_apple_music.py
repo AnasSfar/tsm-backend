@@ -17,6 +17,7 @@ sys.path.insert(0, str(ROOT / "collectors" / "spotify"))
 from core.data_paths import (  # noqa: E402
     LEGACY_WEBSITE_DATA_DIR,
     WEB_EXPORT_DATA_DIR,
+    apple_music_charts_dir,
     apple_music_daily_csv_paths,
     first_existing,
 )
@@ -29,6 +30,8 @@ OUT_DIR = WEB_EXPORT_DATA_DIR
 GLOBAL_CSV = DB_DIR / "apple_music_global.csv"
 TOP_SONGS_CSV = DB_DIR / "apple_music_ts_top_songs_global.csv"
 TOP_VIDEOS_CSV = DB_DIR / "apple_music_ts_top_videos.csv"
+# Day-so-far TS Top Songs (collectors/apple_music/ts_top_songs_live.py), read for today only.
+TOP_SONGS_LIVE_FILENAME = "apple_music_ts_top_songs_global_live.csv"
 COUNTRY_CSV = DB_DIR / "apple_music_country_charts.csv"
 COUNTRY_ALBUMS_CSV = DB_DIR / "apple_music_country_albums.csv"
 GENRE_ALBUMS_CSV = DB_DIR / "apple_music_genre_album_charts.csv"
@@ -385,6 +388,46 @@ def build_top_songs(rows: list[dict[str, Any]]) -> tuple[dict[str, Any], dict[st
     return build_ranked_series(rows)
 
 
+def build_top_songs_live(
+    day: str, final_history: dict[str, list[dict[str, Any]]], final_dates: list[str],
+) -> dict[str, Any] | None:
+    """Today's in-progress TS Top Songs (sum of today's cycles so far, same
+    aggregation as the final chart). Separate key: never merged into the
+    final `ts_top_songs` / its history, and absent once no live file exists
+    for `day`. `previous_rank` is vs the last FINAL day, like the final chart."""
+    path = apple_music_charts_dir(day) / TOP_SONGS_LIVE_FILENAME
+    if not path.exists() or path.stat().st_size == 0:
+        return None
+    with path.open("r", encoding="utf-8-sig", newline="") as f:
+        rows = [row for row in csv.DictReader(f) if clean_str(row.get("date"))[:10] == day]
+    if not rows:
+        return None
+    # Same NEW vs re-entry rule as build_ranked_series: a song absent from the
+    # previous final but present in an earlier final day is a re-entry.
+    past_keys = {
+        _song_key(entry.get("song_name"))
+        for d, entries in final_history.items()
+        if d[:10] < day
+        for entry in entries
+    }
+    entries = []
+    for row in rows:
+        entry = normalize_song_entry(row)
+        if entry.get("previous_rank") is None and _song_key(entry["song_name"]) in past_keys:
+            entry["is_reentry"] = True
+        entries.append(entry)
+    return {
+        "date": day,
+        "scraped_at": clean_str(rows[0].get("scraped_at")),
+        "cycles": to_int(rows[0].get("live_cycles")) or 0,
+        "compared_to_day": clean_str(rows[0].get("compared_to_day")) or None,
+        # Real key of the latest FINAL chart (ts_top_songs_dates, taken before
+        # _mirror_flat_current_to_latest copies it onto the current hour).
+        "final_date": max((d for d in final_dates if d[:10] < day), default=None),
+        "entries": sort_entries(entries),
+    }
+
+
 def build_country(rows: list[dict[str, Any]]) -> tuple[dict[str, Any] | None, dict[str, dict[str, list[dict[str, Any]]]], list[str]]:
     # history format attendu par ton JS:
     # historyData.country[date][country] = [...]
@@ -739,6 +782,7 @@ def main() -> None:
         "last_charted": last_charted,
         "global_chart": global_current,
         "ts_top_songs": top_current,
+        "ts_top_songs_live": build_top_songs_live((run_scraped_at() or today_day)[:10], top_history, top_dates),
         "ts_top_videos": top_video_current,
         "country_charts": country_current,
         "country_album_charts": country_album_current,

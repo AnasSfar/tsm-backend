@@ -569,7 +569,8 @@ def compute_spotify_rank_since_highlight(song_map: dict, tracks_by_id: dict) -> 
 
 def compute_apple_music_rank_since_highlight(song_map: dict) -> dict | None:
     """Single strongest "best rank since" record for Apple Music's Global
-    chart — never emits kind="best_ever" (see best_rank_since.py docstring)."""
+    chart. kind="best_ever" only for songs backed by the owner reference
+    db/apple_music_global_alltime_peaks.json (see best_rank_since.py)."""
     row = apple_music_best_rank_since.compute_apple_music_rank_since(min_days=RANK_SINCE_MIN_DAYS)
     if not row:
         return None
@@ -734,6 +735,8 @@ def compute_highlights() -> list[dict]:
                 "title": song_title(a),
                 "otherTitle": song_title(b),
                 "image": song_image(a),
+                # Both covers are shown on the card (overtaker + overtaken).
+                "otherImage": song_image(b),
                 "date": latest_date,
             })
 

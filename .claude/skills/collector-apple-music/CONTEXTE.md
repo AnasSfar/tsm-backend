@@ -15,7 +15,11 @@ Le pipeline coeur (`run_apple_music.py`) ne poste pas sur X. `--no-post` existe
 dans le runner mais n'est pas un controle de publication Twitter. Ne fait
 jamais de commit/push git (seul l'upload R2 distribue la donnee).
 **Exception depuis le 2026-09-24** : `post_new_release_progression.py`, lance
-en 3e ligne du `.bat`, poste sur X — voir section « Progression horaire des
+en fin de chaque chaine (`--platform apple_music` : depuis le 2026-09-25 demarre PAR
+`run_apple_music.py` des que `global.py` + `country_all.py` ont fini (`POST_INPUTS`, sans attendre
+genre_all / ts_page_all), en parallele du reste et de export/upload/images
+— posts ~HH:02-03 au lieu de ~HH:18 ; plus de ligne dans `run_apple_music.bat`,
+`--platform itunes` dans `collectors/itunes/run_itunes.bat`), poste sur X — voir section « Progression horaire des
 nouvelles sorties » plus bas.
 
 Scheduler : prod tourne **en local via le Planificateur de taches Windows**
@@ -31,8 +35,34 @@ sur l'API Apple). Fix applique le 2026-09-24 : `.env` fixe
 `APPLE_MUSIC_SNAPSHOT_HOURS=0,1,...,23` (et `ITUNES_SNAPSHOT_HOURS` pareil,
 cf. skill `collector-itunes`) pour que chaque heure produise reellement son
 propre snapshot.
-**Depuis le 2026-09-09, `run_apple_music.bat` lance aussi `collectors/itunes/run_itunes.py`
-juste apres** (charts d'achats iTunes Store — collecteur separe, skill
+**Garde-fous des 2 collecteurs (2026-09-25, recap)** :
+- verrou mono-instance + heure sautee (sortie 75) + alertes ntfy sur tout echec : `collectors/spotify/core/run_guard.py` ;
+- sortie **3** = echec deja alerte par Python ; tout AUTRE code non nul fait alerter le `.bat` lui-meme via
+  `%SystemRoot%\System32\curl.exe` -> ntfy (crash avant que Python puisse alerter : import, interpreteur) ;
+  teste : 0/3/75 -> rien, 1/9009 -> alerte ;
+- iTunes : feed US/UK (`ITUNES_CRITICAL_STOREFRONTS`) de moins de `ITUNES_MIN_CRITICAL_FEED_ENTRIES` (50)
+  entrees = echec (reessai puis abandon + alerte), jamais publie comme « Taylor absente du chart » ;
+- **Toujours reessayer (proprio 2026-09-25 : « si quelque chose echoue on reessaie toujours »)** :
+  `run_guard.retry_step` (3 essais, `RUN_RETRY_ATTEMPTS`) sur collecte iTunes / export / upload des 2
+  collecteurs ; Apple Music relance chaque collecteur bloquant en echec (et relance les posts si c'etait
+  global.py/country_all.py) ; posts X via `post_with_retries` (3 essais, 30 s, `APPLE_MUSIC_DEBUT_POST_ATTEMPTS`
+  / `_RETRY_WAIT`) ; guet : fetch express 5 essais, collecte complete 3 essais. L'alerte ne part qu'apres le
+  dernier echec. **Exception** : post « non confirme apres clic » = peut-etre en ligne -> JAMAIS repost
+  (doublon), compte comme poste + alerte haute « verifie le compte ».
+- posts contenant un DEBUT : priorite 0 et attente du slot X jusqu'a 15 min (`APPLE_MUSIC_DEBUT_FIRST_POST_*`) ;
+- controle pre-sortie (`release_watch.preflight`, a l'ouverture de la fenetre de guet) : collectes < 90 min,
+  feed iTunes US + API lookup joignables, > 2 Go libres, profil Chrome X present -> UNE notif « armed » (basse)
+  ou la liste des problemes (haute). La connexion X elle-meme n'est pas verifiable sans navigateur : un post
+  rate reste alerte + retente.
+**Garde-fous 2026-09-25** (`collectors/spotify/core/run_guard.py`, partage avec iTunes) : verrou
+mono-instance `tools/locks/run_apple_music.lock` (PID vivant = heure sautee + alerte, sortie 75 ; jamais
+vole sur l'age : un run endormi par la veille reste proprietaire), alertes ntfy sur echec des collecteurs
+bloquants / export / upload R2 / crash, et la notification Global en echec ne bloque PLUS l'upload R2
+(avant : `sys.exit(1)` = heure absente du site). Le runner attend la fin des posts avant de rendre le verrou.
+**Depuis le 2026-09-24 (soir, veille de The Encore) : iTunes tourne EN PARALLELE d'Apple Music**, plus apres — demande proprietaire « updated independently, whoever is ready first is posted first ». `run_apple_music.bat` lance d'abord `start "" /b cmd /d /c "<chemin absolu>\collectors\itunes
+un_itunes.bat"` (chaine iTunes = `run_itunes.py` puis `post_new_release_progression.py --platform itunes`, log de post `collectors/apple_music/post_new_release_progression_itunes.log`), puis Apple Music puis `post_new_release_progression.py --platform apple_music` (log `post_new_release_progression.log`). Les posts iTunes partent ~HH:03 au lieu de ~HH:20. **Piege** : avec un chemin relatif, le cmd enfant ne trouvait pas le `.bat` (teste) -> chemin absolu + `/d` obligatoires. Verifie : la chaine iTunes continue si le `.bat` parent se termine avant. Course sans risque : cache du jeton MusicKit ecrit atomiquement (`core/token.py`), `resolve_storefronts` a un fallback fixe, `export_itunes.py` ecrit `itunes.json` en tmp + `os.replace` (lu par `generate_home_highlights.py` cote Apple Music).
+Historique : depuis le 2026-09-09, `run_apple_music.bat` lancait `collectors/itunes/run_itunes.py`
+juste apres Apple Music (charts d'achats iTunes Store — collecteur separe, skill
 `collector-itunes`, meme cadence, log `collectors/itunes/run_itunes.log`,
 tourne quel que soit le code de sortie d'Apple Music). Ne pas casser la 2e
 ligne du `.bat` en modifiant la 1re. **Les deux appels python du `.bat`
@@ -46,7 +76,7 @@ seulement le log local) que le run de minuit uploade bien chaque jour
 etait des trous eparpilles (~1-3 creneaux/jour sur 12, dus a des cycles qui
 debordent sur le creneau suivant + `MultipleInstances=IgnoreNew` qui saute
 alors silencieusement le trigger suivant), pas un trou systematique a
-minuit. Si un site parait ne pas avoir la derniere donnee juste apres
+minuit. **Correction 2026-09-25 (audit)** : IgnoreNew ne s'applique en fait JAMAIS — `run_apple_music_hidden.vbs` lance le `.bat` sans attendre (`shell.Run ..., 0, False`), la tache se termine en ~1 s ; le Planificateur ne voit donc ni chevauchement ni blocage, et les runs horaires peuvent se chevaucher (constate le 24 a 21:24). Les trous observes venaient surtout de la mise en veille du laptop (couvercle). Garde-fou iTunes : verrou mono-instance dans `run_itunes.py` (voir skill `collector-itunes`). Apple Music : pas encore de verrou. Si un site parait ne pas avoir la derniere donnee juste apres
 l'heure pile, le run est probablement juste encore en cours (bufferise avant
 le fix ci-dessus) plutot que casse. Pour verifier directement sans attendre
 le prochain run visible sur le site : lister `apple-music/snapshots/` /
@@ -73,7 +103,142 @@ son **propre** etat « dernier rang vu » par (titre, chart, pays) au lieu de
 reutiliser le champ `previous_rank` des CSV (dont la semantique differe deja
 entre Global — vs hier — et pays/iTunes — vs le cycle precedent) :
 
-- **Detection** : `core/discography.py::iter_catalog_tracks()` (factorise
+- **Refonte nuit du 2026-09-24 (veille de The Encore, suite a 2 audits)** —
+  remplace les regles ci-dessous la ou elles divergent :
+  - **Sortie detectee automatiquement** (proprio : « the debut is the first time
+    they appear at the charts or are able to be bought ») : `release_date` du
+    catalogue ne rend un titre que *candidat* (48 h avant -> fenetre + 48 h apres).
+    La fenetre de 72 h demarre au 1er cycle ou le lookup public iTunes
+    (`itunes.apple.com/lookup?id=...&country=<pays cles>`) dit `isStreamable` ou
+    donne un `trackPrice`, ou ou le titre apparait sur un chart. Memorise dans
+    l'etat (`__released_at|<cle>`). Apple injoignable ET pas d'id connu -> repli
+    `release_date + APPLE_MUSIC_DEBUT_FALLBACK_HOURS` (defaut 6). Le `releaseDate`
+    d'Apple sur ces lignes est faux (09-24T07:00Z) -> jamais utilise.
+  - **Matching par id Apple OU titre** : `KNOWN_APPLE_IDS` (ids iTunes des 4 titres
+    Encore, lookup de l'album 6814997249). Les ids Apple Music et iTunes d'un meme
+    titre peuvent differer (Ophelia 1833328840 vs 6814997402) et les editions
+    clean/explicit ont chacune le leur -> le titre reste en repli ; meilleur rang
+    retenu quand les 2 editions chartent.
+  - **Etat = dernier rang POSTE** : mis a jour seulement apres un post reussi ->
+    un post rate (slot X occupe, echec navigateur) est retente au cycle suivant
+    (avant : etat sauve avant le post = debut perdu). `NEW` = jamais poste sur ce
+    chart -> plus de crash `delta=None`.
+  - **`--dry-run`** (texte seulement) et **`--no-post`** (card rendue) n'ecrivent
+    plus rien (ni etat ni lock) — avant ils mangeaient les vrais posts.
+  - **Volume** (`post_due`, revu 2026-09-25 jour J : le chart iTunes est LIVE, il bouge
+    chaque minute) : debut sur un chart cle ou nouveau #1 = poste immediatement ;
+    autre nouveau peak (quel que soit le rang, meme si tous les autres ont baisse) =
+    immediatement, sauf si ce titre a ete poste il y a moins de
+    `APPLE_MUSIC_DEBUT_PEAK_GAP_MINUTES` (15) -> attend, et le post suivant porte tous les
+    peaks atteints entre-temps (un post au lieu de #5->#4->#3 en trois) ; sinon
+    une montee au plus toutes les `APPLE_MUSIC_DEBUT_MIN_GAP_HOURS` (defaut 3) par
+    (titre, plateforme) ; baisses seules jamais postees sauf
+    `APPLE_MUSIC_DEBUT_POST_DROPS=1`.
+  - **Tweet** (`build_tweet_text`, proposition 2026-09-24 en attente de
+    validation proprio) : emoji d'album (`album_emoji` -> ❤️‍🔥) au lieu de 🎧, rang
+    reel du meilleur evenement en tete, autres marches groupes par rang, puis sur
+    CHAQUE tweet une ligne mondiale `🌍 Now #1 in N countries, top 10 in M and charting
+    in K on <plateforme> worldwide.` sur TOUS les storefronts du CSV (paliers egaux
+    omis, rien si < 2 pays) — valide proprio 2026-09-25. Jamais de card mono-pays :
+    la card liste toujours tous les charts cles du titre. Ex. :
+    `❤️‍🔥 | "Babylon" debuts at #1 on iTunes in the US — also #1 in the UK & France, #2 in Canada, #3 in Australia.`
+  - **Card album Global** : seulement si un titre Encore est deja sur le Global
+    (sinon elle postait une card d'anciens titres entre 02:00 et la vraie sortie).
+    Tweet : `❤️‍🔥 | "<album affiche>" songs on the Global Apple Music chart right now:`.
+  - **Isolation + alertes ntfy** (`NTFY_TOPIC_APPLE_MUSIC`) : chaque titre / la card
+    album en try/except ; alerte sur crash, post rate, « sortie detectee » (chaine
+    iTunes), et titre sorti depuis >= 2 h mais absent de tous les charts iTunes cles.
+  - **Ajouts 2026-09-25 (proprio : « ajoute ce qui n'y figure pas »)** :
+    - **Card album iTunes** (chaine iTunes) : l'edition (`KNOWN_ALBUM_IDS`, cle = titre
+      affiche, ids explicit 6814997249 + clean 6814995859, repli titre exact — une
+      ancienne edition « The Life of a Showgirl » ne matche jamais) sur le Top Albums
+      iTunes des pays cles (sources `kind="album"`, `itunes_top_albums.csv`), memes
+      regles que les titres (debut / #1 / peak immediat, sinon 3 h, pas de baisse
+      seule), ligne mondiale sur le Top Albums. Tweet :
+      `❤️‍🔥 | "The Life of a Showgirl: The Encore" debuts at #1 on the iTunes albums chart in the US — also ...`
+    - **Card Global normale Apple Music** (chaine Apple Music, `_post_global_snapshot`) :
+      tous les titres de Taylor sur le Global (`generate_snapshot_images --region global`)
+      postee a chaque changement du Global pendant la fenetre, AVANT la card album
+      Global. 1er passage = baseline sans post (`global_snapshot|global`). Tweet :
+      `🌍 | Taylor Swift songs on the Global Apple Music chart right now:`.
+    - **Card Pop par marche cle (proprio 2026-09-25, `_post_pop_snapshot`)** : les charts
+      genre n'etaient suivis par AUCUN post (US Pop #2, CA/AU Pop #1 le jour de l'Encore,
+      rien poste). Post SEPARE (choix proprio, pas des lignes dans la card par titre), une
+      card par pays = `generate_snapshot_images --region <cc> --genre Pop` (meme card que
+      le Global). Pays : `APPLE_MUSIC_DEBUT_POP_COUNTRIES` (defaut = marches cles). Ne
+      poste QUE sur un evenement fort d'un titre en fenetre (regle validee proprio) : #1,
+      debut dans le top 10, entree dans le top 10, nouveau peak dans le top 10. Tout
+      mouvement hors top 10 (UK/FR #41-#199) = rien. Etat `pop|<titre>|<cc>` = {rank, peak}
+      du dernier cycle vu ; avance sans post quand pas d'evenement, seulement apres un
+      post reussi sinon (retry au cycle suivant) ; lock `pop_snapshot_<cc>_<scraped_at>`.
+      Tweet (prefixe = drapeau du pays depuis 2026-09-25, `_flag_emoji`, emoji album en repli) : `🇨🇦 | "Patient Zero" is now #1 on the Apple Music Pop chart in Canada!` /
+      `debuts at #2 ... in the US.` / `hits a new peak of #N` / `enters the top 10 ... at #N`,
+      puis `Also: "X" #3, ...`, `Taylor Swift songs on the Apple Music Pop chart in <pays>
+      right now:` + lien amcharts.
+    - **Thread des chansons (proprio 2026-09-25)** : quand >= 2 chansons sont a poster dans
+      un meme cycle d'une plateforme, elles partent en UN thread natif
+      (`_post_group` -> `post_image_thread`, chaque post avec sa card) : 1er post =
+      `🧵 | "<album>"'s songs on the Apple Music charts.` (ou iTunes) + le tweet de la
+      meilleure chanson (lien retire d'abord, puis le « — also ... » si > 275), replies = les
+      autres chansons. **Des qu'une chanson declenche un post, le thread embarque TOUTES les
+      chansons en fenetre** (proprio : « since it's a thread every song should go in ») — celles
+      qui n'ont pas bouge / sont retenues par `post_due` y vont avec leur rang actuel
+      (`is now #N`, jamais « hits »), lock par chanson ignore pour elles (lock du thread), et
+      tout le thread est trie par importance (le 1er post = la meilleure chanson, pas forcement
+      celle qui a declenche). Jamais de thread fait uniquement de chansons immobiles.
+      Album card, Global, Pop, carte album iTunes restent des posts
+      independants. Une seule chanson = post normal. X non confirme apres le clic
+      (`thread non confirme apres clic`) = jamais reposte (meme regle que post_with_image).
+    - **Card album Apple Music (proprio 2026-09-25)** : sources `am_albums_<cc>`
+      (`apple_music_country_albums.csv`), meme card/texte que la card album iTunes
+      (« hits #1 on the Apple Music albums chart in the US — also ... »).
+    - **NEW = vraiment absent avant** : sans etat pour un chart, le rang precedent vient du
+      dernier cycle reel du CSV (`_previous_cycle_rank`) ; l'album Encore etait deja classe
+      des 00:00 -> la 1re preview marquait tout « NEW » (faux). Un chart jamais poste compte
+      comme `moved` (1er post meme si rang inchange vs le cycle CSV precedent).
+    - **Drapeau en prefixe des posts mono-region (proprio 2026-09-25)** : card Pop par pays et
+      card album iTunes par pays -> `🇺🇸 |` au lieu de l'emoji album. `_flag_emoji(cc)` =
+      2 indicateurs regionaux depuis le code storefront (`gb` -> 🇬🇧) ; code pas a 2 lettres ->
+      emoji album. Windows affiche ces drapeaux en lettres « US » (pas de police drapeau) : c'est
+      l'affichage local, X rend le drapeau — ne pas « corriger ». Nom de pays dans le texte =
+      nom complet (`country_label`), jamais le code (« in DE »). Posts multi-regions (cards
+      par titre) et Global (🌍) inchanges.
+    - **5 marches cles surlignes sur les cards (proprio 2026-09-25)** : ligne teintee accent +
+      barre a gauche + ★ (`tr.oct-key`, `KEY_COUNTRIES`).
+    - Au debut : iTunes = 4 titres + 1 album ; Apple Music = 4 titres + card Global +
+      card album Global (quand le Global se met a jour).
+    - Garde-fou longueur : poids X (lien = 23, emoji = 2), extras retires au-dela de 275.
+      **Et** longueur brute <= 275 : `twitter.py::_validate_tweet_lengths` refuse tout texte
+      > 280 caracteres BRUTS (sans ponderation du lien) — le tweet album Encore (283 bruts,
+      ~265 pour X) a echoue 3x le 2026-09-25 a 15h. Le plus strict des deux decide.
+  - **Toutes les regions sur la card (proprio 2026-09-25)** : la card liste TOUS les pays ou le titre
+    est classe (iTunes : jusqu'a ~170 ; Apple Music : Global + tous les pays), comme la share image du
+    site — `build_sources` prend tous les pays du CSV du jour. Seuls les marches cles (+ Global,
+    `"key": True`) DECLENCHENT un post et nourrissent le texte ; les autres sont dans la card et la
+    ligne mondiale. Noms de pays : `core/card_theme.py::COUNTRY_NAMES` complet (175). **Storefront `il` = « Occupied Palestine » + drapeau de la
+- **Incident 2026-09-25 10:00 (corrigé)** : la chaîne Apple Music croyait l'Encore « pas encore sorti » (API lookup Apple encore `isStreamable=false`/sans prix 5 h après la sortie, titres absents de tous les charts AM car pas encore de streams comptés) → aucun titre en fenêtre → **card Global jamais postée**. Correctifs : (1) `resolve_released_at` reprend la sortie détectée par l'autre chaîne (état `__released_at|<key>` des deux fichiers d'état) ; (2) 1er passage Global = comparaison au cycle Global précédent du CSV (`_previous_global_signature`, sinon la veille) → posté s'il diffère, au lieu d'une simple baseline muette. Ne jamais se fier à l'API lookup seule pour « sorti ».
+- **Ordre des pays à rang égal** (cards + texte des tweets de `post_new_release_progression`, proprio 2026-09-25) : comme le site (`tsm-frontend/frontend/src/utils/marketWeights.js`) — plus gros store d'abord selon `AM_MARKET_WEIGHTS` (importé de `ts_page_all.MARKET_WEIGHTS`, table identique à TayBoard et au frontend, 36 pays, défaut 0.08), puis code pays ; Global toujours en tête (`_market_order`). Si la table change, la changer aux 3 endroits.
+    Palestine (`ps`)** partout (convention du site : `i18n.js::regionLabel`, `RegionFlag.jsx`) — jamais « Israel ». Perf : `_index`
+    (lecture unique par CSV, cles de correspondance precalculees, lignes par pays) ; drapeaux en cache
+    disque `tools/cache/flags/` (gitignore). Mise en page (`_column_count`, choisie par le proprio sur
+    des rendus reels) : 1 col <= 20 lignes, 2 cols 21-60, 3 cols au-dela (~30 lignes max par colonne,
+    jamais 4 : 168 lignes = 3x56, encore ~portrait) ; largeurs `CARD_WIDTH_BY_COLS` 780/1000/1500 ;
+    rendu x2 au-dela de 24 lignes. Reference : 59 lignes = 2000x2330, 71 = 3000x1944, 168 = 3000x4004
+    (~1 Mo). Variantes : `previews_and_sims/apple-music-debut-progression/card_sizes.py` / `card_rule.py`. Rendu reel verifie :
+    `previews_and_sims/apple-music-debut-progression/real_cards_allregions.py`.
+  - **Vitesse (2026-09-25, « je veux être le premier à poster »)** :
+    - ordre de post = importance (`_importance` : un #1 d'abord, US d'abord, puis meilleur rang ;
+      a egalite l'album passe avant le titre) — 2 passes : decider, trier, poster ;
+    - mode express `run_platform(..., express={song, album})` utilise par
+      `collectors/itunes/release_watch.py` : lignes des 5 pays cles seulement, jamais de ligne
+      mondiale partielle, pas de cards Global ; le run complet suivant ne reposte que ce qui a bouge ;
+    - `platform_lock` (verrou OS `tools/locks/new_release_progression_<platform>.run.lock`,
+      attente max `APPLE_MUSIC_DEBUT_LOCK_WAIT` = 1200 s) serialise le post horaire et l'express
+      (etat partage, jamais de mise a jour perdue). Sim : `.../express.py`.
+  - Simulation de reference : `previews_and_sims/apple-music-debut-progression/release_night.py`
+    (les anciens `simulate.py` / `audit_*.py` monkeypatchent `_build_card_and_tweet`,
+    qui n'existe plus : scinde en `build_tweet_text` + `render_card`).
+- **Detection (version initiale, remplacee — voir ci-dessus)** : `core/discography.py::iter_catalog_tracks()` (factorise
   depuis `generate_snapshot_images.py` le meme jour) -> tout titre dont
   `release_date` tombe dans les dernieres `APPLE_MUSIC_DEBUT_WINDOW_HOURS`
   (defaut 72h) avant `now`, jamais dans le futur. Matching par titre
@@ -110,7 +275,8 @@ entre Global — vs hier — et pays/iTunes — vs le cycle precedent) :
   le titre apparaît actuellement (pas seulement ceux qui ont bougé), triés
   bougé-d'abord puis par rang — premiere apparition = badge "(NEW)", sinon
   delta vs dernier rang connu dans l'etat
-  (`tools/json/new_release_progression_state.json`), jamais egal -> pas
+  (`tools/json/new_release_progression_state_<platform>.json` — un fichier par
+  plateforme depuis le 2026-09-24 au soir, les 2 process tournent en parallele), jamais egal -> pas
   inclus dans le déclenchement (mais toujours affiché dans la ligne du
   tableau s'il apparaît).
 - **Card = la share image du site (4e correction proprietaire 2026-09-24 :
@@ -164,6 +330,9 @@ entre Global — vs hier — et pays/iTunes — vs le cycle precedent) :
   badge **"NEW"** dans la cellule Peak (+ "(NEW)" dans Ranking), jamais
   "NEW PEAK" (demande proprietaire 2026-09-24). Un titre deja vu dans les CSV
   mais absent de l'etat (1er run du script tardif) n'est PAS un "NEW".
+  **Badge "RE-PEAK"** (proprio 2026-09-25) : rang == peak d'avant ce cycle ET le
+  dernier rang poste etait plus bas (`re_peak`) — meme pastille que NEW PEAK.
+  (Depuis la refonte de la nuit du 24, `NEW` = jamais poste sur ce chart.)
 - **Post X** : compte `@swiftiescharts` (meme session que le chart Global,
   `collectors/spotify/charts/global/tools/json/twitter_session.json`),
   `TWITTER_POST_PRIORITY` = `APPLE_MUSIC_DEBUT_POST_PRIORITY` (defaut **1**,
@@ -192,11 +361,14 @@ entre Global — vs hier — et pays/iTunes — vs le cycle precedent) :
   Etat ecrit seulement apres un post reussi (un slot X occupe retente au
   cycle suivant). Lock `album_snapshot_<album>_<scraped_at>.lock`, PNG
   `album_snapshot_<album>_<scraped_at>.png` dans `OUT_DIR`, tweet
-  `🎧 | "<album affiche>" songs on the Global Apple Music chart (<date · heure>).`
+  (texte remplace la nuit du 2026-09-24, voir « Refonte » ci-dessus)
   + lien `amcharts/applemusic`. Poste apres les cards par titre du cycle.
   Simulee dans `previews_and_sims/apple-music-debut-progression/simulate.py`
   (fixtures/<date>/ + copie reelle du Global 09-24 comme baseline).
-- Log dedie : `collectors/apple_music/post_new_release_progression.log`.
+- Logs dedies : `collectors/apple_music/post_new_release_progression.log` (Apple Music + card album)
+  et `post_new_release_progression_itunes.log` (iTunes). `--platform {all,apple_music,itunes}`
+  (defaut `all` = les deux a la suite, pour un run manuel ; la card album Global ne part que
+  dans le run `apple_music`).
 
 ## Entrypoint
 
@@ -230,6 +402,46 @@ Le runner lance, avec le meme `--scraped-at`:
    inchanges, titre = nom d'album affiche (`display_title_for_album`), PNG
    suffixe (`global_the-life-of-a-showgirl.png`) pour ne pas ecraser l'image
    standard. Le runner ne passe pas `--album` (usage manuel uniquement).
+   **Colonne PEAK (cards `--album` uniquement, 2026-09-24)** :
+   `make_peak_resolver` = meilleur rang sur ce chart parmi **tous les cycles**
+   collectes depuis le jour de sortie du titre (meme semantique que les cards
+   pays de `post_new_release_progression`), badge `NEW` (1re apparition
+   depuis la sortie) / `NEW PEAK` (bat tous les cycles precedents) / `RE-PEAK`
+   (egale le peak en revenant d'un rang plus bas au cycle precedent, proprio
+   2026-09-25 — aussi valable avec les peaks de reference), pastille
+   rouge Apple Music. Historique lu dans `snapshots/apple_music_charts/`
+   puis, a defaut, dans le dossier legacy `data/<jour>/apple_music/`
+   (`legacy_apple_music_daily_csv`, 2026-03-22 -> 2026-06-04, memes colonnes ;
+   les 5 premiers jours ont `chart_type` vide -> accepte comme Global).
+   Historique partiel (titre sorti avant `APPLE_MUSIC_HISTORY_START` =
+   2026-03-22, ex. Ophelia/Opalite, ou jour de sortie sans snapshot) -> peak
+   calcule sur les jours collectes seulement, affiche `#N` + legende grise
+   `best in 2026` (decision proprietaire 2026-09-24 ; a partir de 2027 la
+   legende devient `since Mar 22, 2026`, et un jour de sortie manquant pour
+   un titre plus recent donne `since <1er jour collecte>`), et JAMAIS
+   de badge NEW/NEW PEAK (le titre a pu debuter/culminer plus haut avant
+   notre historique) — valide proprietaire 2026-09-24. **Exception Global
+   (2026-09-25)** : si le titre est dans `db/apple_music_global_alltime_peaks.json`
+   (peaks Global de tous les temps fournis par le proprio : les 12 titres de
+   Showgirl standard, sortis le 2025-10-03), peak = min(reference, jours collectes),
+   sans legende `best in`, et `NEW PEAK` si le rang bat les deux. Donnee de
+   reference, jamais fusionnee dans l'historique collecte. Le meme fichier porte
+   aussi `best_2026_jan1_jun1` (Kworb top 200, fourni le 2026-09-25) — purement
+   informatif, ne change aucun badge (le peak de tous les temps est toujours <=).
+   Aucun jour collecte
+   -> tiret. Les dates du
+   catalogue sont des timestamps ISO -> on garde `[:10]`.
+   **Depuis le 2026-09-25 (proprio) : colonne PEAK sur TOUTES les cards**
+   (regions/genres/Global, plus seulement `--album`) -> badges NEW PEAK / RE-PEAK
+   sur les cards de region (US Pop, Global...) et donc sur les posts Pop/Global.
+   Titre a historique partiel : toujours jamais NEW/NEW PEAK, mais badge
+   **`BEST IN 2026`** (choix proprio) quand le rang bat son meilleur des jours
+   collectes (ou `BEST SINCE <DATE>` hors 2026 / release sans snapshot) ; la
+   legende grise `best in 2026` reste sous le peak. Perf : les lignes
+   (scraped_at, song, rank) des jours PASSES sont cachees par chart dans
+   `collectors/apple_music/tools/cache/peak_rows/<region>_<genre>/<jour>.json`
+   (gitignore, reconstructible) — sans ca une card Pop relisait ~20 Mo de CSV
+   genre par jour depuis le 22 mars (35 s/card ; 6,8 s cache chaud).
 10. `scripts/upload_ap_r2.py`, sauf `UPLOAD_TO_R2=0`
 
 Options runner:
@@ -279,6 +491,7 @@ Scripts combines quotidiens:
   l'autre ; le fallback previous_rank par nom couvre ce cas). Verifie : 1 seul
   merge discutable (Teardrops on My Guitar absorbe son "Radio Single Remix" car
   Apple leur met le meme ISRC — accepte).
+  **Fusion chart (2026-09-25)** : par storefront, les titres TS presents dans le chart Apple Music Top Songs du pays (top `CHART_LIMIT`=200, meme endpoint que `country_all.py`, recupere dans le meme cycle) passent **en tete, dans l'ordre du chart**, puis le reste de la liste page-artiste dans son ordre (dedup par `apple_music_id` ou ISRC) — `merge_chart_into_top_songs`. Raison : la vue `top-songs` de la page artiste Apple met des heures a integrer une nouvelle sortie (Showgirl Encore : #1-#4 du chart UK, absents de la page artiste UK jusqu'a l'apres-midi → #105-#282 au TS Top Songs). TS Top Songs est notre chart, on peut melanger. `ts_page.py` (input TayBoard) n'est PAS concerne. Chart en 400 = pas de chart dans ce pays → liste page-artiste seule.
   Pagination plafonnee a
   `APPLE_MUSIC_TS_GLOBAL_DEPTH` (**defaut 400 = 4 pages/storefront depuis le
   2026-09-10**, avant 200 — le catalogue TS complet fait ~675 titres/storefront,
@@ -383,6 +596,25 @@ Exports:
 Les CSV sont la source complete. Les JSON frontend peuvent etre fenetres ou
 precalcules.
 
+### TS Top Songs « live » du jour (2026-09-24)
+
+Decision produit : au lieu d'attendre le lendemain pour voir le classement TS
+Top Songs du jour, le site montre un classement **cumule du jour en cours**
+(cycle 1, puis 1+2, ... jusqu'au dernier) — `ts_top_songs_live.py`, meme
+`compute_final_rows()` que la finalisation, donc apres le dernier cycle il EST
+le final (test d'identite dans `previews_and_sims/ts-top-songs-live/simulate.py`,
+a relancer apres toute modif de `core/ts_top_songs_daily.py`). Regles :
+- toujours etiquete « en cours » (N mises a jour, heure de la derniere) ;
+  jamais publie/utilise comme jour final (TayBoard, posts, notifs, finalize
+  lisent le CSV canonique uniquement) ;
+- mouvements = vs dernier jour FINAL (meme reference que le final) ;
+- cle separee `ts_top_songs_live` dans `applemusic.json`, **ne pas utiliser
+  `ts_top_songs.date` comme date du final** : l'export mirrore le final sur
+  l'heure courante, cette cle vaut « aujourd'hui HH:00 » -> `final_date` vient
+  de `ts_top_songs_dates` (vraies dates de mise a jour) ;
+- front : live par defaut des 3 cycles (`TS_LIVE_MIN_CYCLES`, AppleMusic.jsx),
+  final avant ; jamais sur une date passee choisie dans le calendrier.
+
 ### Objets history-by-song + gzip R2 (2026-09-24)
 
 `upload_ap_r2.py::finalize_payload` applique maintenant, par source :
@@ -397,8 +629,15 @@ precalcules.
    pour les metadonnees. Si l'API se met a lire un de ces champs sur d'autres
    points, revoir `_POINT_META_FIELDS`.
 3. **Gzip** (`upload_json_if_changed(..., compress=True)`, `ContentEncoding:
-   gzip`) pour les per-song et `data/applemusic_history.json` ;
-   `applemusic.json`, snapshots et history-by-date restent en clair. Le hash
+   gzip`) pour les per-song, `data/applemusic_history.json` et (2026-09-24)
+   `apple-music/history-by-date/*.json` sauf `index.json` (4,2 Mo -> ~300 Ko ;
+   `/api/apple-music` en lit 2 a 5 par requete froide : heure courante +
+   comparaison yesterday/last). `applemusic.json` et snapshots restent en
+   clair. Un objet deja au bon hash mais pas encore gzippe est re-uploade une
+   fois (`upload_json_if_changed` regarde `ContentEncoding`) ; `scripts/r2.py`
+   gzippe le meme prefixe (`_GZIP_KEY_PREFIXES`), sinon le dernier uploader
+   passe ferait rebasculer le format. Migration faite le 2026-09-24 (97
+   objets, sortie API verifiee identique par hash, local + prod). Le hash
    `Metadata.sha256` porte toujours sur le JSON **non compresse** (meme
    serialisation que `scripts/r2.py`, donc pas de re-upload en boucle).
    Lecteur : `tsm-frontend api/data/loader.py::_r2_json` degzippe sur les
@@ -484,6 +723,15 @@ bloquant) `scripts/generate_home_highlights.py --quiet` juste apres
 `maybe_upload_to_r2()`. Regenere `cache/home_highlights.json` et
 `cache/version.json` sur R2 (lus par `tsm-frontend/api`).
 
+**Piege vecu 2026-09-24 (runs 15h-17h)** : le refresh highlights etait appele
+APRES `job.result()` des images ; un `UnicodeEncodeError` (stdout du .bat en
+cp1252, relais d'une sortie enfant contenant U+FFFD) faisait planter
+`main()` avant -> highlights bloques sur l'heure precedente alors que
+`/api/version` affichait la nouvelle. Fix : stdout/stderr reconfigures en
+UTF-8 en tete de `run_apple_music.py`, `PYTHONIOENCODING=utf-8` dans
+`child_env()`, refresh highlights juste apres l'upload (avant d'attendre les
+images), echec/crash d'un job image jamais fatal.
+
 **Best rank since (2026-08-14)** : `collectors/apple_music/best_rank_since.py`
 detecte le meilleur rang Global Top 100 d'une chanson depuis au moins 14 jours
 (reutilise `core.rank_since.compute_rank_since`, meme primitif que Spotify
@@ -495,7 +743,11 @@ declenche jamais `kind="best_ever"`** (toujours appele avec
 `release_date=None, history_start_date=None`) — l'historique local ne remonte
 qu'a quelques mois (2026-06-05 sur cette machine, VPS prod depuis
 2026-07-30), donc pas assez profond pour revendiquer un record "de tous les
-temps" en confiance ; meme principe que la regle NEW ci-dessus. Le highlight
+temps" en confiance ; meme principe que la regle NEW ci-dessus. **Exception
+2026-09-25** : titres de `db/apple_music_global_alltime_peaks.json` qui battent
+tout notre historique -> `_reference_record` : `best_ever` si rang < peak de tous
+les temps, `since 2026-01-01` si rang < `best_2026_jan1_jun1` (hors top 200 = 201),
+sinon rien (date inconnue). Le highlight
 produit (`type="best_rank_since", source="apple_music"`) reste affiche 14
 jours apres declenchement — mecanisme dans `generate_home_highlights.py`, pas
 ici. Seuils/decisions produit → skill `data-rules` § "Home highlights".
@@ -627,7 +879,8 @@ ici. Seuils/decisions produit → skill `data-rules` § "Home highlights".
     `run_itunes.py` -> `run_child()` avec plafond par etape (collecteurs
     1200s/900s, export 900s, upload 1800s, images 900s, notif 300s,
     highlights 600s) ; `live_trigger.py` 600s par script. Un enfant bloque ne
-    peut plus tenir le cycle au-dela du trigger suivant (IgnoreNew).
+    peut plus bloquer indefiniment (NB : IgnoreNew ne joue pas, cf. correction
+    2026-09-25 plus haut).
   - **Stdout des enfants bufferise** (le `-u` du `.bat` ne couvre que le
     parent) -> `child_env()` fixe `PYTHONUNBUFFERED=1`.
   - **Une image ratee bloquait l'upload R2** -> les images ne font plus que
@@ -675,6 +928,37 @@ ici. Seuils/decisions produit → skill `data-rules` § "Home highlights".
   - Diagnostic rapide si le log parait fige : `Get-CimInstance Win32_Process`
     filtre sur `upload_ap_r2|run_apple_music` (nom de process = `python3.13.exe`,
     pas `python.exe`), puis `py-spy dump --pid <PID>`.
+- **Alerte "R2 upload failed ... site not updated this hour" en boucle,
+  2026-09-25 07h-13h (corrige le meme jour).** Rien a voir avec les nouvelles
+  sorties : sous charge, des handshakes TLS vers R2 tombaient
+  (`SSLEOFError UNEXPECTED_EOF_WHILE_READING`). `head_object_safe` avalait
+  l'erreur -> le garde « jour passe deja sur R2 » de `upload_snapshot_jsons`
+  croyait le snapshot absent -> reconstruisait et re-PUTait des snapshots du
+  2026-08-26 au 09-04 (plus pauvres que l'original, cf. ci-dessus ; plusieurs
+  ont ete reecrits ce matin-la, ceux du 09-24 non) ; ces PUT echouaient
+  aussi -> 3 tentatives -> crash avant history-by-date/CSV/per-song, donc
+  heure absente du site. Fix : `remote_object_exists()` (True/False seulement
+  si R2 a repondu, 404 = absent, erreur reseau x3 = None) ; un jour passe n'est
+  re-uploade que sur un vrai 404, jamais sur un doute. Ne pas reutiliser
+  `head_object_safe` pour une decision « absent donc j'ecris ».
+  **Suite, cycle 14h du meme jour : heure 15h entierement sautee.** Les SSL EOF
+  sont revenus dans la phase history-by-date (fichiers du 08-27, inchanges) :
+  `upload_json_if_changed` utilisait aussi `head_object_safe` -> PUT inutile ->
+  echec -> exception ; puis le process est reste FIGE 30 min (sortie Python qui
+  attend les threads workers bloques) jusqu'au kill 1800s, 2e essai rate, 3e
+  lance a 14:59 -> le run de 14h tenait encore le verrou a 15h -> run de 15h
+  abandonne (pas de collecte ni de post Apple Music a 15h ; iTunes, chaine
+  separee, a poste normalement). Fixes : `head_object_or_raise` (404 = absent,
+  erreur reseau x3 = exception, jamais « change ») ; echec reseau sur un fichier
+  d'un JOUR PASSE (snapshots + history-by-date) = `[warn] ... skipped` (deja sur
+  R2), seuls le jour courant et `index.json` restent bloquants (`_is_past`) ;
+  `__main__` fait `os._exit` apres un crash (plus d'attente des threads).
+  Pourquoi Apple Music « plus lent » qu'iTunes ce jour-la : pas la collecte (les
+  posts partent apres global.py + country_all.py, ~HH:01), mais ce run bloque.
+  Meme jour : l'alerte ntfy de l'upload rate partait tout en fin de run (apres
+  images, live projection jusqu'a 600s, `_wait_posts` jusqu'a 1800s) -> recue
+  vers HH:40. Elle part maintenant juste apres l'echec de l'upload ; le code de
+  sortie reste pose a la fin.
 - **Live projection trigger (ajoute 2026-09-23)** : `run_apple_music.py::main()`
   appelle `collectors/billboard/live_trigger.py::trigger_live_projection()`
   juste apres `regenerate_home_highlights_cache()`, uniquement sur le chemin

@@ -26,12 +26,54 @@ except ImportError:
 
 HERE = Path(__file__).resolve().parent
 REPO_ROOT = HERE.parents[1]
+if str(REPO_ROOT) not in sys.path:
+    sys.path.insert(0, str(REPO_ROOT))
+from collectors.spotify.core import run_guard  # noqa: E402
+
+# 2026-09-25: phone alert on any failure + single-instance lock (the scheduler
+# can't prevent overlaps, see run_guard). EXIT_SKIPPED -> run_apple_music.bat
+# skips the rest of the chain.
+LOCK_PATH = HERE / "tools" / "locks" / "run_apple_music.lock"
+NTFY_TOPIC = os.getenv("NTFY_TOPIC_APPLE_MUSIC", "taylormuseum-apple-music")
+POST_SCRIPT = HERE / "post_new_release_progression.py"
+POST_INPUTS = {"global.py", "country_all.py"}  # what post_new_release_progression reads
+POST_LOG = HERE / "post_new_release_progression.log"
+
+
+def alert(message: str, priority: str = "high") -> None:
+    run_guard.alert(NTFY_TOPIC, "Apple Music collector", message, priority)
+
+
+def start_new_release_posts() -> subprocess.Popen | None:
+    """New-release posts right after the collectors (2026-09-25, "be the first
+    to post"): they only read the collectors' CSVs, so they no longer wait
+    ~15 min for export / upload / images / highlights. Runs in parallel with
+    them; waited for at the end of the run. No-op outside a release window."""
+    try:
+        log_fh = open(POST_LOG, "a", encoding="utf-8")
+        return subprocess.Popen(
+            [sys.executable, "-u", str(POST_SCRIPT), "--platform", "apple_music"],
+            cwd=REPO_ROOT, env=child_env(), stdout=log_fh, stderr=subprocess.STDOUT,
+        )
+    except Exception as exc:
+        alert(f"Could not start the new-release posts: {type(exc).__name__}: {exc}")
+        return None
+
+# The .bat redirects stdout to a file -> cp1252 by default. Relaying a child's
+# output containing e.g. U+FFFD then raised UnicodeEncodeError at the end of
+# the run (2026-09-24 15h-17h), which skipped the home highlights refresh.
+for _stream in (sys.stdout, sys.stderr):
+    try:
+        _stream.reconfigure(encoding="utf-8", errors="replace")
+    except Exception:
+        pass
 
 SCRIPTS = [
     HERE / "global.py",
     HERE / "ts_page.py",
     HERE / "ts_page_all.py",
     HERE / "finalize_ts_top_songs_daily.py",
+    HERE / "ts_top_songs_live.py",
     HERE / "country_all.py",
     HERE / "genre_all.py",
 ]
@@ -43,7 +85,8 @@ SCRIPTS = [
 # APPLE_MUSIC_PARALLEL_SCRIPTS=0 goes back to one-by-one.
 SCRIPT_GROUPS = [
     [HERE / "genre_all.py"],
-    [HERE / "ts_page_all.py", HERE / "finalize_ts_top_songs_daily.py"],
+    # live reads today's raw cycles + yesterday's final -> after both.
+    [HERE / "ts_page_all.py", HERE / "finalize_ts_top_songs_daily.py", HERE / "ts_top_songs_live.py"],
     [HERE / "country_all.py"],
     [HERE / "global.py", HERE / "ts_page.py"],
 ]
@@ -56,7 +99,7 @@ _PRINT_LOCK = threading.Lock()
 # already refuses to write a partial composite. A failure there (e.g. a DNS
 # blip on 12/168 storefronts, 2026-09-24 12h) must not drop the whole hour's
 # global/country/genre data from the site.
-NON_BLOCKING_SCRIPTS = {"ts_page_all.py", "finalize_ts_top_songs_daily.py"}
+NON_BLOCKING_SCRIPTS = {"ts_page_all.py", "finalize_ts_top_songs_daily.py", "ts_top_songs_live.py"}
 
 
 def _truthy_env(name: str, default: bool = False) -> bool:
@@ -134,6 +177,8 @@ def child_env() -> dict[str, str]:
     # The .bat's -u only covers this process; without this, children's output
     # sits in a block buffer and a hung child leaves the log silent.
     env["PYTHONUNBUFFERED"] = "1"
+    # Children decode as UTF-8 in run_child_captured: make them emit UTF-8.
+    env["PYTHONIOENCODING"] = "utf-8"
     return env
 
 
@@ -301,6 +346,33 @@ def run_group(group: list[Path], scraped_at: str) -> list[tuple[str, int]]:
 
 
 def main() -> None:
+    if not run_guard.acquire_lock(LOCK_PATH):
+        alert("Previous Apple Music run still running — this hour was skipped.", priority="default")
+        sys.exit(run_guard.EXIT_SKIPPED)
+    code = 0
+    try:
+        _main()
+    except SystemExit as exc:
+        code = exc.code if isinstance(exc.code, int) else (0 if exc.code is None else 1)
+    except Exception as exc:
+        import traceback
+
+        traceback.print_exc()
+        alert(f"Apple Music run crashed: {type(exc).__name__}: {exc}")
+        code = 1
+    finally:
+        _wait_posts()  # never leave the posts running past the lock
+        run_guard.release_lock(LOCK_PATH)
+    # Every non-zero exit above has already sent its phone alert: exit
+    # EXIT_ALERTED so the .bat only alerts for crashes that never reached
+    # Python's alert (import error, broken interpreter...).
+    sys.exit(run_guard.EXIT_ALERTED if code else 0)
+
+
+_POSTS: list = []
+
+
+def _main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--no-post", action="store_true")
     parser.add_argument("--no-images", action="store_true", help="Skip Apple Music country chart card images.")
@@ -317,7 +389,18 @@ def main() -> None:
     collect_started = datetime.now()
     if _truthy_env("APPLE_MUSIC_PARALLEL_SCRIPTS", default=True):
         with ThreadPoolExecutor(max_workers=len(SCRIPT_GROUPS)) as executor:
-            grouped = list(executor.map(lambda group: run_group(group, scraped_at), SCRIPT_GROUPS))
+            futures = [executor.submit(run_group, group, scraped_at) for group in SCRIPT_GROUPS]
+            # New-release posts only read global.py + country_all.py output:
+            # start them as soon as those groups are done, while genre_all /
+            # ts_page_all keep running (2026-09-25, "be the first to post").
+            for fut, group in zip(futures, SCRIPT_GROUPS):
+                if {p.name for p in group} & POST_INPUTS:
+                    fut.result()
+            print(f"[Apple Music] Post inputs ready in {(datetime.now() - collect_started).total_seconds():.0f}s")
+            posts = start_new_release_posts()
+            if posts is not None:
+                _POSTS.append(posts)
+            grouped = [fut.result() for fut in futures]
         outcomes = [outcome for group in grouped for outcome in group]
     else:
         outcomes = [(script.name, run_script(script, scraped_at)) for script in SCRIPTS]
@@ -330,26 +413,61 @@ def main() -> None:
             else:
                 failures.append((name, code))
 
+    # Retry each failed blocking collector on its own (owner 2026-09-25: "si
+    # quelque chose échoue on réessaie toujours") — alert only if still failing.
+    if failures:
+        by_name = {p.name: p for p in SCRIPTS}
+        still: list[tuple[str, int]] = []
+        for name, _code in failures:
+            code = run_guard.retry_step(name, lambda n=name: run_script(by_name[n], scraped_at),
+                                        attempts=2, waits=(30,))
+            if code != 0:
+                still.append((name, code))
+            elif name in POST_INPUTS and _POSTS:
+                # posts ran on the failed collector's stale data: run them again
+                # on the fresh CSV (platform_lock serializes the two processes).
+                again = start_new_release_posts()
+                if again is not None:
+                    _POSTS.append(again)
+        failures = still
+
+    # Sequential mode (APPLE_MUSIC_PARALLEL_SCRIPTS=0): posts start now. Either
+    # way they start even if a collector failed (the post script only uses what
+    # was written, and alerts itself).
+    if not _POSTS:
+        posts = start_new_release_posts()
+        if posts is not None:
+            _POSTS.append(posts)
+
     print(f"\n{'=' * 80}")
     if failures:
         print("[Apple Music] Finished with errors:")
         for name, code in failures:
             print(f" - {name}: {code}")
+        alert("Apple Music collection failed ("
+              + ", ".join(f"{n}: {'timeout' if c == 124 else f'code {c}'}" for n, c in failures)
+              + f") for {scraped_at}. No export/upload this hour.")
+        _wait_posts()
         sys.exit(1)
     else:
         print("[Apple Music] All scripts completed successfully")
         
         # Export CSV to JSON for API/website
-        export_code = export_apple_music(scraped_at)
+        export_code = run_guard.retry_step("export_apple_music", lambda: export_apple_music(scraped_at), waits=(10, 30))
         if export_code != 0:
             print("[Apple Music] Export failed, skipping R2 upload")
+            alert(f"Apple Music export failed for {scraped_at} (site not updated this hour).")
+            _wait_posts()
             sys.exit(1)
 
         if not args.no_post:
             notify_code = notify_global_update(scraped_at)
             if notify_code != 0:
-                print("[Apple Music] Global notification failed, skipping R2 upload")
-                sys.exit(1)
+                # 2026-09-25: a notification problem must not keep the hour's
+                # data off the site (it used to skip the R2 upload).
+                print("[Apple Music] WARN: Global notification failed, continuing with the R2 upload")
+                alert(f"Global Apple Music notification step failed for {scraped_at} (upload continues).",
+                      priority="default")
         else:
             print("[Apple Music] Global notification skipped (--no-post)")
 
@@ -363,21 +481,46 @@ def main() -> None:
                 "Snapshot": image_pool.submit(generate_snapshot_images, scraped_at),
             }
 
-        upload_code = maybe_upload_to_r2()
-
-        for kind, job in image_jobs.items():
-            if job.result() != 0:
-                print(f"[Apple Music] {kind} image generation failed (data upload unaffected)")
-        image_pool.shutdown()
+        upload_code = run_guard.retry_step("upload_ap_r2", maybe_upload_to_r2, waits=(15, 45))
         if upload_code != 0:
             # Main JSON / history-by-date upload first, so the hour is usually
             # already live even when the per-song phase failed.
             print("[Apple Music] R2 upload failed")
+            # Alert now, not after images/live projection/posts (which pushed
+            # it to ~HH:40 on 2026-09-25). Exit code still set at the end.
+            alert(f"Apple Music R2 upload failed for {scraped_at} (site not updated this hour).", priority="default")
+        # Highlights only depend on the uploaded data, not on the images:
+        # refresh them now so the Charts Gallery doesn't wait on rendering.
         regenerate_home_highlights_cache()
+
+        for kind, job in image_jobs.items():
+            try:
+                image_code = job.result()
+            except Exception as exc:
+                image_code = 1
+                print(f"[Apple Music] {kind} image generation crashed: {exc!r}")
+            if image_code != 0:
+                print(f"[Apple Music] {kind} image generation failed (data upload unaffected)")
+        image_pool.shutdown()
         trigger_live_projection(log=print)
+        _wait_posts()
         print(f"{'=' * 80}")
         if upload_code != 0:
             sys.exit(upload_code)
+
+
+def _wait_posts(timeout: int = 1800) -> None:
+    """The new-release posts started after the collectors: wait for them so
+    the next hourly run never overlaps them."""
+    for proc in _POSTS:
+        try:
+            code = proc.wait(timeout=timeout)
+            print(f"[Apple Music] New-release posts finished (code {code})")
+        except subprocess.TimeoutExpired:
+            print("[Apple Music] New-release posts still running after timeout — killed")
+            proc.kill()
+            alert("New-release posts ran > 30 min and were killed.")
+    _POSTS.clear()
 
 
 if __name__ == "__main__":

@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import argparse
 import concurrent.futures
+import gzip
 import hashlib
 import io
 import json
@@ -424,6 +425,16 @@ def object_has_same_hash(client, bucket: str, key: str, body_hash: str) -> bool:
     return body_hash == remote_hash
 
 
+# Stored gzipped (ContentEncoding: gzip), same as scripts/upload_ap_r2.py
+# does for them — otherwise whichever uploader ran last would flip the format.
+# Readers: tsm-frontend api/data/loader.py::_r2_json gunzips on magic bytes.
+_GZIP_KEY_PREFIXES = (f"{r2_keys.APPLE_MUSIC_HISTORY_BY_DATE_PREFIX}/",)
+
+
+def _should_gzip(key: str) -> bool:
+    return key.startswith(_GZIP_KEY_PREFIXES) and not key.endswith("/index.json")
+
+
 def upload_bytes_if_changed(
     *,
     client,
@@ -439,9 +450,25 @@ def upload_bytes_if_changed(
         return True
 
     body_hash = hashlib.sha256(data).hexdigest()
+    compress = _should_gzip(key)
 
-    if object_has_same_hash(client, bucket, key, body_hash):
+    if compress:
+        # Hash stays on the uncompressed bytes (matches upload_ap_r2.py);
+        # a same-content object that isn't gzipped yet is re-uploaded once.
+        meta = head_object_safe(client, bucket, key) or {}
+        if (meta.get("Metadata") or {}).get("sha256", "") == body_hash and meta.get("ContentEncoding") == "gzip":
+            return False
+    elif object_has_same_hash(client, bucket, key, body_hash):
         return False
+
+    extra_args = {
+        "ContentType": content_type,
+        "CacheControl": cache_control or SHORT_CACHE_CONTROL,
+        "Metadata": {"sha256": body_hash},
+    }
+    if compress:
+        data = gzip.compress(data, compresslevel=6, mtime=0)
+        extra_args["ContentEncoding"] = "gzip"
 
     for attempt in range(1, retries + 1):
         try:
@@ -449,11 +476,7 @@ def upload_bytes_if_changed(
                 io.BytesIO(data),
                 bucket,
                 key,
-                ExtraArgs={
-                    "ContentType": content_type,
-                    "CacheControl": cache_control or SHORT_CACHE_CONTROL,
-                    "Metadata": {"sha256": body_hash},
-                },
+                ExtraArgs=extra_args,
             )
             return True
         except Exception as exc:

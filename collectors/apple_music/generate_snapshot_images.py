@@ -54,6 +54,7 @@ if str(REPO_ROOT) not in sys.path:
 
 from collectors.spotify.core.data_paths import (  # noqa: E402
     apple_music_charts_dir,
+    legacy_apple_music_daily_csv,
 )
 from collectors.spotify.core.notify import send as notify_send  # noqa: E402
 # NB: collectors.comp.tables_image is imported lazily inside the rendering
@@ -154,26 +155,43 @@ def _rank_change(rank: int, previous_rank: int | None, is_new_release: bool) -> 
     return "=", "chg-eq"
 
 
-def get_region_rows(chart_date: str, region: str, genre: str | None) -> tuple[list[dict], str | None]:
+def _region_csv_path(chart_date: str, region: str, genre: str | None) -> Path:
+    """snapshots/apple_music_charts/<day>/ (since 2026-06-05), else the legacy
+    data/<day>/apple_music/ folder (2026-03-22 -> 2026-06-04, same columns)."""
     region = region.lower().strip()
     if region == "global":
-        path = apple_music_charts_dir(chart_date) / "apple_music_global.csv"
-        latest_rows, scraped_at = _read_latest_rows(path, chart_date)
-        rows = [r for r in latest_rows if r.get("chart_type") == "global"]
+        filename = "apple_music_global.csv"
     elif genre:
-        path = apple_music_charts_dir(chart_date) / "apple_music_genre_charts.csv"
-        genre_norm = genre.strip().lower()
-        latest_rows, scraped_at = _read_latest_rows(path, chart_date)
-        rows = [
-            r for r in latest_rows
-            if str(r.get("country") or "").lower() == region
-            and str(r.get("genre_name") or "").lower() == genre_norm
-        ]
+        filename = "apple_music_genre_charts.csv"
     else:
-        path = apple_music_charts_dir(chart_date) / "apple_music_country_charts.csv"
-        latest_rows, scraped_at = _read_latest_rows(path, chart_date)
-        rows = [r for r in latest_rows if str(r.get("country") or "").lower() == region]
+        filename = "apple_music_country_charts.csv"
+    path = apple_music_charts_dir(chart_date) / filename
+    if not path.exists():
+        legacy = legacy_apple_music_daily_csv(chart_date, filename)
+        if legacy.exists():
+            return legacy
+    return path
 
+
+def _region_row_filter(region: str, genre: str | None) -> Callable[[dict], bool]:
+    region = region.lower().strip()
+    if region == "global":
+        # the first legacy days (2026-03-22..26) left chart_type empty; the
+        # global file only ever holds the Global chart
+        return lambda r: (r.get("chart_type") or "global") == "global"
+    if genre:
+        genre_norm = genre.strip().lower()
+        return lambda r: (
+            str(r.get("country") or "").lower() == region
+            and str(r.get("genre_name") or "").lower() == genre_norm
+        )
+    return lambda r: str(r.get("country") or "").lower() == region
+
+
+def get_region_rows(chart_date: str, region: str, genre: str | None) -> tuple[list[dict], str | None]:
+    latest_rows, scraped_at = _read_latest_rows(_region_csv_path(chart_date, region, genre), chart_date)
+    keep = _region_row_filter(region, genre)
+    rows = [r for r in latest_rows if keep(r)]
     rows.sort(key=lambda r: _rank_int(r.get("rank")) or 9999)
     return rows, scraped_at
 
@@ -240,8 +258,173 @@ def _format_snapshot_time(scraped_at: str | None) -> str:
     return f"{dt.strftime('%b')} {dt.day}, {dt.year} · {clock}"
 
 
+def _release_date_for(row: dict) -> str | None:
+    song = str(row.get("song_name") or "").strip()
+    release = next(
+        (RELEASE_DATES[key] for key in _song_key_candidates(song) if key in RELEASE_DATES),
+        None,
+    )
+    # catalog values are ISO timestamps ("2026-09-25T00:00:00Z") -> date part
+    return (str(release or row.get("release_date") or "").strip()[:10]) or None
+
+
+# First day of Apple Music chart history we have (legacy data/ folder, then
+# snapshots/ from 2026-06-05). A song released earlier only gets a
+# "peak since <first day>".
+APPLE_MUSIC_HISTORY_START = date(2026, 3, 22)
+
+# All-time Global peaks of songs released before APPLE_MUSIC_HISTORY_START
+# (owner-provided reference, 2026-09-25 — see the file's _source). Covers the
+# part of their run we never collected, so the Global card can show a real
+# all-time peak instead of "best in 2026".
+GLOBAL_ALLTIME_PEAKS_PATH = REPO_ROOT / "db" / "apple_music_global_alltime_peaks.json"
+# Per chart/day (scraped_at, song, rank) of past days for the Peak column
+# (gitignored, rebuildable: delete it and it refills from the CSVs).
+PEAK_ROWS_CACHE_DIR = HERE / "tools" / "cache" / "peak_rows"
+
+
+def _global_alltime_peaks() -> dict[str, int]:
+    try:
+        payload = json.loads(GLOBAL_ALLTIME_PEAKS_PATH.read_text(encoding="utf-8"))
+    except Exception:
+        return {}
+    peaks: dict[str, int] = {}
+    for song in payload.get("songs") or []:
+        try:
+            peak = int(song["peak"])
+        except (KeyError, TypeError, ValueError):
+            continue
+        for key in _song_key_candidates(song.get("song_name")):
+            peaks[key] = min(peak, peaks.get(key, peak))
+    return peaks
+
+
+def make_peak_resolver(
+    chart_date: str, region: str, genre: str | None, current_scraped_at: str | None,
+) -> Callable[[dict, int], tuple[int | None, str, str]]:
+    """(peak, badge, since) per row for the album card's Peak column: best
+    rank on this chart across EVERY collected cycle since the song's release
+    day (same semantics as post_new_release_progression's country cards).
+    badge = "NEW" (first appearance since release), "NEW PEAK" (beats every
+    earlier cycle), "RE-PEAK" (equals the peak again after being lower on the
+    previous cycle — owner 2026-09-25), or "".
+    Song released before our history (APPLE_MUSIC_HISTORY_START) or whose
+    release day has no snapshot: we only know part of its run -> peak over
+    the collected days only, labelled "best in 2026" (owner
+    2026-09-24; from 2027 on it becomes "since Mar 22, 2026", our history
+    no longer covering the whole year; a gap on a later release day also
+    gets "since <first collected day>"), and never a NEW / NEW PEAK badge (it may have debuted or
+    peaked higher before we collected). No collected day at all -> dash."""
+    keep = _region_row_filter(region, genre)
+    cache: dict[str, list[dict]] = {}
+    alltime_peaks = _global_alltime_peaks() if region == "global" and not genre else {}
+
+    chart_slug = f"{region}_{(genre or 'all').strip().lower().replace('/', '-').replace(' ', '-')}"
+
+    def day_rows(day: str) -> list[dict]:
+        if day not in cache:
+            # Past days never change: their (scraped_at, song, rank) rows are
+            # cached on disk, else the Peak column re-parsed ~20 MB of genre
+            # CSV per day since Mar 22 on every card (35s per Pop card,
+            # 2026-09-25). Today is always re-read.
+            disk = PEAK_ROWS_CACHE_DIR / chart_slug / f"{day}.json"
+            if day < chart_date and disk.exists():
+                try:
+                    cache[day] = json.loads(disk.read_text(encoding="utf-8"))
+                    return cache[day]
+                except Exception:
+                    pass
+            path = _region_csv_path(day, region, genre)
+            rows: list[dict] = []
+            if path.exists():
+                with path.open("r", encoding="utf-8-sig", newline="") as fh:
+                    rows = [
+                        {"scraped_at": r.get("scraped_at") or "", "song_name": r.get("song_name") or "",
+                         "rank": r.get("rank") or ""}
+                        for r in csv.DictReader(fh)
+                        if str(r.get("date") or "").strip() == day and keep(r)
+                    ]
+            if day < chart_date and path.exists():
+                try:
+                    disk.parent.mkdir(parents=True, exist_ok=True)
+                    disk.write_text(json.dumps(rows, ensure_ascii=False), encoding="utf-8")
+                except Exception:
+                    pass
+            cache[day] = rows
+        return cache[day]
+
+    def resolve(row: dict, rank: int) -> tuple[int | None, str, str]:
+        release = _release_date_for(row)
+        try:
+            released = datetime.strptime(release, "%Y-%m-%d").date() if release else None
+        except ValueError:
+            released = None
+        end = datetime.strptime(chart_date, "%Y-%m-%d").date()
+        if released is not None and released > end:
+            return None, "", ""
+        start = max(released, APPLE_MUSIC_HISTORY_START) if released else APPLE_MUSIC_HISTORY_START
+        complete = released is not None and released >= APPLE_MUSIC_HISTORY_START \
+            and _region_csv_path(released.isoformat(), region, genre).exists()
+        first_day = start
+        while first_day <= end and not _region_csv_path(first_day.isoformat(), region, genre).exists():
+            first_day += timedelta(days=1)
+        if first_day > end:
+            return None, "", ""
+        keys = set(_song_key_candidates(row.get("song_name")))
+        prior: int | None = None
+        last_seen: tuple[str, int] | None = None  # (scraped_at, rank) of the previous cycle
+        day = first_day
+        while day <= end:
+            for r in day_rows(day.isoformat()):
+                if current_scraped_at and str(r.get("scraped_at") or "") == current_scraped_at:
+                    continue
+                if not keys.intersection(_song_key_candidates(r.get("song_name"))):
+                    continue
+                r_rank = _rank_int(r.get("rank"))
+                if r_rank is not None and (prior is None or r_rank < prior):
+                    prior = r_rank
+                r_at = str(r.get("scraped_at") or "")
+                if r_rank is not None and (last_seen is None or r_at >= last_seen[0]):
+                    last_seen = (r_at, r_rank)
+            day += timedelta(days=1)
+
+        def peak_badge(best_before: int) -> str:
+            """NEW PEAK = beats the peak; RE-PEAK = back exactly at the peak
+            after having been lower on the previous cycle (owner 2026-09-25)."""
+            if rank < best_before:
+                return "NEW PEAK"
+            if rank == best_before and last_seen is not None and last_seen[1] > rank:
+                return "RE-PEAK"
+            return ""
+
+        peak = rank if prior is None else min(rank, prior)
+        if not complete and alltime_peaks:
+            ref = next((alltime_peaks[k] for k in keys if k in alltime_peaks), None)
+            if ref is not None:
+                # reference covers the uncollected start of the run -> all-time
+                # peak, no "best in" label; NEW PEAK / RE-PEAK vs both.
+                before = ref if prior is None else min(ref, prior)
+                return min(peak, ref), peak_badge(before), ""
+        if not complete:
+            # Partial run: never NEW / NEW PEAK (it may have peaked higher before
+            # we collected). Beating its best of the collected days = "BEST IN
+            # 2026" (owner 2026-09-25, region cards), a true claim.
+            best_badge = f"BEST IN {end.year}" if prior is not None and rank < prior else ""
+            if released is not None and released < APPLE_MUSIC_HISTORY_START                     and end.year == APPLE_MUSIC_HISTORY_START.year:
+                # owner 2026-09-24: released before our first data -> "best in 2026"
+                return peak, best_badge, f"best in {end.year}"
+            since = f"since {first_day.strftime('%b')} {first_day.day}, {first_day.year}"
+            return peak, ("BEST " + since.upper()) if best_badge else "", since
+        if prior is None:
+            return peak, "NEW", ""
+        return peak, peak_badge(prior), ""
+
+    return resolve
+
+
 def _compute_entries(
     rows: list[dict], prev_rank_fn: Callable[[dict], int | None], chart_date: str,
+    peak_fn: Callable[[dict, int], tuple[int | None, str, str]] | None = None,
 ) -> list[dict]:
     entries: list[dict] = []
     for row in rows:
@@ -258,6 +441,7 @@ def _compute_entries(
         chg_text, chg_css = _rank_change(rank, prev_rank, is_new_release)
         artist = str(row.get("artist_name") or "Taylor Swift").strip()
         album = str(row.get("album_name") or "").strip()
+        peak, peak_badge, peak_since = peak_fn(row, rank) if peak_fn else (None, "", "")
         entries.append({
             "rank": rank,
             "chg_text": chg_text,
@@ -266,11 +450,46 @@ def _compute_entries(
             "artist": artist,
             "album": album,
             "image_url": str(row.get("image_url") or ""),
+            "peak": peak,
+            "peak_badge": peak_badge,
+            "peak_since": peak_since,
         })
     return entries
 
 
-def _rows_html(entries: list[dict]) -> str:
+def _peak_cell_html(entry: dict) -> str:
+    if entry.get("peak") is None:
+        return '<div class="col-peak peak-unknown">&ndash;</div>'
+    if entry.get("peak_since"):
+        badge = f'<span class="peak-badge">{entry["peak_badge"]}</span>' if entry.get("peak_badge") else ""
+        return (
+            f'<div class="col-peak peak-partial"><span>#{entry["peak"]}{badge}</span>'
+            f'<span class="peak-since">{entry["peak_since"]}</span></div>'
+        )
+    badge = f'<span class="peak-badge">{entry["peak_badge"]}</span>' if entry.get("peak_badge") else ""
+    return f'<div class="col-peak">#{entry["peak"]}{badge}</div>'
+
+
+# Peak column (album cards only): same pill as the debut country cards'
+# NEW / NEW PEAK badge, in the Apple Music accent.
+PEAK_CSS = """
+.col-peak{
+  font-size:17px;font-weight:800;color:#0b1f44;letter-spacing:-.02em;
+  display:flex;align-items:center;justify-content:flex-end;gap:8px;
+  font-variant-numeric:tabular-nums;white-space:nowrap;
+}
+.col-peak.peak-unknown{color:#98a2b3;font-weight:600}
+.col-peak.peak-partial{flex-direction:column;align-items:flex-end;gap:2px}
+.col-peak.peak-partial > span:first-child{display:flex;align-items:center;gap:8px}
+.peak-since{font-size:11px;font-weight:600;color:#667085;letter-spacing:0}
+.peak-badge{
+  padding:3px 8px;border-radius:999px;background:#fa243c;color:#fff;
+  font-size:10px;font-weight:800;letter-spacing:.04em;line-height:1;
+}
+"""
+
+
+def _rows_html(entries: list[dict], with_peak: bool = False) -> str:
     if not entries:
         return (
             '<div class="data-row"><div class="col-entity" '
@@ -303,6 +522,7 @@ def _rows_html(entries: list[dict]) -> str:
       <div class="entity-sub">{html.escape(subtitle)}</div>
     </div>
   </div>
+  {_peak_cell_html(entry) if with_peak else ""}
 </div>
 """)
     return "".join(parts)
@@ -387,13 +607,19 @@ def generate(
     rows, scraped_at = get_region_rows(chart_date, region, genre)
     rows = _filter_album(rows, album_keys)
     prev_rank_fn, previous_scraped_at = make_prev_rank_resolver(chart_date, region, genre)
-    entries = _compute_entries(rows, prev_rank_fn, chart_date)
+    # Peak column only on album cards (debut/deluxe follow-up): a full-chart
+    # card would be mostly "since Mar 22" peaks (history starts 2026-03-22).
+    # Peak column on every card since 2026-09-25 (owner: NEW PEAK / RE-PEAK /
+    # BEST IN 2026 badges on the region cards too, not only the album ones).
+    with_peak = True
+    peak_fn = make_peak_resolver(chart_date, region, genre, scraped_at) if with_peak else None
+    entries = _compute_entries(rows, prev_rank_fn, chart_date, peak_fn)
     label = _label_for(region, genre)
 
     date_fmt = datetime.strptime(chart_date, "%Y-%m-%d").strftime("%B %d, %Y")
     heading = display_title_for_album(album_name) if album_name else "Taylor Swift"
     title = f"{heading} · {label} Apple Music"
-    rows_html = _rows_html(entries)
+    rows_html = _rows_html(entries, with_peak=with_peak)
 
     snapshot_label = _format_snapshot_time(scraped_at) or date_fmt
     subtitle = f"Chart Snapshot · {snapshot_label}"
@@ -403,8 +629,9 @@ def generate(
     html_doc = build_table_html(
         title=title,
         subtitle=subtitle,
-        col_heads=[("Pos", False), ("+/-", False), ("Track", False)],
-        grid_cols="52px 64px minmax(240px,1fr)",
+        col_heads=[("Pos", False), ("+/-", False), ("Track", False)] + ([("Peak", True)] if with_peak else []),
+        grid_cols="52px 64px minmax(240px,1fr)" + (" 150px" if with_peak else ""),
+        extra_css=PEAK_CSS if with_peak else "",
         rows_html=rows_html,
         handle=HANDLE,
         date_str=snapshot_label,

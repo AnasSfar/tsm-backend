@@ -22,16 +22,19 @@ import generate_snapshot_images as snap  # noqa: E402
 SCRATCH = Path(__file__).resolve().parent
 m.OUT_DIR = SCRATCH / "cards"
 m.LOCKS_DIR = SCRATCH / "locks"
-m.STATE_PATH = SCRATCH / "state.json"
-if m.STATE_PATH.exists():
-    m.STATE_PATH.unlink()
+m.STATE_DIR = SCRATCH  # per-platform state files since 2026-09-24
+for _f in SCRATCH.glob("new_release_progression_state_*.json"):
+    _f.unlink()
 
 # Album-filtered Global snapshot card (generate_snapshot_images --album) reads
 # per-day folders through apple_music_charts_dir -> point it at fixtures/<date>/.
 # fixtures/2026-09-24/ = copy of the REAL 09-24 Global CSV (the "vs yesterday"
 # baseline, read-only copy); fixtures/2026-09-25/ = fake release-day Global.
 FIXTURES = SCRATCH / "fixtures"
-snap.apple_music_charts_dir = lambda d: FIXTURES / d
+_real_charts_dir = snap.apple_music_charts_dir
+# fixture day if we have one, else the REAL day folder (read-only: the Peak
+# column scans every day since 2026-06-05 for Ophelia/Opalite "peak since")
+snap.apple_music_charts_dir = lambda d: FIXTURES / d if (FIXTURES / d).exists() else _real_charts_dir(d)
 _real_prev = REPO_ROOT / "snapshots" / "apple_music_charts" / "2026" / "09" / "2026-09-24" / "apple_music_global.csv"
 (FIXTURES / "2026-09-24").mkdir(parents=True, exist_ok=True)
 (FIXTURES / "2026-09-24" / "apple_music_global.csv").write_bytes(_real_prev.read_bytes())
@@ -173,6 +176,7 @@ m.build_sources = fake_build_sources
 
 
 class Args:
+    platform = "all"
     scraped_at = None
     window_hours = 72
     no_post = True

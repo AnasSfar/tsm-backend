@@ -23,6 +23,7 @@ env/
 
 # Generated browser runtime data (Playwright Chrome profiles)
 **/tools/json/chrome_profile/**
+**/chrome-profile*/**
 **/tools/browser_cache/**
 *.txt
 *.html
@@ -152,3 +153,6 @@ runtime/exports/
 # Fixed best-day-since recap header (the "all eras" strip) must be versioned
 !/collectors/spotify/streams/tools/headers/best_day_recap/
 !/collectors/spotify/streams/tools/headers/best_day_recap/*.jpg
+
+# Flag data-URI cache of the new-release cards (2026-09-25)
+collectors/apple_music/tools/cache/

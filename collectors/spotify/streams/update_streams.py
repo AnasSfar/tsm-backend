@@ -45,6 +45,7 @@ from finalize_update import (
     run_final_update_tasks,
     run_post_only_steps,
 )
+from post_best_day_since_twitter import in_encore_week
 from release_targets import is_recent_release_date
 from reporting import ProgressLogger, print_remaining_details, print_summary_block, update_json_logs_from_summary
 import spotify_api as _spotify_api
@@ -177,6 +178,11 @@ CHARTSNAPSHOT_REQUIRED_VALIDATED = 20  # non-extra tracks with total - daily == 
 CHARTSNAPSHOT_ARTIST_URI = "06HL4z0CvFAxyc27GXpf02"
 CHARTSNAPSHOT_TOP_SONGS_URL = "https://www.chartsnapshot.com/get_top_songs"
 EARLY_BEST_DAY_MIN_DAILY_STREAMS = 30_000
+# --best-day-last : aucun calcul/post best-day-since pendant la collecte ni
+# intercalé en finalize ; tout le batch part en toute dernière étape de post.
+BEST_DAY_LAST_MODE = False
+# --skip a,b : étapes de post sautées (noms de POST_ONLY_STEPS).
+SKIP_STEPS: set[str] = set()
 EARLY_BEST_DAY_WATCHLIST_MIN_DAILY_STREAMS = 20_000
 EARLY_BEST_DAY_TRACK_LIMIT = 100
 EARLY_BEST_DAY_MAX_POSTS = 5
@@ -582,6 +588,20 @@ Usage:
       Steps (comma- or space-separated): top-eras, all-albums, top20, top45,
       recap, weekend-gainers, milestones, overtakes, best-day-since, debut, gainers.
       Add --no-post to only generate the images without posting.
+
+  python update_streams.py [YYYY-MM-DD] --best-day-last
+      Normal run, but best-day-since is deferred: no early watchers/checks during
+      collection, no recap in the Top Songs thread, no interleaving in finalize;
+      the full batch (songs + era recaps + global recap) posts after every other post.
+      Also works with --post-only (top20 without recap, best-day-since moved last).
+
+  python update_streams.py [YYYY-MM-DD] --skip best-day-since,gainers
+      Normal run, but the listed post step(s) never post (same names as
+      --post-only: top-eras, all-albums, top20, top45, recap, weekend-gainers,
+      milestones, overtakes, best-day-since, debut, gainers). Also filters
+      --post-only. best-day-since = no early watchers + Top Songs without recap.
+      On a run already in progress, only best-day-since can still be stopped:
+      create snapshots/spotify_streams/YYYY/MM/<date>/skip_best_day_since.flag.
 
   python update_streams.py --no-post
       Run full pipeline but skip all Twitter posting steps.
@@ -1691,7 +1711,8 @@ def _collect_daily_growers_for_notify(
 
     rows.sort(key=lambda row: (row["pct"], row["gain"], row["daily_today"]), reverse=True)
     picked = rows[:limit]
-    _add_best_day_labels_to_grower_rows(picked, stats_date)
+    if not BEST_DAY_LAST_MODE:
+        _add_best_day_labels_to_grower_rows(picked, stats_date)
     return picked
 
 
@@ -2393,6 +2414,10 @@ def main():
     local_test_mode = "--local-test" in sys.argv
     test_mode = "--test" in sys.argv
     no_post_mode = "--no-post" in sys.argv
+    global BEST_DAY_LAST_MODE
+    BEST_DAY_LAST_MODE = "--best-day-last" in sys.argv
+    if BEST_DAY_LAST_MODE:
+        print("[BEST-DAY-LAST] best-day-since deferred: no early watchers, full batch after every other post.")
     override_stream_guards = "--over" in sys.argv or "--override-stream-guards" in sys.argv
     admin_override_mode = "--admin" in sys.argv
     throwback_mode = "--throwback" in sys.argv
@@ -2438,6 +2463,7 @@ def main():
             "--local-test",
             "--test",
             "--no-post",
+            "--best-day-last",
             "--over",
             "--override-stream-guards",
             "--admin",
@@ -2493,6 +2519,39 @@ def main():
                 sys.exit(1)
             reset_date_override = remaining_args[i + 1]
             i += 2
+            continue
+
+        if arg == "--skip":
+            # Saute des étapes de post (mêmes noms que --post-only), en live
+            # comme en finalize. Virgules et/ou espaces acceptés (PowerShell
+            # éclate « a, b »). best-day-since passe aussi par l'env pour
+            # atteindre tous les sous-processus post_best_day_since_twitter.py.
+            j = i + 1
+            value_parts: list[str] = []
+            while j < len(remaining_args):
+                nxt = remaining_args[j]
+                if nxt.startswith("-"):
+                    break
+                try:
+                    date.fromisoformat(nxt)
+                    break
+                except ValueError:
+                    pass
+                value_parts.extend(p for p in nxt.split(","))
+                j += 1
+            skip_steps = {s.strip() for s in value_parts if s.strip()}
+            unknown_skips = skip_steps - set(POST_ONLY_STEPS)
+            if not skip_steps or unknown_skips:
+                print(
+                    f"Unknown --skip value(s): {', '.join(sorted(unknown_skips)) or '(empty)'} "
+                    f"(allowed: {', '.join(POST_ONLY_STEPS)})"
+                )
+                sys.exit(1)
+            SKIP_STEPS.update(skip_steps)
+            if "best-day-since" in skip_steps:
+                os.environ["TSM_SKIP_BEST_DAY_SINCE"] = "1"
+            print(f"[SKIP] post step(s) disabled for this run: {', '.join(sorted(skip_steps))}")
+            i = j
             continue
 
         if arg == "--throwback-action":
@@ -2727,6 +2786,8 @@ def main():
             find_biggest_album_gainer_for_spotlight=find_biggest_album_gainer_for_spotlight,
             posted_album_updates=set(),
             initial_post_state={"posted_count": 0, "last_post_at": 0.0},
+            best_day_last=BEST_DAY_LAST_MODE,
+            skip_steps=frozenset(SKIP_STEPS),
         ), post_only_steps)
         return
 
@@ -2762,12 +2823,38 @@ def main():
     print()
 
     new_release_track_ids: set[str] = set()
+    collection_lock_ready_before_preflight = False
+    if normal_lock_mode and _daily_lock_exists(stats_date, STREAMS_UPDATE_COMPLETE_LOCK_NAME):
+        lock_path = _daily_lock_path(stats_date, STREAMS_UPDATE_COMPLETE_LOCK_NAME)
+        missing_recent_positive = recent_release_track_ids_missing_positive_history(stats_date)
+        missing_recent_daily = recent_release_track_ids_missing_daily(stats_date)
+        stale_admin_zero_ids = load_admin_override_unchanged_zero_track_ids(stats_date)
+        if not missing_recent_positive and not missing_recent_daily and not stale_admin_zero_ids:
+            print(f"Streams update already complete for {stats_date} ({lock_path.name}); skipping.")
+            return
+
+    if normal_lock_mode and _daily_lock_exists(stats_date, STREAMS_SCRAPED_LOCK_NAME):
+        lock_path = _daily_lock_path(stats_date, STREAMS_SCRAPED_LOCK_NAME)
+        summary = _build_existing_history_summary(stats_date, total_tracks, total_tracks)
+        missing_recent_positive = recent_release_track_ids_missing_positive_history(stats_date)
+        missing_recent_daily = recent_release_track_ids_missing_daily(stats_date)
+        stale_admin_zero_ids = load_admin_override_unchanged_zero_track_ids(stats_date)
+        if (
+            summary["all_done"]
+            and not missing_recent_positive
+            and not missing_recent_daily
+            and not stale_admin_zero_ids
+        ):
+            print(f"Streams scraping already done for {stats_date} ({lock_path.name}); skipping WARP/token/preflight.")
+            collection_lock_ready_before_preflight = True
+
     recent_preflight_done = False
     should_check_recent_releases = (
         not dry_run_mode
         and not local_test_mode
         and not debug_daily_mode
         and stats_date_override is None
+        and not collection_lock_ready_before_preflight
     )
 
     if should_check_recent_releases:
@@ -2796,7 +2883,7 @@ def main():
             print(f"[discography] Reloaded {total_tracks} track(s) after new release preflight.")
         recent_preflight_done = True
 
-    if not dry_run_mode and not local_test_mode:
+    if not dry_run_mode and not local_test_mode and not collection_lock_ready_before_preflight:
         missing_recent_daily = recent_release_track_ids_missing_daily(stats_date)
         repaired_daily_ids = repair_missing_daily_streams_for_date(stats_date, missing_recent_daily)
         if repaired_daily_ids:
@@ -3338,10 +3425,15 @@ def main():
         load_history_track_ids_for_date=load_history_track_ids_for_date,
         spacing_seconds=POST_BETWEEN_STREAMS_POSTS_SECONDS,
         log_mode=LOG_MODE,
-        enabled=True,
+        enabled="debut" not in SKIP_STEPS,
         no_post_mode=no_post_mode,
     )
     debut_release_poster.start()
+
+    # Encore week (decision 2026-09-25): the Showgirl album card must be the
+    # run's first post, so no early best-day-since / era recap posts during
+    # collection — they all go out in finalize, after Showgirl.
+    early_best_day_off = BEST_DAY_LAST_MODE or "best-day-since" in SKIP_STEPS or in_encore_week(stats_date)
 
     era_recap_poster = ReadyEraRecapPoster(
         script_dir=_SCRIPT_DIR,
@@ -3350,7 +3442,7 @@ def main():
         album_tracks_done_for=album_tracks_done_for,
         spacing_seconds=POST_BETWEEN_STREAMS_POSTS_SECONDS,
         log_mode=LOG_MODE,
-        enabled=True,
+        enabled=not early_best_day_off,
         no_post_mode=no_post_mode,
         target_albums=album_names,
         priority_ready=debut_release_poster.is_done,
@@ -3362,24 +3454,30 @@ def main():
     # cards album partent en finalize, dans l'ordre par score_album_update
     # (2 meilleurs -> Showgirl/TTPD -> reste), alternées avec les autres posts.
 
-    priority_best_day_track_ids = build_priority_best_day_track_ids(
-        tracks,
-        stats_date,
-        min_days_since=EARLY_BEST_DAY_PRIORITY_AFTER_DAYS,
-        min_recent_peak_ratio=EARLY_BEST_DAY_PRIORITY_RECENT_PEAK_RATIO,
-    )
-    chart_gainer_track_ids = build_chart_gainer_priority_track_ids(stats_date)
-    if chart_gainer_track_ids:
-        seen_priority_ids = set(priority_best_day_track_ids)
-        priority_best_day_track_ids = priority_best_day_track_ids + [
-            track_id for track_id in chart_gainer_track_ids if track_id not in seen_priority_ids
-        ]
-    early_best_day_track_ids = build_early_best_day_track_ids(
-        tracks,
-        stats_date,
-        min_previous_daily_streams=EARLY_BEST_DAY_WATCHLIST_MIN_DAILY_STREAMS,
-        limit=EARLY_BEST_DAY_TRACK_LIMIT,
-    )
+    priority_best_day_track_ids: list[str] = []
+    chart_gainer_track_ids: list[str] = []
+    early_best_day_track_ids: list[str] = []
+    if early_best_day_off:
+        print("Early best-day-since watcher disabled (--best-day-last / --skip / Encore week).")
+    else:
+        priority_best_day_track_ids = build_priority_best_day_track_ids(
+            tracks,
+            stats_date,
+            min_days_since=EARLY_BEST_DAY_PRIORITY_AFTER_DAYS,
+            min_recent_peak_ratio=EARLY_BEST_DAY_PRIORITY_RECENT_PEAK_RATIO,
+        )
+        chart_gainer_track_ids = build_chart_gainer_priority_track_ids(stats_date)
+        if chart_gainer_track_ids:
+            seen_priority_ids = set(priority_best_day_track_ids)
+            priority_best_day_track_ids = priority_best_day_track_ids + [
+                track_id for track_id in chart_gainer_track_ids if track_id not in seen_priority_ids
+            ]
+        early_best_day_track_ids = build_early_best_day_track_ids(
+            tracks,
+            stats_date,
+            min_previous_daily_streams=EARLY_BEST_DAY_WATCHLIST_MIN_DAILY_STREAMS,
+            limit=EARLY_BEST_DAY_TRACK_LIMIT,
+        )
     print(
         f"Early best-day-since watcher has {len(priority_best_day_track_ids)} "
         f"priority long-gap candidate(s) ({len(chart_gainer_track_ids)} from Spotify "
@@ -3395,7 +3493,7 @@ def main():
         load_history_track_ids_for_date=load_history_track_ids_for_date,
         spacing_seconds=POST_BETWEEN_STREAMS_POSTS_SECONDS,
         log_mode=LOG_MODE,
-        enabled=True,
+        enabled=not early_best_day_off,
         no_post_mode=no_post_mode,
         max_posts=EARLY_BEST_DAY_MAX_POSTS,
         min_days=21,
@@ -3911,7 +4009,8 @@ def main():
     debut_post_state = debut_release_poster.stop()
     # Push the day's best-day list (rows + era recap groups) to R2 once the early
     # lane is done, ahead of the full finalize export.
-    _upload_best_day_since_list(stats_date)
+    if not BEST_DAY_LAST_MODE:
+        _upload_best_day_since_list(stats_date)
     era_recap_post_state = era_recap_poster.post_state()
     best_day_since_post_state = best_day_since_poster.post_state()
     initial_post_state = {
@@ -3985,6 +4084,8 @@ def main():
         posted_album_updates=posted_album_updates,
         initial_post_state=initial_post_state,
         posted_best_day_since_tracks=posted_best_day_since_tracks,
+        best_day_last=BEST_DAY_LAST_MODE,
+        skip_steps=frozenset(SKIP_STEPS),
         throwback_mode=throwback_mode,
         throwback_action=throwback_action,
         throwback_event=throwback_event,

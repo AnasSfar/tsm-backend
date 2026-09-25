@@ -43,6 +43,14 @@ PRIMARY_ALBUM_UPDATE_TARGETS = (
 # The lowest-scoring albums (excluding the guaranteed top 2 / forced primary
 # targets) skip their card entirely for the day (decision 2026-09-04).
 BOTTOM_ALBUMS_SKIPPED = 2
+# Decision 2026-09-24: when Showgirl's album score is "wow" (>= this
+# score_album_update score), its card leads the whole finalize post order —
+# before the weekend recap / top eras / top songs — instead of waiting for its
+# slot in the alternating album queue. Below the threshold nothing changes.
+# Calibrated on 60 days (2026-07-25..09-22): Showgirl normally scores 15-55,
+# only 09-22 (11 track records, +674k) cleared it at 79.9.
+SHOWGIRL_LEAD_ALBUM = "The Life of a Showgirl"
+SHOWGIRL_LEAD_SCORE_MIN = 70.0
 WEEKEND_WEEKLY_ALBUM_LIMIT = 4
 FINALIZE_POST_RETRY_ATTEMPTS = max(1, int(os.getenv("FINALIZE_POST_RETRY_ATTEMPTS", "3")))
 FINALIZE_POST_RETRY_SLEEP_SECONDS = max(0, int(os.getenv("FINALIZE_POST_RETRY_SLEEP_SECONDS", "60")))
@@ -136,6 +144,12 @@ class FinalizeContext:
     throwback_force: bool = False
     test_mode: bool = False
     posted_best_day_since_tracks: set[str] = field(default_factory=set)
+    # update_streams --best-day-last: no best-day-since work during collection
+    # nor interleaved in finalize; the full batch (songs + era recaps + global
+    # recap) runs as the very last post step.
+    best_day_last: bool = False
+    # update_streams --skip a,b : étapes de post sautées (clés de POST_ONLY_STEPS).
+    skip_steps: frozenset[str] = frozenset()
 
 
 class PartialWebExporter:
@@ -296,6 +310,20 @@ class ReadyEraRecapPoster:
             self._era_recap_checked.add(era)
 
             print(f"Era best-day recap check ready during streams run: {album} ({era})")
+            if not self.no_post_mode:
+                if post_best_day_since_twitter._era_recap_lock_path(era, self.stats_date).exists():
+                    print(f"[best_day_since_era_recap] Already posted for {album} on {self.stats_date}, skipping before export.")
+                    return True
+                if (
+                    len(post_best_day_since_twitter._posted_era_recap_keys_for_date(self.stats_date))
+                    >= post_best_day_since_twitter.EARLY_ERA_RECAP_MAX_POSTS
+                ):
+                    print(
+                        f"[best_day_since_era_recap] Skipping {album}: already "
+                        f"{post_best_day_since_twitter.EARLY_ERA_RECAP_MAX_POSTS} early era recap(s) "
+                        f"for {self.stats_date}; skipping before export."
+                    )
+                    return True
             print("Exporting current web data before early era best-day recap post...")
             self.export_web_data(stats_date=self.stats_date)
 
@@ -480,6 +508,9 @@ class ReadyBestDaySincePoster:
             self._stop.wait(3.0)
 
     def _done(self) -> bool:
+        # Encore-week hard cap reached: stop scanning/computing altogether.
+        if post_best_day_since_twitter.song_posts_remaining(self.stats_date) == 0:
+            return True
         with self._lock:
             # Keep scanning every watched track even after the normal early-post
             # cap: a biggest-day-of-the-year record is posted unconditionally and
@@ -523,6 +554,8 @@ class ReadyBestDaySincePoster:
         return row is not None
 
     def _post_newly_ready_track(self) -> bool:
+        if post_best_day_since_twitter.song_posts_remaining(self.stats_date) == 0:
+            return False
         done_ids = self.load_history_track_ids_for_date(self.stats_date)
         self._refresh_precheck_data()
         for track_id in self.track_ids:
@@ -597,10 +630,12 @@ def _run_streams_post(
     spacing_seconds: int,
     log_mode: str,
     post_priority: str | None = None,
+    attempts: int | None = None,
 ) -> None:
     env_extra = {"TWITTER_POST_PRIORITY": str(post_priority)} if post_priority is not None else None
     last_returncode = 0
-    for attempt in range(1, FINALIZE_POST_RETRY_ATTEMPTS + 1):
+    max_attempts = FINALIZE_POST_RETRY_ATTEMPTS if attempts is None else max(1, attempts)
+    for attempt in range(1, max_attempts + 1):
         _wait_before_post(
             label=label,
             should_post=should_post,
@@ -610,7 +645,7 @@ def _run_streams_post(
         )
 
         if attempt > 1:
-            print(f"Retrying {label} ({attempt}/{FINALIZE_POST_RETRY_ATTEMPTS})...")
+            print(f"Retrying {label} ({attempt}/{max_attempts})...")
 
         result = _run_subprocess(cmd, check=False, env=env_extra)
         last_returncode = result.returncode
@@ -618,12 +653,12 @@ def _run_streams_post(
             _mark_post_done(should_post=should_post, state=state)
             return
 
-        print(f"{label} failed (exit {result.returncode}) on attempt {attempt}/{FINALIZE_POST_RETRY_ATTEMPTS}.")
-        if attempt < FINALIZE_POST_RETRY_ATTEMPTS and FINALIZE_POST_RETRY_SLEEP_SECONDS > 0:
+        print(f"{label} failed (exit {result.returncode}) on attempt {attempt}/{max_attempts}.")
+        if attempt < max_attempts and FINALIZE_POST_RETRY_SLEEP_SECONDS > 0:
             print(f"Waiting {FINALIZE_POST_RETRY_SLEEP_SECONDS}s before retrying {label}...")
             time.sleep(FINALIZE_POST_RETRY_SLEEP_SECONDS)
 
-    raise SystemExit(f"{label} failed after {FINALIZE_POST_RETRY_ATTEMPTS} attempt(s) (last exit {last_returncode}).")
+    raise SystemExit(f"{label} failed after {max_attempts} attempt(s) (last exit {last_returncode}).")
 
 
 def _wait_before_post(
@@ -669,6 +704,7 @@ def _run(
     should_post: bool,
     state: dict[str, float],
     post_priority: str | None = None,
+    attempts: int | None = None,
 ) -> None:
     _run_streams_post(
         cmd,
@@ -678,6 +714,7 @@ def _run(
         spacing_seconds=ctx.post_spacing_seconds,
         log_mode=ctx.log_mode,
         post_priority=post_priority,
+        attempts=attempts,
     )
 
 
@@ -846,7 +883,8 @@ def _post_streams_image(ctx: FinalizeContext, state: dict[str, float]) -> None:
     print("Posting top 20 songs image to Twitter...")
     _run(
         ctx,
-        [sys.executable, str(post_script), ctx.summary["stats_date"]],
+        [sys.executable, str(post_script), ctx.summary["stats_date"]]
+        + (["--no-best-day-recap"] if ctx.best_day_last or "best-day-since" in ctx.skip_steps else []),
         label="top 20 songs image",
         should_post=True,
         state=state,
@@ -878,6 +916,11 @@ def _post_daily_recap_card(ctx: FinalizeContext, state: dict[str, float]) -> Non
 
     if not _streams_post_ready(ctx):
         print("Skipping daily recap card: blocking tracks are still pending.")
+        return
+
+    posted_lock = update_streams_dir(ctx.summary["stats_date"]) / "weekend_streams_posted.lock"
+    if posted_lock.exists() and not ctx.no_post_mode:
+        print(f"Daily recap card already posted for {ctx.summary['stats_date']}, skipping before export.")
         return
 
     _ensure_daily_site_history(ctx)
@@ -1113,6 +1156,7 @@ def _post_one_album(
             should_post=not ctx.no_post_mode,
             state=state,
             post_priority=post_priority,
+            attempts=1,
         )
     except SystemExit as exc:
         print(f"Album update skipped after failure ({album}): {exc}")
@@ -1121,6 +1165,11 @@ def _post_one_album(
 def _post_albums_daily(ctx: FinalizeContext, state: dict[str, float]) -> None:
     if not ctx.no_post_mode and not ctx.summary.get("all_done"):
         print("Skipping top eras post: not all tracks are done yet.")
+        return
+
+    posted_lock = update_streams_dir(ctx.summary["stats_date"]) / "albums_posted.lock"
+    if posted_lock.exists() and not ctx.no_post_mode:
+        print(f"Top eras image already posted for {ctx.summary['stats_date']}, skipping.")
         return
 
     albums_post_script = ctx.script_dir / "tools" / "scripts" / "post_albums_twitter.py"
@@ -1133,6 +1182,7 @@ def _post_albums_daily(ctx: FinalizeContext, state: dict[str, float]) -> None:
         label="top eras image",
         should_post=not ctx.no_post_mode,
         state=state,
+        attempts=1,
     )
 
 
@@ -1152,6 +1202,14 @@ def _all_album_names(ctx: FinalizeContext) -> list[str]:
             continue
         seen.append(album)
     return seen
+
+
+def _album_update_already_posted_for_queue(ctx: FinalizeContext, album: str, stats_date: str) -> bool:
+    if ctx.no_post_mode:
+        return False
+    if album in ctx.posted_album_updates:
+        return True
+    return generate_album_update_image.album_update_already_posted(album, stats_date)
 
 
 def _album_daily_total(album: str, stats_date: str) -> int:
@@ -1206,15 +1264,20 @@ def _weekend_album_post_queue(ctx: FinalizeContext, stats_date: str) -> list[tup
     """
     albums = _all_album_names(ctx)
     blocked: list[str] = []
+    already_posted: list[str] = []
     postable: list[str] = []
     for album in albums:
         block_reason = generate_album_update_image.holiday_collection_post_block_reason(album, stats_date)
         if block_reason:
             blocked.append(album)
+        elif _album_update_already_posted_for_queue(ctx, album, stats_date):
+            already_posted.append(album)
         else:
             postable.append(album)
     if blocked:
         print(f"[weekend-albums] skipped before ranking (not postable): {', '.join(blocked)}")
+    if already_posted:
+        print(f"[weekend-albums] skipped before ranking (already posted): {', '.join(already_posted)}")
 
     try:
         scored = _score_albums_for_posting(postable, stats_date)
@@ -1278,15 +1341,20 @@ def _album_post_queue(
     never at risk of being dropped, only the genuine bottom of the ranking."""
     albums = _all_album_names(ctx)
     blocked: list[str] = []
+    already_posted: list[str] = []
     postable: list[str] = []
     for album in albums:
         block_reason = generate_album_update_image.holiday_collection_post_block_reason(album, stats_date)
         if block_reason:
             blocked.append(album)
+        elif _album_update_already_posted_for_queue(ctx, album, stats_date):
+            already_posted.append(album)
         else:
             postable.append(album)
     if blocked:
         print(f"[all-albums] skipped before ranking (not postable): {', '.join(blocked)}")
+    if already_posted:
+        print(f"[all-albums] skipped before ranking (already posted): {', '.join(already_posted)}")
 
     ranked = _rank_albums_for_posting(postable, stats_date)
     if len(ranked) <= 2:
@@ -1309,6 +1377,39 @@ def _album_post_queue(
     if dropped:
         print(f"[all-albums] skipped (bottom {len(dropped)} by score): {', '.join(dropped)}")
     return [(album, False) for album in queue]
+
+
+def _showgirl_lead_album(
+    album_queue: list[tuple[str, bool]], stats_date: str
+) -> tuple[str, bool] | None:
+    """Showgirl's queue entry when its album score reaches
+    SHOWGIRL_LEAD_SCORE_MIN (it then posts first in finalize), else None.
+    Only an album already in the day's queue can lead — the weekend gating,
+    Holiday block and same-album-overtake removal all still apply. Scores are
+    cached by score_album_update, so this re-read is free after ranking."""
+    lead_cf = SHOWGIRL_LEAD_ALBUM.casefold()
+    entry = next((item for item in album_queue if item[0].casefold() == lead_cf), None)
+    if entry is None:
+        return None
+    if post_best_day_since_twitter.in_encore_week(stats_date):
+        # Encore release week (decision 2026-09-25): Showgirl always leads,
+        # whatever its score.
+        print(f"[all-albums] Encore week: {entry[0]} posts first (before any best-day-since).")
+        return entry
+    try:
+        scored = _score_albums_for_posting([entry[0]], stats_date)
+    except Exception as exc:
+        print(f"[all-albums] Showgirl lead check failed ({exc}); keeping normal order.")
+        return None
+    item = scored[0] if scored else {}
+    score = float(item.get("score") or 0.0)
+    if item.get("status") != "scored" or score < SHOWGIRL_LEAD_SCORE_MIN:
+        return None
+    print(
+        f"[all-albums] {entry[0]} score {score:.0f} >= {SHOWGIRL_LEAD_SCORE_MIN:.0f}: "
+        "posting its card first."
+    )
+    return entry
 
 
 def _post_all_albums(ctx: FinalizeContext, state: dict[str, float]) -> None:
@@ -1445,6 +1546,9 @@ def _post_one_best_day_track(
     _best_day_since_candidate_tracks, so it can take its own turn in the
     album/other-posts alternation instead of the whole batch posting at once."""
     if track_id in ctx.posted_best_day_since_tracks:
+        return
+    if not ctx.no_post_mode and post_best_day_since_twitter.song_posts_remaining(ctx.summary["stats_date"]) == 0:
+        print(f"[best-day-since] Hard cap reached for {ctx.summary['stats_date']}; skipping {track_id}.")
         return
     cmd = [
         sys.executable,
@@ -1670,6 +1774,13 @@ def run_post_only_steps(ctx: FinalizeContext, step_names: list[str]) -> None:
     top eras hors week-end) s'appliquent toujours."""
     post_state = dict(ctx.initial_post_state or {"posted_count": 0, "last_post_at": 0.0})
     failures: list[str] = []
+    skipped = [n for n in step_names if n in ctx.skip_steps]
+    if skipped:
+        print(f"[POST-ONLY] Skipping (--skip): {', '.join(skipped)}")
+        step_names = [n for n in step_names if n not in ctx.skip_steps]
+    if ctx.best_day_last and "best-day-since" in step_names:
+        # --best-day-last : top20 part sans replies recap, le batch best-day en dernier.
+        step_names = [n for n in step_names if n != "best-day-since"] + ["best-day-since"]
     for name in step_names:
         step = POST_ONLY_STEPS[name]
         print(f"[POST-ONLY] Running step: {name}")
@@ -1721,7 +1832,10 @@ def run_final_update_tasks(ctx: FinalizeContext) -> None:
         # Les échecs sont collectés et re-signalés en fin de finalisation.
         post_step_failures: list[str] = []
 
-        def _guarded_post_step(step_label: str, fn) -> None:
+        def _guarded_post_step(step_label: str, fn, key: str | None = None) -> None:
+            if key is not None and key in ctx.skip_steps:
+                print(f"[SKIP] {step_label} skipped (--skip {key}).")
+                return
             with timer.step(step_label):
                 try:
                     fn()
@@ -1736,18 +1850,10 @@ def run_final_update_tasks(ctx: FinalizeContext) -> None:
         #      autres posts (debut, best-day-since, weekend gainers, overtakes,
         #      milestones)
         #   5. tables gainers (spotlight), toujours en dernier
-        _guarded_post_step("weekend recap card", lambda: _post_daily_recap_card(ctx, post_state))
-
-        if not ctx.debug_daily_mode and not ctx.local_test_mode:
-            _guarded_post_step("top eras post", lambda: _post_albums_daily(ctx, post_state))
-
-        _guarded_post_step("top 20 songs post", lambda: _post_streams_image(ctx, post_state))
-        if not ctx.debug_daily_mode and not ctx.local_test_mode:
-            _guarded_post_step(
-                "best-day-since recap (fallback)",
-                lambda: _post_best_day_since_recap_fallback(ctx, post_state),
-            )
-
+        # Exception (2026-09-24) : si le score album de Showgirl est « wow »
+        # (>= SHOWGIRL_LEAD_SCORE_MIN), sa card passe AVANT tout (étape 0).
+        # Semaine Encore (stats 2026-09-24 -> 09-30) : toujours, sans condition
+        # de score, et best-day-since plafonné à 3 cards chanson.
         album_queue: list[tuple[str, bool]] = []
         if not ctx.debug_daily_mode and not ctx.local_test_mode:
             if _is_weekend_stats_date(ctx.summary["stats_date"]):
@@ -1774,13 +1880,46 @@ def run_final_update_tasks(ctx: FinalizeContext) -> None:
                     album_queue = kept
         album_img_script = ctx.script_dir / "tools" / "scripts" / "generate_album_update_image.py"
 
-        other_steps: list[tuple[str, Callable[[], None]]] = []
+        lead_album = _showgirl_lead_album(album_queue, ctx.summary["stats_date"]) if album_queue else None
+        if lead_album is not None:
+            album_queue = [item for item in album_queue if item is not lead_album]
+            _guarded_post_step(
+                f"album update lead ({lead_album[0]})",
+                lambda: _post_one_album(
+                    ctx,
+                    post_state,
+                    album_img_script,
+                    lead_album[0],
+                    post_priority="4",
+                    weekly_only=lead_album[1],
+                ),
+                key="all-albums",
+            )
+
+        _guarded_post_step("weekend recap card", lambda: _post_daily_recap_card(ctx, post_state), key="recap")
+
         if not ctx.debug_daily_mode and not ctx.local_test_mode:
-            other_steps.append(("debut posts", lambda: _post_debut_releases(ctx, post_state)))
+            _guarded_post_step("top eras post", lambda: _post_albums_daily(ctx, post_state), key="top-eras")
+
+        _guarded_post_step("top 20 songs post", lambda: _post_streams_image(ctx, post_state), key="top20")
+        if not ctx.debug_daily_mode and not ctx.local_test_mode and not ctx.best_day_last:
+            _guarded_post_step(
+                "best-day-since recap (fallback)",
+                lambda: _post_best_day_since_recap_fallback(ctx, post_state),
+                key="best-day-since",
+            )
+
+        other_steps: list[tuple[str, Callable[[], None]] | tuple[str, Callable[[], None], str]] = []
+        if not ctx.debug_daily_mode and not ctx.local_test_mode:
+            other_steps.append(("debut posts", lambda: _post_debut_releases(ctx, post_state), "debut"))
             # Each candidate gets its own alternation turn against the album
             # queue (decision 2026-09-04), instead of the whole best-day-since
             # batch posting back to back as a single turn.
-            if ctx.summary.get("all_done"):
+            if "best-day-since" in ctx.skip_steps:
+                print("Best-day-since posts skipped (--skip best-day-since).")
+            elif ctx.best_day_last:
+                print("Best-day-since posts deferred to the end of finalize (--best-day-last).")
+            elif ctx.summary.get("all_done"):
                 best_day_script = ctx.script_dir / "tools" / "scripts" / "post_best_day_since_twitter.py"
                 for track_id in _best_day_since_candidate_tracks(ctx):
                     other_steps.append((
@@ -1789,9 +1928,9 @@ def run_final_update_tasks(ctx: FinalizeContext) -> None:
                     ))
             else:
                 print("Best-day-since posts skipped: not all tracks are done yet.")
-        other_steps.append(("weekend song gainers", lambda: _post_weekend_song_gainers(ctx, post_state)))
-        other_steps.append(("song overtakes", lambda: _post_song_overtakes(ctx, post_state)))
-        other_steps.append(("stream milestones", lambda: _post_stream_milestones(ctx, post_state)))
+        other_steps.append(("weekend song gainers", lambda: _post_weekend_song_gainers(ctx, post_state), "weekend-gainers"))
+        other_steps.append(("song overtakes", lambda: _post_song_overtakes(ctx, post_state), "overtakes"))
+        other_steps.append(("stream milestones", lambda: _post_stream_milestones(ctx, post_state), "milestones"))
 
         album_iter = iter(album_queue)
         other_iter = iter(other_steps)
@@ -1813,20 +1952,26 @@ def run_final_update_tasks(ctx: FinalizeContext) -> None:
                             post_priority="4",
                             weekly_only=weekly_only,
                         ),
+                        key="all-albums",
                     )
             if not other_done:
                 step = next(other_iter, None)
                 if step is None:
                     other_done = True
                 else:
-                    _guarded_post_step(step[0], step[1])
+                    _guarded_post_step(step[0], step[1], step[2] if len(step) > 2 else None)
 
         if ctx.debug_daily_mode or ctx.local_test_mode:
             return
 
         # Always last: biggest daily/weekly gainers should not delay the core
         # daily posts.
-        _guarded_post_step("stream highlights tables", lambda: _post_spotlight_gainers(ctx, post_state))
+        _guarded_post_step("stream highlights tables", lambda: _post_spotlight_gainers(ctx, post_state), key="gainers")
+
+        if ctx.best_day_last:
+            # --best-day-last : tout le best-day-since (chansons, recaps d'ère,
+            # recap global) après tous les autres posts.
+            _guarded_post_step("best-day-since (last)", lambda: _post_best_day_since(ctx, post_state), key="best-day-since")
 
         _join_background_task(forecast_thread, "forecast/image refresh", timer)
 

@@ -32,7 +32,7 @@
             "3CFKUvybrj8Jg5F018tyuA",
             "3wXuJTeA7dkrWShvbdUk0A"
           ],
-          "release_date": "2025-10-31T00:00:00Z",
+          "release_date": "2025-11-28T00:00:00Z",
           "genres": [
             "pop"
           ],
@@ -1130,7 +1130,10 @@
           "catalog_category": "standard",
           "music_track": true,
           "announced": true,
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273d7812467811a7da6e6a44902"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273d7812467811a7da6e6a44902",
+          "version_tags": [
+            "standard"
+          ]
         },
         {
           "title": "Babylon",
@@ -1161,7 +1164,10 @@
           "catalog_category": "standard",
           "music_track": true,
           "announced": true,
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273d7812467811a7da6e6a44902"
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273d7812467811a7da6e6a44902",
+          "version_tags": [
+            "standard"
+          ]
         }
       ]
     },
@@ -1189,9 +1195,10 @@
           "version_tag": "acoustic__alternate_version",
           "image_url": "https://i.scdn.co/image/ab67616d0000b273bc755429117cac056edd2bf7",
           "historical_track_ids": [
-            "3lcWDG62OH0cH5GHLdT5X4"
+            "3lcWDG62OH0cH5GHLdT5X4",
+            "1Egnfi242UNwmZ9SwqKNfP"
           ],
-          "release_date": "2025-10-31T00:00:00Z",
+          "release_date": "2025-11-28T00:00:00Z",
           "genres": [
             "pop"
           ],

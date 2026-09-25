@@ -360,10 +360,15 @@ def main() -> None:
         "country_albums": album_history,
     }
 
-    OUT_DATA.write_text(json.dumps(itunes_data, ensure_ascii=False, indent=2), encoding="utf-8")
-    OUT_HISTORY.write_text(
-        json.dumps(itunes_history, ensure_ascii=False, separators=(",", ":")), encoding="utf-8"
-    )
+    # tmp + os.replace: the iTunes chain now runs in parallel with Apple Music,
+    # whose generate_home_highlights.py reads itunes.json (2026-09-24).
+    for out_path, text in (
+        (OUT_DATA, json.dumps(itunes_data, ensure_ascii=False, indent=2)),
+        (OUT_HISTORY, json.dumps(itunes_history, ensure_ascii=False, separators=(",", ":"))),
+    ):
+        tmp_path = out_path.with_name(out_path.name + ".tmp")
+        tmp_path.write_text(text, encoding="utf-8")
+        os.replace(tmp_path, out_path)
     split_count = write_history_by_date(itunes_history)
 
     log(f"écrit: {OUT_DATA}")

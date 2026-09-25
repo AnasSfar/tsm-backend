@@ -57,6 +57,21 @@ Modes visibles dans les logs/code:
 - `--debug-total YYYY-MM-DD`: remplace des totals sur une date existante.
 - `--post-only <steps...>`: poste des etapes depuis l'history existant, sans
   scraping/export/git.
+- `--best-day-last` (2026-09-24): best-day-since ni calcule ni poste pendant la
+  collecte (watchers early/era recap desactives), Top Songs sans replies recap
+  (`post_streams_twitter.py --no-best-day-recap`), pas d'alternance en finalize ;
+  `FinalizeContext.best_day_last` lance le batch complet en toute derniere etape
+  de post (apres les tables gainers, avant git). Les posts deja lockes (track /
+  era recap locks) ne sont jamais repostes. Combinable avec `--post-only`
+  (top20 sans replies recap, `best-day-since` force en dernier).
+- `--skip S[,S]` (2026-09-24): saute n'importe quelle etape de post (cles de
+  `POST_ONLY_STEPS`) en live et en finalize (`FinalizeContext.skip_steps`,
+  `_guarded_post_step(..., key=)`), filtre aussi `--post-only`. `debut` coupe
+  le poster early ; `best-day-since` coupe les watchers early, les replies
+  recap du Top Songs et pose `TSM_SKIP_BEST_DAY_SINCE=1`. Sur un run deja lance
+  (modules deja importes) seul best-day-since reste coupable : creer
+  `snapshots/spotify_streams/YYYY/MM/<date>/skip_best_day_since.flag`
+  (`best_day_since_skipped`). Les posts deja partis ne sont pas annules.
 - `--latest-history-date`: utilise la derniere date presente en history.
 - modes locaux/test: pas de writes/R2/Twitter/git.
 
@@ -948,6 +963,54 @@ proprietaire apres relecture du classement :
   consommateurs de `_album_post_queue` : `_post_all_albums`
   (`--post-only all-albums`) et la boucle alternee de
   `run_final_update_tasks`.
+
+## Showgirl en tete si score "wow" (2026-09-24)
+
+Decision proprietaire : la card album de Showgirl n'a pas a attendre son slot
+(3e/4e post apres recap weekend / top eras / top songs) quand son score est
+exceptionnel. `finalize_update._showgirl_lead_album(album_queue, stats_date)` :
+si `SHOWGIRL_LEAD_ALBUM` est dans la file album du jour ET que son score
+`score_album_update` >= `SHOWGIRL_LEAD_SCORE_MIN`, la card est postee en
+**etape 0** (avant `weekend recap card`) et retiree de la file alternee.
+Sous le seuil : ordre inchange. La file album est donc desormais construite
+avant l'etape 1 (meme logique : weekend queue, blocage Holiday, retrait des
+same-album overtakes — Showgirl gere en overtake ne passe jamais en tete).
+Log : `[all-albums] The Life of a Showgirl score N >= M: posting its card first.`
+Seuil = **70** : calibre sur 60 jours (2026-07-25 -> 09-22), Showgirl score
+normalement 15-55 ; seul le 09-22 (11 records tracks, +674k daily) l'aurait
+declenche (79.9). Autres albums montent souvent a 100+ : le seuil est propre a
+Showgirl, pas un « score top du jour ».
+
+## Semaine Encore : Showgirl toujours en tete + best-day-since plafonne a 3 (2026-09-25, TEMPORAIRE)
+
+Decision proprietaire pour la semaine de sortie de "The Life of a Showgirl: The
+Encore" : **stats dates 2026-09-24 -> 2026-09-30** (= runs du 2026-09-25 au
+2026-10-01), constante `post_best_day_since_twitter.ENCORE_WEEK_STATS_DATES`,
+helper `in_encore_week(date)`. Hors fenetre, tout redevient normal sans rien
+toucher (supprimer le bloc apres le 2026-10-01 si on veut nettoyer).
+
+- **Showgirl en tete sans condition de score** : `_showgirl_lead_album` renvoie
+  l'entree Showgirl des qu'elle est dans la file album, quel que soit
+  `SHOWGIRL_LEAD_SCORE_MIN`. Log `[all-albums] Encore week: ... posts first`.
+  Limite : le week-end, Showgirl n'est dans la file que si elle est dans le top
+  `WEEKEND_WEEKLY_ALBUM_LIMIT` avec un gain positif (pas de card forcee).
+- **Pas de post best-day-since pendant la collecte** (pour que rien ne passe
+  avant Showgirl) : `update_streams.early_best_day_off` coupe
+  `ReadyBestDaySincePoster` ET `ReadyEraRecapPoster` (ni watchlist calculee).
+  Tout le best-day-since part en finalize, apres la card Showgirl. Les posts
+  debut (`ReadyDebutReleasePoster`) restent actifs pendant la collecte.
+- **Hard cap 3 cards chanson par jour, sans aucun contournement**
+  (`SONG_POST_HARD_CAP`, `song_posts_remaining(date)` = 3 - nb de locks
+  `best_day_since_track_locks/` du jour, toutes voies confondues) : ni >90 j ni
+  biggest day of the year ne passent au-dela. Une fois le cap atteint, plus
+  aucun calcul : `_post_single_track_early` sort avant tout calcul,
+  `--list-batch-candidates` limite a `remaining` (0 -> aucun `_pick_rows`) et
+  tronque la liste validee, `--post-batch-track` sort 0 sans poster,
+  `finalize._post_one_best_day_track` ne lance plus de sous-process,
+  `ReadyBestDaySincePoster._done()` s'arrete. Le batch complet (`--post-only
+  best-day-since` / `--best-day-last`) est tronque pareil.
+- Non concernes par le cap : recaps par ere / recap global (replies du thread
+  Top Songs), comme le cap 3/5 habituel.
 
 ## Refonte de l'ordre de post en finalize (2026-09-03)
 

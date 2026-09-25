@@ -1,8 +1,8 @@
 {
   "album": "The Life of a Showgirl",
   "release_date": "2025-10-03T00:00:00Z",
-  "section_count": 7,
-  "track_count": 42,
+  "section_count": 8,
+  "track_count": 46,
   "sections": [
     {
       "section": "standard_edition",
@@ -34,39 +34,52 @@
           ],
           "release_date": "2025-10-31T00:00:00Z",
           "genres": [
-            "pop",
-            "dance-pop",
-            "synth-pop"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "pop": 3.0,
-            "dance-pop": 2.0,
+            "dance-pop": 1.0,
+            "pop": 2.2,
             "synth-pop": 1.0
           },
           "genre_sources": {
             "lastfm": [
               "pop",
-              "dance-pop",
-              "synth-pop"
+              "synth-pop",
+              "dance-pop"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
             "lastfm": [
               "pop",
+              "synthpop",
               "best of 2025",
               "dance-pop",
-              "synthpop",
+              "julia mofada",
               "2025",
-              "baroque pop",
               "love at first listen",
               "soty",
-              "2020s",
-              "AOTY"
+              "AOTY",
+              "taylor swift"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Musique",
+              "Música",
+              "Musik",
+              "Musica",
+              "Muziek",
+              "流行樂",
+              "音樂"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "The Fate of Ophelia"
+            "lastfm": "The Fate of Ophelia",
+            "apple_music": "The Fate of Ophelia"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:the_fate_of_ophelia",
@@ -115,21 +128,22 @@
           ],
           "release_date": "2026-03-31T00:00:00Z",
           "genres": [
-            "pop",
-            "pop rock",
-            "electropop"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "pop": 3.0,
-            "pop rock": 2.0,
-            "electropop": 1.0
+            "electropop": 1.0,
+            "pop": 2.2,
+            "pop rock": 1.0
           },
           "genre_sources": {
             "lastfm": [
               "pop",
               "pop rock",
               "electropop"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
@@ -144,10 +158,16 @@
               "katseye",
               "Jorge Rivera-Herrans",
               "Sabrina Carpenter"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Musik"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "Elizabeth Taylor"
+            "lastfm": "Elizabeth Taylor",
+            "apple_music": "Elizabeth Taylor"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:elizabeth_taylor",
@@ -195,39 +215,51 @@
           ],
           "release_date": "2026-02-06T00:00:00Z",
           "genres": [
-            "pop",
-            "synth-pop",
-            "soft rock"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "pop": 3.0,
-            "synth-pop": 2.0,
-            "soft rock": 1.0
+            "pop": 2.2,
+            "soft rock": 1.0,
+            "synth-pop": 1.0
           },
           "genre_sources": {
             "lastfm": [
+              "soft rock",
               "pop",
-              "synth-pop",
-              "soft rock"
+              "synth-pop"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
             "lastfm": [
+              "soft rock",
               "pop",
               "synthpop",
               "rnb",
-              "soft rock",
-              "soty",
               "christmas",
-              "holiday",
-              "synth pop",
-              "american",
-              "pop rock"
+              "pop rock",
+              "dance-pop",
+              "julia mofada",
+              "soty",
+              "sunshine pop"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Música",
+              "Musik",
+              "Musique",
+              "Muziek",
+              "流行樂",
+              "音樂"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "Opalite"
+            "lastfm": "Opalite",
+            "apple_music": "Opalite"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:opalite",
@@ -275,36 +307,43 @@
           ],
           "release_date": "2025-11-07T00:00:00Z",
           "genres": [
-            "pop",
-            "synth-pop"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "pop": 3.0,
-            "synth-pop": 2.0
+            "pop": 2.2,
+            "synth-pop": 1.0
           },
           "genre_sources": {
             "lastfm": [
-              "pop",
-              "synth-pop"
+              "synth-pop",
+              "pop"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
             "lastfm": [
               "soty",
               "best of 2025",
-              "pop",
               "synthpop",
-              "gaypop",
+              "pop",
               "female vocalist",
               "jazz",
-              "docinho",
+              "gaypop",
+              "stylish pop",
               "taylor swift",
               "larissa"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "Father Figure"
+            "lastfm": "Father Figure",
+            "apple_music": "Father Figure"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:father_figure",
@@ -353,36 +392,43 @@
           ],
           "release_date": "2025-11-07T00:00:00Z",
           "genres": [
-            "pop",
-            "rock"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "pop": 3.0,
-            "rock": 2.0
+            "pop": 2.2,
+            "rock": 1.0
           },
           "genre_sources": {
             "lastfm": [
               "pop",
               "rock"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
             "lastfm": [
               "pop",
               "2020s",
-              "sad",
               "experimental",
-              "show tunes",
+              "sad",
               "Acid Rock",
+              "show tunes",
               "Ballad",
+              "Iconic",
               "soty",
-              "gay pop",
-              "Iconic"
+              "gay pop"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "Eldest Daughter"
+            "lastfm": "Eldest Daughter",
+            "apple_music": "Eldest Daughter"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:eldest_daughter",
@@ -430,14 +476,12 @@
           ],
           "release_date": "2025-11-07T00:00:00Z",
           "genres": [
-            "pop",
-            "country pop",
-            "soft rock"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "pop": 3.0,
-            "country pop": 2.0,
+            "country pop": 1.0,
+            "pop": 2.2,
             "soft rock": 1.0
           },
           "genre_sources": {
@@ -445,6 +489,9 @@
               "pop",
               "country pop",
               "soft rock"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
@@ -454,15 +501,20 @@
               "peter",
               "soft rock",
               "folk",
-              "female vocalist",
               "country",
+              "female vocalist",
+              "synthpop",
               "singer-songwriter",
-              "sad",
-              "synthpop"
+              "sad"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "Ruin The Friendship"
+            "lastfm": "Ruin The Friendship",
+            "apple_music": "Ruin The Friendship"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:ruin_the_friendship",
@@ -510,14 +562,12 @@
           ],
           "release_date": "2025-11-07T00:00:00Z",
           "genres": [
-            "pop rock",
-            "pop",
-            "rock"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "pop rock": 3.0,
-            "pop": 2.0,
+            "pop": 2.2,
+            "pop rock": 1.0,
             "rock": 1.0
           },
           "genre_sources": {
@@ -525,24 +575,32 @@
               "pop rock",
               "pop",
               "rock"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
             "lastfm": [
               "pop rock",
               "power pop",
-              "ended flopli xcx",
               "best of 2025",
-              "rnb",
-              "rock",
+              "ended flopli xcx",
               "Disco",
-              "soty",
+              "rock",
+              "rnb",
               "Acid Rock",
-              "charli xcx"
+              "charli xcx",
+              "soty"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "Actually Romantic"
+            "lastfm": "Actually Romantic",
+            "apple_music": "Actually Romantic"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:actually_romantic",
@@ -590,36 +648,43 @@
           ],
           "release_date": "2025-11-07T00:00:00Z",
           "genres": [
-            "pop",
-            "synth-pop"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "pop": 3.0,
-            "synth-pop": 2.0
+            "pop": 2.2,
+            "synth-pop": 1.0
           },
           "genre_sources": {
             "lastfm": [
               "pop",
               "synth-pop"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
             "lastfm": [
               "pop",
               "2025",
-              "female vocalist",
               "synthpop",
-              "solo",
+              "female vocalist",
               "synth pop",
+              "solo",
               "female",
               "Dream",
               "dreampop",
               "fav"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "Wi$h Li$t"
+            "lastfm": "Wi$h Li$t",
+            "apple_music": "Wi$h Li$t"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:wi_h_li_t",
@@ -672,10 +737,15 @@
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "pop": 3.0
+            "dance-pop": 1.0,
+            "pop": 2.2
           },
           "genre_sources": {
             "lastfm": [
+              "pop",
+              "dance-pop"
+            ],
+            "apple_music": [
               "pop"
             ]
           },
@@ -683,18 +753,23 @@
             "lastfm": [
               "pop",
               "funk",
-              "Disco",
               "sexy",
+              "Disco",
               "soul",
-              "70s",
-              "power pop",
-              "60s",
-              "eurodisco",
-              "female vocalist"
+              "Europop",
+              "jazz",
+              "dance-pop",
+              "show tunes",
+              "eurodisco"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "Wood"
+            "lastfm": "Wood",
+            "apple_music": "Wood"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:wood",
@@ -742,21 +817,22 @@
           ],
           "release_date": "2025-11-07T00:00:00Z",
           "genres": [
-            "pop",
-            "rock",
-            "singer-songwriter"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "pop": 3.0,
-            "rock": 2.0,
-            "singer-songwriter": 1.0
+            "electropop": 1.0,
+            "pop": 2.2,
+            "rock": 1.0
           },
           "genre_sources": {
             "lastfm": [
               "pop",
               "rock",
-              "singer-songwriter"
+              "electropop"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
@@ -765,16 +841,21 @@
               "soty",
               "rock",
               "female vocalist",
-              "singer-songwriter",
               "electropop",
+              "singer-songwriter",
               "rap",
-              "rnb",
-              "dance pop",
-              "synthpop"
+              "controversial",
+              "synthpop",
+              "rnb"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "CANCELLED!"
+            "lastfm": "CANCELLED!",
+            "apple_music": "CANCELLED!"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:cancelled",
@@ -823,18 +904,20 @@
           ],
           "release_date": "2025-11-07T00:00:00Z",
           "genres": [
-            "pop",
-            "soft rock"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "pop": 3.0,
-            "soft rock": 2.0
+            "pop": 2.2,
+            "soft rock": 1.0
           },
           "genre_sources": {
             "lastfm": [
               "pop",
               "soft rock"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
@@ -846,13 +929,18 @@
               "soul",
               "Love",
               "power pop",
-              "female vocalist",
+              "ambient pop",
               "female",
-              "Contemporary pop"
+              "female vocalist"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "Honey"
+            "lastfm": "Honey",
+            "apple_music": "Honey"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:honey",
@@ -902,16 +990,29 @@
             "6EqHzZp61G5uQ12QEiibpT"
           ],
           "release_date": "2025-10-02T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
+          "genres": [
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 1.2
+          },
           "genre_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "pop"
+            ]
           },
           "genre_raw_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music"
+            ]
           },
-          "genre_query_titles": {},
+          "genre_query_titles": {
+            "apple_music": "The Life of a Showgirl"
+          },
           "genre_errors": {},
           "genre_canonical_key": "family:the_life_of_a_showgirl",
           "filter_tags": [
@@ -928,6 +1029,139 @@
           "tags": [],
           "tsm_song_id": "6c3t",
           "tsm_album_id": "va1"
+        }
+      ]
+    },
+    {
+      "section": "the_encore",
+      "track_count": 4,
+      "chart_extra": false,
+      "announced": true,
+      "announced_text": "OUT THIS FRIDAY, SEPTEMBER 25TH 2026",
+      "tracks": [
+        {
+          "title": "Patient Zero",
+          "url": "https://open.spotify.com/track/11hcBLPtbMp4aQI6zGQLub",
+          "type": "track",
+          "edition": "the_encore",
+          "display_section": "The Encore",
+          "display_order": 13,
+          "base_title": "Patient Zero",
+          "album": "The Life of a Showgirl",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Patient Zero",
+          "song_family": "patient_zero",
+          "version_tag": "standard",
+          "release_date": "2026-09-25T00:00:00Z",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "the_encore",
+          "tags": [],
+          "catalog_category": "standard",
+          "music_track": true,
+          "announced": true,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273d7812467811a7da6e6a44902"
+        },
+        {
+          "title": "Cleveland!",
+          "url": "https://open.spotify.com/track/7uxkx8HPBYkJKcimOyggUM",
+          "type": "track",
+          "edition": "the_encore",
+          "display_section": "The Encore",
+          "display_order": 14,
+          "base_title": "Cleveland!",
+          "album": "The Life of a Showgirl",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Cleveland!",
+          "song_family": "cleveland",
+          "version_tag": "standard",
+          "release_date": "2026-09-25T00:00:00Z",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "the_encore",
+          "tags": [],
+          "catalog_category": "standard",
+          "music_track": true,
+          "announced": true,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273d7812467811a7da6e6a44902"
+        },
+        {
+          "title": "Pink Clouding",
+          "url": "https://open.spotify.com/track/3gyJbNBTRVRdZDA1yO3clm",
+          "type": "track",
+          "edition": "the_encore",
+          "display_section": "The Encore",
+          "display_order": 15,
+          "base_title": "Pink Clouding",
+          "album": "The Life of a Showgirl",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Pink Clouding",
+          "song_family": "pink_clouding",
+          "version_tag": "standard",
+          "release_date": "2026-09-25T00:00:00Z",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "the_encore",
+          "tags": [],
+          "catalog_category": "standard",
+          "music_track": true,
+          "announced": true,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273d7812467811a7da6e6a44902"
+        },
+        {
+          "title": "Babylon",
+          "url": "https://open.spotify.com/track/2j7wI9QWrP8cjKDdOLVQTU",
+          "type": "track",
+          "edition": "the_encore",
+          "display_section": "The Encore",
+          "display_order": 16,
+          "base_title": "Babylon",
+          "album": "The Life of a Showgirl",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Babylon",
+          "song_family": "babylon",
+          "version_tag": "standard",
+          "release_date": "2026-09-25T00:00:00Z",
+          "filter_tags": [
+            "solo",
+            "album_track"
+          ],
+          "on_album": true,
+          "role": "album_track",
+          "release_edition": "the_encore",
+          "tags": [],
+          "catalog_category": "standard",
+          "music_track": true,
+          "announced": true,
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273d7812467811a7da6e6a44902"
         }
       ]
     },
@@ -959,39 +1193,52 @@
           ],
           "release_date": "2025-10-31T00:00:00Z",
           "genres": [
-            "pop",
-            "dance-pop",
-            "synth-pop"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "pop": 3.0,
-            "dance-pop": 2.0,
+            "dance-pop": 1.0,
+            "pop": 2.2,
             "synth-pop": 1.0
           },
           "genre_sources": {
             "lastfm": [
               "pop",
-              "dance-pop",
-              "synth-pop"
+              "synth-pop",
+              "dance-pop"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
             "lastfm": [
               "pop",
+              "synthpop",
               "best of 2025",
               "dance-pop",
-              "synthpop",
+              "julia mofada",
               "2025",
-              "baroque pop",
               "love at first listen",
               "soty",
-              "2020s",
-              "AOTY"
+              "AOTY",
+              "taylor swift"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Musique",
+              "Música",
+              "Musik",
+              "Musica",
+              "Muziek",
+              "流行樂",
+              "音樂"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "The Fate of Ophelia"
+            "lastfm": "The Fate of Ophelia",
+            "apple_music": "The Fate of Ophelia"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:the_fate_of_ophelia",
@@ -1042,39 +1289,51 @@
           ],
           "release_date": "2026-02-06T00:00:00Z",
           "genres": [
-            "pop",
-            "synth-pop",
-            "soft rock"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "pop": 3.0,
-            "synth-pop": 2.0,
-            "soft rock": 1.0
+            "pop": 2.2,
+            "soft rock": 1.0,
+            "synth-pop": 1.0
           },
           "genre_sources": {
             "lastfm": [
+              "soft rock",
               "pop",
-              "synth-pop",
-              "soft rock"
+              "synth-pop"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
             "lastfm": [
+              "soft rock",
               "pop",
               "synthpop",
               "rnb",
-              "soft rock",
-              "soty",
               "christmas",
-              "holiday",
-              "synth pop",
-              "american",
-              "pop rock"
+              "pop rock",
+              "dance-pop",
+              "julia mofada",
+              "soty",
+              "sunshine pop"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Música",
+              "Musik",
+              "Musique",
+              "Muziek",
+              "流行樂",
+              "音樂"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "Opalite"
+            "lastfm": "Opalite",
+            "apple_music": "Opalite"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:opalite",
@@ -1122,36 +1381,43 @@
           "historical_track_ids": [],
           "release_date": "2025-11-07T00:00:00Z",
           "genres": [
-            "pop",
-            "synth-pop"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "pop": 3.0,
-            "synth-pop": 2.0
+            "pop": 2.2,
+            "synth-pop": 1.0
           },
           "genre_sources": {
             "lastfm": [
               "pop",
               "synth-pop"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
             "lastfm": [
               "pop",
               "2025",
-              "female vocalist",
               "synthpop",
-              "solo",
+              "female vocalist",
               "synth pop",
+              "solo",
               "female",
               "Dream",
               "dreampop",
               "fav"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "Wi$h Li$t"
+            "lastfm": "Wi$h Li$t",
+            "apple_music": "Wi$h Li$t"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:wi_h_li_t",
@@ -1199,14 +1465,12 @@
           "historical_track_ids": [],
           "release_date": "2025-11-07T00:00:00Z",
           "genres": [
-            "pop",
-            "country pop",
-            "soft rock"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "pop": 3.0,
-            "country pop": 2.0,
+            "country pop": 1.0,
+            "pop": 2.2,
             "soft rock": 1.0
           },
           "genre_sources": {
@@ -1214,6 +1478,9 @@
               "pop",
               "country pop",
               "soft rock"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
@@ -1223,15 +1490,20 @@
               "peter",
               "soft rock",
               "folk",
-              "female vocalist",
               "country",
+              "female vocalist",
+              "synthpop",
               "singer-songwriter",
-              "sad",
-              "synthpop"
+              "sad"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "Ruin The Friendship"
+            "lastfm": "Ruin The Friendship",
+            "apple_music": "Ruin The Friendship"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:ruin_the_friendship",
@@ -1279,36 +1551,43 @@
           "historical_track_ids": [],
           "release_date": "2025-11-07T00:00:00Z",
           "genres": [
-            "pop",
-            "rock"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "pop": 3.0,
-            "rock": 2.0
+            "pop": 2.2,
+            "rock": 1.0
           },
           "genre_sources": {
             "lastfm": [
               "pop",
               "rock"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
             "lastfm": [
               "pop",
               "2020s",
-              "sad",
               "experimental",
-              "show tunes",
+              "sad",
               "Acid Rock",
+              "show tunes",
               "Ballad",
+              "Iconic",
               "soty",
-              "gay pop",
-              "Iconic"
+              "gay pop"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "Eldest Daughter"
+            "lastfm": "Eldest Daughter",
+            "apple_music": "Eldest Daughter"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:eldest_daughter",
@@ -1358,21 +1637,22 @@
           ],
           "release_date": "2026-03-31T00:00:00Z",
           "genres": [
-            "pop",
-            "pop rock",
-            "electropop"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "pop": 3.0,
-            "pop rock": 2.0,
-            "electropop": 1.0
+            "electropop": 1.0,
+            "pop": 2.2,
+            "pop rock": 1.0
           },
           "genre_sources": {
             "lastfm": [
               "pop",
               "pop rock",
               "electropop"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
@@ -1387,10 +1667,16 @@
               "katseye",
               "Jorge Rivera-Herrans",
               "Sabrina Carpenter"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Musik"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "Elizabeth Taylor"
+            "lastfm": "Elizabeth Taylor",
+            "apple_music": "Elizabeth Taylor"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:elizabeth_taylor",
@@ -1435,16 +1721,29 @@
           "image_url": "https://i.scdn.co/image/ab67616d0000b273f756bdc2c11a985dc0c06d94",
           "historical_track_ids": [],
           "release_date": "2025-11-07T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
+          "genres": [
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 1.2
+          },
           "genre_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "pop"
+            ]
           },
           "genre_raw_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music"
+            ]
           },
-          "genre_query_titles": {},
+          "genre_query_titles": {
+            "apple_music": "The Life of a Showgirl"
+          },
           "genre_errors": {},
           "genre_canonical_key": "family:the_life_of_a_showgirl",
           "filter_tags": [
@@ -1498,39 +1797,51 @@
           "historical_track_ids": [],
           "release_date": "2026-02-19T00:00:00Z",
           "genres": [
-            "pop",
-            "synth-pop",
-            "soft rock"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "pop": 3.0,
-            "synth-pop": 2.0,
-            "soft rock": 1.0
+            "pop": 2.2,
+            "soft rock": 1.0,
+            "synth-pop": 1.0
           },
           "genre_sources": {
             "lastfm": [
+              "soft rock",
               "pop",
-              "synth-pop",
-              "soft rock"
+              "synth-pop"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
             "lastfm": [
+              "soft rock",
               "pop",
               "synthpop",
               "rnb",
-              "soft rock",
-              "soty",
               "christmas",
-              "holiday",
-              "synth pop",
-              "american",
-              "pop rock"
+              "pop rock",
+              "dance-pop",
+              "julia mofada",
+              "soty",
+              "sunshine pop"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Música",
+              "Musik",
+              "Musique",
+              "Muziek",
+              "流行樂",
+              "音樂"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "Opalite"
+            "lastfm": "Opalite",
+            "apple_music": "Opalite"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:opalite",
@@ -1575,39 +1886,51 @@
           "historical_track_ids": [],
           "release_date": "2026-02-20T00:00:00Z",
           "genres": [
-            "pop",
-            "synth-pop",
-            "soft rock"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "pop": 3.0,
-            "synth-pop": 2.0,
-            "soft rock": 1.0
+            "pop": 2.2,
+            "soft rock": 1.0,
+            "synth-pop": 1.0
           },
           "genre_sources": {
             "lastfm": [
+              "soft rock",
               "pop",
-              "synth-pop",
-              "soft rock"
+              "synth-pop"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
             "lastfm": [
+              "soft rock",
               "pop",
               "synthpop",
               "rnb",
-              "soft rock",
-              "soty",
               "christmas",
-              "holiday",
-              "synth pop",
-              "american",
-              "pop rock"
+              "pop rock",
+              "dance-pop",
+              "julia mofada",
+              "soty",
+              "sunshine pop"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Música",
+              "Musik",
+              "Musique",
+              "Muziek",
+              "流行樂",
+              "音樂"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "Opalite"
+            "lastfm": "Opalite",
+            "apple_music": "Opalite"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:opalite",
@@ -1652,39 +1975,51 @@
           "historical_track_ids": [],
           "release_date": "2026-02-19T00:00:00Z",
           "genres": [
-            "pop",
-            "synth-pop",
-            "soft rock"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "pop": 3.0,
-            "synth-pop": 2.0,
-            "soft rock": 1.0
+            "pop": 2.2,
+            "soft rock": 1.0,
+            "synth-pop": 1.0
           },
           "genre_sources": {
             "lastfm": [
+              "soft rock",
               "pop",
-              "synth-pop",
-              "soft rock"
+              "synth-pop"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
             "lastfm": [
+              "soft rock",
               "pop",
               "synthpop",
               "rnb",
-              "soft rock",
-              "soty",
               "christmas",
-              "holiday",
-              "synth pop",
-              "american",
-              "pop rock"
+              "pop rock",
+              "dance-pop",
+              "julia mofada",
+              "soty",
+              "sunshine pop"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Música",
+              "Musik",
+              "Musique",
+              "Muziek",
+              "流行樂",
+              "音樂"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "Opalite"
+            "lastfm": "Opalite",
+            "apple_music": "Opalite"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:opalite",
@@ -1729,39 +2064,51 @@
           "historical_track_ids": [],
           "release_date": "2026-02-19T00:00:00Z",
           "genres": [
-            "pop",
-            "synth-pop",
-            "soft rock"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "pop": 3.0,
-            "synth-pop": 2.0,
-            "soft rock": 1.0
+            "pop": 2.2,
+            "soft rock": 1.0,
+            "synth-pop": 1.0
           },
           "genre_sources": {
             "lastfm": [
+              "soft rock",
               "pop",
-              "synth-pop",
-              "soft rock"
+              "synth-pop"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
             "lastfm": [
+              "soft rock",
               "pop",
               "synthpop",
               "rnb",
-              "soft rock",
-              "soty",
               "christmas",
-              "holiday",
-              "synth pop",
-              "american",
-              "pop rock"
+              "pop rock",
+              "dance-pop",
+              "julia mofada",
+              "soty",
+              "sunshine pop"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Música",
+              "Musik",
+              "Musique",
+              "Muziek",
+              "流行樂",
+              "音樂"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "Opalite"
+            "lastfm": "Opalite",
+            "apple_music": "Opalite"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:opalite",
@@ -1806,39 +2153,52 @@
           "historical_track_ids": [],
           "release_date": "2025-11-06T00:00:00Z",
           "genres": [
-            "pop",
-            "dance-pop",
-            "synth-pop"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "pop": 3.0,
-            "dance-pop": 2.0,
+            "dance-pop": 1.0,
+            "pop": 2.2,
             "synth-pop": 1.0
           },
           "genre_sources": {
             "lastfm": [
               "pop",
-              "dance-pop",
-              "synth-pop"
+              "synth-pop",
+              "dance-pop"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
             "lastfm": [
               "pop",
+              "synthpop",
               "best of 2025",
               "dance-pop",
-              "synthpop",
+              "julia mofada",
               "2025",
-              "baroque pop",
               "love at first listen",
               "soty",
-              "2020s",
-              "AOTY"
+              "AOTY",
+              "taylor swift"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Musique",
+              "Música",
+              "Musik",
+              "Musica",
+              "Muziek",
+              "流行樂",
+              "音樂"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "The Fate of Ophelia"
+            "lastfm": "The Fate of Ophelia",
+            "apple_music": "The Fate of Ophelia"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:the_fate_of_ophelia",
@@ -1883,39 +2243,52 @@
           "historical_track_ids": [],
           "release_date": "2025-11-28T00:00:00Z",
           "genres": [
-            "pop",
-            "dance-pop",
-            "synth-pop"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "pop": 3.0,
-            "dance-pop": 2.0,
+            "dance-pop": 1.0,
+            "pop": 2.2,
             "synth-pop": 1.0
           },
           "genre_sources": {
             "lastfm": [
               "pop",
-              "dance-pop",
-              "synth-pop"
+              "synth-pop",
+              "dance-pop"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
             "lastfm": [
               "pop",
+              "synthpop",
               "best of 2025",
               "dance-pop",
-              "synthpop",
+              "julia mofada",
               "2025",
-              "baroque pop",
               "love at first listen",
               "soty",
-              "2020s",
-              "AOTY"
+              "AOTY",
+              "taylor swift"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Musique",
+              "Música",
+              "Musik",
+              "Musica",
+              "Muziek",
+              "流行樂",
+              "音樂"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "The Fate of Ophelia"
+            "lastfm": "The Fate of Ophelia",
+            "apple_music": "The Fate of Ophelia"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:the_fate_of_ophelia",
@@ -1967,39 +2340,51 @@
           "historical_track_ids": [],
           "release_date": "2026-02-13T00:00:00Z",
           "genres": [
-            "pop",
-            "synth-pop",
-            "soft rock"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "pop": 3.0,
-            "synth-pop": 2.0,
-            "soft rock": 1.0
+            "pop": 2.2,
+            "soft rock": 1.0,
+            "synth-pop": 1.0
           },
           "genre_sources": {
             "lastfm": [
+              "soft rock",
               "pop",
-              "synth-pop",
-              "soft rock"
+              "synth-pop"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
             "lastfm": [
+              "soft rock",
               "pop",
               "synthpop",
               "rnb",
-              "soft rock",
-              "soty",
               "christmas",
-              "holiday",
-              "synth pop",
-              "american",
-              "pop rock"
+              "pop rock",
+              "dance-pop",
+              "julia mofada",
+              "soty",
+              "sunshine pop"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Música",
+              "Musik",
+              "Musique",
+              "Muziek",
+              "流行樂",
+              "音樂"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "Opalite"
+            "lastfm": "Opalite",
+            "apple_music": "Opalite"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:opalite",
@@ -2044,39 +2429,51 @@
           "historical_track_ids": [],
           "release_date": "2026-02-13T00:00:00Z",
           "genres": [
-            "pop",
-            "synth-pop",
-            "soft rock"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "pop": 3.0,
-            "synth-pop": 2.0,
-            "soft rock": 1.0
+            "pop": 2.2,
+            "soft rock": 1.0,
+            "synth-pop": 1.0
           },
           "genre_sources": {
             "lastfm": [
+              "soft rock",
               "pop",
-              "synth-pop",
-              "soft rock"
+              "synth-pop"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
             "lastfm": [
+              "soft rock",
               "pop",
               "synthpop",
               "rnb",
-              "soft rock",
-              "soty",
               "christmas",
-              "holiday",
-              "synth pop",
-              "american",
-              "pop rock"
+              "pop rock",
+              "dance-pop",
+              "julia mofada",
+              "soty",
+              "sunshine pop"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Música",
+              "Musik",
+              "Musique",
+              "Muziek",
+              "流行樂",
+              "音樂"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "Opalite"
+            "lastfm": "Opalite",
+            "apple_music": "Opalite"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:opalite",
@@ -2128,21 +2525,22 @@
           "historical_track_ids": [],
           "release_date": "2026-03-31T00:00:00Z",
           "genres": [
-            "pop",
-            "pop rock",
-            "electropop"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "pop": 3.0,
-            "pop rock": 2.0,
-            "electropop": 1.0
+            "electropop": 1.0,
+            "pop": 2.2,
+            "pop rock": 1.0
           },
           "genre_sources": {
             "lastfm": [
               "pop",
               "pop rock",
               "electropop"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
@@ -2157,10 +2555,16 @@
               "katseye",
               "Jorge Rivera-Herrans",
               "Sabrina Carpenter"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Musik"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "Elizabeth Taylor"
+            "lastfm": "Elizabeth Taylor",
+            "apple_music": "Elizabeth Taylor"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:elizabeth_taylor",
@@ -2202,36 +2606,43 @@
           "historical_track_ids": [],
           "release_date": "2025-10-02T00:00:00Z",
           "genres": [
-            "pop",
-            "synth-pop"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "pop": 3.0,
-            "synth-pop": 2.0
+            "pop": 2.2,
+            "synth-pop": 1.0
           },
           "genre_sources": {
             "lastfm": [
-              "pop",
-              "synth-pop"
+              "synth-pop",
+              "pop"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
             "lastfm": [
               "soty",
               "best of 2025",
-              "pop",
               "synthpop",
-              "gaypop",
+              "pop",
               "female vocalist",
               "jazz",
-              "docinho",
+              "gaypop",
+              "stylish pop",
               "taylor swift",
               "larissa"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "Father Figure"
+            "lastfm": "Father Figure",
+            "apple_music": "Father Figure"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:father_figure",
@@ -2273,39 +2684,51 @@
           "historical_track_ids": [],
           "release_date": "2025-10-02T00:00:00Z",
           "genres": [
-            "pop",
-            "synth-pop",
-            "soft rock"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "pop": 3.0,
-            "synth-pop": 2.0,
-            "soft rock": 1.0
+            "pop": 2.2,
+            "soft rock": 1.0,
+            "synth-pop": 1.0
           },
           "genre_sources": {
             "lastfm": [
+              "soft rock",
               "pop",
-              "synth-pop",
-              "soft rock"
+              "synth-pop"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
             "lastfm": [
+              "soft rock",
               "pop",
               "synthpop",
               "rnb",
-              "soft rock",
-              "soty",
               "christmas",
-              "holiday",
-              "synth pop",
-              "american",
-              "pop rock"
+              "pop rock",
+              "dance-pop",
+              "julia mofada",
+              "soty",
+              "sunshine pop"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Música",
+              "Musik",
+              "Musique",
+              "Muziek",
+              "流行樂",
+              "音樂"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "Opalite"
+            "lastfm": "Opalite",
+            "apple_music": "Opalite"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:opalite",
@@ -2347,39 +2770,52 @@
           "historical_track_ids": [],
           "release_date": "2025-10-02T00:00:00Z",
           "genres": [
-            "pop",
-            "dance-pop",
-            "synth-pop"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "pop": 3.0,
-            "dance-pop": 2.0,
+            "dance-pop": 1.0,
+            "pop": 2.2,
             "synth-pop": 1.0
           },
           "genre_sources": {
             "lastfm": [
               "pop",
-              "dance-pop",
-              "synth-pop"
+              "synth-pop",
+              "dance-pop"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
             "lastfm": [
               "pop",
+              "synthpop",
               "best of 2025",
               "dance-pop",
-              "synthpop",
+              "julia mofada",
               "2025",
-              "baroque pop",
               "love at first listen",
               "soty",
-              "2020s",
-              "AOTY"
+              "AOTY",
+              "taylor swift"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Musique",
+              "Música",
+              "Musik",
+              "Musica",
+              "Muziek",
+              "流行樂",
+              "音樂"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "The Fate of Ophelia"
+            "lastfm": "The Fate of Ophelia",
+            "apple_music": "The Fate of Ophelia"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:the_fate_of_ophelia",
@@ -2420,16 +2856,29 @@
           "image_url": "https://i.scdn.co/image/ab67616d0000b2737e0698e1398b6473de43f901",
           "historical_track_ids": [],
           "release_date": "2025-10-02T00:00:00Z",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
+          "genres": [
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 1.2
+          },
           "genre_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "pop"
+            ]
           },
           "genre_raw_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music"
+            ]
           },
-          "genre_query_titles": {},
+          "genre_query_titles": {
+            "apple_music": "The Life of a Showgirl"
+          },
           "genre_errors": {},
           "genre_canonical_key": "family:the_life_of_a_showgirl",
           "filter_tags": [
@@ -2471,14 +2920,12 @@
           "historical_track_ids": [],
           "release_date": "2025-10-02T00:00:00Z",
           "genres": [
-            "pop rock",
-            "pop",
-            "rock"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "pop rock": 3.0,
-            "pop": 2.0,
+            "pop": 2.2,
+            "pop rock": 1.0,
             "rock": 1.0
           },
           "genre_sources": {
@@ -2486,24 +2933,32 @@
               "pop rock",
               "pop",
               "rock"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
             "lastfm": [
               "pop rock",
               "power pop",
-              "ended flopli xcx",
               "best of 2025",
-              "rnb",
-              "rock",
+              "ended flopli xcx",
               "Disco",
-              "soty",
+              "rock",
+              "rnb",
               "Acid Rock",
-              "charli xcx"
+              "charli xcx",
+              "soty"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "Actually Romantic"
+            "lastfm": "Actually Romantic",
+            "apple_music": "Actually Romantic"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:actually_romantic",
@@ -2547,21 +3002,22 @@
           "historical_track_ids": [],
           "release_date": "2025-10-02T00:00:00Z",
           "genres": [
-            "pop",
-            "rock",
-            "singer-songwriter"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "pop": 3.0,
-            "rock": 2.0,
-            "singer-songwriter": 1.0
+            "electropop": 1.0,
+            "pop": 2.2,
+            "rock": 1.0
           },
           "genre_sources": {
             "lastfm": [
               "pop",
               "rock",
-              "singer-songwriter"
+              "electropop"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
@@ -2570,16 +3026,21 @@
               "soty",
               "rock",
               "female vocalist",
-              "singer-songwriter",
               "electropop",
+              "singer-songwriter",
               "rap",
-              "rnb",
-              "dance pop",
-              "synthpop"
+              "controversial",
+              "synthpop",
+              "rnb"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "CANCELLED!"
+            "lastfm": "CANCELLED!",
+            "apple_music": "CANCELLED!"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:cancelled",
@@ -2623,36 +3084,43 @@
           "historical_track_ids": [],
           "release_date": "2025-10-02T00:00:00Z",
           "genres": [
-            "pop",
-            "rock"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "pop": 3.0,
-            "rock": 2.0
+            "pop": 2.2,
+            "rock": 1.0
           },
           "genre_sources": {
             "lastfm": [
               "pop",
               "rock"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
             "lastfm": [
               "pop",
               "2020s",
-              "sad",
               "experimental",
-              "show tunes",
+              "sad",
               "Acid Rock",
+              "show tunes",
               "Ballad",
+              "Iconic",
               "soty",
-              "gay pop",
-              "Iconic"
+              "gay pop"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "Eldest Daughter"
+            "lastfm": "Eldest Daughter",
+            "apple_music": "Eldest Daughter"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:eldest_daughter",
@@ -2696,18 +3164,20 @@
           "historical_track_ids": [],
           "release_date": "2025-10-02T00:00:00Z",
           "genres": [
-            "pop",
-            "soft rock"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "pop": 3.0,
-            "soft rock": 2.0
+            "pop": 2.2,
+            "soft rock": 1.0
           },
           "genre_sources": {
             "lastfm": [
               "pop",
               "soft rock"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
@@ -2719,13 +3189,18 @@
               "soul",
               "Love",
               "power pop",
-              "female vocalist",
+              "ambient pop",
               "female",
-              "Contemporary pop"
+              "female vocalist"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "Honey"
+            "lastfm": "Honey",
+            "apple_music": "Honey"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:honey",
@@ -2769,14 +3244,12 @@
           "historical_track_ids": [],
           "release_date": "2025-10-02T00:00:00Z",
           "genres": [
-            "pop",
-            "country pop",
-            "soft rock"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "pop": 3.0,
-            "country pop": 2.0,
+            "country pop": 1.0,
+            "pop": 2.2,
             "soft rock": 1.0
           },
           "genre_sources": {
@@ -2784,6 +3257,9 @@
               "pop",
               "country pop",
               "soft rock"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
@@ -2793,15 +3269,20 @@
               "peter",
               "soft rock",
               "folk",
-              "female vocalist",
               "country",
+              "female vocalist",
+              "synthpop",
               "singer-songwriter",
-              "sad",
-              "synthpop"
+              "sad"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "Ruin The Friendship"
+            "lastfm": "Ruin The Friendship",
+            "apple_music": "Ruin The Friendship"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:ruin_the_friendship",
@@ -2845,39 +3326,46 @@
           "historical_track_ids": [],
           "release_date": "2025-10-02T00:00:00Z",
           "genres": [
-            "pop",
-            "synth-pop"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "pop": 3.0,
-            "synth-pop": 2.0
+            "pop": 2.2,
+            "synth-pop": 1.0
           },
           "genre_sources": {
             "lastfm": [
               "pop",
               "synth-pop"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
             "lastfm": [
               "pop",
               "2025",
-              "female vocalist",
               "synthpop",
-              "solo",
+              "female vocalist",
               "synth pop",
+              "solo",
               "female",
               "Dream",
               "dreampop",
               "fav"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "Wi$h Li$t"
+            "lastfm": "Wi$h Li$t",
+            "apple_music": "Wi$h Li$t"
           },
           "genre_errors": {},
-          "genre_canonical_key": "family:wiSh_liSt",
+          "genre_canonical_key": "family:wi_h_li_t",
           "filter_tags": [
             "solo",
             "standalone",
@@ -2922,10 +3410,15 @@
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "pop": 3.0
+            "dance-pop": 1.0,
+            "pop": 2.2
           },
           "genre_sources": {
             "lastfm": [
+              "pop",
+              "dance-pop"
+            ],
+            "apple_music": [
               "pop"
             ]
           },
@@ -2933,18 +3426,23 @@
             "lastfm": [
               "pop",
               "funk",
-              "Disco",
               "sexy",
+              "Disco",
               "soul",
-              "70s",
-              "power pop",
-              "60s",
-              "eurodisco",
-              "female vocalist"
+              "Europop",
+              "jazz",
+              "dance-pop",
+              "show tunes",
+              "eurodisco"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "Wood"
+            "lastfm": "Wood",
+            "apple_music": "Wood"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:wood",
@@ -2993,16 +3491,29 @@
           "release_date": "2025-10-02T00:00:00Z",
           "historical_track_ids": [],
           "image_url": "https://image-cdn-ak.spotifycdn.com/image/ab67616d0000b2737e0698e1398b6473de43f901",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
+          "genres": [
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 1.2
+          },
           "genre_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "pop"
+            ]
           },
           "genre_raw_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music"
+            ]
           },
-          "genre_query_titles": {},
+          "genre_query_titles": {
+            "apple_music": "The Life of a Showgirl Intro"
+          },
           "genre_errors": {},
           "genre_canonical_key": "family:the_life_of_a_showgirl_intro",
           "filter_tags": [
@@ -3057,21 +3568,22 @@
           "tsm_song_id": "4pvw",
           "tsm_album_id": "va1",
           "genres": [
-            "pop",
-            "pop rock",
-            "electropop"
+            "pop"
           ],
           "genre_status": "auto",
           "genre_scores": {
-            "pop": 3.0,
-            "pop rock": 2.0,
-            "electropop": 1.0
+            "electropop": 1.0,
+            "pop": 2.2,
+            "pop rock": 1.0
           },
           "genre_sources": {
             "lastfm": [
               "pop",
               "pop rock",
               "electropop"
+            ],
+            "apple_music": [
+              "pop"
             ]
           },
           "genre_raw_sources": {
@@ -3086,10 +3598,16 @@
               "katseye",
               "Jorge Rivera-Herrans",
               "Sabrina Carpenter"
+            ],
+            "apple_music": [
+              "Pop",
+              "Music",
+              "Musik"
             ]
           },
           "genre_query_titles": {
-            "lastfm": "Elizabeth Taylor"
+            "lastfm": "Elizabeth Taylor",
+            "apple_music": "Elizabeth Taylor"
           },
           "genre_errors": {},
           "genre_canonical_key": "family:elizabeth_taylor"
@@ -3126,16 +3644,29 @@
           "category": "feature",
           "tsm_song_id": "6c3t",
           "tsm_album_id": "va1",
-          "genres": [],
-          "genre_status": "missing",
-          "genre_scores": {},
+          "genres": [
+            "pop"
+          ],
+          "genre_status": "auto",
+          "genre_scores": {
+            "pop": 1.2
+          },
           "genre_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "pop"
+            ]
           },
           "genre_raw_sources": {
-            "lastfm": []
+            "lastfm": [],
+            "apple_music": [
+              "Pop",
+              "Music"
+            ]
           },
-          "genre_query_titles": {},
+          "genre_query_titles": {
+            "apple_music": "The Life of a Showgirl"
+          },
           "genre_errors": {},
           "genre_canonical_key": "family:the_life_of_a_showgirl"
         }

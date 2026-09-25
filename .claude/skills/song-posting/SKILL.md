@@ -80,8 +80,28 @@ Rules:
 Music/iTunes script that posts to X (that pipeline is otherwise data-only —
 see `collector-apple-music`). Convention for this post type only:
 
-- Chart emoji prefix: `🎧 |` (distinct from the streams gainer `📈 |` and the
-  Spotify Charts rank-record `🏆 |`).
+- **Night of 2026-09-24 rewrite (supersedes the text rules below):** prefix is the
+  album emoji (`collectors/twitter/albums.py::album_emoji`, ❤️‍🔥 for Showgirl), not
+  `🎧`; the tweet carries the real rank of the best event (debut / new #1 / new peak /
+  climb), other key markets grouped by rank, and on EVERY tweet `🌍 Now #1 in N
+  countries, top 10 in M and charting in K on <platform> worldwide.` counted over every
+  storefront (`worldwide_sentence`). Built by `build_tweet_text`. Validated by the owner
+  2026-09-25. Never a single-country card: since 2026-09-25 the card lists EVERY region the song charts in (all iTunes countries / Global + all Apple Music countries); only key markets (+ Global) trigger a post and feed the sentence.
+  Same format for the iTunes Top Albums card of the new edition ("... on the iTunes
+  albums chart in the US"). The normal Global Apple Music card during the window:
+  `🌍 | Taylor Swift songs on the Global Apple Music chart right now:` + link. Separate
+  Apple Music **Pop** card per key market (2026-09-25), only on #1 / top-10 debut or entry /
+  new peak inside the top 10: `🇨🇦 | "<title>" is now #1 on the Apple Music Pop chart in
+  Canada!` (single-region posts — Pop card, iTunes per-country album card — use the country
+  FLAG as prefix, built from the storefront code; album emoji only as fallback; country
+  always written in full, never "DE") (or `debuts at #N ...`), `Also: "X" #3, ...`, `Taylor Swift songs on the Apple
+  Music Pop chart in <market> right now:` + link. Several songs in one cycle = ONE thread per
+  platform (2026-09-25): opener `🧵 | "<album>"'s songs on the Apple Music charts.` + the best
+  song's tweet (link dropped first if too long), replies = the other songs; album/Global/Pop
+  cards stay separate posts. Apple Music album card (Top Albums per country) added the same
+  day, same format as the iTunes one. Cards highlight the 5 key stores (★ + tinted row). Posting rules (volume, retry, auto release detection) →
+  `collector-apple-music` CONTEXTE « Refonte nuit du 2026-09-24 ».
+- (Before the rewrite) chart emoji prefix: `🎧 |`.
 - **Apple Music and iTunes are posted separately** (3rd correction
   2026-09-24): one card + one tweet per (track, platform, cycle). Tweet names
   the platform (`"<title>" moves on 6 Apple Music charts`, `debuts at #3 on
@@ -108,8 +128,9 @@ see `collector-apple-music`). Convention for this post type only:
   pills "X #1 / X top 10 / X top 50 / X charting" (shown even at 0). Table has a
   PEAK column (best rank on that chart since release, from real collected
   cycles). A "NEW PEAK" badge marks a rank that beats the previous
-  peak; a first appearance on a chart gets a "NEW" badge there instead,
-  never "NEW PEAK". Accent color comes from the cover
+  peak; a "RE-PEAK" badge (owner 2026-09-25) marks a rank back exactly at
+  the peak after having been lower; a first appearance on a chart gets a "NEW"
+  badge there instead, never "NEW PEAK". Accent color comes from the cover
   (`comp.chart_card._cover_palette`), not a fixed per-platform color. **Not**
   `chart_card.py::render_chart_card` (Spotify Charts branding).
 - Link footer: `collectors/twitter/links.py::amcharts_url("applemusic"|"itunes")`.

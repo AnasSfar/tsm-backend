@@ -75,6 +75,11 @@ REQUEST_JITTER_MAX = _float_from_env("ITUNES_REQUEST_JITTER_MAX", 0.4)
 # previous_rank tolerates gaps), so the threshold is looser — but losing a
 # CRITICAL storefront (us/gb: the charts everyone quotes) always aborts.
 MAX_FAILURE_PCT = _float_from_env("ITUNES_MAX_FAILURE_PCT", 25.0)
+# A critical storefront's feed with fewer entries than this is treated as a
+# failed fetch (retried, then the run aborts + alerts) instead of silently
+# publishing "Taylor gone from the US chart" (2026-09-25; feeds normally hold
+# ~85-100 entries).
+MIN_CRITICAL_FEED_ENTRIES = _int_from_env("ITUNES_MIN_CRITICAL_FEED_ENTRIES", 50)
 CRITICAL_STOREFRONTS = {
     s.strip().lower()
     for s in os.getenv("ITUNES_CRITICAL_STOREFRONTS", "us,gb").split(",")

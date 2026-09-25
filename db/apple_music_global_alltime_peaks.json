@@ -1,0 +1,100 @@
+{
+  "_what": "All-time peak positions on the Apple Music GLOBAL chart for songs released before our own Apple Music history starts (2026-03-22). Reference data, NOT collected history: never merge into db/apple_music_global.csv or snapshots/.",
+  "_source": "Provided by the owner on 2026-09-25 (pasted table 'Rank, Track, Peak Position (Apple Music Global)'). 'WihLit' in the paste = 'Wi$h Li$t' ($ lost in copy/paste).",
+  "_used_by": "collectors/apple_music/generate_snapshot_images.py::make_peak_resolver (Global card Peak column).",
+  "chart": "apple_music_global",
+  "songs": [
+    {
+      "song_name": "The Fate of Ophelia",
+      "album": "The Life of a Showgirl",
+      "release_date": "2025-10-03",
+      "peak": 1,
+      "best_2026_jan1_jun1": 1
+    },
+    {
+      "song_name": "Opalite",
+      "album": "The Life of a Showgirl",
+      "release_date": "2025-10-03",
+      "peak": 2,
+      "best_2026_jan1_jun1": 5
+    },
+    {
+      "song_name": "Elizabeth Taylor",
+      "album": "The Life of a Showgirl",
+      "release_date": "2025-10-03",
+      "peak": 3,
+      "best_2026_jan1_jun1": 54
+    },
+    {
+      "song_name": "Father Figure",
+      "album": "The Life of a Showgirl",
+      "release_date": "2025-10-03",
+      "peak": 4,
+      "best_2026_jan1_jun1": 101
+    },
+    {
+      "song_name": "Wood",
+      "album": "The Life of a Showgirl",
+      "release_date": "2025-10-03",
+      "peak": 5,
+      "best_2026_jan1_jun1": null,
+      "outside_top200_2026_jan1_jun1": true
+    },
+    {
+      "song_name": "Wi$h Li$t",
+      "album": "The Life of a Showgirl",
+      "release_date": "2025-10-03",
+      "peak": 6,
+      "best_2026_jan1_jun1": null,
+      "outside_top200_2026_jan1_jun1": true
+    },
+    {
+      "song_name": "The Life of a Showgirl (feat. Sabrina Carpenter)",
+      "album": "The Life of a Showgirl",
+      "release_date": "2025-10-03",
+      "peak": 7,
+      "best_2026_jan1_jun1": 122
+    },
+    {
+      "song_name": "Actually Romantic",
+      "album": "The Life of a Showgirl",
+      "release_date": "2025-10-03",
+      "peak": 8,
+      "best_2026_jan1_jun1": null,
+      "outside_top200_2026_jan1_jun1": true
+    },
+    {
+      "song_name": "Honey",
+      "album": "The Life of a Showgirl",
+      "release_date": "2025-10-03",
+      "peak": 9,
+      "best_2026_jan1_jun1": null,
+      "outside_top200_2026_jan1_jun1": true
+    },
+    {
+      "song_name": "CANCELLED!",
+      "album": "The Life of a Showgirl",
+      "release_date": "2025-10-03",
+      "peak": 10,
+      "best_2026_jan1_jun1": null,
+      "outside_top200_2026_jan1_jun1": true
+    },
+    {
+      "song_name": "Eldest Daughter",
+      "album": "The Life of a Showgirl",
+      "release_date": "2025-10-03",
+      "peak": 11,
+      "best_2026_jan1_jun1": null,
+      "outside_top200_2026_jan1_jun1": true
+    },
+    {
+      "song_name": "Ruin The Friendship",
+      "album": "The Life of a Showgirl",
+      "release_date": "2025-10-03",
+      "peak": 12,
+      "best_2026_jan1_jun1": null,
+      "outside_top200_2026_jan1_jun1": true
+    }
+  ],
+  "_best_2026_jan1_jun1_source": "Provided by the owner on 2026-09-25, compiled from Kworb 'Worldwide Apple Music Songs' daily archives (top 200 only). best_2026_jan1_jun1 = best Global rank from 2026-01-01 to 2026-06-01; null + outside_top200 = never in Kworb's top 200 in that period. Elizabeth Taylor #54 came with an unexplained '*' in the source (not verified). Cross-checked 2026-09-25 against our own db/apple_music_global.csv (2026-03-22 -> 2026-05-15 only): our best there is Ophelia #9 / Opalite #27, consistent (their bests are from January). Informational only: badges use the all-time 'peak', which is always <= these."
+}

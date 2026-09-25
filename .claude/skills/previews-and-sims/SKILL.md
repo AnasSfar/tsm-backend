@@ -75,6 +75,29 @@ peak lookup through `source["path_for"](date)`), patch that accessor as well,
 not only the "today" path — otherwise the sim silently reads real
 `snapshots/` files for the fake dates.
 
+### Pitfall: stub signatures drift
+
+Monkeypatched stubs (`_render_card_png = lambda html, out: ...`, `fake_sources(today)`) break
+silently-looking (a TypeError caught by the target's own crash handler -> "0 posts") as soon
+as the real function gains a parameter (2026-09-25: `scale=`, `express=`, `path=` on
+post_new_release_progression). Write stubs as `lambda *a, **k:` / `def fake(today, *a, **k):`
+and compare the sim's totals with the previous run before trusting it.
+
+### Pattern: previewing a new API field in the real frontend
+
+When the backend adds a field the prod API doesn't serve yet, run the real
+tsm-frontend FastAPI app locally on **:8003** (the Vite dev proxy target) with
+`TSM_DATA_SOURCE=local` (reads real local exports, read-only) and monkeypatch
+only the loader the route uses to inject the sim payload (see
+`previews_and_sims/ts-top-songs-live/preview_api.py`), then `npx vite --port
+5173` + headless Chrome `--screenshot`. Stop both servers by exact PID after.
+
+### Pitfall: headless Chrome mobile width
+
+`--window-size=390,...` is silently clamped (Chrome min window width ~500px):
+the screenshot looks cropped on the right and suggests a fake horizontal
+overflow. Use `--window-size=500,...` (still under the 600px breakpoint).
+
 ## Reporting back
 
 Tell the user what was simulated, what was faked (so they know it's not

@@ -2,9 +2,15 @@
 """iTunes Store purchase charts — full run.
 
 Order: charts.py -> scripts/export_itunes.py -> scripts/upload_itunes_r2.py.
-Never posts to X, never commits git. A failed collector aborts the run (no
+This runner never posts to X and never commits git (run_itunes.bat posts the
+new-release progression right after it). A failed collector aborts the run (no
 export / upload). scraped_at rounding mirrors run_apple_music.py so the two
 Apple pipelines share a snapshot cadence.
+
+Since 2026-09-25: phone alert (ntfy) on any failure, and a single-instance
+lock — Task Scheduler cannot prevent overlaps (the .vbs doesn't wait for the
+.bat), so a run that finds the previous one still alive skips its hour and
+exits with EXIT_SKIPPED, which run_itunes.bat uses to skip the post step too.
 """
 
 from __future__ import annotations
@@ -31,6 +37,27 @@ HERE = Path(__file__).resolve().parent
 REPO_ROOT = HERE.parents[1]
 
 SCRIPTS = [HERE / "charts.py"]
+
+LOCK_PATH = HERE / "tools" / "locks" / "run_itunes.lock"
+NTFY_TOPIC = os.getenv("NTFY_TOPIC_ITUNES") or os.getenv("NTFY_TOPIC_APPLE_MUSIC", "taylormuseum-apple-music")
+
+if str(REPO_ROOT) not in sys.path:
+    sys.path.insert(0, str(REPO_ROOT))
+from collectors.spotify.core import run_guard  # noqa: E402
+
+EXIT_SKIPPED = run_guard.EXIT_SKIPPED  # previous run still alive (checked by run_itunes.bat)
+
+
+def alert(message: str, priority: str = "high") -> None:
+    run_guard.alert(NTFY_TOPIC, "iTunes collector", message, priority)
+
+
+def acquire_lock() -> bool:
+    return run_guard.acquire_lock(LOCK_PATH)
+
+
+def release_lock() -> None:
+    run_guard.release_lock(LOCK_PATH)
 
 
 def _truthy_env(name: str, default: bool = False) -> bool:
@@ -96,8 +123,10 @@ def child_env() -> dict[str, str]:
 
 
 def run_child(cmd: list[str], timeout: int) -> int:
-    # Same hourly .bat as Apple Music: a hung step must not make Task Scheduler
-    # (IgnoreNew) skip the next hour.
+    # Hard cap per step: the scheduler does NOT stop a hung run (the .vbs
+    # launches the .bat without waiting, so IgnoreNew / time limits never
+    # apply). Worst case = 3 steps x 900 s, under the 1 h cadence; the lock
+    # in main() covers anything longer (e.g. the laptop slept mid-run).
     try:
         return subprocess.run(cmd, cwd=REPO_ROOT, env=child_env(), check=False, timeout=timeout).returncode
     except subprocess.TimeoutExpired:
@@ -143,6 +172,45 @@ def maybe_upload_to_r2() -> int:
 
 
 def main() -> None:
+    if not acquire_lock():
+        alert("Previous iTunes run still running — this hour was skipped.", priority="default")
+        sys.exit(EXIT_SKIPPED)
+    code = 0
+    try:
+        _main()
+    except SystemExit as exc:
+        code = exc.code if isinstance(exc.code, int) else (0 if exc.code is None else 1)
+    except Exception as exc:
+        import traceback
+
+        traceback.print_exc()
+        alert(f"iTunes run crashed: {type(exc).__name__}: {exc}")
+        code = 1
+    finally:
+        release_lock()
+    release_watch_hook()
+    # Every non-zero exit above has already sent its phone alert: exit
+    # EXIT_ALERTED so the .bat only alerts for crashes that never reached
+    # Python's alert (import error, broken interpreter...).
+    sys.exit(run_guard.EXIT_ALERTED if code else 0)
+
+
+def release_watch_hook() -> None:
+    """After the lock is released: returns at once (date check) unless a
+    catalog release is due within ~70 min — then this run waits for it and
+    polls every second (release_watch.py, owner 2026-09-25: "retry chaque
+    seconde jusqu'à avoir la data")."""
+    try:
+        if str(HERE) not in sys.path:
+            sys.path.insert(0, str(HERE))
+        import release_watch
+
+        release_watch.run_if_release_due()
+    except Exception as exc:
+        alert(f"Release watch failed to start: {type(exc).__name__}: {exc}")
+
+
+def _main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--no-post", action="store_true", help="No effect (this pipeline never posts to X).")
     args, _unknown = parser.parse_known_args()
@@ -154,7 +222,7 @@ def main() -> None:
 
     failures: list[tuple[str, int]] = []
     for script in SCRIPTS:
-        code = run_script(script, scraped_at)
+        code = run_guard.retry_step(script.name, lambda s=script: run_script(s, scraped_at))
         if code != 0:
             failures.append((script.name, code))
 
@@ -163,16 +231,21 @@ def main() -> None:
         print("[iTunes] Finished with errors:")
         for name, code in failures:
             print(f" - {name}: {code}")
+        alert("iTunes collection failed ("
+              + ", ".join(f"{n}: {'timeout' if c == 124 else f'code {c}'}" for n, c in failures)
+              + f") for {scraped_at}. No export/upload, no fresh data for the posts this hour.")
         sys.exit(1)
 
     print("[iTunes] All scripts completed successfully")
-    if export_itunes() != 0:
+    if run_guard.retry_step("export_itunes", export_itunes, waits=(10, 30)) != 0:
         print("[iTunes] Export failed, skipping R2 upload")
+        alert(f"iTunes export failed for {scraped_at} (site not updated this hour).")
         sys.exit(1)
 
-    upload_code = maybe_upload_to_r2()
+    upload_code = run_guard.retry_step("upload_itunes_r2", maybe_upload_to_r2, waits=(15, 45))
     if upload_code != 0:
         print("[iTunes] R2 upload failed")
+        alert(f"iTunes R2 upload failed for {scraped_at} (site not updated this hour).", priority="default")
         sys.exit(upload_code)
     print(f"{'=' * 80}")
 

@@ -20,6 +20,7 @@ from typing import Any
 import boto3
 from botocore.client import BaseClient
 from botocore.config import Config
+from botocore.exceptions import ClientError
 from dotenv import load_dotenv
 
 
@@ -164,6 +165,53 @@ def head_object_safe(client: BaseClient, bucket: str, key: str) -> dict[str, Any
         return None
 
 
+def head_object_or_raise(client: BaseClient, bucket: str, key: str) -> dict[str, Any] | None:
+    """Object metadata, None on a real 404, raises after 3 network errors.
+    head_object_safe turned a dropped TLS handshake into "missing" -> a
+    pointless PUT of unchanged content, which then failed the same way
+    (2026-09-25 14h: 100 unchanged history-by-date files re-checked)."""
+    for attempt in range(1, 4):
+        try:
+            return client.head_object(Bucket=bucket, Key=key)
+        except ClientError as exc:
+            code = str(exc.response.get("Error", {}).get("Code", ""))
+            if code in ("404", "NoSuchKey", "NotFound"):
+                return None
+            if attempt == 3:
+                raise
+        except Exception:
+            if attempt == 3:
+                raise
+        time.sleep(min(2 ** attempt, 5))
+    return None
+
+
+def _is_past(name: str, current_day: str) -> bool:
+    """History-by-date / snapshot file of a day before the current one."""
+    return len(name) >= 10 and name[:4].isdigit() and name[:10] < current_day
+
+
+def remote_object_exists(client: BaseClient, bucket: str, key: str) -> bool | None:
+    """True/False only when R2 actually answered; None on a network error.
+
+    head_object_safe folds a dropped TLS handshake into "missing", which made
+    every run from 2026-09-25 07h rebuild and re-PUT past-day snapshots (poorer
+    than the originals) and then die on those PUTs, keeping the hour off the site.
+    """
+    for attempt in range(1, 4):
+        try:
+            client.head_object(Bucket=bucket, Key=key)
+            return True
+        except ClientError as exc:
+            code = str(exc.response.get("Error", {}).get("Code", ""))
+            if code in ("404", "NoSuchKey", "NotFound"):
+                return False
+        except Exception:
+            pass
+        time.sleep(min(2 ** attempt, 5))
+    return None
+
+
 def object_has_same_body_hash(client: BaseClient, bucket: str, key: str, body: bytes) -> bool:
     import hashlib
 
@@ -190,7 +238,12 @@ def upload_json_if_changed(
     # doesn't force a re-upload and r2.py (same serialization) still matches.
     local_hash = hashlib.sha256(body).hexdigest()
 
-    if object_has_same_body_hash(client, bucket, key, body):
+    meta = head_object_or_raise(client, bucket, key)
+    remote_hash = ((meta or {}).get("Metadata") or {}).get("sha256", "")
+    # Same content but not gzipped yet (object uploaded before compress was
+    # turned on for its prefix): re-upload once so it migrates by itself.
+    already_gzipped = (meta or {}).get("ContentEncoding") == "gzip"
+    if remote_hash == local_hash and (already_gzipped or not compress):
         return False
 
     if dry_run:
@@ -278,7 +331,7 @@ def append_rows(
             },
         )
 
-        # garder le premier nom rencontré comme canonique, mais si vide on remplit
+        # garder le premier nom rencontrÃ© comme canonique, mais si vide on remplit
         if not bucket.get("song_name"):
             bucket["song_name"] = name
 
@@ -529,12 +582,22 @@ def upload_snapshot_jsons(client: BaseClient, bucket: str, dry_run: bool) -> int
         r2_key = f"{SNAPSHOT_R2_PREFIX}/{snapshot_key}.json"
         # Past days are collapsed to one snapshot per chart in the export, so
         # rebuilding them now would be poorer than what was uploaded that day.
-        if snapshot_key[:10] != current_day and head_object_safe(client, bucket, r2_key):
+        # Only a real 404 lets a past day through: an unreachable R2 (None)
+        # means "don't know", never "re-upload".
+        if snapshot_key[:10] != current_day and remote_object_exists(client, bucket, r2_key) is not False:
             return r2_key, False
         payload = _snapshot_payload(history, snapshot_key)
         if payload is None:
             return r2_key, False
-        changed = upload_json_if_changed(client, bucket, r2_key, payload, dry_run=dry_run)
+        try:
+            changed = upload_json_if_changed(client, bucket, r2_key, payload, dry_run=dry_run)
+        except Exception as exc:
+            if not _is_past(snapshot_key, current_day):
+                raise
+            # A past day is already on R2: a dropped connection on it must not
+            # keep the current hour off the site (2026-09-25).
+            print(f"[warn] {r2_key}: {type(exc).__name__} (past day, skipped)")
+            return r2_key, False
         return r2_key, changed
 
     with ThreadPoolExecutor(max_workers=R2_WORKERS) as pool:
@@ -562,11 +625,27 @@ def upload_history_by_date_jsons(client: BaseClient, bucket: str, dry_run: bool)
 
     uploaded = 0
     unchanged = 0
+    current_day = max((f.name[:10] for f in files if _is_past(f.name, "9999")), default="")
 
     def _upload(path: Path) -> tuple[str, bool]:
         payload = json.loads(path.read_text(encoding="utf-8-sig"))
         r2_key = f"{HISTORY_BY_DATE_R2_PREFIX}/{path.name}"
-        changed = upload_json_if_changed(client, bucket, r2_key, payload, dry_run=dry_run)
+        # ~4.2 MB -> ~320 KB: /api/apple-music reads 2-5 of these per cold
+        # request (current hour + compare=yesterday/last), 2026-09-24. The
+        # 2 KB index.json is left plain (not worth it, and small).
+        try:
+            changed = upload_json_if_changed(
+                client, bucket, r2_key, payload, dry_run=dry_run,
+                compress=path.name != "index.json",
+            )
+        except Exception as exc:
+            # index.json and the current day stay blocking; a past day is
+            # already on R2 (2026-09-25 14h: SSL drops on 08-27 files failed
+            # the whole upload three times).
+            if not _is_past(path.name, current_day):
+                raise
+            print(f"[warn] {r2_key}: {type(exc).__name__} (past day, skipped)")
+            return r2_key, False
         return r2_key, changed
 
     with ThreadPoolExecutor(max_workers=R2_WORKERS) as pool:
@@ -652,4 +731,15 @@ def main() -> None:
 
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except BaseException as exc:
+        import traceback
+
+        traceback.print_exc()
+        sys.stdout.flush()
+        sys.stderr.flush()
+        # Exit NOW: the default exit joins every worker thread, and one stuck
+        # in an R2 call held the process until the runner's 30-min kill
+        # (2026-09-25 14h), blocking the next hourly run. Code 1 -> retried.
+        os._exit(exc.code if isinstance(exc, SystemExit) and isinstance(exc.code, int) else 1)

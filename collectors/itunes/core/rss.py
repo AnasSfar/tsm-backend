@@ -22,6 +22,8 @@ from .config import (
     ARTIST_FILTER,
     ARTIST_ID,
     CHART_LIMIT,
+    CRITICAL_STOREFRONTS,
+    MIN_CRITICAL_FEED_ENTRIES,
     REQUEST_JITTER_MAX,
     RSS_ALBUMS_PATH,
     RSS_BASE,
@@ -143,14 +145,23 @@ def _release_date(entry: dict) -> str:
     return match.group(1) if match else ""
 
 
+def feed_url(storefront: str, path: str) -> str:
+    """Feed URL with a cache-busting query (2026-09-25): the plain URL is
+    served from Akamai's cache (X-Cache TCP_MEM_HIT, `feed.updated` frozen for
+    an hour or more), so the 08:00 and 10:00 runs of release day got the
+    previous hour's chart byte for byte ("snapshot identical, not writing")
+    while the live chart had moved. A unique query forces a fresh origin read
+    (TCP_MISS)."""
+    return f"{RSS_BASE}/{storefront}/{path.format(limit=CHART_LIMIT)}?cb={time.time_ns()}"
+
+
 def _fetch(session, storefront: str, path: str) -> list[dict]:
-    url = f"{RSS_BASE}/{storefront}/{path.format(limit=CHART_LIMIT)}"
     last_status = None
     for attempt in range(THROTTLE_RETRIES + 1):
         if REQUEST_JITTER_MAX > 0:
             time.sleep(random.uniform(0, REQUEST_JITTER_MAX))
         try:
-            resp = session.get(url)
+            resp = session.get(feed_url(storefront, path))
         except RequestException as exc:
             raise ITunesFeedError(f"{storefront}: {exc}") from exc
         if resp.status_code == 404:
@@ -209,7 +220,16 @@ def parse_albums(entries: list[dict]) -> list[dict]:
     return out
 
 
+def _check_size(storefront: str, entries: list[dict], chart: str) -> list[dict]:
+    if storefront in CRITICAL_STOREFRONTS and len(entries) < MIN_CRITICAL_FEED_ENTRIES:
+        raise ITunesFeedError(
+            f"{storefront}: {chart} feed has only {len(entries)} entries (< {MIN_CRITICAL_FEED_ENTRIES}) — "
+            "treated as a broken answer, not an empty chart"
+        )
+    return entries
+
+
 def fetch_storefront(session, storefront: str) -> tuple[list[dict], list[dict]]:
-    songs = parse_songs(_fetch(session, storefront, RSS_SONGS_PATH))
-    albums = parse_albums(_fetch(session, storefront, RSS_ALBUMS_PATH))
+    songs = parse_songs(_check_size(storefront, _fetch(session, storefront, RSS_SONGS_PATH), "top songs"))
+    albums = parse_albums(_check_size(storefront, _fetch(session, storefront, RSS_ALBUMS_PATH), "top albums"))
     return songs, albums

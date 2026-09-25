@@ -44,6 +44,11 @@ def main():
         default=20,
         help="Number of tracks in the single top songs image (default: 20).",
     )
+    parser.add_argument(
+        "--no-best-day-recap",
+        action="store_true",
+        help="Post Top Songs alone, without the best-day-since recap replies (update_streams --best-day-last).",
+    )
     ns = parser.parse_args()
 
     no_post = bool(ns.no_post)
@@ -95,7 +100,11 @@ def main():
     # itself; finalize's "best-day-since recap (fallback)" step (--limit 0)
     # covers the standalone case if this thread post fails outright.
     try:
-        recap_posts, era_groups, has_global_recap = bds_post.build_recap_thread_posts(target_date)
+        if ns.no_best_day_recap:
+            print("Best-day-since recap deferred to the end of the run (--no-best-day-recap).")
+            recap_posts, era_groups, has_global_recap = [], [], False
+        else:
+            recap_posts, era_groups, has_global_recap = bds_post.build_recap_thread_posts(target_date)
     except Exception as exc:
         print(f"Best-day-since recap unavailable, posting Top Songs alone: {exc}")
         recap_posts, era_groups, has_global_recap = [], [], False

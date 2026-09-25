@@ -1166,7 +1166,12 @@ def _post_compose_image_thread(page, posts: list[tuple[str, tuple[Path, ...]]]) 
     _click_tweet_button(page, editor)
     expected = "\n".join(text for text, _ in posts if text)
     print("X compose: attente confirmation X...", flush=True)
-    return _wait_post_submitted(page, expected, timeout_ms=90_000)
+    ok = _wait_post_submitted(page, expected, timeout_ms=90_000)
+    if not ok:
+        # Clicked: the thread may be live. Same flag as post_with_image so
+        # callers that retry never repost it.
+        _set_last_post_error("thread non confirme apres clic")
+    return ok
 
 
 def _launch_once(p, profile_dir: Path, *, headless: bool, args: list[str]):
@@ -1623,7 +1628,7 @@ def schedule_post(
                     context.close()
 
 
-def post_image_thread(posts: list[tuple[str, Path | list[Path] | tuple[Path, ...]]], session_file: Path, *, priority: int | None = None) -> bool:
+def post_image_thread(posts: list[tuple[str, Path | list[Path] | tuple[Path, ...]]], session_file: Path, *, priority: int | None = None, slot_timeout: int | None = None) -> bool:
     """Post a native X thread where each post has one or more images attached."""
     normalized_posts: list[tuple[str, tuple[Path, ...]]] = []
     for text, image_paths in posts:
@@ -1634,6 +1639,7 @@ def post_image_thread(posts: list[tuple[str, Path | list[Path] | tuple[Path, ...
         if paths:
             normalized_posts.append((str(text or "").strip(), paths))
     posts = normalized_posts
+    _set_last_post_error("")
     if not posts:
         print("Aucun post image a publier.")
         return False
@@ -1652,7 +1658,7 @@ def post_image_thread(posts: list[tuple[str, Path | list[Path] | tuple[Path, ...
         setup_session(session_file)
 
     print("X thread: acquisition du slot compte...", flush=True)
-    with _twitter_account_slot(session_file, priority=priority) as account_key:
+    with _twitter_account_slot(session_file, slot_timeout or TWITTER_POST_LOCK_TIMEOUT, priority=priority) as account_key:
         print("X thread: slot compte acquis", flush=True)
         with sync_playwright() as p:
             context = None
@@ -1689,6 +1695,8 @@ def post_image_thread(posts: list[tuple[str, Path | list[Path] | tuple[Path, ...
 
             except Exception as e:
                 print(f"X Erreur post_image_thread: {e}")
+                if not get_last_post_error():
+                    _set_last_post_error(str(e))
                 return False
 
             finally:

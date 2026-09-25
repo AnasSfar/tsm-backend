@@ -12,6 +12,7 @@ from __future__ import annotations
 import argparse
 import csv
 import json
+import os
 import html
 import re
 import sys
@@ -704,6 +705,35 @@ def _posted_track_ids_for_date(target_date: str) -> set[str]:
     return {p.stem for p in track_locks_dir.glob("*.lock")}
 
 
+# Owner decision 2026-09-25 (Showgirl: The Encore release week): for these
+# stats dates, at most SONG_POST_HARD_CAP individual best-day-since song cards
+# per day, with NO bypass (priority >90 d / biggest day of the year included).
+# Once reached, nothing is computed anymore (early lane, batch listing, batch
+# posts all return straight away). Same window: the Showgirl album card leads
+# the run (finalize_update), so the early best-day lanes are off during
+# collection (update_streams). Window = runs 2026-09-25 -> 2026-10-01.
+ENCORE_WEEK_STATS_DATES = ("2026-09-24", "2026-09-30")
+SONG_POST_HARD_CAP = 3
+
+
+def in_encore_week(target_date: str) -> bool:
+    start, end = ENCORE_WEEK_STATS_DATES
+    return start <= str(target_date) <= end
+
+
+def song_post_hard_cap(target_date: str) -> int | None:
+    return SONG_POST_HARD_CAP if in_encore_week(target_date) else None
+
+
+def song_posts_remaining(target_date: str) -> int | None:
+    """Song card slots left under the hard cap (None = no hard cap that day).
+    Counts every track lock of the date, whichever lane posted it."""
+    cap = song_post_hard_cap(target_date)
+    if cap is None:
+        return None
+    return max(0, cap - len(_posted_track_ids_for_date(target_date)))
+
+
 def _write_track_lock(track_id: str, target_date: str, row: dict, *, post_type: str = "best_day") -> None:
     lock = _track_posted_lock_path(track_id, target_date)
     lock.parent.mkdir(parents=True, exist_ok=True)
@@ -737,6 +767,9 @@ def _post_single_track_early(
     lock = _track_posted_lock_path(track_id, target_date)
     if lock.exists() and not no_post:
         print(f"[best_day_since_early] Already posted for {track_id} on {target_date}, skipping.")
+        return "skipped"
+    if song_posts_remaining(target_date) == 0:
+        print(f"[best_day_since_early] Hard cap of {SONG_POST_HARD_CAP} song posts reached for {target_date}, skipping.")
         return "skipped"
 
     tracks_by_id = {track["track_id"]: track for track in load_all_tracks()}
@@ -1240,6 +1273,9 @@ def build_recap_thread_posts(
     Used by post_streams_twitter.py to post everything as one native X
     thread; call mark_recap_thread_posted after actually posting the
     returned entries to write the lock files."""
+    if best_day_since_skipped(target_date):
+        print(f"[best_day_since] Recap thread skipped for {target_date}: best-day-since posts disabled.")
+        return [], [], False
     if tracks_by_id is None:
         tracks_by_id = {track["track_id"]: track for track in load_all_tracks()}
     if covers is None:
@@ -1305,6 +1341,24 @@ def _best_since_badge_text(row: dict) -> str:
 
 def _day_dir(target_date: str) -> Path:
     return update_streams_dir(target_date)
+
+
+SKIP_FLAG_NAME = "skip_best_day_since.flag"
+
+
+def best_day_since_skipped(target_date: str) -> bool:
+    """Kill-switch for every best-day-since post of a date (song posts, era
+    recaps, global recap, Top Songs thread replies). Set by
+    `update_streams.py --skip best-day-since`, env TSM_SKIP_BEST_DAY_SINCE=1,
+    or by creating <day_dir>/skip_best_day_since.flag — the flag file also
+    works on a run already in progress, since every post goes through a fresh
+    subprocess of this script."""
+    if os.getenv("TSM_SKIP_BEST_DAY_SINCE", "").strip().lower() in {"1", "true", "yes", "on"}:
+        return True
+    try:
+        return (_day_dir(target_date) / SKIP_FLAG_NAME).exists()
+    except Exception:
+        return False
 
 
 def _badge_class(text: str) -> str:
@@ -1514,6 +1568,11 @@ def main() -> None:
 
     target_date = args.date or str(date.today() - timedelta(days=1))
 
+    if best_day_since_skipped(target_date):
+        print(f"[best_day_since] Skipped for {target_date}: best-day-since posts disabled (--skip / flag).")
+        # 3 = "doesn't qualify" for the early lanes; 0 elsewhere (no candidates line → finalize skips).
+        sys.exit(3 if (args.only_track or args.only_era_recap) else 0)
+
     if args.only_track:
         result = _post_single_track_early(
             args.only_track,
@@ -1557,8 +1616,13 @@ def main() -> None:
         result = _post_one_era_recap(group, target_date, no_post=args.no_post, early=True)
         sys.exit(0 if result == "posted" else (3 if result == "skipped" else 1))
 
+    hard_cap_remaining = song_posts_remaining(target_date)
+
     if args.list_batch_candidates:
         limit = min(POST_COLLECTION_MAX_SONG_POSTS, max(0, int(args.limit)))
+        if hard_cap_remaining is not None:
+            limit = min(limit, hard_cap_remaining)
+            print(f"[best_day_since_post] Hard cap window: {hard_cap_remaining} song slot(s) left for {target_date}.")
         tracks_by_id = {track["track_id"]: track for track in load_all_tracks()}
         lock = day_dir / "best_day_since_posted.lock"
         track_locked = lock.exists() and not args.no_post and not args.force
@@ -1585,6 +1649,9 @@ def main() -> None:
             limit=limit,
             min_days=args.min_days,
         )
+        if hard_cap_remaining is not None:
+            # Hard cap has no bypass (biggest day of the year included).
+            rows = rows[:hard_cap_remaining]
         stash = [{k: v for k, v in row.items() if k != "_post_track"} for row in rows]
         stash_path = day_dir / "best_day_since_batch_candidates.json"
         stash_path.write_text(json.dumps(stash), encoding="utf-8")
@@ -1602,6 +1669,9 @@ def main() -> None:
         if row is None:
             print(f"[best_day_since_post] {args.post_batch_track} not found in today's batch candidates.")
             sys.exit(3)
+        if hard_cap_remaining == 0:
+            print(f"[best_day_since_post] Hard cap of {SONG_POST_HARD_CAP} song posts reached for {target_date}, skipping {args.post_batch_track}.")
+            sys.exit(0)
 
         if not args.no_post and not TWITTER_SESSION.exists():
             print(f"ERROR: Twitter session not found at {TWITTER_SESSION}")
@@ -1667,7 +1737,7 @@ def main() -> None:
     # Early best-day posts are a separate lane (up to 3 during collection).
     # Exclude those track IDs from the final batch to avoid duplicates, but do
     # not spend the final batch's own song slots.
-    remaining_song_limit = limit
+    remaining_song_limit = limit if hard_cap_remaining is None else min(limit, hard_cap_remaining)
     candidate_rows = (
         []
         if track_locked or remaining_song_limit <= 0
@@ -1688,6 +1758,8 @@ def main() -> None:
         limit=remaining_song_limit,
         min_days=args.min_days,
     )
+    if hard_cap_remaining is not None:
+        rows = rows[:hard_cap_remaining]
     if not rows:
         print(f"[best_day_since_post] No best-day-since songs found for {target_date}.")
 

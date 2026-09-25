@@ -173,10 +173,48 @@ mirrorés `tsm-frontend/api/data/r2_keys.py`) :
 
 ## Scheduler
 
+**Garde-fous des 2 collecteurs (2026-09-25, recap)** :
+- verrou mono-instance + heure sautee (sortie 75) + alertes ntfy sur tout echec : `collectors/spotify/core/run_guard.py` ;
+- sortie **3** = echec deja alerte par Python ; tout AUTRE code non nul fait alerter le `.bat` lui-meme via
+  `%SystemRoot%\System32\curl.exe` -> ntfy (crash avant que Python puisse alerter : import, interpreteur) ;
+  teste : 0/3/75 -> rien, 1/9009 -> alerte ;
+- iTunes : feed US/UK (`ITUNES_CRITICAL_STOREFRONTS`) de moins de `ITUNES_MIN_CRITICAL_FEED_ENTRIES` (50)
+  entrees = echec (reessai puis abandon + alerte), jamais publie comme « Taylor absente du chart » ;
+- **Toujours reessayer (proprio 2026-09-25 : « si quelque chose echoue on reessaie toujours »)** :
+  `run_guard.retry_step` (3 essais, `RUN_RETRY_ATTEMPTS`) sur collecte iTunes / export / upload des 2
+  collecteurs ; Apple Music relance chaque collecteur bloquant en echec (et relance les posts si c'etait
+  global.py/country_all.py) ; posts X via `post_with_retries` (3 essais, 30 s, `APPLE_MUSIC_DEBUT_POST_ATTEMPTS`
+  / `_RETRY_WAIT`) ; guet : fetch express 5 essais, collecte complete 3 essais. L'alerte ne part qu'apres le
+  dernier echec. **Exception** : post « non confirme apres clic » = peut-etre en ligne -> JAMAIS repost
+  (doublon), compte comme poste + alerte haute « verifie le compte ».
+- posts contenant un DEBUT : priorite 0 et attente du slot X jusqu'a 15 min (`APPLE_MUSIC_DEBUT_FIRST_POST_*`) ;
+- controle pre-sortie (`release_watch.preflight`, a l'ouverture de la fenetre de guet) : collectes < 90 min,
+  feed iTunes US + API lookup joignables, > 2 Go libres, profil Chrome X present -> UNE notif « armed » (basse)
+  ou la liste des problemes (haute). La connexion X elle-meme n'est pas verifiable sans navigateur : un post
+  rate reste alerte + retente.
+
+**Attente de sortie (2026-09-25)** : pas de process ni de tâche séparés (proprio). `run_itunes.py`
+appelle `release_watch.run_if_release_due()` en fin de run, après avoir libéré son verrou : simple
+comparaison de date (~0,1 s), sauf si un titre candidat non sorti a sa sortie dans les ~70 min (sortie =
+00:00 America/New_York à la date `release_date` du catalogue, fenêtre −10 min → +2 h ; Encore : c'est le run
+de 05:00 qui attend 05:50 puis guette jusqu'à 08:00). Pourquoi : le run horaire lit les feeds une fois à
+HH:00:01 ; si Apple publie 30 s après → 1 h de retard. Dans la fenêtre : 1 feed clé/seconde (US une seconde
+sur deux ; 66 s testés sans 403 le 25/09), lookup toutes les 15 s ; dès qu'un titre apparaît : post express
+(proprio 2026-09-25 : « 1 minute plus tard » mais toutes les régions → Top Songs des ~168 storefronts, 168/168
+en 53 s mesuré ; albums laissés au run complet qui suit, dont le début d'album part juste après) + collecte complète en parallèle (réessai tant que le verrou
+horaire renvoie 75) puis post normal. Les runs horaires suivants continuent normalement pendant l'attente.
+403/429 → pause 15→120 s (même hôte que le collecteur). Verrou mono-instance `tools/locks/release_watch.lock`.
+Simulation : `previews_and_sims/apple-music-debut-progression/express.py`.
+
 **Pas de tâche dédiée.** `collectors/apple_music/run_apple_music.bat` (tâche
 `TSM Apple Music Every 4 Hours`, repeat **1 h depuis le 2026-09-24**, avant ça
-2 h) lance `run_itunes.py` **juste après** `run_apple_music.py`, dans le même
-`.bat` :
+2 h) démarre **en premier et EN PARALLÈLE** (depuis le 2026-09-24 au soir, demande
+proprio « whoever is ready first is posted first ») `collectors/itunes/run_itunes.bat` =
+`run_itunes.py` puis `post_new_release_progression.py --platform itunes` (posts iTunes
+~HH:03, log `collectors/apple_music/post_new_release_progression_itunes.log`, état
+`tools/json/new_release_progression_state_itunes.json`). Lancé via
+`start "" /b cmd /d /c "<chemin absolu>"` — **un chemin relatif n'était pas trouvé par le
+cmd enfant (testé)**. La chaîne continue si le `.bat` parent finit avant.
 
 **`ITUNES_SNAPSHOT_HOURS` défaut code = heures paires seulement** — comme pour
 Apple Music, le passage à une cadence horaire du Planificateur ne suffisait
@@ -184,14 +222,16 @@ pas seul (les runs impairs auraient juste ré-arrondi au créneau pair
 précédent). Fix 2026-09-24 : `.env` fixe
 `ITUNES_SNAPSHOT_HOURS=0,1,...,23`.
 
-- séquentiel après Apple Music → le jeton MusicKit du cache est déjà frais
-  quand `resolve_storefronts` le lit ;
+- en parallèle d'Apple Music : le cache du jeton MusicKit est écrit atomiquement
+  (`core/token.py`) et `resolve_storefronts` a un fallback fixe → pas de risque de
+  course ; `export_itunes.py` écrit `itunes.json` en tmp + `os.replace` (lu en même
+  temps par `generate_home_highlights.py` côté Apple Music) ;
 - tourne **quel que soit** le code de sortie d'Apple Music (pas de
-  `goto :error` entre les deux lignes) ;
+  dépendance entre les deux chaînes) ;
 - log séparé : `collectors/itunes/run_itunes.log`.
 
-`collectors/itunes/run_itunes.bat` + `run_itunes_hidden.vbs` existent pour un
-lancement manuel / rattrapage, **pas** branchés à une tâche.
+`collectors/itunes/run_itunes.bat` + `run_itunes_hidden.vbs` servent aussi seuls pour un
+rattrapage manuel (pas de tâche dédiée).
 
 ## Pièges
 
@@ -218,8 +258,17 @@ lancement manuel / rattrapage, **pas** branchés à une tâche.
 - **Timeouts (2026-09-24)** : `run_itunes.py::run_child()` plafonne chaque
   sous-script à 900s et force `PYTHONUNBUFFERED=1` ; `upload_itunes_r2.py` a
   un client boto3 avec timeouts + `Body=io.BytesIO(...)` (ne jamais repasser
-  un body `bytes` brut : le timeout couvrirait tout l'envoi). Même .bat
-  horaire qu'Apple Music, un blocage ici fait sauter l'heure suivante (IgnoreNew).
+  un body `bytes` brut : le timeout couvrirait tout l'envoi). Pire cas 3 × 900 s < 1 h.
+  **Le Planificateur n'empêche PAS les chevauchements** (le `.vbs` n'attend pas le `.bat`,
+  IgnoreNew ne joue jamais) → **verrou mono-instance (2026-09-25)** :
+  `collectors/itunes/tools/locks/run_itunes.lock` (PID + heure). Un run qui trouve le PID
+  précédent encore vivant (vérif Windows via `OpenProcess`/`GetExitCodeProcess`, jamais
+  `os.kill(pid, 0)` qui TUE le process sous Windows ; l'âge seul ne vole jamais le verrou,
+  un run endormi par la veille reste propriétaire) saute son heure, alerte, et sort en **75** ;
+  `run_itunes.bat` saute alors aussi l'étape de post. Verrou d'un PID mort = repris.
+- **Alertes ntfy (2026-09-25)** : `run_itunes.py::alert()` → topic `NTFY_TOPIC_ITUNES` (défaut
+  `NTFY_TOPIC_APPLE_MUSIC`) sur échec collecte (dont timeout), export, upload R2, crash, heure
+  sautée. Testé le 2026-09-25 (envoi réel OK).
   Détail : skill `collector-apple-music`, piège « Upload R2 bloqué à l'infini ».
 
 ## Frontend (câblé le 2026-09-09)
@@ -283,3 +332,19 @@ Pas encore fait : capture OG (`_OG_SCREENSHOT_PATHS` + backend
 `generate_og_screenshots.py::MAIN_PAGES` — miroirs à garder synchro, la page
 prend l'image générique en attendant). Déploiement Vercel via le skill
 `deploy` (build `frontend` OK au 2026-09-09).
+
+
+### Phase follow après la sortie (2026-09-25)
+Constat le jour J : iTunes se met à jour en continu (Patient Zero absent du Top US à 06:36, #1 à 06:41), le run horaire ne suffit pas.
+`release_watch.follow()` : après le post express, puis à chaque run horaire pendant `ITUNES_FOLLOW_HOURS` (24 h), poll des 5 feeds pays clés
+(1 toutes les `ITUNES_FOLLOW_INTERVAL`=2 s) jusqu'à HH:58:30 ; déclenche fetch express 168 storefronts + post si un pays clé montre
+un debut / nouveau peak / montée après le délai de 3 h, comparé au dernier état **posté** (`_worth_express`). Baisses ignorées.
+Piège CDN : l'origine du RSS legacy sert en alternance des versions différentes du même feed (Patient Zero #1 puis absent puis #1,
+requêtes à quelques secondes). Comparer à l'état posté (pas au poll précédent) évite les faux posts ; une « disparition » n'est jamais postée.
+Mise à jour 07:00 : un rang ne compte qu'une fois **confirmé par deux lectures consécutives** du même feed (anti-clignotement CDN) ; le follower lit aussi un Top Albums pays clé une fois sur 4 (card album de l'Encore, fetch express albums seulement si c'est l'album qui bouge) ; il applique exactement les règles de volume de `post_due` (debut / #1 immédiats, autres peaks regroupés 15 min, montées 3 h). En mode `--auto`, il lance d'abord le post horaire normal (sinon celui du .bat attendrait la fin du follow ~HH:58).
+
+### Cache Akamai du RSS legacy (incident 2026-09-25, corrigé)
+L'URL RSS normale est servie depuis le cache Akamai (`X-Cache: TCP_MEM_HIT`, `feed.updated` figé ≥ 1 h) : les runs de 08:00 et 10:00 du jour J ont reçu le chart de l'heure d'avant octet pour octet (`[skip] snapshot identical`, cycles absents du CSV), le follower lisait le même cache, et 3 alertes « out for 2h but on no key chart » étaient fausses. Correctif : `core/rss.feed_url()` ajoute `?cb=<time_ns>` à **chaque** requête (collecteur, follower, express, preflight) → lecture origine (`TCP_MISS`). Ne jamais revenir à l'URL nue.
+
+### Card album par pays (2026-09-25)
+`post_new_release_progression._post_itunes_album_card` (chaîne iTunes, run horaire) : toutes les chansons de l'album (standard + nouvelle édition, meilleure édition explicit/clean) dans le Top Songs d'un pays (`ITUNES_ALBUM_CARD_REGIONS`, déf. `us`), +/- vs la dernière card postée (1re : vs snapshot précédent), peak depuis notre historique iTunes (2026-09-09 → « since Sep 9 » pour les titres sortis avant, NEW PEAK / RE-PEAK pour les nouveaux). Postée quand le classement de l'album change, au plus 1×/`ITUNES_ALBUM_CARD_GAP_MINUTES` (60), seulement quand un nouveau titre y est. Tweet « songs hold the top N on iTunes in the US right now » si l'album tient #1..#N (N ≥ 3). État `album_snapshot|<album>|itunes_<cc>`.
