@@ -176,9 +176,20 @@ def fetch_country_task(manager: TokenManager, country: str):
     return country, fetch_country(session, manager, country)
 
 
+def is_recent_release(release_date: str | None, reference_date: str | None, *, window_days: int = 21) -> bool:
+    if not release_date or not reference_date:
+        return False
+    try:
+        released = date.fromisoformat(str(release_date)[:10])
+        reference = date.fromisoformat(str(reference_date)[:10])
+    except ValueError:
+        return False
+    return -1 <= (reference - released).days <= window_days
+
+
 def build_song_row(*, today, scraped_at, country, song, previous_by_id, previous_by_name) -> dict:
     prev_rank = previous_by_id.get((country, song["apple_music_id"]))
-    if prev_rank is None:
+    if prev_rank is None and not is_recent_release(song.get("release_date"), scraped_at):
         prev_rank = previous_by_name.get((country, rank_key(song["song_name"])))
     return {
         "date": today,
@@ -197,7 +208,7 @@ def build_song_row(*, today, scraped_at, country, song, previous_by_id, previous
 
 def build_album_row(*, today, scraped_at, country, album, previous_by_id, previous_by_name) -> dict:
     prev_rank = previous_by_id.get((country, album["apple_music_id"]))
-    if prev_rank is None:
+    if prev_rank is None and not is_recent_release(album.get("release_date"), scraped_at):
         prev_rank = previous_by_name.get((country, rank_key(album["album_name"])))
     return {
         "date": today,

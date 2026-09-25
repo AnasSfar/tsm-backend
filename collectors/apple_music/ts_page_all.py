@@ -114,6 +114,17 @@ MARKET_WEIGHTS: dict[str, float] = {
 }
 
 
+def is_recent_release(release_date: str | None, reference_date: str | None, *, window_days: int = 21) -> bool:
+    if not release_date or not reference_date:
+        return False
+    try:
+        released = date.fromisoformat(str(release_date)[:10])
+        reference = date.fromisoformat(str(reference_date)[:10])
+    except ValueError:
+        return False
+    return -1 <= (reference - released).days <= window_days
+
+
 def _market_weight(storefront: str) -> float:
     weight = MARKET_WEIGHTS.get(storefront, MARKET_WEIGHT_DEFAULT)
     if storefront in IMPORTANT_STOREFRONTS:
@@ -393,10 +404,13 @@ def main() -> None:
         key_by_id = (GLOBAL_STOREFRONT_TAG, am_id)
         key_by_name = (GLOBAL_STOREFRONT_TAG, rank_key(song["song_name"]))
         prev_rank = previous_by_id.get(key_by_id)
-        if prev_rank is None:
+        recent_release = is_recent_release(song.get("release_date"), scraped_at)
+        if prev_rank is None and not recent_release:
             prev_rank = previous_by_name.get(key_by_name)
         storefront_ranks = {}
-        identity_keys = [f"id:{am_id}", f"name:{rank_key(song['song_name'])}"]
+        identity_keys = [f"id:{am_id}"]
+        if not recent_release:
+            identity_keys.append(f"name:{rank_key(song['song_name'])}")
         for storefront, value in sorted(entry.get("storefront_ranks", {}).items()):
             rank = value.get("rank")
             previous_storefront_rank = None

@@ -203,13 +203,31 @@ def _build_rank_lookup(entries: list[dict[str, Any]]) -> tuple[dict[str, int], d
     return by_id, by_name
 
 
-def _backfill_entries(entries: list[dict[str, Any]], by_id: dict[str, int], by_name: dict[str, int]) -> None:
+def _is_recent_release(release_date: str | None, reference_date: str | None, *, window_days: int = 21) -> bool:
+    if not release_date or not reference_date:
+        return False
+    try:
+        released = _date.fromisoformat(str(release_date)[:10])
+        reference = _date.fromisoformat(str(reference_date)[:10])
+    except ValueError:
+        return False
+    return -1 <= (reference - released).days <= window_days
+
+
+def _backfill_entries(
+    entries: list[dict[str, Any]],
+    by_id: dict[str, int],
+    by_name: dict[str, int],
+    reference_date: str | None,
+) -> None:
     for entry in entries:
         if entry.get("previous_rank") not in (None, ""):
             continue
         am_id = clean_str(entry.get("apple_music_id"))
         name = _song_key(entry.get("song_name") or entry.get("album_name") or "")
-        rank = (by_id.get(am_id) if am_id else None) or by_name.get(name)
+        rank = by_id.get(am_id) if am_id else None
+        if rank is None and not _is_recent_release(entry.get("release_date"), reference_date):
+            rank = by_name.get(name)
         if rank is not None:
             entry["previous_rank"] = rank
 
@@ -218,7 +236,7 @@ def _backfill_flat(current: dict[str, Any] | None, prev_section: Any) -> None:
     if not current or not prev_section:
         return
     by_id, by_name = _build_rank_lookup(_get_entries(prev_section))
-    _backfill_entries(current.get("entries") or [], by_id, by_name)
+    _backfill_entries(current.get("entries") or [], by_id, by_name, current.get("date"))
 
 
 def _backfill_by_country(current: dict[str, Any] | None, prev_section: Any) -> None:
@@ -230,7 +248,7 @@ def _backfill_by_country(current: dict[str, Any] | None, prev_section: Any) -> N
     current_cc = current.get("countries") or {}
     for country, entries in current_cc.items():
         by_id, by_name = _build_rank_lookup(_get_entries(prev_cc.get(country)))
-        _backfill_entries(entries if isinstance(entries, list) else _get_entries(entries), by_id, by_name)
+        _backfill_entries(entries if isinstance(entries, list) else _get_entries(entries), by_id, by_name, current.get("date"))
 
 
 def _backfill_by_genre(current: dict[str, Any] | None, prev_section: Any) -> None:
@@ -245,7 +263,7 @@ def _backfill_by_genre(current: dict[str, Any] | None, prev_section: Any) -> Non
         prev_genres = prev_by_country.get(country) or {}
         for genre, entries in genres.items():
             by_id, by_name = _build_rank_lookup(_get_entries(prev_genres.get(genre)))
-            _backfill_entries(entries if isinstance(entries, list) else _get_entries(entries), by_id, by_name)
+            _backfill_entries(entries if isinstance(entries, list) else _get_entries(entries), by_id, by_name, current.get("date"))
 
 
 def _mirror_flat_current_to_latest(

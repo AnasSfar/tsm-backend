@@ -202,9 +202,20 @@ def fetch_genre_task(manager: TokenManager, country: str, genre_id: str, genre_n
     return country, genre_id, genre_name, songs, albums
 
 
+def is_recent_release(release_date: str | None, reference_date: str | None, *, window_days: int = 21) -> bool:
+    if not release_date or not reference_date:
+        return False
+    try:
+        released = date.fromisoformat(str(release_date)[:10])
+        reference = date.fromisoformat(str(reference_date)[:10])
+    except ValueError:
+        return False
+    return -1 <= (reference - released).days <= window_days
+
+
 def build_song_row(*, today, scraped_at, country, genre_id, genre_name, song, previous_by_id, previous_by_name) -> dict:
     prev_rank = previous_by_id.get((country, genre_id, song["apple_music_id"]))
-    if prev_rank is None:
+    if prev_rank is None and not is_recent_release(song.get("release_date"), scraped_at):
         prev_rank = previous_by_name.get((country, genre_id, rank_key(song["song_name"])))
     return {
         "date": today,
@@ -231,7 +242,7 @@ def build_song_row(*, today, scraped_at, country, genre_id, genre_name, song, pr
 
 def build_album_row(*, today, scraped_at, country, genre_id, genre_name, album, previous_by_id, previous_by_name) -> dict:
     prev_rank = previous_by_id.get((country, genre_id, album["apple_music_id"]))
-    if prev_rank is None:
+    if prev_rank is None and not is_recent_release(album.get("release_date"), scraped_at):
         prev_rank = previous_by_name.get((country, genre_id, rank_key(album["album_name"])))
     return {
         "date": today,

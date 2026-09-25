@@ -171,13 +171,26 @@ def _build_rank_lookup(entries: list[dict[str, Any]]):
     return by_id, by_name
 
 
-def _backfill_entries(entries, by_id, by_name) -> None:
+def _is_recent_release(release_date: str | None, reference_date: str | None, *, window_days: int = 21) -> bool:
+    if not release_date or not reference_date:
+        return False
+    try:
+        released = _date.fromisoformat(str(release_date)[:10])
+        reference = _date.fromisoformat(str(reference_date)[:10])
+    except ValueError:
+        return False
+    return -1 <= (reference - released).days <= window_days
+
+
+def _backfill_entries(entries, by_id, by_name, reference_date: str | None) -> None:
     for entry in entries:
         if entry.get("previous_rank") not in (None, ""):
             continue
         am_id = clean_str(entry.get("apple_music_id"))
         name = _song_key(entry.get("song_name") or entry.get("album_name") or "")
-        rank = (by_id.get(am_id) if am_id else None) or by_name.get(name)
+        rank = by_id.get(am_id) if am_id else None
+        if rank is None and not _is_recent_release(entry.get("release_date"), reference_date):
+            rank = by_name.get(name)
         if rank is not None:
             entry["previous_rank"] = rank
 
@@ -185,12 +198,13 @@ def _backfill_entries(entries, by_id, by_name) -> None:
 def _backfill_by_country(current: dict[str, Any] | None, prev_section: Any) -> None:
     if not current or not prev_section:
         return
+    reference_date = current.get("date")
     prev_cc = prev_section if isinstance(prev_section, dict) else {}
     if "countries" in prev_cc:
         prev_cc = prev_cc["countries"]
     for country, entries in (current.get("countries") or {}).items():
         by_id, by_name = _build_rank_lookup(prev_cc.get(country) or [])
-        _backfill_entries(entries if isinstance(entries, list) else [], by_id, by_name)
+        _backfill_entries(entries if isinstance(entries, list) else [], by_id, by_name, reference_date)
 
 
 def build_by_country(rows: list[dict[str, Any]], *, album: bool):

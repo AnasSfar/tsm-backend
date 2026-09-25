@@ -39,6 +39,17 @@ FIELDNAMES = [
 ]
 
 
+def is_recent_release(release_date: str | None, reference_date: str | None, *, window_days: int = 21) -> bool:
+    if not release_date or not reference_date:
+        return False
+    try:
+        released = date.fromisoformat(str(release_date)[:10])
+        reference = date.fromisoformat(str(reference_date)[:10])
+    except ValueError:
+        return False
+    return -1 <= (reference - released).days <= window_days
+
+
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Collect Taylor Swift Apple Music top songs.")
@@ -134,7 +145,7 @@ def main() -> None:
         key_by_id = (storefront, song["apple_music_id"])
         key_by_name = (storefront, rank_key(song["song_name"]))
         prev_rank = previous_by_id.get(key_by_id)
-        if prev_rank is None:
+        if prev_rank is None and not is_recent_release(song.get("release_date"), scraped_at):
             prev_rank = previous_by_name.get(key_by_name)
         rows.append(
             {
