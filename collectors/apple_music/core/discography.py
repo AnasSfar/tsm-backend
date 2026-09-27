@@ -32,6 +32,11 @@ def song_key_candidates(value: object) -> list[str]:
     stripped = re.sub(r"\s*\(from\b[^)]*\)\s*$", "", key).strip()
     if stripped and stripped != key:
         candidates.append(stripped)
+    # Apple's "X (Track by Track)" is the catalog's "X - Track by Track": the
+    # album-filtered cards dropped it (Global 2026-09-26, Ophelia TbT #13).
+    dashed = re.sub(r"\s*\(([^()]+)\)\s*$", r" - \1", key).strip()
+    if dashed != key and dashed not in candidates:
+        candidates.append(dashed)
     return candidates
 
 
@@ -82,10 +87,26 @@ def load_release_dates() -> dict[str, str]:
     and a re-entry (data-rules: never infer NEW for an already-released
     song)."""
     dates: dict[str, str] = {}
-    for track in iter_catalog_tracks():
+    tracks = list(iter_catalog_tracks())
+    # A track's catalog release_date can be the date of a NEW ID, not of the
+    # song (owner 2026-09-26: "Elizabeth Taylor" reads 2026-03-31 but came out
+    # with the album in Oct 2025): never later than the first release of its
+    # album edition (standard -> 2025-10, The Encore -> 2026-09-25).
+    edition_first: dict[tuple[str, str], str] = {}
+    for track in tracks:
+        release_date = str(track.get("release_date") or "").strip()
+        edition = str(track.get("release_edition") or "").strip()
+        if release_date and edition and track.get("album"):
+            k = (str(track["album"]), edition)
+            if k not in edition_first or release_date < edition_first[k]:
+                edition_first[k] = release_date
+    for track in tracks:
         release_date = str(track.get("release_date") or "").strip()
         if not release_date:
             continue
+        first = edition_first.get((str(track.get("album") or ""), str(track.get("release_edition") or "").strip()))
+        if first and first < release_date:
+            release_date = first
         for field in ("title", "base_title"):
             key = song_name_key(track.get(field))
             if key and key not in dates:

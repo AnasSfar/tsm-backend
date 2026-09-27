@@ -635,7 +635,23 @@ def main() -> int:
     else:
         maybe_upload_to_r2(chart_date, period, force=args.force)
 
-    if period == "weekly" and already_collected and not args.force_post:
+    # DEBUT phase gate (decision 2026-09-26): on a Spotify release day, the
+    # artist chart posts wait for the DEBUT phase (run by the Spotify Charts
+    # pipeline) and never go out before it (max 3h, then no post).
+    debut_blocked = False
+    if period == "daily" and not args.no_post:
+        debut_script = ROOT / "collectors" / "spotify" / "charts" / "worldwide" / "tools" / "scripts" / "debut_phase.py"
+        if debut_script.exists():
+            gate = subprocess.run(
+                [sys.executable, str(debut_script), str(chart_date), "--wait", "10800"],
+                cwd=str(ROOT),
+                check=False,
+            )
+            debut_blocked = gate.returncode != 0
+
+    if debut_blocked:
+        print(f"[BLOCK] phase DEBUT non faite pour {chart_date}: posts artistes non publies")
+    elif period == "weekly" and already_collected and not args.force_post:
         print(f"[INFO] Weekly chart {chart_date} already collected; post skipped.")
     elif args.no_post:
         print("[INFO] Image generation and Twitter post skipped (--no-post)")
@@ -650,7 +666,7 @@ def main() -> int:
         else:
             print(f"[WARN] Image generation script not found: {generate_script}")
 
-    if period == "daily" and not args.no_post:
+    if period == "daily" and not args.no_post and not debut_blocked:
         _run_filtered_artist_charts(chart_date, force=args.force)
 
     print(f"[OK] {len(rows)} artists collected for {period} {chart_date}")

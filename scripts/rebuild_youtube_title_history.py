@@ -11,9 +11,10 @@ title_key for those songs — the frontend shows them all as "NEW" even though
 nothing actually changed. This rebuilds the whole file date-by-date with
 today's fixed matching, so title_key is consistent across all of history.
 
-Also regenerates the 3-source split (all/main/topic, added 2026-09-06) for
-every historical date, using each row's `channel` field (blank = "main",
-true historically since Topic wasn't tracked before 2026-09-05).
+Also regenerates every `source` split (title_groups.video_rows_by_source:
+all/main/topic/songs + videos/audios/extras, the YouTube page sections added
+2026-09-27) for every historical date, using each row's `channel` field (blank
+= "main", true historically since Topic wasn't tracked before 2026-09-05).
 
 Dry-run by default: prints a diff summary, writes nothing. --apply to write
 (backup created first).
@@ -31,11 +32,12 @@ from collectors.youtube.core.config import (
     DISCOGRAPHY_SONGS_PATH,
     TITLE_CSV_FIELDNAMES,
     TITLE_HISTORY_PATH,
+    VIDEO_CATEGORIES_PATH,
     VIDEO_GROUPS_PATH,
 )
 from collectors.youtube.core.csv_utils import read_csv_rows
 from collectors.youtube.update_youtube import enrich_chart_rows
-from collectors.youtube.core.title_groups import build_title_rows
+from collectors.youtube.core.title_groups import build_title_rows, video_rows_by_source
 
 
 def parse_args() -> argparse.Namespace:
@@ -67,12 +69,13 @@ def main() -> int:
 
     for date in dates:
         day_rows = by_date[date]
-        video_rows_by_source = {
-            "all": day_rows,
-            "main": [r for r in day_rows if (r.get("channel") or "main") == "main"],
-            "topic": [r for r in day_rows if r.get("channel") == "topic"],
-        }
-        for source_tag, source_video_rows in video_rows_by_source.items():
+        sources = video_rows_by_source(
+            day_rows,
+            songs_path=DISCOGRAPHY_SONGS_PATH,
+            manual_groups_path=VIDEO_GROUPS_PATH,
+            categories_path=VIDEO_CATEGORIES_PATH,
+        )
+        for source_tag, source_video_rows in sources.items():
             if not source_video_rows:
                 continue
             variant_rows = build_title_rows(
@@ -80,6 +83,7 @@ def main() -> int:
                 video_rows=source_video_rows,
                 songs_path=DISCOGRAPHY_SONGS_PATH,
                 manual_groups_path=VIDEO_GROUPS_PATH,
+                catalog_only=(source_tag == "songs"),
             )
             for r in variant_rows:
                 r["source"] = source_tag

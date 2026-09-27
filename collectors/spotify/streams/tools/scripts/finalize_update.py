@@ -24,6 +24,7 @@ import score_album_update
 import history_store
 from config import NTFY_TOPIC
 from post_debut_releases import post_debut_releases as run_debut_release_posts
+from post_debut_releases import album_track_id_set, release_day_debut_albums
 
 
 # Album scrape-priority hint (see update_streams.build_album_post_priority_track_ids):
@@ -353,7 +354,15 @@ class ReadyEraRecapPoster:
 
 
 class ReadyDebutReleasePoster:
-    """Post debut release cards as soon as all same-day release tracks are ready."""
+    """Post debut releases as soon as their data is ready during collection.
+
+    Album debuts (a catalogue album with a track released on stats_date) never
+    get standalone song cards: their album update card is posted instead, as
+    soon as every released track of the album has its stats_date daily
+    (decision 2026-09-26, The Encore). Debuts outside any album keep their
+    song card (post_debut_releases). The album card lock also makes finalize's
+    album queue skip it afterwards.
+    """
 
     def __init__(
         self,
@@ -365,6 +374,7 @@ class ReadyDebutReleasePoster:
         log_mode: str,
         enabled: bool,
         no_post_mode: bool,
+        script_dir: Path | None = None,
     ) -> None:
         self.stats_date = stats_date
         self.track_ids = set(track_ids)
@@ -373,6 +383,15 @@ class ReadyDebutReleasePoster:
         self.log_mode = log_mode
         self.enabled = enabled and bool(self.track_ids)
         self.no_post_mode = no_post_mode
+        self.script_dir = script_dir
+        self.song_track_ids = set(self.track_ids)
+        self.albums: list[str] = []
+        if self.enabled:
+            self.song_track_ids -= album_track_id_set()
+            if script_dir is not None:
+                self.albums = release_day_debut_albums(stats_date)
+            if self.albums:
+                print(f"[debut] Release-day album card(s) instead of song cards: {', '.join(self.albums)}")
         self._posted = False
         self._stop = threading.Event()
         self._finished = threading.Event()
@@ -401,34 +420,79 @@ class ReadyDebutReleasePoster:
 
     def _run(self) -> None:
         try:
+            pending_albums = list(self.albums)
+            songs_pending = bool(self.song_track_ids)
             while not self._stop.is_set():
-                done_ids = self.load_history_track_ids_for_date(self.stats_date)
-                missing = self.track_ids - done_ids
-                if missing:
-                    self._stop.wait(2.0)
-                    continue
+                pending_albums = [album for album in pending_albums if not self._try_post_album(album)]
 
-                with self._lock:
-                    if self._posted:
-                        return
-                    self._posted = True
+                if songs_pending:
+                    done_ids = self.load_history_track_ids_for_date(self.stats_date)
+                    if not (self.song_track_ids - done_ids):
+                        songs_pending = False
+                        self._post_song_debuts()
 
-                _wait_before_post(
-                    label="early debut release posts",
-                    should_post=not self.no_post_mode,
-                    state=self._post_state,
-                    spacing_seconds=self.spacing_seconds,
-                    log_mode=self.log_mode,
-                )
-                result = run_debut_release_posts(self.stats_date, no_post=self.no_post_mode, priority=0)
-                if result == 0:
-                    _mark_post_done(should_post=not self.no_post_mode, state=self._post_state)
-                    print("[debut] Posted early during streams run.")
-                else:
-                    print(f"[debut] Early debut release post failed (exit {result}); finalization will retry if needed.")
-                return
+                if not pending_albums and not songs_pending:
+                    return
+                # An album check reloads the history CSV: poll it less often.
+                self._stop.wait(5.0 if pending_albums else 2.0)
         finally:
             self._finished.set()
+
+    def _try_post_album(self, album: str) -> bool:
+        """True once the album is handled (posted, already posted, blocked or
+        failed — finalize's album queue retries a failure)."""
+        if not history_store.album_tracks_done_for(album, self.stats_date):
+            return False
+        block_reason = generate_album_update_image.holiday_collection_post_block_reason(album, self.stats_date)
+        if block_reason:
+            print(f"[debut] Album card skipped ({album}): {block_reason}")
+            return True
+        if not self.no_post_mode and generate_album_update_image.album_update_already_posted(album, self.stats_date):
+            print(f"[debut] Album card already posted: {album}")
+            return True
+
+        album_cmd = [
+            sys.executable,
+            str(self.script_dir / "tools" / "scripts" / "generate_album_update_image.py"),
+            album,
+            self.stats_date,
+        ]
+        if not self.no_post_mode:
+            album_cmd.append("--post")
+        _wait_before_post(
+            label=f"early debut album card ({album})",
+            should_post=not self.no_post_mode,
+            state=self._post_state,
+            spacing_seconds=self.spacing_seconds,
+            log_mode=self.log_mode,
+        )
+        result = _run_subprocess(album_cmd, check=False, env={"TWITTER_POST_PRIORITY": "0"})
+        if result.returncode == 0:
+            _mark_post_done(should_post=not self.no_post_mode, state=self._post_state)
+            print(f"[debut] Album card posted early during streams run: {album}")
+        else:
+            print(f"[debut] Early album card failed for {album} (exit {result.returncode}); finalization will retry.")
+        return True
+
+    def _post_song_debuts(self) -> None:
+        with self._lock:
+            if self._posted:
+                return
+            self._posted = True
+
+        _wait_before_post(
+            label="early debut release posts",
+            should_post=not self.no_post_mode,
+            state=self._post_state,
+            spacing_seconds=self.spacing_seconds,
+            log_mode=self.log_mode,
+        )
+        result = run_debut_release_posts(self.stats_date, no_post=self.no_post_mode, priority=0)
+        if result == 0:
+            _mark_post_done(should_post=not self.no_post_mode, state=self._post_state)
+            print("[debut] Posted early during streams run.")
+        else:
+            print(f"[debut] Early debut release post failed (exit {result}); finalization will retry if needed.")
 
 
 class ReadyBestDaySincePoster:

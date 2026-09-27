@@ -33,6 +33,7 @@ except ImportError:
 sys.path.insert(0, str(Path(__file__).parent.parent.parent))
 from core.chart_comment import build_chart_comment
 from core.twitter import post_thread, post_with_image, split_tweets
+from core.discord_notify import discord_send
 from core.notify import send as notify
 from core.data_paths import first_existing, legacy_spotify_chart_dir, spotify_chart_dir
 from playwright.sync_api import sync_playwright
@@ -348,6 +349,8 @@ def main():
             log("INFO", "Twitter post skipped (--no-post)")
             posted = True
         else:
+            discord_send("spotify-charts", [(tweet_content, image_path)],
+                         kind="us_daily", key=f"us_daily_{target}", thread="us")
             log("STEP", "Twitter post")
             posted = post_with_image(
                 tweet_content, image_path, TWITTER_SESSION,
@@ -447,6 +450,8 @@ def main():
         log("INFO", "Twitter post skipped (--no-post)")
         posted = True
     else:
+        discord_send("spotify-charts", [(tweet_content, image_path)], kind="us_daily",
+                     key="us_daily_" + "_".join(str(d) for d in processed), thread="us")
         log("STEP", "Twitter post")
         posted = post_with_image(
             tweet_content, image_path, TWITTER_SESSION,

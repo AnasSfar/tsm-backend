@@ -700,6 +700,9 @@ def main() -> None:
             return
         tweet = build_tweet(ts_artist, mode, stats_date, args.period)
         print(f"\nTweet:\n{tweet}\n")
+        from core.discord_notify import discord_send
+        discord_send("spotify-charts", [(tweet, out_path)], kind="artist_chart",
+                     key=f"artist_chart_{stats_date}_{args.period}_{mode}", thread="artists")
         try:
             from core.twitter import post_with_image
             success = post_with_image(tweet, out_path, twitter_session)

@@ -1074,7 +1074,9 @@
           ],
           "version_tags": [
             "standalone"
-          ]
+          ],
+          "tsm_song_id": "ot9x",
+          "tsm_album_id": "va1"
         },
         {
           "title": "Cleveland!",
@@ -1111,7 +1113,9 @@
           ],
           "version_tags": [
             "standard"
-          ]
+          ],
+          "tsm_song_id": "ckw2",
+          "tsm_album_id": "va1"
         },
         {
           "title": "Pink Clouding",
@@ -1145,7 +1149,9 @@
           "image_url": "https://i.scdn.co/image/ab67616d0000b273d7812467811a7da6e6a44902",
           "version_tags": [
             "standard"
-          ]
+          ],
+          "tsm_song_id": "hu7i",
+          "tsm_album_id": "va1"
         },
         {
           "title": "Babylon",
@@ -1179,7 +1185,9 @@
           "image_url": "https://i.scdn.co/image/ab67616d0000b273d7812467811a7da6e6a44902",
           "version_tags": [
             "standard"
-          ]
+          ],
+          "tsm_song_id": "zw2i",
+          "tsm_album_id": "va1"
         }
       ]
     },

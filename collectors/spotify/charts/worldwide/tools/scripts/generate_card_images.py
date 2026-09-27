@@ -19,6 +19,7 @@ from __future__ import annotations
 
 import argparse
 import base64
+import hashlib
 import html
 import json
 import re
@@ -64,12 +65,14 @@ from core.data_paths import (  # noqa: E402
 WORLDWIDE_JSON = first_existing(WEB_EXPORT_DATA_DIR / "charts_worldwide.json", LEGACY_WEBSITE_DATA_DIR / "charts_worldwide.json")
 SONGS_JSON = first_existing(WEB_EXPORT_DATA_DIR / "songs.json", LEGACY_WEBSITE_DATA_DIR / "songs.json")
 from comp.chart_card import render_chart_card  # noqa: E402
+from comp.song_card import SPOTIFY_SVG, _tsm_logo_data_uri  # noqa: E402
 from comp.export_frame import add_export_frame  # noqa: E402
 from comp.img_fetch import fetch_data_uri as _fetch_data_uri  # noqa: E402
 from collectors.twitter.albums import album_emoji as _shared_album_emoji  # noqa: E402
 from collectors.twitter.text import full_charts_update_line  # noqa: E402
 from twitter import post_image_thread as _post_image_thread  # noqa: E402
 from twitter import post_with_image as _post_with_image  # noqa: E402
+from discord_notify import discord_send  # noqa: E402
 
 # Shared lock with core/twitter.py — prevents running Playwright while Twitter
 # posting scripts are also using a browser (same lock file, same semantics).
@@ -1123,6 +1126,21 @@ def _chart_card_footer_date(chart_date: str) -> str:
         return chart_date
 
 
+def _is_release_day(chart_date: str) -> bool:
+    """True on a release day (catalog tracks with release_date == chart_date),
+    see debut_phase.is_debut_day. False on any error (normal behavior)."""
+    try:
+        scripts_dir = str(Path(__file__).resolve().parent)
+        if scripts_dir not in sys.path:
+            sys.path.insert(0, scripts_dir)
+        import debut_phase  # noqa: E402
+
+        return debut_phase.is_debut_day(chart_date)
+    except Exception as exc:
+        print(f"[WARN] jour de sortie non verifiable ({exc})")
+        return False
+
+
 def _is_first_single_region_entry(
     entries: list[dict],
     track_id: str,
@@ -1271,7 +1289,9 @@ def _best_entry(
 def _summary_rows(
     tracks: list[tuple[str, list[dict]]],
     song_meta: dict[str, dict],
+    prev_country_counts: dict[str, int] | None = None,
 ) -> list[dict]:
+    prev_country_counts = prev_country_counts or {}
     rows: list[dict] = []
     for track_id, entries in tracks:
         meta = song_meta.get(track_id, {})
@@ -1283,8 +1303,12 @@ def _summary_rows(
                 "song": title,
                 "image_url": _image_url_from_meta(meta),
                 "countries": len(entries),
+                # Same rule as the per-song tweets: no delta unless the song is
+                # in the previous snapshot (never a made-up "+N" vs a missing day).
+                "prev_countries": prev_country_counts.get(track_id),
                 "peak_streams": peak_streams,
                 "peak_rank": peak_rank,
+                "no1": sum(1 for e in entries if e.get("rank") == 1),
                 "top10": sum(1 for e in entries if (e.get("rank") or 9999) <= 10),
                 "top50": sum(1 for e in entries if (e.get("rank") or 9999) <= 50),
                 "top100": sum(1 for e in entries if (e.get("rank") or 9999) <= 100),
@@ -1293,44 +1317,55 @@ def _summary_rows(
     return rows
 
 
-def _summary_cell_entry_html(entry: dict | None, *, streams: bool = False) -> str:
-    if not entry:
-        return "-"
-    country = _country_label(str(entry.get("country") or ""), str(entry.get("country_name") or ""))
-    if streams:
-        pct = entry.get("stream_change_pct")
-        if pct is None:
-            change = ""
-            css = ""
-        else:
-            sign = "+" if pct > 0 else ""
-            change = f" ({sign}{pct:.1f}%)"
-            css = "positive" if pct > 0 else "negative" if pct < 0 else "neutral"
-        return f"{html.escape(country)} - {_fmt_streams(entry.get('streams'))}<span class='chg {css}'>{html.escape(change)}</span>"
+def _summary_entry_country(entry: dict) -> str:
+    return _country_label(str(entry.get("country") or ""), str(entry.get("country_name") or ""))
 
-    rank = entry.get("rank", "?")
-    rank_change = entry.get("rank_change")
-    prev = entry.get("previous_rank")
-    if rank_change is not None and rank_change != 0:
-        delta = int(rank_change)
-    elif prev and rank:
-        delta = int(prev) - int(rank)
-    else:
-        delta = None
-    if delta is None:
-        peak = entry.get("peak_rank")
-        change = " (NEW)" if peak is None or peak == rank else " (RE)"
-        css = "neutral"
-    elif delta > 0:
-        change = f" (▲{delta})"
-        css = "positive"
-    elif delta < 0:
-        change = f" (▼{abs(delta)})"
-        css = "negative"
-    else:
-        change = " (=)"
-        css = "neutral"
-    return f"{html.escape(country)} - #{rank}<span class='chg {css}'>{html.escape(change)}</span>"
+
+def _summary_streams_cell(entry: dict | None) -> tuple[str, str]:
+    """(big value, "where" line) for the Most streams cell."""
+    if not entry:
+        return "—", ""
+    where = f"<span class='where-name'>{html.escape(_summary_entry_country(entry))}</span>"
+    pct = entry.get("stream_change_pct")
+    if pct is not None:
+        sign = "+" if pct > 0 else ""
+        css = "positive" if pct > 0 else "negative" if pct < 0 else "neutral"
+        where += f"<span class='chg {css}'>{html.escape(f'{sign}{pct:.1f}%')}</span>"
+    return html.escape(_fmt_streams(entry.get("streams"))), where
+
+
+def _summary_rank_cell(entry: dict | None) -> tuple[str, str]:
+    """(big value with movement pill, "where" line) for the Best rank cell."""
+    if not entry:
+        return "—", ""
+    value = f"#{html.escape(str(entry.get('rank', '?')))}{_rank_delta_html(entry)}"
+    return value, f"<span class='where-name'>{html.escape(_summary_entry_country(entry))}</span>"
+
+
+def _summary_country_delta_html(count: int, prev_count: int | None) -> str:
+    if prev_count is None:
+        return ""
+    diff = count - int(prev_count)
+    if diff == 0:
+        return "<span class='ctry-delta neutral'>=</span>"
+    css = "positive" if diff > 0 else "negative"
+    return f"<span class='ctry-delta {css}'>{diff:+d}</span>"
+
+
+_SUMMARY_TWO_COLUMNS_ABOVE = 12
+
+
+def _summary_title_size(title: str) -> str:
+    # Font bucket by length + 2-line clamp as a safety net (image-gen rule:
+    # a title must never overflow nor be silently cut mid-word).
+    n = len(title)
+    if n <= 24:
+        return "t-xl"
+    if n <= 36:
+        return "t-lg"
+    if n <= 52:
+        return "t-md"
+    return "t-sm"
 
 
 def _build_summary_html(
@@ -1338,36 +1373,80 @@ def _build_summary_html(
     song_meta: dict[str, dict],
     palette: dict[str, str],
     chart_date: str,
+    prev_country_counts: dict[str, int] | None = None,
 ) -> str:
-    global _LOGO_URI
-    if not _LOGO_URI:
-        _LOGO_URI = _logo_data_uri()
+    logo_uri = _tsm_logo_data_uri()
 
     try:
         date_label = datetime.strptime(chart_date, "%Y-%m-%d").strftime("%A, %B %d, %Y")
     except Exception:
         date_label = chart_date
 
+    rows = _summary_rows(tracks, song_meta, prev_country_counts)
+    # "#1" tier only on days where at least one song is #1 somewhere (debuts):
+    # a column of zeros every other day would just be noise.
+    show_no1 = any(row["no1"] > 0 for row in rows)
+    tier_keys = (("no1", "#1"),) if show_no1 else ()
+    tier_keys += (("top10", "Top 10"), ("top50", "Top 50"), ("top100", "Top 100"))
     rows_html = ""
-    for row in _summary_rows(tracks, song_meta):
+    for row in rows:
         img_uri = _url_to_data_uri(row.get("image_url", ""))
         cover_html = (
-            f'<img class="summary-cover" src="{img_uri}" alt="cover" />'
+            f'<img class="cover" src="{img_uri}" alt="cover" />'
             if img_uri else
-            '<div class="summary-cover cover-placeholder"></div>'
+            '<div class="cover cover-placeholder"></div>'
         )
-        rows_html += (
-            "<tr>"
-            f"<td class='song'><div class='song-cell'>{cover_html}<span>{html.escape(row['song'])}</span></div></td>"
-            f"<td>{row['countries']}</td>"
-            f"<td class='wide'>{_summary_cell_entry_html(row['peak_streams'], streams=True)}</td>"
-            f"<td class='wide'>{_summary_cell_entry_html(row['peak_rank'])}</td>"
-            f"<td>{row['top10']}</td>"
-            f"<td>{row['top50']}</td>"
-            f"<td>{row['top100']}</td>"
-            "</tr>"
+        streams_val, streams_where = _summary_streams_cell(row["peak_streams"])
+        rank_val, rank_where = _summary_rank_cell(row["peak_rank"])
+        countries = row["countries"]
+        tiers_html = "".join(
+            f"<div class='tier{' zero' if row[key] == 0 else ' gold' if key == 'no1' else ''}'>"
+            f"<div class='tier-num'>{row[key]}</div><div class='tier-lbl'>{label}</div></div>"
+            for key, label in tier_keys
         )
+        rows_html += f"""
+    <div class="song-row">
+      {cover_html}
+      <div class="song-main">
+        <div class="song-top">
+          <div class="song-title {_summary_title_size(row['song'])}">{html.escape(row['song'])}</div>
+          <div class="ctry">
+            <span class="ctry-num">{countries}</span>
+            <span class="ctry-lbl">{'region' if countries == 1 else 'regions'}</span>
+            {_summary_country_delta_html(countries, row['prev_countries'])}
+          </div>
+        </div>
+        <div class="stats">
+          <div class="stat">
+            <div class="stat-lbl">Most streams</div>
+            <div class="stat-val">{streams_val}</div>
+            <div class="stat-where">{streams_where}</div>
+          </div>
+          <div class="stat">
+            <div class="stat-lbl">Best rank</div>
+            <div class="stat-val">{rank_val}</div>
+            <div class="stat-where">{rank_where}</div>
+          </div>
+          <div class="stat tiers">{tiers_html}</div>
+        </div>
+      </div>
+    </div>"""
 
+    song_count = len(rows)
+    # Release days (15-20 songs) would give a very tall single column that X
+    # shrinks to fit the screen height: switch to 2 columns (read top-down).
+    two_cols = song_count > _SUMMARY_TWO_COLUMNS_ABOVE
+    card_width = 1860 if two_cols else 960
+    # 4 tiers need a wider box: taken from the streams/rank cells.
+    stats_cols = "1.1fr 0.9fr 1.4fr" if show_no1 else "1.2fr 1fr 1.1fr"
+    songs_css = (
+        f"display:grid;grid-template-columns:1fr 1fr;column-gap:48px;"
+        f"grid-auto-flow:column;grid-template-rows:repeat({(song_count + 1) // 2}, auto);"
+        if two_cols else ""
+    )
+    logo_html = (
+        f'<img class="tsm-logo" src="{logo_uri}" alt="Swifties Charts" />' if logo_uri else ""
+    )
     p = palette
     return f"""<!DOCTYPE html>
 <html lang="en">
@@ -1382,145 +1461,250 @@ def _build_summary_html(
     color: {p['text']};
   }}
   .summary {{
-    width: 1320px;
+    width: {card_width}px;
     background: {p['card_bg']};
     border: 1px solid {p['border']};
     border-radius: 18px;
     box-shadow: 0 2px 18px rgba(0,0,0,0.22);
-    padding: 22px 24px 16px;
+    padding: 34px 36px 26px;
   }}
+  .songs {{ {songs_css} }}
   .header {{
     display: flex;
-    align-items: end;
-    justify-content: space-between;
-    gap: 18px;
-    padding-bottom: 16px;
-    border-bottom: 1px solid {p['border']};
+    align-items: center;
+    gap: 20px;
+    padding-bottom: 24px;
+    border-bottom: 2px solid {p['border']};
   }}
+  .sp-badge {{
+    width: 68px;
+    height: 68px;
+    flex: 0 0 68px;
+    border-radius: 50%;
+    background: #1db954;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }}
+  .sp-badge .logo {{ width: 40px; height: 40px; }}
+  .head-text {{ flex: 1; min-width: 0; }}
   .title {{
-    font-size: 32px;
-    font-weight: 800;
-    line-height: 1.08;
+    font-size: 38px;
+    font-weight: 900;
+    line-height: 1.05;
+    letter-spacing: -0.4px;
   }}
-  .subtitle {{
-    margin-top: 6px;
-    color: {p['muted']};
-    font-size: 18px;
-    font-weight: 650;
+  .head-meta {{
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 10px;
   }}
   .date {{
-    flex-shrink: 0;
     border-radius: 999px;
     background: {p['play_btn']};
     color: #fff;
-    padding: 9px 16px;
+    padding: 6px 14px;
     font-size: 18px;
     font-weight: 800;
   }}
-  table {{
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 16px;
-    table-layout: fixed;
-  }}
-  th, td {{
-    border-bottom: 1px solid {p['border']};
-    padding: 9px 10px;
-    font-size: 16px;
-    line-height: 1.18;
-    text-align: center;
-    vertical-align: middle;
-  }}
-  th {{
+  .subtitle {{
     color: {p['muted']};
-    font-size: 13px;
-    font-weight: 800;
-    text-transform: uppercase;
+    font-size: 19px;
+    font-weight: 700;
   }}
-  tr:nth-child(even) td {{ background: {p['even_row']}; }}
-  .song {{
-    width: 330px;
-    text-align: left;
+  .head-count {{
+    flex-shrink: 0;
+    text-align: center;
+    min-width: 108px;
+    padding: 10px 16px;
+    border-radius: 16px;
+    background: {p['even_row']};
+  }}
+  .hc-num {{
+    font-size: 46px;
+    font-weight: 900;
+    line-height: 1;
     color: {p['region']};
-    font-weight: 800;
   }}
-  .song-cell {{
+  .hc-lbl {{
+    margin-top: 4px;
+    font-size: 14px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: {p['muted']};
+  }}
+  .song-row {{
     display: flex;
     align-items: center;
-    gap: 10px;
-    min-width: 0;
+    gap: 22px;
+    padding: 17px 0;
+    border-bottom: 1px solid {p['border']};
   }}
-  .song-cell span {{
-    min-width: 0;
-    overflow-wrap: anywhere;
-  }}
-  .summary-cover {{
-    width: 36px;
-    height: 36px;
-    flex: 0 0 36px;
-    border-radius: 7px;
+  .cover {{
+    width: 118px;
+    height: 118px;
+    flex: 0 0 118px;
+    border-radius: 14px;
     object-fit: cover;
-    box-shadow: 0 1px 5px rgba(0,0,0,0.16);
+    box-shadow: 0 2px 10px rgba(0,0,0,0.18);
   }}
-  .cover-placeholder {{
-    background: {p['border']};
+  .cover-placeholder {{ background: {p['border']}; }}
+  .song-main {{ flex: 1; min-width: 0; }}
+  .song-top {{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 10px;
   }}
-  .wide {{
-    width: 245px;
-    text-align: left;
-    font-weight: 720;
+  .song-title {{
+    min-width: 0;
+    color: {p['region']};
+    font-weight: 850;
+    line-height: 1.12;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
   }}
-  .chg {{
-    font-weight: 650;
+  .song-title.t-xl {{ font-size: 31px; }}
+  .song-title.t-lg {{ font-size: 27px; }}
+  .song-title.t-md {{ font-size: 23px; }}
+  .song-title.t-sm {{ font-size: 21px; }}
+  .ctry {{
+    flex-shrink: 0;
+    display: flex;
+    align-items: baseline;
+    gap: 7px;
+    white-space: nowrap;
   }}
+  .ctry-num {{ font-size: 31px; font-weight: 900; line-height: 1; }}
+  .ctry-lbl {{ font-size: 18px; font-weight: 700; color: {p['muted']}; }}
+  .ctry-delta {{ font-size: 18px; font-weight: 800; }}
+  .ctry-delta.positive {{ color: {p['stream_pos']}; }}
+  .ctry-delta.negative {{ color: {p['stream_neg']}; }}
+  .ctry-delta.neutral {{ color: {p['muted']}; }}
+  .stats {{
+    display: grid;
+    grid-template-columns: {stats_cols};
+    gap: 12px;
+  }}
+  .stat {{
+    min-width: 0;
+    border-radius: 14px;
+    background: {p['even_row']};
+    padding: 11px 16px 12px;
+  }}
+  .stat-lbl {{
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    color: {p['muted']};
+  }}
+  .stat-val {{
+    margin-top: 4px;
+    display: flex;
+    align-items: center;
+    font-size: 29px;
+    font-weight: 850;
+    line-height: 1.1;
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+  }}
+  .stat-where {{
+    margin-top: 3px;
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    font-size: 18px;
+    font-weight: 700;
+    color: {p['muted']};
+    white-space: nowrap;
+  }}
+  .where-name {{ min-width: 0; overflow: hidden; text-overflow: ellipsis; }}
+  .chg {{ flex-shrink: 0; font-weight: 800; }}
   .chg.positive {{ color: {p['stream_pos']}; }}
   .chg.negative {{ color: {p['stream_neg']}; }}
   .chg.neutral {{ color: {p['muted']}; }}
+  .oct-rank-delta {{ display:inline-flex;align-items:center;justify-content:center;min-width:34px;margin-left:10px;padding:4px 9px;border-radius:999px;font-size:17px;font-weight:800;line-height:1; }}
+  .oct-rank-delta.rank-up   {{ background:#dcfce7;color:#15803d; }}
+  .oct-rank-delta.rank-down {{ background:#fee2e2;color:#b91c1c; }}
+  .oct-rank-delta.rank-neutral {{ background:#f1f5f9;color:#64748b; }}
+  .oct-rank-delta.rank-tag  {{ background:#dbeafe;color:#1d4ed8; }}
+  .stat.tiers {{
+    display: grid;
+    grid-template-columns: repeat({len(tier_keys)}, 1fr);
+    align-items: center;
+    padding: 11px 8px;
+  }}
+  .tier {{ text-align: center; }}
+  .tier-num {{
+    font-size: 29px;
+    font-weight: 850;
+    line-height: 1.1;
+    color: {p['text']};
+  }}
+  .tier-lbl {{
+    margin-top: 4px;
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    color: {p['muted']};
+    white-space: nowrap;
+  }}
+  .tier.zero .tier-num {{ opacity: 0.32; }}
+  .tier.gold .tier-num {{ color: #c8930a; }}
+  .tier.gold .tier-lbl {{ color: #b07f06; }}
   .footer {{
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-top: 14px;
-    padding-top: 12px;
-    border-top: 1px solid {p['border']};
+    margin-top: 22px;
     color: {p['muted']};
-    font-size: 15px;
-    opacity: 0.78;
+    font-size: 19px;
+    font-weight: 750;
   }}
   .brand {{
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 12px;
   }}
-  .logo {{ height: 24px; width: auto; }}
+  .tsm-logo {{
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    object-fit: contain;
+    background: #111827;
+    padding: 6px;
+  }}
 </style>
 </head>
 <body>
 <div class="summary" id="card">
   <div class="header">
-    <div>
+    <div class="sp-badge">{SPOTIFY_SVG}</div>
+    <div class="head-text">
       <div class="title">Taylor Swift on Spotify Charts</div>
-      <div class="subtitle">Worldwide recap by song</div>
+      <div class="head-meta">
+        <span class="date">{html.escape(date_label)}</span>
+        <span class="subtitle">Worldwide recap</span>
+      </div>
     </div>
-    <div class="date">{html.escape(date_label)}</div>
+    <div class="head-count">
+      <div class="hc-num">{song_count}</div>
+      <div class="hc-lbl">{'song' if song_count == 1 else 'songs'}</div>
+    </div>
   </div>
-  <table>
-    <thead>
-      <tr>
-        <th class="song">Song</th>
-        <th>Countries</th>
-        <th class="wide">Peak streams</th>
-        <th class="wide">Peak rank</th>
-        <th>Top 10</th>
-        <th>Top 50</th>
-        <th>Top 100</th>
-      </tr>
-    </thead>
-    <tbody>{rows_html}</tbody>
-  </table>
+  <div class="songs">{rows_html}
+  </div>
   <div class="footer">
     <div class="brand">
-      <img class="logo" src="{_LOGO_URI}" alt="Swifties Charts" />
+      {logo_html}
       <span>@swiftiescharts</span>
     </div>
     <span>thetsmuseum.app</span>
@@ -1561,21 +1745,51 @@ def _is_re_entry(entry: dict | None) -> bool:
     return peak is not None and peak != rank
 
 
+def _merge_historical_track_ids(by_track: dict, song_meta: dict) -> dict:
+    """A song can appear under its current track_id AND a former one (catalog
+    `historical_track_ids`, exact mapping), e.g. 2026-09-25: Elizabeth Taylor
+    Global #109 under both 3AKV7Mvo2Mx4tb39iPvPlT and 1jgTiNob5cVyXeJ3WgX5bL
+    -> two cards, one titled with the raw ID. Merge the former ID's entries
+    into the current one; an entry for a country already present (same chart
+    position) is the same entry and is dropped, never summed."""
+    merged = {tid: list(entries) for tid, entries in by_track.items()}
+    for tid in list(merged):
+        song = song_meta.get(tid) or {}
+        canonical = str(song.get("track_id") or "").strip()
+        if not canonical or canonical == tid:
+            continue
+        target = merged.setdefault(canonical, [])
+        present = {str(e.get("country") or "").lower() for e in target if isinstance(e, dict)}
+        for entry in merged.pop(tid):
+            country = str(entry.get("country") or "").lower() if isinstance(entry, dict) else ""
+            if country in present:
+                continue
+            target.append(entry)
+            present.add(country)
+        print(f"[INFO] {tid} = ancien ID de {song.get('title')!r} ({canonical}), fusionne")
+    return merged
+
+
 def _card_priority(track_id: str, entries: list[dict], song: dict) -> tuple:
-    global_entry = _global_entry(entries)
-    global_rank = global_entry.get("rank") if global_entry else None
-    best_rank = min((e.get("rank") or 9999 for e in entries), default=9999)
+    """Card order (thread + summary), owner 2026-09-26:
+    1. songs on the Global chart, by Global rank;
+    2. else songs on the US chart, by US rank;
+    3. else by number of charting countries (most first);
+    ties: total streams over the charting countries, then re-entries first,
+    then title."""
     total_streams = sum(e.get("streams") or 0 for e in entries)
+    is_re = any(_is_re_entry(e) for e in entries if isinstance(e, dict))
     title = str(song.get("title") or track_id).lower()
-    return (
-        0 if global_entry else 1,
-        0 if _is_re_entry(global_entry) else 1,
-        global_rank or 9999,
-        -len(entries),
-        best_rank,
-        -total_streams,
-        title,
+    tail = (-total_streams, 0 if is_re else 1, title)
+    global_entry = _global_entry(entries)
+    if global_entry:
+        return (0, global_entry.get("rank") or 9999, 0, *tail)
+    us_entry = next(
+        (e for e in entries if isinstance(e, dict) and str(e.get("country") or "").lower() == "us"), None
     )
+    if us_entry:
+        return (1, us_entry.get("rank") or 9999, 0, *tail)
+    return (2, 0, -len(entries), *tail)
 
 
 def _priority_payload(entries: list[dict]) -> dict:
@@ -1615,6 +1829,21 @@ def generate(chart_date: str, *, theme: str = "showgirl", min_countries: int = 3
     songs_raw  = _load_json(SONGS_JSON)
     songs_list = songs_raw.get("songs", songs_raw) if isinstance(songs_raw, dict) else songs_raw
     song_meta: dict[str, dict] = {s["track_id"]: s for s in songs_list if "track_id" in s}
+    # Charts can list a song under one of its former Spotify IDs (catalog
+    # `historical_track_ids`, exact mapping). Without this alias the card read
+    # "Unknown" with no cover (incident 2026-09-26: Elizabeth Taylor #109
+    # Global under 1jgTiNob5cVyXeJ3WgX5bL). Never overrides a real track_id.
+    for s in songs_list:
+        if not isinstance(s, dict) or "track_id" not in s:
+            continue
+        hist = s.get("historical_track_ids") or []
+        if isinstance(hist, str):
+            hist = [h for h in hist.split(";")]
+        for old_id in hist:
+            old_id = str(old_id).strip()
+            if old_id and old_id not in song_meta:
+                song_meta[old_id] = s
+    by_track = _merge_historical_track_ids(by_track, song_meta)
     has_prev_snapshot = _previous_snapshot_path(chart_date) is not None
     prev_by_track = _load_prev_by_track(chart_date)
     enriched_stream_changes = _enrich_missing_stream_changes(by_track, prev_by_track)
@@ -1658,7 +1887,7 @@ def generate(chart_date: str, *, theme: str = "showgirl", min_countries: int = 3
     generated: list[str] = []
     priority_index: dict[str, dict] = {}
     to_post: list[tuple[Path, str, str]] = []  # (image_path, tweet_text, posted_key)
-    pending_standalone: list[tuple[Path, str, str, str]] = []  # (image_path, tweet_text, posted_key, label)
+    pending_standalone: list[tuple[Path, str, str, str, str]] = []  # (image_path, tweet_text, posted_key, label, region)
 
     # Load already-posted slugs to avoid re-posting on --force reruns
     posted_path = out_dir / "posted_cards.json"
@@ -1702,7 +1931,7 @@ def generate(chart_date: str, *, theme: str = "showgirl", min_countries: int = 3
             try:
                 summary_palette, summary_theme = _dominant_album_theme(tracks, song_meta, palette)
                 page.set_content(
-                    _build_summary_html(tracks, song_meta, summary_palette, chart_date),
+                    _build_summary_html(tracks, song_meta, summary_palette, chart_date, prev_country_counts),
                     wait_until="domcontentloaded",
                 )
                 card = page.locator("#card")
@@ -1754,6 +1983,11 @@ def generate(chart_date: str, *, theme: str = "showgirl", min_countries: int = 3
                         prev_country_counts,
                         has_prev_snapshot=has_prev_snapshot,
                     )
+                    if first_single_region and _is_release_day(chart_date):
+                        # Release day anti-spam (owner 2026-09-26): NO standalone
+                        # NEW/RE card that day, for ANY song (e.g. "I Can Do It With
+                        # a Broken Heart" US RE) - the card stays in the thread.
+                        first_single_region = False
                     chart_card_slug = f"{slug}_chart_card"
                     if first_single_region:
                         # Postee standalone en priorite (jamais dans le thread cards
@@ -1786,14 +2020,19 @@ def generate(chart_date: str, *, theme: str = "showgirl", min_countries: int = 3
                                 # asyncio loop" - la chanson etait alors silencieusement jamais
                                 # postee (ni standalone, ni dans le thread). Voir SKILL.
                                 tweet_text = _build_tweet(meta, entries, chart_date, prev_count)
-                                pending_standalone.append((chart_out_path, tweet_text, chart_card_slug, slug))
+                                pending_standalone.append(
+                                    (chart_out_path, tweet_text, chart_card_slug, slug, str(entries[0].get("country") or ""))
+                                )
                             elif post:
                                 print("    [SKIP] deja poste (standalone)")
                         except Exception as e:
                             print(f"  [WARN] echec chart_card regionale: {e}")
                         finally:
                             page.set_viewport_size({"width": 860, "height": 900})
-                    elif post and slug not in already_posted:
+                    # EVERY card goes in the thread (owner 2026-09-26), even a song
+                    # already posted standalone (first single region / RE): before,
+                    # those were left out of the thread because tracked separately.
+                    if post and slug not in already_posted:
                         to_post.append((out_path, _build_tweet(meta, entries, chart_date, prev_count), slug))
                     elif post:
                         print(f"    [SKIP] déjà posté")
@@ -1853,7 +2092,9 @@ def generate(chart_date: str, *, theme: str = "showgirl", min_countries: int = 3
     )
     print(f"[DONE] {len(generated)} images → {out_dir}")
 
-    for chart_out_path, tweet_text, chart_card_slug, slug in pending_standalone:
+    for chart_out_path, tweet_text, chart_card_slug, slug, card_region in pending_standalone:
+        discord_send("spotify-charts", [(tweet_text, chart_out_path)], kind="first_single_region",
+                     key=f"first_single_region_{chart_date}_{chart_card_slug}", thread=card_region)
         if _post_first_single_region_standalone(chart_out_path, tweet_text, slug):
             newly_posted_solo.add(chart_card_slug)
         else:
@@ -1870,6 +2111,10 @@ def generate(chart_date: str, *, theme: str = "showgirl", min_countries: int = 3
     if post and to_post:
         print(f"[STEP] Publication d'un thread de {len(to_post)} card(s) sur Twitter...")
         thread_posts = [(tweet_text, img_path) for img_path, tweet_text, _posted_key in to_post]
+        _thread_keys = "|".join(sorted(k for _i, _t, k in to_post))
+        discord_send("spotify-charts", thread_posts, kind="cards_thread",
+                     key=f"cards_thread_{chart_date}_{hashlib.sha1(_thread_keys.encode('utf-8')).hexdigest()[:12]}",
+                     thread="worldwide")
         if _post_image_thread(thread_posts, TWITTER_SESSION):
             all_posted = sorted(already_posted | {posted_key for _img_path, _tweet_text, posted_key in to_post})
             posted_path.write_text(

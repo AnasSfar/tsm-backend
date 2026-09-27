@@ -31,6 +31,8 @@ Pour tester un **nouveau** générateur/pipeline avec des données fictives (fea
 ## Pièges de layout corrigés plusieurs fois (ne pas régresser)
 
 - **Titres longs** : la taille de police doit s'adapter au nombre de caractères — un titre ne déborde JAMAIS du cadre (ni le @handle en bas). Ne jamais s'appuyer sur `white-space:nowrap;overflow:hidden` seul sans filet de sécurité — incident réel (2026-08-26, Chart Sheet) : un titre de 74 caractères a été tronqué en plein mot, sans ellipse ni indication, repéré uniquement en générant une vraie card (pas dans le mockup). Toujours combiner bucket de taille de police + `-webkit-line-clamp` (2 lignes) en filet de sécurité.
+- **Lisibilité sur X mobile** : une image postée s'affiche à ~310px de large dans la timeline téléphone. Un tableau très large (ex. ancien récap worldwide Spotify Charts : 1320px, texte 16px → ~3.5px à l'écran) est illisible sans zoom — rejeté par le propriétaire le 2026-09-26. Viser ~900-1000px de large, valeurs ≥ 28px, format portrait/carré (une tuile par élément plutôt que 7 colonnes), et vérifier sur une version réduite à ~310px (voir `previews_and_sims/worldwide-summary-card/preview.py`, sortie `*_phone.png`).
+- **Logo Swifties Charts** (`db/logo.png`, via `song_card._tsm_logo_data_uri`) : il est **blanc** — sur une card claire, le poser sur un badge sombre (`background:#111827` comme `chart_card.py`), sinon il est invisible (cas de l'ancien footer du récap worldwide).
 - **Footer** (logo, handle, date) : doit avoir son propre espace — ne jamais le laisser chevaucher la section au-dessus ; hauteur de card suffisante, pas de rendu « condensé ».
 - Le background d'une card doit s'accorder aux couleurs de la cover de l'album (ou, pour Chart Sheet, en être directement une version floutée — voir plus bas).
 
@@ -100,6 +102,23 @@ si la taille d'une card change.
   plutôt que de les dupliquer — seul le gabarit HTML/CSS est spécifique.
   Ces mêmes helpers sont aussi réutilisés par `song_card_chart_sheet.py`.
 - `song_card.py` lui-même n'a plus été modifié pour ce cas d'usage.
+- **Valeur de la case stat à taille variable (fix 2026-09-27)** :
+  `_stat_font_size(stat_value)` (46 → 32 px selon la longueur). À 46 px fixe,
+  `+12,966,141 views` sortait de la case (vrai post du 26/09) — la case fait
+  ~398 px utiles, `white-space:nowrap`.
+- **`render_youtube_debut_table()` (2026-09-27)** : tableau « first 24 hours »
+  d'une release de plusieurs vidéos (`collector-youtube`, `core/first_day.py`).
+  Passe par `tables_image.build_table_html` (même famille que les snapshots
+  Apple Music) : header rouge YouTube (`YOUTUBE_HEADER_BG`, logo blanc), 900 px,
+  miniatures 16:9 (140×79, `object-fit:cover` — les miniatures Topic ont la
+  pochette carrée centrée sur fond de couleur, ça reste lisible), titres 28 px,
+  valeurs 31 px, `\n` dans le sous-titre = retour à la ligne (évite un « UTC »
+  orphelin). Toutes les lignes ont un `border-left` transparent de 3 px pour
+  que la ligne #1 (`row-gold`, bordure dorée) ne soit pas décalée de 3 px.
+  Un tableau par post : audios Topic et vidéos de la chaîne principale ne
+  sont jamais mélangés (fichiers `first_day_release_<anchor>_audio.png` /
+  `_video.png`, postés en thread si les deux existent).
+  Vérif : `previews_and_sims/youtube-first-day/simulate.py` (cards/).
 
 ## Top Eras — ère « Non-Album » (generate_albums_image.py)
 
@@ -128,6 +147,14 @@ ces 4 URLs.
 - **`announced` est maintenant auto-gaté par date, pas juste par le flag DB brut (fix 2026-09-23)** : `load_album_sections` calcule `track["announced"]` comme `(flag DB section/track) AND target_date < track["release_date"]` — dès que `target_date` atteint la vraie `release_date` du track, la bannière disparaît et le rendu normal (hist réel + `★`/`NEW`) prend le relais **automatiquement**, même si `"announced": true` traîne encore dans le JSON. Avant ce fix, le flag DB brut était utilisé tel quel (`bool(t.get("announced")) or bool(sec.get("announced"))`) — il fallait le retirer manuellement du JSON le jour de sortie sous peine de masquer les vraies données indéfiniment. Le nettoyage manuel du flag reste une bonne pratique (clarté du JSON) mais n'est plus une dépendance bloquante.
 - **`announced_text` bascule automatiquement sur "OUT NOW" la veille de la sortie** (même fix) : `load_album_sections` compare `target_date` à la `release_date` de la section (min des `release_date` de ses tracks) — dès que `target_date >= release_date - 1 jour`, le texte stocké en DB (ex. `"OUT THIS FRIDAY, SEPTEMBER 25TH 2026"`) est remplacé par `"OUT NOW"` au rendu, sans toucher au JSON. Ça couvre exactement le cas "on poste le snapshot du jeudi le vendredi matin, l'ancien texte annonçant vendredi est déjà périmé". Le texte DB reste affiché tel quel pour tous les jours avant la veille.
 - **Pas de sous-total pour une section annoncée** (`_table_dark_section_row` skip si `section.get("announced")`) — un total à 0 serait trompeur.
+- **Le flag `announced` de la SECTION est lui aussi gaté par date (fix 2026-09-26)** : avant, seul le flag track l'était, donc le jour de sortie la ligne de sous-total de "The Encore" restait une bannière « OUT NOW » au lieu de ses vrais totaux. `load_album_sections` calcule désormais `section["announced"] = flag DB AND target_date < release_date de la section` → à partir du jour de sortie, sous-total réel ; la veille, bannière « OUT NOW » inchangée.
+
+### Card album le jour de sortie de nouveaux titres (fix 2026-09-26, The Encore)
+
+- **« NEW » dans le rendu `table_dark`** : `build_table_dark_html` affiche `NEW` (classe `.new`, bleu `#5bbde4`) dans les 2 colonnes Change pour un track dont c'est le jour exact de sortie (`hist[...]["ever_seen"] is False`, calculé par `load_history_for_album` depuis la `release_date` catalogue). Même chose pour une ligne de section dont tous les tracks sortent ce jour-là. Avant, le rendu `table_dark` (le seul posté) ignorait `ever_seen` et affichait `-`.
+- **Variation section/TOTAL/légende** : `_change_vs_yesterday(hdata)` → un track au jour de sa sortie avait 0 stream la veille, donc tout son daily compte comme variation. Utilisé par `_table_dark_section_row`, le TOTAL de `build_table_dark_html` et `_daily_summary_for_tracks` (pourcentage de la 1re ligne du tweet) ; idem pour la variation hebdo de la légende. Avant, la variation ignorait les nouveaux titres mais leur daily gonflait la base : Showgirl 2026-09-25 affichait `+16.36% / +8,465,791` au lieu du vrai `+632.29% / +51,985,163` (60,2M vs 8,22M la veille).
+- **Grille `table_dark` qui déborde** : `grid-template-columns` faisait 1096 px + 5×4 px de gap = 1116 px pour 1090 px utiles (card 1106 − 2×8 de padding) → les 26 px de trop étaient coupés par `overflow:hidden`, la dernière colonne (delta) tronquée dès 7-8 chiffres (`+1,491,307`, `+51,985,163`). Désormais `49 381 190 170 128 152` = 1070 + 20 = 1090 px pile. Toute nouvelle retouche de colonnes doit garder somme + gaps ≤ 1090.
+- **Comparaison contre un jour pré-sortie (fix 2026-09-27)** : `load_history_for_album` fait partir `change`/`weekly_change` de 0 pour un track pas encore sorti à J-1 / J-7 (`release_date` > ce jour, pas de ligne CSV) — les sommes section/TOTAL/légende sont justes à la source pour tous les rendus, pas seulement `table_dark`. Champ `new_vs_week` → `NEW` dans les colonnes hebdo du rendu week-end (`weekly_only`). Colonne WEEKLY de ce rendu passée de 80 à 112 px (TOTAL 14 px/800 : un gain hebdo à 8 chiffres chevauchait DAILY).
 - Les tracks annoncés comptent quand même dans `_counts_in_album_total`/`_display_total_tracks` (via `on_album`/`chart_extra` normaux) mais contribuent 0 puisque `hist` n'a aucune ligne pour eux — le TOTAL global reste donc exact, basé uniquement sur les tracks réellement sortis.
 - Ajouté 2026-09-23 pour "The Encore" (`the_life_of_a_showgirl.json`, section `the_encore`, 4 tracks, `release_date: 2026-09-25`). Voir mémoire projet `showgirl-encore-deluxe-release` pour le suivi de ce cas précis.
 
@@ -253,6 +280,11 @@ Fix :
 ## Deltas de rang
 
 - **RE en bleu** ; NEW réservé aux vraies nouveautés. Apple Music : jamais de NEW rétroactif (→ skill `data-rules`).
+- **Ligne `OUT` (Apple Music / iTunes, 2026-09-27)** : `generate_snapshot_images._out_row_html` + `OUT_CSS`
+  (pastille `.col-chg.chg-out` grise, titres dans `.out-names` qui couvre `grid-column:3/-1` et passe à la
+  ligne) = dernière ligne listant les chansons sorties du chart depuis le snapshot de référence des flèches.
+  Opt-in `generate(..., show_out=True)` (posts nouvelle sortie uniquement) ; aussi ajoutée à la card album
+  iTunes de `post_new_release_progression.py`. Détail → `collector-apple-music` CONTEXTE.
 - Gold = #1, vert hausse / rouge baisse (mêmes conventions que le site).
 - **Piège corrigé (2026-07-21)** : `charts_history_global/fr/us/uk.csv` contient des vieilles lignes migrées (avant l'ajout de la colonne `movement`) où **le tout premier jour de chart d'une chanson est marqué `movement=RE`** au lieu de `NEW` (ex. les titres de folklore le 24/07/2020, jour de sortie surprise — `total_days=1`, `peak_rank` vide, mais `movement=RE` en dur). Le calcul du chg pour Spotify Charts (tab Image Studio du tsm-frontend, `api/routes/charts.py::_is_re_entry_chart_row`) faisait confiance à ce `movement` archivé en priorité, donc affichait RE-ENTRY sur des debuts réels. Fix : si `total_days<=1` (et `peak_rank` absent ou = rang courant), c'est forcément NEW, peu importe ce que dit le `movement` archivé — ce check passe maintenant AVANT la lecture du `movement`. `tables_image.py::rank_change` (Python, utilisé par les générateurs PNG des collectors) n'avait pas ce bug — il ne lit jamais de champ `movement`, seulement `previous_rank`/`total_days`/`peak_rank`.
 - **Piège corrigé (2026-09-05) — Top Songs streams, `+/-` faux à partir du ~rang 10** : `generate_streams_image.build_top_n` appliquait `_drop_active_catalog_merge_duplicates` (retrait des track_id que Spotify est en train de fusionner dans le total d'un autre) **uniquement au jour courant**, pas aux fenêtres veille / semaine-dernière servant à calculer `prev_rank`. Un merge loser au **titre distinct** (ex. `Shake It Off (Best Work Edition)`, `Love Story - Pop Mix`) survit alors au dédup-par-titre dans le classement de la veille seulement → une entrée fantôme s'y intercale → toutes les chansons sous son rang héritent d'un `prev_rank` gonflé de 1 → faux `▲ 1` uniforme sur toute la moitié basse du tableau (observé 2026-09-04). Fix : `build_top_n` applique désormais le drop aux trois listes (`today_rows`, `yesterday_rows`, `last_week_rows`). Concerne aussi `generate_weekend_streams_image.py` et `post_throwback_thread.py` qui réutilisent `build_top_n`.

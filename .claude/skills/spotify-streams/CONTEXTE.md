@@ -611,6 +611,16 @@ utilise partout ailleurs dans le fichier, ex. ligne ~2110/2767/2804/2966/2990)
 avant de calculer `non_extra_ids`. Un titre dont `release_date > stats_date`
 n'est plus compte comme manquant.
 
+Meme oubli sur le gate juste apres ("comparison history", fix 2026-09-26) :
+`missing_previous_non_extra` exigeait une ligne avec daily a J-1 pour tout
+`non_extra_ids`, y compris les titres sortis le jour meme -> le 2026-09-25
+(The Encore) : `Posting blocked: 4 non-extra track(s) are missing comparison
+history for 2026-09-24` (Babylon, Cleveland!, Patient Zero, Pink Clouding)
+et `return` sans finalize. Desormais seuls les tracks deja sortis a J-1
+(`track_is_released_for_stats_date(t, previous_stats_date)`) doivent avoir
+leur ligne de la veille. Reflexe : tout nouveau gate "J-1 obligatoire" doit
+exclure les sorties du jour (un debut n'a jamais de veille).
+
 ## Batch best-day-since finalize : 3 standard / 5 max (2026-09-03)
 
 Decision proprietaire : le batch best-day-since de `finalize_update`
@@ -998,7 +1008,9 @@ toucher (supprimer le bloc apres le 2026-10-01 si on veut nettoyer).
   avant Showgirl) : `update_streams.early_best_day_off` coupe
   `ReadyBestDaySincePoster` ET `ReadyEraRecapPoster` (ni watchlist calculee).
   Tout le best-day-since part en finalize, apres la card Showgirl. Les posts
-  debut (`ReadyDebutReleasePoster`) restent actifs pendant la collecte.
+  debut (`ReadyDebutReleasePoster`) restent actifs pendant la collecte — pour
+  un album, ca veut dire sa card album en early (voir « Debut d'un album = card
+  album, jamais de card chanson » plus bas).
 - **Hard cap 3 cards chanson par jour, sans aucun contournement**
   (`SONG_POST_HARD_CAP`, `song_posts_remaining(date)` = 3 - nb de locks
   `best_day_since_track_locks/` du jour, toutes voies confondues) : ni >90 j ni
@@ -2087,3 +2099,163 @@ d'ajouter des tracks futurs à un album existant — ces deux gates de posting
 sont le seul endroit qui sommait encore "tous les tracks du JSON" sans passer
 par le filtre `release_date`, tout le reste (badge `announced`, override
 d'affichage, complétude `update_streams.py`) était déjà correctement gated.
+
+## Bug fixe : debut le jour J sans ligne pre-sortie -> daily vide, boucle `[debut]` infinie (2026-09-26)
+
+Symptome (run stats_date 2026-09-25, The Encore) : `New Release Priority Run
+(4 track(s))` scrape bien les 4 titres (`updated=4`, totaux reels ecrits :
+Patient Zero 14 877 500, Cleveland! 10 219 295, Pink Clouding 9 388 172,
+Babylon 9 034 405) puis `[debut] 4 new release track(s) still missing;
+retrying in 10s...` a chaque tentative (12 x), alors que les chiffres etaient
+dispo.
+
+Cause : la boucle `[debut]` considere un titre "missing" tant que
+`recent_release_track_ids_missing_daily` le voit (total > 0 mais
+`daily_streams` vide). Or pour un titre sans AUCUNE ligne avant stats_date,
+`try_apply_track_update` tombait en `first_seen` avec
+`daily = compute_daily(None, total) = None`. En mode force (le priority run
+passe `force_reprocess=True`, recu positionnellement par `_worker` comme
+`compare_before_stats_date=True`), `last_total` = total avant stats_date =
+`None` a chaque tentative -> meme resultat 12 fois. Et
+`repair_missing_daily_streams_for_date` exigeait lui aussi un total anterieur.
+Au lancement de Showgirl (2025-10-03) ca marchait parce que des lignes
+pre-sortie a `0` existaient (daily = total - 0) ; pour l'Encore, les titres
+ont ete ajoutes au catalogue le jour J, donc aucune ligne pre-sortie.
+
+Fix (`update_streams.py`) :
+- `release_day_debut` = aucune ligne anterieure (`last_total is None`) ET
+  `total > 0` ET `release_date` == stats_date exactement
+  (`is_recent_release_date(..., window_days=0)`). Dans ce cas
+  `reason="release_day_debut"`, `daily = total` (tout le total Spotify date du
+  jour de sortie — meme semantique que `post_debut_releases._daily_streams_for_row`,
+  qui prenait deja le total comme chiffre du jour 1 sans veille). Exclu de
+  `missing_previous_day_baseline` (s'applique donc aussi a un extra sorti le
+  jour meme), et gere dans les branches `--admin` / `--over`.
+- `repair_missing_daily_streams_for_date` : une ligne sans aucun total
+  anterieur est reparee avec `daily = streams` seulement si le track sort
+  exactement ce jour-la (`filter_tracks_released_on(..., window_days=0)` —
+  nouveau parametre `window_days`, defaut 3 inchange). Les lignes deja ecrites
+  avec daily vide sont donc reparees au preflight du prochain run, sans
+  re-scrape.
+- Jamais applique a J+1 ou plus tard : un titre vu pour la 1re fois le
+  lendemain de sa sortie a un total qui couvre 2 jours -> reste `first_seen`
+  daily vide (regle exact-data). Total a 0 le jour J -> reste `first_seen`
+  comme avant (pas de faux daily=0).
+
+## Debut d'un album = card album, jamais de card chanson (decision proprietaire 2026-09-26)
+
+Contexte : le 2026-09-25 (The Encore), le run a poste une card debut
+individuelle « Babylon » (`post_debut_releases.py`, une card par famille de
+titre) avant d'etre arrete a la main. Decision : **pour un debut, on ne poste
+pas de card chanson independante ; on poste directement la card album**
+(« The Life of a Showgirl: The Encore »). Meme logique que la phase DEBUT des
+charts (tableau d'album, aucune card individuelle — skill `spotify-charts`).
+
+- `post_debut_releases._build_post_threads` : tout track debut qui appartient a
+  un fichier album (`db/discography/albums/*.json`) est retire des cards
+  chanson, sur toute la fenetre debut (7 j), pas seulement le jour J
+  (log `[debut_releases] N album debut track(s) (...): no song card`). Seuls les
+  debuts hors album (songs/features/misc : single isole) gardent leur card
+  chanson — ils n'ont aucune card album pour les couvrir. `--force-song` /
+  `--force-track-id` (mode test) ne sont pas filtres.
+- `finalize_update.ReadyDebutReleasePoster` (early, pendant la collecte,
+  priorite X 0) : `release_day_debut_albums(stats_date)` = albums dont un track
+  sort **exactement** ce jour-la. Pour chacun, des que
+  `history_store.album_tracks_done_for(album, stats_date)` est vrai (tous les
+  titres sortis de l'album ont leur daily), lance
+  `generate_album_update_image.py <album> <date> --post` avec
+  `TWITTER_POST_PRIORITY=0`. Le lock `<slug>_update.lock` qu'il ecrit fait
+  sauter l'album dans la file album de finalize (`album_update_already_posted`)
+  -> pas de double post. Blocage saisonnier Holiday Collection respecte. Echec
+  = log + finalize le reposte via sa file (en Encore week, Showgirl mene).
+  Poll 5 s tant qu'un album attend (le check relit le CSV history), 2 s sinon.
+- Le poster reste `is_done() == False` tant que la card album n'est pas partie
+  (ou `stop()` en fin de collecte) : les posters best-day-since/era recap
+  precoces (`priority_ready=debut_release_poster.is_done`) attendent donc la
+  card album — coherent avec « Showgirl = premier post » en Encore week.
+- Seule exception a « plus de card album pendant la collecte » (2026-09-03).
+
+Rattrapage du 2026-09-25 : card album postee a la main
+(`generate_album_update_image.py "The Life of a Showgirl" 2026-09-25 --post`,
+lock ecrit). Le tweet est parti **tronque** (sans la ligne « Ruin The
+Friendship once again had its BIGGEST DAY... » ni le lien) a cause du
+`TWEET_CHAR_LIMIT = 280` code en dur de ce script — corrige juste apres (voir
+ci-dessous). La card debut « Babylon » deja postee par le run 232641 reste en
+ligne (a supprimer a la main sur X si voulu).
+
+## Plafonds tweet 280 codes en dur -> 500 (2026-09-26)
+
+Trois scripts streams tronquaient encore a 280 malgre la regle X Premium
+(`data-rules` : plafond `core.twitter.TWITTER_TEXT_LIMIT` = 500, ne jamais
+tronquer en dessous) : `generate_album_update_image.TWEET_CHAR_LIMIT`
+(`fit_album_post_text` coupait le lien puis les lignes best-day),
+`post_albums_twitter.TWITTER_MAX`, `post_stream_highlights_thread` (3 tests
+`<= 280` sur les titres). Tous lisent maintenant la meme limite (env
+`TWITTER_TEXT_LIMIT`, defaut 500).
+
+## Export web : daily d'un debut efface -> total daily faux (fix 2026-09-26)
+
+Symptome (2026-09-25, The Encore) : Streams Recap + Top Eras postes avec
+`Total +65 640 457 / +10 118 976 (+18.2%)` alors que la somme des eres
+depassait 107M (Showgirl seul +60,5M). Le total de ces cards vient de
+`site_history.json` (export web, `generate_albums_image.load_public_total_row`),
+pas du CSV : `export_for_web.normalize_daily_streams_from_totals` vidait le
+daily de toute **premiere** ligne d'un track (`nearest_before is None`,
+garde-fou prevu pour les tracks ajoutes avec un vieil historique backfille),
+donc les 4 debuts (43 519 372 streams) passaient a `d: null` sur le site et
+dans le total.
+
+Fix : `normalize_daily_streams_from_totals(by_date, release_dates)` garde la
+premiere ligne d'un track si sa date == `release_date` catalogue ET
+`daily == total` (debut exact). `release_dates_by_track(raw_songs)` est passe
+aux 2 appels de `export_for_web()` (`load_raw_history` + `merged_history`).
+Effet de bord voulu : 22 premieres lignes historiques au jour de sortie
+(vault tracks Red TV 2021-11-12, Anthology TTPD 2024-04-19, 2 versions « I
+Knew It, I Knew You » 2026-06-12), reelles mais jusqu'ici masquees sur le
+site, sont maintenant exportees (jour 1 > jour 2 a chaque fois, coherent). Les
+fichiers R2 `history/<date>.json` de ces 3 dates n'ont pas ete re-uploades
+(l'upload quotidien ne pousse que `--new-date`).
+
+Rattrapage 2026-09-25 : re-export local (`export_for_web(stats_date=...,
+allow_r2=False)`), total verifie = 109 159 829 (+53 638 348, +96.6% vs
+55 521 481), puis `scripts/r2.py --skip-history-upload --skip-db-upload
+--skip-images-upload --streams-daily --new-date 2026-09-25` (6 objets
+changes). Images recap/Top Eras regenerees en `--no-post` ; les tweets deja
+postes avec le faux total restent en ligne (suppression/repost = decision
+proprietaire).
+
+## Semaine de sortie : comparaisons contre un jour ou le titre n'existait pas (fix 2026-09-27)
+
+Audit « que ca ne se reproduise pas le lendemain » (Encore J+1 = samedi
+2026-09-26, cards album en mode week-end « vs last week ») :
+
+- `generate_album_update_image.load_history_for_album` : un track sans ligne
+  a J-1 (resp. J-7) dont la `release_date` catalogue est posterieure a ce
+  jour-la part d'une comparaison a **0** (`_not_out_on`) au lieu d'etre ignore
+  -> variations section/TOTAL/legende justes le jour J ET toute la semaine
+  suivante (sinon son daily gonflait la base de chaque %). Nouveau champ
+  `new_vs_week` -> colonnes hebdo en `NEW` (rendu week-end `weekly_only`,
+  lignes et sous-totaux).
+- `score_album_update._album_points_by_day` : la coupure « jours ou tous les
+  titres de l'album ont des donnees » ignore desormais les tracks suivis depuis
+  leur jour de sortie (`_tracked_since_release` : 1re ligne <= release_date).
+  Avant : la serie de Showgirl commencait au 2026-09-25 -> `weekly_abs_gain =
+  None` -> le samedi, `_weekend_album_post_queue` aurait saute la card Showgirl
+  (baisse J+1 vs le pic du jour 1 + pas de variation hebdo). Verifie : sur
+  2026-09-24/25 seul Showgirl change (blocked -> scored, +54 297 983 vs last
+  week le 25), ordre des autres albums identique.
+- Rendu week-end (`weekly_only`, style default) : colonne WEEKLY 80 -> 112 px
+  (le TOTAL `+54 297 983` chevauchait la cellule DAILY) ; `NEW` en bleu sur
+  les lignes de total.
+- Plafond tweet : `collectors/twitter/text.py` (overtakes streams, records de
+  rang / streams filtres charts) avait aussi 5 tests `<= 280` ->
+  `TWEET_TEXT_LIMIT` (env `TWITTER_TEXT_LIMIT`, defaut 500). Les `filter.py`
+  charts gardent un 280 mais leur `tweet.txt` n'est pas le texte poste
+  (`build_tweet_content` l'est) — laisse tel quel.
+- Checklist sortie : `scripts/assign_tsm_ids.py --apply` n'avait pas ete lance
+  pour l'Encore (`[tsm-ids] WARNING: 4 track(s)` a chaque export) -> fait le
+  2026-09-27 (ot9x / ckw2 / hu7i / zw2i), re-export + upload R2.
+- Deroule verifie pour J+1 sur l'historique reel (sans ligne du 26) : pas de
+  boucle `[debut]`, `ReadyDebutReleasePoster` sans album ni card chanson,
+  `post_debut_releases` vide ; gate « comparison history » OK (lignes du 25
+  avec daily) ; weekend song gainers compare a J-1 (pas de faux gainer).

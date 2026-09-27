@@ -47,6 +47,12 @@ After code changes, run the smallest safe check available:
 - Backfill wrapper shape: `python .\scripts\backfill_spotify_charts_history.py --help`
 - Worldwide collector shape: `python .\collectors\spotify\charts\worldwide\daily.py --help`
 
+**`global/daily.py` (and the regional `daily.py`) have NO `--help`**: any
+unknown arg is ignored and the REAL pipeline starts (Playwright, availability
+wait, then posting). Never call them to "check the CLI" — use
+`python -m py_compile <file>` or import-only checks instead (incident
+2026-09-26: a `--help` check launched a real run, stopped before posting).
+
 For data-changing commands, prefer `--dry-run` first when the script supports it.
 Networked Spotify collection, R2 upload, Twitter posting, WARP, and git push may
 need explicit user approval or a deliberate manual run.

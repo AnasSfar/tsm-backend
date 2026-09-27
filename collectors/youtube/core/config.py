@@ -67,6 +67,8 @@ DISCOGRAPHY_SONGS_PATH = DB_DIR / "discography" / "songs.json"
 # Manual video->group overrides written by scripts/youtube_grouping_editor/.
 # Takes precedence over the songs.json catalog match in build_title_rows().
 VIDEO_GROUPS_PATH = TOOLS_JSON_DIR / "video_groups.json"
+# Exceptions manuelles au classement videos/audios/extras (title_groups.video_category).
+VIDEO_CATEGORIES_PATH = TOOLS_JSON_DIR / "video_categories.json"
 
 BATCH_SIZE = 50  # max IDs par appel videos.list
 API_BASE = "https://www.googleapis.com/youtube/v3"

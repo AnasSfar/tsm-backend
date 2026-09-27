@@ -33,7 +33,7 @@ from twitter.albums import album_emoji  # noqa: E402
 from twitter.sessions import default_twitter_session  # noqa: E402
 TWITTER_SESSION = default_twitter_session(REPO_ROOT)
 from twitter.text import stream_gainers_table_tweet, track_history_line  # noqa: E402
-from core.twitter import post_image_thread, post_with_image  # noqa: E402
+from core.twitter import TWITTER_TEXT_LIMIT, post_image_thread, post_with_image  # noqa: E402
 from comp.fmt import fmt_delta, fmt_num, fmt_signed  # noqa: E402
 from comp.discography import display_title_for_album  # noqa: E402
 from comp.tables_image import build_table_html, dominant_color_from_data_uri, era_accent_color, ledger_name_with_best_day, masthead_theme_for_date, render_html_to_png  # noqa: E402
@@ -755,15 +755,15 @@ def _build_tweet(item: dict, target_date: str) -> str:
         return "\n\n".join(lines)
 
     tweet = compose(title)
-    if len(tweet) <= 280:
+    if len(tweet) <= TWITTER_TEXT_LIMIT:
         return tweet
 
     compact_title = _compact_title(title)
     tweet = compose(compact_title, compact=True)
-    if len(tweet) <= 280:
+    if len(tweet) <= TWITTER_TEXT_LIMIT:
         return tweet
 
-    overflow = len(tweet) - 280
+    overflow = len(tweet) - TWITTER_TEXT_LIMIT
     shortened_title = _shorten_title(compact_title, limit=max(18, len(compact_title) - overflow - 3))
     return compose(shortened_title, compact=True)
 

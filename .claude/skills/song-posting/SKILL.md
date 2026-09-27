@@ -76,6 +76,38 @@ Rules:
 
 ## Apple Music / iTunes debut chart-movement posts (2026-09-24)
 
+**Current rule (owner 2026-09-26 noon, overrides the thread/Pop/Global lines below):** no
+songs threads anymore; a song card posts ALONE and only when the song gets to #1 on a key
+chart. **+ 2026-09-27: "good update" song posts** — a song card also posts alone when
+THIS cycle gives it >= 2 peaks inside the top 10 (any country) with a market-weighted score >= 0.8
+(new peak 1, back at its peak 0.5, +1 for a new #1; weights = AM_MARKET_WEIGHTS, Global 1.5); best song
+only per platform and cycle, same song not within 12 h. Caption:
+`❤️‍🔥 | "Babylon" hits new peaks on Apple Music: #3 in the US, #1 in Suriname — and is back at its peak: #3 in Kuwait.`
++ worldwide line + link (details: `collector-apple-music` CONTEXTE). Apple Music posts only the album-filtered cards of US, US Pop, Australia and Canada
+(`🇺🇸 | "The Life of a Showgirl: The Encore" songs on the Apple Music chart in the US right now:`
++ link; Pop: `... Apple Music Pop chart in the US ...`). Global card + Global album card: ONE
+thread of 2 posts. iTunes: the album card of the 5 key countries as ONE thread
+(`🧵 | "<album>" songs on the iTunes charts.` + the first country's card text, then the others).
+**Trigger since 2026-09-27 (owner, these cards + the iTunes thread):** only when the NEW songs
+move among themselves on that chart (one passes another, or one enters/re-enters) — an old
+album song climbing or the new songs shifting together in the same order posts nothing
+(`APPLE_MUSIC_DEBUT_NEW_ORDER_ONLY`). EXCEPT the Global (owner 2026-09-27): ONE post, the normal
+Global card only (no album-filtered card, no thread), at every Global update; a reorder only changes its
+caption. Apple Music only: that move must touch the top 10
+(entry inside it, or one of the two songs is/was inside it — `APPLE_MUSIC_DEBUT_NEW_ORDER_TOP`). iTunes thread order = biggest change first: new songs
+reordered, then a new song at #1 (NEW PEAK / RE-PEAK), then another new-song peak, then re-entries,
+then songs up, then drops, then unchanged (US, UK, FR, CA, AU on a tie). A country card with a peak but no
+reorder says it: `🇫🇷 | "Patient Zero" is back at #1 on iTunes in France!`.
+**Caption of a reorder-triggered card (2026-09-27):** say what moved, with the card's Peak badge —
+`🇺🇸 | "Babylon" passes "Pink Clouding" and hits a new peak of #3 on the Apple Music chart in the US.`
+then `"The Life of a Showgirl: The Encore" songs hold the top 4 right now:` (or `... songs on the chart
+right now:` below a top-3 run) + link. Verbs: `to take #1 ...!` / `hits a new peak of #N` / `returns to
+its peak of #N` / `climbs to #N` / `moves ahead of "Y" at #N` / `debuts|re-enters at #N`; the chart is
+named in the first sentence only. Global thread opener: same, prefix 🌍, intro `Taylor Swift songs on
+the Global chart right now:`. Unchanged countries in the iTunes thread keep the plain caption.
+Peak column: a song whose chart history we only have in part shows `PEAK TODAY` (its best rank
+of the day on that chart) instead of "best in 2026" / "since …" (owner 2026-09-26).
+
 `collectors/apple_music/post_new_release_progression.py` is the first Apple
 Music/iTunes script that posts to X (that pipeline is otherwise data-only —
 see `collector-apple-music`). Convention for this post type only:
@@ -90,15 +122,26 @@ see `collector-apple-music`). Convention for this post type only:
   Same format for the iTunes Top Albums card of the new edition ("... on the iTunes
   albums chart in the US"). The normal Global Apple Music card during the window:
   `🌍 | Taylor Swift songs on the Global Apple Music chart right now:` + link. Separate
-  Apple Music **Pop** card per key market (2026-09-25), only on #1 / top-10 debut or entry /
-  new peak inside the top 10: `🇨🇦 | "<title>" is now #1 on the Apple Music Pop chart in
+  Apple Music **Pop** card (US only since 2026-09-26) and the same card for the NORMAL
+  US Apple Music chart (`🇺🇸 | "Opalite" climbs to #13 on the Apple Music chart in the US (+4).`),
+  posted whenever ANY song of the new
+  release's album (every edition, old tracks included) moves UP vs the card's previous snapshot,
+  at any rank (other albums never trigger; an unrefreshed hour never re-posts; `Also:` lists
+  every other climb as `"X" #10 (+48)`, trimmed to `+N more`) (#1 / debut / new peak / top-10 entry / re-entry / `climbs to #N ... (+k)`),
+  never on a drop: `🇨🇦 | "<title>" is now #1 on the Apple Music Pop chart in
   Canada!` (single-region posts — Pop card, iTunes per-country album card — use the country
   FLAG as prefix, built from the storefront code; album emoji only as fallback; country
   always written in full, never "DE") (or `debuts at #N ...`), `Also: "X" #3, ...`, `Taylor Swift songs on the Apple
   Music Pop chart in <market> right now:` + link. Several songs in one cycle = ONE thread per
   platform (2026-09-25): opener `🧵 | "<album>"'s songs on the Apple Music charts.` + the best
-  song's tweet (link dropped first if too long), replies = the other songs; album/Global/Pop
-  cards stay separate posts. Apple Music album card (Top Albums per country) added the same
+  song's tweet (link dropped first if too long), replies = the other songs (ALL the release's
+  songs as soon as one moved; hourly runs post every key-market move, drops included —
+  only the iTunes mid-hour follow keeps debut/#1/peak-only); album/Global/Pop
+  cards stay separate posts. **Since 2026-09-26 the thread carries EVERY song of the album**
+  (12 standard + 4 Encore, main versions only), strongest first, header
+  `🧵 | "The Life of a Showgirl"'s songs on the Apple Music charts.`; iTunes: only the songs
+  that chart. Older tracks never read NEW / new peak (peak column "—"). Top Albums cards
+  stopped the same day. Apple Music album card (Top Albums per country) added the same
   day, same format as the iTunes one. Cards highlight the 5 key stores (★ + tinted row). Posting rules (volume, retry, auto release detection) →
   `collector-apple-music` CONTEXTE « Refonte nuit du 2026-09-24 ».
 - (Before the rewrite) chart emoji prefix: `🎧 |`.

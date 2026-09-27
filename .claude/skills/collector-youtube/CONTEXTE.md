@@ -62,8 +62,10 @@ collectors/youtube/run_youtube.bat
 ```powershell
 python -m collectors.youtube.videos.update_youtube --dry-run
 python -m collectors.youtube.videos.update_youtube --debug
-python -m collectors.youtube.videos.update_youtube --no-post     # aucun post X + pas de ntfy
-python -m collectors.youtube.videos.update_youtube --no-notify   # pas de ntfy, cards first-day OK (utilisé par le .bat)
+python -m collectors.youtube.videos.update_youtube --no-post     # aucun post X (ni first-day) + pas de ntfy
+python -m collectors.youtube.videos.update_youtube --no-notify   # pas de ntfy, posts first-day OK (utilisé par le .bat)
+python -m collectors.youtube.videos.update_youtube --first-day-status   # releases first-day en attente
+python -m collectors.youtube.videos.update_youtube --first-day-cancel   # ne rien poster pour elles
 python -m collectors.youtube.videos.update_youtube --bootstrap
 python -m collectors.youtube.videos.update_youtube --commit
 python -m collectors.youtube.videos.update_youtube --force --commit
@@ -132,12 +134,47 @@ Colonnes importantes:
   semaines prennent les dates corrigées (`_weekly_youtube_views` somme par
   `date` dans la semaine ISO — 1 semaine de transition peut avoir 6/8 jours YT,
   négligeable à `YOUTUBE_WEIGHT` 0.3).
+- **Vidéo publiée après la fin du jour d'activité (fix 2026-09-27)** : le run de
+  ~00:05 ET écrit le jour D qui vient de finir ; une vidéo publiée entre minuit
+  ET et ce run (**l'heure des sorties de Taylor**) n'existait pas le jour D →
+  `main()` ne lui écrit **ni ligne D ni état delta** (`rows_after_day`, date de
+  publication calculée dans `YOUTUBE_COLLECTION_TZ`). Le run suivant la voit
+  pour la 1re fois, baseline 0 (`_is_recent_publish`), donc son jour de sortie
+  compte **toutes** ses vues, y compris celles d'avant sa détection. Avant : les
+  27 uploads Topic d'Encore (publiés à 00:01 ET le 25/09) avaient une ligne au
+  24/09 (veille de la sortie, 0 à 1 114 vues, 3 127 au total) et autant en
+  moins sur le 25/09 (Patient Zero 2 254 193 au lieu de 2 255 307). Ces lignes
+  historiques n'ont PAS été réparées (réparation proposée à Anas, en attente).
+  Seul cas de tout l'historique. Vérifié par le scénario D de
+  `previews_and_sims/youtube-first-day/simulate.py` (vrai `main()`).
 - `total_views` vient de YouTube Data API.
 - `daily_views` est uniquement le delta exact entre deux snapshots calendaires
   consecutifs.
 - Si une journee manque, ne pas classer/poster le delta multi-jours comme daily.
   Utiliser `period_gain_views`, `period_days`, `period_label`.
 - Ne pas melanger videos YouTube et YouTube Music charts.
+- **Collaborations : `feat`/`ft` obligatoire dans le titre video (fix
+  2026-09-26).** Incident : `Taylor Swift - The Life of a Showgirl: The Encore
+  STATION` et des titres Topic nus ont ete combines avec `The Life of a
+  Showgirl (feat. Sabrina Carpenter)` parce que `_title_aliases()` retirait les
+  parentheses et proposait l'alias nu `The Life of a Showgirl`. Regle :
+  lorsqu'une entree discographie a `featured_artists`, les alias automatiques
+  doivent conserver ou generer un credit explicite `feat`/`ft <artiste>` ; un
+  titre video sans ce credit ne matche pas la chanson feat. Si le titre nu
+  collide exactement avec une chanson feat, `match_video_title()` le met dans
+  `*_no_feature_credit` pour eviter qu'un autre titre court (ex. `ME!`) le
+  vole. Rebuild applique avec `python -m scripts.rebuild_youtube_title_history
+  --apply` depuis `db/youtube_views_history.csv`.
+- **Source `songs` YouTube (ajout 2026-09-26).** Les niveaux historiques
+  `all`/`main`/`topic` gardent leur sens brut : videos officielles et topics,
+  donc `main` peut contenir annonces, lives, premieres, stations, shorts, etc.
+  Pour lire uniquement les chansons, utiliser `source=songs` dans
+  `youtube_title_history.csv` et l'API frontend. Ce niveau est reconstruit
+  depuis les memes lignes exactes que `all`, mais ne garde que les groupes qui
+  matchent le catalogue chanson ou un groupe manuel catalogue ; il exclut les
+  groupes video/promo comme `*_station`, `*_live`, announcements, shorts, etc.
+  En `mode=videos&source=songs`, l'API filtre les videos via les `video_ids`
+  des groupes `source=songs`.
 - **Exception pour une vidéo tout juste sortie (fix 2026-08-26)** : à sa toute
   première ligne CSV (`prev_views` absent), si `published_at` est récent
   (`_is_recent_publish`, seuil `FIRST_DAY_VIEWS_MAX_PUBLISH_LAG_DAYS` = 4 jours)
@@ -166,6 +203,7 @@ Colonnes importantes:
 - `core/channel.py`: chaine officielle/config.
 - `core/title_groups.py`: groupement officiel/lyric/audio/visualizer par titre.
 - `core/csv_utils.py`: CSV.
+- `core/first_day.py`: posts "first 24 hours" par release (voir section dédiée).
 - `core/git_ops.py`: commit si demande.
 - `core/config.py`: chemins/env.
 
@@ -174,128 +212,114 @@ Colonnes importantes:
 - `YOUTUBE_API_KEY`: requis.
 - `NTFY_TOPIC_YOUTUBE`: topic ntfy, defaut `taylormuseum-youtube`.
 
-## Posting "first 24h views" (ajouté 2026-08-25, planification exacte ajoutée le même jour)
+## Posts "first 24 hours" — une release = un post (refonte 2026-09-27)
 
-Quand une vidéo tout juste découverte franchit ses 24h depuis
-`published_at`, le collector poste automatiquement une card sur
-@swiftiescharts avec "views in its first 24 hours" (card dédiée
-`comp/youtube_card.py`, thumbnail YouTube en cover, logo YouTube).
+Code : `core/first_day.py` (appelé par `update_youtube.py`). Rendu :
+`comp/youtube_card.py` (`render_youtube_card` = card seule,
+`render_youtube_debut_table` = tableau). Rejouer le cas Encore :
+`python previews_and_sims/youtube-first-day/simulate.py` (état isolé, rien de
+posté).
 
-**Chemin principal — tâche Planificateur Windows one-off (précis à la
-minute) :**
+**Incident qui a motivé la refonte (Encore, 25-27/09/2026).** La chaîne Topic a
+ré-uploadé tout le deluxe (2 uploads par chanson, anciennes chansons de
+Showgirl comprises), puis les 4 lyric videos sont sorties le lendemain soir.
+L'ancienne logique (1 tâche + 1 post par vidéo, + filet de sécurité quotidien
+« 2e apparition CSV ») a posté **~34 cards séparées** : doublons (2 × Babylon,
+2 × Honey…), ré-uploads de chansons vieilles d'un an présentés comme des
+débuts, et des chiffres mesurés à +28 h (lyric videos) ou +52 h (STATION,
+12,9M) étiquetés « first 24 hours ». Anas avait supprimé les tâches
+planifiées pour bloquer les posts : le filet de sécurité les a postés quand
+même. Les 31 tâches du 25/09 n'ont jamais tourné (supprimées avant).
 
-- À la découverte d'une vidéo (1ère écriture CSV, dans `main()` juste après
-  `append_rows`), `_schedule_first_day_task(video_id, published_at)` crée
-  une tâche Planificateur de tâches Windows **one-off** nommée
-  `TSM_YouTube_FirstDay_<video_id>` déclenchée à `published_at + 24h`
-  (heure locale, via PowerShell `Register-ScheduledTask` — évite les
-  ambiguïtés de format `schtasks.exe` selon la locale). La tâche relance
-  `python -m collectors.youtube.update_youtube --post-first-day <video_id>`.
-  `-StartWhenAvailable` : si le PC est éteint/en veille pile à l'heure
-  cible, la tâche se déclenche au prochain réveil au lieu d'être perdue.
-- Si `published_at + 24h` est déjà dans le passé au moment de la
-  découverte (vidéo découverte plus de 24h après sa propre sortie —
-  jusqu'à `FIRST_DAY_VIEWS_MAX_PUBLISH_LAG_DAYS` = 4 jours après
-  publication pour être encore suivie du tout ; au-delà, aucune
-  planification), **aucun post first-day n'est fait** : la fenêtre exacte
-  des 24h est passée, impossible d'obtenir une donnée juste sans fake data
-  (cf. `run_post_first_day` ci-dessous — avant le 2026-08-26 le code
-  postait quand même immédiatement, ce qui était le bug corrigé ce jour-là).
-- `run_post_first_day(video_id)` (`--post-first-day`) : fetch live le
-  `viewCount` actuel et le poste **tel quel** comme total "first 24 hours"
-  (génère la card, poste, écrit le lock, puis **se désinscrit elle-même**
-  de la tâche Planificateur via `_unschedule_first_day_task` — une tâche
-  one-off n'a plus rien à faire après son unique déclenchement, qu'elle
-  ait réussi ou échoué ; l'échec est repris par le filet de sécurité
-  ci-dessous, pas par une replanification). `viewCount` est cumulatif
-  depuis la sortie (0 à `published_at`), donc un fetch fait pile à
-  `published_at+24h` EST déjà le vrai total des 24 premières heures — pas
-  besoin de soustraire quoi que ce soit.
-  **Bug corrigé le 2026-08-26** : le code soustrayait auparavant le
-  `total_views` enregistré à la *découverte* (1ère écriture CSV), en le
-  traitant comme une baseline à t=0. Faux : le collector tourne 1x/jour,
-  donc une vidéo peut déjà avoir engrangé une grosse partie de ses vues du
-  1er jour plusieurs heures avant d'être vue pour la 1ère fois — soustraire
-  cette valeur sous-comptait fortement le vrai total (ex. "Taylor Swift
-  Performance - The Icon Sessions at the Grammy Museum" : posté à
-  721 390 vues alors que le total réel à +24h était ~2,09M, car la vidéo
-  avait déjà 1 368 926 vues ~11h après sa sortie, au moment de sa
-  découverte par la collecte quotidienne). Le filet de sécurité
-  `post_first_day_views` avait le même défaut (delta `daily_views` depuis
-  la découverte au lieu du `total_views` cumulé) et a été corrigé pareil.
-- Pas de planification en `--bootstrap` (découverte en masse du catalogue
-  entier — aucune de ces vidéos n'est "tout juste" publiée) ni avec
-  `--no-post`. **`--no-notify` NE bloque PAS la planification** (c'est tout
-  l'intérêt du split fait le 2026-08-30) — seule la ntfy quotidienne est
-  coupée. Le `.bat` de prod utilise `--no-notify`.
+**Pipeline (3 étapes découplées) :**
 
-**Filet de sécurité — vérif quotidienne (`post_first_day_views`) :**
+1. **Enregistrement** (run quotidien, à la découverte) : vidéo publiée il y a
+   moins de `MAX_PUBLISH_LAG_DAYS` (4 j) → `tools/json/first_day/pending/<id>.json`.
+   Jamais en `--bootstrap` ni `--no-post`.
+2. **Capture exacte** : le chiffre « first 24h » = `viewCount` cumulé lu à
+   **±`CAPTURE_TOLERANCE` (15 min) de `published_at + 24h`**, par :
+   - la tâche one-off `TSM_YouTube_FirstDay_<id>` à `published_at+24h`
+     (`--capture-first-day <id>`, capture seulement, ne poste pas ; se
+     désinscrit ; si elle part hors fenêtre — PC en veille puis
+     `StartWhenAvailable` — elle refuse de capturer) ;
+   - ou une ligne du run quotidien dont le `snapshot_at` tombe dans la fenêtre
+     (cas normal d'une sortie à minuit ET : le run de 00:05 ET est à ~+24h05).
+   Figée dans `first_day/captures/<id>.json` (jamais écrasée). Hors fenêtre :
+   pas de capture → la vidéo est écartée, **jamais** postée avec un total à
+   +28 h étiqueté 24 h.
+3. **Post** (`run_tick`, idempotent) : les vidéos en attente publiées à
+   ≤ `RELEASE_GAP` (2 h) l'une de l'autre = **une release**. Quand plus aucun
+   membre ne peut être capturé et que `POST_GRACE` (15 min) est passé après la
+   dernière échéance, **un seul post** part (tâche
+   `TSM_YouTube_FirstDayPost_<anchor>`, `--first-day-post`, re-planifiée à
+   chaque run si la release grossit ; rattrapage par le tick de fin de run
+   quotidien). Verrou `first_day/releases/<anchor>.posting` (O_EXCL) contre
+   les doubles posts concurrents. Plus de post 48 h après la dernière
+   échéance (`POST_MAX_DELAY`) : release marquée `skipped`. Échec du post →
+   nouvel essai au tick suivant (run quotidien), avec les mêmes captures figées.
 
-- `_first_daily_video_ids()` : détecte, parmi les vidéos collectées le jour
-  même, celles avec exactement une seule apparition CSV antérieure à
-  `today` ET un `published_at` récent (`FIRST_DAY_VIEWS_MAX_PUBLISH_LAG_DAYS`,
-  4 jours) — ce 2e garde-fou évite qu'une vieille vidéo qui vient juste
-  d'être *découverte* (rendue publique/listée tardivement, mais uploadée il
-  y a longtemps, donc déjà avec un vrai total de vues) ne soit faussement
-  présentée comme "premières 24h".
-- `post_first_day_views()` tourne à chaque collecte quotidienne (~24h après
-  la 1ère apparition CSV, potentiellement décalé par rapport à
-  `published_at+24h` exact) et sert uniquement de rattrapage si la tâche
-  one-off n'a pas pu être créée ou ne s'est jamais déclenchée. Même fichier
-  de lock que le chemin principal — donc quel que soit celui qui poste en
-  premier, l'autre est un no-op silencieux.
+**Contenu du post :**
 
-**Commun aux deux chemins :**
+- **Audios Topic et vidéos de la chaîne principale ne sont jamais mélangés
+  (décision Anas 2026-09-27)** : un post pour les audios, un pour les vidéos ;
+  si la release a les deux → **un thread de 2 posts** (audios d'abord, puis
+  vidéos — `GROUP_ORDER`, via `core.twitter.post_image_thread`). Sorties à un
+  jour d'écart (cas Encore) = deux releases, deux posts séparés.
+- Lignes = **chansons** (matching `title_groups` + `video_groups.json`) : dans
+  un même post, les uploads d'une même chanson sont **additionnés** (les 2
+  audios Topic d'Encore ; clip + lyric video sortis ensemble) ; sous-titre de
+  ligne `Official Audio · 2 uploads` / `Lyric Video` / `Music Video + Lyric
+  Video · 2 uploads`. Vidéo main non reconnue (annonce, live…) = sa propre
+  ligne avec son titre complet.
+- **Upload Topic d'une chanson qui avait déjà une vidéo YouTube avant la
+  release = ré-upload, exclu** (ex. les 12 chansons du standard ré-uploadées
+  avec le deluxe). Les vidéos de la chaîne principale sont toujours gardées
+  (un nouveau clip/lyric video est une actu même si la chanson existe).
+- Par post, 1 ligne → card seule (`🎥 | ❤️‍🔥 "<titre vidéo>" debuts with N views
+  in its first 24 hours on YouTube.` ; audio : `"<chanson>" debuts with … on
+  YouTube (official audio, 2 uploads combined).`) ; ≥ 2 lignes → tableau
+  (header rouge YouTube, 900 px, miniatures 16:9, lignes triées par vues) +
+  tweet `🎥 | ❤️‍🔥 "<album>" new songs in their first 24 hours on YouTube
+  (official audio):` / `… lyric videos in their first 24 hours on YouTube:`
+  (`music videos`… si un seul type, `new videos` sinon) puis `Titre —
+  2,759,591` par ligne (`+N more` au-delà de la limite de caractères). Album = album catalogue
+  commun à toutes les lignes (`display_title_for_album` → « The Life of a
+  Showgirl: The Encore »), sinon tag album commun des uploads Topic (chansons
+  pas encore backfillées), sinon « Taylor Swift ».
+- Vues d'avant la détection : le chiffre posté est le `viewCount` cumulé à
+  +24 h, donc les vues faites entre la sortie et le moment où le collecteur
+  voit la vidéo (quelques secondes/minutes) sont toujours incluses.
+- Rejeu Encore avec la nouvelle logique : **1 post** au lieu de 22 le 26/09
+  (Patient Zero 2,759,591 · Babylon 2,080,524 · Pink Clouding 1,655,327 ·
+  Cleveland! 1,651,000, chiffres réels mesurés 1-5 min après +24 h), STATION
+  et lyric videos (tâches supprimées) → rien, faute de chiffre exact.
 
-- Génération de la card : `comp/youtube_card.py::render_youtube_card`
-  (réutilise les helpers génériques de `comp/song_card.py` — fetch/palette
-  de la thumbnail, logo TSM footer, rendu Playwright HTML->PNG). PNG écrits
-  dans `snapshots/youtube/videos/YYYY/MM/YYYY-MM-DD/`.
-- Post via `collectors/spotify/core/twitter.py::post_with_image` sur la
-  même session que @swiftiescharts
-  (`collectors/spotify/charts/global/tools/json/twitter_session.json`).
-- Lock anti-doublon par vidéo :
-  `collectors/youtube/tools/json/first_day_posted/<video_id>.lock`.
-- Erreurs non bloquantes pour le reste de la collecte (`try/except` autour
-  des deux appels dans `main()`).
+**Traçabilité :** chaque release résolue (`posted` / `skipped` / `cancelled`)
+est archivée dans `first_day/releases/<anchor>.json` (membres, captures,
+résultat par vidéo : `included` / `reupload` / `expired`) ; ses vidéos
+reçoivent le lock historique `first_day_posted/<id>.lock` (= « déjà traitée »)
+et quittent `pending/`/`captures/`. Tout `tools/json/` est commité par
+`--commit`.
 
-**Design de la card :**
+**Commandes :**
 
-- Le titre vidéo complet est affiché tel quel (ne PAS retirer le préfixe
-  "Taylor Swift ... -", il fait partie du titre officiel). Les titres
-  YouTube sont de vraies phrases longues, contrairement aux titres de
-  chansons courts — d'où une card dédiée (`comp/youtube_card.py`,
-  `render_youtube_card`) plutôt que de détourner `comp/song_card.py`
-  (jamais utilisé en prod avec `best_since=False`, donc `song_card.py` est
-  resté intact). Titre jusqu'à 4 lignes (`-webkit-line-clamp:4`), paliers
-  de police propres à `youtube_card.py` (`_title_font_size`, généreux —
-  titre + stat box doivent remplir l'espace vertical dispo, pas rester
-  petits avec du vide autour), une seule case stat (pas "First 24h" +
-  "Total" séparées : sur une vidéo qui vient d'être publiée les deux sont
-  quasi identiques) au format `+842,391 views` (signe + et mot "views"
-  inclus dans la valeur, pas juste le nombre brut), contenu de la case
-  centré horizontalement (`text-align:center` sur `.stat`).
-  Titre + stat box + date de sortie (`"Released {mois} {jour}, {année} · {heure}
-  UTC"`, depuis `published_at` qui est déjà en UTC — pas de conversion locale,
-  l'heure affichée est directement celle de l'upload) forment un seul bloc flex
-  (`.body` dans `youtube_card.py`, conteneur `.body-wrap` avec
-  `justify-content:center`) : ce bloc est centré verticalement dans l'espace
-  entre le header et le footer, donc l'espace au-dessus du bloc = l'espace
-  en dessous. Ne pas séparer la date dans un élément hors de `.body` (footer
-  ou position absolue) sous peine de casser cet équilibre.
-- `--preview` (`run_preview()`) : aperçu à la demande, sans attendre le run
-  réel du lendemain. Prend la vidéo qui n'a qu'une seule ligne CSV (donc en
-  attente de son 1er daily_views), refait un fetch live YouTube pour son
-  `total_views` actuel, et utilise `live_total - total_views_enregistré`
-  comme delta d'aperçu — n'écrit pas le CSV, ne poste pas. Ce delta n'est
-  PAS le vrai daily_views (qui ne sera calculé que par le run réel du
-  lendemain sur un vrai intervalle de ~24h) : il sert à vérifier la card et
-  le texte du tweet avec des chiffres réels, pas pour valider la donnée.
-  Contrairement au run réel (`post_first_day_views`, HTML temporaire
-  supprimé après le rendu Playwright), `--preview` appelle
-  `_generate_first_day_views_image(..., keep_html=True)` : le `.html` reste
-  sur disque à côté du `.png` (même dossier, même nom de base) pour pouvoir
-  inspecter/retoucher le rendu directement.
+```powershell
+python -m collectors.youtube.update_youtube --first-day-status   # releases en attente
+python -m collectors.youtube.update_youtube --preview            # image + tweet, previews_and_sims/youtube-first-day/preview/
+python -m collectors.youtube.update_youtube --first-day-cancel   # NE RIEN POSTER pour ce qui est en attente
+```
+
+**Pour empêcher un post : `--first-day-cancel`, pas la suppression des tâches**
+(le run quotidien capturerait et posterait quand même — c'est exactement ce
+qui s'est passé le 27/09 avec l'ancienne logique).
+
+**Card seule (design inchangé, `render_youtube_card`) :** titre vidéo complet
+(ne PAS retirer le préfixe "Taylor Swift ... -"), jusqu'à 4 lignes, paliers
+de police `_title_font_size`, une seule case stat `+842,391 views` centrée,
+titre + stat + date de sortie (`Released {mois} {jour}, {année} · {heure}
+UTC`) dans un seul bloc `.body` centré verticalement. **Fix 2026-09-27** : la
+taille de la valeur dépend de sa longueur (`_stat_font_size`) — à 46 px fixe,
+`+12,966,141 views` débordait de la case sur le vrai post du 26/09.
 
 ## Consommateurs
 
@@ -434,14 +458,12 @@ minute) :**
   jamais commitée. Fix : `update_video_db` ne mute plus son input +
   `new_video_ids` capturé juste après la découverte. Réflexe : si la tâche
   YouTube sort `0x1` un jour où TS a posté une vidéo, checker ici en premier.
-- Tâches Planificateur `TSM_YouTube_FirstDay_<video_id>` visibles dans
-  Task Scheduler (racine, pas dans un dossier dédié) : normal, une par
-  vidéo tout juste découverte, en attente de son déclenchement à
-  `published_at+24h`. Elles se suppriment seules après exécution — si
-  plusieurs traînent avec une date de déclenchement passée, ça signale un
-  souci (`run_post_first_day` planté avant `_unschedule_first_day_task`,
-  ou le run correspondant jamais arrivé) : vérifier via `Get-ScheduledTask
-  -TaskName 'TSM_YouTube_FirstDay_*'` en PowerShell.
+- Tâches Planificateur visibles à la racine du Task Scheduler pendant une
+  sortie : `TSM_YouTube_FirstDay_<video_id>` (capture à `published_at+24h`,
+  une par vidéo) et `TSM_YouTube_FirstDayPost_<anchor>` (post de la release,
+  dernière échéance +15 min). Normal ; elles se suppriment à la résolution de
+  la release. **Ne pas les supprimer à la main pour bloquer un post** →
+  `--first-day-cancel`. État réel : `--first-day-status`.
 - **Live projection trigger (ajoute 2026-09-23)** : `update_youtube.py::main()`
   appelle `collectors/billboard/live_trigger.py::trigger_live_projection()`
   juste avant le print final `[OK] Collecte terminée.`, apres

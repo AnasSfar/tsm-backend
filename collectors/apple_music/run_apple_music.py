@@ -44,6 +44,28 @@ def alert(message: str, priority: str = "high") -> None:
     run_guard.alert(NTFY_TOPIC, "Apple Music collector", message, priority)
 
 
+def start_refresh_watch() -> None:
+    """refresh_watch.py (2026-09-26): polls Apple until HH:40 and starts a run
+    as soon as it refreshes mid-hour. DETACHED: the scheduled task must end now
+    (IgnoreNew would skip the next HH:00 trigger while it's alive). Not started
+    by a run the watch itself triggered (APPLE_MUSIC_REFRESH_WATCH=0)."""
+    if os.getenv("APPLE_MUSIC_REFRESH_WATCH", "0") != "1":
+        return
+    try:
+        flags = 0
+        if os.name == "nt":
+            flags = subprocess.DETACHED_PROCESS | subprocess.CREATE_NEW_PROCESS_GROUP
+        log_fh = open(HERE / "refresh_watch.log", "a", encoding="utf-8")
+        subprocess.Popen(
+            [sys.executable, "-u", str(HERE / "refresh_watch.py")],
+            cwd=REPO_ROOT, env=child_env(), stdout=log_fh, stderr=subprocess.STDOUT,
+            stdin=subprocess.DEVNULL, creationflags=flags, close_fds=True,
+        )
+        print("[Apple Music] Refresh watch started (until HH:40)")
+    except Exception as exc:
+        print(f"[Apple Music] Could not start the refresh watch: {exc!r}")
+
+
 def start_new_release_posts() -> subprocess.Popen | None:
     """New-release posts right after the collectors (2026-09-25, "be the first
     to post"): they only read the collectors' CSVs, so they no longer wait
@@ -363,6 +385,8 @@ def main() -> None:
     finally:
         _wait_posts()  # never leave the posts running past the lock
         run_guard.release_lock(LOCK_PATH)
+    if code == 0:
+        start_refresh_watch()
     # Every non-zero exit above has already sent its phone alert: exit
     # EXIT_ALERTED so the .bat only alerts for crashes that never reached
     # Python's alert (import error, broken interpreter...).

@@ -32,6 +32,7 @@ from core.notify import send as _notify
 from core.retention import cleanup_generated_artifacts
 from core.swift_top_gate import check_swift_top_gate, mark_swift_top_done
 from core.twitter import post_with_image
+from core.discord_notify import discord_send
 from live_trigger import trigger_live_projection
 from twitter.text import date_label, spotify_chart_filtered_streams_record_tweet, spotify_chart_rank_record_since_tweet
 from comp.chart_card import RECORD_CARD_EXTRA_HEIGHT, render_chart_card, write_chart_card_png
@@ -1837,6 +1838,36 @@ def _spcharts_filtered_streaming_extra_line(streams_record: dict, current_stream
     )
 
 
+_SPCHARTS_CURRENT_ID_CACHE: dict[str, str] | None = None
+
+
+def _spcharts_current_track_id(track_id: str) -> str:
+    """Former Spotify ID -> current track_id, from the catalog
+    `historical_track_ids` of songs.json (exact mapping, never guessed).
+    Unknown or already current IDs are returned unchanged."""
+    global _SPCHARTS_CURRENT_ID_CACHE
+    if _SPCHARTS_CURRENT_ID_CACHE is None:
+        mapping: dict[str, str] = {}
+        try:
+            raw = _load_json_file(WEB_EXPORT_DATA_DIR / "songs.json")
+            songs = raw.get("songs", raw) if isinstance(raw, dict) else raw
+            for song in songs or []:
+                if not isinstance(song, dict):
+                    continue
+                current = str(song.get("track_id") or "").strip()
+                hist = song.get("historical_track_ids") or []
+                if isinstance(hist, str):
+                    hist = hist.split(";")
+                for old in hist:
+                    old = str(old).strip()
+                    if current and old and old != current:
+                        mapping.setdefault(old, current)
+        except Exception as exc:
+            print(f"[WARN] historical_track_ids illisibles: {exc}")
+        _SPCHARTS_CURRENT_ID_CACHE = mapping
+    return _SPCHARTS_CURRENT_ID_CACHE.get(track_id, track_id)
+
+
 def _collect_spcharts_rank_record_since(region: str) -> list[dict]:
     """Ready-to-post "best chart position since <date>" records, backend-computed.
 
@@ -1930,6 +1961,11 @@ def _collect_spcharts_rank_record_since(region: str) -> list[dict]:
         track_id = str(current_row.get("track_id") or "").strip()
         if not track_id:
             continue
+        # The chart CSV can carry a song under a former Spotify ID too (e.g.
+        # 2026-09-25 "I Can Do It With a Broken Heart" 4q5Yez... next to its
+        # current 4dgf2...): use the current ID, otherwise the card has no
+        # cover and "Full history" links to the old ID.
+        track_id = _spcharts_current_track_id(track_id)
 
         # Day-over-day deltas for the card (decision 2026-09-23) — positive
         # rank_change = moved up (lower rank number), matching the sign
@@ -2054,6 +2090,12 @@ def _post_spcharts_rank_record_card(record: dict, cover_lookup: dict[str, str]) 
     lock_path = out_dir / f"{slug}_rank_record.lock"
     if lock_path.exists():
         return
+    if _is_release_day(chart_date):
+        # Release day (owner 2026-09-26): no "record since" tweet at all,
+        # for any song. Lock written so no later pass posts it either.
+        lock_path.write_text("suppressed: release day (no record-since post)\n", encoding="utf-8")
+        print(f"[DEBUT] record-since {title!r} ({region}) non poste: jour de sortie")
+        return
 
     try:
         chart_dt = datetime.strptime(chart_date, "%Y-%m-%d")
@@ -2132,6 +2174,8 @@ def _post_spcharts_rank_record_card(record: dict, cover_lookup: dict[str, str]) 
         return
 
     tweet = record["tweet"]
+    discord_send("spotify-charts", [(tweet, out_path)], kind="rank_record",
+                 key=f"rank_record_{chart_date}_{region}_{slug}", thread=region)
     for attempt in range(1, SPCHARTS_RECORD_POST_MAX_ATTEMPTS + 1):
         if post_with_image(tweet, out_path, SPCHARTS_RECORD_TWITTER_SESSION, skip_if=lambda: lock_path.exists()):
             lock_path.write_text(datetime.utcnow().isoformat(), encoding="utf-8")
@@ -2369,6 +2413,105 @@ def _ensure_card_regional_data(target_date: date, *, env: dict[str, str], verbos
     return True
 
 
+def _is_release_day(chart_date) -> bool:
+    """Release day = catalog tracks with release_date == chart_date
+    (worldwide/tools/scripts/debut_phase.py). False on any error."""
+    try:
+        scripts_dir = str(CHARTS_ROOT / "worldwide" / "tools" / "scripts")
+        if scripts_dir not in sys.path:
+            sys.path.insert(0, scripts_dir)
+        import debut_phase  # noqa: E402
+
+        return debut_phase.is_debut_day(str(chart_date))
+    except Exception as exc:
+        print(f"[WARN] jour de sortie non verifiable ({exc})")
+        return False
+
+
+def _final_data_export(
+    target_date: date,
+    *,
+    force: bool,
+    explicit_target_date: bool,
+    env: dict[str, str],
+    verbose: bool,
+) -> tuple[list[tuple[str, int]], bool]:
+    """sync country charts -> build discography -> R2 charts-only upload.
+    Runs in a background thread right after collection (owner 2026-09-26:
+    "l'export R2 doit avoir lieu en parallele des la fin de la collecte"),
+    independent of every post step. Returns (failures, discography_ok);
+    rank-record notifications (posts) stay at the end of main()."""
+    failures: list[tuple[str, int]] = []
+    ok, detail = _validate_worldwide_snapshot(target_date)
+    if not ok:
+        print(f"[FAIL] final sync/export bloque: {detail}")
+        return [("worldwide-final-data", 1)], False
+    print("\n[FINAL] sync Spotify country chart history for all worldwide regions...")
+    rc_sync = _run(
+        "sync-country-charts",
+        REPO_ROOT / "scripts" / "sync_spotify_country_charts_from_worldwide.py",
+        [],
+        dry_run=False,
+        env=env,
+        verbose=verbose,
+    )
+    if rc_sync != 0:
+        return [("sync-country-charts", rc_sync)], False
+    rc_discography = _run(
+        "build-country-discography",
+        REPO_ROOT / "scripts" / "build_spotify_chart_discography.py",
+        [],
+        dry_run=False,
+        env=env,
+        verbose=verbose,
+    )
+    if rc_discography != 0:
+        return [("build-country-discography", rc_discography)], False
+    if _r2_export_is_fresh(target_date) and not force:
+        print(f"\n[FINAL] upload R2 charts-only deja fait pour {target_date} (r2_exported.lock), skip")
+        return failures, True
+    print("\n[FINAL] upload R2 charts-only...")
+    rc_export = _run(
+        "r2-charts",
+        REPO_ROOT / "scripts" / "r2.py",
+        [
+            "--skip-history-upload",
+            "--skip-db-upload",
+            "--skip-images-upload",
+            "--charts-only",
+            *(["--worldwide-snapshot-only"] if explicit_target_date else []),
+            "--new-date",
+            str(target_date),
+        ],
+        dry_run=False,
+        env={**env, "UPLOAD_TO_R2": "1"},
+        verbose=verbose,
+    )
+    if rc_export != 0:
+        failures.append(("export", rc_export))
+    else:
+        _mark_r2_exported(target_date)
+    return failures, True
+
+
+def _debut_phase_gate(target_date: date, *, env: dict[str, str], verbose: bool) -> bool:
+    """DEBUT phase (decision 2026-09-26): on a release day nothing may be
+    posted before it, and it is never skipped. Runs debut_phase.py (runs the
+    phase if worldwide/daily.py did not already; no-op on normal days).
+    False = posting blocked for this run."""
+    rc = _run(
+        "debut-phase",
+        CHARTS_ROOT / "worldwide" / "tools" / "scripts" / "debut_phase.py",
+        [str(target_date)],
+        dry_run=False,
+        env=env,
+        verbose=verbose,
+    )
+    if rc != 0:
+        print(f"[BLOCK] phase DEBUT non faite pour {target_date}: aucun post dans ce run")
+    return rc == 0
+
+
 def _post_album_debut_cards(
     target_date: date,
     *,
@@ -2378,10 +2521,11 @@ def _post_album_debut_cards(
 ) -> tuple[str, int] | None:
     """Runs post_album_debut_chart.py — a no-op most days (returns 0
     immediately when no album has a track with release_date == target_date).
-    Must run BEFORE _post_priority_global_cards / _verify_regional_posts so
-    an album-wide debut highlight (see that script's docstring) goes out
-    ahead of the regular Global/US chart posts and the worldwide cards
-    thread (decision 2026-09-23, prep "The Life of a Showgirl: The Encore")."""
+    Safety net only since 2026-09-26: the real post happens in the DEBUT
+    phase of worldwide/daily.py (_run_debut_phase, right after Phase 1,
+    before the routine Global/US posts). Its per-region lock makes this call
+    a no-op when that already worked, and posts only the missing region
+    otherwise."""
     args = [str(target_date), "--post"]
     if force:
         args.append("--force")
@@ -2861,9 +3005,45 @@ def main() -> int:
         elif not _ensure_global_entries_in_worldwide_snapshot(target_date):
             failures.append(("cards-global-data", 1))
 
-    # Album debut highlight (Global + US table, then per-song standalone
-    # cards) goes out before anything else in this phase — no-op most days.
-    if not args.dry_run and not args.no_post and should_post_cards and "global" in post_parts and not failures:
+    # R2 export in parallel, right after collection (owner 2026-09-26): sync +
+    # discography + R2 upload no longer wait for (nor depend on) the posts.
+    export_thread: threading.Thread | None = None
+    export_result: dict = {"failures": [], "discography_ok": False}
+    if (
+        not args.dry_run
+        and not failures
+        and (worldwide_ready_for_final_sync or args.force or not _r2_export_is_fresh(target_date))
+    ):
+        def _export_job() -> None:
+            try:
+                f, disco_ok = _final_data_export(
+                    target_date,
+                    force=args.force,
+                    explicit_target_date=_explicit_target_date,
+                    env=env,
+                    verbose=args.verbose,
+                )
+            except Exception as exc:
+                print(f"[FAIL] export parallele: {exc}")
+                f, disco_ok = [("export", 1)], False
+            export_result.update(failures=f, discography_ok=disco_ok)
+
+        print("\n[FINAL] sync + export R2 lances en parallele des posts (fin de collecte)")
+        export_thread = threading.Thread(target=_export_job, name="final-data-export")
+        export_thread.start()
+
+    # DEBUT phase gate (2026-09-26): on a release day, no post of this run
+    # goes out before the DEBUT phase is done; if it cannot be done, every
+    # post step below is skipped (data steps still run) and the run fails.
+    debut_ok = True
+    if not args.dry_run and not args.no_post:
+        debut_ok = _debut_phase_gate(target_date, env=env, verbose=args.verbose)
+        if not debut_ok:
+            should_post_cards = False
+
+    # Album debut highlight (Global + US table) — safety net, normally
+    # already posted by the DEBUT phase (per-region lock => no-op).
+    if not args.dry_run and not args.no_post and debut_ok and should_post_cards and "global" in post_parts and not failures:
         debut_failure = _post_album_debut_cards(
             target_date,
             force=args.force_cards or args.force,
@@ -2886,7 +3066,7 @@ def main() -> int:
         if priority_failure:
             failures.append(priority_failure)
 
-    if not args.dry_run and not args.no_post:
+    if not args.dry_run and not args.no_post and debut_ok:
         regional_post_failures = _verify_regional_posts(
             target_date,
             post_parts,
@@ -2959,7 +3139,7 @@ def main() -> int:
         if rc_cards != 0:
             failures.append(("cards", rc_cards))
 
-    if not args.dry_run and not args.no_post and not failures:
+    if not args.dry_run and not args.no_post and debut_ok and not failures:
         best_day_failure = _run_best_day_since_post(
             target_date,
             post_parts,
@@ -2970,77 +3150,25 @@ def main() -> int:
         if best_day_failure:
             failures.append(best_day_failure)
 
-    final_export_needed = (
-        not args.dry_run
-        and not failures
-        and (args.force or not _r2_export_is_fresh(target_date))
-    )
-    final_sync_needed = (
-        not args.dry_run
-        and not failures
-        and (worldwide_ready_for_final_sync or final_export_needed)
-    )
-
-    if final_sync_needed:
-        ok, detail = _validate_worldwide_snapshot(target_date)
-        if not ok:
-            failures.append(("worldwide-final-data", 1))
-            print(f"[FAIL] final sync/export bloque: {detail}")
-        else:
-            print("\n[FINAL] sync Spotify country chart history for all worldwide regions...")
-            rc_sync = _run(
-                "sync-country-charts",
-                REPO_ROOT / "scripts" / "sync_spotify_country_charts_from_worldwide.py",
-                [],
-                dry_run=False,
-                env=env,
-                verbose=args.verbose,
-            )
-            if rc_sync != 0:
-                failures.append(("sync-country-charts", rc_sync))
-            else:
-                rc_discography = _run(
-                    "build-country-discography",
-                    REPO_ROOT / "scripts" / "build_spotify_chart_discography.py",
-                    [],
-                    dry_run=False,
-                    env=env,
-                    verbose=args.verbose,
-                )
-                if rc_discography != 0:
-                    failures.append(("build-country-discography", rc_discography))
+    # Wait for the parallel sync/export started after collection, then the
+    # rank-record notifications (they POST, so they stay after the DEBUT
+    # phase and the other posts, and they read the rebuilt discography).
+    if export_thread is not None:
+        if export_thread.is_alive():
+            print("\n[FINAL] attente fin sync/export R2 (lance en parallele)...")
+        export_thread.join()
+        failures.extend(export_result["failures"])
+        if export_result["discography_ok"]:
+            try:
+                if debut_ok:
+                    _notify_spcharts_events(env)
                 else:
-                    try:
-                        _notify_spcharts_events(env)
-                    except Exception as exc:
-                        print(f"[spcharts_notify] failed: {exc}")
+                    print("[BLOCK] notifications/rank-record skippes: phase DEBUT non faite")
+            except Exception as exc:
+                print(f"[spcharts_notify] failed: {exc}")
 
-        if not failures:
-            if _r2_export_is_fresh(target_date) and not args.force:
-                print(f"\n[FINAL] upload R2 charts-only deja fait pour {target_date} (r2_exported.lock), skip")
-            else:
-                print("\n[FINAL] upload R2 charts-only...")
-                rc_export = _run(
-                    "r2-charts",
-                    REPO_ROOT / "scripts" / "r2.py",
-                    [
-                        "--skip-history-upload",
-                        "--skip-db-upload",
-                        "--skip-images-upload",
-                        "--charts-only",
-                        *(["--worldwide-snapshot-only"] if _explicit_target_date else []),
-                        "--new-date",
-                        str(target_date),
-                    ],
-                    dry_run=False,
-                    env={**env, "UPLOAD_TO_R2": "1"},
-                    verbose=args.verbose,
-                )
-                if rc_export != 0:
-                    failures.append(("export", rc_export))
-                else:
-                    _mark_r2_exported(target_date)
-
+    if not debut_ok:
+        failures.append(("debut-phase", 1))
     total = _fmt(time.perf_counter() - started)
     if failures:
         print(f"[FAIL] {', '.join(n for n, _ in failures)} — {total}")

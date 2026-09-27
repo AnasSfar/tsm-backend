@@ -32,14 +32,14 @@ from twitter.sessions import default_twitter_session  # noqa: E402
 TWITTER_SESSION = default_twitter_session(REPO_ROOT)
 from twitter.links import albums_latest_url
 from core.data_paths import update_streams_dir
-from core.twitter import post_with_image
+from core.twitter import TWITTER_TEXT_LIMIT, post_with_image
 
 import generate_albums_image
 import history_store
 from comp.discography import display_title_for_album
 from post_locks import mark_posted, should_skip_post
 
-TWITTER_MAX = 280
+TWITTER_MAX = TWITTER_TEXT_LIMIT  # X Premium cap (500), never the legacy 280
 
 
 def _ordinal(n: int) -> str:

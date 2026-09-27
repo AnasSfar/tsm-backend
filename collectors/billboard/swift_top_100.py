@@ -42,6 +42,7 @@ from core.data_paths import (  # noqa: E402
     apple_music_daily_csv_paths,
     billboard_snapshot_dir,
     first_existing_db_history,
+    itunes_daily_csv_paths,
     spotify_chart_snapshot_candidates,
 )
 _DB_DIR = _REPO_ROOT / "db"
@@ -63,6 +64,7 @@ APPLE_MUSIC_GLOBAL_CSV = _DB_DIR / "apple_music_global.csv"
 APPLE_MUSIC_COUNTRY_CSV = _DB_DIR / "apple_music_country_charts.csv"
 APPLE_MUSIC_GENRE_CSV = _DB_DIR / "apple_music_genre_charts.csv"
 APPLE_MUSIC_TS_TOP_SONGS_CSV = _DB_DIR / "apple_music_ts_top_songs.csv"
+ITUNES_TOP_SONGS_CSV = _DB_DIR / "itunes_top_songs.csv"
 YOUTUBE_TITLE_HISTORY_CSV = _DB_DIR / "youtube_title_history.csv"
 SWIFT_TOP_100_HISTORY_CSV = _DB_DIR / "swift_top_100_history.csv"
 SWIFT_TOP_SONGS_HISTORY_CSV = _DB_DIR / "swift_top_songs_history.csv"
@@ -145,16 +147,16 @@ AM_MARKET_WEIGHTS: dict[str, float] = {
 # abandon it — see collector-deezer/CONTEXTE.md); no history exists before
 # this weight was introduced, so units_youtube is 0 for every past week:
 # this cannot change any already-published historical total_units.
-YOUTUBE_WEIGHT = float(os.getenv("TAYBOARD_YOUTUBE_WEIGHT", "0.3"))
-
 # Platform mix weights: top-level multipliers applied on top of each
 # platform's own already-computed units (streams for Spotify, power-law
 # chart score x1000 for Apple Music), decided 2026-08-14 (Anas) to make
 # Spotify's raw stream volume less dominant relative to Apple Music/YouTube
 # engagement. YOUTUBE_WEIGHT above already plays this exact role for
 # YouTube (applied directly to raw views, no separate multiplier needed).
-SPOTIFY_WEIGHT = float(os.getenv("TAYBOARD_SPOTIFY_WEIGHT", "0.6"))
-AM_WEIGHT = float(os.getenv("TAYBOARD_AM_WEIGHT", "0.3"))
+SPOTIFY_WEIGHT = float(os.getenv("TAYBOARD_SPOTIFY_WEIGHT", "0.45"))
+AM_WEIGHT = float(os.getenv("TAYBOARD_AM_WEIGHT", "0.35"))
+YOUTUBE_WEIGHT = float(os.getenv("TAYBOARD_YOUTUBE_WEIGHT", "0.12"))
+ITUNES_WEIGHT = float(os.getenv("TAYBOARD_ITUNES_WEIGHT", "0.08"))
 
 _APPLE_MUSIC_R2_SYNC_DONE = False
 
@@ -512,6 +514,29 @@ def _active_apple_music_csvs(csv_path: Path) -> list[Path]:
         paths.append(archived)
 
     paths.extend(apple_music_daily_csv_paths(csv_path.name))
+
+    result: list[Path] = []
+    seen: set[Path] = set()
+    for path in paths:
+        resolved = path.resolve()
+        if resolved in seen:
+            continue
+        seen.add(resolved)
+        result.append(path)
+    return result
+
+
+def _active_itunes_csvs(csv_path: Path) -> list[Path]:
+    """Return iTunes CSV paths, including archived daily snapshots."""
+    paths: list[Path] = []
+    if csv_path.exists():
+        paths.append(csv_path)
+
+    archived = _ARCHIVE_DB_DIR / csv_path.name
+    if archived.exists():
+        paths.append(archived)
+
+    paths.extend(itunes_daily_csv_paths(csv_path.name))
 
     result: list[Path] = []
     seen: set[Path] = set()
@@ -1324,6 +1349,66 @@ def _weekly_apple_music_ts_points(
     return scores
 
 
+def _weekly_itunes_points(
+    *, week_dates: set[str], logger: Logger, return_daily: bool = False
+) -> dict[str, float] | tuple[dict[str, float], dict[str, dict[str, float]]]:
+    """Return normalized_title -> weighted sum of daily iTunes song-chart scores.
+
+    iTunes Store purchase charts are per-country, not global. Formula:
+    (500 / rank^0.75) * market_weight for each country/day placement, with
+    the best rank kept per (title, country, day). Multiply by 1000 and
+    ITUNES_WEIGHT externally when computing units_itunes.
+    """
+    scores: dict[str, float] = {}
+    active_paths = _active_itunes_csvs(ITUNES_TOP_SONGS_CSV)
+    if not active_paths:
+        logger.log("  itunes         : missing - iTunes disabled")
+        return (scores, {}) if return_daily else scores
+
+    def _to_int(v: str | None) -> int | None:
+        try:
+            return int((v or "").strip())
+        except Exception:
+            return None
+
+    best_per_country_day: dict[tuple[str, str, str], int] = {}
+    matched_rows = 0
+    for csv_path in active_paths:
+        with csv_path.open("r", newline="", encoding="utf-8-sig") as f:
+            reader = csv.DictReader(f)
+            for row in reader:
+                day = (row.get("date") or "").strip()
+                if day not in week_dates:
+                    continue
+                chart_type = (row.get("chart_type") or "").strip().lower()
+                if chart_type and chart_type != "itunes_country":
+                    continue
+                country = (row.get("country") or "").strip().lower()
+                title = (row.get("song_name") or "").strip()
+                rank = _to_int(row.get("rank"))
+                if not country or not title or not rank or rank < 1 or rank > 200:
+                    continue
+                key = _chart_lookup_key(title, combined=COMBINE_VERSIONS)
+                if not key:
+                    continue
+                cell = (key, country, day)
+                if cell not in best_per_country_day or rank < best_per_country_day[cell]:
+                    best_per_country_day[cell] = rank
+                matched_rows += 1
+
+    daily: dict[str, dict[str, float]] = {}
+    for (key, country, day), rank in best_per_country_day.items():
+        value = _rank_to_am_units_score(rank) * _apple_music_market_weight(country)
+        scores[key] = scores.get(key, 0.0) + value
+        if return_daily:
+            daily.setdefault(key, {})[day] = daily.get(key, {}).get(day, 0.0) + value
+
+    logger.log(f"  itunes         : {matched_rows} rows ({len(active_paths)} file(s), market-weighted)")
+    if return_daily:
+        return scores, daily
+    return scores
+
+
 # Some YouTube video titles carry a redundant "ft. X" / "feat. X" suffix
 # outside any parentheses (e.g. "Taylor Swift - End Game ft. Ed Sheeran,
 # Future", or "ME! (feat. Brendon Urie...) ft. Brendon Urie" — the featured
@@ -1497,6 +1582,7 @@ def _write_history_csv(rows: list[dict], logger: Logger) -> None:
         "title",
         "weekly_streams",
         "units_am",
+        "units_itunes",
         "units_youtube",
         "units_spotify",
         "units_charts",
@@ -1504,6 +1590,7 @@ def _write_history_csv(rows: list[dict], logger: Logger) -> None:
         "total_units",
         "streams_pct",
         "airplay_pct",
+        "itunes_pct",
         "youtube_pct",
         "sales_pct",
         "bonus_points",
@@ -1513,6 +1600,7 @@ def _write_history_csv(rows: list[dict], logger: Logger) -> None:
         "am_global_score",
         "am_country_score",
         "am_overall_score",
+        "itunes_score",
         "weekly_youtube_views",
         "prev_rank",
         "prev_points",
@@ -1561,9 +1649,10 @@ def _write_songs_history_csv(rows: list[dict], logger: Logger) -> None:
         "date", "week_start", "rank", "track_id", "title", "weekly_streams",
         "base_title", "song_family",
         "units_am", "units_youtube", "units_spotify", "units_charts", "units_surplus", "total_units",
-        "streams_pct", "airplay_pct", "youtube_pct", "sales_pct", "bonus_points", "points",
+        "units_itunes",
+        "streams_pct", "airplay_pct", "itunes_pct", "youtube_pct", "sales_pct", "bonus_points", "points",
         "global_best_rank", "am_ts_score", "am_global_score", "am_country_score",
-        "am_overall_score", "weekly_youtube_views",
+        "am_overall_score", "itunes_score", "weekly_youtube_views",
         "prev_rank", "prev_points", "change", "rank_change",
         "percentage_change", "weeks_on_chart", "peak_position", "times_at_peak",
     ]
@@ -1617,6 +1706,7 @@ def _generate_song_files(logger: Logger) -> None:
             am_global_score = entry.get("am_global_score") or 0.0
             am_country_score = entry.get("am_country_score") or 0.0
             am_overall_score = entry.get("am_overall_score")
+            itunes_score = entry.get("itunes_score") or 0.0
             if am_overall_score is None:
                 am_overall_score = am_global_score + am_country_score
             by_track[tid]["history"].append({
@@ -1633,6 +1723,8 @@ def _generate_song_files(logger: Logger) -> None:
                 "am_global_units": round(am_global_score * 1000),
                 "am_country_units": round(am_country_score * 1000),
                 "am_overall_units": round(am_overall_score * 1000),
+                "itunes_units": round(itunes_score * 1000 * ITUNES_WEIGHT),
+                "units_itunes": entry.get("units_itunes"),
             })
 
     written = 0
@@ -1969,8 +2061,9 @@ def compute_track_units(
     am_ts_raw: float,
     am_overall_raw: float,
     weekly_youtube_views: int,
+    itunes_raw: float = 0.0,
 ) -> dict[str, int]:
-    """Combine the four platform inputs into the final units/total_units breakdown.
+    """Combine platform inputs into the final units/total_units breakdown.
 
     Extracted verbatim from the math that used to be inlined in run() (same
     formula, same rounding order) so both the official weekly run and
@@ -1982,14 +2075,16 @@ def compute_track_units(
     collector-billboard/CONTEXTE.md § "Poids plateforme".
     """
     units_am = round((am_ts_raw + am_overall_raw) * 1000 * AM_WEIGHT)
+    units_itunes = round(itunes_raw * 1000 * ITUNES_WEIGHT)
     units_youtube = round(weekly_youtube_views * YOUTUBE_WEIGHT)
     units_charts = min(raw_units_charts, weekly_streams)
     units_surplus = max(0, weekly_streams - units_charts)
     units_spotify = round((units_charts + units_surplus * 0.7) * SPOTIFY_WEIGHT)
-    total_units = units_spotify + units_am + units_youtube
+    total_units = units_spotify + units_am + units_youtube + units_itunes
     return {
         "units_spotify": units_spotify,
         "units_am": units_am,
+        "units_itunes": units_itunes,
         "units_youtube": units_youtube,
         "units_charts": units_charts,
         "units_surplus": units_surplus,
@@ -2081,6 +2176,7 @@ def run(
     am_ts_best_rank = _weekly_apple_music_ts_points(week_dates=week_set, logger=logger)
     am_ts_floor_raw = _apple_music_ts_floor_score(week_set)
     logger.log(f"  apple_ts_floor : rank #{max(1, AM_TS_FLOOR_RANK)} ({round(am_ts_floor_raw * 1000)} units)")
+    itunes_score_by_title = _weekly_itunes_points(week_dates=week_set, logger=logger)
     youtube_views_by_title = _weekly_youtube_views(week_dates=week_set, logger=logger)
     charts_streams_by_title = _weekly_charts_streams_by_title(week_dates=week_set, tracks=tracks, logger=logger)
 
@@ -2207,6 +2303,7 @@ def run(
             am_global_raw = 0.0
             am_country_raw = 0.0
         am_overall_raw = am_global_raw + am_country_raw
+        itunes_raw = itunes_score_by_title.get(key, 0.0) if apple_music_floor_eligible else 0.0
 
         # YouTube raw weekly views (vues exactes — pas de loi de puissance, on a le volume réel)
         weekly_youtube_views = youtube_views_by_title.get(key, 0)
@@ -2220,9 +2317,11 @@ def run(
             am_ts_raw=am_ts_raw,
             am_overall_raw=am_overall_raw,
             weekly_youtube_views=weekly_youtube_views,
+            itunes_raw=itunes_raw,
         )
         units_spotify = unit_breakdown["units_spotify"]
         units_am = unit_breakdown["units_am"]
+        units_itunes = unit_breakdown["units_itunes"]
         units_youtube = unit_breakdown["units_youtube"]
         units_charts = unit_breakdown["units_charts"]
         units_surplus = unit_breakdown["units_surplus"]
@@ -2239,6 +2338,7 @@ def run(
         # Répartition (points calculés après — placeholder 0)
         streams_pct = round(units_spotify / total_units * 100, 1) if total_units else 0.0
         airplay_pct = round(units_am / total_units * 100, 1) if total_units else 0.0
+        itunes_pct = round(units_itunes / total_units * 100, 1) if total_units else 0.0
         youtube_pct = round(units_youtube / total_units * 100, 1) if total_units else 0.0
 
         out_entries.append(
@@ -2252,6 +2352,7 @@ def run(
                 "song_family": row.get("song_family"),
                 "weekly_streams": weekly_streams,
                 "units_am": units_am,
+                "units_itunes": units_itunes,
                 "units_youtube": units_youtube,
                 "units_spotify": units_spotify,
                 "units_charts": units_charts,
@@ -2259,6 +2360,7 @@ def run(
                 "total_units": total_units,
                 "streams_pct": streams_pct,
                 "airplay_pct": airplay_pct,
+                "itunes_pct": itunes_pct,
                 "youtube_pct": youtube_pct,
                 "sales_pct": 0,
                 "bonus_points": row["bonus_points"],
@@ -2268,6 +2370,7 @@ def run(
                 "am_global_score": round(am_global_raw, 2),
                 "am_country_score": round(am_country_raw, 2),
                 "am_overall_score": round(am_overall_raw, 2),
+                "itunes_score": round(itunes_raw, 2),
                 "weekly_youtube_views": weekly_youtube_views,
                 "prev_rank": pr,
                 "prev_points": prev_points_value,
@@ -2292,6 +2395,7 @@ def run(
                 "image_url": (meta.image_url if meta and meta.image_url else None),
                 "weekly_streams": weekly_streams,
                 "units_am": units_am,
+                "units_itunes": units_itunes,
                 "units_youtube": units_youtube,
                 "units_spotify": units_spotify,
                 "units_charts": units_charts,
@@ -2302,11 +2406,13 @@ def run(
                 "am_global_units_display": _format_number(round(am_overall_raw * 1000 * AM_WEIGHT)),
                 "am_country_units_display": _format_number(round(am_country_raw * 1000 * AM_WEIGHT)),
                 "am_overall_units_display": _format_number(round(am_overall_raw * 1000 * AM_WEIGHT)),
+                "itunes_units_display": _format_number(units_itunes),
                 "youtube_units_display": _format_number(units_youtube),
                 "units_charts_display": _format_number(round(units_charts * SPOTIFY_WEIGHT)),
                 "units_surplus_display": _format_number(round(units_surplus * SPOTIFY_WEIGHT)),
                 "streams_pct": streams_pct,
                 "airplay_pct": airplay_pct,
+                "itunes_pct": itunes_pct,
                 "youtube_pct": youtube_pct,
                 "sales_pct": 0,
                 "bonus_points": row["bonus_points"],
@@ -2316,6 +2422,7 @@ def run(
                 "am_global_score": round(am_global_raw, 2),
                 "am_country_score": round(am_country_raw, 2),
                 "am_overall_score": round(am_overall_raw, 2),
+                "itunes_score": round(itunes_raw, 2),
                 "weekly_youtube_views": weekly_youtube_views,
                 "prev_rank": pr,
                 "change": change,

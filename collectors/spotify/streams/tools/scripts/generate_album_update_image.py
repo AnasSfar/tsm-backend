@@ -20,6 +20,7 @@ import csv
 import html
 import io
 import json
+import os
 import random
 import re
 import sys
@@ -65,7 +66,7 @@ CHARTS_GLOBAL_HISTORY_DIR = ROOT.parent / "charts" / "global" / "history"
 TWITTER_SESSION = ROOT.parent / "charts" / "global" / "tools" / "json" / "twitter_session.json"
 
 HANDLE          = "@swiftiescharts"
-TWEET_CHAR_LIMIT = 280
+TWEET_CHAR_LIMIT = int(os.getenv("TWITTER_TEXT_LIMIT", "500"))  # X Premium: same cap as core.twitter.TWITTER_TEXT_LIMIT
 HOLIDAY_COLLECTION_ALBUM = "The Taylor Swift Holiday Collection"
 HOLIDAY_COLLECTION_MIN_DAILY_STREAMS_TO_POST = 100_000
 HOLIDAY_COLLECTION_SEASON_START = (11, 25)
@@ -677,12 +678,22 @@ def load_album_sections(album_name: str, target_date: str | None = None) -> list
             else:
                 if target_day >= release_day - timedelta(days=1):
                     announced_text = "OUT NOW"
+        # Like the per-track flag above: from its release day on, the section
+        # has real data, so it shows its totals instead of the teaser banner.
+        section_announced = bool(sec.get("announced"))
+        if section_announced and section_release_date and target_date:
+            try:
+                section_announced = (
+                    date_cls.fromisoformat(target_date[:10]) < date_cls.fromisoformat(section_release_date)
+                )
+            except ValueError:
+                pass
         sections.append({
             "name": name,
             "tracks": tracks,
             "release_date": section_release_date,
             "source_order": len(sections),
-            "announced": bool(sec.get("announced")),
+            "announced": section_announced,
             "announced_text": announced_text,
         })
 
@@ -808,6 +819,14 @@ def load_history_for_album(
         # or a track added to collection scope later than it was released).
         return release_dates.get(tid) == target_date
 
+    def _not_out_on(tid: str, day: str) -> bool:
+        # Catalogue release_date after `day`: the track had 0 streams that day
+        # (no CSV row), so a comparison against that day starts from 0 instead
+        # of being skipped — otherwise its daily inflates the base of every
+        # section/total/caption % (release day AND the following week).
+        release = release_dates.get(tid) or ""
+        return bool(release) and release > day
+
     result = {}
     for tid in all_ids:
         t = today_data.get(tid)
@@ -818,6 +837,7 @@ def load_history_for_album(
                 "change": None,
                 "pct": None,
                 "ever_seen": not _is_release_day(tid),
+                "new_vs_week": _not_out_on(tid, last_week),
             }
             continue
         y = yest_data.get(tid)
@@ -826,6 +846,10 @@ def load_history_for_album(
         streams = t.get("streams")
         yest_d = (y or {}).get("daily_streams")
         week_d = (w or {}).get("daily_streams")
+        if y is None and _not_out_on(tid, yesterday):
+            yest_d = 0
+        if w is None and _not_out_on(tid, last_week):
+            week_d = 0
         change = (daily - yest_d) if (daily is not None and yest_d is not None) else None
         pct = (change / yest_d * 100) if (change is not None and yest_d not in (None, 0)) else None
         weekly_change = (daily - week_d) if (daily is not None and week_d is not None) else None
@@ -842,6 +866,7 @@ def load_history_for_album(
             "weekly_change": weekly_change,
             "weekly_pct": weekly_pct,
             "ever_seen": not _is_release_day(tid),
+            "new_vs_week": _not_out_on(tid, last_week),
         }
     return result
 
@@ -1321,6 +1346,7 @@ body{
   display:flex;align-items:center;justify-content:flex-end;
 }
 .era-num.neg{color:#b42318}
+.sec-num.new,.era-num.new{color:#5bbde4}
 .era-filter-wrap{grid-column:3/5}
 .era-main-wrap{grid-column:5/9}
 .era-total.no-filter .era-main-wrap{grid-column:3/7}
@@ -1402,10 +1428,13 @@ def _compute_layout_metrics(
     row_padding_px = 18
 
     if weekly_only:
-        cols = [40, 0, 120, 80, 80, 110]
+        # WEEKLY is 112px, not 80: the grand-total row (14px/800) needs ~95px
+        # for an 8-digit weekly gain (+54 297 983, Showgirl Encore week) — at
+        # 80px it overlapped the DAILY cell.
+        cols = [40, 0, 120, 112, 80, 110]
         song_col_px = int(max(130, longest_title_px + song_buffer_px))
         cols[1] = song_col_px
-        grid_cols = f"40px {song_col_px}px 120px 80px 80px 110px"
+        grid_cols = f"40px {song_col_px}px 120px 112px 80px 110px"
         col_heads_html = f"""<div class="col-heads">
     <span class="center">#</span>
     <span>{song_header}</span>
@@ -1572,7 +1601,7 @@ def build_song_row_html(
 
     if weekly_only:
         weekly_s, weekly_pct_s, weekly_cls = fmt_chg(weekly_change, weekly_pct)
-        if not hdata.get("ever_seen", True):
+        if not hdata.get("ever_seen", True) or hdata.get("new_vs_week"):
             weekly_s = "NEW"
             weekly_pct_s = "NEW"
             weekly_cls = "new"
@@ -1635,7 +1664,10 @@ def build_section_total_html(sec_name: str, tracks: list[dict],
     if tracks and all(not hist.get(t["track_id"], {}).get("ever_seen", True) for t in tracks):
         chg_s, pct_s, chg_cls = "NEW", "NEW", "new"
     pct_disp = pct_s or "—"
-    if tracks and all(not hist.get(t["track_id"], {}).get("ever_seen", True) for t in tracks):
+    if tracks and all(
+        not hist.get(t["track_id"], {}).get("ever_seen", True) or hist.get(t["track_id"], {}).get("new_vs_week")
+        for t in tracks
+    ):
         weekly_s, weekly_pct_s, weekly_cls = "NEW", "NEW", "new"
     weekly_pct_disp = weekly_pct_s or "&mdash;"
     chg_chip_cls = _chip_cls(chg_cls)
@@ -1926,7 +1958,7 @@ body{width:1106px;background:var(--page-bg);color:var(--text);font-family:Inter,
 .brand-lock{position:absolute;z-index:3;right:22px;top:20px;display:flex;align-items:center;gap:9px;color:var(--accent);font-size:15px;font-weight:900;text-shadow:0 7px 16px rgba(0,0,0,.75)}
 .brand-mark{width:54px;height:54px;object-fit:contain;opacity:.9}
 .table{margin-top:-30px}
-.table{position:relative;z-index:2;display:grid;grid-template-columns:49px 421px 190px 170px 128px 138px;gap:4px}
+.table{position:relative;z-index:2;display:grid;grid-template-columns:49px 381px 190px 170px 128px 152px;gap:4px}
 .th,.td{min-height:44px;display:flex;align-items:center;justify-content:center;background:var(--cell-bg);box-shadow:inset 0 0 0 2px var(--grid-line)}
 .td.alt{background:var(--cell-bg-alt)}
 .th{min-height:37px;background:var(--head-bg);color:var(--accent);font-size:18px;font-weight:900}
@@ -1935,7 +1967,7 @@ body{width:1106px;background:var(--page-bg);color:var(--text);font-family:Inter,
 .rank,.track,.daily,.pct,.delta{font-weight:900}
 .rank{color:var(--accent)}
 .track{padding:0 15px;text-align:center;font-size:19px}
-.daily{color:var(--daily-text)}.pos{color:#1f9d55}.neg{color:#d64545}
+.daily{color:var(--daily-text)}.pos{color:#1f9d55}.neg{color:#d64545}.new{color:#5bbde4}
 .td.total-row{min-height:48px;background:var(--head-bg);color:var(--accent);font-weight:900}
 .td.total-row.total-num{color:#fff7df}
 .total-label{grid-column:1/3}
@@ -1945,6 +1977,7 @@ body{width:1106px;background:var(--page-bg);color:var(--text);font-family:Inter,
 .td.section-cell.section-num{font-size:15px;letter-spacing:0;text-transform:none;color:#fff7df}
 .td.section-cell.section-num.pos{color:#1f9d55}
 .td.section-cell.section-num.neg{color:#d64545}
+.td.section-cell.section-num.new{color:#5bbde4}
 """
 
 
@@ -2414,21 +2447,33 @@ def _format_section_name(name: str) -> str:
     return " ".join(words)
 
 
+def _change_vs_yesterday(hdata: dict) -> int:
+    """Daily change of one track for section/total sums. A track on its release
+    day (ever_seen False) had 0 streams the day before, so its whole daily is
+    change — otherwise its day-1 streams would inflate the comparison base."""
+    if not hdata.get("ever_seen", True):
+        return hdata.get("daily") or 0
+    return hdata.get("change") or 0
+
+
 def _table_dark_section_row(section: dict, hist: dict) -> str:
     tracks = section.get("tracks", [])
     sec_streams = sum(hist.get(track["track_id"], {}).get("streams") or 0 for track in tracks)
     sec_daily = sum(hist.get(track["track_id"], {}).get("daily") or 0 for track in tracks)
-    sec_change = sum(hist.get(track["track_id"], {}).get("change") or 0 for track in tracks)
+    sec_change = sum(_change_vs_yesterday(hist.get(track["track_id"], {})) for track in tracks)
     sec_yest = sec_daily - sec_change
     sec_pct = (sec_change / sec_yest * 100) if sec_yest else None
     pct_text = "-" if sec_pct is None else f"{sec_pct:+.2f}%"
+    delta_text = f"{sec_change:+,}"
     state_cls = "pos" if sec_change >= 0 else "neg"
+    if tracks and all(not hist.get(track["track_id"], {}).get("ever_seen", True) for track in tracks):
+        pct_text, delta_text, state_cls = "NEW", "NEW", "new"
     name = html.escape(_format_section_name(section.get("name") or "Section"))
     return f"""<div class="td section-cell section-name">{name}</div>
     <div class="td section-cell section-num">{fmt_comma_num(sec_streams)}</div>
     <div class="td section-cell section-num">+{fmt_comma_num(sec_daily)}</div>
     <div class="td section-cell section-num {state_cls}">{pct_text}</div>
-    <div class="td section-cell section-num {state_cls}">{sec_change:+,}</div>"""
+    <div class="td section-cell section-num {state_cls}">{delta_text}</div>"""
 
 
 def _table_dark_section_announced_row(section: dict) -> str:
@@ -2502,6 +2547,8 @@ def build_table_dark_html(
             pct_text = "-" if pct is None else f"{pct:+.2f}%"
             delta_text = "-" if change is None else f"{change:+,}"
             state_cls = "pos" if (change or 0) >= 0 else "neg"
+            if not hdata.get("ever_seen", True):
+                pct_text, delta_text, state_cls = "NEW", "NEW", "new"
             daily_text = "-" if daily is None else f"+{fmt_comma_num(daily)}"
             rows.append(f"""<div class="td rank{alt_cls}">{idx}</div>
     <div class="td track{alt_cls}">{title}</div>
@@ -2518,7 +2565,7 @@ def build_table_dark_html(
     total_label = "TOTAL ERA" if _has_era_context(sections) else "TOTAL"
     total_streams = sum(hist.get(track["track_id"], {}).get("streams") or 0 for track in total_tracks)
     total_daily = sum(hist.get(track["track_id"], {}).get("daily") or 0 for track in total_tracks)
-    total_change = sum(hist.get(track["track_id"], {}).get("change") or 0 for track in total_tracks)
+    total_change = sum(_change_vs_yesterday(hist.get(track["track_id"], {})) for track in total_tracks)
     total_yest = total_daily - total_change
     total_pct = (total_change / total_yest * 100) if total_yest else None
     total_pct_text = "-" if total_pct is None else f"{total_pct:+.2f}%"
@@ -2933,7 +2980,7 @@ def _era_best_day_row(album_name: str, sections: list[dict], target_date: str) -
 
 def _daily_summary_for_tracks(tracks: list[dict], hist: dict[str, dict]) -> tuple[int, float | None]:
     total_daily = sum(hist.get(t["track_id"], {}).get("daily") or 0 for t in tracks)
-    total_change = sum(hist.get(t["track_id"], {}).get("change") or 0 for t in tracks)
+    total_change = sum(_change_vs_yesterday(hist.get(t["track_id"], {})) for t in tracks)
     total_yesterday = total_daily - total_change
     total_pct = None
     if total_yesterday and total_yesterday > 0:
@@ -2954,6 +3001,8 @@ def _build_album_post_text(album_name: str, target_date: str, *, weekly_only: bo
 
     tracks = _album_total_tracks(sections)
     total_daily, album_pct = _daily_summary_for_tracks(tracks, hist)
+    # weekly_change already starts from 0 for a track not out last week
+    # (load_history_for_album), so the base is only last week's real streams.
     total_weekly_change = sum(hist.get(t["track_id"], {}).get("weekly_change") or 0 for t in tracks)
     total_weekly_base = total_daily - total_weekly_change
     album_weekly_pct = (total_weekly_change / total_weekly_base * 100) if total_weekly_base > 0 else None

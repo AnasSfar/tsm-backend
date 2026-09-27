@@ -22,7 +22,8 @@ if str(SPOTIFY_ROOT) not in sys.path:
 
 from comp.chart_card import render_chart_card, write_chart_card_png  # noqa: E402
 from core.data_paths import LEGACY_WEBSITE_DATA_DIR, WEB_EXPORT_DATA_DIR, first_existing, spotify_chart_dir  # noqa: E402
-from core.twitter import post_with_image  # noqa: E402
+from core.twitter import post_image_thread, post_with_image  # noqa: E402
+from core.discord_notify import discord_send  # noqa: E402
 import generate_card_images  # noqa: E402
 
 TWITTER_SESSION = ROOT / "collectors" / "spotify" / "charts" / "global" / "tools" / "json" / "twitter_session.json"
@@ -31,6 +32,13 @@ CHARTS_HISTORY_GLOBAL = ROOT / "db" / "charts_history_global.csv"
 SONGS_JSON = first_existing(WEB_EXPORT_DATA_DIR / "songs.json", LEGACY_WEBSITE_DATA_DIR / "songs.json")
 HANDLE = "@swiftiescharts"
 PRIORITY_WINDOW_DAYS = 7
+# "It marks her Nth biggest debut on the chart." DISABLED 2026-09-26: the
+# ranking source (db/charts_history_global.csv) is not reliable for this —
+# 176/216 real first-day rows are labelled movement "RE" (all of Midnights,
+# 1989/Speak Now TV, LWYMMD, ME!...) and were excluded, plus name/track-id
+# duplicate rows. The sentence overstated the rank by 10-15 places.
+# Re-enable only after the debut ranking is rebuilt and verified.
+DEBUT_RANK_SENTENCE_ENABLED = False
 
 
 def _norm(value: str) -> str:
@@ -287,11 +295,22 @@ def _priority_file_prefix(row: dict) -> str:
     return "new_card"
 
 
-def _global_debut_rank(row: dict) -> int | None:
+def _global_debut_rank(row: dict, chart_date: str | None = None) -> int | None:
     streams = _to_int(row.get("streams"))
     title = str(row.get("title") or row.get("track_name") or row.get("song_name") or "").strip()
     if streams <= 0 or not title:
         return None
+
+    # One chart position = one song on a given date. charts_history_global.csv
+    # has duplicate rows for the same entry under another song_name (e.g.
+    # 2025-10-03 #2 "Elizabeth Taylor" AND "1jgTiNob5cVyXeJ3WgX5bL", same
+    # streams), which counted one debut twice and pushed every smaller debut
+    # one place down ("Nth biggest debut" off by one). Dedupe on (date, rank)
+    # (fix 2026-09-26); today's own position is pre-seeded for the same reason.
+    seen_positions: set[tuple[str, int]] = set()
+    own_rank = _to_int(row.get("rank"))
+    if chart_date and own_rank:
+        seen_positions.add((chart_date, own_rank))
 
     debuts: dict[str, dict] = {
         _norm(title): {
@@ -317,6 +336,11 @@ def _global_debut_rank(row: dict) -> int | None:
                     continue
                 if total_days not in {"1", "1.0"} and previous_rank not in {"", "-1"}:
                     continue
+                position = (str(csv_row.get("date") or "").strip(), rank)
+                if rank and position[0]:
+                    if position in seen_positions:
+                        continue
+                    seen_positions.add(position)
                 debuts[key] = {
                     "title": song_name,
                     "streams": _to_int(csv_row.get("streams")),
@@ -344,7 +368,7 @@ def _new_card_tweet(rows: list[dict], chart_date: str) -> str:
             )
         elif _is_first_global_day(row):
             debut_rank_text = ""
-            debut_rank = _global_debut_rank(row)
+            debut_rank = _global_debut_rank(row, chart_date) if DEBUT_RANK_SENTENCE_ENABLED else None
             if debut_rank:
                 debut_rank_text = f"\n\nIt marks her {_ordinal(debut_rank)} biggest debut on the chart."
             body = (
@@ -608,8 +632,33 @@ def _build_html(rows: list[dict], chart_date: str) -> tuple[str, str, str]:
     return html_text, slug_val, _priority_file_prefix(primary)
 
 
+def _release_day_filter(rows: list[dict], chart_date: str, *, worldwide: bool, force_songs) -> list[dict]:
+    """Release day anti-spam (owner 2026-09-26), ONE filter shared by
+    generate_cards / the Global card post / the worldwide cards so images
+    and texts always stay paired. On a release day there is NO individual
+    NEW/RE/recent card at all, for ANY song (album or not, e.g. "I Can Do
+    It With a Broken Heart"): the new songs are in the DEBUT tables and
+    every song has its card in the cards thread."""
+    if force_songs or not rows:
+        return rows
+    try:
+        scripts_dir = str(Path(__file__).resolve().parent)
+        if scripts_dir not in sys.path:
+            sys.path.insert(0, scripts_dir)
+        import debut_phase  # noqa: E402
+    except Exception as exc:
+        print(f"[global-priority] debut_phase indisponible ({exc}); pas de filtre jour de sortie")
+        return rows
+    if not debut_phase.is_debut_day(chart_date):
+        return rows
+    print(f"[global-priority] jour de sortie: aucune card individuelle ({len(rows)} titre(s) -> thread cards)")
+    return []
+
+
 def generate_cards(chart_date: str, *, force_songs: set[str] | None = None) -> list[Path]:
-    rows = _load_priority_rows(chart_date, force_songs=force_songs)
+    rows = _release_day_filter(
+        _load_priority_rows(chart_date, force_songs=force_songs), chart_date, worldwide=False, force_songs=force_songs
+    )
     if not rows:
         print(f"[global-priority] No priority Global Spotify Chart entries for {chart_date}.")
         return []
@@ -638,7 +687,10 @@ def post_card(
     no_post: bool = False,
     force_songs: set[str] | None = None,
 ) -> int:
-    rows = _load_priority_rows(chart_date, force_songs=force_songs)
+    # Same filter as generate_cards (images and texts are zipped below).
+    rows = _release_day_filter(
+        _load_priority_rows(chart_date, force_songs=force_songs), chart_date, worldwide=False, force_songs=force_songs
+    )
     if not rows:
         print(f"[global-priority] No priority post needed for {chart_date}.")
         return 0
@@ -646,6 +698,7 @@ def post_card(
     out_dir = spotify_chart_dir("global", chart_date)
     lock_path = out_dir / "global_new_releases_posted.json"
     slugs = sorted(_priority_slug(row) for row in rows)
+    posted: set[str] = set()
     if lock_path.exists() and not force:
         try:
             posted = set(json.loads(lock_path.read_text(encoding="utf-8")).get("posted", []))
@@ -666,18 +719,45 @@ def post_card(
     if no_post:
         print("[global-priority] Twitter post skipped (--no-post).")
         return 0
+    pending_posts: list[tuple[str, str, Path]] = []
+    for row, tweet, image_path in zip(rows, tweets, image_paths):
+        row_slug = _priority_slug(row)
+        if row_slug in posted:
+            print(f"[global-priority] {row_slug}: already posted, skip.")
+            continue
+        pending_posts.append((row_slug, tweet, image_path))
+
+    if not pending_posts:
+        print(f"[global-priority] No pending priority posts for {chart_date}.")
+        return 0
+
+    for row_slug, tweet, image_path in pending_posts:
+        discord_send("spotify-charts", [(tweet, image_path)], kind="global_new_releases",
+                     key=f"global_new_releases_{chart_date}_{row_slug}", thread="global")
     if not TWITTER_SESSION.exists():
         print(f"[global-priority] Twitter session missing: {TWITTER_SESSION}")
         return 1
-    for tweet, image_path in zip(tweets, image_paths):
+
+    if len(pending_posts) == 1:
+        row_slug, tweet, image_path = pending_posts[0]
         if not post_with_image(tweet, image_path, TWITTER_SESSION):
             print("[global-priority] Twitter post failed.")
             return 1
+    else:
+        thread_posts = [(tweet, image_path) for _, tweet, image_path in pending_posts]
+        if not post_image_thread(thread_posts, TWITTER_SESSION):
+            print("[global-priority] Twitter image thread failed.")
+            return 1
+
+    posted.update(row_slug for row_slug, _, _ in pending_posts)
     lock_path.write_text(
-        json.dumps({"date": chart_date, "posted": slugs}, ensure_ascii=False, indent=2),
+        json.dumps({"date": chart_date, "posted": sorted(posted)}, ensure_ascii=False, indent=2),
         encoding="utf-8",
     )
-    print("[global-priority] Priority Global card posted.")
+    if len(pending_posts) == 1:
+        print("[global-priority] Priority Global card posted.")
+    else:
+        print(f"[global-priority] Priority Global thread posted ({len(pending_posts)} cards).")
     return 0
 
 
@@ -706,7 +786,9 @@ def post_worldwide_cards(
     no_post: bool = False,
     force_songs: set[str] | None = None,
 ) -> int:
-    rows = _load_priority_rows(chart_date, force_songs=force_songs)
+    rows = _release_day_filter(
+        _load_priority_rows(chart_date, force_songs=force_songs), chart_date, worldwide=True, force_songs=force_songs
+    )
     if not rows:
         print(f"[global-priority-worldwide] No priority worldwide card needed for {chart_date}.")
         return 0
@@ -785,23 +867,36 @@ def post_worldwide_cards(
     if no_post:
         print("[global-priority-worldwide] Twitter post skipped (--no-post).")
         return 0
+    for slug, tweet, image_path in posts:
+        discord_send("spotify-charts", [(tweet, image_path)], kind="global_new_releases_worldwide",
+                     key=f"global_new_releases_worldwide_{chart_date}_{slug}", thread="worldwide")
     if not TWITTER_SESSION.exists():
         print(f"[global-priority-worldwide] Twitter session missing: {TWITTER_SESSION}")
         return 1
 
     posted = set(already_posted)
-    for slug, tweet, image_path in posts:
+    if len(posts) == 1:
+        slug, tweet, image_path = posts[0]
         if not post_with_image(tweet, image_path, TWITTER_SESSION):
             print(f"[global-priority-worldwide] Twitter post failed for {slug}.")
             return 1
-        posted.add(slug)
-        lock_path.parent.mkdir(parents=True, exist_ok=True)
-        lock_path.write_text(
-            json.dumps({"date": chart_date, "posted": sorted(posted)}, ensure_ascii=False, indent=2),
-            encoding="utf-8",
-        )
+    else:
+        thread_posts = [(tweet, image_path) for _, tweet, image_path in posts]
+        if not post_image_thread(thread_posts, TWITTER_SESSION):
+            print("[global-priority-worldwide] Twitter image thread failed.")
+            return 1
 
-    print(f"[global-priority-worldwide] Posted {len(posts)} worldwide priority card(s).")
+    posted.update(slug for slug, _, _ in posts)
+    lock_path.parent.mkdir(parents=True, exist_ok=True)
+    lock_path.write_text(
+        json.dumps({"date": chart_date, "posted": sorted(posted)}, ensure_ascii=False, indent=2),
+        encoding="utf-8",
+    )
+
+    if len(posts) == 1:
+        print("[global-priority-worldwide] Posted 1 worldwide priority card.")
+    else:
+        print(f"[global-priority-worldwide] Posted worldwide priority thread ({len(posts)} cards).")
     return 0
 
 

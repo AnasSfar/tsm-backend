@@ -95,8 +95,19 @@ def _album_track_ids(album: str, target_date: str) -> list[str]:
             track_id = str(track.get("track_id") or "").strip()
             if track_id and track_id not in seen:
                 seen.append(track_id)
+                try:
+                    _TRACK_RELEASE_DAYS[track_id] = date.fromisoformat(str(track.get("release_date") or "")[:10])
+                except ValueError:
+                    pass
     _ALBUM_TRACK_IDS_CACHE[cache_key] = seen
     return seen
+
+
+def _tracked_since_release(track_id: str, points: list[best_day_since.Point]) -> bool:
+    """True when the track's history starts on (or before) its catalogue
+    release day: the days before it are genuinely 0 streams, not missing data."""
+    release_day = _TRACK_RELEASE_DAYS.get(track_id)
+    return bool(points) and release_day is not None and points[0].day <= release_day
 
 
 def _album_points_by_day(track_ids: list[str], history: dict[str, list[best_day_since.Point]]):
@@ -110,7 +121,15 @@ def _album_points_by_day(track_ids: list[str], history: dict[str, list[best_day_
     combined = best_day_since.combine_points(points_by_track)
     # Only trust days where every album track already had data, so today's full
     # total is never compared against a day the album was still incomplete.
-    starts = [pts[0].day for pts in points_by_track if pts]
+    # A track tracked since its release day (e.g. a deluxe's new songs) doesn't
+    # count: before its release it had 0 streams, the album wasn't incomplete —
+    # otherwise the album loses its pre-release history and "vs last week"
+    # (2026-09-26, The Encore: Showgirl weekly gain None -> weekend card skipped).
+    starts = [
+        pts[0].day
+        for track_id, pts in zip(track_ids, points_by_track)
+        if pts and not _tracked_since_release(track_id, pts)
+    ]
     if len(starts) > 1:
         cutoff = max(starts)
         combined = [point for point in combined if point.day >= cutoff]
@@ -177,6 +196,7 @@ _RECORD_ROWS_CACHE: dict[str, dict[str, dict]] = {}
 _SCORE_CACHE: dict[tuple[str, str, bool], dict] = {}
 _ALBUM_TRACK_IDS_CACHE: dict[tuple[str, str], list[str]] = {}
 _ALBUM_BY_DAY_CACHE: dict[tuple[str, ...], dict] = {}
+_TRACK_RELEASE_DAYS: dict[str, date] = {}
 
 
 def _history() -> dict[str, list[best_day_since.Point]]:

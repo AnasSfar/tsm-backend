@@ -425,25 +425,43 @@ def _read_history_csv(path: Path, by_date: dict) -> None:
             }
 
 
-def load_raw_history() -> tuple[list[str], dict[str, dict[str, dict]]]:
+def load_raw_history(release_dates: dict[str, str] | None = None) -> tuple[list[str], dict[str, dict[str, dict]]]:
     by_date: dict[str, dict[str, dict]] = defaultdict(dict)
     if HISTORY_CSV_PATH.exists():
         _read_history_csv(HISTORY_CSV_PATH, by_date)
-    normalize_daily_streams_from_totals(by_date)
+    normalize_daily_streams_from_totals(by_date, release_dates)
     return sorted_unique_dates(list(by_date.keys())), dict(by_date)
+
+
+def release_dates_by_track(songs: list[dict]) -> dict[str, str]:
+    """{track_id: YYYY-MM-DD} from the catalogue, for the debut exception of
+    normalize_daily_streams_from_totals."""
+    return {
+        song["track_id"]: str(song.get("release_date") or "")[:10]
+        for song in songs
+        if song.get("track_id") and song.get("release_date")
+    }
 
 
 MAX_DAILY_GAP_DAYS = 4  # au-delà, un delta multi-jours n'est plus exporté comme daily
 
 
-def normalize_daily_streams_from_totals(by_date: dict[str, dict[str, dict]]) -> int:
+def normalize_daily_streams_from_totals(
+    by_date: dict[str, dict[str, dict]],
+    release_dates: dict[str, str] | None = None,
+) -> int:
     """Ensure exported daily streams match consecutive-day total deltas.
 
     Garde-fou supplémentaire : quand un track n'a AUCUNE ligne la veille et que
     sa ligne précédente la plus proche date de plus de MAX_DAILY_GAP_DAYS jours
     (ex. track ajouté en DB avec un historique backfillé ancien), son
     daily_streams est vidé — un delta couvrant des semaines/mois n'est pas un
-    daily et gonflerait les totaux du site."""
+    daily et gonflerait les totaux du site.
+
+    Exception (2026-09-26, The Encore) : la toute première ligne d'un track,
+    datée de son jour de sortie catalogue (``release_dates``) avec
+    daily == total, est un debut exact (rien n'existait avant) — gardée."""
+    release_dates = release_dates or {}
     corrected = 0
     blanked = 0
     dates_by_track: dict[str, list[date_cls]] = defaultdict(list)
@@ -475,6 +493,12 @@ def normalize_daily_streams_from_totals(by_date: dict[str, dict[str, dict]]) -> 
                 track_dates = dates_by_track.get(track_id, [])
                 index = bisect_left(track_dates, current_date)
                 nearest_before = track_dates[index - 1] if index > 0 else None
+                if (
+                    nearest_before is None
+                    and release_dates.get(track_id) == date_value
+                    and values.get("daily_streams") == values.get("streams")
+                ):
+                    continue
                 if nearest_before is None or (current_date - nearest_before).days > MAX_DAILY_GAP_DAYS:
                     values["daily_streams"] = None
                     blanked += 1
@@ -1825,7 +1849,8 @@ def export_for_web(
     print(f"ROOT     = {ROOT}")
     print(f"HISTORY  = {HISTORY_CSV_PATH}")
     raw_songs = load_tracks_from_discography()
-    dates, raw_history_by_date = load_raw_history()
+    release_dates = release_dates_by_track(raw_songs)
+    dates, raw_history_by_date = load_raw_history(release_dates)
     dates = sorted_unique_dates(dates)
     print(f"Last 10 dates found: {dates[-10:]}")
     track_appearances_by_id, albums_payload_raw = build_discography_index()
@@ -1886,7 +1911,7 @@ def export_for_web(
                 old_to_kept[h_id] = kept_id
 
     merged_history = merge_history_by_kept_track(dates, raw_history_by_date, old_to_kept)
-    normalize_daily_streams_from_totals(merged_history)
+    normalize_daily_streams_from_totals(merged_history, release_dates)
 
     latest_date = dates[-1] if dates else None
     latest_values = merged_history.get(latest_date, {})

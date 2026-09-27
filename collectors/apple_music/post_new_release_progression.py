@@ -30,6 +30,7 @@ import argparse
 import csv
 import json
 import os
+import re
 import sys
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
@@ -74,6 +75,13 @@ KEY_COUNTRIES = [
     for c in os.getenv("APPLE_MUSIC_DEBUT_KEY_COUNTRIES", "us,gb,fr,ca,au").split(",")
     if c.strip()
 ]
+# Stores HIGHLIGHTED on the cards (owner 2026-09-26: IFPI top 10 recorded-music
+# markets, in IFPI order). Display only — posting triggers stay on KEY_COUNTRIES.
+HIGHLIGHT_COUNTRIES = [
+    c.strip().lower()
+    for c in os.getenv("APPLE_MUSIC_HIGHLIGHT_COUNTRIES", "us,jp,gb,cn,de,fr,kr,br,ca,mx").split(",")
+    if c.strip()
+]
 TWITTER_SESSION = (
     REPO_ROOT / "collectors" / "spotify" / "charts" / "global" / "tools" / "json" / "twitter_session.json"
 )
@@ -87,6 +95,25 @@ POST_SLOT_TIMEOUT = int(os.getenv("APPLE_MUSIC_DEBUT_POST_SLOT_TIMEOUT", "180"))
 # (2026-09-25, "be the first to post").
 DEBUT_POST_PRIORITY = int(os.getenv("APPLE_MUSIC_DEBUT_FIRST_POST_PRIORITY", "0"))
 DEBUT_POST_SLOT_TIMEOUT = int(os.getenv("APPLE_MUSIC_DEBUT_FIRST_POST_SLOT_TIMEOUT", "900"))
+# A busy slot no longer drops the post to the next hour after 3 min (owner
+# 2026-09-26: "mais c'est con") — it waits until HH:<this minute>, when the
+# next hourly run is about to take over. The timeouts above stay the floor
+# (a post started past that minute still gets them).
+# ~2.5 min between this script's posts and the account's previous post
+# (owner 2026-09-26) instead of the account-wide 60-75 s. twitter.py reads the
+# spacing at import, and it is only imported lazily below — so this applies to
+# this process only (Apple Music + iTunes chains, release_watch express posts).
+POST_SPACING_SECONDS = int(os.getenv("APPLE_MUSIC_DEBUT_POST_SPACING_SECONDS", "150"))
+os.environ["TWITTER_ACCOUNT_SPACING_MIN_SECONDS"] = str(POST_SPACING_SECONDS)
+os.environ["TWITTER_ACCOUNT_SPACING_MAX_SECONDS"] = str(POST_SPACING_SECONDS + 15)
+POST_SLOT_DEADLINE_MINUTE = int(os.getenv("APPLE_MUSIC_DEBUT_POST_DEADLINE_MINUTE", "50"))
+
+
+def _slot_timeout(debut: bool) -> int:
+    floor = DEBUT_POST_SLOT_TIMEOUT if debut else POST_SLOT_TIMEOUT
+    now = datetime.now()
+    deadline = now.replace(minute=POST_SLOT_DEADLINE_MINUTE, second=0, microsecond=0)
+    return max(floor, int((deadline - now).total_seconds()))
 FRONTEND_PUBLIC = REPO_ROOT.parent / "tsm-frontend" / "frontend" / "public"
 
 # Volume control (2026-09-24): a debut, a new #1 or a new peak (any rank) always
@@ -96,6 +123,9 @@ FRONTEND_PUBLIC = REPO_ROOT.parent / "tsm-frontend" / "frontend" / "public"
 MIN_GAP_HOURS = float(os.getenv("APPLE_MUSIC_DEBUT_MIN_GAP_HOURS", "3"))
 PEAK_MIN_GAP_MINUTES = float(os.getenv("APPLE_MUSIC_DEBUT_PEAK_GAP_MINUTES", "15"))
 POST_DROPS = os.getenv("APPLE_MUSIC_DEBUT_POST_DROPS", "0") == "1"
+# Hourly runs post every key-market move (threads since 2026-09-25); 0 = back
+# to post_due's throttle (debut/#1/peak now, climbs every 3h, never drops).
+POST_EVERY_MOVE = os.getenv("APPLE_MUSIC_DEBUT_POST_EVERY_MOVE", "1") == "1"
 
 # Phone alerts (same topic as the Global Apple Music notification).
 NTFY_TOPIC = os.getenv("NTFY_TOPIC_APPLE_MUSIC", "taylormuseum-apple-music")
@@ -513,6 +543,77 @@ def build_sources(today: str, express: dict[str, Path] | None = None) -> list[di
     return sources
 
 
+# 2026-09-26 (owner, ~24h after the Encore): fewer posts, in two steps.
+# Morning: the songs thread became a thread of every song of the album
+# (ALBUM_SONGS_THREAD, now off). Noon ("les thread oublie les"):
+#   - no more songs threads (SONG_THREADS); a song card posts on its own ONLY
+#     when the song reaches #1 on a key chart (SONG_POSTS_NUMBER_ONE_ONLY);
+#   - Apple Music: the album-filtered card of the US, US Pop, Australia and
+#     Canada charts (REGION_CARD_COUNTRIES / POP_CARD_COUNTRIES) — the Global
+#     and Global album cards stop (GLOBAL_CARDS);
+#   - iTunes: the album card of the 5 key countries as ONE thread
+#     (_post_itunes_album_thread);
+#   - Top Albums cards (both platforms): off (ALBUM_CHART_CARDS).
+ALBUM_SONGS_THREAD = os.getenv("APPLE_MUSIC_DEBUT_ALBUM_SONGS_THREAD", "0") == "1"
+ALBUM_CHART_CARDS = os.getenv("APPLE_MUSIC_DEBUT_ALBUM_CHART_CARDS", "0") == "1"
+SONG_THREADS = os.getenv("APPLE_MUSIC_DEBUT_SONG_THREADS", "0") == "1"
+SONG_POSTS_NUMBER_ONE_ONLY = os.getenv("APPLE_MUSIC_DEBUT_SONG_POSTS_NUMBER_ONE_ONLY", "1") == "1"
+# 2026-09-27 (owner: "on peut poster une chanson en standalone si elle reçoit
+# une bonne update genre plusieurs RE PEAK ou NEW PEAK, mais pas en abusant,
+# juste les meilleurs"): besides the #1 rule, a song card also posts when THIS
+# cycle brings it several peaks inside the top UPDATE_TOP, weighted by market
+# (AM_MARKET_WEIGHTS, Global 1.5): new peak = 1, back at its peak = 0.5, +1
+# when that peak is a new #1. Needs >= UPDATE_MIN_PEAKS peaks and a score >=
+# UPDATE_MIN_SCORE; the best song only, per platform and cycle; a song not
+# again within UPDATE_GAP_HOURS on that platform. Calibrated on 26-27/09:
+# 4 posts in 36h (Babylon US #3 / UK #3, Cleveland! MX #2 & PT #2...).
+SONG_UPDATE_POSTS = os.getenv("APPLE_MUSIC_DEBUT_SONG_UPDATE_POSTS", "1") == "1"
+UPDATE_TOP = int(os.getenv("APPLE_MUSIC_DEBUT_UPDATE_TOP", "10"))
+UPDATE_MIN_PEAKS = int(os.getenv("APPLE_MUSIC_DEBUT_UPDATE_MIN_PEAKS", "2"))
+UPDATE_MIN_SCORE = float(os.getenv("APPLE_MUSIC_DEBUT_UPDATE_MIN_SCORE", "0.8"))
+UPDATE_GAP_HOURS = float(os.getenv("APPLE_MUSIC_DEBUT_UPDATE_GAP_HOURS", "12"))
+UPDATE_GLOBAL_WEIGHT = 1.5
+GLOBAL_CARDS = os.getenv("APPLE_MUSIC_DEBUT_GLOBAL_CARDS", "0") == "1"
+# Afternoon (owner: "garde les finalement mais genre dans un thread"): the
+# Global + Global album cards come back, as one thread (_post_global_thread).
+# 2026-09-27: only the Global card, one post at every Global update
+# (GLOBAL_ALBUM_CARD=1 puts the album card back as the thread's reply).
+GLOBAL_THREAD = os.getenv("APPLE_MUSIC_DEBUT_GLOBAL_THREAD", "1") == "1"
+GLOBAL_ALBUM_CARD = os.getenv("APPLE_MUSIC_DEBUT_GLOBAL_ALBUM_CARD", "0") == "1"
+
+
+def album_song_tracks(active_tracks: list[dict]) -> list[dict]:
+    """The other songs of the new tracks' album(s), from the catalog: main
+    versions only (no acoustic / remix / Track by Track, i.e. no extra_type).
+    "old": their release predates our history (Apple Music 2026-03-22), so
+    their cards/tweets never claim NEW / NEW PEAK / RE-PEAK and show no peak."""
+    albums = {t["album"] for t in active_tracks if t["album"]}
+    taken = {t["key"] for t in active_tracks}
+    released = min((t["released_at"] for t in active_tracks), default=None)
+    out: list[dict] = []
+    for track in iter_catalog_tracks():
+        album = str(track.get("album") or "")
+        if album not in albums or track.get("extra_type"):
+            continue
+        title = str(track.get("title") or track.get("base_title") or "").strip()
+        key = song_name_key(track.get("base_title") or title)
+        if not title or key in taken:
+            continue
+        taken.add(key)
+        out.append({
+            "title": title,
+            "key": key,
+            "keys": set(song_key_candidates(title)),
+            "apple_ids": set(KNOWN_APPLE_IDS.get(title, set())),
+            "image_url": _album_cover_url(album, str(track.get("image_url") or "")),
+            "album": album,
+            "released_at": released,
+            "release_date": None,
+            "old": True,
+        })
+    return out
+
+
 def album_items(active_tracks: list[dict]) -> list[dict]:
     """One pseudo-track per album of the active tracks, for its iTunes Top
     Albums card. Out when its first new track is out."""
@@ -672,284 +773,202 @@ def _format_share_date(value: str) -> str:
     return f"{dt.strftime('%b')} {dt.day}, {dt.year}"
 
 
-def _rank_delta_html(placement: dict) -> str:
-    """Site's PlacementTables cell: "(▲ 3)" / "(▼ 2)" / "(NEW)", nothing when
-    unchanged (the site shows no marker for delta 0)."""
-    if placement.get("is_new"):
-        return '<span class="oct-rank-delta rank-new"> (NEW)</span>'
-    delta = placement.get("delta")
-    if not delta:
-        return ""
-    cls = "rank-up" if delta > 0 else "rank-down"
-    arrow = "\u25b2" if delta > 0 else "\u25bc"
-    return f'<span class="oct-rank-delta {cls}"> ({arrow} {abs(delta)})</span>'
-
-
-def _peak_badge_html(placement: dict) -> str:
-    if placement.get("is_new"):
-        return '<span class="new-peak">NEW</span>'
-    if placement.get("new_peak"):
-        return '<span class="new-peak">NEW PEAK</span>'
-    if placement.get("re_peak"):
-        return '<span class="new-peak">RE-PEAK</span>'
-    return ""
-
-
-# Card layout (2026-09-25): number of table columns for n rows, and the card
-# width for that many columns. Tunable in one place (previews_and_sims/
-# apple-music-debut-progression/card_sizes.py renders the variants).
-CARD_WIDTH_BY_COLS = {1: 780, 2: 1000, 3: 1500, 4: 2000}
-
-
-def _column_count(n: int) -> int:
-    """Owner 2026-09-25 (picked from previews_and_sims/.../card_sizes/): cards
-    readable without zooming, between a near-square portrait (59 rows -> 2 cols,
-    2000x2330) and a landscape (71 rows -> 3 cols, 3000x1944) — at most ~30 rows
-    per column, 1 column up to 20 rows, never more than 3 columns (168 rows ->
-    3 x 56, still ~portrait instead of a very wide strip)."""
-    if n <= 20:
-        return 1
-    if n <= 60:
-        return 2
-    return 3
-
-
-def _split_columns(placements: list[dict]) -> list[list[dict]]:
-    n = len(placements)
-    count = _column_count(n)
-    per = -(-n // count) if n else 1
-    cols = [placements[i:i + per] for i in range(0, n, per)]
-    return [c for c in cols if c]
-
-
-def _placements_tables_html(placements: list[dict], first_col_header: str) -> str:
-    tables = []
-    for col in _split_columns(placements):
-        rows = "".join(
-            ('<tr class="oct-key">' if p["region"] in KEY_COUNTRIES else "<tr>")
-            + f'<td class="oct-country"><span class="oct-country-cell">{_region_flag_html(p["region"])}'
-            + f'{_html_escape(p["label"])}'
-            + (' <span class="oct-key-star">★</span>' if p["region"] in KEY_COUNTRIES else "")
-            + "</span></td>"
-            f'<td class="oct-rank">#{p["rank"]}{_rank_delta_html(p)}</td>'
-            f'<td class="oct-peak">#{p["peak"]}'
-            f'{_peak_badge_html(p)}</td>'
-            "</tr>"
-            for p in col
-        )
-        tables.append(
-            '<table class="overall-country-table"><thead><tr>'
-            f'<th class="oct-country">{first_col_header}</th><th class="oct-rank">Ranking</th><th class="oct-peak">Peak</th>'
-            f"</tr></thead><tbody>{rows}</tbody></table>"
-        )
-    return "".join(tables), len(tables)
-
-
 def _html_escape(value: object) -> str:
     import html as html_lib
 
     return html_lib.escape(str(value or ""))
 
 
+# ---------------------------------------------------------------------------
+# Rank-groups card (owner 2026-09-26). Replaced the site-style "all regions"
+# tables (118 rows over 3 columns were unreadable once posted on X): big tiles
+# for Global + the highlighted stores, then countries grouped by rank
+# ("#1 · 40 countries", #2, #3, #4–10, #11–50, #51+) as flag + name chips
+# sized to their text. Shared by the live posts (_build_progression_card_html,
+# with ▲/▼ vs the previous cycle) and daily_recap.py (best rank of the day).
+# ---------------------------------------------------------------------------
+
+# No iTunes music store there: their feed is always empty ("cn/kr: 0 song(s)"
+# every run) -> no tile, a "—" would read as "not charting".
+ITUNES_NO_MUSIC_STORE = {"cn", "kr"}
+RANK_GROUPS = [(1, 1, "#1"), (2, 2, "#2"), (3, 3, "#3"), (4, 10, "#4–10"), (11, 50, "#11–50"), (51, 10**6, "#51+")]
+
+
+def _brand_platform(platform: str) -> str:
+    return "apple_music" if platform.startswith("apple_music") else platform  # + "apple_music_albums"
+
+
+def rank_card_page(*, image_url: str, title: str, subtitle: str, platform: str, chart_label: str,
+                   when_main: str, when_sub: str, body_html: str, footer_left: str, tile_count: int = 0) -> str:
+    """Shell of the rank cards: header (cover, title, platform brand, date),
+    body, footer (@swiftiescharts + logo). Accent = the cover's color."""
+    esc = _html_escape
+    img_uri = _remote_data_uri(image_url or "") or (image_url or "")
+    accent = _cover_accent(img_uri)
+    logo_mask = _file_data_uri(FRONTEND_PUBLIC / "logo.png", "image/png")
+    brand_platform = _brand_platform(platform)
+    if brand_platform == "apple_music":
+        brand = _file_data_uri(FRONTEND_PUBLIC / "icons" / "apple-music-logo.webp", "image/webp")
+    else:
+        brand = _file_data_uri(HERE / "itunes_logo.svg", "image/svg+xml")
+    label = PLATFORMS[brand_platform]["label"] + (f" · {chart_label}" if chart_label else "")
+    tile_cols = tile_count if tile_count <= 6 else -(-tile_count // 2)
+    cover = f'<img class="cover" src="{esc(img_uri)}" alt="" />' if img_uri else ""
+    return f"""<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"/><style>
+  :root {{ --text:#101828; --muted:#667085; --line:rgba(16,24,40,.09); --accent:{accent}; }}
+  * {{ box-sizing:border-box; margin:0; padding:0; }}
+  body {{ background:#f9fcfa; font-family:Inter, system-ui, "Segoe UI", sans-serif; color:var(--text); }}
+  #card {{ width:1400px; background:#f9fcfa; padding:28px 32px 20px; }}
+  .head {{ display:flex; align-items:center; gap:18px; padding-bottom:18px; border-bottom:1px solid var(--line); }}
+  .cover {{ width:84px; height:84px; border-radius:14px; object-fit:cover; box-shadow:0 2px 10px rgba(0,0,0,.15); }}
+  .title {{ font-size:34px; font-weight:800; letter-spacing:-.02em; line-height:1.1; }}
+  .album {{ font-size:18px; color:var(--muted); margin-top:4px; }}
+  .side {{ margin-left:auto; text-align:right; }}
+  .brand {{ display:flex; align-items:center; justify-content:flex-end; gap:8px; font-size:15px; font-weight:800;
+           text-transform:uppercase; letter-spacing:.05em; color:var(--muted); }}
+  .brand img {{ width:24px; height:24px; border-radius:5px; }}
+  .when {{ font-size:18px; font-weight:800; margin-top:6px; }}
+  .when-sub {{ font-size:14px; font-weight:600; color:var(--muted); margin-top:2px; }}
+  .tiles {{ display:grid; grid-template-columns:repeat({max(tile_cols, 1)}, 1fr); gap:12px; margin:20px 0 6px; }}
+  .tile {{ background:#fff; border:1px solid var(--line); border-radius:14px; padding:12px 14px; }}
+  .tile-one {{ background:color-mix(in srgb, var(--accent) 14%, #fff); border-color:color-mix(in srgb, var(--accent) 40%, #fff); }}
+  .tile-off {{ opacity:.55; }}
+  .tile-name {{ display:flex; align-items:center; gap:8px; font-size:15px; font-weight:700; color:var(--muted); white-space:nowrap; }}
+  .tile-rank {{ display:flex; align-items:baseline; gap:8px; font-size:40px; font-weight:900; letter-spacing:-.03em;
+               margin-top:4px; font-variant-numeric:tabular-nums; }}
+  .tile-rank .delta {{ font-size:17px; letter-spacing:0; }}
+  .tile-one .tile-rank {{ color:var(--accent); }}
+  .group {{ margin-top:18px; }}
+  .group h3 {{ display:flex; align-items:baseline; gap:12px; margin-bottom:10px; }}
+  .g-rank {{ font-size:28px; font-weight:900; letter-spacing:-.02em; }}
+  .group-one .g-rank {{ color:var(--accent); }}
+  .g-count {{ font-size:18px; font-weight:700; color:var(--muted); }}
+  /* Chips sized to their text and wrapped (owner 2026-09-26) — a name is never cut. */
+  .chips {{ display:flex; flex-wrap:wrap; gap:8px; }}
+  .chip {{ display:flex; align-items:center; gap:9px; background:#fff; border:1px solid var(--line);
+          border-radius:10px; padding:8px 12px; font-size:17px; font-weight:600; white-space:nowrap; }}
+  .chip-key {{ border-color:var(--accent); box-shadow:inset 3px 0 0 var(--accent); font-weight:800; }}
+  .chip-name {{ line-height:1.15; }}
+  .chip-rank {{ font-weight:800; font-variant-numeric:tabular-nums; margin-left:2px;
+               padding-left:9px; border-left:1px solid var(--line); }}
+  .delta {{ font-size:14px; font-weight:800; font-variant-numeric:tabular-nums; }}
+  .delta.up {{ color:#1f9d55; }}
+  .delta.down {{ color:#d64545; }}
+  .delta.new {{ color:#fff; background:var(--accent); border-radius:999px; padding:1px 7px; font-size:11px; letter-spacing:.04em; }}
+  .star {{ color:var(--accent); font-size:.9em; margin-left:2px; }}
+  .region-flag {{ width:26px; height:19px; flex-shrink:0; object-fit:cover; border-radius:3px;
+                 border:1px solid rgba(16,24,40,.08); }}
+  .region-flag-globe {{ width:20px; height:20px; border:none; color:var(--muted); }}
+  .stats {{ display:grid; grid-template-columns:repeat(6, 1fr); gap:10px; margin-top:10px; }}
+  .stat {{ background:#fff; border:1px solid var(--line); border-radius:12px; padding:10px 12px; }}
+  .stat-label {{ font-size:13px; font-weight:800; text-transform:uppercase; letter-spacing:.05em; color:var(--muted); }}
+  .stat-value {{ font-size:32px; font-weight:900; letter-spacing:-.02em; font-variant-numeric:tabular-nums; margin-top:2px; }}
+  .stat-one {{ background:color-mix(in srgb, var(--accent) 14%, #fff); border-color:color-mix(in srgb, var(--accent) 40%, #fff); }}
+  .stat-one .stat-value {{ color:var(--accent); }}
+  .stat-zero .stat-value {{ color:#c0c7d2; }}
+  .item {{ margin-top:20px; }}
+  .item-head {{ display:flex; align-items:center; gap:12px; }}
+  .item-cover {{ width:48px; height:48px; border-radius:9px; object-fit:cover; }}
+  .item-title {{ font-size:24px; font-weight:800; letter-spacing:-.01em; }}
+  .item-rank {{ font-size:24px; font-weight:900; color:var(--muted); min-width:36px; }}
+  .foot {{ margin-top:22px; padding-top:14px; border-top:1px solid var(--line); display:flex; align-items:center;
+          justify-content:space-between; font-size:13px; font-weight:700; letter-spacing:.03em; text-transform:uppercase; color:var(--muted); }}
+  .foot-brand {{ display:flex; align-items:center; gap:9px; }}
+  .brand-logo {{ width:26px; height:26px; background-color:var(--text);
+    -webkit-mask:url("{logo_mask}") center/contain no-repeat; mask:url("{logo_mask}") center/contain no-repeat; }}
+</style></head><body><div id="card">
+  <div class="head">{cover}<div><div class="title">{esc(title)}</div>
+    <div class="album">{esc(subtitle)}</div></div>
+    <div class="side"><div class="brand"><img src="{brand}" alt=""/>{esc(label)}</div>
+      <div class="when">{esc(when_main)}</div>
+      <div class="when-sub">{esc(when_sub)}</div></div></div>
+  {body_html}
+  <div class="foot"><span>{footer_left}</span>
+    <span class="foot-brand">@swiftiescharts <span class="brand-logo"></span> thetsmuseum.app</span></div>
+</div></body></html>"""
+
+
+def _delta_html(p: dict) -> str:
+    """Live cards: move vs the previous cycle ("delta" > 0 = up), NEW on a
+    first appearance on that chart, nothing when unchanged."""
+    if p.get("is_new"):
+        return '<span class="delta new">NEW</span>'
+    delta = p.get("delta")
+    if not delta:
+        return ""
+    return (f'<span class="delta up">▲{delta}</span>' if delta > 0
+            else f'<span class="delta down">▼{abs(delta)}</span>')
+
+
+def rank_groups_card_html(*, title: str, subtitle: str, image_url: str, platform: str, placements: list[dict],
+                          when_main: str, when_sub: str, footer_left: str, chart_label: str = "",
+                          show_deltas: bool = False, show_new_peaks: bool = False) -> str:
+    """Tiles (Global when the platform has one + HIGHLIGHT_COUNTRIES), then the
+    countries grouped by rank. placements: {region, label, rank} + optional
+    delta / is_new (live) and new_peak (★)."""
+    esc = _html_escape
+    by_region = {p["region"]: p for p in placements}
+    countries = sorted((p for p in placements if p["region"] != "global"),
+                       key=lambda p: (p["rank"], _market_order(p)))
+    extras = lambda p: ((_delta_html(p) if show_deltas else "")  # noqa: E731
+                        + ('<span class="star">★</span>' if show_new_peaks and p.get("new_peak") else ""))
+    tiles = []
+    for region in ["global", *HIGHLIGHT_COUNTRIES]:
+        if region == "global" and platform != "apple_music":
+            continue  # no Global iTunes / Apple Music albums chart
+        if platform == "itunes" and region in ITUNES_NO_MUSIC_STORE:
+            continue
+        p = by_region.get(region)
+        name = "Global" if region == "global" else country_label(region)
+        rank = f"#{p['rank']}" if p else "—"
+        cls = "tile" + (" tile-one" if p and p["rank"] == 1 else "") + ("" if p else " tile-off")
+        tiles.append(f'<div class="{cls}"><div class="tile-name">{_region_flag_html(region)}'
+                     f'<span>{esc(name)}</span></div><div class="tile-rank">{rank}{extras(p) if p else ""}</div></div>')
+    groups = []
+    for lo, hi, group_title in RANK_GROUPS:
+        members = [p for p in countries if lo <= p["rank"] <= hi]
+        if not members:
+            continue
+        chips = "".join(
+            f'<div class="chip{" chip-key" if p["region"] in HIGHLIGHT_COUNTRIES else ""}">'
+            f'{_region_flag_html(p["region"])}<span class="chip-name">{esc(p["label"])}</span>'
+            + (f'<span class="chip-rank">#{p["rank"]}</span>' if lo != hi else "")
+            + extras(p) + "</div>"
+            for p in members
+        )
+        n = len(members)
+        groups.append(
+            f'<section class="group{" group-one" if lo == 1 else ""}"><h3><span class="g-rank">{group_title}</span>'
+            f'<span class="g-count">{n} {"country" if n == 1 else "countries"}</span></h3>'
+            f'<div class="chips">{chips}</div></section>'
+        )
+    body = f'<div class="tiles">{"".join(tiles)}</div>{"".join(groups)}'
+    return rank_card_page(image_url=image_url, title=title, subtitle=subtitle, platform=platform,
+                          chart_label=chart_label, when_main=when_main, when_sub=when_sub, body_html=body,
+                          footer_left=footer_left, tile_count=len(tiles))
+
+
+
 def _build_progression_card_html(
     *, track: dict, placements: list[dict], scraped_at: str, platform: str,
 ) -> str:
-    """Card = the site's own share image for this track (2026-09-24, owner:
-    "match the frontend's actual design"): a port of the `.overall-song-block`
-    rendered by pages/AppleMusic.jsx (AppleMusicOverallBlock) / pages/ITunes.jsx
-    as captured by ShareImageButton (`.is-share-image-capturing`): header
-    (cover + title + album), platform brand row (logo + "Apple Music" /
-    "iTunes") + "vs <previous cycle time>", Chart|Country / Ranking tables
-    split in columns like splitPlacementsIntoColumns, share footer with
-    @swiftiescharts (owner: replaces the site's "THE TAYLOR SWIFT MUSEUM : A
-    Taylor Swift fan project" line) + the Swifties Charts logo mask (/logo.png recolored to --text). CSS values are
-    copied from styles/Charts.css, calendar.css, ITunes.css, RegionFlag.css
-    and the default :root tokens (variables.css) — keep in sync if the site
-    card changes. Deltas are "since the last update" (this script's state)."""
+    """Live card of a post (owner 2026-09-26: the site-style tables of up to
+    ~170 rows were unreadable on X) -> rank_groups_card_html: the cycle's rank
+    per country, ▲/▼ vs the previous cycle, NEW on a first appearance on that
+    chart, ★ new peak since release."""
     conf = PLATFORMS[platform]
-    img_uri = _remote_data_uri(track.get("image_url") or "") or (track.get("image_url") or "")
-    accent = _cover_accent(img_uri)
-    cover_html = (
-        f'<img class="overall-song-cover" src="{_html_escape(img_uri)}" alt="" />' if img_uri else ""
-    )
-    title = _html_escape(track["title"])
-    album = _html_escape(track.get("subtitle") or display_title_for_album(track.get("album") or ""))
-    logo_mask = _file_data_uri(FRONTEND_PUBLIC / "logo.png", "image/png")
-    if platform == "apple_music":
-        brand_logo = _file_data_uri(FRONTEND_PUBLIC / "icons" / "apple-music-logo.webp", "image/webp")
-    else:
-        # Official iTunes logo (Wikimedia Commons ITunes_logo.svg), kept next to
-        # this script — the site has no iTunes logo asset (owner 2026-09-24:
-        # iTunes header must mirror the Apple Music brand row).
-        brand_logo = _file_data_uri(HERE / "itunes_logo.svg", "image/svg+xml")
     prev_times = [p["prev_scraped_at"] for p in placements if p.get("prev_scraped_at")]
     compared = _format_clock(max(prev_times)) if prev_times else ""
-    compared_html = f'<span class="am-group-brand-compared-to">vs {_html_escape(compared)}</span>' if compared else ""
-    # Header right (owner 2026-09-24): logo + platform name, then date + hour
-    # of this cycle, then ALWAYS the 4 tallies (even at 0) — "X #1", "X top
-    # 10", "X top 50", "X charting" — pill style from the site's iTunes
-    # .itunes-overall-stat.
-    ranks = [p["rank"] for p in placements]
-    tallies = [
-        (sum(1 for r in ranks if r == 1), "#1", True),
-        (sum(1 for r in ranks if r <= 10), "top 10", False),
-        (sum(1 for r in ranks if r <= 50), "top 50", False),
-        (len(ranks), "charting", False),
-    ]
-    pills_html = "".join(
-        f'<span class="itunes-overall-stat{" itunes-overall-stat-no1" if hl and n else ""}">{n} {label}</span>'
-        for n, label, hl in tallies
+    return rank_groups_card_html(
+        title=track["title"],
+        subtitle=track.get("subtitle") or display_title_for_album(track.get("album") or ""),
+        image_url=track.get("image_url") or "", platform=platform, placements=placements,
+        when_main=f"{_format_share_date(scraped_at)} · {_format_clock(scraped_at)}",
+        when_sub=f"▲▼ vs {compared}" if compared else "rank on each chart right now",
+        footer_left=f'{_html_escape(conf["footer"])} · {_html_escape(_format_share_date(scraped_at))}'
+                    ' · <span class="star">★</span> new peak',
+        show_deltas=True, show_new_peaks=True,
     )
-    when_html = (
-        f'<span class="am-group-brand-when">{_html_escape(_format_share_date(scraped_at))}'
-        f' &middot; {_html_escape(_format_clock(scraped_at))}</span>'
-    )
-    side_html = (
-        '<div class="am-group-section-brand"><span class="am-group-brand-row">'
-        f'<img src="{brand_logo}" class="am-group-brand-logo" alt="" /><span>{_html_escape(conf["label"])}</span></span>'
-        f'{when_html}{compared_html}<div class="itunes-overall-stats">{pills_html}</div></div>'
-    )
-
-    if platform == "apple_music":
-        # Site order: Global first, then countries, by rank.
-        ordered = sorted(placements, key=lambda p: (0 if p["region"] == "global" else 1, p["rank"], _market_order(p)))
-        first_col = "Chart"
-        footer_date = f'{conf["footer"]} - {_format_share_date(scraped_at)} - {_html_escape(_format_clock(scraped_at))}'
-    else:
-        ordered = sorted(placements, key=lambda p: (p["rank"], _market_order(p)))
-        first_col = "Country"
-        footer_date = f'{conf["footer"]} - {_format_share_date(scraped_at)}'
-
-    tables_html, col_count = _placements_tables_html(ordered, first_col)
-    # 4 columns (all-regions cards, 12+ rows): ~500 px per column so long names
-    # + rank + peak badge never spill into the next column (2026-09-25 render).
-    card_width = CARD_WIDTH_BY_COLS.get(col_count, CARD_WIDTH_BY_COLS[4])
-
-    return f"""<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="utf-8"/>
-<style>
-  :root {{
-    --text:#101828; --muted:#6b7280; --line:rgba(16,24,40,.09);
-    --surface-3:rgba(255,255,255,.99); --accent:{accent};
-  }}
-  * {{ box-sizing: border-box; margin: 0; padding: 0; }}
-  body {{ background: #f9fcfa; font-family: Inter, system-ui, "Segoe UI", sans-serif; color: var(--text); }}
-  .overall-song-block {{
-    width: {card_width}px;
-    background: #f9fcfa;
-    border-radius: 1.1rem;
-    border: 1px solid var(--line);
-    box-shadow: 0 2px 16px rgba(0,0,0,0.07);
-    padding: 1.1rem 1.2rem 0.9rem 1.2rem;
-    display: flex; flex-direction: column;
-  }}
-  .overall-song-header {{
-    display: flex; align-items: center; gap: 0.75rem;
-    margin-bottom: 0.9rem; padding-bottom: 0.75rem;
-    border-bottom: 1px solid var(--line); width: 100%;
-  }}
-  .overall-song-header-link {{ display: flex; align-items: center; gap: 1rem; flex: 1; min-width: 0; }}
-  .overall-song-cover {{
-    width: 52px; height: 52px; border-radius: 0.6rem; object-fit: cover;
-    flex-shrink: 0; box-shadow: 0 1px 6px rgba(0,0,0,0.1);
-  }}
-  .overall-song-meta {{ min-width: 0; }}
-  .overall-song-title {{
-    font-size: 1.05rem; font-weight: 700; color: var(--text); margin-bottom: 0.15em;
-    line-height: 1.2; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-  }}
-  .overall-song-artist {{ font-size: 0.92rem; color: var(--muted); line-height: 1.2; }}
-  .am-group-section-brand {{ display: flex; flex-direction: column; align-items: flex-end; gap: 2px; margin-left: auto; }}
-  .am-group-brand-row {{
-    display: flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 800;
-    text-transform: uppercase; letter-spacing: .05em; color: var(--muted); white-space: nowrap;
-  }}
-  .am-group-brand-logo {{ width: 18px; height: 18px; border-radius: 4px; flex-shrink: 0; }}
-  .am-group-brand-compared-to {{ font-size: 9px; font-weight: 600; color: var(--muted); opacity: .75; white-space: nowrap; }}
-  .am-group-brand-when {{ font-size: 11px; font-weight: 700; color: var(--text); white-space: nowrap; }}
-  .itunes-overall-stats {{ display: flex; flex-wrap: nowrap; align-items: center; justify-content: flex-end; gap: 6px; margin-top: 4px; }}
-  .itunes-overall-stat {{
-    font-size: 11px; font-weight: 700; color: var(--text); background: #eef1ef;
-    border-radius: 999px; padding: 2px 9px; white-space: nowrap;
-  }}
-  .itunes-overall-stat-no1 {{ color: #fff; background: var(--accent); }}
-  .am-overall-table-grid {{ display: grid; grid-template-columns: repeat({col_count}, minmax(0, 1fr)); gap: 0 1.2rem; }}
-  .overall-country-table {{ width: 100%; border-collapse: collapse; font-size: 0.88rem; }}
-  .overall-country-table thead tr {{ border-bottom: 1px solid var(--line); }}
-  .overall-country-table th {{
-    text-align: right; font-size: 0.72rem; font-weight: 700; text-transform: uppercase;
-    letter-spacing: 0.04em; color: var(--muted); padding: 0 0.5rem 0.4rem 0.5rem;
-  }}
-  .overall-country-table th.oct-country {{ text-align: left; }}
-  .overall-country-table td {{ padding: 0.35rem 0.5rem; vertical-align: middle; white-space: nowrap; text-align: right; }}
-  .overall-country-table tbody tr:nth-child(even) {{ background: var(--surface-3); }}
-  .oct-country {{ font-weight: 600; color: var(--accent); text-align: left !important; min-width: 64px; }}
-  .oct-country-cell {{ display: inline-flex; align-items: center; gap: 7px; }}
-  /* 5 key stores (owner 2026-09-25): tinted row + accent bar + star. */
-  .overall-country-table tbody tr.oct-key {{ background: color-mix(in srgb, var(--accent) 13%, #fff); }}
-  .overall-country-table tbody tr.oct-key td:first-child {{ box-shadow: inset 4px 0 0 var(--accent); }}
-  .overall-country-table tbody tr.oct-key td {{ font-weight: 800; }}
-  .oct-key-star {{ color: var(--accent); font-size: 0.95em; }}
-  .oct-rank {{ font-weight: 700; color: var(--text); }}
-  .oct-peak {{ font-weight: 700; color: var(--text); font-variant-numeric: tabular-nums; width: 150px; }}
-  .new-peak {{
-    margin-left: 6px; padding: 1px 7px; border-radius: 999px; background: var(--accent); color: #fff;
-    font-size: 0.68rem; font-weight: 800; letter-spacing: .04em; vertical-align: 1px;
-  }}
-  th.oct-peak {{ color: var(--muted); }}
-  .oct-rank-delta {{ font-size: 0.85em; font-weight: 400; }}
-  .oct-rank-delta.rank-up {{ color: #2a9d5c; }}
-  .oct-rank-delta.rank-down {{ color: #e05c3a; }}
-  .oct-rank-delta.rank-new {{ color: var(--muted); font-weight: 700; }}
-  .region-flag {{
-    display: inline-block; width: 20px; height: 15px; flex-shrink: 0; object-fit: cover;
-    border-radius: 2px; border: 1px solid rgba(16,24,40,.07);
-    box-shadow: 0 1px 2px rgba(0,0,0,0.12); vertical-align: -2px;
-  }}
-  .region-flag-globe {{ width: 15px; height: 15px; color: var(--muted); border: none; box-shadow: none; border-radius: 0; }}
-  .am-share-card-footer {{
-    margin-top: 16px; padding-top: 12px; border-top: 1px solid rgba(16,24,40,.07);
-    display: flex; align-items: center; justify-content: space-between; gap: 12px;
-    color: var(--muted); font-size: 11px; font-weight: 700; letter-spacing: 0.02em; text-transform: uppercase;
-  }}
-  .am-share-card-date {{ flex: 0 0 auto; color: var(--text); }}
-  .am-share-card-brand {{ display: flex; align-items: center; justify-content: flex-end; gap: 8px; min-width: 0; text-align: right; }}
-  .brand-logo {{
-    display: inline-block; background-color: var(--text);
-    -webkit-mask-image: url("{logo_mask}"); mask-image: url("{logo_mask}");
-    -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat;
-    -webkit-mask-position: center; mask-position: center;
-    -webkit-mask-size: contain; mask-size: contain;
-  }}
-  .am-share-card-brand-logo {{ width: 26px; height: 26px; flex: 0 0 auto; }}
-</style>
-</head>
-<body>
-<div class="overall-song-block" id="card">
-  <div class="overall-song-header">
-    <div class="overall-song-header-link">
-      {cover_html}
-      <div class="overall-song-meta">
-        <div class="overall-song-title">{title}</div>
-        <div class="overall-song-artist">{album}</div>
-      </div>
-    </div>
-    {side_html}
-  </div>
-  <div class="am-overall-table-grid">{tables_html}</div>
-  <div class="am-share-card-footer">
-    <div class="am-share-card-date">{footer_date}</div>
-    <div class="am-share-card-brand">
-      <span>@swiftiescharts</span>
-      <span class="brand-logo am-share-card-brand-logo" role="img" aria-label="Swifties Charts"></span>
-      <span>thetsmuseum.app</span>
-    </div>
-  </div>
-</div>
-</body>
-</html>"""
 
 
 def _render_card_png(html_content: str, out_path: Path, scale: int = 3) -> None:
@@ -1043,11 +1062,12 @@ def _collect_track_placements(track: dict, sources: list[dict], cache: dict[Path
         state_key = f"{track['key']}|{source['source_key']}"
         prev = state.get(state_key) or {}
         prev_rank = prev.get("rank")
+        cycle_prev = _previous_cycle_rank(track, source, cache, today, scraped_at)
         if prev_rank is None:
             # Never posted here, but maybe already charting before (the Encore
             # album sat on Apple Music album charts from 00:00, 2026-09-25):
             # compare with the previous real cycle, never call it NEW.
-            prev_rank = _previous_cycle_rank(track, source, cache, today, scraped_at)
+            prev_rank = cycle_prev
         delta = (prev_rank - rank) if prev_rank is not None else None
         # Peak before this cycle (real CSV history + state), then this cycle.
         prior = []
@@ -1067,6 +1087,15 @@ def _collect_track_placements(track: dict, sources: list[dict], cache: dict[Path
         # posted card showed it lower.
         re_peak = ((not is_new) and prior_peak is not None and rank == prior_peak
                    and prev_rank is not None and prev_rank > rank)
+        # What THIS cycle brought (song update posts, 2026-09-27): vs the peak
+        # before this cycle and the previous cycle — not vs the last post, or a
+        # song that rarely posts would pile up stale peaks.
+        cycle_new_peak = csv_peak is not None and rank < csv_peak
+        cycle_re_peak = csv_peak is not None and rank == csv_peak and cycle_prev is not None and cycle_prev > rank
+        if track.get("old"):
+            # Out before our history: no real peak, never NEW (album_song_tracks).
+            is_new = new_peak = re_peak = cycle_new_peak = cycle_re_peak = False
+            peak = None
         placements.append(
             {
                 "label": source["chart_label"],
@@ -1077,6 +1106,9 @@ def _collect_track_placements(track: dict, sources: list[dict], cache: dict[Path
                 "peak": peak,
                 "new_peak": new_peak,
                 "re_peak": re_peak,
+                "cycle_new_peak": cycle_new_peak,
+                "cycle_re_peak": cycle_re_peak,
+                "cycle_new_no1": rank == 1 and cycle_prev != 1,
                 "is_new": is_new,
                 "delta": delta,
                 # Never posted on this chart = worth a first post even if the
@@ -1174,6 +1206,71 @@ def post_due(track: dict, moved: list[dict], state: dict, now: datetime) -> str 
     if since_min is not None and since_min < MIN_GAP_HOURS * 60:
         return f"minor move, last post < {MIN_GAP_HOURS:g}h ago"
     return None
+
+
+def song_update(track: dict, placements: list[dict], state: dict, now: datetime) -> dict | None:
+    """{"score", "peaks"} when this cycle is a good update for the song (see
+    SONG_UPDATE_POSTS), None otherwise — also None while the song was posted
+    less than UPDATE_GAP_HOURS ago on this platform."""
+    if not SONG_UPDATE_POSTS or track.get("old") or track.get("is_album"):
+        return None
+    peaks = [p for p in placements
+             if p["rank"] <= UPDATE_TOP and (p.get("cycle_new_peak") or p.get("cycle_re_peak"))]
+    score = sum(
+        ((1.0 if p["cycle_new_peak"] else 0.5) + (1.0 if p.get("cycle_new_no1") else 0.0))
+        * (UPDATE_GLOBAL_WEIGHT if p["region"] == "global" else MARKET_WEIGHTS.get(p["region"], MARKET_WEIGHT_DEFAULT))
+        for p in peaks
+    )
+    if len(peaks) < UPDATE_MIN_PEAKS or score < UPDATE_MIN_SCORE:
+        return None
+    last = _parse_release_date(state.get(f"__last_post|{track['key']}") or "")
+    if last and (now - last).total_seconds() / 3600.0 < UPDATE_GAP_HOURS:
+        print(f"[new_release_progression] {track['title']}: good update (score {score:.2f}) but posted "
+              f"< {UPDATE_GAP_HOURS:g}h ago — not posted")
+        return None
+    return {"score": score, "peaks": peaks}
+
+
+def _peak_list(peaks: list[dict]) -> str:
+    """"#3 in the US & the UK, #1 in Suriname" — grouped by rank, best first,
+    bigger market first on a tie, the Global chart named as such."""
+    by_rank: dict[int, list[str]] = {}
+    for p in sorted(peaks, key=lambda p: (p["rank"], _market_order(p))):
+        by_rank.setdefault(p["rank"], []).append(p["region"])
+    parts = []
+    for rank, regions in by_rank.items():
+        places = ["the Global chart" if r == "global" else MARKET_NAMES.get(r, country_label(r)) for r in regions]
+        parts.append(f"#{rank} {'on' if regions == ['global'] else 'in'} {_and_list(places)}")
+    return ", ".join(parts)
+
+
+def build_update_tweet(*, track: dict, update: dict, platform: str, worldwide: dict[str, int]) -> str:
+    """Song update post (2026-09-27): the peaks of the cycle, then the
+    worldwide line + link. Too long -> the smallest markets go first."""
+    from collectors.twitter.albums import album_emoji
+    from collectors.twitter.links import amcharts_url
+
+    label = PLATFORMS[platform]["label"]
+    url = amcharts_url(PLATFORMS[platform]["site_source"])
+    world = worldwide_sentence(worldwide, platform)
+    title = f'"{track["title"]}"'
+    # Keep the biggest markets when trimming (Global, then market weight).
+    kept = sorted(update["peaks"], key=_market_order)
+    while True:
+        new = [p for p in kept if p["cycle_new_peak"]]
+        back = [p for p in kept if not p["cycle_new_peak"]]
+        if len(new) == 1 and not back:
+            lead = f"{title} hits a new peak of {_peak_list(new)} on {label}."
+        elif new:
+            lead = f"{title} hits new peaks on {label}: {_peak_list(new)}."
+            if back:
+                lead = lead[:-1] + f" — and is back at its peak: {_peak_list(back)}."
+        else:
+            lead = f"{title} is back at its peak on {label}: {_peak_list(back)}."
+        tweet = "\n\n".join(x for x in (f"{album_emoji(track.get('album'))} | {lead}", world, url) if x)
+        if _tweet_weight(tweet, url) <= 275 or len(kept) <= 1:
+            return tweet
+        kept.pop()
 
 
 def _where(p: dict, platform: str, is_album: bool = False) -> str:
@@ -1280,7 +1377,7 @@ def render_card(*, track: dict, placements: list[dict], max_scraped_at: str, pla
         track=track, placements=placements, scraped_at=max_scraped_at, platform=platform,
     )
     out_path = OUT_DIR / f"{_safe_slug(track['key'], platform, max_scraped_at)}.png"
-    _render_card_png(html_content, out_path, scale=3 if len(placements) <= 24 else 2)
+    _render_card_png(html_content, out_path, scale=2)
     return out_path
 
 
@@ -1343,14 +1440,14 @@ def post_with_retries(tweet: str, image_path: Path, lock_path: Path, *, debut: b
                 ok = post_image_thread(
                     thread, TWITTER_SESSION,
                     priority=DEBUT_POST_PRIORITY if debut else POST_PRIORITY,
-                    slot_timeout=DEBUT_POST_SLOT_TIMEOUT if debut else POST_SLOT_TIMEOUT,
+                    slot_timeout=_slot_timeout(debut),
                 )
             else:
                 ok = post_with_image(
                     tweet, image_path, TWITTER_SESSION,
                     priority=DEBUT_POST_PRIORITY if debut else POST_PRIORITY,
                     skip_if=lambda: lock_path.exists(),
-                    slot_timeout=DEBUT_POST_SLOT_TIMEOUT if debut else POST_SLOT_TIMEOUT,
+                    slot_timeout=_slot_timeout(debut),
                 )
             error = "" if ok else (get_last_post_error() or "unknown error")
         except TimeoutError as exc:
@@ -1378,7 +1475,10 @@ def _thread_header(entries: list[dict], platform: str) -> str:
     albums = {e["track"].get("album") for e in entries}
     chart = f"the {PLATFORMS[platform]['label']} charts"
     if len(albums) == 1 and next(iter(albums)):
-        return f'🧵 | "{display_title_for_album(next(iter(albums)))}"\'s songs on {chart}.'
+        album = next(iter(albums))
+        # Whole-album thread (2026-09-26): the album's own name, not the new edition's.
+        name = album if any(e["track"].get("old") for e in entries) else display_title_for_album(album)
+        return f'🧵 | "{name}"\'s songs on {chart}.'
     return f"🧵 | Taylor Swift's new songs on {chart}."
 
 
@@ -1510,6 +1610,16 @@ def _importance(track: dict, placements: list[dict]) -> tuple:
     return (0 if best["rank"] == 1 else 1, best["rank"], order.get(best["region"], 99), 0 if track.get("is_album") else 1)
 
 
+def _strength(track: dict, placements: list[dict]) -> tuple:
+    """Album thread order (2026-09-26, "du plus fort au plus faible"): best
+    current rank on a key chart (Global, then the US first on a tie), then
+    how many countries it charts in."""
+    order = {c: i for i, c in enumerate(["global", *KEY_COUNTRIES])}
+    key = [p for p in placements if p.get("key", True)] or placements
+    best = min(key, key=lambda p: (p["rank"], order.get(p["region"], 99)))
+    return (0 if track.get("is_album") else 1, best["rank"], order.get(best["region"], 99), -len(placements))
+
+
 def run_platform(
     platform: str, args: argparse.Namespace, now: datetime, today: str, express: dict[str, Path] | None = None,
 ) -> None:
@@ -1557,17 +1667,25 @@ def run_platform(
     song_sources = [s for s in sources if s.get("kind", "song") == "song"]
     album_sources = [s for s in sources if s.get("kind") == "album"]
     items = [(t, song_sources) for t in active_tracks]
-    if album_sources:  # iTunes Top Albums card (owner 2026-09-25)
+    if ALBUM_SONGS_THREAD and not express:  # every song of the album (2026-09-26)
+        items += [(t, song_sources) for t in album_song_tracks(active_tracks)]
+    if album_sources and ALBUM_CHART_CARDS:  # Top Albums card (owner 2026-09-25, off since 09-26)
         items += [(a, album_sources) for a in album_items(active_tracks)]
 
     # Pass 1: what is worth posting this cycle.
     to_post: list[tuple[dict, list[dict]]] = []
     idle_songs: list[tuple[dict, list[dict]]] = []  # charting, but nothing worth a post alone
+    update_candidates: list[tuple[float, dict, list[dict], dict]] = []
     for track, item_sources in items:
         try:
             placements = _collect_track_placements(track, item_sources, cache, state, today)
+            update = None if express else song_update(track, placements, state, now)
+            if update:
+                update_candidates.append((update["score"], track, placements, update))
             if not placements and track.get("is_album"):
                 continue
+            if not placements and track.get("old"):
+                continue  # not charting: not in the thread (iTunes: "seulement ceux qui chartent")
             if not placements:
                 hours_out = (now - track["released_at"]).total_seconds() / 3600.0
                 flag = f"__not_found_alerted|{track['key']}"
@@ -1588,11 +1706,23 @@ def run_platform(
 
             # Volume control (post_due). Skipped cycles keep the last posted
             # baseline, so the next post compares against what followers saw.
-            held = post_due(track, moved, state, now)
+            # Hourly runs: every move posts, drops and small climbs included
+            # (owner 2026-09-25: "since we did threads now we can post
+            # everything" — one thread per cycle, not one post per song). The
+            # iTunes follow's mid-hour express posts keep post_due (the chart
+            # moves every minute: a thread a minute otherwise).
+            held = post_due(track, moved, state, now) if (express or not POST_EVERY_MOVE) else None
             if held:
                 if not track.get("is_album"):
                     idle_songs.append((track, placements))
                 print(f"[new_release_progression] {track['title']} [{label}]: {held} — not posted")
+                continue
+            if SONG_POSTS_NUMBER_ONE_ONLY and not track.get("is_album") and not any(
+                p["rank"] == 1 for p in moved
+            ):
+                # Owner 2026-09-26: a song posts on its own only when it gets
+                # to #1 on a key chart (new #1 / back at #1).
+                print(f"[new_release_progression] {track['title']} [{label}]: moved, no new #1 — not posted")
                 continue
             to_post.append((track, placements))
         except Exception as exc:
@@ -1601,15 +1731,29 @@ def run_platform(
             traceback.print_exc()
             alert(f'{label}: "{track["title"]}" crashed: {type(exc).__name__}: {exc}')
 
+    # Song update post (2026-09-27): the best candidate only, one per platform
+    # and cycle; a song already posting for a key #1 keeps that post.
+    update_of: dict[str, dict] = {}
+    if update_candidates:
+        score, track, placements, update = max(update_candidates, key=lambda c: c[0])
+        others = ", ".join(f"{t['title']} {s:.2f}" for s, t, _p, _u in update_candidates if t is not track)
+        print(f"[new_release_progression] {track['title']} [{label}]: good update, score {score:.2f} — "
+              + ", ".join(f"{p['region']}#{p['rank']}{'' if p['cycle_new_peak'] else ' (back)'}" for p in update["peaks"])
+              + (f" (not posted this cycle: {others})" if others else ""))
+        if not any(t["key"] == track["key"] for t, _p in to_post):
+            to_post.append((track, placements))
+            update_of[track["key"]] = update
     # A songs thread carries EVERY song of the release (owner 2026-09-25:
     # "since it's a thread every song should go in"): the ones that triggered
     # it first, then the others with their current ranks.
     idle_keys: set[str] = set()
-    if any(not t.get("is_album") for t, _ in to_post):
+    if SONG_THREADS and any(not t.get("is_album") for t, _ in to_post):
         to_post += idle_songs
         idle_keys = {t["key"] for t, _ in idle_songs}
     # Biggest news first: the thread opener is the best song (owner 2026-09-25).
-    to_post.sort(key=lambda tp: _importance(*tp))
+    # Album thread (2026-09-26): strongest song first, by its best current
+    # rank on a key chart, moved or not.
+    to_post.sort(key=lambda tp: _strength(*tp) if ALBUM_SONGS_THREAD else _importance(*tp))
 
     # Pass 2: text + card for everything worth posting, biggest news first.
     ready: list[dict] = []
@@ -1626,9 +1770,14 @@ def run_platform(
                 track, platform, cache, today,
                 path=(express or {}).get("album" if track.get("is_album") else "song"),
             )
-            tweet = build_tweet_text(track=track, placements=placements, platform=platform, worldwide=worldwide)
+            if track["key"] in update_of:
+                tweet = build_update_tweet(track=track, update=update_of[track["key"]], platform=platform,
+                                           worldwide=worldwide)
+            else:
+                tweet = build_tweet_text(track=track, placements=placements, platform=platform, worldwide=worldwide)
             print(f"[new_release_progression] {track['title']} [{label}]: "
                   + ("carried by the thread (no move)" if track["key"] in idle_keys
+                     else "good update" if track["key"] in update_of
                      else "moved on " + ", ".join(p["label"] for p in moved)))
             print(f"[new_release_progression] TWEET ({len(tweet)} chars):\n{tweet}")
             image_path = None
@@ -1651,8 +1800,8 @@ def run_platform(
         # never a thread made only of songs that didn't move.
         ready = [e for e in ready if e["track"]["key"] not in idle_keys]
         songs = []
-    groups = [[e] for e in ready if e["track"].get("is_album") or len(songs) < 2]
-    if len(songs) >= 2:
+    groups = [[e] for e in ready if e["track"].get("is_album") or len(songs) < 2 or not SONG_THREADS]
+    if len(songs) >= 2 and SONG_THREADS:
         groups.append(songs)
     groups.sort(key=lambda g: ready.index(g[0]))
     for group in groups:
@@ -1668,7 +1817,15 @@ def run_platform(
         return
     # Global cards = Apple Music data, so they belong to the Apple Music run:
     # the normal Taylor Global card first, then the album-filtered one.
-    if platform == "apple_music":
+    if platform == "apple_music" and GLOBAL_THREAD:
+        try:
+            _post_global_thread(args, today, state, active_tracks, platform, writes)
+        except Exception as exc:
+            import traceback
+
+            traceback.print_exc()
+            alert(f"Global thread crashed: {type(exc).__name__}: {exc}")
+    elif platform == "apple_music" and GLOBAL_CARDS:
         try:
             _post_global_snapshot(args, today, state, platform, writes)
         except Exception as exc:
@@ -1676,25 +1833,26 @@ def run_platform(
 
             traceback.print_exc()
             alert(f"Global card crashed: {type(exc).__name__}: {exc}")
-        for country in POP_CARD_COUNTRIES:
+    if platform == "apple_music":
+        cards =[(c, None) for c in REGION_CARD_COUNTRIES] + [(c, POP_GENRE) for c in POP_CARD_COUNTRIES]
+        for country, genre in cards:
             try:
-                _post_pop_snapshot(country, args, today, state, active_tracks, platform, writes)
+                _post_pop_snapshot(country, args, today, state, active_tracks, platform, writes, genre)
             except Exception as exc:
                 import traceback
 
                 traceback.print_exc()
-                alert(f"Pop card crashed ({country}): {type(exc).__name__}: {exc}")
+                alert(f"{genre or 'Region'} card crashed ({country}): {type(exc).__name__}: {exc}")
     if platform == "itunes":
         for album in sorted({t["album"] for t in active_tracks if t["album"]}):
-            for region in ITUNES_ALBUM_CARD_REGIONS:
-                try:
-                    _post_itunes_album_card(album, args, today, state, active_tracks, now, writes, region)
-                except Exception as exc:
-                    import traceback
+            try:
+                _post_itunes_album_thread(album, args, today, state, active_tracks, now, writes)
+            except Exception as exc:
+                import traceback
 
-                    traceback.print_exc()
-                    alert(f"iTunes album card crashed ({album}, {region}): {type(exc).__name__}: {exc}")
-    albums = sorted({t["album"] for t in active_tracks if t["album"]}) if platform == "apple_music" else []
+                traceback.print_exc()
+                alert(f"iTunes album thread crashed ({album}): {type(exc).__name__}: {exc}")
+    albums = sorted({t["album"] for t in active_tracks if t["album"]}) if platform == "apple_music" and GLOBAL_CARDS else []
     for album in albums:
         try:
             _post_album_snapshot(album, args, today, state, active_tracks, platform)
@@ -1757,7 +1915,7 @@ def _post_global_snapshot(args, today: str, state: dict, platform: str, writes: 
     print(f"[new_release_progression] TWEET ({len(tweet)} chars):\n{tweet}")
     if args.dry_run:
         return
-    rendered = snap.generate(today, "global", None, OUT_DIR)
+    rendered = snap.generate(today, "global", None, OUT_DIR, show_out=True)
     image_path = rendered.replace(OUT_DIR / f"{_safe_slug('global_snapshot', scraped_at)}.png")
     if args.no_post:
         print(f"[new_release_progression] --no-post: card {image_path}")
@@ -1777,13 +1935,170 @@ def _post_global_snapshot(args, today: str, state: dict, platform: str, writes: 
 
 # Apple Music Pop card per key market (owner 2026-09-25: "US Pop" etc. were
 # never posted). Own post, same card as generate_snapshot_images --genre pop.
-# Only a strong event of a new track triggers it: #1, entering the top 10, or a
-# new peak inside the top 10. Moves further down (UK/FR at #41-#199) never do.
+# ANY song of the new release's album moving UP triggers it, at any rank, old
+# tracks of the album included (owner 2026-09-25: "poste toujours dès qu'il y
+# a un mouvement positif de n'importe quel track de l'album" — a 21:00 US Pop
+# with the Encore songs flat but Opalite +13 / Ophelia +44 didn't post). Album
+# = every edition of it (The Life of a Showgirl, : The Encore, Track by Track).
+# A drop or an unchanged rank never posts. Moves are vs the same snapshot as
+# the card's arrows (last snapshot whose positions differ), so tweet and card
+# agree. "new peak" / "debut" only for the new tracks: their Pop history
+# starts at release; older tracks' all-time peaks aren't tracked here.
+# 2026-09-26 (owner): Pop only for the US and France ("on ne fera plus le pop
+# genre, on gardera seulement pour US et FR"), and the same card for the
+# normal (all-genre) Apple Music chart of the US ("what about us apple music
+# normal pas pop??? il est ou") — same rule, same code, genre None.
+# 2026-09-27 (owner): the album-song-moving-up trigger above is replaced by
+# NEW_ORDER_ONLY — posted only when the new songs move among themselves,
+# inside the top 10 (AM_NEW_ORDER_TOP) (APPLE_MUSIC_DEBUT_NEW_ORDER_ONLY=0 restores it).
 POP_GENRE = "Pop"
 POP_CARD_COUNTRIES = [
-    c.strip().lower() for c in os.getenv("APPLE_MUSIC_DEBUT_POP_COUNTRIES", ",".join(KEY_COUNTRIES)).split(",") if c.strip()
+    c.strip().lower() for c in os.getenv("APPLE_MUSIC_DEBUT_POP_COUNTRIES", "us").split(",") if c.strip()
 ]
+REGION_CARD_COUNTRIES = [
+    c.strip().lower() for c in os.getenv("APPLE_MUSIC_DEBUT_REGION_CARD_COUNTRIES", "us,au,ca").split(",") if c.strip()
+]
+
+
+def _chart_name(genre: str | None) -> str:
+    return f"Apple Music {genre} chart" if genre else "Apple Music chart"
+
+
+def _card_kind(genre: str | None) -> str:
+    """State/lock prefix: "pop" (kept for the existing Pop state), "region"."""
+    return genre.lower() if genre else "region"
 POP_TOP_N = 10
+
+
+def _album_family(name: str) -> str:
+    """Edition-free album name: "The Life of a Showgirl: The Encore" and
+    "The Life of a Showgirl (Track by Track Version)" -> "the life of a showgirl"."""
+    import re
+
+    return re.split(r"\s*[:(\[]", str(name or "").strip().lower(), maxsplit=1)[0].strip()
+
+
+# Owner 2026-09-27: the chart cards (Apple Music US/AU/CA/US Pop, Global
+# thread, iTunes thread) post ONLY when the new songs move among themselves —
+# one passes another, or one (re-)enters the chart. An old album song
+# climbing, or the 4 new songs all shifting together in the same order, no
+# longer posts. 0 = previous rule (any album song moving).
+NEW_ORDER_ONLY = os.getenv("APPLE_MUSIC_DEBUT_NEW_ORDER_ONLY", "1") == "1"
+# Apple Music only (owner 2026-09-27, "aussi pour apple music, seulement si
+# mouvement top 10"): the move among the new songs must touch the top 10 —
+# an entry inside it, or a pass where one of the two songs is/was in it.
+# iTunes keeps every reorder. 0 = no limit.
+AM_NEW_ORDER_TOP = int(os.getenv("APPLE_MUSIC_DEBUT_NEW_ORDER_TOP", "10"))
+
+
+def _new_song_ranks(tracks: list[dict], rows: list[dict], rank_of=None) -> dict[str, int]:
+    """{new track title: best rank} over `rows` (clean + explicit editions:
+    the best one). rank_of(row) defaults to the row's own rank; pass the
+    previous-snapshot resolver to get where those same rows were before."""
+    rank_of = rank_of or _rank_of
+    out: dict[str, int] = {}
+    for track in tracks:
+        ranks = [r for r in (rank_of(row) for row in rows if _row_matches(track, row)) if r is not None]
+        if ranks:
+            out[track["title"]] = min(ranks)
+    return out
+
+
+def _signature_rows(signature: dict[str, int] | None) -> list[dict]:
+    """{song: rank} signature (Global / iTunes album card state) as rows."""
+    return [{"song_name": song, "rank": rank} for song, rank in (signature or {}).items()]
+
+
+def new_songs_moves(cur: dict[str, int], prev: dict[str, int], top: int = 0) -> list[dict]:
+    """How the new songs moved among themselves, one entry per song that moved,
+    best current rank first: {"title", "rank", "prev" (None = entered),
+    "passed": [titles it is now ahead of]}. `cur`/`prev` = {title: rank}. A
+    new song (re-)entering counts; one leaving the chart doesn't. top > 0:
+    only moves touching the top `top` (entry inside it; pass where one of the
+    two songs is or was inside it)."""
+    inside = (lambda *ranks: min(ranks) <= top) if top > 0 else (lambda *ranks: True)
+    moves = [{"title": t, "rank": cur[t], "prev": None, "passed": []}
+             for t in cur if t not in prev and inside(cur[t])]
+    both = [t for t in cur if t in prev]
+    now_order = sorted(both, key=lambda t: cur[t])
+    before = sorted(both, key=lambda t: prev[t])
+    for i, a in enumerate(now_order):
+        passed = [b for b in now_order[i + 1:]
+                  if before.index(b) < before.index(a) and inside(cur[a], cur[b], prev[a], prev[b])]
+        if passed:
+            moves.append({"title": a, "rank": cur[a], "prev": prev[a], "passed": passed})
+    return sorted(moves, key=lambda m: m["rank"])
+
+
+def new_songs_order_change(cur: dict[str, int], prev: dict[str, int], top: int = 0) -> str | None:
+    """new_songs_moves as log text, None when nothing moved."""
+    return ", ".join(
+        f'"{m["title"]}" enters at #{m["rank"]}' if m["prev"] is None
+        else f'"{m["title"]}" passes ' + ", ".join(f'"{b}"' for b in m["passed"])
+        for m in new_songs_moves(cur, prev, top)
+    ) or None
+
+
+def _tweet_weight(text: str, url: str = "") -> int:
+    """X weighting (a link counts 23, an emoji 2) — and never over the raw
+    length twitter.py::_validate_tweet_lengths checks: the stricter decides."""
+    link = 23 - len(url) if url and url in text else 0
+    return max(len(text) + link + sum(1 for ch in text if ord(ch) > 0x2000), len(text) - 5)
+
+
+def _and_list(items: list[str]) -> str:
+    return items[0] if len(items) == 1 else ", ".join(items[:-1]) + f" & {items[-1]}"
+
+
+def _move_sentence(move: dict, badge: str, where: str, debut: bool) -> str:
+    """Caption line for one new song that moved among the new songs (owner
+    2026-09-27: "on le dit dans la caption aussi si elle atteint un peak").
+    badge = the card's Peak badge for that song ("NEW PEAK", "RE-PEAK", ...).
+    where = "" for the 2nd+ sentence (the 1st one already says the chart)."""
+    title, rank = f'"{move["title"]}"', move["rank"]
+    w = f" {where}" if where else ""
+    if move["prev"] is None:
+        return f"{title} {'debuts' if debut else 're-enters'} at #{rank}{w}."
+    passed = _and_list([f'"{t}"' for t in move["passed"]])
+    if rank == 1:
+        return f"{title} passes {passed} to take #1{w}!"
+    if badge == "NEW PEAK":
+        return f"{title} passes {passed} and hits a new peak of #{rank}{w}."
+    if badge == "RE-PEAK":
+        return f"{title} passes {passed} and returns to its peak of #{rank}{w}."
+    if rank < move["prev"]:
+        return f"{title} passes {passed} and climbs to #{rank}{w}."
+    return f"{title} moves ahead of {passed} at #{rank}{w}."
+
+
+def reorder_caption(*, prefix: str, sentences: list[str], standing: str, url: str, budget: int = 275) -> str:
+    """`<prefix> | <move sentences>` + the card's intro line + link. Too long
+    -> the extra move sentences go first (best-ranked mover kept), then the
+    intro line, then the link."""
+    sentences = list(sentences)
+    while True:
+        parts = [f"{prefix} | {' '.join(sentences)}", standing, url]
+        tweet = "\n\n".join(p for p in parts if p)
+        if _tweet_weight(tweet, url) <= budget or len(sentences) <= 1:
+            break
+        sentences.pop()
+    for drop in ("standing", "url"):
+        if _tweet_weight(tweet, url) <= budget:
+            break
+        if drop == "standing":
+            standing = ""
+        else:
+            url = ""
+        tweet = "\n\n".join(p for p in (f"{prefix} | {' '.join(sentences)}", standing, url) if p)
+    return tweet
+
+
+def _top_run(ranks) -> int:
+    """How many of the top spots the album holds from #1 down (#1-#4 -> 4)."""
+    ranks, run = set(ranks), 0
+    while run + 1 in ranks:
+        run += 1
+    return run
 
 
 def _flag_emoji(region: str) -> str | None:
@@ -1798,90 +2113,167 @@ def _flag_emoji(region: str) -> str | None:
     return "".join(chr(0x1F1E6 + ord(ch) - ord("A")) for ch in code)
 
 
-def _pop_events(active_tracks: list[dict], rows: list[dict], state: dict, country: str) -> tuple[list[dict], dict]:
+def _pop_events(active_tracks: list[dict], rows: list[dict], prev_rank_of,
+                state: dict, country: str, kind_prefix: str = "pop") -> tuple[list[dict], dict]:
     """(events, new per-track state) for one country's current Pop chart.
-    State per track = {"rank", "peak"} of the last cycle seen (posted or not)."""
+    Every row of the new tracks' album(s) is checked against `prev_ranks` (the
+    card's previous snapshot). State per new track = {"rank", "peak"}."""
+    import generate_snapshot_images as snap
+
     events: list[dict] = []
     updates: dict[str, dict] = {}
     for track in active_tracks:
         _row, rank = _best_match(track, rows)
-        key = f"pop|{song_name_key(track['title'])}|{country}"
+        key = f"{kind_prefix}|{song_name_key(track['title'])}|{country}"
         prev = state.get(key) or {}
-        prev_rank, prev_peak = prev.get("rank"), prev.get("peak")
         if rank is None:
-            # Off the chart: keep the peak, forget the rank (a comeback into
-            # the top 10 is an entry again).
             if prev:
-                updates[key] = {"rank": None, "peak": prev_peak}
+                updates[key] = {"rank": None, "peak": prev.get("peak")}
             continue
-        peak = rank if prev_peak is None else min(prev_peak, rank)
+        peak = rank if prev.get("peak") is None else min(prev["peak"], rank)
         updates[key] = {"rank": rank, "peak": peak}
-        if rank > POP_TOP_N or rank == prev_rank:
+    families = {_album_family(t.get("album")) for t in active_tracks} - {""}
+    # The normal country CSV has no album_name column: song keys of every
+    # edition of the album(s), from the discography (same as the album cards).
+    album_keys: set[str] = set()
+    for album in {str(t.get("album") or "").split(":")[0].split("(")[0].strip() for t in active_tracks} - {""}:
+        try:
+            album_keys |= set(snap._resolve_album_filter(album)[1] or ())
+        except Exception:
+            pass
+    for row in rows:
+        rank = _rank_of(row)
+        title = str(row.get("song_name") or "").strip()
+        if rank is None or not title:
             continue
+        new_track = next((t for t in active_tracks if _row_matches(t, row)), None)
+        # Exactly the rows the album-filtered card shows (2026-09-26: the card
+        # IS the post now — a Track by Track climb must not trigger a card it
+        # isn't on). Album family only when the discography can't resolve it.
+        if album_keys:
+            in_album = bool(snap._filter_album([row], album_keys))
+        else:
+            in_album = _album_family(row.get("album_name")) in families
+        if not new_track and not in_album:
+            continue  # other albums never trigger
+        prev_rank = prev_rank_of(row)  # id first, title fallback on an Apple id swap
+        if prev_rank is not None and rank >= prev_rank:
+            continue  # unchanged or down: never posts
+        prev_peak = None
+        if new_track:
+            prev_peak = (state.get(f"{kind_prefix}|{song_name_key(new_track['title'])}|{country}") or {}).get("peak")
         if rank == 1 and prev_rank != 1:
             kind = "number_one"
         elif prev_rank is None:
-            kind = "debut"
-        elif prev_rank > POP_TOP_N:
-            kind = "top10_entry"
-        elif prev_peak is not None and rank < prev_peak:
+            kind = "debut" if new_track and prev_peak is None else "reentry"
+        elif new_track and prev_peak is not None and rank < prev_peak:
             kind = "new_peak"
+        elif prev_rank > POP_TOP_N >= rank:
+            kind = "top10_entry"
         else:
-            continue
-        events.append({"track": track, "rank": rank, "kind": kind})
-    events.sort(key=lambda e: ({"number_one": 0, "debut": 1, "new_peak": 2, "top10_entry": 3}[e["kind"]], e["rank"]))
+            kind = "climb"
+        track = new_track or {"title": title, "album": str(row.get("album_name") or "")}
+        events.append({"track": track, "rank": rank, "kind": kind,
+                       "delta": (prev_rank - rank) if prev_rank is not None else None})
+    # Strong events first; re-entries and climbs together, by rank.
+    order = {"number_one": 0, "debut": 1, "new_peak": 2, "top10_entry": 3, "reentry": 4, "climb": 4}
+    events.sort(key=lambda e: (order[e["kind"]], e["rank"]))
     return events, updates
 
 
-def _pop_event_sentence(event: dict, where: str) -> str:
+def _pop_event_sentence(event: dict, where: str, chart: str = "Apple Music Pop chart") -> str:
     title = f'"{event["track"]["title"]}"'
     if event["kind"] == "number_one":
-        return f"{title} is now #1 on the Apple Music Pop chart in {where}!"
+        return f"{title} is now #1 on the {chart} in {where}!"
     if event["kind"] == "new_peak":
-        return f"{title} hits a new peak of #{event['rank']} on the Apple Music Pop chart in {where}."
+        return f"{title} hits a new peak of #{event['rank']} on the {chart} in {where}."
     if event["kind"] == "debut":
-        return f"{title} debuts at #{event['rank']} on the Apple Music Pop chart in {where}."
-    return f"{title} enters the top 10 of the Apple Music Pop chart in {where} at #{event['rank']}."
+        return f"{title} debuts at #{event['rank']} on the {chart} in {where}."
+    if event["kind"] == "reentry":
+        return f"{title} re-enters the {chart} in {where} at #{event['rank']}."
+    if event["kind"] == "climb":
+        return f"{title} climbs to #{event['rank']} on the {chart} in {where} (+{event['delta']})."
+    return f"{title} enters the top 10 of the {chart} in {where} at #{event['rank']}."
 
 
 def _post_pop_snapshot(country: str, args, today: str, state: dict, active_tracks: list[dict],
-                       platform: str, writes: bool) -> None:
+                       platform: str, writes: bool, genre: str | None = POP_GENRE) -> None:
+    """One country's genre card (Pop) or, genre None, its normal chart card."""
     import generate_snapshot_images as snap
 
-    rows, scraped_at = snap.get_region_rows(today, country, POP_GENRE)
+    rows, scraped_at = snap.get_region_rows(today, country, genre)
     if not rows or not scraped_at:
         return
-    events, updates = _pop_events(active_tracks, rows, state, country)
-    if not events:
-        # Nothing strong: just track ranks/peaks so the next cycle compares
-        # against this one.
-        if writes and updates:
+    # An hour Apple didn't refresh repeats the last chart, and the moves are
+    # vs the last DIFFERENT snapshot, so they'd repeat too: the chart content
+    # already handled is remembered and never handled twice.
+    kind = _card_kind(genre)
+    chart = _chart_name(genre)
+    posted_key = f"{kind}_posted|{country}"
+    signature = json.dumps(sorted((snap._day_cycles(today, country, genre).get(scraped_at) or {}).items()))
+    if state.get(posted_key) == signature:
+        return
+    prev_ranks, prev_at = snap.get_previous_snapshot_ranks(today, country, genre, scraped_at)
+    prev_rank_of = snap.id_swap_prev_rank(prev_ranks, prev_at, country, genre, rows)
+    events, updates = _pop_events(active_tracks, rows, prev_rank_of, state, country, kind)
+    updates[posted_key] = signature
+    label = f"[new_release_progression] [{genre or 'Chart'} {country}]"
+    moves = ", ".join(f"{e['track']['title']} {e['kind']} #{e['rank']}" for e in events)
+    new_cur = _new_song_ranks(active_tracks, rows)
+    new_prev = _new_song_ranks(active_tracks, rows, prev_rank_of)
+    if NEW_ORDER_ONLY:
+        # Same baseline as the card's arrows (previous distinct snapshot).
+        reason = new_songs_order_change(new_cur, new_prev, top=AM_NEW_ORDER_TOP)
+        if not reason and events:
+            print(f"{label} {len(events)} move(s) ({moves}), no move among the new songs "
+                  f"in the top {AM_NEW_ORDER_TOP} — not posted")
+    else:
+        reason = f"{len(events)} event(s): {moves}" if events else None
+    if not reason:
+        # Nothing to post: just track peaks + mark this chart as handled.
+        if writes:
             state.update(updates)
             save_state(state, platform)
         return
-    lock_path = LOCKS_DIR / f"{_safe_slug('pop_snapshot', country, scraped_at)}.lock"
+    lock_path = LOCKS_DIR / f"{_safe_slug(f'{kind}_snapshot', country, scraped_at)}.lock"
     if lock_path.exists():
         return
     where = MARKET_NAMES.get(country, country_label(country))
-    print(f"[new_release_progression] [Pop {country}] {len(events)} event(s): "
-          + ", ".join(f"{e['track']['title']} {e['kind']} #{e['rank']}" for e in events))
+    print(f"{label} {reason}")
 
     from collectors.twitter.albums import album_emoji
     from collectors.twitter.links import amcharts_url
 
-    lead = events[0]
-    others = [e for e in events[1:]]
-    prefix = _flag_emoji(country) or album_emoji(lead["track"].get("album") or "", fallback="📈")
-    lines = [f"{prefix} | {_pop_event_sentence(lead, where)}"]
-    if others:
-        lines.append("Also: " + ", ".join(f'"{e["track"]["title"]}" #{e["rank"]}' for e in others) + ".")
-    tweet = "\n\n".join([*lines, f"Taylor Swift songs on the Apple Music Pop chart in {where} right now:",
-                         amcharts_url("applemusic")])
+    # Album-filtered card + plain caption (owner 2026-09-26: "on poste seulement
+    # le filtre showgirl genre '"The Life of a Showgirl: The Encore" songs on
+    # the Apple Music XX'"), like the Global album card.
+    album = next((t["album"] for t in active_tracks if t.get("album")), "")
+    prefix = _flag_emoji(country) or album_emoji(album, fallback="📈")
+    album_filter = snap._resolve_album_filter(album) if album else None
+    display = display_title_for_album(album) if album else "Taylor Swift"
+    url = amcharts_url("applemusic")
+    tweet = f'{prefix} | "{display}" songs on the {chart} in {where} right now:\n\n{url}'
+    moves = new_songs_moves(new_cur, new_prev, top=AM_NEW_ORDER_TOP) if NEW_ORDER_ONLY else []
+    if moves:
+        # Say what moved, with the card's own Peak badge (owner 2026-09-27).
+        peak_of = snap.make_peak_resolver(today, country, genre, scraped_at)
+        sentences = []
+        for move in moves:
+            track = next(t for t in active_tracks if t["title"] == move["title"])
+            row, rank = _best_match(track, rows)
+            badge = peak_of(row, rank)[1] if row is not None else ""
+            sentences.append(_move_sentence(move, badge, "" if sentences else f"on the {chart} in {where}",
+                                            debut=badge == "NEW"))
+        album_ranks = [_rank_of(r) for r in snap._filter_album(rows, album_filter[1] if album_filter else None)]
+        run = _top_run(album_ranks)
+        standing = (f'"{display}" songs hold the top {run} right now:' if run >= 3
+                    else f'"{display}" songs on the chart right now:')
+        tweet = reorder_caption(prefix=prefix, sentences=sentences, standing=standing, url=url)
     print(f"[new_release_progression] TWEET ({len(tweet)} chars):\n{tweet}")
     if args.dry_run:
         return
-    rendered = snap.generate(today, country, POP_GENRE, OUT_DIR)
-    image_path = rendered.replace(OUT_DIR / f"{_safe_slug('pop_snapshot', country, scraped_at)}.png")
+    rendered = snap.generate(today, country, genre, OUT_DIR, album=album_filter, show_out=True)
+    image_path = rendered.replace(OUT_DIR / f"{_safe_slug(f'{kind}_snapshot', country, scraped_at)}.png")
     if args.no_post:
         print(f"[new_release_progression] --no-post: card {image_path}")
         return
@@ -1895,6 +2287,99 @@ def _post_pop_snapshot(country: str, args, today: str, state: dict, active_track
         save_state(state, platform)
     else:
         alert(f"Pop card post failed ({country}) — will retry next cycle.", priority="default")
+
+
+def _post_global_thread(args, today: str, state: dict, active_tracks: list[dict], platform: str, writes: bool) -> None:
+    """The normal Global card, ONE post, at every Global update (owner
+    2026-09-27: "keep posting but remove the album filter thing so just one
+    post"). GLOBAL_ALBUM_CARD=1 brings back the 2026-09-26 thread: + the
+    Global album card as a reply ("garde les finalement mais genre dans un
+    thread"), only while a new track of the album is on the Global chart."""
+    import generate_snapshot_images as snap
+    from collectors.twitter.albums import album_emoji
+    from collectors.twitter.links import amcharts_url
+
+    rows, scraped_at = snap.get_region_rows(today, "global", None)
+    if not rows or not scraped_at:
+        return
+    signature = {str(r.get("song_name") or ""): snap._rank_int(r.get("rank")) for r in rows}
+    state_key = "global_snapshot|global"
+    known = state.get(state_key)
+    if known is None:
+        # First pass: vs the previous Global cycle in the CSVs (see _post_global_snapshot).
+        prev = _previous_global_signature(today, scraped_at)
+        known = {"ranks": prev} if prev is not None else {"ranks": signature}
+    global_changed = known.get("ranks") != signature
+    album_posts = []
+    if GLOBAL_ALBUM_CARD:
+        album_posts = [p for p in (_album_snapshot_post(a, today, state, active_tracks)
+                                   for a in sorted({t["album"] for t in active_tracks if t["album"]})) if p]
+        # Only a NEW Apple snapshot counts: a different album signature on the SAME
+        # scraped_at means our filter changed, not the chart (2026-09-26 13:26: the
+        # Track by Track matching fix added a row to the 10:00 Global album card and
+        # re-posted a chart unchanged since 10:00).
+        album_posts = [p for p in album_posts
+                       if (state.get(p["state_key"]) or {}).get("scraped_at") != p["scraped_at"]]
+    # Owner 2026-09-27: the Global keeps posting at EVERY update (exempt from the
+    # new-songs-reorder rule); a reorder of the new songs only changes the caption.
+    new_cur = _new_song_ranks(active_tracks, rows)
+    new_prev = _new_song_ranks(active_tracks, _signature_rows(known.get("ranks")))
+    moves = new_songs_moves(new_cur, new_prev, top=AM_NEW_ORDER_TOP)
+    if not global_changed and not album_posts:
+        return
+    lock_path = LOCKS_DIR / f"{_safe_slug('global_thread', scraped_at)}.lock"  # name kept: same cycles
+    if lock_path.exists():
+        return
+    # With the album card on, the thread carries both cards even if only one changed.
+    if GLOBAL_ALBUM_CARD and not album_posts:
+        for album in sorted({t["album"] for t in active_tracks if t["album"]}):
+            p = _album_snapshot_post(album, today, {}, active_tracks)
+            if p:
+                album_posts.append(p)
+    link = amcharts_url("applemusic")
+    opener = f"🌍 | Taylor Swift songs on the Global Apple Music chart right now:\n\n{link}"
+    if moves:
+        # The caption says what moved, with the card's Peak badge (owner 2026-09-27).
+        peak_of = snap.make_peak_resolver(today, "global", None, scraped_at)
+        sentences = []
+        for move in moves:
+            track = next(t for t in active_tracks if t["title"] == move["title"])
+            row, rank = _best_match(track, rows)
+            badge = peak_of(row, rank)[1] if row is not None else ""
+            sentences.append(_move_sentence(move, badge, "" if sentences else "on the Global Apple Music chart",
+                                            debut=badge == "NEW"))
+        opener = reorder_caption(prefix="🌍", sentences=sentences,
+                                 standing="Taylor Swift songs on the Global chart right now:", url=link)
+    posts = [(opener, None)]
+    for p in album_posts:
+        posts.append((f'{album_emoji(p["album"])} | "{display_title_for_album(p["album"])}" songs on the '
+                      f"Global Apple Music chart right now:\n\n{link}", p))
+    print(f"[new_release_progression] [Global] {len(posts)} post(s) "
+          f"(Global changed: {global_changed}, album changed: {bool(album_posts) and any((state.get(p['state_key']) or {}).get('ranks') != p['signature'] for p in album_posts)})")
+    for text, _p in posts:
+        print(f"  ---\n{text}")
+    if args.dry_run:
+        return
+    images = []
+    rendered = snap.generate(today, "global", None, OUT_DIR, show_out=True)
+    images.append(rendered.replace(OUT_DIR / f"{_safe_slug('global_snapshot', scraped_at)}.png"))
+    for p in album_posts:
+        rendered = snap.generate(today, "global", None, OUT_DIR, album=(p["album"], p["album_keys"]), show_out=True)
+        images.append(rendered.replace(OUT_DIR / f"{_safe_slug('album_snapshot', p['album'], p['scraped_at'])}.png"))
+    if args.no_post or not writes:
+        print(f"[new_release_progression] --no-post: cards {', '.join(str(i) for i in images)}")
+        return
+    thread = [(text, img) for (text, _p), img in zip(posts, images)]
+    LOCKS_DIR.mkdir(parents=True, exist_ok=True)
+    ok = post_with_retries(thread[0][0], thread[0][1], lock_path, thread=thread if len(thread) > 1 else None)
+    if not ok:
+        alert("Global thread post failed — will retry next cycle.", priority="default")
+        return
+    lock_path.write_text(datetime.utcnow().isoformat(), encoding="utf-8")
+    state[state_key] = {"ranks": signature, "scraped_at": scraped_at}
+    for p in album_posts:
+        state[p["state_key"]] = {"ranks": p["signature"], "scraped_at": p["scraped_at"]}
+    save_state(state, platform)
 
 
 def _post_album_snapshot(album: str, args, today: str, state: dict, active_tracks: list[dict], platform: str) -> None:
@@ -1920,7 +2405,7 @@ def _post_album_snapshot(album: str, args, today: str, state: dict, active_track
         return
 
     rendered = snap.generate(
-        today, "global", None, OUT_DIR, album=(pending["album"], pending["album_keys"]),
+        today, "global", None, OUT_DIR, album=(pending["album"], pending["album_keys"]), show_out=True,
     )
     # one PNG per cycle, like the per-track cards (generate() names by album only)
     image_path = rendered.replace(OUT_DIR / f"{_safe_slug('album_snapshot', pending['album'], pending['scraped_at'])}.png")
@@ -1943,9 +2428,30 @@ def _post_album_snapshot(album: str, args, today: str, state: dict, active_track
 
 # iTunes US album card (owner 2026-09-25: "le post où on prend dans le US
 # iTunes seulement les chansons de Showgirl — là 5 chansons sont dans le top 5").
-ITUNES_ALBUM_CARD_REGIONS = [c.strip() for c in os.getenv("ITUNES_ALBUM_CARD_REGIONS", "us").split(",") if c.strip()]
+ITUNES_ALBUM_CARD_REGIONS = [c.strip() for c in os.getenv("ITUNES_ALBUM_CARD_REGIONS", ",".join(KEY_COUNTRIES)).split(",") if c.strip()]
 ITUNES_ALBUM_CARD_GAP_MINUTES = float(os.getenv("ITUNES_ALBUM_CARD_GAP_MINUTES", "60"))
 ITUNES_HEADER_BG = "linear-gradient(135deg,#ff5c6d 0%,#d17cad 55%,#9b5de5 100%)"
+
+
+# iTunes thread order, biggest change first (owner 2026-09-27).
+THREAD_ORDER = {"reorder": 0, "number_one": 1, "peak": 2, "reentry": 3, "up": 4, "down": 5, "none": 6}
+
+
+def _peak_sentence(entry: dict, where: str) -> str:
+    """A new song at a peak without passing another new song: "is back at #1",
+    "hits #1 for the first time", "hits a new peak of #N", "returns to its
+    peak of #N". where = "" for the 2nd+ sentence."""
+    title, rank, w = f'"{entry["song"]}"', entry["rank"], f" {where}" if where else ""
+    if rank == 1:
+        return (f"{title} hits #1{w} for the first time!" if entry["peak_badge"] == "NEW PEAK"
+                else f"{title} is back at #1{w}!")
+    if entry["peak_badge"] == "NEW PEAK":
+        return f"{title} hits a new peak of #{rank}{w}."
+    return f"{title} returns to its peak of #{rank}{w}."
+
+
+def itunes_thread_header(display: str) -> str:
+    return f'🧵 | "{display}" songs on the iTunes charts.'
 
 
 def _itunes_region_cycles(day: str, region: str) -> list[tuple[str, list[dict]]]:
@@ -1989,7 +2495,11 @@ def _itunes_history_peaks(region: str, album_keys: set[str], before: str, today:
 
 
 def _post_itunes_album_card(album: str, args, today: str, state: dict, active_tracks: list[dict],
-                            now: datetime, writes: bool, region: str = "us") -> None:
+                            now: datetime, writes: bool, region: str = "us",
+                            collect: list | None = None, force: bool = False) -> None:
+    """collect (2026-09-26): don't post, append the ready card to `collect`
+    (the 5 key countries go out as ONE thread). force: build the card even if
+    this country's standings didn't change (the thread carries all 5)."""
     """Every song of the album on one country's iTunes chart (standard +
     new edition), with +/- vs the last posted card (first one: vs the previous
     snapshot) and the peak. Posted when the album's standings changed, at most
@@ -2011,12 +2521,7 @@ def _post_itunes_album_card(album: str, args, today: str, state: dict, active_tr
         return
     state_key = f"album_snapshot|{song_name_key(album_name)}|itunes_{region}"
     known = state.get(state_key) or {}
-    if known.get("ranks") == signature:
-        return
-    posted_at = _parse_release_date(known.get("posted_at") or "")
-    if posted_at and (now - posted_at).total_seconds() / 60.0 < ITUNES_ALBUM_CARD_GAP_MINUTES:
-        print(f"[new_release_progression] {album_name} [iTunes {region.upper()} album card]: changed, "
-              f"last post < {ITUNES_ALBUM_CARD_GAP_MINUTES:g} min ago — not posted")
+    if known.get("ranks") == signature and not force:
         return
     if known.get("ranks"):
         prev, prev_at = known["ranks"], known.get("scraped_at")
@@ -2024,6 +2529,32 @@ def _post_itunes_album_card(album: str, args, today: str, state: dict, active_tr
         older = cycles[:-1] or _itunes_region_cycles(
             (datetime.strptime(today, "%Y-%m-%d") - timedelta(days=1)).strftime("%Y-%m-%d"), region)
         prev, prev_at = (_album_signature(older[-1][1], album_keys)[0], older[-1][0]) if older else ({}, None)
+    # What changed vs the card's baseline (owner 2026-09-27): the trigger is the
+    # new songs moving among themselves; the thread is ordered by THREAD_ORDER:
+    # that, then a new song at #1 / at a peak (set once the card's Peak column
+    # is known, below), re-entries, songs moving up, drops, nothing.
+    new_cur = _new_song_ranks(new_tracks, _signature_rows(signature))
+    new_prev = _new_song_ranks(new_tracks, _signature_rows(prev))
+    reorder = new_songs_order_change(new_cur, new_prev)
+    if reorder:
+        change = (THREAD_ORDER["reorder"], f"new songs reordered: {reorder}")
+    elif any(song not in prev for song in signature):
+        change = (THREAD_ORDER["reentry"], "re-entry")
+    elif any(rank < prev[song] for song, rank in signature.items()):
+        change = (THREAD_ORDER["up"], "song(s) up")
+    elif any(prev.get(song) != rank for song, rank in signature.items()) or set(prev) - set(signature):
+        change = (THREAD_ORDER["down"], "song(s) down")
+    else:
+        change = (THREAD_ORDER["none"], "no change")
+    if NEW_ORDER_ONLY and not reorder and not force:
+        print(f"[new_release_progression] {album_name} [iTunes {region.upper()} album card]: {change[1]}, "
+              "new songs in the same order — not posted")
+        return
+    posted_at = _parse_release_date(known.get("posted_at") or "")
+    if not force and posted_at and (now - posted_at).total_seconds() / 60.0 < ITUNES_ALBUM_CARD_GAP_MINUTES:
+        print(f"[new_release_progression] {album_name} [iTunes {region.upper()} album card]: changed, "
+              f"last post < {ITUNES_ALBUM_CARD_GAP_MINUTES:g} min ago — not posted")
+        return
     lock_path = LOCKS_DIR / f"{_safe_slug('album_card', album_name, 'itunes', region, scraped_at)}.lock"
     if lock_path.exists():
         return
@@ -2043,7 +2574,11 @@ def _post_itunes_album_card(album: str, args, today: str, state: dict, active_tr
         peak = min(rank, prior) if prior is not None else rank
         badge, since = "", ""
         if not is_new_song:
-            since = f"since {start_label}"  # out before our iTunes history: partial peak
+            # Out before our iTunes history (owner 2026-09-26): "PEAK TODAY",
+            # best rank in this country over today's cycles.
+            peak = min([rank] + [r for _at, day_rows in cycles
+                                 for s2, r in _album_signature(day_rows, album_keys)[0].items() if s2 == song])
+            since = "PEAK TODAY"
         elif prior is not None and rank < prior:
             badge = "NEW PEAK"
         elif prior is not None and rank == prior and before is not None and before > rank:
@@ -2053,24 +2588,63 @@ def _post_itunes_album_card(album: str, args, today: str, state: dict, active_tr
             "artist": str(r.get("artist_name") or "Taylor Swift"),
             "album": display_title_for_album(album_name),
             "image_url": _album_cover_url(album_name, str(r.get("image_url") or "")),
-            "peak": peak, "peak_badge": badge, "peak_since": since,
+            "peak": peak, "peak_badge": badge, "peak_since": since, "new_song": is_new_song,
         })
+    # A new song at a peak (the card's NEW PEAK / RE-PEAK badge) outranks plain
+    # moves in the thread, #1 first (owner 2026-09-27: France "aurait dû être le
+    # deuxième post puisque RE PEAK à #1", it came after the US' plain climbs).
+    peak_entries = [e for e in entries if e["new_song"] and e["peak_badge"] in ("NEW PEAK", "RE-PEAK")]
+    if not reorder and peak_entries:
+        at_one = [e for e in peak_entries if e["rank"] == 1]
+        change = ((THREAD_ORDER["number_one"], f'#1: {at_one[0]["song"]}') if at_one else
+                  (THREAD_ORDER["peak"], "peak: " + ", ".join(f'{e["song"]} #{e["rank"]}' for e in peak_entries)))
 
     display = display_title_for_album(album_name)
     market = MARKET_NAMES.get(region, country_label(region))  # full name, never "DE"
     prefix = _flag_emoji(region) or album_emoji(album_name)
-    top_run = 0
-    while top_run + 1 in signature.values():
-        top_run += 1
+    top_run = _top_run(signature.values())
     if top_run >= 3:
         lead = f'{prefix} | "{display}" songs hold the top {top_run} on iTunes in {market} right now:'
     else:
         lead = f'{prefix} | "{display}" songs on the iTunes chart in {market} right now:'
-    tweet = f"{lead}\n\n{amcharts_url('itunes')}"
+    url = amcharts_url("itunes")
+    tweet = f"{lead}\n\n{url}"
+    moves = new_songs_moves(new_cur, new_prev) if reorder else []
+    if moves:
+        # Say what moved, with the card's own Peak badge (owner 2026-09-27:
+        # "Babylon a surpassed Pink Clouding et a eu un peak, on devrait le dire").
+        entry_of: dict[str, dict] = {}
+        for e in entries:  # best rank first: the edition the card shows
+            for t in new_tracks:
+                if _row_matches(t, {"song_name": e["song"]}):
+                    entry_of.setdefault(t["title"], e)
+        sentences = [
+            _move_sentence(m, entry_of.get(m["title"], {}).get("peak_badge", ""), "" if i else f"on iTunes in {market}",
+                           debut=entry_of.get(m["title"], {}).get("chg_text") == "NEW")
+            for i, m in enumerate(moves)
+        ]
+        standing = (f'"{display}" songs hold the top {top_run} right now:' if top_run >= 3
+                    else f'"{display}" songs on the chart right now:')
+        # Any card can open the thread (biggest change first): room for its header.
+        header = itunes_thread_header(display)
+        tweet = reorder_caption(prefix=prefix, sentences=sentences, standing=standing, url=url,
+                                budget=275 - _tweet_weight(header) - 2)
+    elif peak_entries:
+        # No reorder but a peak: say it too ("Patient Zero" is back at #1 in France).
+        sentences = [_peak_sentence(e, "" if i else f"on iTunes in {market}") for i, e in enumerate(peak_entries)]
+        standing = (f'"{display}" songs hold the top {top_run} right now:' if top_run >= 3
+                    else f'"{display}" songs on the chart right now:')
+        tweet = reorder_caption(prefix=prefix, sentences=sentences, standing=standing, url=url,
+                                budget=275 - _tweet_weight(itunes_thread_header(display)) - 2)
     print(f"[new_release_progression] {display} [iTunes {region.upper()} album card]: "
-          f"{len(entries)} song(s), top run {top_run}")
+          f"{len(entries)} song(s), top run {top_run}, {change[1]}")
     print(f"[new_release_progression] TWEET ({len(tweet)} chars):\n{tweet}")
+    entry = {"region": region, "tweet": tweet, "image_path": None, "lock_path": lock_path, "change": change,
+             "state_key": state_key, "state_value": {"ranks": signature, "scraped_at": scraped_at,
+                                                     "posted_at": now.isoformat()}}
     if args.dry_run:
+        if collect is not None:
+            collect.append(entry)
         return
 
     label = snap._format_snapshot_time(scraped_at)
@@ -2079,17 +2653,25 @@ def _post_itunes_album_card(album: str, args, today: str, state: dict, active_tr
         vs = vs.split(" · ", 1)[-1]  # same day: time only, keeps the subtitle on one line
     subtitle = f"iTunes Top Songs · {country_label(region)} · {label}" + (f" · vs {vs}" if vs else "")
     logo = f'<img class="hdr-logo" src="{_file_data_uri(HERE / "itunes_logo.svg", "image/svg+xml")}" />'
+    # OUT row (owner 2026-09-27): songs of the card's baseline no longer on the chart.
+    still = {song_name_key(s) for s in signature}
+    dropped = [s for s, _r in sorted(prev.items(), key=lambda kv: kv[1] or 9999) if song_name_key(s) not in still]
     html_doc = build_table_html(
         title=display, subtitle=subtitle,
         col_heads=[("Pos", False), ("+/-", False), ("Track", False), ("Peak", True)],
-        grid_cols="52px 64px minmax(240px,1fr) 150px", extra_css=snap.PEAK_CSS,
-        rows_html=snap._rows_html(entries, with_peak=True), handle=snap.HANDLE, date_str=label,
+        grid_cols="52px 64px minmax(240px,1fr) 150px", extra_css=snap.PEAK_CSS + (snap.OUT_CSS if dropped else ""),
+        rows_html=snap._rows_html(entries, with_peak=True) + snap._out_row_html(dropped),
+        handle=snap.HANDLE, date_str=label,
         headers_dir=HERE, header_background=ITUNES_HEADER_BG, logo_svg=logo,
     )
     OUT_DIR.mkdir(parents=True, exist_ok=True)
     slug = _safe_slug("album_card", album_name, "itunes", region, scraped_at)
     image_path = OUT_DIR / f"{slug}.png"
     render_html_to_png(html_doc, image_path, OUT_DIR / f"_{slug}_tmp.html")
+    entry["image_path"] = image_path
+    if collect is not None:
+        collect.append(entry)
+        return
     if args.no_post or not writes:
         print(f"[new_release_progression] --no-post: card {image_path}")
         return
@@ -2100,6 +2682,53 @@ def _post_itunes_album_card(album: str, args, today: str, state: dict, active_tr
         save_state(state, "itunes")
     else:
         alert(f"iTunes {region.upper()} album card post failed ({display}) — will retry next cycle.", priority="default")
+
+def _post_itunes_album_thread(album: str, args, today: str, state: dict, active_tracks: list[dict],
+                              now: datetime, writes: bool) -> None:
+    """The album card of the 5 key countries as ONE thread (owner 2026-09-26:
+    "on poste le tableau de itunes pour les 5 mais dans un thread"). Posted
+    when the new songs moved among themselves in at least one country (owner
+    2026-09-27; same gap rule as the lone card); the thread then carries every
+    key country where the album charts, the biggest change first (new songs
+    reordered, then re-entries, songs up, drops, unchanged — market order on
+    a tie)."""
+    changed: list[dict] = []
+    for region in ITUNES_ALBUM_CARD_REGIONS:
+        _post_itunes_album_card(album, args, today, state, active_tracks, now, writes, region, collect=changed)
+    if not changed:
+        return
+    cards = list(changed)
+    done = {c["region"] for c in cards}
+    for region in ITUNES_ALBUM_CARD_REGIONS:
+        if region not in done:
+            _post_itunes_album_card(album, args, today, state, active_tracks, now, writes, region,
+                                    collect=cards, force=True)
+    order = {c: i for i, c in enumerate(ITUNES_ALBUM_CARD_REGIONS)}
+    cards.sort(key=lambda c: (c["change"][0], order.get(c["region"], 99)))
+    display = display_title_for_album(album)
+    header = itunes_thread_header(display)
+    thread = [(f"{header}\n\n{cards[0]['tweet']}", cards[0]["image_path"])] + [(c["tweet"], c["image_path"]) for c in cards[1:]]
+    print(f"[new_release_progression] [iTunes album thread] {len(thread)} post(s): "
+          + ", ".join(f"{c['region'].upper()} ({c['change'][1]})" for c in cards)
+          + f" (triggered by: {', '.join(c['region'].upper() for c in changed)})")
+    if args.dry_run or args.no_post or not writes:
+        return
+    scraped = max(c["state_value"]["scraped_at"] for c in cards)
+    lock_path = LOCKS_DIR / f"{_safe_slug('itunes_album_thread', album, scraped)}.lock"
+    if lock_path.exists():
+        return
+    LOCKS_DIR.mkdir(parents=True, exist_ok=True)
+    ok = post_with_retries(thread[0][0], thread[0][1], lock_path, thread=thread if len(thread) > 1 else None)
+    if not ok:
+        alert(f"iTunes album thread failed ({display}) — will retry next cycle.", priority="default")
+        return
+    stamp = datetime.utcnow().isoformat()
+    lock_path.write_text(stamp, encoding="utf-8")
+    for c in cards:
+        c["lock_path"].write_text(stamp, encoding="utf-8")
+        state[c["state_key"]] = c["state_value"]
+    save_state(state, "itunes")
+
 
 if __name__ == "__main__":
     main()

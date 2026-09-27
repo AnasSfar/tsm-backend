@@ -20,6 +20,9 @@ Core rules:
 - Do not publish partial Apple Music snapshots as complete data.
 - Match primarily by `apple_music_id`; title fallback exists only for old rows
   without IDs.
+  Exception (2026-09-26): Apple id swap mid-day (same song re-issued under a
+  new id, same rank) -> `generate_snapshot_images.id_swap_prev_rank` reuses the
+  previous rank of the ONE row with the exact same title whose id left the chart.
 - Do not treat already released songs as `NEW` just because old Apple Music
   history is incomplete.
 - Do not run subset country/genre commands against the real current date unless

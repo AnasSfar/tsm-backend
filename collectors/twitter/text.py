@@ -1,10 +1,15 @@
 from __future__ import annotations
 
+import os
 import sys
 from datetime import date
 
 from .links import chart_song_url, charts_url, song_url, streams_latest_url
 from .prefixes import BEST_DAY_PREFIX, MOST_STREAMED_SONGS_TITLE, OVERTAKE_PREFIX, STREAMS_PREFIX, THREAD_PREFIX, SPOTIFY_CHART_PREFIX, with_prefix
+
+# X Premium: same cap as core.twitter.TWITTER_TEXT_LIMIT (500, env override).
+# Fallbacks below only kick in past it, never at the legacy 280.
+TWEET_TEXT_LIMIT = int(os.getenv("TWITTER_TEXT_LIMIT", "500"))
 
 
 def ordinal(n: int) -> str:
@@ -54,23 +59,23 @@ def song_overtake_tweet(group: dict, stats_date: str) -> str:
         return with_prefix("\n".join(lines) + footer, OVERTAKE_PREFIX)
 
     tweet = build([full_line(event) for event in events])
-    if len(tweet) <= 280:
+    if len(tweet) <= TWEET_TEXT_LIMIT:
         return tweet
 
     # A bundled group (several overtakes close in rank posted as one tweet)
-    # can blow past 280 chars with the full sentence per event — fall back to
+    # can blow past the tweet limit with the full sentence per event — fall back to
     # a compact line per event, then to dropping the tail of the list. The
     # image always shows every overtake regardless of what the tweet text fits.
     compact_lines = [compact_line(event) for event in events]
     tweet = build(compact_lines)
-    if len(tweet) <= 280:
+    if len(tweet) <= TWEET_TEXT_LIMIT:
         return tweet
 
     while len(compact_lines) > 1:
         compact_lines = compact_lines[:-1]
         remaining = len(events) - len(compact_lines)
         candidate = build(compact_lines + [f"+{remaining} more overtake(s) — see image."])
-        if len(candidate) <= 280:
+        if len(candidate) <= TWEET_TEXT_LIMIT:
             return candidate
 
     return build(compact_lines)
@@ -115,10 +120,10 @@ def spotify_chart_rank_record_since_tweet(
 
     if extra_line:
         tweet = build([base_line, extra_line, footer])
-        if len(tweet) <= 280:
+        if len(tweet) <= TWEET_TEXT_LIMIT:
             return tweet
         # Real failure caught live (2026-09-23): combining both clauses can
-        # blow past 280 even for a plain 20-char title once the long
+        # blow past the tweet limit even for a plain 20-char title once the long
         # chart_song_url footer is added — drop the filtered-streams add-on
         # rather than fail to post at all (same fallback pattern as
         # `song_overtake_tweet` above).
@@ -149,9 +154,9 @@ def spotify_chart_filtered_streams_record_tweet(
         f"on the {region_label} Spotify chart with {int(streams):,} streams, currently at #{int(rank)}."
     )
     tweet = with_prefix("\n\n".join([full_line, footer]), BEST_DAY_PREFIX)
-    if len(tweet) <= 280:
+    if len(tweet) <= TWEET_TEXT_LIMIT:
         return tweet
-    # Same 280-char safety net as the rank-record tweet above: a long title
+    # Same length safety net as the rank-record tweet above: a long title
     # can push the full sentence past the limit — fall back to a compact form.
     compact_line = (
         f'"{title}" {verb} its best filtered streaming day since {date_label(since_date)}: '

@@ -96,6 +96,17 @@ Phase 2 entiere. `_verify_regional_posts` reste le filet de secours en fin de
 run (retry si le post anticipe a echoue) ; protege par le meme `posted.lock`
 que le post anticipe, donc jamais de double-post.
 
+**Export R2 en parallele des la fin de la collecte (proprietaire 2026-09-26)** :
+`run_all_charts.py::_final_data_export` (validation snapshot -> `sync-country-charts`
+-> `build-country-discography` -> upload R2 charts-only -> `r2_exported.lock`) tourne
+dans un thread lance juste apres la collecte + reparation des donnees cards, AVANT la
+phase DEBUT, en parallele de tous les posts ; il ne depend plus du succes des posts
+(avant : tout en fin de run, et un echec de post bloquait l'export). Fin de `main()` :
+attente du thread, puis `_notify_spcharts_events` (rank-records = posts, donc apres la
+phase DEBUT et les autres posts ; lit la discographie reconstruite). Le sync CSV ne
+fait qu'ajouter les lignes manquantes (append), sans risque pour les posts qui lisent
+les CSV en meme temps.
+
 **`artists_global` n'est PAS orchestre par `run_all_charts.py` (depuis
 2026-08-16).** Task Scheduler local a deux taches distinctes qui declenchent
 toutes les deux a **15h** :
@@ -1044,6 +1055,60 @@ Fichiers typiques:
 - `posted_cards.json`.
 - `first_single_region_posted.json` (voir "First single region entry" ci-dessous).
 
+**Card recap `worldwide_summary.png` (1re image du thread, tweet "Taylor Swift
+charted X songs on the Spotify Charts") — refonte 2026-09-26 :** l'ancien
+tableau 7 colonnes (1320px de large, texte 16px) etait illisible sans zoom sur
+X mobile (rejete par le proprietaire). Nouveau rendu `_build_summary_html` :
+card **960px** en **une tuile par chanson** — grande cover a gauche, titre
+(paliers de police `_summary_title_size` + `-webkit-line-clamp:2`) + nombre de
+**regions** a droite du titre (libelle "regions", pas "countries", demande
+proprietaire 2026-09-26 — le compte inclut Global), puis 3 cases : *Most
+streams* (valeur + region + % vs veille), *Best rank* (rang + pastille
+▲/▼/=/NEW/RE via `_rank_delta_html`, meme style que les cards par chanson) et
+*Top 10 / Top 50 / Top 100* (zeros attenues, jamais masques). **Case `#1`**
+(nombre de regions ou la chanson est #1, dore) ajoutee en tete des tiers
+**uniquement si au moins une chanson du jour est #1 quelque part** (jours de
+debut) — sinon 3 tiers, pas de colonne de zeros. Memes donnees/regles
+qu'avant (`_summary_rows`, `_best_entry`), avec en plus le **delta du nombre de
+regions vs le snapshot de la veille** — affiche seulement si la chanson est
+dans ce snapshot (meme regle que les tweets par chanson : jamais de "+N"
+invente face a un jour manquant).
+Au-dela de `_SUMMARY_TWO_COLUMNS_ABOVE` (12) chansons (jours de sortie
+d'album), grille **2 colonnes** lue de haut en bas (card 1860px) pour que
+l'image reste proche du carre au lieu d'une colonne tres haute que X reduit.
+Header : badge Spotify + titre + pastille date + case "N songs" ; footer : logo
+Swifties Charts sur badge sombre (le logo est blanc — l'ancien footer
+l'affichait invisible). Preview avec donnees reelles (lecture seule) :
+`python previews_and_sims/worldwide-summary-card/preview.py 2026-09-23 2026-09-19 2025-10-04`
+(6, 9 et 19 chansons ; ecrit aussi un `<date>_phone.png` a ~310px de large =
+largeur d'une image dans la timeline X mobile, pour juger la lisibilite).
+
+**Ordre des cards (thread + summary), proprietaire 2026-09-26** :
+`_card_priority` = (1) titres au Global, par rang Global ; (2) sinon titres
+aux US, par rang US ; (3) sinon par nombre de pays (le plus d'abord) ;
+egalites : total streams (pays ou il charte), puis RE d'abord, puis titre.
+Avant : les re-entrees Global passaient en tete, puis nb de pays.
+
+**TOUTES les cards vont dans le thread (proprietaire 2026-09-26)**, y compris
+un titre deja poste en standalone (« first single region » / RE par pays,
+post immediat) : avant, il etait retire du thread (suivi separement). Le
+post standalone existe toujours en plus. `post_global_new_releases.py` ne
+marque plus aucun titre comme « deja dans le thread » (`_mark_thread_card_posted`
+supprime).
+
+**Anciens track_id (2026-09-26)** : `generate()` aliase `historical_track_ids`
+(songs.json) vers la fiche du titre et fusionne via
+`_merge_historical_track_ids` les entrees d'un ancien ID dans l'ID courant
+(meme pays = meme entree, ignoree, jamais additionnee). Incident : Elizabeth
+Taylor Global #109 present sous 3AKV7Mvo2Mx4tb39iPvPlT ET 1jgTiNob5cVyXeJ3WgX5bL
+-> 2 cards dont une « Unknown » sans cover, postee en « first single region ».
+La cause amont (le snapshot worldwide garde l'ancien ID en doublon) n'est pas
+corrigee : le 2026-09-25, `db/charts_history_us.csv` a aussi « I Can Do It With a Broken Heart »
+#169 deux fois (4dgf2... actuel + 4q5Yez... ancien). Consequence corrigee cote rank-records :
+`run_all_charts._spcharts_current_track_id` ramene l'ID du record a l'ID actuel
+(`historical_track_ids` de songs.json) — sinon card sans cover et lien « Full history »
+vers l'ancien ID.
+
 **First single region entry — postee standalone en priorite, hors thread
 (depuis 2026-08-05) :** quand une chanson charte pour la toute premiere fois
 (aucun pays avant, `has_prev_snapshot` requis) dans exactement UN pays
@@ -1240,6 +1305,149 @@ debut". Ordre de post :
 4. (inchange) le post Global normal avec toutes les chansons qui chartent —
    deja existant, tourne juste apres dans la sequence normale.
 
+**Phase DEBUT (decision 2026-09-26, remplace l'ordre ci-dessus) — JAMAIS
+skippee, RIEN ne poste avant elle, le plus vite possible.** Un jour de
+sortie = des tracks catalogue ont `release_date == date du chart`.
+Module unique `worldwide/tools/scripts/debut_phase.py` :
+- **MAJ 2026-09-26 (fin de journee) : les tableaux « New Songs » (etapes 1+2
+  ci-dessous, `--new-songs`) sont SUPPRIMES de la phase DEBUT.** `run(date)` =
+  seulement tableau album complet Global puis US 30 s apres (le tableau album
+  liste deja les nouveaux titres en `(NEW)`). Plus de pre-rendu parallele
+  (il n'y a plus rien a chevaucher ; la table US se rend pendant les 30 s).
+  Plus d'exception « un seul nouveau titre garde sa card » : aucun titre de
+  l'album sorti n'a de card individuelle ce jour-la. `--new-songs` /
+  `--render-only` restent dans `post_album_debut_chart.py` mais ne sont plus
+  appeles.
+- (historique) `run(date)` — 4 posts dans cet ordre (proprietaire 2026-09-26) : tableau
+  nouveaux titres Global, tableau nouveaux titres US (30 s apres), tableau
+  album complet Global, tableau album complet US (30 s apres).
+  (1+2) `post_album_debut_chart.py <date> --post --new-songs` =
+  UN tableau des nouveaux titres seulement, Global puis US (texte identique,
+  « global charts » -> « US charts » ; un seul nouveau titre au Global garde
+  sa card, un seul au US -> tableau + « "X" debuts at #R on the US charts
+  with Y streams. ») (plus de card par titre ;
+  un seul nouveau titre garde sa card `post_global_new_releases.py --post`,
+  qui de son cote ne poste plus de card individuelle quand >= 2 titres
+  sortent le jour meme). Texte (proprietaire 2026-09-26), prefixe
+  `📈 | <emoji album>` : si les N titres font #1..#N « Taylor Swift occupies
+  the full top N of the global charts with her new songs. », sinon si tous
+  top 10 « ... occupies N spots in the top 10 ... », sinon « Taylor Swift
+  debuts N new songs on the global charts. » ; puis « "X" debuts at #R with
+  Y streams. » ; puis une ligne par titre `#R (NEW) Titre — streams`
+  (`new_songs_tweet`, compte X Premium : texte complet tant qu'il tient
+  dans notre plafond `TWITTER_TEXT_LIMIT` = 500 ; au-dela seulement, retire
+  la 2e phrase puis les dernieres lignes -> « +N more »). (3+4) `post_album_debut_chart.py <date>
+  --post` = tableau de TOUT l'album (anciens titres compris : track_id de
+  l'album OU titre exact d'un track de l'album), Global puis US **30 s apres
+  la fin du post Global** (`ALBUM_DEBUT_BETWEEN_REGIONS_SECONDS`), texte
+  `📈 | ❤️‍🔥 "<edition>" debuts with X streams on the <Global|US> Spotify
+  charts.` (X = somme des streams du tableau), puis une ligne par titre de
+  l'album dans le chart : `#R (MOUV) Titre — streams` (`album_table_tweet`,
+  proprietaire 2026-09-26). MOUV = `_movement_label` depuis les champs
+  Spotify du chart uniquement : `NEW` (is_new / movement NEW), `RE`
+  (is_re_entry / movement RE), `+X` / `-X` (previous_rank - rank), `=` ;
+  aucun signal exploitable -> pas de parenthese (jamais devine). Plafond
+  **1000 pour les posts DEBUT** (`debut_phase.DEBUT_TWITTER_TEXT_LIMIT`, passe
+  en env `TWITTER_TEXT_LIMIT` aux etapes ; 16 titres ~ 700 car. = liste
+  complete) ; au-dela, dernieres lignes -> « +N more ». Autres posts : 500. Sidecar
+  de pre-rendu versionne (`"v": 2`) : un pre-rendu d'un ancien schema n'est
+  jamais reutilise.
+  Emoji album : `collectors/twitter/albums.py` charge PAR CHEMIN (un import
+  `twitter.albums` masque `core/twitter.py` importe comme `twitter` par
+  `generate_card_images` -> ImportError). Chaque etape : 3
+  tentatives, pause 5 s. Marqueur `global/cards/debut_phase_done.json`
+  ecrit seulement si les deux reussissent ; lock `debut_phase.running`
+  (O_EXCL, perime apres 45 min) contre deux executions paralleles.
+- `posting_allowed(date)` : True si pas jour de sortie ou marqueur present.
+- CLI : `debut_phase.py <date>` (execute si besoin), `--check`, `--wait S`.
+
+Verrous (aucun post tant que le marqueur manque) :
+- `worldwide/daily.py` : phase DEBUT synchrone juste apres la Phase 1
+  (`_run_debut_phase`), avant rank-record et posts Global/US ; le thread
+  "priority Global NEW" n'est pas lance ce jour-la (debut_phase le fait).
+  Echec => rank-record + posts routiniers non lances (`[BLOCK]`). Posts
+  immediats NEW/RE par pays : attendent `_DEBUT_GATE` puis re-verifient ;
+  posts multi-regions : verifies en entree.
+- `run_all_charts.py` : `_debut_phase_gate` (execute `debut_phase.py`)
+  avant toute etape de post ; echec => aucune etape de post, donnees/R2
+  quand meme, run en echec (`debut-phase`). Rerun => la phase reprend
+  (locks par titre / par region) puis le reste part.
+- `artists_global/artist_global_daily.py` : attend le marqueur
+  (`--wait 10800`, 3 h) ; sinon ne poste pas (`[BLOCK]`), rattrapage manuel.
+Pas couverts (autres pipelines) : streams, Apple Music.
+
+**Anti-spam jour de sortie — ELARGI (proprietaire 2026-09-26, fin de journee)** :
+un jour de sortie (`debut_phase.is_debut_day`), AUCUNE card individuelle
+NEW/RE/recent pour AUCUN titre, de l'album ou pas (ex. « I Can Do It With a
+Broken Heart » RE US) : `post_global_new_releases._release_day_filter` renvoie
+[] (cards Global et worldwide), `generate_card_images` ne poste plus de
+« first single region » (`_is_release_day`), `daily._maybe_trigger_immediate_reentries`
+sort tout de suite. Toutes les cards restent dans le thread. **Aucun tweet
+« record since » (meilleur rang / meilleur jour de streams filtres) ce jour-la,
+pour AUCUN titre** : `run_all_charts._post_spcharts_rank_record_card` ecrit le lock
+« suppressed » au lieu de poster (`_is_release_day`), et `daily._suppress_release_album_rank_record`
+(Phase 1 + fin de collecte, toutes les regions) fait de meme pour tous les titres.
+
+(version precedente, remplacee pour les cards) **Anti-spam jour de sortie (proprietaire 2026-09-26)** : un titre de l'album
+sorti (anciens compris ; `debut_phase.is_release_album_track` = track_id exact
+ou titre exact d'un track de l'album) n'a AUCUN post individuel ce jour-la :
+ni post immediat par pays, ni card prioritaire worldwide / RE Global
+(`post_global_new_releases._release_day_filter`, filtre UNIQUE partage par
+`generate_cards` / post Global / worldwide — sinon images et textes
+`zip()`es se decalent : incident 2026-09-26, texte « Elizabeth Taylor
+re-entered » publie avec l'image de Patient Zero), ni card « first single
+region » (reste dans le thread), ni rank-record (lock
+`<slug>_rank_record.lock` ecrit « suppressed » par `worldwide/daily.py` en
+fin de collecte, que la passe notify de `run_all_charts.py` respecte). Ils
+sont dans les tableaux DEBUT et le thread `cards`.
+
+**Piege (incident 2026-09-26)** : `run_all_charts.py` lance
+`worldwide/daily.py` avec **`--no-post`** + `--post-priority-global-new` +
+`--post-priority-region us` ; les posts routiniers Global/US partent quand
+meme via ces flags. Toute condition « ce process va poster » doit donc
+utiliser `debut_posting_planned` (`not no_post or post_priority_global_new or
+priority_post_regions`), jamais `not args.no_post` seul — c'est ce qui a fait
+sauter le verrou DEBUT dans `daily.py` le 2026-09-26 (Global/US routiniers
+postes avant la phase DEBUT, rattrapee ensuite par le verrou de
+`run_all_charts.py`). Consequence connue : sous ce mode, les posts immediats
+par pays et le rank-record de Phase 1 de `daily.py` sont inactifs (rank-records
+postes par la passe notify de fin de `run_all_charts.py`).
+
+Vitesse (sans rien sauter) : tous les posts DEBUT ont `TWITTER_POST_PRIORITY=0`
+(passent devant streams/Apple Music/artistes dans la file du compte X) ;
+les tables album sont pre-rendues (`--render-only`) en parallele des cards
+NEW, reutilisees seulement si le sidecar `album_debut_table.meta.json`
+correspond exactement au meme `ts_chart` (mtime_ns + taille), titre et
+tracks, sinon re-rendues ; rendu dans un fichier temporaire par pid puis
+`os.replace` (jamais d'image a moitie ecrite) ; la table US se rend pendant
+les 30 s. Retries 5 s au lieu de 30 s.
+
+Robustesse : `post_album_debut_chart.py` renvoie 3 si le chart d'une region
+n'est pas encore collecte (`no_data`, phase incomplete) mais considere
+« fait » une region collectee ou aucun titre de l'album ne charte
+(`no_rows`) ; lock par region (`"<titre>|global"`). `post_global_new_releases
+--post` ecrit son lock apres CHAQUE titre (avant : seulement a la fin, donc
+un echec au 3e titre faisait reposter les 2 premiers -> doublon rejete par X
+-> echec sans fin).
+
+**« It marks her Nth biggest debut on the chart. » DESACTIVEE (2026-09-26)**
+(`post_global_new_releases.py::DEBUT_RANK_SENTENCE_ENABLED = False`) : le
+classement lit `db/charts_history_global.csv`, ou 176/216 vraies lignes de
+premier jour sont etiquetees `movement = RE` (tout Midnights, 1989/Speak Now
+TV, LWYMMD, ME!...) et etaient exclues, + doublons nom/track_id (ex.
+2025-10-03 #2 « Elizabeth Taylor » ET « 1jgTiNob5cVyXeJ3WgX5bL »). La phrase
+surestimait le rang de 10-15 places. Dedup `(date, rank)` deja ajoutee dans
+`_global_debut_rank` ; reactiver seulement apres reconstruction + verification
+du classement des debuts (se fier a `total_days == 1`, pas a `movement`).
+
+Cards par chanson de `post_album_debut_chart.py` : off par defaut
+(`--song-cards`), identiques a celles de `--post-worldwide` (X rejetait le
+doublon, et un echec de `priority-global-highlights-worldwide` est fatal).
+`post_global_new_releases.py::_mark_thread_card_posted` ecrit le slug des
+titres sortis le jour meme dans `worldwide/cards/posted_cards.json` apres
+leur post `--post-worldwide` => le thread `cards` les saute. Les autres
+titres prioritaires gardent leur card dans le thread.
+
 **Desactivation du post immediat par pays pour ces titres (fix 2026-09-23,
 suite retour proprietaire "pour les nouvelles chansons on ne poste pas") :**
 le mecanisme live "Immediate NEW/RE posting" (voir plus haut) postait
@@ -1344,6 +1552,51 @@ Bearer caches:
 `run_all_charts.py` peut connecter Cloudflare WARP quand necessaire, sauf
 `--no-warp`. Ne pas masquer un probleme de token/session en ajoutant un fallback
 silencieux.
+
+## Discord (depuis 2026-09-25)
+
+Chaque post du pipeline appelle aussi `core.discord_notify.discord_send(
+"spotify-charts", [(texte, image)], kind=..., key=...)` (module
+`notifiers/discord`, voir son README), **avant** le post X et seulement quand
+le run publie (jamais en `--no-post`). Independant de X : part meme si X
+echoue ; anti-doublon par `key` (date + region/slug). La priorite (donc les
+roles mentionnes) vient du `kind` dans `notifiers/discord/config.json`.
+Points d'appel : global/us/uk `daily.py` (global_daily/us_daily/uk_daily),
+`worldwide/daily.py` (regional_multi_song, immediate_entry, reentry_text),
+`run_all_charts._post_spcharts_rank_record_card` (rank_record),
+`generate_card_images.py` (first_single_region, cards_thread),
+`post_album_debut_chart.py` (album_debut, album_debut_song),
+`post_global_new_releases.py` (global_new_releases[_worldwide]),
+`artists_global/tools/scripts` (artist_chart, artist_chart_filtered).
+Nouveau post X dans ce pipeline => ajouter l'appel + le kind dans config.json.
+**Fils Discord par pays (2026-09-26)** : chaque appel passe `thread=<region>` (global, us, uk/gb,
+fr, ca…, `worldwide` pour le thread des cards / cards multi-pays / album_debut_song, `artists`
+pour les charts artistes). Fil configure dans `notifiers/discord/config.json`
+(`channels.spotify-charts.threads`, via `set-thread`), sinon salon principal. Fil Global =
+1553414825353289840. `reentry_text` (multi-pays, `--post-song-updates`) reste dans le salon.
+Bot (2026-09-26) : fils us/gb/fr/worldwide/artists crees par `setup-threads`, un role pays par
+fil (`setup-country-roles`), fil desarchive avant post. Double envoi : salon principal = feed
+« Overall » (tous les posts, roles d'importance + role Overall), + copie dans le fil du pays
+(role du pays seulement).
+Detail : `notifiers/discord/README.md`.
+**Liens retires sur Discord (proprietaire 2026-09-26)** : `notifiers/discord/sender.py::strip_links`
+supprime toute ligne contenant une URL (« 🔗 See full update here : https://... »,
+« Full history: https://... ») avant envoi ; un message vide sans image n'est pas envoye.
+Le texte X, lui, garde ses liens.
+
+Priorites choisies par Anas (2026-09-26) : urgent = album_debut,
+album_debut_song, global_new_releases[_worldwide] ; high = rank_record,
+immediate_entry, first_single_region, global_daily, reentry_text ; normal =
+us/uk_daily, artist_chart[_filtered], cards_thread, regional_multi_song ; low =
+rien. **global_daily passe en urgent** (`global/daily.py::
+discord_global_priority`) si une chanson : est #1 Global ; atteint un nouveau
+peak (rang == `peak_rank` Spotify du jour ET < `peak_rank` de la veille — ne
+PAS utiliser le min du CSV, `charts_history_global.csv` est incomplet sur
+l'historique ancien : faux « new peak » Blank Space #47 alors que peak = #14) ;
+gagne >= 16 rangs (`previous_rank - rank`) ; ou > +15 % de streams vs la veille (seuil abaisse de 20 a 15 % le 2026-09-26)
+(ts_chart de la veille, sinon ligne CSV de la veille). Donnee absente => pas
+d'escalade. Backtest 115 jours (juin-sept 2026, seuil 15 %) : 17 jours urgent (14 via
++rangs, 3 via streams : Ophelia 13/07 et 20/07, Blank Space 17/09), 1 via #1.
 
 ## Locks
 

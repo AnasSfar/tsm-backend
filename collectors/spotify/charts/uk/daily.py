@@ -33,6 +33,7 @@ except ImportError:
 sys.path.insert(0, str(Path(__file__).parent.parent.parent))
 from core.chart_comment import build_chart_comment
 from core.twitter import post_thread, post_with_image, split_tweets
+from core.discord_notify import discord_send
 from core.notify import send as notify
 from playwright.sync_api import sync_playwright
 
@@ -368,6 +369,8 @@ def main():
         log("INFO", "Publication Twitter ignorée (--no-post)")
         posted = True
     else:
+        discord_send("spotify-charts", [(tweet_content, image_path)], kind="uk_daily",
+                     key="uk_daily_" + "_".join(str(d) for d in processed), thread="uk")
         log("STEP", "Publication Twitter")
         posted = post_with_image(
             tweet_content, image_path, TWITTER_SESSION,

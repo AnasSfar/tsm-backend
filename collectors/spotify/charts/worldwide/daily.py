@@ -66,6 +66,7 @@ from core.data_paths import (
 )
 from core.git_ops import git_commit_and_push
 from core.twitter import post_thread, post_with_image, split_tweets
+from core.discord_notify import discord_send
 from collectors.twitter.albums import album_emoji as _shared_album_emoji
 from collectors.twitter.text import full_charts_update_line  # noqa: E402
 from collectors.twitter.prefixes import SPOTIFY_CHART_PREFIX, with_prefix  # noqa: E402
@@ -109,6 +110,7 @@ HISTORY_ROOT    = ROOT / "snapshots" / "spotify_charts"
 TOTAL_DAYS_PATH = ROOT / "collectors" / "spotify" / "charts" / "worldwide" / "tools" / "json" / "total_days.json"
 TWITTER_SESSION = ROOT / "collectors" / "spotify" / "charts" / "global" / "tools" / "json" / "twitter_session.json"
 GLOBAL_NEW_RELEASES_SCRIPT = ROOT / "collectors" / "spotify" / "charts" / "worldwide" / "tools" / "scripts" / "post_global_new_releases.py"
+ALBUM_DEBUT_SCRIPT = ROOT / "collectors" / "spotify" / "charts" / "worldwide" / "tools" / "scripts" / "post_album_debut_chart.py"
 WORLDWIDE_TOOLS_SCRIPTS_DIR = ROOT / "collectors" / "spotify" / "charts" / "worldwide" / "tools" / "scripts"
 if str(WORLDWIDE_TOOLS_SCRIPTS_DIR) not in sys.path:
     sys.path.insert(0, str(WORLDWIDE_TOOLS_SCRIPTS_DIR))
@@ -1427,6 +1429,9 @@ def _post_multi_song_regions(
     *,
     force: bool = False,
 ) -> None:
+    if not _debut_posting_allowed(chart_date):
+        print("[BLOCK] [DEBUT] posts multi-regions non publies: phase DEBUT non faite", flush=True)
+        return
     prev_day = (datetime.strptime(chart_date, "%Y-%m-%d").date() - timedelta(days=1)).strftime("%Y-%m-%d")
     prev_day_by_track = _load_snapshot_by_track(prev_day)
     annotate_recent_region_records(chart_date, by_region)
@@ -1543,6 +1548,8 @@ def _post_multi_song_regions(
             print(f"[WARN] Regional Spotify post skipped for {region}: image unavailable", flush=True)
             continue
         print(f"[regional-post] {region}: {tweet}", flush=True)
+        discord_send("spotify-charts", [(tweet, image_path)], kind="regional_multi_song",
+                     key=f"regional_multi_song_{chart_date}_{region}", thread=region)
         if post_with_image(tweet, image_path, TWITTER_SESSION, skip_if=lambda lp=lock_path: lp.exists() and not force):
             lock_path.parent.mkdir(parents=True, exist_ok=True)
             lock_path.touch()
@@ -1680,6 +1687,10 @@ def _post_immediate_reentry_card(
     lock_key = f"{slug}_chart_card"
     if _immediate_reentry_already_posted(chart_date, lock_key):
         return
+    _DEBUT_GATE.wait(timeout=3600)
+    if not _debut_posting_allowed(chart_date):
+        print(f"[BLOCK] [DEBUT] post immediat {title} ({region}) non publie: phase DEBUT non faite", flush=True)
+        return
 
     song_meta = _build_song_meta().get(track_id, {})
     album = str(song_meta.get("primary_album") or song_meta.get("album") or "").strip()
@@ -1735,6 +1746,8 @@ def _post_immediate_reentry_card(
 
     tweet_text = _build_immediate_reentry_tweet(title, album, region_name, row, chart_date)
     print(f"[INFO] Immediate {badge_text} entry detected: {title!r} in {region_name} — posting standalone...", flush=True)
+    discord_send("spotify-charts", [(tweet_text, out_path)], kind="immediate_entry",
+                 key=f"immediate_entry_{chart_date}_{lock_key}", thread=region)
     for attempt in range(1, IMMEDIATE_REENTRY_POST_MAX_ATTEMPTS + 1):
         if post_with_image(
             tweet_text,
@@ -1826,6 +1839,10 @@ def _maybe_trigger_immediate_reentries(
 ) -> None:
     if region == "global" or not has_prev_snapshot or not rows:
         return
+    if _debut_track_ids_for_date(chart_date):
+        # Release day (owner 2026-09-26): no standalone NEW/RE post for ANY
+        # song that day; every card is in the cards thread.
+        return
     debut_track_ids = _debut_track_ids_for_date(chart_date)
     for row in rows:
         movement = str(row.get("movement") or "").strip().upper()
@@ -1837,6 +1854,8 @@ def _maybe_trigger_immediate_reentries(
             continue
         if track_id in debut_track_ids:
             continue  # covered by post_album_debut_chart.py's fuller per-song card instead
+        if _is_release_album_track(chart_date, track_id, row.get("track_name")):
+            continue  # release day anti-spam: album songs are in the DEBUT tables + cards thread
         if int(prev_country_counts.get(track_id, 0) or 0) != 0:
             continue
         title = row.get("track_name") or track_id
@@ -1942,6 +1961,96 @@ def _sync_region_csv_immediately(
         print(f"[INFO] Synced {added} row(s) → db/charts_history_{csv_region}.csv", flush=True)
 
 
+# DEBUT phase gate (decision 2026-09-26): on a release day nothing is posted
+# before the DEBUT phase (see tools/scripts/debut_phase.py). Immediate per-
+# country posts started during Phase 1 wait on this event, then re-check.
+_DEBUT_GATE = threading.Event()
+
+
+def _debut_phase_module():
+    scripts_dir = str(WORLDWIDE_TOOLS_SCRIPTS_DIR)
+    if scripts_dir not in sys.path:
+        sys.path.insert(0, scripts_dir)
+    import debut_phase  # noqa: E402
+    return debut_phase
+
+
+def _is_release_album_track(chart_date: str, track_id: str | None, title: str | None) -> bool:
+    try:
+        return _debut_phase_module().is_release_album_track(chart_date, track_id, title)
+    except Exception as exc:
+        print(f"[WARN] [DEBUT] album du jour non verifiable ({exc})", flush=True)
+        return False
+
+
+def _suppress_release_album_rank_record(rac, record: dict) -> bool:
+    """Release day anti-spam (owner 2026-09-26): NO "record since" post
+    (best rank / best filtered streaming day) that day, for ANY song (first
+    only the album's songs, widened the same day). Writes the card's own
+    anti-repost lock (`<slug>_rank_record.lock`, same path as
+    run_all_charts._post_spcharts_rank_record_card) instead of posting, so
+    run_all_charts' end-of-run notify pass skips it too. True = suppressed."""
+    chart_date = str(record.get("chart_date") or "")
+    title = str(record.get("title") or "")
+    if not _debut_track_ids_for_date(chart_date):
+        return False
+    try:
+        out_dir = spotify_chart_dir(record["region"], chart_date) / "cards"
+        out_dir.mkdir(parents=True, exist_ok=True)
+        lock = out_dir / f"{rac.slugify(title)}_rank_record.lock"
+        if not lock.exists():
+            lock.write_text("suppressed: release day album track (no individual post)\n", encoding="utf-8")
+            print(f"[DEBUT] rank-record {title!r} ({record['region']}) non poste: jour de sortie", flush=True)
+    except Exception as exc:
+        print(f"[WARN] [DEBUT] lock rank-record {title!r}: {exc}", flush=True)
+    return True
+
+
+def _suppress_release_album_rank_records_all_regions(chart_date: str) -> None:
+    """End of collection, release day only: pre-writes the rank-record locks
+    of EVERY song for every rank-record region (incl. UK, collected in
+    Phase 2), before run_all_charts' notify pass would post them."""
+    try:
+        if not _debut_track_ids_for_date(chart_date):
+            return
+        run_all_charts_path = Path(__file__).resolve().parents[1] / "run_all_charts.py"
+        charts_root = run_all_charts_path.parent
+        if str(charts_root) not in sys.path:
+            sys.path.insert(0, str(charts_root))
+        import run_all_charts as _rac
+
+        for region in sorted(_rac.SPCHARTS_RANK_RECORD_REGIONS):
+            try:
+                records = _rac._collect_spcharts_rank_record_since(region)
+            except Exception as exc:
+                print(f"[WARN] [DEBUT] rank-record check {region}: {exc}", flush=True)
+                continue
+            for record in records:
+                if record.get("chart_date") == chart_date:
+                    _suppress_release_album_rank_record(_rac, record)
+    except Exception as exc:
+        print(f"[WARN] [DEBUT] suppression rank-records: {exc}", flush=True)
+
+
+def _debut_posting_allowed(chart_date: str) -> bool:
+    try:
+        return _debut_phase_module().posting_allowed(chart_date)
+    except Exception as exc:
+        print(f"[WARN] [DEBUT] verification impossible ({exc}); post bloque par securite", flush=True)
+        return False
+
+
+def _run_debut_phase(chart_date: str) -> bool:
+    """Runs the DEBUT phase synchronously (priority Global "N New Songs"
+    card, then album debut tables Global + US 30s apart). True = other posts
+    may go out. False = everything else stays unposted for this run."""
+    try:
+        return _debut_phase_module().run(chart_date)
+    except Exception as exc:
+        print(f"[BLOCK] [DEBUT] phase DEBUT en erreur: {exc}", flush=True)
+        return False
+
+
 def _post_pending_rank_records(chart_date: str, regions: list[str]) -> None:
     """"Best chart rank since"/"best filtered streaming day since" tweets must
     go out BEFORE the routine Global/US/FR chart card (decision 2026-09-23) —
@@ -1983,6 +2092,8 @@ def _post_pending_rank_records(chart_date: str, regions: list[str]) -> None:
                 continue
             for record in records:
                 if record.get("chart_date") != chart_date:
+                    continue
+                if _suppress_release_album_rank_record(_rac, record):
                     continue
                 try:
                     _rac._post_spcharts_rank_record_card(record, cover_lookup)
@@ -2436,6 +2547,25 @@ def main() -> int:
     priority_to_fetch = {k: v for k, v in regions_to_fetch.items() if k in _PRIORITY}
     other_to_fetch    = {k: v for k, v in regions_to_fetch.items() if k not in _PRIORITY}
 
+    # A post is planned by THIS process: normal posting, OR the priority paths
+    # run_all_charts.py actually uses — it always passes --no-post together
+    # with --post-priority-global-new / --post-priority-region, and the routine
+    # Global/US posts still go out through them. Checking only `not no_post`
+    # made the DEBUT gate never fire in the real run (incident 2026-09-26:
+    # routine Global/US posted before the DEBUT phase).
+    debut_posting_planned = (not args.no_post) or post_priority_global_new or bool(priority_post_regions)
+    debut_day = (
+        debut_posting_planned
+        and not args.backfill_mode
+        and not args.dates
+        and not args.dates_file
+        and not _debut_posting_allowed(chart_date)
+    )
+    if debut_day:
+        print(f"[DEBUT] {chart_date} = jour de sortie : phase DEBUT avant tout autre post", flush=True)
+    else:
+        _DEBUT_GATE.set()
+
     t0 = time.perf_counter()
     _priority_card_thread: threading.Thread | None = None
     if priority_to_fetch:
@@ -2461,7 +2591,12 @@ def main() -> int:
         for region in PRIORITY_POST_REGIONS:
             if region in priority_results and priority_results[region]:
                 _write_regional_ts_chart(chart_date, region, priority_results[region], manual_lookup, track_lookup)
-        if (not args.no_post or post_priority_global_new) and priority_results.get("global") and GLOBAL_NEW_RELEASES_SCRIPT.exists():
+        if (
+            (not args.no_post or post_priority_global_new)
+            and priority_results.get("global")
+            and GLOBAL_NEW_RELEASES_SCRIPT.exists()
+            and not debut_day
+        ):
             def _post_priority_global_new_card() -> None:
                 print("[INFO] Priority Global NEW card check...", flush=True)
                 for attempt in range(1, PRIORITY_CARD_POST_MAX_ATTEMPTS + 1):
@@ -2503,6 +2638,17 @@ def main() -> int:
     else:
         regions_to_post = [region for region in PRIORITY_POST_REGIONS if region in priority_to_fetch]
     regions_to_post = [region for region in regions_to_post if region in priority_results and priority_results[region]]
+    debut_ok = True
+    if debut_day:
+        if "global" in regions_to_post:
+            debut_ok = _run_debut_phase(chart_date)
+        else:
+            debut_ok = False
+            print("[BLOCK] [DEBUT] chart Global absent: phase DEBUT impossible, aucun post", flush=True)
+    _DEBUT_GATE.set()
+    if not debut_ok:
+        print("[BLOCK] [DEBUT] rank-record + posts routiniers Global/US non publies", flush=True)
+        regions_to_post = []
     if regions_to_post and not args.no_post:
         print("[INFO] Rank-record check (before routine chart cards)...", flush=True)
         _post_pending_rank_records(chart_date, regions_to_post)
@@ -2788,6 +2934,8 @@ def main() -> int:
             if not first:
                 time.sleep(30)
             first = False
+            discord_send("spotify-charts", [(tweet, None)], kind="reentry_text",
+                         key=f"song_update_{chart_date}_{track_id}")
             ok = post_thread([tweet], TWITTER_SESSION)
             if ok:
                 (locks_dir / f"posted_{track_id}.lock").touch()
@@ -2800,6 +2948,9 @@ def main() -> int:
         _posting_thread.join(timeout=600)
         if _posting_thread.is_alive():
             print("[WARN] Posting global/fr toujours en cours après 10 minutes", flush=True)
+
+    if debut_posting_planned and not args.backfill_mode and not args.dates and not args.dates_file:
+        _suppress_release_album_rank_records_all_regions(chart_date)
 
     if _priority_card_thread is not None and _priority_card_thread.is_alive():
         print("[INFO] Attente fin Priority Global NEW card...", flush=True)

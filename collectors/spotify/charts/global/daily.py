@@ -23,6 +23,8 @@ Options :
 
 from __future__ import annotations
 
+import csv
+import json
 import re
 import os
 import subprocess
@@ -51,6 +53,7 @@ from core.chart_comment import build_chart_comment
 from core.data_paths import first_existing, legacy_spotify_chart_dir, spotify_chart_dir
 from core.notify import send as notify
 from core.twitter import post_thread, post_with_image, split_tweets
+from core.discord_notify import discord_send
 
 ROOT = Path(__file__).parent
 _REPO_ROOT = ROOT.parents[3]
@@ -437,6 +440,85 @@ def run_filter(d: date, *, force: bool = False) -> tuple[str | None, bool]:
     return content, False
 
 
+# Escalade Discord du post Global quotidien (high -> urgent), decision 2026-09-26.
+# Uniquement sur donnees exactes : ts_chart du jour et de la veille, puis
+# db/charts_history_global.csv en secours. Donnee absente => pas d'escalade.
+# Peak = champ peak_rank de Spotify (le CSV est incomplet sur l'historique ancien).
+GLOBAL_URGENT_RANK_GAIN_MIN = 16      # "plus de 15 rangs"
+GLOBAL_URGENT_STREAMS_PCT_MIN = 0.15  # "plus de 15 %" (strictement)
+
+
+def _load_ts_chart(d: date) -> list[dict] | None:
+    try:
+        rows = json.loads((spotify_chart_dir("global", d) / f"ts_chart_{d}.json").read_text(encoding="utf-8"))
+    except Exception:
+        return None
+    return rows if isinstance(rows, list) else None
+
+
+def discord_global_urgent_reasons(d: date) -> list[str]:
+    rows = _load_ts_chart(d)
+    if not rows:
+        return []
+    track_ids = {r.get("track_id") for r in rows if r.get("track_id")}
+    prev_peak: dict[str, int] = {}
+    prev_streams: dict[str, int] = {}
+
+    # Secours : derniere ligne CSV strictement avant la date (peak), ligne de la veille (streams).
+    target, prev_day = str(d), str(d - timedelta(days=1))
+    last_date: dict[str, str] = {}
+    try:
+        with (_REPO_ROOT / "db" / "charts_history_global.csv").open(encoding="utf-8", newline="") as fh:
+            for row in csv.DictReader(fh):
+                tid, row_date = row.get("track_id"), row.get("date") or ""
+                if tid not in track_ids or not row_date or row_date >= target:
+                    continue
+                try:
+                    if row_date >= last_date.get(tid, "") and row.get("peak_rank"):
+                        last_date[tid] = row_date
+                        prev_peak[tid] = int(row["peak_rank"])
+                    if row_date == prev_day and row.get("streams"):
+                        prev_streams[tid] = int(row["streams"])
+                except (TypeError, ValueError):
+                    continue
+    except OSError:
+        pass
+
+    # Prioritaire : chart de la veille (meme source que le jour J).
+    for r in _load_ts_chart(d - timedelta(days=1)) or []:
+        tid = r.get("track_id")
+        if isinstance(r.get("peak_rank"), int):
+            prev_peak[tid] = r["peak_rank"]
+        if isinstance(r.get("streams"), int):
+            prev_streams[tid] = r["streams"]
+
+    reasons = []
+    for r in rows:
+        tid, name = r.get("track_id"), r.get("track_name", "?")
+        rank, prev_rank, streams, peak = r.get("rank"), r.get("previous_rank"), r.get("streams"), r.get("peak_rank")
+        if not isinstance(rank, int):
+            continue
+        if rank == 1:
+            reasons.append(f"{name} #1 Global")
+        if peak == rank and tid in prev_peak and rank < prev_peak[tid]:
+            reasons.append(f"{name} new peak #{rank} (avant #{prev_peak[tid]})")
+        if isinstance(prev_rank, int) and prev_rank > 0 and prev_rank - rank >= GLOBAL_URGENT_RANK_GAIN_MIN:
+            reasons.append(f"{name} +{prev_rank - rank} rangs")
+        prev = prev_streams.get(tid)
+        if isinstance(streams, int) and prev and (streams - prev) / prev > GLOBAL_URGENT_STREAMS_PCT_MIN:
+            reasons.append(f"{name} +{(streams - prev) / prev:.1%} streams")
+    return reasons
+
+
+def discord_global_priority(dates: list[date]) -> str | None:
+    """'urgent' si une regle d'escalade touche une des dates, sinon None (kind => high)."""
+    reasons = [reason for d in dates for reason in discord_global_urgent_reasons(d)]
+    if reasons:
+        log("INFO", "Discord: post Global en urgent -> " + "; ".join(reasons))
+        return "urgent"
+    return None
+
+
 def build_tweet_content(processed: list[date]) -> str:
     processed = processed[:1]
     if len(processed) == 1:
@@ -674,6 +756,9 @@ def main() -> None:
             log("INFO", "Publication Twitter ignorée (--no-post)")
             posted = True
         else:
+            discord_send("spotify-charts", [(tweet_content, image_path)],
+                         kind="global_daily", key=f"global_daily_{target}",
+                         priority=discord_global_priority([target]), thread="global")
             posted = post_with_image(
                 tweet_content, image_path, TWITTER_SESSION,
                 skip_if=lambda: already_posted(target),
@@ -758,6 +843,9 @@ def main() -> None:
         log("INFO", "Publication Twitter ignorée (--no-post)")
         posted = True
     else:
+        discord_send("spotify-charts", [(tweet_content, image_path)], kind="global_daily",
+                     key="global_daily_" + "_".join(str(d) for d in processed),
+                     priority=discord_global_priority(processed), thread="global")
         log("STEP", "Publication Twitter")
         posted = post_with_image(
             tweet_content, image_path, TWITTER_SESSION,

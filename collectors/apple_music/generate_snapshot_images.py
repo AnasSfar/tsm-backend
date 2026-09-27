@@ -223,15 +223,116 @@ def get_previous_day_ranks(chart_date: str, region: str, genre: str | None) -> t
     return {}, None
 
 
+def _day_cycles(chart_date: str, region: str, genre: str | None) -> dict[str, dict[str, int]]:
+    """{scraped_at: {track_key: rank}} for every collected cycle of the day."""
+    path = _region_csv_path(chart_date, region, genre)
+    if not path.exists():
+        return {}
+    keep = _region_row_filter(region, genre)
+    cycles: dict[str, dict[str, int]] = {}
+    with path.open("r", encoding="utf-8-sig", newline="") as fh:
+        for row in csv.DictReader(fh):
+            if str(row.get("date") or "").strip() != chart_date:
+                continue
+            at = str(row.get("scraped_at") or "")
+            cycle = cycles.setdefault(at, {})  # file-level: known even with no TS row
+            if not keep(row):
+                continue
+            rank, key = _rank_int(row.get("rank")), _track_key(row)
+            if rank is not None and key:
+                cycle[key] = rank
+    return cycles
+
+
+def get_previous_snapshot_ranks(
+    chart_date: str, region: str, genre: str | None, current_scraped_at: str | None,
+) -> tuple[dict[str, int], str | None]:
+    """Ranks of the LAST snapshot before the current one whose positions
+    differ (owner 2026-09-25: Apple Music changes are vs the latest snapshot,
+    not vs yesterday). Apple doesn't refresh every chart every hour and an
+    unrefreshed hour repeats the previous one, so an identical snapshot is
+    skipped — same rule as the site's "Last snapshot" mode
+    (tsm-frontend api/routes/apple_music.py::_last_distinct_bucket_payloads).
+    Falls back to the newest earlier snapshot when none differs."""
+    day = datetime.strptime(chart_date, "%Y-%m-%d").date()
+    current: dict[str, int] | None = None
+    fallback: tuple[dict[str, int], str] | None = None
+    for back in range(0, PREVIOUS_SNAPSHOT_LOOKBACK_DAYS + 1):
+        cycles = _day_cycles(str(day - timedelta(days=back)), region, genre)
+        for at in sorted(cycles, reverse=True):
+            if current_scraped_at and at >= current_scraped_at:
+                if at == current_scraped_at:
+                    current = cycles[at]
+                continue
+            if current is None:
+                current = {}
+            if fallback is None:
+                fallback = (cycles[at], at)
+            if cycles[at] != current:
+                return cycles[at], at
+    return fallback if fallback else ({}, None)
+
+
+def _cycle_title_ids(scraped_at: str | None, region: str, genre: str | None) -> dict[str, str | None]:
+    """{title key: apple_music_id} of one snapshot (None when a title appears
+    twice — ambiguous, never used)."""
+    if not scraped_at:
+        return {}
+    path = _region_csv_path(scraped_at[:10], region, genre)
+    if not path.exists():
+        return {}
+    keep = _region_row_filter(region, genre)
+    out: dict[str, str | None] = {}
+    with path.open("r", encoding="utf-8-sig", newline="") as fh:
+        for row in csv.DictReader(fh):
+            if str(row.get("scraped_at") or "") != scraped_at or not keep(row):
+                continue
+            key = _song_name_key(row.get("song_name"))
+            out[key] = None if key in out else str(row.get("apple_music_id") or "").strip() or None
+    return out
+
+
+def id_swap_prev_rank(
+    ranks: dict[str, int], previous_scraped_at: str | None, region: str, genre: str | None,
+    current_rows: list[dict],
+) -> Callable[[dict], int | None]:
+    """Previous rank of a row, surviving an Apple id swap: Apple re-issues the
+    same song under a new id mid-day (Pink Clouding US 2026-09-26 13:25,
+    6814996162 -> 6814997428, #3 -> #3) and an id-only lookup made it
+    NEW / "reentry #3". The id is still the primary key (Apple Music rule);
+    the title is only a fallback when the id is unknown AND exactly one
+    previous row had that exact title AND its id has left the chart."""
+    titles = _cycle_title_ids(previous_scraped_at, region, genre)
+    current_ids = {str(r.get("apple_music_id") or "").strip() for r in current_rows}
+
+    def resolve(row: dict) -> int | None:
+        rank = ranks.get(_track_key(row))
+        if rank is not None:
+            return rank
+        old_id = titles.get(_song_name_key(row.get("song_name")))
+        if old_id and old_id not in current_ids:
+            return ranks.get(old_id)
+        return None
+
+    return resolve
+
+
 def make_prev_rank_resolver(
-    chart_date: str, region: str, genre: str | None,
+    chart_date: str, region: str, genre: str | None, current_scraped_at: str | None = None,
+    current_rows: list[dict] | None = None,
 ) -> tuple[Callable[[dict], int | None], str | None]:
-    """Every chart compares vs the previous day's last snapshot (Global only
-    updates once/day; country/genre previous_rank already means "vs
-    yesterday"). Computed here rather than read from previous_rank so the
-    deltas and the "vs <hour>" label come from the very same snapshot."""
-    previous_day_ranks, previous_scraped_at = get_previous_day_ranks(chart_date, region, genre)
-    return (lambda row: previous_day_ranks.get(_track_key(row))), previous_scraped_at
+    """With `current_scraped_at` (the cards): vs the last snapshot whose
+    positions differ (get_previous_snapshot_ranks). Without (ntfy notify):
+    vs the previous day's last snapshot, as before. Computed here rather than
+    read from previous_rank so the deltas and the "vs <hour>" label come from
+    the very same snapshot."""
+    if current_scraped_at:
+        ranks, previous_scraped_at = get_previous_snapshot_ranks(chart_date, region, genre, current_scraped_at)
+    else:
+        ranks, previous_scraped_at = get_previous_day_ranks(chart_date, region, genre)
+    if current_rows is not None:
+        return id_swap_prev_rank(ranks, previous_scraped_at, region, genre, current_rows), previous_scraped_at
+    return (lambda row: ranks.get(_track_key(row))), previous_scraped_at
 
 
 def _filter_album(rows: list[dict], album_keys: set[str] | None) -> list[dict]:
@@ -297,6 +398,9 @@ def _global_alltime_peaks() -> dict[str, int]:
         for key in _song_key_candidates(song.get("song_name")):
             peaks[key] = min(peak, peaks.get(key, peak))
     return peaks
+
+
+PEAK_TODAY_FOR_PARTIAL = os.getenv("APPLE_MUSIC_PEAK_TODAY_FOR_PARTIAL", "1") == "1"
 
 
 def make_peak_resolver(
@@ -405,11 +509,23 @@ def make_peak_resolver(
                 # peak, no "best in" label; NEW PEAK / RE-PEAK vs both.
                 before = ref if prior is None else min(ref, prior)
                 return min(peak, ref), peak_badge(before), ""
+        if not complete and PEAK_TODAY_FOR_PARTIAL:
+            # Owner 2026-09-26: "the peaks for the old songs we don't have them
+            # for all the stores so instead we will do PEAK TODAY : X" — best
+            # rank on this chart over today's cycles (current one included),
+            # never a badge.
+            today_best = rank
+            for r in day_rows(chart_date):
+                if keys.intersection(_song_key_candidates(r.get("song_name"))):
+                    r_rank = _rank_int(r.get("rank"))
+                    if r_rank is not None and r_rank < today_best:
+                        today_best = r_rank
+            return today_best, "", "PEAK TODAY"
         if not complete:
             # Partial run: never NEW / NEW PEAK (it may have peaked higher before
             # we collected). Beating its best of the collected days = "BEST IN
             # 2026" (owner 2026-09-25, region cards), a true claim.
-            best_badge = f"BEST IN {end.year}" if prior is not None and rank < prior else ""
+            best_badge =f"BEST IN {end.year}" if prior is not None and rank < prior else ""
             if released is not None and released < APPLE_MUSIC_HISTORY_START                     and end.year == APPLE_MUSIC_HISTORY_START.year:
                 # owner 2026-09-24: released before our first data -> "best in 2026"
                 return peak, best_badge, f"best in {end.year}"
@@ -528,6 +644,63 @@ def _rows_html(entries: list[dict], with_peak: bool = False) -> str:
     return "".join(parts)
 
 
+# "OUT" row (owner 2026-09-27: "when we post a store update like US Apple
+# Music and a song left since last snapshot we add OUT to a row we put last
+# like OUT Opalite, Honey, Wood"): one last row, the songs that were on the
+# card's previous snapshot and left the chart. Posted cards only (show_out).
+OUT_CSS = """
+.data-row.out-row{background:rgba(242,244,247,.92);padding-top:12px;padding-bottom:12px}
+.col-chg.chg-out{background:#e4e7ec;color:#475467;font-size:11px}
+.out-row .out-names{
+  grid-column:3/-1;font-size:15px;font-weight:700;color:#475467;
+  line-height:1.4;white-space:normal;overflow-wrap:anywhere;
+}
+"""
+
+
+def _out_row_html(songs: list[str]) -> str:
+    if not songs:
+        return ""
+    return (
+        '<div class="data-row out-row"><div class="col-rank"></div>'
+        '<div class="col-chg chg-out">OUT</div>'
+        f'<div class="out-names">{html.escape(", ".join(songs))}</div></div>\n'
+    )
+
+
+def dropped_songs(
+    region: str, genre: str | None, previous_scraped_at: str | None,
+    current_rows: list[dict], album_keys: set[str] | None = None,
+) -> list[str]:
+    """Songs (album filter applied) of the previous snapshot — the one the
+    card's arrows compare to — that are no longer on the chart, best previous
+    rank first. Still there = same Apple id OR same title (id swap, clean /
+    explicit editions): never a false OUT."""
+    if not previous_scraped_at:
+        return []
+    path = _region_csv_path(previous_scraped_at[:10], region, genre)
+    if not path.exists():
+        return []
+    keep = _region_row_filter(region, genre)
+    with path.open("r", encoding="utf-8-sig", newline="") as fh:
+        prev_rows = [r for r in csv.DictReader(fh)
+                     if str(r.get("scraped_at") or "") == previous_scraped_at and keep(r)]
+    current_ids = {str(r.get("apple_music_id") or "").strip() for r in current_rows} - {""}
+    current_titles = {_song_name_key(r.get("song_name")) for r in current_rows}
+    out: list[str] = []
+    seen: set[str] = set()
+    for row in sorted(_filter_album(prev_rows, album_keys), key=lambda r: _rank_int(r.get("rank")) or 9999):
+        title = str(row.get("song_name") or "").strip()
+        key = _song_name_key(title)
+        if not title or key in seen or key in current_titles:
+            continue
+        if str(row.get("apple_music_id") or "").strip() in current_ids:
+            continue
+        seen.add(key)
+        out.append(title)
+    return out
+
+
 def _notify_text(entries: list[dict]) -> str:
     if not entries:
         return "No Taylor Swift entries currently charting"
@@ -599,14 +772,20 @@ def generate(
     genre: str | None,
     out_dir: Path,
     album: tuple[str, set[str]] | None = None,
+    show_out: bool = False,
 ) -> Path:
+    """show_out: last row "OUT <songs that left since the previous snapshot>"
+    (the new-release posts, 2026-09-27)."""
     from collectors.comp.discography import display_title_for_album
     from collectors.comp.tables_image import build_table_html, render_html_to_png
 
     album_name, album_keys = album if album else (None, None)
     rows, scraped_at = get_region_rows(chart_date, region, genre)
+    chart_rows = rows
     rows = _filter_album(rows, album_keys)
-    prev_rank_fn, previous_scraped_at = make_prev_rank_resolver(chart_date, region, genre)
+    prev_rank_fn, previous_scraped_at = make_prev_rank_resolver(
+        chart_date, region, genre, scraped_at, current_rows=chart_rows,
+    )
     # Peak column only on album cards (debut/deluxe follow-up): a full-chart
     # card would be mostly "since Mar 22" peaks (history starts 2026-03-22).
     # Peak column on every card since 2026-09-25 (owner: NEW PEAK / RE-PEAK /
@@ -619,7 +798,8 @@ def generate(
     date_fmt = datetime.strptime(chart_date, "%Y-%m-%d").strftime("%B %d, %Y")
     heading = display_title_for_album(album_name) if album_name else "Taylor Swift"
     title = f"{heading} · {label} Apple Music"
-    rows_html = _rows_html(entries, with_peak=with_peak)
+    out_songs = dropped_songs(region, genre, previous_scraped_at, chart_rows, album_keys) if show_out else []
+    rows_html = _rows_html(entries, with_peak=with_peak) + _out_row_html(out_songs)
 
     snapshot_label = _format_snapshot_time(scraped_at) or date_fmt
     subtitle = f"Chart Snapshot · {snapshot_label}"
@@ -631,7 +811,7 @@ def generate(
         subtitle=subtitle,
         col_heads=[("Pos", False), ("+/-", False), ("Track", False)] + ([("Peak", True)] if with_peak else []),
         grid_cols="52px 64px minmax(240px,1fr)" + (" 150px" if with_peak else ""),
-        extra_css=PEAK_CSS if with_peak else "",
+        extra_css=(PEAK_CSS if with_peak else "") + (OUT_CSS if out_songs else ""),
         rows_html=rows_html,
         handle=HANDLE,
         date_str=snapshot_label,

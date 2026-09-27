@@ -43,8 +43,12 @@ def title_key(value: str) -> str:
 
 def _clean_video_title(value: str) -> str:
     text = re.sub(r"^\s*.*taylor\s+swift.*?\s*[-–—:]\s*", "", value or "", flags=re.I)
-    text = re.sub(r"\([^)]*\)", " ", text)
-    text = re.sub(r"\[[^]]*\]", " ", text)
+    def keep_feature_credit(match: re.Match[str]) -> str:
+        inner = match.group(1)
+        return f" {inner} " if re.search(r"\b(?:feat|ft)\.?\b", inner, flags=re.I) else " "
+
+    text = re.sub(r"\(([^)]*)\)", keep_feature_credit, text)
+    text = re.sub(r"\[([^]]*)\]", keep_feature_credit, text)
     return normalize_text(text)
 
 
@@ -80,9 +84,23 @@ def _title_aliases(track: dict[str, Any]) -> list[str]:
     family = normalize_text(str(track.get("song_family") or ""))
     version = normalize_text(str(track.get("version_tag") or ""))
     allow_base_alias = "remix" not in family and "remix" not in version
+    featured_artists = [
+        str(artist or "").strip()
+        for artist in (track.get("featured_artists") or [])
+        if str(artist or "").strip()
+    ]
+    requires_feature_credit = bool(featured_artists)
+    filter_tags = {
+        normalize_text(str(tag or ""))
+        for tag in (track.get("filter_tags") or track.get("tags") or [])
+    }
+    is_commentary_extra = (
+        "track by track" in filter_tags
+        or normalize_text(str(track.get("extra_type") or "")) == "commentary"
+    )
     raw = [
         track.get("title_clean"),
-        track.get("base_title"),
+        None if is_commentary_extra else track.get("base_title"),
         track.get("title"),
     ]
     aliases: list[str] = []
@@ -90,12 +108,35 @@ def _title_aliases(track: dict[str, Any]) -> list[str]:
         text = str(value or "").strip()
         if not text:
             continue
+        has_feature_credit = bool(re.search(r"\b(?:feat|ft)\.?\b", text, flags=re.I))
+        if requires_feature_credit and not has_feature_credit:
+            for artist in featured_artists:
+                aliases.append(f"{text} feat {artist}")
+                aliases.append(f"{text} ft {artist}")
+            continue
         aliases.append(text)
-        if allow_base_alias:
+        if allow_base_alias and not requires_feature_credit:
             aliases.append(re.sub(r"\s*\([^)]*\)", "", text).strip())
             aliases.append(re.sub(r"\s*\[[^]]*\]", "", text).strip())
             aliases.append(re.sub(r"\s+feat\.?.*$", "", text, flags=re.I).strip())
     return [alias for alias in aliases if alias]
+
+
+def _featureless_aliases(track: dict[str, Any]) -> list[str]:
+    if not (track.get("featured_artists") or []):
+        return []
+    aliases: list[str] = []
+    for value in (track.get("title_clean"), track.get("base_title"), track.get("title")):
+        text = str(value or "").strip()
+        if not text:
+            continue
+        text = re.sub(r"\s*\([^)]*\b(?:feat|ft)\.?\b[^)]*\)", "", text, flags=re.I).strip()
+        text = re.sub(r"\s*\[[^]]*\b(?:feat|ft)\.?\b[^]]*\]", "", text, flags=re.I).strip()
+        text = re.sub(r"\s+\b(?:feat|ft)\.?\b.*$", "", text, flags=re.I).strip()
+        normalized = normalize_text(text)
+        if normalized:
+            aliases.append(normalized)
+    return aliases
 
 
 def load_song_catalog(path: Path) -> list[dict[str, str]]:
@@ -113,6 +154,7 @@ def load_song_catalog(path: Path) -> list[dict[str, str]]:
                 if not display or not family:
                     continue
                 key = title_key(family)
+                featureless_aliases = _featureless_aliases(track)
                 for alias in _title_aliases(track):
                     match_text = normalize_text(alias)
                     if not match_text:
@@ -123,6 +165,8 @@ def load_song_catalog(path: Path) -> list[dict[str, str]]:
                             "title_key": key,
                             "title": display,
                             "match_text": match_text,
+                            "featureless_aliases": "|".join(featureless_aliases),
+                            "matched_catalog": "1",
                         },
                     )
 
@@ -131,17 +175,40 @@ def load_song_catalog(path: Path) -> list[dict[str, str]]:
 
 def match_video_title(video_title: str, catalog: list[dict[str, str]]) -> dict[str, str]:
     cleaned = _clean_video_title(video_title)
+    exact_featureless_collision = any(
+        cleaned in str(entry.get("featureless_aliases") or "").split("|")
+        for entry in catalog
+    )
+    if exact_featureless_collision and not re.search(r"\b(?:feat|ft)\.?\b", cleaned, flags=re.I):
+        return {
+            "title_key": f"{title_key(cleaned)}_no_feature_credit",
+            "title": (cleaned or normalize_text(video_title)).title(),
+            "matched_catalog": "0",
+        }
+
     padded = f" {cleaned} "
     for entry in catalog:
         match_text = entry["match_text"]
         if match_text and f" {match_text} " in padded:
-            return {"title_key": entry["title_key"], "title": entry["title"]}
+            return {
+                "title_key": entry["title_key"],
+                "title": entry["title"],
+                "matched_catalog": "1",
+            }
 
     fallback = cleaned
     for marker in DROP_VIDEO_MARKERS:
         fallback = fallback.replace(marker, " ")
     fallback = re.sub(r"\s+", " ", fallback).strip() or cleaned or normalize_text(video_title)
-    return {"title_key": title_key(fallback), "title": fallback.title()}
+    fallback_key = title_key(fallback)
+    featureless_collision = any(
+        fallback_key == entry["title_key"]
+        and cleaned in str(entry.get("featureless_aliases") or "").split("|")
+        for entry in catalog
+    )
+    if featureless_collision:
+        fallback_key = f"{fallback_key}_no_feature_credit"
+    return {"title_key": fallback_key, "title": fallback.title(), "matched_catalog": "0"}
 
 
 def load_manual_groups(path: Path) -> dict[str, dict[str, str]]:
@@ -218,14 +285,24 @@ def build_title_rows(
     video_rows: list[dict],
     songs_path: Path,
     manual_groups_path: Path | None = None,
+    catalog_only: bool = False,
 ) -> list[dict]:
     catalog = load_song_catalog(songs_path)
     manual_groups = load_manual_groups(manual_groups_path) if manual_groups_path else {}
+    catalog_keys = {entry["title_key"] for entry in catalog}
     groups: dict[str, dict[str, Any]] = {}
 
     for row in video_rows:
         video_id = str(row.get("video_id") or "")
-        matched = manual_groups.get(video_id) or match_video_title(str(row.get("title") or ""), catalog)
+        manual = manual_groups.get(video_id)
+        matched = manual or match_video_title(str(row.get("title") or ""), catalog)
+        if catalog_only:
+            is_catalog_match = (
+                matched.get("matched_catalog") == "1"
+                or (manual is not None and matched.get("title_key") in catalog_keys)
+            )
+            if not is_catalog_match:
+                continue
         group = groups.setdefault(
             matched["title_key"],
             {
@@ -262,6 +339,120 @@ def build_title_rows(
         )
 
     return sorted(out, key=lambda row: int(row["total_views"]), reverse=True)
+
+
+# ---------------------------------------------------------------------------
+# Video categories (owner 2026-09-27) — the YouTube page's 4 sections:
+#   videos  = music videos + lyric videos/visualizers of songs (main channel)
+#   audios  = Topic art tracks + main-channel audio uploads
+#   extras  = trailers, announcements, lives, behind the scenes, shorts,
+#             promos, commentary / track by track / voice memos
+#   all     = everything
+# Decided from the video's own title + duration (catalog matching alone is
+# wrong both ways: shorts/lives match song titles, real MVs don't match).
+# Exceptions: tools/json/video_categories.json ({video_id: {"category": ...}}).
+# ---------------------------------------------------------------------------
+
+CATEGORY_VIDEOS = "videos"
+CATEGORY_AUDIOS = "audios"
+CATEGORY_EXTRAS = "extras"
+VIDEO_CATEGORIES = (CATEGORY_VIDEOS, CATEGORY_AUDIOS, CATEGORY_EXTRAS)
+
+_SPOKEN_RE = re.compile(r"commentary|track by track|voice memo|\binterview\b")
+_MAIN_EXTRA_RE = re.compile("|".join([
+    r"\blive (?:from|at|on|in)\b", r"\(live\b", r"\blive\)", r"\blive\s*$", r"\blive ?stream",
+    r"performance", r"\bperforms?\b", r"behind[ -]the[ -]scenes", r"\bbts\b", r"making of", r"outtakes?",
+    r"rehearsal", r"storyboard", r"vevocertified", r"\btalks?\b", r"challenge", r"diary", r"in-store",
+    r"preview", r"available now", r"now available", r"out now", r"only on youtube", r"long pond",
+    r"studio sessions?", r"recorded at", r"secret sessions", r"fan video", r"the collaboration",
+    r"on style:", r"trailer", r"teaser", r"announcement", r"sneak peek", r"\bstation\b",
+    r"karaoke", r"yule log", r"\btour\b", r"concert film", r"swiftmas", r"#shorts",
+]))
+_AUDIO_RE = re.compile(r"official audio|\(audio\)|\[audio\]|/ ?audio\)")
+_VIDEO_MARK_RE = re.compile(r"music video|official video|lyric video|lyric version|visualizer|short film|vertical version")
+# Main-channel remix/acoustic/vault uploads without a video marker are the
+# label's static "official audio" uploads.
+_AUDIO_HINT_RE = re.compile(r"remix|acoustic|witch version|from the vault")
+_DASH_RE = re.compile(r"\s[-–—]\s")
+SHORTS_MAX_SECONDS = 60
+
+
+def duration_seconds(value: str) -> int | None:
+    match = re.fullmatch(r"P(?:(\d+)D)?(?:T(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?)?", str(value or "").strip())
+    if not match or not str(value or "").strip():
+        return None
+    days, hours, minutes, seconds = (int(part or 0) for part in match.groups())
+    return days * 86400 + hours * 3600 + minutes * 60 + seconds
+
+
+def load_video_categories(path: Path | None) -> dict[str, str]:
+    if not path or not path.exists():
+        return {}
+    with path.open(encoding="utf-8") as f:
+        payload = json.load(f)
+    out: dict[str, str] = {}
+    for video_id, value in (payload.items() if isinstance(payload, dict) else []):
+        category = value.get("category") if isinstance(value, dict) else value
+        if category in VIDEO_CATEGORIES:
+            out[str(video_id)] = category
+    return out
+
+
+def video_category(
+    row: dict,
+    *,
+    catalog: list[dict[str, str]],
+    catalog_keys: set[str],
+    manual_groups: dict[str, dict[str, str]],
+    overrides: dict[str, str],
+) -> str:
+    video_id = str(row.get("video_id") or "")
+    if video_id in overrides:
+        return overrides[video_id]
+    title = str(row.get("title") or "").replace("’", "'").casefold()
+    if row.get("channel") == "topic":
+        return CATEGORY_EXTRAS if _SPOKEN_RE.search(title) else CATEGORY_AUDIOS
+    seconds = duration_seconds(row.get("duration") or "")
+    if seconds is not None and seconds <= SHORTS_MAX_SECONDS:
+        return CATEGORY_EXTRAS
+    if _SPOKEN_RE.search(title) or _MAIN_EXTRA_RE.search(title):
+        return CATEGORY_EXTRAS
+    if _AUDIO_RE.search(title) or (not _VIDEO_MARK_RE.search(title) and _AUDIO_HINT_RE.search(title)):
+        return CATEGORY_AUDIOS
+    if _DASH_RE.search(str(row.get("title") or "")):  # "Taylor Swift - Song", "ZAYN, Taylor Swift - Song"
+        return CATEGORY_VIDEOS
+    matched = manual_groups.get(video_id) or match_video_title(str(row.get("title") or ""), catalog)
+    in_catalog = matched.get("matched_catalog") == "1" or matched.get("title_key") in catalog_keys
+    return CATEGORY_VIDEOS if in_catalog else CATEGORY_EXTRAS
+
+
+def video_rows_by_source(
+    video_rows: list[dict],
+    *,
+    songs_path: Path,
+    manual_groups_path: Path | None,
+    categories_path: Path | None,
+) -> dict[str, list[dict]]:
+    """Video rows feeding each `source` of youtube_title_history.csv:
+    all (TayBoard), main/topic/songs (legacy page toggles, kept while the
+    deployed frontend may still ask for them) + videos/audios/extras."""
+    catalog = load_song_catalog(songs_path)
+    context = {
+        "catalog": catalog,
+        "catalog_keys": {entry["title_key"] for entry in catalog},
+        "manual_groups": load_manual_groups(manual_groups_path) if manual_groups_path else {},
+        "overrides": load_video_categories(categories_path),
+    }
+    by_category: dict[str, list[dict]] = {category: [] for category in VIDEO_CATEGORIES}
+    for row in video_rows:
+        by_category[video_category(row, **context)].append(row)
+    return {
+        "all": video_rows,
+        "main": [r for r in video_rows if (r.get("channel") or "main") == "main"],
+        "topic": [r for r in video_rows if r.get("channel") == "topic"],
+        "songs": video_rows,  # build_title_rows(catalog_only=True)
+        **by_category,
+    }
 
 
 def write_title_history(

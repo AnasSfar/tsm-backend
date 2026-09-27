@@ -14,6 +14,9 @@ Spotify streams et charts.
   composer.
 - `git_ops.py`: commit/push.
 - `notify.py`: ntfy.
+- `discord_notify.py`: pont vers `notifiers/discord` (module Discord
+  independant, voir son README) : `discord_send(channel, posts, kind=, key=)`.
+  `twitter.py` ne touche PAS a Discord.
 - `logger.py`: logging.
 - `history.py`: helpers history.
 - `retention.py`: nettoyage artefacts generes.

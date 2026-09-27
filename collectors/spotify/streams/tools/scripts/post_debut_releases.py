@@ -5,6 +5,12 @@ Detects tracks whose Spotify API release_date is within the release update
 window. Different songs get standalone posts; multiple versions of the same
 song share one post.
 
+Tracks that belong to a catalogue album (db/discography/albums/*.json) never
+get a standalone song card: the album update card covers them, posted early on
+the release day by finalize_update.ReadyDebutReleasePoster (decision
+2026-09-26, The Encore). Only debuts outside any album (songs/features/misc)
+still get a song card here.
+
 Usage:
   python post_debut_releases.py 2026-06-01
   python post_debut_releases.py 2026-06-01 --no-post
@@ -407,6 +413,24 @@ def _release_day(release_date: str | None) -> date | None:
         return date.fromisoformat(str(release_date)[:10])
     except Exception:
         return None
+
+
+def album_track_id_set() -> set[str]:
+    """Every track ID listed in a catalogue album file."""
+    album_tracks, _meta = _load_album_tracks()
+    return {tid for ids in album_tracks.values() for tid in ids}
+
+
+def release_day_debut_albums(target_date: str) -> list[str]:
+    """Catalogue albums with at least one track released exactly on
+    target_date — their album update card replaces the debut song cards."""
+    album_tracks, meta = _load_album_tracks()
+    target_day = date.fromisoformat(target_date)
+    return sorted(
+        album
+        for album, ids in album_tracks.items()
+        if any(_release_day(meta.get(tid, {}).get("release_date")) == target_day for tid in ids)
+    )
 
 
 def _daily_streams_for_row(row: dict | None, previous_row: dict | None = None) -> int:
@@ -1037,6 +1061,16 @@ def _build_post_threads(
         if tid in day_rows
         and _is_recent_release_for_debut(item.get("release_date"), target_date)
     }
+    # Album tracks: no standalone song card, the album update card covers them.
+    album_track_ids = {tid for ids in album_tracks.values() for tid in ids}
+    album_debut_ids = (debut_ids & album_track_ids) - forced_ids
+    if album_debut_ids:
+        albums = sorted({meta.get(tid, {}).get("album") or "?" for tid in album_debut_ids})
+        print(
+            f"[debut_releases] {len(album_debut_ids)} album debut track(s) "
+            f"({', '.join(albums)}): no song card, the album update card covers them."
+        )
+        debut_ids -= album_debut_ids
     if not debut_ids:
         return []
 

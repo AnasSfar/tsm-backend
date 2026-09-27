@@ -760,6 +760,16 @@ def try_apply_track_update(
     )
     daily = compute_daily(previous_day_total, total)
     missing_previous_day_total = previous_day_total is None and last_total is not None
+    # Debut le jour meme de sa sortie, sans aucune ligne anterieure (titre
+    # ajoute au catalogue le jour J, pas de ligne pre-sortie a 0) : rien
+    # n'existait avant stats_date, donc tout le total Spotify = streams du jour.
+    # Sans ca, daily restait vide et la boucle [debut] re-scrapait en boucle
+    # (incident The Encore 2026-09-25).
+    release_day_debut = (
+        last_total is None
+        and total > 0
+        and is_recent_release_date(track.get("release_date"), stats_date, window_days=0)
+    )
     # Baseline (total Ã©crit, daily VIDE) quand il n'y a pas de ligne J-1 et que
     # le delta depuis la derniÃ¨re ligne connue ne peut pas valoir un daily :
     # extras (comportement historique extra_baseline), ou gap > 4 jours / aucun
@@ -772,7 +782,7 @@ def try_apply_track_update(
         if history_index is not None
         else (days_covered_by_row(track_id, stats_date) if last_total is not None else None)
     )
-    missing_previous_day_baseline = previous_day_total is None and (
+    missing_previous_day_baseline = previous_day_total is None and not release_day_debut and (
         bool(track.get("chart_extra"))
         or (
             not is_recent_release_date(track.get("release_date"), stats_date)
@@ -801,15 +811,21 @@ def try_apply_track_update(
             elif last_total is not None:
                 daily = total - last_total
             else:
-                daily = None
+                daily = total if release_day_debut else None
     elif override_stream_guards:
         reason = "override_stream_guards"
         real_update = True
         if previous_day_total is None and last_total is not None:
             daily = compute_daily(last_total, total)
+        elif release_day_debut:
+            daily = total
     elif missing_previous_day_baseline:
         reason = "missing_previous_day_baseline"
         real_update = False
+    elif release_day_debut:
+        reason = "release_day_debut"
+        real_update = True
+        daily = total
     elif last_total is None:
         reason = "first_seen"
         real_update = True
@@ -1297,7 +1313,7 @@ def run_new_release_preflight(token_mgr: TokenManager | None, stats_date: str) -
     )
     return added_ids
 
-def filter_tracks_released_on(track_ids: set[str], target_date: str) -> set[str]:
+def filter_tracks_released_on(track_ids: set[str], target_date: str, *, window_days: int = 3) -> set[str]:
     if not track_ids:
         return set()
 
@@ -1316,7 +1332,9 @@ def filter_tracks_released_on(track_ids: set[str], target_date: str) -> set[str]
         for section in sections if isinstance(sections, list) else []:
             for track in section.get("tracks") or []:
                 track_id = extract_track_id(track.get("url") or track.get("spotify_url") or "")
-                if track_id in track_ids and is_recent_release_date(track.get("release_date"), target_date):
+                if track_id in track_ids and is_recent_release_date(
+                    track.get("release_date"), target_date, window_days=window_days
+                ):
                     released.add(track_id)
     return released
 
@@ -1778,6 +1796,19 @@ def repair_missing_daily_streams_for_date(stats_date: str, track_ids: set[str] |
         if previous is None or row_day > previous[0]:
             prior_totals[track_id] = (row_day, streams)
 
+    # Rows with no earlier history at all can only be repaired when stats_date
+    # is the track's release day (debut: whole total = that day's streams).
+    no_prior_ids = {
+        str(row.get("track_id") or "").strip()
+        for row in rows
+        if str(row.get("date") or "").strip() == stats_date
+        and not str(row.get("daily_streams") or "").strip()
+        and str(row.get("track_id") or "").strip() not in prior_totals
+        and (not target_ids or str(row.get("track_id") or "").strip() in target_ids)
+    }
+    no_prior_ids.discard("")
+    release_day_ids = filter_tracks_released_on(no_prior_ids, stats_date, window_days=0)
+
     repaired_ids: set[str] = set()
     for row in rows:
         track_id = str(row.get("track_id") or "").strip()
@@ -1792,9 +1823,14 @@ def repair_missing_daily_streams_for_date(stats_date: str, track_ids: set[str] |
         except Exception:
             continue
         prior = prior_totals.get(track_id)
-        if streams <= 0 or prior is None:
+        if streams <= 0:
             continue
-        daily = streams - prior[1]
+        if prior is None:
+            if track_id not in release_day_ids:
+                continue
+            daily = streams
+        else:
+            daily = streams - prior[1]
         if daily < 0 or daily > MAX_DAILY_INCREASE:
             continue
         row["daily_streams"] = str(daily)
@@ -3427,6 +3463,7 @@ def main():
         log_mode=LOG_MODE,
         enabled="debut" not in SKIP_STEPS,
         no_post_mode=no_post_mode,
+        script_dir=_SCRIPT_DIR,
     )
     debut_release_poster.start()
 
@@ -3453,6 +3490,8 @@ def main():
     # Plus de post d'album pendant la collecte (décision 2026-09-03) : toutes les
     # cards album partent en finalize, dans l'ordre par score_album_update
     # (2 meilleurs -> Showgirl/TTPD -> reste), alternées avec les autres posts.
+    # Exception (2026-09-26) : l'album d'une sortie du jour (debut) part en early
+    # via debut_release_poster, a la place des cards debut par titre.
 
     priority_best_day_track_ids: list[str] = []
     chart_gainer_track_ids: list[str] = []
@@ -3969,7 +4008,13 @@ def main():
 
         previous_stats_date = get_previous_stats_date_str(stats_date)
         previous_done_ids = load_history_track_ids_with_daily_for_date(previous_stats_date)
-        missing_previous_non_extra = non_extra_ids - previous_done_ids
+        # A track released on stats_date can't have a previous-day row (debut:
+        # its whole total is day 1) - only tracks already out on J-1 must have one.
+        released_by_previous_ids = {
+            t["track_id"] for t in all_tracks_for_check
+            if track_is_released_for_stats_date(t, previous_stats_date)
+        }
+        missing_previous_non_extra = (non_extra_ids & released_by_previous_ids) - previous_done_ids
         if missing_previous_non_extra:
             missing_titles = sorted(
                 t["title"] for t in all_tracks_for_check if t["track_id"] in missing_previous_non_extra
@@ -4002,8 +4047,10 @@ def main():
 
     era_recap_poster.stop()
     # Album cards are no longer posted during collection (decision 2026-09-03);
-    # finalize posts them all. Kept as an (always empty) set so _post_one_album's
-    # anti-double-post skip signature is unchanged.
+    # finalize posts them all — except a release-day album debut, posted early by
+    # debut_release_poster (decision 2026-09-26; its lock makes finalize skip it).
+    # Kept as an (always empty) set so _post_one_album's anti-double-post skip
+    # signature is unchanged.
     posted_album_updates: set[str] = set()
     posted_best_day_since_tracks = best_day_since_poster.stop()
     debut_post_state = debut_release_poster.stop()

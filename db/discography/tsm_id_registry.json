@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-09-05",
+  "updated_at": "2026-09-27",
   "songs": {
     "0qnt": {
       "song_family": "sad_beautiful_tragic",
@@ -99,6 +99,7 @@
       "canonical_title": "The Fate of Ophelia",
       "slug": "the-fate-of-ophelia",
       "spotify_track_ids": [
+        "1Egnfi242UNwmZ9SwqKNfP",
         "3CFKUvybrj8Jg5F018tyuA",
         "3JNaLxAymiSUMrmjOarjeo",
         "3Z2nTctPsTsgqqJm5fCSvG",
@@ -110,7 +111,7 @@
         "6PlBKImSl4AZoxBU7F649D"
       ],
       "created_at": "2026-08-29",
-      "updated_at": "2026-08-29",
+      "updated_at": "2026-09-27",
       "merged_into": null
     },
     "11p4": {
@@ -1626,6 +1627,18 @@
       "updated_at": "2026-08-29",
       "merged_into": null
     },
+    "ckw2": {
+      "song_family": "cleveland",
+      "canonical_title": "Cleveland!",
+      "slug": "cleveland",
+      "spotify_track_ids": [
+        "4S6EQ0C00EwfcFWm4Pd1mt",
+        "7uxkx8HPBYkJKcimOyggUM"
+      ],
+      "created_at": "2026-09-27",
+      "updated_at": "2026-09-27",
+      "merged_into": null
+    },
     "clzn": {
       "song_family": "it_s_time_to_go",
       "canonical_title": "it's time to go - bonus track",
@@ -2202,6 +2215,17 @@
       ],
       "created_at": "2026-08-29",
       "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "hu7i": {
+      "song_family": "pink_clouding",
+      "canonical_title": "Pink Clouding",
+      "slug": "pink-clouding",
+      "spotify_track_ids": [
+        "3gyJbNBTRVRdZDA1yO3clm"
+      ],
+      "created_at": "2026-09-27",
+      "updated_at": "2026-09-27",
       "merged_into": null
     },
     "hu7u": {
@@ -3135,6 +3159,18 @@
       ],
       "created_at": "2026-08-29",
       "updated_at": "2026-08-29",
+      "merged_into": null
+    },
+    "ot9x": {
+      "song_family": "patient_zero",
+      "canonical_title": "Patient Zero",
+      "slug": "patient-zero",
+      "spotify_track_ids": [
+        "11hcBLPtbMp4aQI6zGQLub",
+        "49JeKZqejPtqJKpK7x9Ew4"
+      ],
+      "created_at": "2026-09-27",
+      "updated_at": "2026-09-27",
       "merged_into": null
     },
     "owt3": {
@@ -4581,6 +4617,17 @@
       "updated_at": "2026-08-29",
       "merged_into": null
     },
+    "zw2i": {
+      "song_family": "babylon",
+      "canonical_title": "Babylon",
+      "slug": "babylon",
+      "spotify_track_ids": [
+        "2j7wI9QWrP8cjKDdOLVQTU"
+      ],
+      "created_at": "2026-09-27",
+      "updated_at": "2026-09-27",
+      "merged_into": null
+    },
     "zwq6": {
       "song_family": "marjorie",
       "canonical_title": "marjorie",
@@ -5727,6 +5774,8 @@
         "0ttGLmxI0mAkMblE6iRm2S",
         "0wAvTNz81YTUhLFWuWJSAV",
         "0yZPIEgco572UWiwoQtcYF",
+        "11hcBLPtbMp4aQI6zGQLub",
+        "1Egnfi242UNwmZ9SwqKNfP",
         "1VCcPLfDiR1S9PJaSp5qm5",
         "1ZbSww1TszeuJOtsdMZQv1",
         "1appZ3c336FkPvCuywfmrs",
@@ -5740,6 +5789,7 @@
         "2TEQvxxQabwLQMqWMg1qGu",
         "2TUxAAf8NbwbZjr2Ii3Hg9",
         "2ZbU5CJSi02RLNsldux0QQ",
+        "2j7wI9QWrP8cjKDdOLVQTU",
         "2x3mwb96B6TquRqMtbxUE1",
         "3AKV7Mvo2Mx4tb39iPvPlT",
         "3CFKUvybrj8Jg5F018tyuA",
@@ -5749,13 +5799,16 @@
         "3Qeh4z08FfDBRfQMfDv83f",
         "3Z2nTctPsTsgqqJm5fCSvG",
         "3aEo53WkfnIEBh6Cy3E2pj",
+        "3gyJbNBTRVRdZDA1yO3clm",
         "3lcWDG62OH0cH5GHLdT5X4",
         "3r9fAceWmaDFvbNiTnFiLr",
         "3wXuJTeA7dkrWShvbdUk0A",
         "3yWuTOYDztXjZxdE2cIRUa",
         "3zAj2CyrmXsR1DJ5zYznkh",
         "42TAweWJJ9YlQ47T5nesu5",
+        "49JeKZqejPtqJKpK7x9Ew4",
         "4Ox858TeUXjy7WEKOcxaFI",
+        "4S6EQ0C00EwfcFWm4Pd1mt",
         "4UBWugj5D20ZveyzdGpqvD",
         "4qmFC3Jz5aQ0erlk2OSi2X",
         "4s1Sql0NqvLh0ioDzSTaET",
@@ -5787,11 +5840,12 @@
         "6virCtlwc98cKYVyeZYXqq",
         "7EWLNUpx0QWUCYfmBJS9qb",
         "7jHzBmxAGVVPvLiq4Y45pD",
+        "7uxkx8HPBYkJKcimOyggUM",
         "7vf4GBEJmv0uXojpr5qPMX",
         "7y16ygjcEcfo1VYKxmgVZY"
       ],
       "created_at": "2026-08-29",
-      "updated_at": "2026-08-29",
+      "updated_at": "2026-09-27",
       "merged_into": null
     },
     "wf6": {
