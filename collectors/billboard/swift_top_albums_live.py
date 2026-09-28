@@ -88,6 +88,7 @@ ALBUM_LIVE_HISTORY_FIELDNAMES = [
     "units_am",
     "units_am_ts",
     "units_am_overall",
+    "units_itunes",
     "units_youtube",
     "units_spotify",
     "units_charts",
@@ -144,6 +145,7 @@ def _build_not_combined_song_rows(
     for e in result["entries"]:
         agg = e.get("_album_agg") or {}
         units_am = e["units_am_actual"] + e["units_am_projected"]
+        units_itunes = e["units_itunes_actual"] + e["units_itunes_projected"]
         units_youtube = e["units_youtube_actual"] + e["units_youtube_projected"]
         units_spotify = e["units_spotify_actual"] + e["units_spotify_projected"]
         rows.append(
@@ -154,6 +156,7 @@ def _build_not_combined_song_rows(
                 "units_am": str(units_am),
                 "am_ts_score": str(agg.get("am_ts_score", 0)),
                 "am_overall_score": str(agg.get("am_overall_score", 0)),
+                "units_itunes": str(units_itunes),
                 "units_youtube": str(units_youtube),
                 "units_spotify": str(units_spotify),
                 "units_charts": str(agg.get("units_charts", 0)),
@@ -275,6 +278,7 @@ def _build_album_variant_entries(
                 "units_am": row["units_am"],
                 "units_am_ts": row.get("units_am_ts", 0),
                 "units_am_overall": row.get("units_am_overall", 0),
+                "units_itunes": row.get("units_itunes", 0),
                 "units_youtube": row.get("units_youtube", 0),
                 "units_spotify": row["units_spotify"],
                 "units_charts": row["units_charts"],
@@ -378,6 +382,7 @@ def run(*, as_of: date, dry_run: bool, skip_r2: bool) -> int:
                 "units_am": e["units_am"],
                 "units_am_ts": e["units_am_ts"],
                 "units_am_overall": e["units_am_overall"],
+                "units_itunes": e["units_itunes"],
                 "units_youtube": e["units_youtube"],
                 "units_spotify": e["units_spotify"],
                 "units_charts": e["units_charts"],

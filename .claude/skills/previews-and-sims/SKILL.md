@@ -92,6 +92,15 @@ only the loader the route uses to inject the sim payload (see
 `previews_and_sims/ts-top-songs-live/preview_api.py`), then `npx vite --port
 5173` + headless Chrome `--screenshot`. Stop both servers by exact PID after.
 
+### Pattern: X account-slot contention (no browser, no post)
+
+`previews_and_sims/twitter-account-slot-spacing/simulate.py` runs several real processes
+(`multiprocessing`, spawn) through the real `core/twitter._twitter_account_slot` with
+`TWITTER_COORD_DIR` redirected into the sim folder and spacings scaled down via env (set in
+each child BEFORE importing `twitter`, constants are read at import). A "post" = slot +
+1 s fake browser + `_wait_account_spacing` + `_mark_account_posted`. Reuse it for any change
+to post priority/spacing/locks.
+
 ### Pitfall: headless Chrome mobile width
 
 `--window-size=390,...` is silently clamped (Chrome min window width ~500px):

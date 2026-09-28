@@ -2042,6 +2042,12 @@ skill `data-rules` § "Home highlights" pour les seuils produits.
 
 ## Pieges connus
 
+- Post Global en retard alors que la data est la (2026-09-28, ~9 min) : ce n'etait pas le
+  pipeline charts mais le verrou compte X partage — les posts Apple Music/iTunes
+  (`post_new_release_progression.py`, espacement 150 s) dormaient leur espacement en tenant
+  le slot. Corrige dans `core/twitter.py` (attente hors verrou, skill `spotify-core`). Pour
+  diagnostiquer : `%TEMP%	sm_twitter_postsccount_*.lock` = PID qui tient le slot,
+  `waiter_*.json` = qui attend (priorite, spacing).
 - `--backfill-workers` est limite par les sessions Spotify disponibles.
 - `run_all_charts.py --backfill` ne lance pas le vieux bloc backfill situe sous
   le `return subprocess.run(...)`.

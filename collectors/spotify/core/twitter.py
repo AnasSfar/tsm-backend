@@ -41,6 +41,17 @@ TWITTER_LOCK_STALE_SECONDS = int(os.getenv("TWITTER_LOCK_STALE_SECONDS", str(TWI
 # gagne un cran toutes les TWITTER_WAITER_AGING_SECONDS.
 TWITTER_DEFAULT_POST_PRIORITY = int(os.getenv("TWITTER_POST_PRIORITY_DEFAULT", "5"))
 TWITTER_WAITER_AGING_SECONDS = int(os.getenv("TWITTER_WAITER_AGING_SECONDS", "300"))
+# Un process ne prend le verrou compte qu'une fois SON espacement quasi ecoule (reste
+# <= ce lead, qui couvre l'ouverture du navigateur + home) : l'attente d'espacement se
+# fait hors verrou, et un waiter pas encore pret ne bloque pas un waiter pret de meme
+# priorite. Avant (jusqu'au 2026-09-28), le gagnant prenait le verrou tout de suite et
+# dormait son espacement DEDANS : un post Apple Music/iTunes (espacement 150 s) a ainsi
+# bloque deux fois de suite le Global Spotify Charts (60 s) ~2,5 min chacun.
+TWITTER_SLOT_SPACING_LEAD_SECONDS = int(os.getenv("TWITTER_SLOT_SPACING_LEAD_SECONDS", "25"))
+
+# Espacement tire au sort par _twitter_account_slot pour le post en cours (par compte),
+# reutilise par _wait_account_spacing pour ne pas re-tirer un espacement plus long.
+_SLOT_SPACING_S: dict[str, int] = {}
 
 LAST_POST_ERROR = ""
 
@@ -177,15 +188,33 @@ def _last_post_path(account_key: str) -> Path:
     return TWITTER_COORD_DIR / f"last_post_{account_key}.txt"
 
 
-def _wait_account_spacing(account_key: str) -> None:
-    last_post_path = _last_post_path(account_key)
-    try:
-        last_post_at = float(last_post_path.read_text(encoding="ascii").strip())
-    except Exception:
-        return
+def _draw_account_spacing() -> int:
     min_spacing = min(TWITTER_ACCOUNT_SPACING_MIN_SECONDS, TWITTER_ACCOUNT_SPACING_MAX_SECONDS)
     max_spacing = max(TWITTER_ACCOUNT_SPACING_MIN_SECONDS, TWITTER_ACCOUNT_SPACING_MAX_SECONDS)
-    spacing_s = random.randint(min_spacing, max_spacing)
+    return random.randint(min_spacing, max_spacing)
+
+
+def _last_post_at(account_key: str) -> float | None:
+    try:
+        return float(_last_post_path(account_key).read_text(encoding="ascii").strip())
+    except Exception:
+        return None
+
+
+def _spacing_remaining(spacing_s: float, last_post_at: float | None) -> float:
+    """Secondes restantes avant qu'un post d'espacement `spacing_s` puisse partir."""
+    if last_post_at is None:
+        return 0.0
+    return spacing_s - (time.time() - last_post_at)
+
+
+def _wait_account_spacing(account_key: str) -> None:
+    last_post_at = _last_post_at(account_key)
+    if last_post_at is None:
+        return
+    spacing_s = _SLOT_SPACING_S.get(account_key)
+    if spacing_s is None:
+        spacing_s = _draw_account_spacing()
     wait_s = spacing_s - (time.time() - last_post_at)
     if wait_s > 0:
         print(f"Waiting {int(wait_s)}s before next X post for this account...")
@@ -214,12 +243,15 @@ def _waiter_path(account_key: str, pid: int | None = None) -> Path:
     return TWITTER_COORD_DIR / f"waiter_{account_key}_{pid or os.getpid()}.json"
 
 
-def _register_waiter(account_key: str, priority: int) -> tuple[Path, float]:
-    """Declare ce process comme candidat au slot de `account_key`, avec sa priorite."""
+def _register_waiter(account_key: str, priority: int, spacing_s: int) -> tuple[Path, float]:
+    """Declare ce process comme candidat au slot de `account_key`, avec sa priorite
+    et l'espacement qu'il doit respecter apres le dernier post du compte."""
     TWITTER_COORD_DIR.mkdir(parents=True, exist_ok=True)
     ts = time.time()
     path = _waiter_path(account_key)
-    payload = json.dumps({"priority": int(priority), "ts": ts, "pid": os.getpid()})
+    payload = json.dumps(
+        {"priority": int(priority), "ts": ts, "pid": os.getpid(), "spacing": int(spacing_s)}
+    )
     tmp = path.with_name(path.name + f".{os.getpid()}.tmp")
     try:
         tmp.write_text(payload, encoding="ascii")
@@ -276,10 +308,16 @@ def _waiter_sort_key(entry: dict, now: float) -> tuple[float, float, int]:
 
 
 def _waiter_is_next(account_key: str, my_ts: float, my_priority: int) -> bool:
-    """True si, parmi les waiters vivants du compte, c'est notre tour de tenter le verrou."""
+    """True si, parmi les waiters vivants du compte, c'est notre tour de tenter le verrou.
+
+    Un waiter mieux classe ne passe devant que s'il est pret (son espacement est quasi
+    ecoule) OU si sa priorite effective est strictement meilleure : a priorite egale, un
+    post qui doit encore attendre 150 s ne bloque pas un post deja pret a partir.
+    """
     now = time.time()
     try:
         waiters = _list_waiters(account_key)
+        last_post_at = _last_post_at(account_key)
     except Exception:
         return True  # fail-open : ne jamais bloquer un post a cause de la file d'attente
     mine = _waiter_sort_key(
@@ -288,7 +326,18 @@ def _waiter_is_next(account_key: str, my_ts: float, my_priority: int) -> bool:
     for entry in waiters:
         if int(entry.get("pid", 0) or 0) == os.getpid():
             continue
-        if _waiter_sort_key(entry, now) < mine:
+        theirs = _waiter_sort_key(entry, now)
+        if theirs >= mine:
+            continue
+        try:
+            spacing = entry.get("spacing")
+            # Waiter sans "spacing" (process lance avant ce fix) : compte comme pret.
+            ready = spacing is None or (
+                _spacing_remaining(float(spacing), last_post_at) <= TWITTER_SLOT_SPACING_LEAD_SECONDS
+            )
+        except (TypeError, ValueError):
+            ready = True
+        if ready or theirs[0] < mine[0]:
             return False
     return True
 
@@ -304,29 +353,50 @@ def _twitter_account_slot(
 
     Sous contention (plusieurs process visent le meme compte), le slot est accorde
     par priorite decroissante puis par anciennete d'attente, pas au premier qui
-    tape le verrou.
+    tape le verrou. L'espacement entre posts s'attend HORS verrou : on ne prend le
+    verrou qu'une fois son propre espacement quasi ecoule (voir
+    TWITTER_SLOT_SPACING_LEAD_SECONDS).
     """
     account_key = _account_key(session_file)
     account_lock = TWITTER_COORD_DIR / f"account_{account_key}.lock"
     stale_after = max(60, TWITTER_LOCK_STALE_SECONDS)
     prio = _resolve_post_priority(priority)
-    waiter_path, waiter_ts = _register_waiter(account_key, prio)
+    spacing_s = _draw_account_spacing()
+    waiter_path, waiter_ts = _register_waiter(account_key, prio, spacing_s)
     account_fd = None
     active_marker = None
+    announced_spacing = False
     start = time.time()
     try:
         while account_fd is None:
             if not waiter_path.exists():
-                waiter_path, waiter_ts = _register_waiter(account_key, prio)
+                waiter_path, waiter_ts = _register_waiter(account_key, prio, spacing_s)
             else:
                 try:
                     os.utime(waiter_path, None)
                 except OSError:
                     pass
-            if _waiter_is_next(account_key, waiter_ts, prio):
+            remaining = _spacing_remaining(spacing_s, _last_post_at(account_key))
+            spacing_ready = remaining <= TWITTER_SLOT_SPACING_LEAD_SECONDS
+            if not spacing_ready and not announced_spacing:
+                print(
+                    f"X: espacement compte ({int(remaining)}s restantes) — attente hors verrou",
+                    flush=True,
+                )
+                announced_spacing = True
+            if spacing_ready and _waiter_is_next(account_key, waiter_ts, prio):
                 try:
                     account_fd = _exclusive_file(account_lock, timeout=20, stale_after=stale_after)
                 except TimeoutError:
+                    account_fd = None
+                if account_fd is not None and (
+                    _spacing_remaining(spacing_s, _last_post_at(account_key))
+                    > TWITTER_SLOT_SPACING_LEAD_SECONDS
+                ):
+                    # Un autre process a poste pendant qu'on attendait le verrou : le
+                    # rendre plutot que dormir un espacement entier en le tenant.
+                    os.close(account_fd)
+                    _safe_unlink(account_lock)
                     account_fd = None
             if account_fd is None:
                 if time.time() - start > timeout:
@@ -336,8 +406,10 @@ def _twitter_account_slot(
                 time.sleep(2)
         _safe_unlink(waiter_path)
         active_marker = _acquire_active_account(account_key, timeout=timeout, stale_after=stale_after)
+        _SLOT_SPACING_S[account_key] = spacing_s
         yield account_key
     finally:
+        _SLOT_SPACING_S.pop(account_key, None)
         _safe_unlink(waiter_path)
         if active_marker is not None:
             _safe_unlink(active_marker)

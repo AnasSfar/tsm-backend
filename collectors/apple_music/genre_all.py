@@ -28,6 +28,7 @@ from core.csv_utils import load_previous_ranks, rewrite_for_snapshot
 from core.export import maybe_run_export
 from core.filters import build_artwork_url, clean_text, is_taylor_swift_song, rank_key
 from core.http import build_session, retry_failed
+from core.storefront_coverage import pair_key, record as record_coverage
 from core.storefronts import resolve_storefronts
 from core.token import TokenManager, build_auth_headers
 
@@ -361,6 +362,12 @@ def main() -> None:
                 f"({failure_pct:.1f}% > {MAX_FAILURE_PCT}%), aborting to avoid publishing a partial day"
             )
             sys.exit(1)
+
+    # A skipped pair has no rows: without this record the next snapshot
+    # compared against it would show every song as a re-entry.
+    genre_names = dict(GENRES)
+    record_coverage(scraped_at, countries, kind="genre",
+                    skipped=[pair_key(country, genre_names[genre_id]) for country, genre_id, _error in failures])
 
     song_rows: list[dict] = []
     album_rows: list[dict] = []

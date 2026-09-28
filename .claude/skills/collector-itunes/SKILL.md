@@ -33,7 +33,7 @@ Also use:
   Only the R2 upload distributes the data. `--no-post` on the runner is a legacy no-op.
   **But the iTunes chain posts since 2026-09-24**: `run_itunes.bat` runs
   `collectors/apple_music/post_new_release_progression.py --platform itunes` right
-  after the collector (new-release rank progression, 72h window). The chain is started
+  after the collector (new-release rank progression, 7-day window ending at midnight Paris, 72h before 2026-09-27). The chain is started
   in PARALLEL by `run_apple_music.bat` (no longer after Apple Music) — see CONTEXTE.md § Scheduler.
 - The legacy RSS host throttles bursts with **HTTP 403** — keep
   `ITUNES_WORKERS` low (default 3), rely on `_fetch`'s backoff retries + the

@@ -83,14 +83,18 @@ LIVE_HISTORY_FIELDNAMES = [
     "units_spotify_projected",
     "units_am_actual",
     "units_am_projected",
+    "units_itunes_actual",
+    "units_itunes_projected",
     "units_youtube_actual",
     "units_youtube_projected",
     "units_am_ts",
     "units_am_overall",
+    "units_itunes",
     "units_spotify_charts",
     "units_spotify_streams",
     "units_am_ts_pct",
     "units_am_overall_pct",
+    "units_itunes_pct",
     "units_spotify_charts_pct",
     "units_spotify_streams_pct",
     "units_youtube_pct",
@@ -236,6 +240,39 @@ def _max_date_across(*daily_by_key_dicts: dict[str, dict[str, float]]) -> str | 
     return latest
 
 
+def _filter_daily_through(
+    daily_by_key: dict[str, dict[str, float]], data_as_of: str | None
+) -> dict[str, dict[str, float]]:
+    """Keep only days that can be reconciled to the platform total."""
+    if not data_as_of:
+        return {}
+    filtered: dict[str, dict[str, float]] = {}
+    for key, day_map in daily_by_key.items():
+        kept = {day: value for day, value in day_map.items() if day <= data_as_of}
+        if kept:
+            filtered[key] = kept
+    return filtered
+
+
+def _sum_daily_by_key(daily_by_key: dict[str, dict[str, float]]) -> dict[str, float]:
+    return {key: sum(day_map.values()) for key, day_map in daily_by_key.items()}
+
+
+def _spotify_surplus_daily(
+    spotify_daily: dict[str, int | float],
+    charts_daily: dict[str, int | float],
+    dates: set[str],
+) -> dict[str, float]:
+    surplus: dict[str, float] = {}
+    for day in dates:
+        total = float(spotify_daily.get(day, 0) or 0)
+        if total <= 0:
+            continue
+        chart_streams = float(charts_daily.get(day, 0) or 0)
+        surplus[day] = max(0.0, total - chart_streams)
+    return surplus
+
+
 def _build_live_variant(
     *,
     variant: str,
@@ -375,6 +412,9 @@ def _build_live_variant(
     am_genre_actual, am_genre_daily_actual = top100._weekly_apple_music_genre_points(
         week_dates=week_set_full, logger=logger, return_daily=True
     )
+    itunes_actual, itunes_daily_actual = top100._weekly_itunes_points(
+        week_dates=week_set_full, logger=logger, return_daily=True
+    )
     youtube_actual, youtube_daily_actual = top100._weekly_youtube_views(
         week_dates=week_set_full, logger=logger, return_daily=True
     )
@@ -385,8 +425,18 @@ def _build_live_variant(
     apple_music_data_as_of = _max_date_across(
         am_ts_daily_actual, am_global_daily_actual, am_country_daily_actual, am_genre_daily_actual
     )
+    itunes_data_as_of = _max_date_across(itunes_daily_actual)
     youtube_data_as_of = _max_date_across(youtube_daily_actual)
     charts_data_as_of = _max_date_across(charts_daily_actual)
+    charts_split_data_as_of = min(charts_data_as_of, spotify_data_as_of) if charts_data_as_of and spotify_data_as_of else None
+    if charts_data_as_of and charts_split_data_as_of != charts_data_as_of:
+        logger.log(
+            "  spotify_units  : "
+            f"chart split aligned to Spotify streams through {charts_split_data_as_of} "
+            f"(charts latest {charts_data_as_of})"
+        )
+    charts_daily_for_split = _filter_daily_through(charts_daily_actual, charts_split_data_as_of)
+    charts_actual_for_split = _sum_daily_by_key(charts_daily_for_split)
 
     # Per-platform "still needs projecting" dates, each anchored on that
     # platform's OWN real latest date — not a single blanket days_remaining
@@ -398,9 +448,10 @@ def _build_live_variant(
         return [date.fromisoformat(d) for d in day_list_full if d > data_as_of]
 
     am_remaining_dates = _missing_dates(apple_music_data_as_of)
+    itunes_remaining_dates = _missing_dates(itunes_data_as_of)
     youtube_remaining_dates = _missing_dates(youtube_data_as_of)
-    charts_remaining_dates = _missing_dates(charts_data_as_of)
-    need_projection = bool(am_remaining_dates or youtube_remaining_dates or charts_remaining_dates)
+    charts_remaining_dates = _missing_dates(charts_split_data_as_of)
+    need_projection = bool(am_remaining_dates or itunes_remaining_dates or youtube_remaining_dates or charts_remaining_dates)
 
     if need_projection:
         _, am_ts_hist = top100._weekly_apple_music_ts_points(
@@ -415,6 +466,9 @@ def _build_live_variant(
         _, am_genre_hist = top100._weekly_apple_music_genre_points(
             week_dates=history_days, logger=logger, return_daily=True
         )
+        _, itunes_hist = top100._weekly_itunes_points(
+            week_dates=history_days, logger=logger, return_daily=True
+        )
         _, youtube_hist = top100._weekly_youtube_views(
             week_dates=history_days, logger=logger, return_daily=True
         )
@@ -422,7 +476,7 @@ def _build_live_variant(
             week_dates=history_days, tracks=tracks, logger=logger, return_daily=True
         )
     else:
-        am_ts_hist = am_global_hist = am_country_hist = am_genre_hist = youtube_hist = charts_hist = {}
+        am_ts_hist = am_global_hist = am_country_hist = am_genre_hist = itunes_hist = youtube_hist = charts_hist = {}
 
     am_actual_days = {d for d in day_list_full if apple_music_data_as_of and d <= apple_music_data_as_of}
     floor_actual = top100._apple_music_ts_floor_score(am_actual_days)
@@ -463,8 +517,9 @@ def _build_live_variant(
             am_country_actual.get(key, 0.0) + am_genre_actual.get(key, 0.0) if eligible else 0.0
         )
         am_overall_raw_actual = am_global_raw_actual + am_country_raw_actual
+        itunes_raw_actual = itunes_actual.get(key, 0.0) if eligible else 0.0
         yt_actual = youtube_actual.get(key, 0)
-        raw_charts_actual = charts_actual.get(key, 0)
+        raw_charts_actual = charts_actual_for_split.get(key, 0)
 
         actual_units = top100.compute_track_units(
             weekly_streams=wk_actual,
@@ -472,6 +527,7 @@ def _build_live_variant(
             am_ts_raw=_am_ts_with_floor(am_ts_raw_actual, floor_actual) if eligible else 0.0,
             am_overall_raw=am_overall_raw_actual,
             weekly_youtube_views=yt_actual,
+            itunes_raw=itunes_raw_actual,
         )
 
         # ---- project remaining days per platform, then combine for the final total ----
@@ -497,13 +553,32 @@ def _build_live_variant(
             _project_sum(am_country_daily_actual, am_country_hist, am_remaining_dates)
             + _project_sum(am_genre_daily_actual, am_genre_hist, am_remaining_dates)
         ) if eligible else 0.0
+        itunes_projected_sum = _project_sum(itunes_daily_actual, itunes_hist, itunes_remaining_dates) if eligible else 0.0
         yt_projected_sum = _project_sum(youtube_daily_actual, youtube_hist, youtube_remaining_dates)
-        charts_projected_sum = _project_sum(charts_daily_actual, charts_hist, charts_remaining_dates)
+        charts_actual_daily = charts_daily_for_split.get(key, {})
+        split_actual_dates = {d for d in day_list_full if charts_split_data_as_of and d <= charts_split_data_as_of}
+        spotify_surplus_actual_daily = _spotify_surplus_daily(
+            merged_daily.get(primary, {}), charts_actual_daily, split_actual_dates
+        )
+        charts_history = charts_hist.get(key, {})
+        spotify_surplus_history = _spotify_surplus_daily(
+            spotify_history, charts_history, set(spotify_history) | set(charts_history)
+        )
+        spotify_surplus_projected_sum = sum(
+            live_projection.project_remaining_days(
+                spotify_surplus_actual_daily, charts_remaining_dates, spotify_surplus_history
+            ).values()
+        )
 
         am_ts_raw_final = am_ts_raw_actual + am_ts_projected_sum
         am_overall_raw_final = am_overall_raw_actual + am_global_projected_sum + am_country_projected_sum
+        itunes_raw_final = itunes_raw_actual + itunes_projected_sum
         yt_final = yt_actual + yt_projected_sum
-        raw_charts_final = raw_charts_actual + charts_projected_sum
+        raw_surplus_final = min(
+            float(wk_final),
+            sum(spotify_surplus_actual_daily.values()) + spotify_surplus_projected_sum,
+        )
+        raw_charts_final = max(0.0, float(wk_final) - raw_surplus_final)
 
         am_ts_raw_final_floored = _am_ts_with_floor(am_ts_raw_final, floor_final) if eligible else 0.0
 
@@ -513,6 +588,7 @@ def _build_live_variant(
             am_ts_raw=am_ts_raw_final_floored,
             am_overall_raw=am_overall_raw_final,
             weekly_youtube_views=round(yt_final),
+            itunes_raw=itunes_raw_final,
         )
 
         # Sub-unit breakdown for the table's AM TS/Overall and Spotify
@@ -521,6 +597,7 @@ def _build_live_variant(
         # units_charts_display/units_surplus_display (swift_top_100.py:2301-2307).
         units_am_ts = round(am_ts_raw_final_floored * 1000 * top100.AM_WEIGHT)
         units_am_overall = round(am_overall_raw_final * 1000 * top100.AM_WEIGHT)
+        units_itunes = round(itunes_raw_final * 1000 * top100.ITUNES_WEIGHT)
         units_spotify_charts = round(final_units["units_charts"] * top100.SPOTIFY_WEIGHT)
         units_spotify_streams = round(final_units["units_surplus"] * top100.SPOTIFY_WEIGHT)
 
@@ -541,11 +618,13 @@ def _build_live_variant(
         if pr is not None and prev_row:
             units_am_ts_pct = _pct_change(am_ts_raw_final_floored, prev_row.get("am_ts_score"))
             units_am_overall_pct = _pct_change(am_overall_raw_final, prev_row.get("am_overall_score"))
+            units_itunes_pct = _pct_change(itunes_raw_final, prev_row.get("itunes_score"))
             units_spotify_charts_pct = _pct_change(final_units["units_charts"], prev_row.get("units_charts"))
             units_spotify_streams_pct = _pct_change(final_units["units_surplus"], prev_row.get("units_surplus"))
             units_youtube_pct = _pct_change(final_units["units_youtube"], prev_row.get("units_youtube"))
         else:
             units_am_ts_pct = units_am_overall_pct = None
+            units_itunes_pct = None
             units_spotify_charts_pct = units_spotify_streams_pct = None
             units_youtube_pct = None
 
@@ -569,14 +648,18 @@ def _build_live_variant(
                 "units_spotify_projected": final_units["units_spotify"] - actual_units["units_spotify"],
                 "units_am_actual": actual_units["units_am"],
                 "units_am_projected": final_units["units_am"] - actual_units["units_am"],
+                "units_itunes_actual": actual_units["units_itunes"],
+                "units_itunes_projected": final_units["units_itunes"] - actual_units["units_itunes"],
                 "units_youtube_actual": actual_units["units_youtube"],
                 "units_youtube_projected": final_units["units_youtube"] - actual_units["units_youtube"],
                 "units_am_ts": units_am_ts,
                 "units_am_overall": units_am_overall,
+                "units_itunes": units_itunes,
                 "units_spotify_charts": units_spotify_charts,
                 "units_spotify_streams": units_spotify_streams,
                 "units_am_ts_pct": units_am_ts_pct,
                 "units_am_overall_pct": units_am_overall_pct,
+                "units_itunes_pct": units_itunes_pct,
                 "units_spotify_charts_pct": units_spotify_charts_pct,
                 "units_spotify_streams_pct": units_spotify_streams_pct,
                 "units_youtube_pct": units_youtube_pct,
@@ -594,6 +677,8 @@ def _build_live_variant(
                 "weekly_streams": wk_final,
                 "am_ts_score": round(am_ts_raw_final_floored, 2),
                 "am_overall_score": round(am_overall_raw_final, 2),
+                "itunes_score": round(itunes_raw_final, 2),
+                "units_itunes": final_units["units_itunes"],
                 "units_charts": final_units["units_charts"],
                 "units_surplus": final_units["units_surplus"],
                 "base_title": meta.base_title,
@@ -637,6 +722,7 @@ def _build_live_variant(
             "spotify": spotify_data_as_of,
             "apple_music": apple_music_data_as_of,
             "youtube": youtube_data_as_of,
+            "spotify_charts": charts_data_as_of,
         },
     }
 
@@ -748,14 +834,18 @@ def run(*, as_of: date, dry_run: bool, skip_r2: bool) -> int:
                 "units_spotify_projected": e["units_spotify_projected"],
                 "units_am_actual": e["units_am_actual"],
                 "units_am_projected": e["units_am_projected"],
+                "units_itunes_actual": e["units_itunes_actual"],
+                "units_itunes_projected": e["units_itunes_projected"],
                 "units_youtube_actual": e["units_youtube_actual"],
                 "units_youtube_projected": e["units_youtube_projected"],
                 "units_am_ts": e["units_am_ts"],
                 "units_am_overall": e["units_am_overall"],
+                "units_itunes": e["units_itunes"],
                 "units_spotify_charts": e["units_spotify_charts"],
                 "units_spotify_streams": e["units_spotify_streams"],
                 "units_am_ts_pct": e["units_am_ts_pct"],
                 "units_am_overall_pct": e["units_am_overall_pct"],
+                "units_itunes_pct": e["units_itunes_pct"],
                 "units_spotify_charts_pct": e["units_spotify_charts_pct"],
                 "units_spotify_streams_pct": e["units_spotify_streams_pct"],
                 "units_youtube_pct": e["units_youtube_pct"],

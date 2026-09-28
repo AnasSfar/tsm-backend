@@ -39,6 +39,14 @@ Spotify streams et charts.
     / fichiers `waiter_<acct>_<pid>.json`) : sous contention le slot va au plus prioritaire
     puis au plus ancien, avec anti-famine (`TWITTER_WAITER_AGING_SECONDS`). Fail-open si la
     file d'attente casse (ne jamais bloquer un post a cause d'elle). Bareme -> skill `data-rules`.
+  - espacement entre posts attendu HORS verrou (depuis 2026-09-28) : `_twitter_account_slot` tire
+    l'espacement du post une fois (`_SLOT_SPACING_S`, reutilise par `_wait_account_spacing`), le
+    publie dans le waiter (`"spacing"`), et ne prend le verrou qu'a <= `TWITTER_SLOT_SPACING_LEAD_SECONDS`
+    (25 s, couvre l'ouverture du navigateur) de la fin de cet espacement ; si un autre process a poste
+    entre-temps, il rend le verrou. `_waiter_is_next` : un waiter mieux classe ne bloque que s'il est
+    pret OU de priorite effective strictement meilleure. Ne jamais remettre un `sleep` d'espacement
+    long en tenant le verrou (incident 2026-09-28 : post AM/iTunes a 150 s qui bloquait le Global
+    Spotify Charts). Sim : `previews_and_sims/twitter-account-slot-spacing/simulate.py`.
 - Toute modification de git/notify doit rester non bloquante quand le pipeline
   doit continuer, sauf quand le code l'exige explicitement.
 - Les helpers partages ne doivent pas masquer une donnee manquante par defaut

@@ -526,6 +526,7 @@ def _build_album_week(
     album_units_am: dict[str, int] = {}
     album_units_am_ts: dict[str, int] = {}
     album_units_am_overall: dict[str, int] = {}
+    album_units_itunes: dict[str, int] = {}
     album_units_youtube: dict[str, int] = {}
     album_units_spotify: dict[str, int] = {}
     album_units_charts: dict[str, int] = {}
@@ -534,6 +535,7 @@ def _build_album_week(
     album_am_units_by_song: dict[str, dict[str, int]] = {}
     album_am_ts_units_by_song: dict[str, dict[str, int]] = {}
     album_am_overall_units_by_song: dict[str, dict[str, int]] = {}
+    album_itunes_units_by_song: dict[str, dict[str, int]] = {}
     album_youtube_units_by_song: dict[str, dict[str, int]] = {}
     album_songs: dict[str, list[dict]] = {}
 
@@ -586,6 +588,9 @@ def _build_album_week(
         album_am_units[am_song_key] = max(album_am_units.get(am_song_key, 0), row_units_am)
         album_am_ts_units[am_song_key] = max(album_am_ts_units.get(am_song_key, 0), row_units_am_ts)
         album_am_overall_units[am_song_key] = max(album_am_overall_units.get(am_song_key, 0), row_units_am_overall)
+        row_units_itunes = _to_int(row.get("units_itunes"))
+        album_itunes_units = album_itunes_units_by_song.setdefault(album.album_id, {})
+        album_itunes_units[am_song_key] = max(album_itunes_units.get(am_song_key, 0), row_units_itunes)
         row_units_youtube = _to_int(row.get("units_youtube"))
         album_youtube_units = album_youtube_units_by_song.setdefault(album.album_id, {})
         album_youtube_units[am_song_key] = max(album_youtube_units.get(am_song_key, 0), row_units_youtube)
@@ -611,6 +616,7 @@ def _build_album_week(
                 "units_am": row_units_am,
                 "units_am_ts": row_units_am_ts,
                 "units_am_overall": row_units_am_overall,
+                "units_itunes": row_units_itunes,
                 "units_youtube": row_units_youtube,
                 "units_spotify": _to_int(row.get("units_spotify")),
                 "units_charts": _to_int(row.get("units_charts")),
@@ -626,15 +632,16 @@ def _build_album_week(
     if unmatched_track_ids:
         logger.log(f"  unmatched      : {len(unmatched_track_ids)} tracks not linked to any album")
 
-    for aid in set(album_units_spotify) | set(album_am_units_by_song) | set(album_youtube_units_by_song):
+    for aid in set(album_units_spotify) | set(album_am_units_by_song) | set(album_youtube_units_by_song) | set(album_itunes_units_by_song):
         album_units_am[aid] = sum(album_am_units_by_song.get(aid, {}).values())
         album_units_am_ts[aid] = sum(album_am_ts_units_by_song.get(aid, {}).values())
         album_units_am_overall[aid] = sum(album_am_overall_units_by_song.get(aid, {}).values())
+        album_units_itunes[aid] = sum(album_itunes_units_by_song.get(aid, {}).values())
         album_units_youtube[aid] = sum(album_youtube_units_by_song.get(aid, {}).values())
 
     album_total_units = {
-        aid: album_units_spotify.get(aid, 0) + album_units_am.get(aid, 0) + album_units_youtube.get(aid, 0)
-        for aid in set(album_units_spotify) | set(album_units_am) | set(album_units_youtube)
+        aid: album_units_spotify.get(aid, 0) + album_units_am.get(aid, 0) + album_units_youtube.get(aid, 0) + album_units_itunes.get(aid, 0)
+        for aid in set(album_units_spotify) | set(album_units_am) | set(album_units_youtube) | set(album_units_itunes)
     }
 
     scored = sorted(album_total_units.items(), key=lambda kv: kv[1], reverse=True)
@@ -647,6 +654,7 @@ def _build_album_week(
             "units_am": album_units_am.get(aid, 0),
             "units_am_ts": album_units_am_ts.get(aid, 0),
             "units_am_overall": album_units_am_overall.get(aid, 0),
+            "units_itunes": album_units_itunes.get(aid, 0),
             "units_youtube": album_units_youtube.get(aid, 0),
             "units_spotify": album_units_spotify.get(aid, 0),
             "units_charts": album_units_charts.get(aid, 0),
@@ -755,6 +763,7 @@ def _write_history_csv(rows: list[dict], logger: Logger) -> None:
         "units_am",
         "units_am_ts",
         "units_am_overall",
+        "units_itunes",
         "units_youtube",
         "units_spotify",
         "units_charts",
@@ -942,6 +951,7 @@ def run(*, chart_date: date | None, song_rows: list[dict], dry_run: bool, skip_r
         units_am = row["units_am"]
         units_am_ts = row.get("units_am_ts", 0)
         units_am_overall = row.get("units_am_overall", 0)
+        units_itunes = row.get("units_itunes", 0)
         units_youtube = row.get("units_youtube", 0)
         units_spotify = row["units_spotify"]
         units_charts = row["units_charts"]
@@ -974,6 +984,7 @@ def run(*, chart_date: date | None, song_rows: list[dict], dry_run: bool, skip_r
             "units_am": units_am,
             "units_am_ts": units_am_ts,
             "units_am_overall": units_am_overall,
+            "units_itunes": units_itunes,
             "units_youtube": units_youtube,
             "units_spotify": units_spotify,
             "units_charts": units_charts,
@@ -1001,6 +1012,7 @@ def run(*, chart_date: date | None, song_rows: list[dict], dry_run: bool, skip_r
             "units_am": units_am,
             "units_am_ts": units_am_ts,
             "units_am_overall": units_am_overall,
+            "units_itunes": units_itunes,
             "units_youtube": units_youtube,
             "units_spotify": units_spotify,
             "units_charts": units_charts,
@@ -1014,6 +1026,7 @@ def run(*, chart_date: date | None, song_rows: list[dict], dry_run: bool, skip_r
             "units_surplus_display": _format_number(units_surplus),
             "am_ts_units_display": _format_number(units_am_ts),
             "am_global_units_display": _format_number(units_am_overall),
+            "itunes_units_display": _format_number(units_itunes),
             "youtube_units_display": _format_number(units_youtube),
             "units_charts_display": _format_number(units_charts),
             "prev_rank": pr,

@@ -68,6 +68,7 @@ from core.discography import (  # noqa: E402
     song_key_candidates as _song_key_candidates,
     song_name_key as _song_name_key,
 )
+from core.storefront_coverage import not_fetched as country_not_fetched  # noqa: E402
 
 DISCOGRAPHY_DIR = REPO_ROOT / "db" / "discography"
 
@@ -241,6 +242,10 @@ def _day_cycles(chart_date: str, region: str, genre: str | None) -> dict[str, di
             rank, key = _rank_int(row.get("rank")), _track_key(row)
             if rank is not None and key:
                 cycle[key] = rank
+    if region.lower() != "global":
+        # Chart skipped by country_all / genre_all (fetch failed): no rows !=
+        # no Taylor song — never a snapshot to compare against (2026-09-27).
+        cycles = {at: c for at, c in cycles.items() if not country_not_fetched(at, region, genre)}
     return cycles
 
 
