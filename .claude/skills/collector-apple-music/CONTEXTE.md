@@ -361,6 +361,13 @@ entre Global — vs hier — et pays/iTunes — vs le cycle precedent) :
         sur 24 cycles, 18 si les 9 declenchaient). Egalite dans l'ordre du thread = ordre IFPI de la liste. Artiste
         localise du flux (iTunes JP « テイラー・スウィフト ») -> « Taylor Swift » sur la card. Thread = un seul compose X
         (`post_image_thread`), pas d'espacement par post.
+      - **Depuis le 2026-09-29 (proprio : « pour itunes, on est le 4eme jour de sortie, on ne postera seulement les
+        RE-PEAK ou NEW PEAK »)** : a partir du jour `ITUNES_PEAK_ONLY_FROM_DAY` (defaut 4 ; jour 1 = jour de sortie,
+        calendrier Paris ; 0 = off), une card iTunes ne part QUE si une nouvelle chanson de l'album y a le badge
+        NEW PEAK / RE-PEAK (un reorder seul ne suffit plus) ; n'importe lequel des 9 gros stores
+        (`ITUNES_ALBUM_CARD_REGIONS`) peut declencher, et le thread ne porte QUE les stores avec un peak (plus de
+        remplissage des autres stores). Delai `ITUNES_ALBUM_CARD_GAP_MINUTES` inchange. Cote chansons seules
+        iTunes, rien a changer : la regle #1 et les posts « good update » sont deja des peaks.
       - iTunes : la card album des 5 pays cles en UN thread (`_post_itunes_album_thread`,
         `ITUNES_ALBUM_CARD_REGIONS` defaut = pays cles) : des qu'un pays a change (depuis le
         2026-09-27 : des que les nouvelles chansons s'y reordonnent ; meme regle de

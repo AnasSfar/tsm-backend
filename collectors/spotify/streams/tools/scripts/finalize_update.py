@@ -52,7 +52,7 @@ BOTTOM_ALBUMS_SKIPPED = 2
 # only 09-22 (11 track records, +674k) cleared it at 79.9.
 SHOWGIRL_LEAD_ALBUM = "The Life of a Showgirl"
 SHOWGIRL_LEAD_SCORE_MIN = 70.0
-WEEKEND_WEEKLY_ALBUM_LIMIT = 4
+WEEKEND_WEEKLY_ALBUM_LIMIT = 3  # 2026-09-28: top 3 only (was 4)
 FINALIZE_POST_RETRY_ATTEMPTS = max(1, int(os.getenv("FINALIZE_POST_RETRY_ATTEMPTS", "3")))
 FINALIZE_POST_RETRY_SLEEP_SECONDS = max(0, int(os.getenv("FINALIZE_POST_RETRY_SLEEP_SECONDS", "60")))
 # ReadyBestDaySincePoster in-process precheck (2026-09-18): minimum seconds

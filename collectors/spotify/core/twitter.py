@@ -1703,8 +1703,12 @@ def schedule_post(
                     context.close()
 
 
-def post_image_thread(posts: list[tuple[str, Path | list[Path] | tuple[Path, ...]]], session_file: Path, *, priority: int | None = None, slot_timeout: int | None = None) -> bool:
-    """Post a native X thread where each post has one or more images attached."""
+def post_image_thread(posts: list[tuple[str, Path | list[Path] | tuple[Path, ...]]], session_file: Path, *, priority: int | None = None, slot_timeout: int | None = None, skip_if=None) -> bool:
+    """Post a native X thread where each post has one or more images attached.
+
+    skip_if : comme post_with_image, re-evaluee APRES l'acquisition du slot ; True =
+    deja poste par un autre process -> thread annule, renvoie True.
+    """
     normalized_posts: list[tuple[str, tuple[Path, ...]]] = []
     for text, image_paths in posts:
         if isinstance(image_paths, (list, tuple)):
@@ -1735,6 +1739,15 @@ def post_image_thread(posts: list[tuple[str, Path | list[Path] | tuple[Path, ...
     print("X thread: acquisition du slot compte...", flush=True)
     with _twitter_account_slot(session_file, slot_timeout or TWITTER_POST_LOCK_TIMEOUT, priority=priority) as account_key:
         print("X thread: slot compte acquis", flush=True)
+        if skip_if is not None:
+            try:
+                already = bool(skip_if())
+            except Exception as exc:
+                print(f"X skip_if en erreur (ignore): {exc}")
+                already = False
+            if already:
+                print("X: deja poste par un autre process (detecte apres le slot) — thread annule")
+                return True
         with sync_playwright() as p:
             context = None
             try:

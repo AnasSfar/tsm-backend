@@ -5,7 +5,6 @@ from __future__ import annotations
 import argparse
 import csv
 import json
-import random
 import re
 import sys
 import time
@@ -28,7 +27,7 @@ from comp.song_card_chart_sheet import format_change_html, render_chart_sheet_ca
 from twitter.albums import album_emoji  # noqa: E402
 from twitter.sessions import default_twitter_session  # noqa: E402
 TWITTER_SESSION = default_twitter_session(REPO_ROOT)
-from twitter.text import track_history_line  # noqa: E402
+from twitter.text import best_day_since_tweet  # noqa: E402
 from core.data_paths import update_streams_dir  # noqa: E402
 from core.twitter import post_with_image  # noqa: E402
 import history_store  # noqa: E402
@@ -79,10 +78,6 @@ def _fmt_pct(value: float) -> str:
     return f"{sign}{abs(value):.1f}%"
 
 
-def _fmt_pct_abs(value: float) -> str:
-    return f"{abs(value):.1f}%"
-
-
 def _ordinal(n: int) -> str:
     if 11 <= (n % 100) <= 13:
         return f"{n}th"
@@ -113,18 +108,6 @@ def _badge_class(text: str) -> str:
     if text.startswith("-"):
         return "down"
     return "flat"
-
-
-def _date_text(target_date: str) -> str:
-    d = datetime.strptime(target_date, "%Y-%m-%d").date()
-    return f"{d.strftime('%A')} ({d.strftime('%b')} {d.day}, {d.year})"
-
-
-def _date_phrase(target_date: str) -> str:
-    target = date.fromisoformat(target_date)
-    if target == date.today() - timedelta(days=1):
-        return f"yesterday, {_date_text(target_date)}"
-    return f"on {_date_text(target_date)}"
 
 
 def _load_album_tracks() -> list[dict]:
@@ -260,19 +243,19 @@ def _image_for_row(row: dict, *, target_date: str, covers: dict, family_images: 
 
 
 def _build_tweet(row: dict, *, target_date: str) -> str:
-    track = row["track"]
-    emoji = album_emoji(track.get("album"), fallback="")
-    prefix = f"\U0001F4C8 | {emoji} " if emoji else "\U0001F4C8 | "
-    title = track.get("title") or row["track_id"]
-    song_history = track_history_line(row['track_id'])
-    pct = float(row["pct"])
-    date_phrase = _date_phrase(target_date)
-    if random.choice(("bracket", "direction")) == "bracket":
-        first_line = f'{prefix}"{title}" earned {_fmt_int(row["daily_today"])} streams [{_fmt_pct(pct)}] {date_phrase}'
-    else:
-        direction = "up" if pct >= 0 else "down"
-        first_line = f'{prefix}"{title}" earned {_fmt_int(row["daily_today"])} streams, {direction} {_fmt_pct_abs(pct)}, {date_phrase}'
-    return f"{first_line}\n\n{song_history}"
+    # Every weekend gainer is now a best-day-since song (decision 2026-09-28),
+    # so it uses the same caption as a best-day-since card.
+    best_day_row = row["best_day_row"]
+    label = best_day_since.row_label(best_day_row)
+    label = label.replace("best day", "BEST DAY", 1).replace("biggest day", "BIGGEST DAY", 1)
+    return best_day_since_tweet(
+        title=row["track"].get("title") or row["track_id"],
+        label=label,
+        daily_streams=int(row["daily_today"]),
+        pct=_fmt_pct(float(row["pct"])),
+        track_id=row["track_id"],
+        repeat=best_day_since.is_recent_repeat_record(best_day_row),
+    )
 
 
 def _global_charted_track_ids(target_date: str) -> set[str]:
@@ -290,29 +273,49 @@ def _global_charted_track_ids(target_date: str) -> set[str]:
     return charted
 
 
-def _best_day_since_track_ids(target_date: str) -> set[str]:
-    """Track ids (including combined song-family members) with a best-day-since record on target_date."""
+def _best_day_since_rows(target_date: str) -> dict[str, dict]:
+    """Solo best-day-since rows on target_date, keyed by track id.
+
+    Only the track's OWN streams count: a record reached only by the summed
+    song family is left out, since the card and caption show the solo
+    track's streams and would otherwise claim a record it didn't hit."""
     tracks = best_day_since.load_tracks(include_extras=False)
-    all_tracks = best_day_since.load_tracks(include_extras=True)
     history = best_day_since.load_history()
     target = date.fromisoformat(target_date)
 
-    track_ids: set[str] = set()
-    seen_families: set[str] = set()
+    rows: dict[str, dict] = {}
     for track_id, track in tracks.items():
-        family = (track.song_family or track_id).strip()
-        if family in seen_families:
-            continue
-        seen_families.add(family)
-        row = best_day_since.compute_best_day_since_combined(
-            track,
-            best_day_since.combined_tracks_for(all_tracks.get(track_id, track), all_tracks),
-            history,
-            target,
-        )
+        row = best_day_since.compute_best_day_since(track, history.get(track_id) or [], target)
         if row and best_day_since.passes_filters(row, min_days=best_day_since.DEFAULT_MIN_DAYS):
-            track_ids.update(row.get("combined_track_ids") or [track_id])
-    return track_ids
+            rows[track_id] = row
+    return rows
+
+
+def _posted_best_day_track_ids(target_date: str) -> set[str]:
+    """Track ids already posted today as their own best-day-since card (per-track
+    locks written by post_best_day_since_twitter.py), so a standalone run also
+    skips them — not only the finalize run that passes --exclude-tracks."""
+    locks_dir = update_streams_dir(target_date) / "best_day_since_track_locks"
+    if not locks_dir.exists():
+        return set()
+    return {p.stem for p in locks_dir.glob("*.lock")}
+
+
+def _with_song_family(track_ids: set[str]) -> set[str]:
+    """Expand to every version of the same song (song_family): a best-day card
+    for "Girl At Home" already covers "Girl At Home (Taylor's Version)"."""
+    if not track_ids:
+        return set()
+    tracks = best_day_since.load_tracks(include_extras=True)
+    families = {
+        (tracks[tid].song_family or "").strip()
+        for tid in track_ids
+        if tid in tracks
+    } - {""}
+    return set(track_ids) | {
+        tid for tid, track in tracks.items()
+        if (track.song_family or "").strip() in families
+    }
 
 
 def _pick_weekend_gainers(
@@ -325,7 +328,7 @@ def _pick_weekend_gainers(
 ) -> list[dict]:
     history = history_store.HistoryIndex.load()
     baseline_date = str(date.fromisoformat(target_date) - timedelta(days=1))
-    best_day_track_ids = _best_day_since_track_ids(target_date)
+    best_day_rows = _best_day_since_rows(target_date)
     charted_track_ids = _global_charted_track_ids(target_date)
     exclude_track_ids = exclude_track_ids or set()
 
@@ -355,15 +358,14 @@ def _pick_weekend_gainers(
             continue
         pct = gain / daily_baseline * 100
 
-        # Below the pct bar, a song still qualifies if it charted on the
-        # Global Top 200 that day (chart placement is only used as a
-        # qualifying signal here — never mentioned in copy). A best-day-since
-        # record alone no longer bypasses the pct floor (decision 2026-09-21)
-        # — that song already gets its own best-day-since card, so letting it
-        # in here too would double-post the same event under +5%.
-        had_best_day = track_id in best_day_track_ids
+        # Only best-day-since songs qualify (decision 2026-09-28): a plain
+        # weekend rise no longer posts, nor does a Global Top 200 entry. A
+        # song already posted as its own best-day-since card is excluded
+        # above, so the same song is never posted twice.
+        best_day_row = best_day_rows.get(track_id)
+        had_best_day = best_day_row is not None
         had_chart_entry = track_id in charted_track_ids
-        if pct < min_pct and not had_chart_entry:
+        if not had_best_day or pct < min_pct:
             continue
 
         rows.append({
@@ -376,6 +378,7 @@ def _pick_weekend_gainers(
             "pct": pct,
             "baseline_date": baseline_date,
             "had_best_day": had_best_day,
+            "best_day_row": best_day_row,
             "had_chart_entry": had_chart_entry,
         })
 
@@ -386,8 +389,8 @@ def _pick_weekend_gainers(
 def main() -> int:
     parser = argparse.ArgumentParser(
         description=(
-            "Post weekend Spotify song gainers with song_card images. A song qualifies if it "
-            "gained at least --min-pct, or charted on the Global Top 200 that day. Tracks "
+            "Post weekend Spotify song gainers with song_card images. A song qualifies only if it "
+            "hit a best-day-since record that day AND gained at least --min-pct. Tracks "
             "already posted as a best-day-since card today are excluded (one card per song)."
         )
     )
@@ -429,6 +432,8 @@ def main() -> int:
         return 1
 
     exclude_track_ids = {t.strip() for t in args.exclude_tracks.split(",") if t.strip()}
+    exclude_track_ids |= _posted_best_day_track_ids(target_date)
+    exclude_track_ids = _with_song_family(exclude_track_ids)
 
     rows = _pick_weekend_gainers(
         target_date,
@@ -439,8 +444,8 @@ def main() -> int:
     )
     if not rows:
         print(
-            f"[weekend_song_gainers] No song gained at least +{float(args.min_pct):.1f}% or "
-            f"charted on the Global Top 200 on {target_date}."
+            f"[weekend_song_gainers] No best-day-since song (not already posted) gained at least "
+            f"+{float(args.min_pct):.1f}% on {target_date}."
         )
         return 0
 

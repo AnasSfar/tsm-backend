@@ -2551,6 +2551,26 @@ ITUNES_THREAD_TRIGGER_REGIONS = [c.strip() for c in os.getenv(
     "ITUNES_THREAD_TRIGGER_REGIONS", ",".join(KEY_COUNTRIES),
 ).split(",") if c.strip()]
 ITUNES_ALBUM_CARD_GAP_MINUTES = float(os.getenv("ITUNES_ALBUM_CARD_GAP_MINUTES", "60"))
+# Owner 2026-09-29 ("pour itunes, on est le 4eme jour de sortie, on ne postera
+# seulement les RE-PEAK ou NEW PEAK"): from the 4th day of the release (release
+# day = day 1, Paris calendar days) an iTunes card posts ONLY when a new song
+# of the album is at a NEW PEAK / RE-PEAK in that store — a reorder alone no
+# longer does. Any of the ITUNES_ALBUM_CARD_REGIONS stores can trigger the
+# thread, and the thread carries only the stores with a peak. 0 = off.
+ITUNES_PEAK_ONLY_FROM_DAY = int(os.getenv("ITUNES_PEAK_ONLY_FROM_DAY", "4"))
+
+
+def itunes_peak_only(active_tracks: list[dict], album: str, now: datetime) -> bool:
+    """True once the album's first new track is out for ITUNES_PEAK_ONLY_FROM_DAY
+    days (day 1 = its release day, Paris time)."""
+    if ITUNES_PEAK_ONLY_FROM_DAY <= 0:
+        return False
+    paris = ZoneInfo("Europe/Paris")
+    released = [t["released_at"] for t in active_tracks if t["album"] == album and t.get("released_at")]
+    if not released:
+        return False
+    day1 = min(released).astimezone(paris).date()
+    return (now.astimezone(paris).date() - day1).days + 1 >= ITUNES_PEAK_ONLY_FROM_DAY
 ITUNES_HEADER_BG = "linear-gradient(135deg,#ff5c6d 0%,#d17cad 55%,#9b5de5 100%)"
 
 
@@ -2617,7 +2637,8 @@ def _itunes_history_peaks(region: str, album_keys: set[str], before: str, today:
 
 def _post_itunes_album_card(album: str, args, today: str, state: dict, active_tracks: list[dict],
                             now: datetime, writes: bool, region: str = "us",
-                            collect: list | None = None, force: bool = False) -> None:
+                            collect: list | None = None, force: bool = False,
+                            peak_only: bool = False) -> None:
     """collect (2026-09-26): don't post, append the ready card to `collect`
     (the 5 key countries go out as ONE thread). force: build the card even if
     this country's standings didn't change (the thread carries all 5)."""
@@ -2667,7 +2688,7 @@ def _post_itunes_album_card(album: str, args, today: str, state: dict, active_tr
         change = (THREAD_ORDER["down"], "song(s) down")
     else:
         change = (THREAD_ORDER["none"], "no change")
-    if NEW_ORDER_ONLY and not reorder and not force:
+    if NEW_ORDER_ONLY and not reorder and not force and not peak_only:
         print(f"[new_release_progression] {album_name} [iTunes {region.upper()} album card]: {change[1]}, "
               "new songs in the same order — not posted")
         return
@@ -2718,6 +2739,10 @@ def _post_itunes_album_card(album: str, args, today: str, state: dict, active_tr
     # moves in the thread, #1 first (owner 2026-09-27: France "aurait dû être le
     # deuxième post puisque RE PEAK à #1", it came after the US' plain climbs).
     peak_entries = [e for e in entries if e["new_song"] and e["peak_badge"] in ("NEW PEAK", "RE-PEAK")]
+    if peak_only and not peak_entries and not force:
+        print(f"[new_release_progression] {album_name} [iTunes {region.upper()} album card]: {change[1]}, "
+              f"no NEW PEAK / RE-PEAK (day {ITUNES_PEAK_ONLY_FROM_DAY}+ rule) — not posted")
+        return
     if not reorder and peak_entries:
         at_one = [e for e in peak_entries if e["rank"] == 1]
         change = ((THREAD_ORDER["number_one"], f'#1: {at_one[0]["song"]}') if at_one else
@@ -2818,16 +2843,25 @@ def _post_itunes_album_thread(album: str, args, today: str, state: dict, active_
     first (new songs reordered, then re-entries, songs up, drops, unchanged —
     market order on a tie)."""
     changed: list[dict] = []
-    for region in ITUNES_THREAD_TRIGGER_REGIONS:
-        _post_itunes_album_card(album, args, today, state, active_tracks, now, writes, region, collect=changed)
-    if not changed:
-        return
-    cards = list(changed)
-    done = {c["region"] for c in cards}
-    for region in ITUNES_ALBUM_CARD_REGIONS:
-        if region not in done:
+    if itunes_peak_only(active_tracks, album, now):
+        # Day 4+ (ITUNES_PEAK_ONLY_FROM_DAY): only the stores with a peak, any big store can trigger.
+        for region in ITUNES_ALBUM_CARD_REGIONS:
             _post_itunes_album_card(album, args, today, state, active_tracks, now, writes, region,
-                                    collect=cards, force=True)
+                                    collect=changed, peak_only=True)
+        if not changed:
+            return
+        cards = list(changed)
+    else:
+        for region in ITUNES_THREAD_TRIGGER_REGIONS:
+            _post_itunes_album_card(album, args, today, state, active_tracks, now, writes, region, collect=changed)
+        if not changed:
+            return
+        cards = list(changed)
+        done = {c["region"] for c in cards}
+        for region in ITUNES_ALBUM_CARD_REGIONS:
+            if region not in done:
+                _post_itunes_album_card(album, args, today, state, active_tracks, now, writes, region,
+                                        collect=cards, force=True)
     order = {c: i for i, c in enumerate(ITUNES_ALBUM_CARD_REGIONS)}
     cards.sort(key=lambda c: (c["change"][0], order.get(c["region"], 99)))
     display = display_title_for_album(album)

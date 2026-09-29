@@ -785,6 +785,18 @@ retombe sur `current_streak` de `charts_discography/peaks_by_track.json`.
 
 ## global/, fr/, us/, uk/
 
+**Cards NEW/RE Global = reponses dans le thread du post Global (proprietaire 2026-09-28).**
+Avant : `worldwide/daily.py::_post_priority_global_new_card` postait un thread separe des
+cards (`post_global_new_releases.py --post`) et le post Global routinier attendait qu'il parte.
+Maintenant, quand ce process poste Global (`--post-priority-global-new` / pas `--no-post`), ce
+thread de fond ne fait que pre-rendre les PNG (`--no-post`) ; `global/daily.py::post_global_with_new_cards`
+(post-only et chemin normal, 1 seule date) poste `[Global + chart_image, card1, card2...]` en un
+thread (`post_image_thread(skip_if=posted.lock)`), puis marque les slugs dans
+`global_new_releases_posted.json` (`pending_priority_posts` / `mark_priority_posted` /
+`send_priority_discord` de `post_global_new_releases.py`, PNG reutilises). Echec de preparation
+des cards = post Global seul, cards laissees en attente pour le catch-up `--post`.
+Sim sans post : `previews_and_sims/global-thread-new-cards/simulate.py <date> --force-pending`.
+
 Ces dossiers contiennent les pipelines regionaux historiques.
 
 Fichiers principaux:

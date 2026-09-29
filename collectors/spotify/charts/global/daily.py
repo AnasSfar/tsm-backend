@@ -52,7 +52,7 @@ sys.path.insert(0, str(Path(__file__).parent.parent.parent))
 from core.chart_comment import build_chart_comment
 from core.data_paths import first_existing, legacy_spotify_chart_dir, spotify_chart_dir
 from core.notify import send as notify
-from core.twitter import post_thread, post_with_image, split_tweets
+from core.twitter import post_image_thread, post_thread, post_with_image, split_tweets
 from core.discord_notify import discord_send
 
 ROOT = Path(__file__).parent
@@ -85,6 +85,47 @@ ENABLE_GLOBAL_US_COMBINED_IMAGE = False
 TS_HISTORY_PATH = ROOT / "tools" / "json" / "ts_history.json"
 
 _SCRIPT_START = datetime.now()
+
+
+GLOBAL_NEW_RELEASES_DIR = _REPO_ROOT / "collectors" / "spotify" / "charts" / "worldwide" / "tools" / "scripts"
+
+
+def _global_new_releases_module():
+    # Appended (not inserted) so this folder never shadows our own config/git_ops.
+    if str(GLOBAL_NEW_RELEASES_DIR) not in sys.path:
+        sys.path.append(str(GLOBAL_NEW_RELEASES_DIR))
+    import post_global_new_releases
+    return post_global_new_releases
+
+
+def post_global_with_new_cards(tweet_content: str, image_path: Path, target: date, *, skip_if) -> bool:
+    """Post the routine Global chart; pending NEW/RE Global cards go as replies in
+    ITS thread (owner 2026-09-28 — before: a separate thread posted before it).
+
+    Any failure while preparing the cards never blocks the Global post: it then
+    goes out alone and the cards stay pending for the standalone fallback
+    (run_all_charts catch-up)."""
+    pending = []
+    gnr = None
+    try:
+        gnr = _global_new_releases_module()
+        pending = gnr.pending_priority_posts(str(target), reuse_existing=True)
+    except Exception as exc:
+        log("WARN", f"Cards NEW/RE Global non preparees (post Global seul): {exc}")
+        pending = []
+    if not pending:
+        return post_with_image(tweet_content, image_path, TWITTER_SESSION, skip_if=skip_if)
+
+    log("INFO", f"Thread Global + {len(pending)} card(s) NEW/RE en reponse")
+    try:
+        gnr.send_priority_discord(str(target), pending)
+    except Exception as exc:
+        log("WARN", f"Discord cards NEW/RE: {exc}")
+    thread_posts = [(tweet_content, image_path)] + [(tweet, card) for _, tweet, card in pending]
+    posted = post_image_thread(thread_posts, TWITTER_SESSION, skip_if=skip_if)
+    if posted:
+        gnr.mark_priority_posted(str(target), [slug for slug, _, _ in pending])
+    return posted
 
 
 def log(level: str, message: str) -> None:
@@ -759,8 +800,8 @@ def main() -> None:
             discord_send("spotify-charts", [(tweet_content, image_path)],
                          kind="global_daily", key=f"global_daily_{target}",
                          priority=discord_global_priority([target]), thread="global")
-            posted = post_with_image(
-                tweet_content, image_path, TWITTER_SESSION,
+            posted = post_global_with_new_cards(
+                tweet_content, image_path, target,
                 skip_if=lambda: already_posted(target),
             )
         if posted:
@@ -847,10 +888,11 @@ def main() -> None:
                      key="global_daily_" + "_".join(str(d) for d in processed),
                      priority=discord_global_priority(processed), thread="global")
         log("STEP", "Publication Twitter")
-        posted = post_with_image(
-            tweet_content, image_path, TWITTER_SESSION,
-            skip_if=lambda: all(already_posted(d) for d in processed),
-        )
+        skip_if = lambda: all(already_posted(d) for d in processed)
+        if len(processed) == 1:
+            posted = post_global_with_new_cards(tweet_content, image_path, processed[0], skip_if=skip_if)
+        else:
+            posted = post_with_image(tweet_content, image_path, TWITTER_SESSION, skip_if=skip_if)
 
     if posted:
         for d in processed:

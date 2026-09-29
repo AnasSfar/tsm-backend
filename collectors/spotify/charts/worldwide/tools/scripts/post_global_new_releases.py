@@ -655,6 +655,23 @@ def _release_day_filter(rows: list[dict], chart_date: str, *, worldwide: bool, f
     return []
 
 
+def _render_cards(rows: list[dict], chart_date: str, *, reuse_existing: bool = False) -> list[Path]:
+    out_dir = spotify_chart_dir("global", chart_date)
+    out_dir.mkdir(parents=True, exist_ok=True)
+    paths: list[Path] = []
+    for row in rows:
+        html_text, slug, prefix = _build_html([row], chart_date)
+        out_path = out_dir / f"{prefix}_{slug}.png"
+        if reuse_existing and out_path.exists():
+            print(f"[global-priority] Card reused: {out_path}")
+        else:
+            tmp_path = out_dir / f"_{prefix}_{slug}_tmp.html"
+            write_chart_card_png(html_text, out_path, tmp_path, export_frame=True)
+            print(f"[global-priority] Card generated: {out_path}")
+        paths.append(out_path)
+    return paths
+
+
 def generate_cards(chart_date: str, *, force_songs: set[str] | None = None) -> list[Path]:
     rows = _release_day_filter(
         _load_priority_rows(chart_date, force_songs=force_songs), chart_date, worldwide=False, force_songs=force_songs
@@ -662,22 +679,66 @@ def generate_cards(chart_date: str, *, force_songs: set[str] | None = None) -> l
     if not rows:
         print(f"[global-priority] No priority Global Spotify Chart entries for {chart_date}.")
         return []
-    out_dir = spotify_chart_dir("global", chart_date)
-    out_dir.mkdir(parents=True, exist_ok=True)
-    paths: list[Path] = []
-    for row in rows:
-        html_text, slug, prefix = _build_html([row], chart_date)
-        out_path = out_dir / f"{prefix}_{slug}.png"
-        tmp_path = out_dir / f"_{prefix}_{slug}_tmp.html"
-        write_chart_card_png(html_text, out_path, tmp_path, export_frame=True)
-        print(f"[global-priority] Card generated: {out_path}")
-        paths.append(out_path)
-    return paths
+    return _render_cards(rows, chart_date)
 
 
 def generate_card(chart_date: str, *, force_songs: set[str] | None = None) -> Path | None:
     paths = generate_cards(chart_date, force_songs=force_songs)
     return paths[0] if paths else None
+
+
+def _priority_lock_path(chart_date: str) -> Path:
+    return spotify_chart_dir("global", chart_date) / "global_new_releases_posted.json"
+
+
+def _load_posted(chart_date: str) -> set[str]:
+    lock_path = _priority_lock_path(chart_date)
+    if not lock_path.exists():
+        return set()
+    try:
+        return set(json.loads(lock_path.read_text(encoding="utf-8")).get("posted", []))
+    except Exception:
+        return set()
+
+
+def pending_priority_posts(
+    chart_date: str,
+    *,
+    force: bool = False,
+    force_songs: set[str] | None = None,
+    reuse_existing: bool = False,
+) -> list[tuple[str, str, Path]]:
+    """(slug, tweet, image) of the NEW/RE Global cards not posted yet for chart_date.
+
+    Used by global/daily.py to post them as replies in the routine Global post's
+    thread (owner 2026-09-28), and by post_card for the standalone fallback.
+    """
+    rows = _release_day_filter(
+        _load_priority_rows(chart_date, force_songs=force_songs), chart_date, worldwide=False, force_songs=force_songs
+    )
+    posted = set() if force else _load_posted(chart_date)
+    rows = [row for row in rows if _priority_slug(row) not in posted]
+    if not rows:
+        return []
+    images = _render_cards(rows, chart_date, reuse_existing=reuse_existing)
+    return [
+        (_priority_slug(row), _new_card_tweet([row], chart_date), image_path)
+        for row, image_path in zip(rows, images)
+    ]
+
+
+def mark_priority_posted(chart_date: str, slugs) -> None:
+    posted = _load_posted(chart_date) | set(slugs)
+    _priority_lock_path(chart_date).write_text(
+        json.dumps({"date": chart_date, "posted": sorted(posted)}, ensure_ascii=False, indent=2),
+        encoding="utf-8",
+    )
+
+
+def send_priority_discord(chart_date: str, pending_posts: list[tuple[str, str, Path]]) -> None:
+    for row_slug, tweet, image_path in pending_posts:
+        discord_send("spotify-charts", [(tweet, image_path)], kind="global_new_releases",
+                     key=f"global_new_releases_{chart_date}_{row_slug}", thread="global")
 
 
 def post_card(
@@ -687,59 +748,26 @@ def post_card(
     no_post: bool = False,
     force_songs: set[str] | None = None,
 ) -> int:
-    # Same filter as generate_cards (images and texts are zipped below).
-    rows = _release_day_filter(
-        _load_priority_rows(chart_date, force_songs=force_songs), chart_date, worldwide=False, force_songs=force_songs
-    )
-    if not rows:
-        print(f"[global-priority] No priority post needed for {chart_date}.")
+    """Standalone fallback: normally these cards go out as replies in the routine
+    Global post's thread (global/daily.py). Only posts what is still pending."""
+    pending_posts = pending_priority_posts(chart_date, force=force, force_songs=force_songs)
+    if not pending_posts:
+        print(f"[global-priority] No pending priority posts for {chart_date}.")
         return 0
-
-    out_dir = spotify_chart_dir("global", chart_date)
-    lock_path = out_dir / "global_new_releases_posted.json"
-    slugs = sorted(_priority_slug(row) for row in rows)
-    posted: set[str] = set()
-    if lock_path.exists() and not force:
-        try:
-            posted = set(json.loads(lock_path.read_text(encoding="utf-8")).get("posted", []))
-        except Exception:
-            posted = set()
-        if set(slugs).issubset(posted):
-            print(f"[global-priority] Priority Global card already posted for {chart_date}.")
-            return 0
-
-    image_paths = generate_cards(chart_date, force_songs=force_songs)
-    if not image_paths:
-        return 0
-
-    tweets = [_new_card_tweet([row], chart_date) for row in rows]
-    for tweet, image_path in zip(tweets, image_paths):
+    for _, tweet, image_path in pending_posts:
         print(f"[global-priority] Tweet: {tweet}")
         print(f"[global-priority] Image: {image_path}")
     if no_post:
         print("[global-priority] Twitter post skipped (--no-post).")
         return 0
-    pending_posts: list[tuple[str, str, Path]] = []
-    for row, tweet, image_path in zip(rows, tweets, image_paths):
-        row_slug = _priority_slug(row)
-        if row_slug in posted:
-            print(f"[global-priority] {row_slug}: already posted, skip.")
-            continue
-        pending_posts.append((row_slug, tweet, image_path))
 
-    if not pending_posts:
-        print(f"[global-priority] No pending priority posts for {chart_date}.")
-        return 0
-
-    for row_slug, tweet, image_path in pending_posts:
-        discord_send("spotify-charts", [(tweet, image_path)], kind="global_new_releases",
-                     key=f"global_new_releases_{chart_date}_{row_slug}", thread="global")
+    send_priority_discord(chart_date, pending_posts)
     if not TWITTER_SESSION.exists():
         print(f"[global-priority] Twitter session missing: {TWITTER_SESSION}")
         return 1
 
     if len(pending_posts) == 1:
-        row_slug, tweet, image_path = pending_posts[0]
+        _, tweet, image_path = pending_posts[0]
         if not post_with_image(tweet, image_path, TWITTER_SESSION):
             print("[global-priority] Twitter post failed.")
             return 1
@@ -749,11 +777,7 @@ def post_card(
             print("[global-priority] Twitter image thread failed.")
             return 1
 
-    posted.update(row_slug for row_slug, _, _ in pending_posts)
-    lock_path.write_text(
-        json.dumps({"date": chart_date, "posted": sorted(posted)}, ensure_ascii=False, indent=2),
-        encoding="utf-8",
-    )
+    mark_priority_posted(chart_date, [row_slug for row_slug, _, _ in pending_posts])
     if len(pending_posts) == 1:
         print("[global-priority] Priority Global card posted.")
     else:

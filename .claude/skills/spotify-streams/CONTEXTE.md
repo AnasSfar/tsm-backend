@@ -1041,7 +1041,7 @@ un `_guarded_post_step` independant) :
      (score `score_album_update`) sur **tous** les albums non-Misc, puis
      `[2 meilleurs] + [Showgirl, TTPD s'ils ne sont pas dans le top 2] + [reste par score]`.
      Vide en debug / en local ; le week-end elle est remplacee par
-     `_weekend_album_post_queue` (weekly-only, gain positif, cap top 4 — voir
+     `_weekend_album_post_queue` (weekly-only, gain positif, cap top 3 — voir
      section « Cards album le week-end » plus bas), plus vide depuis 2026-09-21.
    - les **autres posts**, dans l'ordre : `debut posts`, `best-day-since posts`
      (hors debug/local), `weekend song gainers`, `song overtakes`, `stream milestones`.
@@ -1342,7 +1342,7 @@ suivante : le week-end poste desormais une file separee `_weekend_album_post_que
 qui choisit le style de card par album — normal si gain daily positif, sinon
 weekly-only si gain weekly positif).
 
-## Cards album le week-end : style par album (daily d'abord, weekly en repli), cap top 4 (2026-09-21)
+## Cards album le week-end : style par album (daily d'abord, weekly en repli), cap top 4 (2026-09-21), cap passe a 3 le 2026-09-28
 
 Decision proprietaire, affinee le 2026-09-21 : le week-end, les albums ne sont
 plus systematiquement skippes. `_weekend_album_post_queue` (dans
@@ -1358,11 +1358,11 @@ plus systematiquement skippes. `_weekend_album_post_queue` (dans
    weekly_only=True)` (CLI `--weekly-only`).
 3. Sinon (ni daily ni weekly positif) -> album non poste.
 
-**Cap `WEEKEND_WEEKLY_ALBUM_LIMIT = 4`** : les candidats (style 1 ou 2) sont
+**Cap `WEEKEND_WEEKLY_ALBUM_LIMIT = 3`** (4 jusqu au 2026-09-28, proprietaire : « si plusieurs albums sont weekly gainers on poste seulement les 3 meilleurs ») : les candidats (style 1 ou 2) sont
 ordonnes par le score habituel (`score_album_update`, meme classement que la
-semaine) et seuls les 4 premiers sont postes — les logs `[weekend-albums]`
+semaine) et seuls les 3 premiers sont postes — les logs `[weekend-albums]`
 detaillent la file retenue (`+X (daily)` / `+X (weekly)`) et ce qui est
-"skipped (outside top 4 queue)" vs "skipped (no positive daily or weekly
+"skipped (outside top 3 queue)" vs "skipped (no positive daily or weekly
 gain)".
 
 - **`_album_post_queue`/`_weekend_album_post_queue` retournent desormais des
@@ -1393,7 +1393,28 @@ gain)".
   (`update_streams.py 2026-09-19 --post-only all-albums --no-post`) apres coup :
   la file capee a bien 4 entrees.
 
-## Weekend song gainers : +5% strict (sauf chart entry), un seul post si aussi best-day-since (2026-09-21)
+## Weekend song gainers : best-day-since uniquement (2026-09-28)
+
+**Remplace la regle du 2026-09-21 ci-dessous** (proprietaire : « on arrete avec
+les weekend gainers sauf si best day, on ne poste pas 2 fois ») :
+`_pick_weekend_gainers` ne garde plus qu'un titre qui a un **best-day-since
+record** ce jour-la (`_best_day_since_track_ids`, `passes_filters` min_days
+standard) **et** >= `--min-pct`. Simple hausse et entree Global Top 200 ne
+qualifient plus. L'exclusion `--exclude-tracks` (best-day deja postes en card
+propre) est inchangee -> jamais 2 posts pour la meme chanson ; l'etape ne
+couvre donc que les best-days restes sans card (plafond du batch). Verifie sur
+2026-09-27 (`--no-post`) : 5 posts -> 4 best-days sans card propre.
+- Texte : format best-day (`best_day_since_tweet`, prefixe 🏆, `row_label`,
+  "has once again" via `is_recent_repeat_record`) — plus le texte gainer.
+- `_best_day_since_rows` = record **solo** par track (`compute_best_day_since`),
+  plus de dedup par song_family ni de record combined (l'ancienne dedup cachait
+  les versions TV quand l'original etait vu en premier ; et un record combined
+  ne peut pas etre annonce avec les streams solo de la card).
+- Exclusion : `--exclude-tracks` + locks `best_day_since_track_locks/*.lock` du
+  jour, etendus a toute la `song_family` (`_with_song_family`). La "limite connue"
+  standalone ci-dessous est donc resolue.
+
+### Historique : +5% strict (sauf chart entry), un seul post si aussi best-day-since (2026-09-21)
 
 `post_weekend_song_gainers.py` (`_pick_weekend_gainers`) :
 

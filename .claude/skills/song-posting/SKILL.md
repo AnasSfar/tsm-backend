@@ -98,6 +98,9 @@ caption. Apple Music only: that move must touch the top 10
 reordered, then a new song at #1 (NEW PEAK / RE-PEAK), then another new-song peak, then re-entries,
 then songs up, then drops, then unchanged (US, UK, FR, CA, AU on a tie). A country card with a peak but no
 reorder says it: `🇫🇷 | "Patient Zero" is back at #1 on iTunes in France!`.
+**iTunes from day 4 of the release (owner 2026-09-29, `ITUNES_PEAK_ONLY_FROM_DAY`):** a store card
+posts ONLY when a new song is at a NEW PEAK / RE-PEAK there (a reorder alone posts nothing); any of
+the big stores can trigger, and the thread carries only the stores with a peak.
 **Caption of a reorder-triggered card (2026-09-27):** say what moved, with the card's Peak badge —
 `🇺🇸 | "Babylon" passes "Pink Clouding" and hits a new peak of #3 on the Apple Music chart in the US.`
 then `"The Life of a Showgirl: The Encore" songs hold the top 4 right now:` (or `... songs on the chart

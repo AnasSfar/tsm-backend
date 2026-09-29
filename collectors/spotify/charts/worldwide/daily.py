@@ -2597,7 +2597,20 @@ def main() -> int:
             and GLOBAL_NEW_RELEASES_SCRIPT.exists()
             and not debut_day
         ):
+            # Global posted by this process (--post-priority-global-new always adds
+            # it, see _PRIORITY): the NEW/RE cards go as replies in the routine
+            # Global post's thread (global/daily.py::post_global_with_new_cards,
+            # owner 2026-09-28) — here we only pre-render them in the background.
+            global_post_here = (not args.no_post) or ("global" in priority_post_regions)
+
             def _post_priority_global_new_card() -> None:
+                if global_post_here:
+                    print("[INFO] Priority Global NEW cards: pre-render (posted in the Global thread)...", flush=True)
+                    subprocess.run(
+                        [sys.executable, str(GLOBAL_NEW_RELEASES_SCRIPT), chart_date, "--no-post"],
+                        cwd=str(ROOT),
+                    )
+                    return
                 print("[INFO] Priority Global NEW card check...", flush=True)
                 for attempt in range(1, PRIORITY_CARD_POST_MAX_ATTEMPTS + 1):
                     cmd = [sys.executable, str(GLOBAL_NEW_RELEASES_SCRIPT), chart_date, "--post"]
