@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-30T20:20:19+00:00",
+  "generated_at": "2026-09-30T22:00:19+00:00",
   "window_days": 7,
   "releases": [
     {
@@ -14,9 +14,9 @@
           "thumbnail_url": "https://i.ytimg.com/vi/mw3kSNIxjqo/maxresdefault.jpg",
           "published_at": "2026-09-29T22:00:19+00:00",
           "due_at": "2026-09-30T22:00:19+00:00",
-          "state": "waiting",
-          "views_24h": null,
-          "captured_at": null
+          "state": "captured",
+          "views_24h": 4497126,
+          "captured_at": "2026-09-30T22:00:19+00:00"
         }
       ]
     }
