@@ -151,27 +151,111 @@ def ref_streams(track_hist: dict, track: str, ref_date: str, row: dict | None = 
     return ref_streams_from_archive(track, ref_date)
 
 
+_track_names_cache: dict[str, str] | None = None
+_SPOTIFY_TRACK_URL_RE = re.compile(r"open\.spotify\.com/track/([A-Za-z0-9]{22})")
+
+
+def _track_names_by_id() -> dict[str, str]:
+    """{spotify track_id: title} from the discography, then the global archive CSV."""
+    global _track_names_cache
+    if _track_names_cache is not None:
+        return _track_names_cache
+    names: dict[str, str] = {}
+
+    def walk(node):
+        if isinstance(node, dict):
+            title = str(node.get("title") or node.get("name") or "").strip()
+            tid = str(node.get("track_id") or "").strip()
+            if not tid:
+                url = node.get("spotify_url") or node.get("url") or ""
+                match = _SPOTIFY_TRACK_URL_RE.search(url) if isinstance(url, str) else None
+                tid = match.group(1) if match else ""
+            if title and tid:
+                names.setdefault(tid, title)
+            for value in node.values():
+                walk(value)
+        elif isinstance(node, list):
+            for value in node:
+                walk(value)
+
+    for path in sorted(DISCOGRAPHY_ROOT.glob("**/*.json")):
+        if path.name == "covers.json":
+            continue
+        try:
+            walk(load_json(path))
+        except Exception:
+            continue
+    for rows in _archive_rows_by_date().values():
+        for row in rows:
+            tid = str(row.get("track_id") or "").strip()
+            name = str(row.get("song_name") or "").strip()
+            if tid and name:
+                names.setdefault(tid, name)
+    _track_names_cache = names
+    return names
+
+
+def _region_rows_from_worldwide(ref_date: str) -> list[dict] | None:
+    """CHART_REGION rows of ref_date from the worldwide snapshot (None if snapshot missing).
+
+    The worldwide snapshot holds every charting region; per-region ts_chart files
+    are only written for some regions, so it is the source of truth for regions.
+    """
+    json_path = first_existing(
+        spotify_chart_dir("worldwide", ref_date) / f"ts_worldwide_{ref_date}.json",
+        legacy_spotify_chart_dir("worldwide", ref_date) / f"ts_worldwide_{ref_date}.json",
+    )
+    if not json_path.exists():
+        return None
+    data = load_json(json_path)
+    by_track = data.get("by_track") if isinstance(data, dict) else None
+    if not isinstance(by_track, dict):
+        return None
+    names = _track_names_by_id()
+    rows = []
+    for track_id, entries in by_track.items():
+        for entry in entries if isinstance(entries, list) else []:
+            if isinstance(entry, dict) and entry.get("country") == CHART_REGION:
+                name = entry.get("track_name") or names.get(str(track_id)) or str(track_id)
+                rows.append({**entry, "track_id": str(track_id), "track_name": name})
+                break
+    return sorted(rows, key=lambda r: r.get("rank") or 9999)
+
+
 def get_out_songs(chart_date: str, current_rows: list[dict]) -> list[dict]:
-    """Returns TS songs from yesterday's CSV (or archive) that are not in today's chart."""
+    """Returns TS songs from yesterday's chart (same region) that are not in today's chart.
+
+    Global: yesterday's ts_chart JSON / CSV, then db/charts_history_global.csv.
+    Other regions: yesterday's worldwide snapshot, then the region's ts_chart JSON.
+    Never the global archive for a region (it showed Global's songs as regional OUTs).
+    """
     date_obj  = datetime.strptime(chart_date, "%Y-%m-%d").date()
     yesterday = str(date_obj - timedelta(days=1))
     yesterday_dir = date_dir_for(yesterday)
     json_path = yesterday_dir / f"ts_chart_{yesterday}.json"
     csv_path  = yesterday_dir / "ts_all_songs.csv"
-    if not json_path.exists() and not csv_path.exists() and yesterday not in _archive_rows_by_date():
-        return []
     try:
         current_names = {str(r.get("song_name", "") or r.get("track_name", "")).lower() for r in current_rows}
         current_ids = {str(r.get("track_id") or "").strip() for r in current_rows if str(r.get("track_id") or "").strip()}
         out_rows = []
         source_rows: list[dict]
-        if json_path.exists():
+        if CHART_REGION != "global":
+            worldwide_rows = _region_rows_from_worldwide(yesterday)
+            if worldwide_rows is not None:
+                source_rows = worldwide_rows
+            elif json_path.exists():
+                source_rows = list(load_json(json_path))
+            else:
+                return []
+        elif json_path.exists():
             source_rows = list(load_json(json_path))
         elif csv_path.exists():
             with open(csv_path, newline="", encoding="utf-8-sig") as f:
                 source_rows = list(csv.DictReader(f))
-        else:
+        elif yesterday in _archive_rows_by_date():
             source_rows = list(_archive_rows_by_date().get(yesterday, []))
+        else:
+            return []
         for row in source_rows:
             name = str(row.get("song_name", "") or row.get("track_name", ""))
             row["track_name"] = name

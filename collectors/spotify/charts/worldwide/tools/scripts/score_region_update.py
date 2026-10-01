@@ -16,6 +16,7 @@ Examples:
 from __future__ import annotations
 
 import argparse
+import csv
 import json
 import os
 import sys
@@ -418,6 +419,103 @@ def score_regions(
         for region, rows in by_region.items()
     ]
     return sorted(scores, key=lambda item: getattr(item, sort_key), reverse=True)
+
+
+MINOR_REGION_LONG_ABSENCE_RE_DAYS = 60
+MINOR_REGION_MULTI_RE_MIN_COUNT = 2
+MINOR_REGION_MULTI_RE_MIN_ABSENCE_DAYS = 7
+MINOR_REGION_BOOST_MIN_PCT = 25.0
+MINOR_REGION_BOOST_MIN_WEEKLY_PCT = 25.0
+MINOR_REGION_BOOST_MIN_GAP_VS_MEDIAN = 25.0
+MINOR_REGION_BOOST_MIN_PEER_REGIONS = 5
+
+_region_history_dates: dict[str, dict[str, list[str]]] = {}
+
+
+def _history_dates_for_region(region: str) -> dict[str, list[str]]:
+    """{track_id: [chart dates]} from db/charts_history_<region>.csv (cached)."""
+    if region in _region_history_dates:
+        return _region_history_dates[region]
+    dates: dict[str, list[str]] = {}
+    path = ROOT / "db" / f"charts_history_{'uk' if region == 'gb' else region}.csv"
+    if path.exists():
+        with path.open(newline="", encoding="utf-8-sig") as f:
+            for row in csv.DictReader(f):
+                track_id = (row.get("track_id") or "").strip()
+                day = (row.get("date") or "").strip()
+                if track_id and day:
+                    dates.setdefault(track_id, []).append(day)
+    _region_history_dates[region] = dates
+    return dates
+
+
+def days_since_last_chart(region: str, track_id: str, chart_date: str) -> int | None:
+    """Days between chart_date and the track's previous appearance in region (None = never)."""
+    previous = [d for d in _history_dates_for_region(region).get(str(track_id), []) if d < chart_date]
+    if not previous:
+        return None
+    current = datetime.strptime(chart_date, "%Y-%m-%d").date()
+    return (current - datetime.strptime(max(previous), "%Y-%m-%d").date()).days
+
+
+def minor_region_highlights(
+    chart_date: str,
+    region: str,
+    rows: list[dict],
+    all_regions_rows: dict[str, list[dict]],
+) -> list[str]:
+    """Exceptional events that let a minor market post (owner rule 2026-10-01).
+
+    - long-absence RE: a RE whose previous chart day in this region is >= 60 days ago;
+    - multiple RE: >= 2 RE that were each absent >= 7 days (not bottom-of-chart bouncing);
+    - local boost: daily +25% AND weekly +25% AND >= 25 pts above, and >= 2x, the
+      median daily % of the same song across >= 5 other regions (a global surge
+      where everybody is up does not count).
+    """
+    highlights: list[str] = []
+    re_gaps: list[tuple[str, int | None]] = []
+    for row in rows:
+        if row.get("is_re_entry"):
+            track_id = str(row.get("_track_id_uri") or row.get("track_id") or "")
+            re_gaps.append((str(row.get("track_name") or track_id), days_since_last_chart(region, track_id, chart_date)))
+    long_absence = [(name, gap) for name, gap in re_gaps if gap is not None and gap >= MINOR_REGION_LONG_ABSENCE_RE_DAYS]
+    if long_absence:
+        highlights.append(
+            "long-absence RE: " + ", ".join(f"{name} ({gap}d)" for name, gap in long_absence)
+        )
+    real_res = [gap for _name, gap in re_gaps if gap is not None and gap >= MINOR_REGION_MULTI_RE_MIN_ABSENCE_DAYS]
+    if len(real_res) >= MINOR_REGION_MULTI_RE_MIN_COUNT:
+        highlights.append(f"{len(real_res)} RE")
+
+    peer_pcts: dict[str, list[float]] = {}
+    for other_region, other_rows in all_regions_rows.items():
+        if other_region == region:
+            continue
+        for row in other_rows:
+            pct = row.get("stream_change_pct")
+            if isinstance(pct, (int, float)):
+                track_id = str(row.get("_track_id_uri") or row.get("track_id") or "")
+                peer_pcts.setdefault(track_id, []).append(float(pct))
+    for row in rows:
+        pct = row.get("stream_change_pct")
+        weekly = row.get("weekly_stream_change_pct")
+        if not isinstance(pct, (int, float)) or not isinstance(weekly, (int, float)):
+            continue
+        track_id = str(row.get("_track_id_uri") or row.get("track_id") or "")
+        peers = peer_pcts.get(track_id, [])
+        if len(peers) < MINOR_REGION_BOOST_MIN_PEER_REGIONS:
+            continue
+        peers.sort()
+        mid = len(peers) // 2
+        median = peers[mid] if len(peers) % 2 else (peers[mid - 1] + peers[mid]) / 2
+        if (
+            pct >= MINOR_REGION_BOOST_MIN_PCT
+            and weekly >= MINOR_REGION_BOOST_MIN_WEEKLY_PCT
+            and pct - median >= MINOR_REGION_BOOST_MIN_GAP_VS_MEDIAN
+            and pct >= 2 * max(median, 0.0)
+        ):
+            highlights.append(f"local boost: {row.get('track_name') or track_id} {pct:+.0f}% (median {median:+.0f}%)")
+    return highlights
 
 
 def _worldwide_history_path(chart_date: str) -> Path:

@@ -23,7 +23,17 @@ Spotify streams et charts.
 - `swift_top_gate.py`: gate Swift Top apres charts.
 - `download.py`: telechargements.
 - `fmt.py`: formatters.
-- `chart_comment.py`: commentaires chart.
+- `chart_comment.py`: commentaire du tweet quotidien Global/US/UK (`build_chart_comment`).
+  **Refonte 2026-10-01** (owner : « remains steady at » / « jumped to the X spot » trop pauvres) :
+  raconte avec l'historique complet `db/charts_history_<chart>.csv` (relie par titre) — jours
+  consecutifs / total a #1, retour a #1, 1er #1, nouveau peak, RE = « jumps back into the chart
+  at #N. It last charted X days ago, at #R on Weekday (Mon D, YYYY) », gros bond (>= 15) +
+  « its highest position since <date> » (>= 14 j), paliers de jours (100e, 365e, 1 000e...),
+  serie top 10 >= 5 j, plus gros gain streams (>= 5 %), sinon plus longue serie (champ `streak`).
+  Jour de sortie : >= 3 debuts → « Taylor Swift debuts N new songs ..., led by ... » ; >= 3 RE →
+  « N Taylor Swift songs re-enter ... ». Candidats scores, 2 phrases max (2 chansons differentes).
+  Garde exactitude : une serie/absence/« since » qui traverse une date absente du CSV n'est pas
+  ecrite (`_history_complete`, `_consecutive_days` → None).
 - `album_emoji.py`: emoji albums.
 
 ## Regles

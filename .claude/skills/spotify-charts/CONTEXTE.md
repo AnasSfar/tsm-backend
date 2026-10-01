@@ -587,6 +587,51 @@ Options importantes:
 - `--post-multi-song-regions`
 - `--post-multi-song-regions-only`
 
+**Posts regionaux scores — grands marches seulement (2026-10-01) :** seules
+les regions de `SCORED_REGIONAL_POST_ALLOWED_REGIONS` peuvent etre tirees =
+le meme top 10 que Apple Music/iTunes `HIGHLIGHT_COUNTRIES`
+(us,jp,gb,cn,de,fr,kr,br,ca,mx ; override env
+`SPOTIFY_SCORED_REGIONAL_POST_REGIONS`), moins global/fr/us (voie prioritaire)
+→ en pratique jp, gb, de, kr, br, ca, mx (pas de chart Spotify cn). Les petits
+marches (LU, IS, PY…) ne postent plus : un RE #33 au Luxembourg ≈ 1 000 streams.
+**Exception** : un marche mineur reste candidat s'il a un evenement
+exceptionnel (`score_region_update.minor_region_highlights`, constantes
+`MINOR_REGION_*`) — RE apres >= 60 j d'absence dans CE pays (date precedente lue
+dans `db/charts_history_<region>.csv`) ; >= 2 RE absents chacun >= 7 j (les
+allers-retours #190 a 2-3 j ne comptent pas) ; boost local = jour +25 % ET
+semaine +25 % ET >= 25 pts au-dessus et >= 2x la mediane du meme titre sur >= 5
+autres regions (une vague mondiale ou tout le monde monte ne compte pas, ex.
+Patient Zero +84 % partout le 28/09 ; le +35 % hebdo d'Israel le samedi non
+plus). OUT = 0 et seuil de score toujours requis ; ensuite meme tirage pondere
+que les grands marches. Backtest sept. 2026 : sg 10/09 (Love Story 901 j),
+cz 17/09 (Blank Space 3167 j), lv 21/09, ie 23/09, tw/ph 17/09 (2 RE).
+**Texte du tweet regional (2026-10-01)** : chaque RE apres >= 60 j d'absence
+dans la region (`MINOR_REGION_LONG_ABSENCE_RE_DAYS`, grands ET petits marches)
+ajoute une ligne `"Blank Space" re-entered at #194. The last time it charted in
+Czech Republic was 3,167 days ago.` (ecart exact via `days_since_last_chart`,
+max 2 lignes) dans `_build_multi_song_region_tweet`.
+Les scores restent calcules/ecrits pour toutes les regions
+(`regional_scores_<date>.json`). Les posts RE immediats (titre absent de TOUS
+les pays la veille) ne sont pas concernes.
+
+**Streak sur les images regionales :** `_load_snapshot_by_region` (chemin
+`--post-multi-song-regions-only`, qui ecrit les `<region>/ts_chart_<date>.json`)
+oubliait `streak` → colonne STREAK « — » partout ; corrige le 2026-10-01.
+
+**Posts regionaux scores — OUT eliminatoire (regle produit) :**
+`_post_multi_song_regions` exclut toute region avec `out >= 1` (un seul OUT
+suffit, plusieurs OUT ne sont jamais compenses par un RE/NEW). Le `out` vient de
+`score_region_update.score_region_snapshot` = titres de la region dans le
+snapshot worldwide de la veille absents aujourd'hui. **L'image doit montrer les
+memes OUT** : `generate_chart_image.get_out_songs` lit, pour une region
+non-global, la veille dans `ts_worldwide_<veille>.json` (les fichiers
+`<region>/ts_chart_<date>.json` ne sont ecrits que pour certaines regions), noms
+resolus via discographie + `charts_history_global.csv`. **Jamais l'archive
+Global pour une region** — bug corrige le 2026-10-01 : sans fichier regional la
+veille, l'image prenait le chart Global (Babylon #13, Cleveland! #17…) et
+affichait de faux OUT (BR 28/09, PY 29/09, LU 30/09 postes avec 3-5 « OUT »
+inexistants ; le scorer, lui, avait bien out=0).
+
 **Priorite de post X (2026-08-28) :** `run_all_charts._build_env` pose
 `TWITTER_POST_PRIORITY=1` dans l'env de tous ses sous-process. Quand streams
 finalize poste en meme temps (defaut `3`, sweep album `4`), les tweets charts

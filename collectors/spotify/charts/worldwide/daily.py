@@ -115,7 +115,10 @@ WORLDWIDE_TOOLS_SCRIPTS_DIR = ROOT / "collectors" / "spotify" / "charts" / "worl
 if str(WORLDWIDE_TOOLS_SCRIPTS_DIR) not in sys.path:
     sys.path.insert(0, str(WORLDWIDE_TOOLS_SCRIPTS_DIR))
 from score_region_update import (  # noqa: E402
+    MINOR_REGION_LONG_ABSENCE_RE_DAYS,
     annotate_recent_region_records,
+    days_since_last_chart,
+    minor_region_highlights,
     post_min_adjusted_score_for_date,
     score_region_snapshot,
     write_region_scores,
@@ -208,6 +211,15 @@ MULTI_SONG_REGIONAL_NO_REPEAT_DAYS = 1
 MULTI_SONG_REGIONAL_WEEKLY_LOOKBACK_DAYS = 7
 PRIORITY_POST_REGIONS = ("global", "fr", "us")
 SCORED_REGIONAL_POST_EXCLUDED_REGIONS = set(PRIORITY_POST_REGIONS)
+# Scored regional posts: only the major markets (same top-10 list as the Apple
+# Music / iTunes HIGHLIGHT_COUNTRIES: us,jp,gb,cn,de,fr,kr,br,ca,mx — owner
+# 2026-10-01). Minor markets (LU, IS...) no longer post: a RE at #33 there is
+# ~1k streams. us/fr are posted by the priority path; Spotify has no cn chart.
+SCORED_REGIONAL_POST_ALLOWED_REGIONS = {
+    c.strip().lower()
+    for c in os.getenv("SPOTIFY_SCORED_REGIONAL_POST_REGIONS", "us,jp,gb,cn,de,fr,kr,br,ca,mx").split(",")
+    if c.strip()
+} - SCORED_REGIONAL_POST_EXCLUDED_REGIONS
 
 # Regional snapshot scoring lives in tools/scripts/score_region_update.py.
 def _album_emoji(album: str) -> str:
@@ -1381,6 +1393,22 @@ def _build_multi_song_region_tweet(chart_date: str, region: str, region_name: st
             "",
             f"{count} songs charting in {region_name}.",
         ])
+    # Long-absence RE (owner 2026-10-01): exact gap since the song's previous
+    # chart day in this region, from db/charts_history_<region>.csv.
+    long_absence_lines = []
+    for row in rows:
+        if not row.get("is_re_entry"):
+            continue
+        track_id = str(row.get("_track_id_uri") or row.get("track_id") or "")
+        gap = days_since_last_chart(region, track_id, chart_date) if track_id else None
+        if gap is not None and gap >= MINOR_REGION_LONG_ABSENCE_RE_DAYS:
+            title = row.get("track_name") or track_id
+            long_absence_lines.append(
+                f'"{title}" re-entered at #{row.get("rank")}. '
+                f"The last time it charted in {region_name} was {gap:,} days ago."
+            )
+    if long_absence_lines:
+        lines.extend(["", *long_absence_lines[:2]])
     lines.extend([
         "",
         full_charts_update_line(region=region),
@@ -1427,6 +1455,7 @@ def _post_multi_song_regions(
     regions: dict[str, str],
     by_region: dict[str, list[dict]],
     *,
+    all_regions_rows: dict[str, list[dict]] | None = None,
     force: bool = False,
 ) -> None:
     if not _debut_posting_allowed(chart_date):
@@ -1477,6 +1506,25 @@ def _post_multi_song_regions(
     if not TWITTER_SESSION.exists():
         print(f"[WARN] Multi-song regional posts skipped: Twitter session missing: {TWITTER_SESSION}", flush=True)
         return
+
+    # Minor markets post only on an exceptional event (long-absence RE, several
+    # real RE, local boost the other regions don't have) — owner 2026-10-01.
+    kept = []
+    ignored_minor = []
+    for c in scored:
+        if c[0] in SCORED_REGIONAL_POST_ALLOWED_REGIONS:
+            kept.append(c)
+            continue
+        highlights = minor_region_highlights(chart_date, c[0], c[1], all_regions_rows or by_region)
+        if highlights:
+            c[3]["minor_region_highlights"] = highlights
+            print(f"[INFO] Region mineure retenue {c[0]}: {'; '.join(highlights)}", flush=True)
+            kept.append(c)
+        else:
+            ignored_minor.append(c[0])
+    if ignored_minor:
+        print(f"[INFO] Regions mineures ignorees (aucun evenement exceptionnel): {', '.join(ignored_minor[:15])}", flush=True)
+    scored = kept
 
     with_out = [c for c in scored if int(c[3].get("out") or 0) > 0]
     if with_out:
@@ -2193,6 +2241,7 @@ def _load_snapshot_by_region(chart_date: str) -> tuple[dict[str, list[dict]], di
                 "previous_rank": entry.get("previous_rank"),
                 "peak_rank": entry.get("peak_rank"),
                 "total_days": entry.get("total_days"),
+                "streak": entry.get("streak"),
                 "is_new": bool(entry.get("is_new")),
                 "is_re_entry": bool(entry.get("is_re_entry")),
                 "movement": entry.get("movement"),
@@ -2235,6 +2284,7 @@ def _post_multi_song_regions_from_snapshot(
         chart_date,
         regions,
         multi_song_region_rows,
+        all_regions_rows=by_region,
         force=force,
     )
     return 0
@@ -2731,6 +2781,7 @@ def main() -> int:
                     chart_date,
                     regions,
                     multi_song_region_rows,
+                    all_regions_rows=by_region,
                     force=args.force,
                 ),
                 daemon=True,
