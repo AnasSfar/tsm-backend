@@ -105,7 +105,13 @@ si la taille d'une card change.
 - **Valeur de la case stat à taille variable (fix 2026-09-27)** :
   `_stat_font_size(stat_value)` (46 → 32 px selon la longueur). À 46 px fixe,
   `+12,966,141 views` sortait de la case (vrai post du 26/09) — la case fait
-  ~398 px utiles, `white-space:nowrap`.
+  ~398 px utiles, `white-space:nowrap`. Les cards du 26/09 (Encore STATION,
+  Babylon, Cleveland!, Patient Zero lyric) ont été générées le 27/09 à 06:0x,
+  **avant** ce fix (commit 16:22) — c'est pour ça qu'elles débordent. Filet de
+  sécurité ajouté le 2026-09-30 : un `<script>` inline en fin de page réduit
+  `.stat-val` px par px tant que `scrollWidth` dépasse la largeur utile de la
+  case (plancher 20 px) — la police réelle ne peut plus faire déborder, même si
+  les paliers sont mal calibrés. Vérif : `previews_and_sims/youtube-first-day/stat-overflow/`.
 - **`render_youtube_debut_table()` (2026-09-27)** : tableau « first 24 hours »
   d'une release de plusieurs vidéos (`collector-youtube`, `core/first_day.py`).
   Passe par `tables_image.build_table_html` (même famille que les snapshots

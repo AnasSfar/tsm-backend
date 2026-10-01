@@ -1203,6 +1203,31 @@ def upload_youtube(
                 unchanged += 1
 
     print(f"[r2] youtube: {uploaded} uploaded, {unchanged} unchanged")
+    upload_youtube_new_releases(dry_run=dry_run, bucket=_bucket)
+    return True
+
+
+def upload_youtube_new_releases(*, dry_run: bool = False, bucket: str | None = None) -> bool:
+    """Upload db/youtube_new_releases.json (the YouTube page's New video
+    button, collectors/youtube/core/new_releases.py) — alone, so the +24h
+    capture task pushes the figure without re-uploading the big CSVs."""
+    ok, reason = _r2_ready()
+    if not ok:
+        print(f"[r2] skipped — {reason}")
+        return False
+    path = DB_DIR / "youtube_new_releases.json"
+    if not path.exists():
+        print(f"[r2] youtube new releases skip missing: {path}")
+        return False
+    changed = upload_raw_if_changed(
+        client=get_s3_client(),
+        bucket=bucket or os.getenv("R2_BUCKET", "taylor-data"),
+        key=f"{r2_keys.STATIC_DATA_PREFIX}/youtube_new_releases.json",
+        data=path.read_bytes(),
+        content_type="application/json; charset=utf-8",
+        dry_run=dry_run,
+    )
+    print(f"[r2] youtube new releases: {'uploaded' if changed else 'unchanged'}")
     return True
 
 

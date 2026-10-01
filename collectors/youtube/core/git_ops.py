@@ -19,6 +19,7 @@ def git_commit_and_push(repo_root: Path, message: str) -> None:
                 "collectors/youtube/tools/json/",
                 "db/youtube_views_history.csv",
                 "db/youtube_title_history.csv",
+                "db/youtube_new_releases.json",
             ],
             cwd=str(repo_root),
             check=True,

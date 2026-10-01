@@ -15,6 +15,15 @@ Core rule: `daily_views` is an exact one-calendar-day delta. If a previous
 calendar snapshot is missing, keep the one-day value blank and store the exact
 multi-day gain as period data.
 
+Page sections (`source` column of `youtube_title_history.csv`): `all`
+(TayBoard, never filter it), `videos`, `audios`, `extras`, and `songs` =
+videos + audios (2026-09-30). Details in CONTEXTE.md.
+
+"New video" button feed (`core/new_releases.py`, 2026-09-30):
+`db/youtube_new_releases.json`, rebuilt from the first-day registry after each
+capture/post/daily run and pushed to R2 — the site shows the exact 24h figure
+of the post, `waiting` before it, `missed` (no figure) if the window was missed.
+
 "First 24 hours" posts (`core/first_day.py`, 2026-09-27): videos published
 together = ONE release; Topic audios and main-channel videos are separate
 posts (a 2-post thread when a release has both), one row per song, uploads of

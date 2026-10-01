@@ -44,7 +44,7 @@ for _stream in (sys.stdout, sys.stderr):
     except Exception:
         pass
 
-from .core import first_day
+from .core import first_day, new_releases
 from .core.api import chunked, fetch_video_stats
 from .core.channel import (
     discover_new_videos,
@@ -390,16 +390,22 @@ def main() -> int:
     if args.first_day_cancel:
         count = first_day.cancel_pending(now_utc)
         print(f"[first_day] {count} vidéo(s) retirée(s) de l'attente — rien ne sera posté pour elles.")
+        new_releases.refresh_and_upload()
         return 0
 
     if args.capture_first_day:
         if not YOUTUBE_API_KEY:
             print("[first_day] YOUTUBE_API_KEY manquant.")
             return 1
-        return first_day.capture_video_live(args.capture_first_day, now_utc, _fetch_stats)
+        code = first_day.capture_video_live(
+            args.capture_first_day, now_utc, _fetch_stats, clock=lambda: datetime.now(timezone.utc),
+        )
+        new_releases.refresh_and_upload()  # the 24h figure reaches the site right away
+        return code
 
     if args.first_day_post:
         results = first_day.run_tick(now_utc)
+        new_releases.refresh_and_upload()
         return 1 if any(r["status"] == "failed" for r in results) else 0
 
     # The scheduled run fires at 06:05 Europe/Paris ≈ 00:05 America/New_York
@@ -650,8 +656,9 @@ def main() -> int:
     # Variantes de regroupement par chanson pour ce jour (colonne `source`) :
     # "all" (les 2 chaînes sommées — la vue historique, celle que lit TayBoard),
     # "videos"/"audios"/"extras" (sections de la page YouTube, classement
-    # title_groups.video_category) et "main"/"topic"/"songs" (anciens toggles,
-    # gardés tant que le frontend déployé peut encore les demander). Même
+    # title_groups.video_category), "songs" (= videos + audios, sans extras)
+    # et "main"/"topic" (anciens toggles, gardés tant que le frontend déployé
+    # peut encore les demander). Même
     # pipeline (build_title_rows + enrich_chart_rows), juste des video_rows
     # filtrés en entrée — TayBoard (source=all) est donc inchangé.
     existing_title_rows = read_csv_rows(TITLE_HISTORY_PATH)
@@ -668,7 +675,6 @@ def main() -> int:
             video_rows=source_video_rows,
             songs_path=DISCOGRAPHY_SONGS_PATH,
             manual_groups_path=VIDEO_GROUPS_PATH,
-            catalog_only=(source_tag == "songs"),
         )
         for r in variant_rows:
             r["source"] = source_tag
@@ -697,6 +703,10 @@ def main() -> int:
     save_video_db(video_db, VIDEO_DB_PATH)
     print(f"[INFO] Catalogue vidéos mis à jour : {VIDEO_DB_PATH}")
 
+    try:
+        new_releases.write()  # uploaded with the CSVs just below
+    except Exception as e:
+        print(f"[new_releases] Échec de l'export (non bloquant) : {e}")
     maybe_upload_youtube_to_r2(activity_date)
 
     # ------------------------------------------------------------------
@@ -705,7 +715,8 @@ def main() -> int:
     # ------------------------------------------------------------------
     if not args.no_post:
         try:
-            first_day.run_tick(datetime.now(timezone.utc))
+            if first_day.run_tick(datetime.now(timezone.utc)):
+                new_releases.refresh_and_upload()
         except Exception as e:
             print(f"[first_day] Échec du post (non bloquant) : {e}")
 

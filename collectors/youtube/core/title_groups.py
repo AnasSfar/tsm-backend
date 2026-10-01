@@ -347,6 +347,8 @@ def build_title_rows(
 #   audios  = Topic art tracks + main-channel audio uploads
 #   extras  = trailers, announcements, lives, behind the scenes, shorts,
 #             promos, commentary / track by track / voice memos
+#   songs   = videos + audios (everything except extras, owner 2026-09-30;
+#             replaced the old "songs" = catalog-matched titles of all rows)
 #   all     = everything
 # Decided from the video's own title + duration (catalog matching alone is
 # wrong both ways: shorts/lives match song titles, real MVs don't match).
@@ -434,8 +436,9 @@ def video_rows_by_source(
     categories_path: Path | None,
 ) -> dict[str, list[dict]]:
     """Video rows feeding each `source` of youtube_title_history.csv:
-    all (TayBoard), main/topic/songs (legacy page toggles, kept while the
-    deployed frontend may still ask for them) + videos/audios/extras."""
+    all (TayBoard), main/topic (legacy page toggles, kept while the deployed
+    frontend may still ask for them) + videos/audios/extras + songs
+    (videos + audios)."""
     catalog = load_song_catalog(songs_path)
     context = {
         "catalog": catalog,
@@ -450,8 +453,8 @@ def video_rows_by_source(
         "all": video_rows,
         "main": [r for r in video_rows if (r.get("channel") or "main") == "main"],
         "topic": [r for r in video_rows if r.get("channel") == "topic"],
-        "songs": video_rows,  # build_title_rows(catalog_only=True)
         **by_category,
+        "songs": by_category[CATEGORY_VIDEOS] + by_category[CATEGORY_AUDIOS],
     }
 
 

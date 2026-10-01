@@ -12,9 +12,13 @@ nothing actually changed. This rebuilds the whole file date-by-date with
 today's fixed matching, so title_key is consistent across all of history.
 
 Also regenerates every `source` split (title_groups.video_rows_by_source:
-all/main/topic/songs + videos/audios/extras, the YouTube page sections added
-2026-09-27) for every historical date, using each row's `channel` field (blank
+all/main/topic + videos/audios/extras, the YouTube page sections added
+2026-09-27, + songs = videos + audios since 2026-09-30) for every historical date, using each row's `channel` field (blank
 = "main", true historically since Topic wasn't tracked before 2026-09-05).
+
+--sources videos,audios,... regenerates only those sources and keeps every
+other source's rows byte-for-byte (e.g. leave `all`, read by TayBoard, alone
+when only the page sections changed).
 
 Dry-run by default: prints a diff summary, writes nothing. --apply to write
 (backup created first).
@@ -44,6 +48,11 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--apply", action="store_true", help="Write the rebuilt file (default: dry-run)")
     parser.add_argument("--no-backup", action="store_true", help="Skip the .bak copy on --apply")
+    parser.add_argument(
+        "--sources",
+        default="",
+        help="Comma-separated sources to regenerate (default: all of them); other sources are kept as-is",
+    )
     return parser.parse_args()
 
 
@@ -62,6 +71,7 @@ def main() -> int:
     rebuilt: list[dict] = []  # accumulates all rebuilt rows so far, across dates
     title_key_changes = 0
     old_rows = read_csv_rows(TITLE_HISTORY_PATH)
+    only_sources = {s.strip() for s in args.sources.split(",") if s.strip()}
     old_by_date_source: dict[tuple[str, str], dict[str, str]] = {}
     for row in old_rows:
         key = (row.get("date", ""), row.get("source") or "all")
@@ -76,6 +86,8 @@ def main() -> int:
             categories_path=VIDEO_CATEGORIES_PATH,
         )
         for source_tag, source_video_rows in sources.items():
+            if only_sources and source_tag not in only_sources:
+                continue
             if not source_video_rows:
                 continue
             variant_rows = build_title_rows(
@@ -83,7 +95,6 @@ def main() -> int:
                 video_rows=source_video_rows,
                 songs_path=DISCOGRAPHY_SONGS_PATH,
                 manual_groups_path=VIDEO_GROUPS_PATH,
-                catalog_only=(source_tag == "songs"),
             )
             for r in variant_rows:
                 r["source"] = source_tag
@@ -100,6 +111,10 @@ def main() -> int:
                 title_key_changes += 1
             rebuilt.extend(variant_rows)
 
+    if only_sources:
+        kept = [r for r in old_rows if (r.get("source") or "all") not in only_sources]
+        print(f"[INFO] Keeping {len(kept)} rows of other sources untouched")
+        rebuilt = sorted(kept + rebuilt, key=lambda r: r.get("date") or "")  # stable: kept rows first per date
     print(f"[INFO] {len(rebuilt)} rebuilt rows across {len(dates)} dates")
     print(f"[INFO] {title_key_changes} (date, source) pairs had a different title_key set than the old file")
 

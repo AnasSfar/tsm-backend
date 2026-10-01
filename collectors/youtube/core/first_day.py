@@ -83,6 +83,9 @@ MAX_PUBLISH_LAG_DAYS = 4
 # |capture instant - (published_at + 24h)| allowed. The daily run fires at
 # ~00:05 ET, i.e. ~5 min after a midnight-ET release's 24h mark.
 CAPTURE_TOLERANCE = timedelta(minutes=15)
+# The capture task starts this early and waits in-process for the exact 24h
+# second, so Task Scheduler / Python start-up latency never delays the read.
+CAPTURE_LEAD = timedelta(minutes=3)
 # Uploads published within this gap of each other = one release (the Encore
 # Topic uploads spread over 04:01-04:05 UTC; its lyric videos came 20h later).
 RELEASE_GAP = timedelta(hours=2)
@@ -321,9 +324,11 @@ def capture_video_live(
     fetch_stats: Callable[[list[str]], dict[str, dict]],
     *,
     log: Callable[[str], None] = print,
+    clock: Callable[[], datetime] | None = None,
 ) -> int:
     """--capture-first-day <id>: entry point of the one-off Scheduled Task
-    fired at published_at + 24h. Captures only; posting is run_tick's job."""
+    fired CAPTURE_LEAD before published_at + 24h. With a clock, waits for the
+    exact 24h second before reading. Captures only; posting is run_tick's job."""
     unregister_task(capture_task_name(video_id))
     candidate = load_pending().get(video_id)
     if candidate is None:
@@ -340,6 +345,11 @@ def capture_video_live(
             "un total pris à ce moment ne serait pas « 24 heures »."
         )
         return 0
+    if clock is not None and now < candidate.due:
+        log(f"[first_day] {video_id}: attente de published_at+24h ({_iso(candidate.due)}).")
+        while (remaining := (candidate.due - clock()).total_seconds()) > 0:
+            time.sleep(min(remaining, 5.0))
+        now = clock()
     stat = (fetch_stats([video_id]) or {}).get(video_id)
     if not stat:
         log(f"[first_day] {video_id}: stats live indisponibles — le run quotidien tentera sa propre capture.")
@@ -987,7 +997,7 @@ def schedule_capture_task(candidate: Candidate, now: datetime, *, log: Callable[
         return False  # 24h mark already reached: only the daily-run capture can apply
     return _register_one_off_task(
         capture_task_name(candidate.video_id),
-        candidate.due,
+        max(candidate.due - CAPTURE_LEAD, now + timedelta(minutes=1)),
         f"-m collectors.youtube.update_youtube --capture-first-day {candidate.video_id}",
         log=log,
     )

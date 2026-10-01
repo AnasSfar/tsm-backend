@@ -165,16 +165,55 @@ Colonnes importantes:
   `*_no_feature_credit` pour eviter qu'un autre titre court (ex. `ME!`) le
   vole. Rebuild applique avec `python -m scripts.rebuild_youtube_title_history
   --apply` depuis `db/youtube_views_history.csv`.
-- **Source `songs` YouTube (ajout 2026-09-26).** Les niveaux historiques
-  `all`/`main`/`topic` gardent leur sens brut : videos officielles et topics,
-  donc `main` peut contenir annonces, lives, premieres, stations, shorts, etc.
-  Pour lire uniquement les chansons, utiliser `source=songs` dans
-  `youtube_title_history.csv` et l'API frontend. Ce niveau est reconstruit
-  depuis les memes lignes exactes que `all`, mais ne garde que les groupes qui
-  matchent le catalogue chanson ou un groupe manuel catalogue ; il exclut les
-  groupes video/promo comme `*_station`, `*_live`, announcements, shorts, etc.
-  En `mode=videos&source=songs`, l'API filtre les videos via les `video_ids`
-  des groupes `source=songs`.
+- **Sections de la page YouTube = colonne `source` (2026-09-27, `songs` refait
+  le 2026-09-30).** `title_groups.video_rows_by_source` ecrit par jour :
+  - `all` : tout (les 2 chaines sommees). **Seul niveau lu par TayBoard**
+    (`swift_top_100.py`), ne jamais le filtrer.
+  - `videos` : clips, lyric videos, visualizers, short films (chaine principale).
+  - `audios` : art tracks Topic + uploads « official audio » de la chaine principale.
+  - `extras` : trailers, annonces, lives/performances, BTS, shorts (<= 60 s),
+    promos, commentary/track by track/voice memo/interview.
+  - `songs` : **= `videos` + `audios`** (tout sauf extras). Avant le
+    2026-09-30, `songs` = groupes matchant le catalogue sur toutes les lignes
+    (`catalog_only`) ; historique regenere avec la nouvelle definition.
+  - `main`/`topic` : anciens toggles par chaine, encore ecrits (compat), plus
+    affiches par le frontend.
+  Classement par `video_category()` sur le titre + la duree (le catalogue
+  seul se trompe dans les 2 sens) ; exceptions manuelles dans
+  `tools/json/video_categories.json` (`{video_id: {"category": ...}}`).
+  Changer le classement => `python -m scripts.rebuild_youtube_title_history
+  --sources songs,videos,audios,extras --apply` puis `r2.upload_youtube()`
+  (laisse `all` intact). API frontend : `source=all|songs|videos|audios|extras|main|topic` ;
+  en `mode=videos`, les sections filtrent via les `video_ids` des groupes du
+  jour de cette source. Frontend : un seul menu deroulant « Showing » (defaut
+  Songs, Music videos/Audios en sous-filtres indentes, puis Extras,
+  Everything) — pas de rangee de pilules (choix produit 2026-09-30, 5
+  boutons = trop). Songs est **toujours combine** (switch masque, c'est un
+  chart par chanson) ; les autres sources s'ouvrent en **Split** par defaut,
+  le switch Combined/Split permet de combiner (`?mode=titles`) ; changer de
+  source remet le mode par defaut.
+  Image Studio (template YouTube) : memes 5 sources (boutons courts
+  Songs/Videos/Audios/Extras/All, defaut Songs, Mode masque pour Songs) ;
+  le sous-titre de l'image explique la section (« Songs: Music videos +
+  official audios, per song · date », « Extras: Trailers, lives, shorts &
+  behind the scenes · Each video separately · date »). Le template « All
+  collectors » lit `source=songs` (= videos + audios depuis 2026-09-30).
+- **Bouton « New video » de la page YouTube (2026-09-30).**
+  `core/new_releases.py` ecrit `db/youtube_new_releases.json` depuis le
+  registre first_day (pending + captures + releases resolues, 7 jours) :
+  chaque video = `waiting` (avec `due_at`), `captured` (`views_24h` = la
+  MEME capture exacte que le post « first 24 hours ») ou `missed` (fenetre
+  ±15 min ratee -> aucun chiffre, jamais un total pris a un autre moment).
+  Re-uploads Topic exclus comme dans le post. Reecrit + upload R2 juste apres
+  la capture +24h (la tache `TSM_YouTube_FirstDay_<id>`), apres le post, le
+  cancel et au run quotidien -> le chiffre arrive sur le site quelques
+  minutes apres la capture. Ne marche que pour les videos enregistrees par
+  first_day (donc pas en `--no-post`/`--bootstrap`). API
+  `/api/youtube/new-releases` (s-maxage 60) ; frontend `NewVideosButton`
+  dans `YouTube.jsx` (pilule a point pulse, panneau avec compte a rebours
+  puis le chiffre ; repoll auto autour de l'echeance). Preview :
+  `previews_and_sims/youtube-new-video-button/simulate.py` (registre factice
+  isole + route Playwright mockee).
 - **Exception pour une vidéo tout juste sortie (fix 2026-08-26)** : à sa toute
   première ligne CSV (`prev_views` absent), si `published_at` est récent
   (`_is_recent_publish`, seuil `FIRST_DAY_VIEWS_MAX_PUBLISH_LAG_DAYS` = 4 jours)
@@ -238,7 +277,11 @@ même. Les 31 tâches du 25/09 n'ont jamais tourné (supprimées avant).
    Jamais en `--bootstrap` ni `--no-post`.
 2. **Capture exacte** : le chiffre « first 24h » = `viewCount` cumulé lu à
    **±`CAPTURE_TOLERANCE` (15 min) de `published_at + 24h`**, par :
-   - la tâche one-off `TSM_YouTube_FirstDay_<id>` à `published_at+24h`
+   - la tâche one-off `TSM_YouTube_FirstDay_<id>`, lancée `CAPTURE_LEAD`
+     (3 min) **avant** `published_at+24h` : le process attend en interne la
+     seconde exacte puis lit l'API (décalage mesuré ~0 s, `offset_seconds` = 0 ;
+     avant 2026-09-30 elle partait pile à l'échéance et la latence de démarrage
+     Task Scheduler/Python décalait la lecture de quelques secondes)
      (`--capture-first-day <id>`, capture seulement, ne poste pas ; se
      désinscrit ; si elle part hors fenêtre — PC en veille puis
      `StartWhenAvailable` — elle refuse de capturer) ;
@@ -459,7 +502,7 @@ taille de la valeur dépend de sa longueur (`_stat_font_size`) — à 46 px fixe
   `new_video_ids` capturé juste après la découverte. Réflexe : si la tâche
   YouTube sort `0x1` un jour où TS a posté une vidéo, checker ici en premier.
 - Tâches Planificateur visibles à la racine du Task Scheduler pendant une
-  sortie : `TSM_YouTube_FirstDay_<video_id>` (capture à `published_at+24h`,
+  sortie : `TSM_YouTube_FirstDay_<video_id>` (démarre à `published_at+24h` − 3 min, capture à la seconde près,
   une par vidéo) et `TSM_YouTube_FirstDayPost_<anchor>` (post de la release,
   dernière échéance +15 min). Normal ; elles se suppriment à la résolution de
   la release. **Ne pas les supprimer à la main pour bloquer un post** →

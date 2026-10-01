@@ -92,6 +92,31 @@ only the loader the route uses to inject the sim payload (see
 `previews_and_sims/ts-top-songs-live/preview_api.py`), then `npx vite --port
 5173` + headless Chrome `--screenshot`. Stop both servers by exact PID after.
 
+### Pitfall: the owner's dev servers + frontend/.env.local
+
+The owner runs `tsm-frontend/dev.bat` (API :8003 `--reload` + Vite :3000), and
+dev.bat **kills whatever listens on :8003** when it starts — a preview API on
+:8003 can vanish mid-session and be replaced by theirs (real ADMIN_TOKEN ->
+your admin pages bounce to the login screen). Also `frontend/.env.local` sets
+`VITE_API_BASE` (straight to :8003, bypassing any proxy) and a dev admin token.
+For admin/Image Studio previews use separate ports + no env files:
+`previews_and_sims/image-studio-picker/vite.preview.config.mjs` (Vite :3010,
+proxy -> API :8013, `envDir` pointed at an empty folder) with the API started
+as `ADMIN_TOKEN=local-preview-token python -m uvicorn --app-dir . api.index:app
+--port 8013`, and `sessionStorage.news_admin_token` set by an init script.
+Never stop the owner's processes; stop yours by exact PID.
+
+### Pattern: mock one API route in the browser instead of the loader
+
+When the page's new data comes from its own small route, Playwright
+`page.route("**/api/<route>*", lambda r: r.fulfill(...))` answers it with the
+sim payload while the rest of the page uses the real local API — no loader
+monkeypatch needed (`previews_and_sims/youtube-new-video-button/simulate.py`,
+which also rebuilds the payload with the real backend code on an isolated
+registry). Pitfall: `page.click("text=Audios")` matches any element whose text
+*contains* the word (a hint like "Music videos + audios") — use
+`get_by_role(..., name=...)`.
+
 ### Pattern: X account-slot contention (no browser, no post)
 
 `previews_and_sims/twitter-account-slot-spacing/simulate.py` runs several real processes

@@ -180,6 +180,16 @@ body:before{{
 <div class="ftr">
   <span class="ftr-l">{footer_left_html}</span>
 </div>
+<script>
+// Safety net over _stat_font_size: shrink until the value really fits its box.
+(function(){{
+  var v=document.querySelector('.stat-val');if(!v)return;
+  var box=v.parentElement,cs=getComputedStyle(box);
+  var room=box.clientWidth-parseFloat(cs.paddingLeft)-parseFloat(cs.paddingRight);
+  var size=parseFloat(getComputedStyle(v).fontSize);
+  while(v.scrollWidth>room&&size>20){{size-=1;v.style.fontSize=size+'px';}}
+}})();
+</script>
 </body></html>"""
 
 
