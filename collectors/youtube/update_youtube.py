@@ -44,7 +44,7 @@ for _stream in (sys.stdout, sys.stderr):
     except Exception:
         pass
 
-from .core import first_day, new_releases
+from .core import first_day, first_week, new_releases
 from .core.api import chunked, fetch_video_stats
 from .core.channel import (
     discover_new_videos,
@@ -198,6 +198,20 @@ def parse_args() -> argparse.Namespace:
         "--first-day-post",
         action="store_true",
         help="Interne : poste les releases prêtes (tâche planifiée +24h+15 min).",
+    )
+    p.add_argument(
+        "--first-week-tick",
+        metavar="VIDEO_ID",
+        default=None,
+        help=(
+            "Interne : capture exacte à published_at+N×24h (N=2..7) d'un clip suivi, puis post "
+            "Day N (tâche TSM_YouTube_FirstWeek_<id>). Day 7 = graphique de la semaine."
+        ),
+    )
+    p.add_argument(
+        "--first-week-status",
+        action="store_true",
+        help="Affiche les clips en suivi première semaine (marques +N×24h, posts).",
     )
     return p.parse_args()
 
@@ -406,7 +420,23 @@ def main() -> int:
     if args.first_day_post:
         results = first_day.run_tick(now_utc)
         new_releases.refresh_and_upload()
+        try:
+            first_week.sync(datetime.now(timezone.utc))  # enrolls the music video just posted
+        except Exception as e:
+            print(f"[first_week] Échec (non bloquant) : {e}")
         return 1 if any(r["status"] == "failed" for r in results) else 0
+
+    if args.first_week_status:
+        print("\n".join(first_week.status_lines(now_utc)))
+        return 0
+
+    if args.first_week_tick:
+        if not YOUTUBE_API_KEY:
+            print("[first_week] YOUTUBE_API_KEY manquant.")
+            return 1
+        return first_week.capture_and_post(
+            args.first_week_tick, now_utc, _fetch_stats, clock=lambda: datetime.now(timezone.utc),
+        )
 
     # The scheduled run fires at 06:05 Europe/Paris ≈ 00:05 America/New_York
     # (YOUTUBE_COLLECTION_TZ), i.e. right at NY midnight. The viewCount delta
@@ -652,6 +682,12 @@ def main() -> int:
             )
         except Exception as e:
             print(f"[first_day] Échec (non bloquant) : {e}")
+        try:
+            captured = first_week.capture_from_daily_rows(rows, datetime.fromisoformat(snapshot_at))
+            if captured:
+                print(f"[first_week] capture(s) +N×24h prise(s) sur ce snapshot : {', '.join(captured)}")
+        except Exception as e:
+            print(f"[first_week] Échec (non bloquant) : {e}")
 
     # Variantes de regroupement par chanson pour ce jour (colonne `source`) :
     # "all" (les 2 chaînes sommées — la vue historique, celle que lit TayBoard),
@@ -719,6 +755,10 @@ def main() -> int:
                 new_releases.refresh_and_upload()
         except Exception as e:
             print(f"[first_day] Échec du post (non bloquant) : {e}")
+        try:
+            first_week.sync(datetime.now(timezone.utc))
+        except Exception as e:
+            print(f"[first_week] Échec (non bloquant) : {e}")
 
     # ------------------------------------------------------------------
     # 9. Git commit/push (opt-in avec --commit)

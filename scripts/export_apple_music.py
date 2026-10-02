@@ -128,6 +128,11 @@ def normalize_song_entry(row: dict[str, Any]) -> dict[str, Any]:
     }
     if storefront_ranks:
         entry["storefront_ranks"] = storefront_ranks
+    # TS Top Songs chart-only rank (ts_top_songs_daily), absent elsewhere.
+    chart_rank = to_int(row.get("chart_rank"))
+    if chart_rank:
+        entry["chart_rank"] = chart_rank
+        entry["previous_chart_rank"] = to_int(row.get("previous_chart_rank"))
     return entry
 
 

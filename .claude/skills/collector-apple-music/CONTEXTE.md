@@ -819,6 +819,7 @@ Scripts combines quotidiens:
   merge discutable (Teardrops on My Guitar absorbe son "Radio Single Remix" car
   Apple leur met le meme ISRC — accepte).
   **Fusion chart (2026-09-25)** : par storefront, les titres TS presents dans le chart Apple Music Top Songs du pays (top `CHART_LIMIT`=200, meme endpoint que `country_all.py`, recupere dans le meme cycle) passent **en tete, dans l'ordre du chart**, puis le reste de la liste page-artiste dans son ordre (dedup par `apple_music_id` ou ISRC) — `merge_chart_into_top_songs`. Raison : la vue `top-songs` de la page artiste Apple met des heures a integrer une nouvelle sortie (Showgirl Encore : #1-#4 du chart UK, absents de la page artiste UK jusqu'a l'apres-midi → #105-#282 au TS Top Songs). TS Top Songs est notre chart, on peut melanger. `ts_page.py` (input TayBoard) n'est PAS concerne. Chart en 400 = pas de chart dans ce pays → liste page-artiste seule.
+  **Rang « Charts » (2026-10-02)** : les titres issus du chart portent `from_chart` ; leurs points (meme `500/rank**0.75 * poids_marche`, rang = position dans la liste fusionnee) sont aussi cumules dans `chart_score` → classement separe `chart_rank` (colonne du `*_raw.csv`, vide si la chanson n'est dans aucun chart pays). `compute_final_rows` agrege `rank_to_score(chart_rank)` sur les cycles du jour → `chart_rank` + `previous_chart_rank` (vs dernier jour final) dans le CSV canonique et le live ; les cycles d'avant cette colonne comptent 0 pour tout le monde (le 2026-10-02 = cycles de 16h a 22h seulement, aucun backfill des jours precedents). `export_apple_music.normalize_song_entry` les expose sur l'entry seulement si presents. Frontend : colonne « Charts / Rank » de la table TS Top Songs (`AppleMusic.jsx`, `TS_CHARTS_COLUMN_KEY`, aussi option de tri). Sim : `previews_and_sims/ts-top-songs-charts-column/`.
   Pagination plafonnee a
   `APPLE_MUSIC_TS_GLOBAL_DEPTH` (**defaut 400 = 4 pages/storefront depuis le
   2026-09-10**, avant 200 — le catalogue TS complet fait ~675 titres/storefront,
@@ -903,8 +904,8 @@ Outils partages:
 CSV principaux dans `db/` (ou le dossier snapshot du jour, `DB_DIR` est date-dependant):
 
 - `apple_music_ts_top_songs.csv` (single-storefront `us`, input TayBoard uniquement)
-- `apple_music_ts_top_songs_global_raw.csv` (2026-09-19, ecrit par `ts_page_all.py` a chaque cycle 2h ; jamais lu par l'export — donnees internes seulement)
-- `apple_music_ts_top_songs_global.csv` (composite final, **une ligne par chanson par jour**, ecrit uniquement par `finalize_ts_top_songs_daily.py` une fois le jour termine ; alimente l'onglet site "TS Top Songs" via `export_apple_music.py`/`upload_ap_r2.py` — aucune ligne pour le jour en cours tant qu'il n'est pas finalise)
+- `apple_music_ts_top_songs_global_raw.csv` (2026-09-19, ecrit par `ts_page_all.py` a chaque cycle 2h ; jamais lu par l'export — donnees internes seulement ; colonne `chart_rank` depuis 2026-10-02)
+- `apple_music_ts_top_songs_global.csv` (composite final, **une ligne par chanson par jour**, ecrit uniquement par `finalize_ts_top_songs_daily.py` une fois le jour termine ; alimente l'onglet site "TS Top Songs" via `export_apple_music.py`/`upload_ap_r2.py` — aucune ligne pour le jour en cours tant qu'il n'est pas finalise ; colonnes `chart_rank`/`previous_chart_rank` depuis 2026-10-02)
 - `apple_music_global.csv`
 - `apple_music_genre_charts.csv`
 - `apple_music_country_charts.csv`

@@ -10,6 +10,8 @@ API :
 - Mentions cumulatives : un post de niveau L mentionne le role de L et ceux
   de tous les niveaux plus bas (un membre avec le role "Tout" recoit tout,
   "Urgent" ne recoit que l'urgent). Mentions seulement sur le 1er message.
+  Un salon sans `roles` (spotify-charts depuis 2026-10-02) ne pingue que ses
+  roles de region (Overall + fil du pays).
 - `key` = anti-doublon inter-process (lock atomique sous
   runtime/social/discord/sent/<salon>/). Deja envoye => rien. Echec => lock
   retire pour permettre un retry.
@@ -133,8 +135,8 @@ def bot_headers() -> dict | None:
 
 
 def thread_role_ids(config: dict, channel: str, thread: str | None) -> list[str]:
-    """Role of the thread's region (country role), mentioned IN ADDITION to
-    the importance roles (owner 2026-09-26)."""
+    """Role of the thread's region (country role), mentioned on the copy
+    posted in that thread (owner 2026-09-26)."""
     key = thread_key(thread)
     if not key:
         return []
@@ -673,9 +675,10 @@ def send(
         already = _sent_positions(channel, key) if key else set()
 
         # Main channel = the "Overall" feed (owner 2026-09-26): EVERY post, as
-        # before, mentioning the importance roles + the Overall role. When the
-        # region has a thread, the post is ALSO published there, mentioning
-        # only that region's role (no double ping of the importance roles).
+        # before, mentioning the Overall role (+ the importance roles if the
+        # channel still has some: spotify-charts dropped them 2026-10-02, they
+        # double-pinged). When the region has a thread, the post is ALSO
+        # published there, mentioning only that region's role.
         main_roles = mention_role_ids(config, channel, level)
         overall = str((chan.get("thread_roles") or {}).get("overall") or "").strip()
         if overall and overall not in main_roles:

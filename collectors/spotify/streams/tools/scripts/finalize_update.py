@@ -151,6 +151,10 @@ class FinalizeContext:
     best_day_last: bool = False
     # update_streams --skip a,b : étapes de post sautées (clés de POST_ONLY_STEPS).
     skip_steps: frozenset[str] = frozenset()
+    # update_streams --no-post (run complet, hors --test/--local-test) : aucune
+    # étape de post n'est lancée, donc aucune image générée (décision 2026-10-02).
+    # Export web, forecast, git et Swift Top restent faits.
+    skip_post_images: bool = False
 
 
 class PartialWebExporter:
@@ -1896,7 +1900,12 @@ def run_final_update_tasks(ctx: FinalizeContext) -> None:
         # Les échecs sont collectés et re-signalés en fin de finalisation.
         post_step_failures: list[str] = []
 
+        if ctx.skip_post_images:
+            print("[NO-POST] Post steps and their image generation skipped.")
+
         def _guarded_post_step(step_label: str, fn, key: str | None = None) -> None:
+            if ctx.skip_post_images:
+                return
             if key is not None and key in ctx.skip_steps:
                 print(f"[SKIP] {step_label} skipped (--skip {key}).")
                 return
@@ -1919,7 +1928,7 @@ def run_final_update_tasks(ctx: FinalizeContext) -> None:
         # Semaine Encore (stats 2026-09-24 -> 09-30) : toujours, sans condition
         # de score, et best-day-since plafonné à 3 cards chanson.
         album_queue: list[tuple[str, bool]] = []
-        if not ctx.debug_daily_mode and not ctx.local_test_mode:
+        if not ctx.debug_daily_mode and not ctx.local_test_mode and not ctx.skip_post_images:
             if _is_weekend_stats_date(ctx.summary["stats_date"]):
                 album_queue = _album_post_queue(ctx, ctx.summary["stats_date"], weekend_weekly_only=True)
             else:
@@ -1983,6 +1992,8 @@ def run_final_update_tasks(ctx: FinalizeContext) -> None:
                 print("Best-day-since posts skipped (--skip best-day-since).")
             elif ctx.best_day_last:
                 print("Best-day-since posts deferred to the end of finalize (--best-day-last).")
+            elif ctx.skip_post_images:
+                pass
             elif ctx.summary.get("all_done"):
                 best_day_script = ctx.script_dir / "tools" / "scripts" / "post_best_day_since_twitter.py"
                 for track_id in _best_day_since_candidate_tracks(ctx):

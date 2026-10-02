@@ -80,6 +80,16 @@ Vérifié le 2026-09-26 : un webhook notifie bien un rôle **non mentionnable** 
 Choix des rôles par les membres : page native « Salons & rôles » (questions des salons hors
 onboarding), annoncée dans #roles — voir « Parcours d'arrivée » plus bas.
 
+## Roles d'importance retires de spotify-charts (proprietaire 2026-10-02)
+
+Les membres qui avaient un role de niveau (« Everything », « Normal »...) ET un role de region
+recevaient les posts en double. Supprime : les 4 roles `Spotify Charts - Everything/Important/
+Normal/Urgent`, la question « Spotify Charts Notifications? » de « Salons & roles », la section
+« how often? » du message #roles. `channels.spotify-charts.roles` = `{}` et `level_roles: false`
+(`setup-roles` ne les recree pas). Pings restants : role Overall sur le salon principal, role
+du pays sur la copie dans son fil (Global, US, UK, France, Worldwide, Artists). Les `kinds`
+restent (niveau journalise). Le systeme de niveaux reste dispo pour les autres salons.
+
 ## Branchés
 
 - `spotify-charts` (2026-09-25) : 15 posts, voir `kinds` dans `config.json`.

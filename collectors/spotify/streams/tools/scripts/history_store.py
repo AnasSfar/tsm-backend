@@ -874,6 +874,17 @@ class HistoryIndex:
                     best_total = point_total
         return best_total
 
+    def total_seen_before_date(self, track_id: str, total: int, before_date: str) -> str | None:
+        """Date d'une ligne antérieure à before_date portant exactement ce total
+        (None sinon). Sert à reconnaître un snapshot Spotify périmé : un total
+        qui « baisse » pile sur une valeur déjà enregistrée n'est pas une vraie
+        correction (incident 2026-10-02, 94 faux daily négatifs)."""
+        with self._lock:
+            for point in self.points_by_track.get(track_id, []):
+                if point.get("date", "") < before_date and point.get("streams") == total:
+                    return point["date"]
+        return None
+
     def get_days_since_previous_row(self, track_id: str, stats_date: str) -> int | None:
         """Écart en jours entre stats_date et la ligne la plus récente
         strictement antérieure (None si aucune ligne antérieure)."""

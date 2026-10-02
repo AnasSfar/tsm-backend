@@ -16,6 +16,12 @@ appeared in that day — a song holding #1 all day accumulates far more than
 one that spiked to #1 once and vanished. Songs are matched across cycles by
 ISRC (fallback apple_music_id), same identity rule as the live
 storefront-merge step.
+
+`chart_rank` (2026-10-02) is the same aggregation applied to each cycle's
+chart-only rank (points earned in storefronts where the song came from the
+Apple Music chart, see ts_page_all.merge_chart_into_top_songs). Cycles
+collected before that column existed contribute nothing (equally for every
+song); songs never chart-sourced that day get no chart_rank.
 """
 
 from __future__ import annotations
@@ -42,6 +48,8 @@ FIELDNAMES = [
     "content_rating",
     "genre_names",
     "storefront_ranks",
+    "chart_rank",
+    "previous_chart_rank",
 ]
 
 
@@ -51,6 +59,13 @@ def rank_to_score(rank: int) -> float:
     if rank < 1:
         return 0.0
     return 500.0 / (rank ** 0.75)
+
+
+def _int_or_none(value) -> int | None:
+    try:
+        return int(value or "")
+    except (TypeError, ValueError):
+        return None
 
 
 def _merge_key(row: dict) -> str:
@@ -102,6 +117,7 @@ def compute_final_rows(day: str, cycle_rows: list[dict], previous_final_rows: li
         if entry is None:
             entry = groups[key] = {
                 "score": 0.0,
+                "chart_score": 0.0,
                 "cycles": 0,
                 "best_rank": rank,
                 "row": row,
@@ -109,6 +125,9 @@ def compute_final_rows(day: str, cycle_rows: list[dict], previous_final_rows: li
             }
         entry["score"] += score
         entry["cycles"] += 1
+        cycle_chart_rank = _int_or_none(row.get("chart_rank"))
+        if cycle_chart_rank:
+            entry["chart_score"] += rank_to_score(cycle_chart_rank)
         if rank < entry["best_rank"]:
             entry["best_rank"] = rank
             entry["row"] = row
@@ -129,9 +148,16 @@ def compute_final_rows(day: str, cycle_rows: list[dict], previous_final_rows: li
                     entry["storefront_ranks"][storefront] = sf_rank
 
     ranked = sorted(groups.items(), key=lambda kv: (-kv[1]["score"], kv[0]))
+    chart_ranked = sorted(
+        (kv for kv in groups.items() if kv[1]["chart_score"] > 0),
+        key=lambda kv: (-kv[1]["chart_score"], kv[0]),
+    )
+    chart_rank_by_key = {key: rank for rank, (key, _entry) in enumerate(chart_ranked, start=1)}
 
     prev_by_id: dict[str, int] = {}
     prev_by_name: dict[str, int] = {}
+    prev_chart_by_id: dict[str, int] = {}
+    prev_chart_by_name: dict[str, int] = {}
     prev_storefront_ranks: dict[tuple[str, str], int] = {}
     for prow in previous_final_rows:
         try:
@@ -144,6 +170,12 @@ def compute_final_rows(day: str, cycle_rows: list[dict], previous_final_rows: li
             prev_by_id[am_id] = prank
         if name:
             prev_by_name[rank_key(name)] = prank
+        pchart = _int_or_none(prow.get("chart_rank"))
+        if pchart:
+            if am_id:
+                prev_chart_by_id[am_id] = pchart
+            if name:
+                prev_chart_by_name[rank_key(name)] = pchart
         try:
             sf_ranks = json.loads(prow.get("storefront_ranks") or "{}")
         except json.JSONDecodeError:
@@ -160,13 +192,19 @@ def compute_final_rows(day: str, cycle_rows: list[dict], previous_final_rows: li
                     prev_storefront_ranks[(identity_key, storefront)] = sf_rank
 
     final_rows: list[dict] = []
-    for idx, (_key, entry) in enumerate(ranked, start=1):
+    for idx, (key, entry) in enumerate(ranked, start=1):
         row = entry["row"]
         am_id = (row.get("apple_music_id") or "").strip()
         name = (row.get("song_name") or "").strip()
         prev_rank = prev_by_id.get(am_id)
         if prev_rank is None:
             prev_rank = prev_by_name.get(rank_key(name))
+        chart_rank = chart_rank_by_key.get(key)
+        prev_chart_rank = None
+        if chart_rank:
+            prev_chart_rank = prev_chart_by_id.get(am_id)
+            if prev_chart_rank is None:
+                prev_chart_rank = prev_chart_by_name.get(rank_key(name))
 
         storefront_ranks_out = {}
         identity_keys = [f"id:{am_id}", f"name:{rank_key(name)}"]
@@ -200,6 +238,8 @@ def compute_final_rows(day: str, cycle_rows: list[dict], previous_final_rows: li
                 "content_rating": row.get("content_rating", ""),
                 "genre_names": row.get("genre_names", ""),
                 "storefront_ranks": json.dumps(storefront_ranks_out, ensure_ascii=False, separators=(",", ":")),
+                "chart_rank": chart_rank or "",
+                "previous_chart_rank": prev_chart_rank or "",
             }
         )
     return final_rows

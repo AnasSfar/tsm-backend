@@ -149,6 +149,7 @@ FIELDNAMES = [
     "content_rating",
     "genre_names",
     "storefront_ranks",
+    "chart_rank",
 ]
 
 
@@ -284,12 +285,14 @@ def merge_chart_into_top_songs(top_songs: list[dict], chart_songs: list[dict]) -
     (artist-page order). Decision 2026-09-25: Apple's artist-page top-songs
     view lags new releases by hours (Showgirl Encore: #1-#4 on the UK chart,
     absent from the UK artist page), and TS Top Songs is our own chart.
-    Matched by apple_music_id or ISRC (regional ids of the same master)."""
+    Matched by apple_music_id or ISRC (regional ids of the same master).
+    Chart-sourced songs carry `from_chart=True`: their points also feed the
+    separate chart-only ranking (`chart_rank`)."""
     if not chart_songs:
         return top_songs
     seen_ids = {s["apple_music_id"] for s in chart_songs if s.get("apple_music_id")}
     seen_isrcs = {(s.get("isrc") or "").strip() for s in chart_songs} - {""}
-    merged = list(chart_songs)
+    merged = [{**s, "from_chart": True} for s in chart_songs]
     for song in top_songs:
         if song.get("apple_music_id") in seen_ids or (song.get("isrc") or "").strip() in seen_isrcs:
             continue
@@ -394,7 +397,9 @@ def main() -> None:
             )
             sys.exit(1)
 
-    # Aggregate one entry per recording -> {score, best_rank, song, storefront_ranks}.
+    # Aggregate one entry per recording -> {score, chart_score, best_rank, song, storefront_ranks}.
+    # chart_score = the part of score earned in storefronts where the song came
+    # from the Apple Music chart (merge_chart_into_top_songs) -> chart_rank.
     # Merge key is the ISRC when present, else the raw apple_music_id. Apple serves
     # a different apple_music_id per regional catalogue for the same 2014-era master
     # (e.g. "Wildest Dreams" / "Blank Space" have a US, an international and a
@@ -416,12 +421,14 @@ def main() -> None:
             score = _rank_to_score(idx) * weight
             entry = composite.get(merge_key)
             if entry is None:
-                entry = composite[merge_key] = {"score": score, "best_rank": idx, "song": song, "storefront_ranks": {}}
+                entry = composite[merge_key] = {"score": score, "chart_score": 0.0, "best_rank": idx, "song": song, "storefront_ranks": {}}
             else:
                 entry["score"] += score
                 if idx < entry["best_rank"]:
                     entry["best_rank"] = idx
                     entry["song"] = song
+            if song.get("from_chart"):
+                entry["chart_score"] += score
             if storefront in IMPORTANT_STOREFRONTS:
                 existing = entry["storefront_ranks"].get(storefront, {}).get("rank")
                 if existing is None or idx < existing:
@@ -429,6 +436,13 @@ def main() -> None:
 
     # Sort by composite score desc; tie-break on merge key for determinism.
     ranked = sorted(composite.items(), key=lambda kv: (-kv[1]["score"], kv[0]))
+    # Chart-only ranking: same points, chart-sourced storefronts only; songs
+    # absent from every storefront chart get no chart_rank.
+    chart_ranked = sorted(
+        (kv for kv in composite.items() if kv[1]["chart_score"] > 0),
+        key=lambda kv: (-kv[1]["chart_score"], kv[0]),
+    )
+    chart_rank_by_key = {key: rank for rank, (key, _entry) in enumerate(chart_ranked, start=1)}
 
     previous_by_id = load_previous_ranks(
         CSV_PATH,
@@ -443,7 +457,7 @@ def main() -> None:
     previous_storefront_ranks = _load_previous_storefront_ranks(scraped_at)
 
     rows: list[dict] = []
-    for idx, (_merge_key, entry) in enumerate(ranked, start=1):
+    for idx, (merge_key, entry) in enumerate(ranked, start=1):
         song = entry["song"]
         # Representative id = the best-ranked fragment's id (see aggregation above);
         # it is what lands in the CSV column and anchors day-over-day id lookups.
@@ -488,6 +502,7 @@ def main() -> None:
                 "content_rating": song["content_rating"],
                 "genre_names": song["genre_names"],
                 "storefront_ranks": json.dumps(storefront_ranks, ensure_ascii=False, separators=(",", ":")),
+                "chart_rank": chart_rank_by_key.get(merge_key, ""),
             }
         )
         if idx <= 20:

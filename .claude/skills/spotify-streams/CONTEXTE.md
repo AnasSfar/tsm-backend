@@ -77,6 +77,50 @@ Modes visibles dans les logs/code:
 
 Avant de conseiller une option non listee ici, verifier `update_streams.py`.
 
+## `--no-post` = ni post ni image (decision 2026-10-02)
+
+Sur un vrai run (`update_streams.py [date] --no-post`), aucune image de post
+n'est generee : watchers early coupes (debut, best-day-since, era recap) et,
+en finalize, `FinalizeContext.skip_post_images` court-circuite toutes les
+etapes `_guarded_post_step` (+ pas de calcul de `_album_post_queue` ni des
+candidats best-day). Restent faits : export web, rate anomaly check, home
+highlights, forecast/images de pochettes, git, Swift Top. `--test` et
+`--local-test` (qui forcent `no_post_mode`) generent toujours les images
+pour previsualiser ; `--post-only X --no-post` aussi (preview d'une card).
+
+## Snapshot perime + runs concurrents (incident 2026-10-02)
+
+Le run 09-30 (attempt03, lance a 11:24) est reste ~4 h en probe pendant que
+Spotify alternait entre deux snapshots (totaux du 09-29 / totaux du 09-30).
+A 15:00 le Task Scheduler a lance le run 10-01 **en parallele**, sur le meme
+`streams_history.csv`. Le run 09-30 a ecrit les vrais totaux 09-30 (via
+`backfilled_previous_day`), puis le run 10-01 a recu l'ancien snapshot (pile
+les totaux 09-29) pour une partie des tracks → 94 `lower_than_previous`
+(daily negatif = -daily(09-30)) + une notif ntfy par track (centaines, ntfy
+en 429). Les nouveaux totaux etaient bien ceux du 09-30 (verifie : delta /
+streams chart Global 09-30 = meme ratio que daily / chart le 09-29) ; ceux
+du 10-01 n'etaient pas sortis. Le probe du run 10-01 avait compare au 09-29
+(lignes 09-30 encore absentes au demarrage) et pris le 09-30 pour le 10-01.
+Correctifs :
+
+- **Verrou de run** (`update_streams.acquire_run_lock`, fichier
+  `runtime/spotify_streams/update_streams.run.lock`, info dans
+  `update_streams.run.json`) : tout mode qui ecrit l'historique (normal,
+  `--debug-daily/--debug-total`, `--admin`, `--force`, `--reset-*`) attend que
+  l'autre run soit fini avant de charger l'historique (ntfy « Streams run
+  waiting » une fois, log toutes les 10 min). Verrou OS (`msvcrt`/`fcntl`) :
+  libere si le process meurt, jamais de lock perime. `--dry-run`,
+  `--local-test`, `--test`, `--throwback`, `--post-only` ne le prennent pas.
+- **`stale_previous_snapshot`** : un `total < last_total` qui retombe
+  EXACTEMENT sur un total deja enregistre a une date anterieure
+  (`HistoryIndex.total_seen_before_date`) = snapshot Spotify perime → pending
+  (retente aux rounds suivants, jamais converti en 0), pas de daily negatif.
+  Une baisse vers une valeur jamais vue reste `lower_than_previous` (regle
+  ci-dessous inchangee).
+- **Notifs « decreased » plafonnees** : 3 individuelles par run
+  (`DECREASE_NOTIFY_MAX_INDIVIDUAL`), puis UNE alerte groupee haute priorite,
+  le reste muet (voir le log).
+
 ## Regle (REMPLACEE 2026-09-23) : daily negatif accepte tel quel, jamais bloque/masque — affiche en rouge
 
 Decision proprietaire 2026-09-23 : les gates/garde-fous qui bloquaient ou

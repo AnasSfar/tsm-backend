@@ -224,6 +224,7 @@ def add_entry(
             "_current_streak": entry_streak,
             "_charted_dates": {chart_date} if chart_date else set(),
             "_rank_by_date": {chart_date: rank} if (chart_date and rank > 0) else {},
+            "_streams_by_date": {chart_date: streams} if (chart_date and streams > 0) else {},
             "track_id": track_id,
         }
         region_rows[track_id] = summary
@@ -236,6 +237,11 @@ def add_entry(
         previous_rank = rank_by_date.get(chart_date)
         if previous_rank is None or rank < previous_rank:
             rank_by_date[chart_date] = rank
+    if chart_date and streams > 0:
+        # Same day can come from both the regional CSV and a worldwide snapshot:
+        # keep one value per date so the running total never double-counts.
+        streams_by_date = summary.setdefault("_streams_by_date", {})
+        streams_by_date[chart_date] = max(streams_by_date.get(chart_date, 0), streams)
     if chart_date > str(summary.get("last_date") or ""):
         summary["last_date"] = chart_date
         summary["last_rank"] = rank
@@ -373,6 +379,13 @@ def build_discographies(
                 if peak_rank_value
                 else 0
             )
+            # Cumulative streams over every chart day we hold data for. Our
+            # history can start after the song's first chart day (worldwide
+            # snapshots only exist since we began collecting them), so
+            # `total_streams_days` < `total_days` means the total is a floor.
+            streams_by_date = summary.pop("_streams_by_date", {})
+            summary["total_streams"] = sum(streams_by_date.values())
+            summary["total_streams_days"] = len(streams_by_date)
         songs.sort(
             key=lambda x: (
                 str(x.get("last_date") or ""),
@@ -416,6 +429,8 @@ def _song_country_row(song: dict[str, Any], region: str) -> dict[str, Any]:
         "longest_streak_active": bool(song.get("longest_streak_active")),
         "current_streak": to_int(song.get("current_streak")) or 0,
         "days_at_peak": to_int(song.get("days_at_peak")) or 0,
+        "total_streams": to_int(song.get("total_streams")) or 0,
+        "total_streams_days": to_int(song.get("total_streams_days")) or 0,
     }
 
 

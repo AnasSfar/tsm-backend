@@ -117,6 +117,15 @@ registry). Pitfall: `page.click("text=Audios")` matches any element whose text
 *contains* the word (a hint like "Music videos + audios") — use
 `get_by_role(..., name=...)`.
 
+### Pitfall: `/api/apple-music` live path skips `load_apple_music`
+
+Since 2026-09-24 the page route reads the history-by-date index + day files,
+not `load_apple_music()` — monkeypatching the loader (as `ts-top-songs-live/preview_api.py`
+does for its own `/ts-top-songs-live` route) has NO effect on the main
+payload. To graft a new field onto it, use the browser route mock below on
+`**/api/apple-music**` (`route.fetch()` the real response, edit, `fulfill`):
+`previews_and_sims/ts-top-songs-charts-column/shoot.py`.
+
 ### Pattern: X account-slot contention (no browser, no post)
 
 `previews_and_sims/twitter-account-slot-spacing/simulate.py` runs several real processes

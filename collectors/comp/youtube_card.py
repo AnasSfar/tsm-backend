@@ -20,7 +20,9 @@ from .song_card import (
     write_song_card_png,
 )
 
-__all__ = ["render_youtube_card", "render_youtube_debut_table", "slugify", "write_song_card_png"]
+__all__ = [
+    "render_youtube_card", "render_youtube_debut_table", "render_youtube_week_chart", "slugify", "write_song_card_png",
+]
 
 YOUTUBE_LOGO_SVG = (
     '<svg class="logo" viewBox="0 0 28 20" xmlns="http://www.w3.org/2000/svg">'
@@ -282,3 +284,111 @@ def render_youtube_debut_table(
         handle_color_override="#d9001b",
         logo_svg=YOUTUBE_HEADER_LOGO_SVG,
     )
+
+
+# ---------------------------------------------------------------------------
+# First-week chart — daily views of one music video over its first 7 x 24h
+# windows from release (collectors/youtube/core/first_week.py, 2026-10-01).
+# Single series: one hue, no legend, every bar labelled (7 bars). 1000 px wide,
+# values >= 28 px so it reads at ~310 px on X mobile (image-gen skill).
+# ---------------------------------------------------------------------------
+
+def _compact_views(n: int) -> str:
+    if n >= 1_000_000:
+        return f"{n / 1_000_000:.2f}M"
+    if n >= 1_000:
+        return f"{n / 1_000:.0f}K"
+    return str(n)
+
+
+def render_youtube_week_chart(
+    *,
+    title: str,
+    subtitle: str,
+    daily: list[int | None],
+    total_text: str,
+    cover_url: str | None,
+    handle: str,
+    release_date_text: str = "",
+) -> str:
+    """daily: views of day 1..7 (None = window missed, shown as n/a, never
+    estimated). total_text: e.g. "14,203,551 views in 7 days"."""
+    cover_uri, cover_bytes = image_data_uri(cover_url)
+    gradient, _accent = cover_palette(cover_bytes)
+    thumb_html = f'<img class="thumb" src="{cover_uri}" />' if cover_uri else '<div class="thumb"></div>'
+    tsm_logo_uri = _tsm_logo_data_uri()
+    logo_html = f'<img class="tsm-logo" src="{tsm_logo_uri}" alt="" />' if tsm_logo_uri else ""
+    known = [v for v in daily if v is not None]
+    peak = max(known) if known else 1
+    plot_h = 380
+    bars: list[str] = []
+    for index, value in enumerate(daily, 1):
+        window = f"{(index - 1) * 24}–{index * 24}h"
+        if value is None:
+            bar = '<div class="val na">n/a</div><div class="bar na" style="height:6px"></div>'
+        else:
+            height = max(6, round(plot_h * value / peak))
+            bar = (
+                f'<div class="val">{html.escape(_compact_views(value))}</div>'
+                f'<div class="bar" style="height:{height}px"></div>'
+            )
+        bars.append(
+            f'<div class="col"><div class="stack">{bar}</div>'
+            f'<div class="day">DAY {index}</div><div class="win">{window}</div></div>'
+        )
+    release_html = (
+        f'<div class="release">Released {html.escape(release_date_text)}</div>' if release_date_text else ""
+    )
+    css = f"""
+*{{margin:0;padding:0;box-sizing:border-box}}
+body{{
+  font-family:Inter,-apple-system,'Helvetica Neue',Arial,sans-serif;
+  width:1000px;background:{gradient};color:#fff;position:relative;
+}}
+body:before{{content:"";position:absolute;inset:0;background:rgba(4,10,16,.62)}}
+.wrap{{position:relative;z-index:1;padding:40px 44px 30px}}
+.top{{display:flex;gap:28px;align-items:flex-start}}
+.head{{flex:1;min-width:0}}
+.brand{{display:flex;align-items:center;gap:12px;margin-bottom:18px}}
+.logo{{width:40px;height:28px}}
+.brand span{{font-size:17px;font-weight:900;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.92)}}
+.badge{{margin-left:6px;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.24);
+  border-radius:999px;padding:7px 13px;font-size:14px!important;letter-spacing:.08em!important}}
+.title{{font-size:52px;font-weight:950;line-height:1.08;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}}
+.sub{{font-size:21px;font-weight:650;color:rgba(255,255,255,.66);margin-top:10px}}
+.thumb{{width:300px;height:169px;border-radius:16px;object-fit:cover;flex-shrink:0;background:#172421;
+  box-shadow:0 14px 34px rgba(0,0,0,.4),0 0 0 1px rgba(255,255,255,.16)}}
+.total{{margin-top:28px;font-size:44px;font-weight:950;white-space:nowrap}}
+.total small{{display:block;font-size:16px;font-weight:900;letter-spacing:.1em;text-transform:uppercase;
+  color:rgba(255,255,255,.58);margin-bottom:8px}}
+.plot{{margin-top:30px;display:flex;gap:14px;border-top:1px solid rgba(255,255,255,.14);padding-top:18px}}
+.col{{flex:1;display:flex;flex-direction:column;align-items:center}}
+.stack{{height:{plot_h + 48}px;width:100%;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;
+  border-bottom:2px solid rgba(255,255,255,.35)}}
+.val{{font-size:29px;font-weight:900;margin-bottom:10px;white-space:nowrap;font-variant-numeric:tabular-nums}}
+.val.na{{color:rgba(255,255,255,.45)}}
+.bar{{width:78%;background:#fff;border-radius:4px 4px 0 0}}
+.bar.na{{background:rgba(255,255,255,.18)}}
+.day{{margin-top:12px;font-size:22px;font-weight:900;letter-spacing:.04em}}
+.win{{font-size:16px;font-weight:650;color:rgba(255,255,255,.55);margin-top:3px}}
+.ftr{{display:flex;justify-content:space-between;align-items:center;margin-top:30px;
+  font-size:18px;font-weight:700;color:rgba(255,255,255,.6)}}
+.ftr-brand{{display:flex;align-items:center;gap:9px}}
+.tsm-logo{{width:26px;height:26px;object-fit:contain}}
+.release{{font-size:18px;font-weight:600}}
+"""
+    return f"""<!doctype html><html><head><meta charset="utf-8"><style>{css}</style></head>
+<body><div class="wrap">
+  <div class="top">
+    <div class="head">
+      <div class="brand">{YOUTUBE_LOGO_SVG}<span>YouTube</span><span class="badge">First week</span></div>
+      <div class="title">{html.escape(title)}</div>
+      <div class="sub">{html.escape(subtitle)}</div>
+    </div>
+    {thumb_html}
+  </div>
+  <div class="total"><small>Total after 7 days</small>{html.escape(total_text)}</div>
+  <div class="plot">{''.join(bars)}</div>
+  <div class="ftr"><span class="ftr-brand">{logo_html}<span>{html.escape(handle)}</span></span>{release_html}</div>
+</div></body></html>"""

@@ -126,6 +126,15 @@ si la taille d'une card change.
   `_video.png`, postés en thread si les deux existent).
   Vérif : `previews_and_sims/youtube-first-day/simulate.py` (cards/).
 
+- **`render_youtube_week_chart()` (2026-10-01)** : graphique « first week »
+  d'un clip (`collector-youtube`, `core/first_week.py`), posté au Day 7. 1000 px
+  de large, hauteur auto (`tables_image.render_html_to_png`), fond = palette de
+  la miniature assombrie, 7 barres blanches (une seule série → une teinte, pas
+  de légende, chaque barre étiquetée en compact `4.50M`/`925K` à 29 px — les
+  chiffres exacts sont dans le tweet), sous-label `DAY N` + fenêtre `0–24h`.
+  Jour manquant = barre fantôme + `n/a` grisé, jamais estimé. Vérif :
+  `previews_and_sims/youtube-first-week/simulate.py`.
+
 ## Top Eras — ère « Non-Album » (generate_albums_image.py)
 
 `generate_albums_image.py` ajoute une ère `Non-Album` (constante

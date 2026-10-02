@@ -100,6 +100,9 @@ def cmd_setup_roles(args) -> int:
     channels = args.channel or list(config["channels"])
     for channel in channels:
         chan = config["channels"][channel]
+        if chan.get("level_roles") is False:
+            print(f"- #{channel} : pas de roles d'importance (level_roles=false), ignore")
+            continue
         chan.setdefault("roles", {})
         for level in config["levels"]:
             name = role_name(config, channel, level)
@@ -565,7 +568,9 @@ def cmd_setup_community(args) -> int:
             "components": [button],
         }, headers)
     if roles_cid:
-        levels_text = "\n".join(f"{level_labels[lv]}: {level_help[lv]}" for lv in config["levels"])
+        levels_text = "\n".join(f"{level_labels[lv]}: {level_help[lv]}" for lv in config["levels"]
+                                if chan.get("roles", {}).get(lv))
+        how_often = f"**Spotify Charts: how often?**\n{levels_text}\n\n" if levels_text else ""
         messages["roles"] = _upsert_bot_message(roles_cid, messages.get("roles"), {
             "allowed_mentions": {"parse": []},
             "embeds": [{
@@ -574,7 +579,7 @@ def cmd_setup_community(args) -> int:
                 "description": (
                     "**By default you get no notifications.** Everything is opt-in: open "
                     "<id:customize> (button below) and pick what you want.\n\n"
-                    f"**Spotify Charts: how often?**\n{levels_text}\n\n"
+                    f"{how_often}"
                     "**Spotify Charts: which charts?**\n" + "\n".join(chart_roles) + "\n\n"
                     "You can change your choices and your profile (age, country, pronouns, gender) "
                     "anytime in <id:customize>."

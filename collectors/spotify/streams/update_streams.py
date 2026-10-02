@@ -1,4 +1,4 @@
-﻿from __future__ import annotations
+from __future__ import annotations
 
 import csv
 import json
@@ -223,11 +223,80 @@ ESTIMATED_MISSING_DAY_REASON = "missing_daily_gap"
 # --admin: accept whatever total Spotify shows as-is, writing the raw diff as
 # daily_streams. Set once in main() from argv.
 ADMIN_OVERRIDE_MODE = False
+# --no-post (hors --test/--local-test) : aucune image de post générée. Set in main().
+SKIP_POST_IMAGES = False
 NEW_RELEASE_RETRY_ATTEMPTS = int(os.getenv("NEW_RELEASE_RETRY_ATTEMPTS", "12"))
 NEW_RELEASE_RETRY_SLEEP_SECONDS = int(os.getenv("NEW_RELEASE_RETRY_SLEEP_SECONDS", "10"))
 
 # â”€â”€ API GraphQL Spotify â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 START_TIME = None
+
+# Un seul update_streams.py qui écrit l'historique à la fois (incident
+# 2026-10-02 : le run 09-30 encore en retry + le run 10-01 du Task Scheduler
+# écrivaient streams_history.csv en parallèle → 468 lignes 10-01 fausses,
+# 94 daily négatifs). Verrou OS : libéré automatiquement si le process meurt.
+RUN_LOCK_PATH = DATA_DIR / "update_streams.run.lock"
+RUN_LOCK_INFO_PATH = DATA_DIR / "update_streams.run.json"
+RUN_LOCK_WAIT_LOG_SECONDS = 600
+_RUN_LOCK_HANDLE = None
+
+
+def _try_lock_file(handle) -> bool:
+    try:
+        if os.name == "nt":
+            import msvcrt
+            handle.seek(0)
+            msvcrt.locking(handle.fileno(), msvcrt.LK_NBLCK, 1)
+        else:
+            import fcntl
+            fcntl.flock(handle.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)
+        return True
+    except OSError:
+        return False
+
+
+def acquire_run_lock(stats_date: str) -> None:
+    """Attend que tout autre run qui écrit l'historique soit terminé.
+
+    On attend au lieu de quitter : le run précédent (souvent la veille encore
+    en retry) doit finir d'écrire ses lignes avant qu'on charge l'historique,
+    sinon on compare à une veille incomplète."""
+    global _RUN_LOCK_HANDLE
+    RUN_LOCK_PATH.parent.mkdir(parents=True, exist_ok=True)
+    handle = open(RUN_LOCK_PATH, "a+b")
+    waited_since = None
+    last_log = 0.0
+    while not _try_lock_file(handle):
+        now = time.monotonic()
+        if waited_since is None:
+            waited_since = now
+            holder = ""
+            try:
+                holder = RUN_LOCK_INFO_PATH.read_text(encoding="utf-8")
+            except OSError:
+                pass
+            print(f"[RUN-LOCK] Another update_streams.py run is writing history ({holder.strip() or 'unknown'}). Waiting...", flush=True)
+            notify(
+                NTFY_TOPIC,
+                f"Run {stats_date} waiting: another streams run is still active ({holder.strip() or 'unknown'}).",
+                title="Taylor Swift - Streams run waiting",
+                tags="hourglass",
+            )
+        elif now - last_log >= RUN_LOCK_WAIT_LOG_SECONDS:
+            print(f"[RUN-LOCK] Still waiting ({int((now - waited_since) // 60)} min)...", flush=True)
+        if now - last_log >= RUN_LOCK_WAIT_LOG_SECONDS:
+            last_log = now
+        time.sleep(15)
+    if waited_since is not None:
+        print(f"[RUN-LOCK] Lock acquired after {int((time.monotonic() - waited_since) // 60)} min.", flush=True)
+    _RUN_LOCK_HANDLE = handle
+    try:
+        RUN_LOCK_INFO_PATH.write_text(
+            json.dumps({"pid": os.getpid(), "stats_date": stats_date, "started_at": time.strftime("%Y-%m-%d %H:%M:%S")}),
+            encoding="utf-8",
+        )
+    except OSError:
+        pass
 
 
 def _daily_lock_path(stats_date: str, lock_name: str) -> Path:
@@ -604,7 +673,8 @@ Usage:
       create snapshots/spotify_streams/YYYY/MM/<date>/skip_best_day_since.flag.
 
   python update_streams.py --no-post
-      Run full pipeline but skip all Twitter posting steps.
+      Run full pipeline but skip all Twitter posting steps and their image generation
+      (early watchers + finalize). --test / --local-test still render images.
 
   python update_streams.py YYYY-MM-DD --throwback --throwback-action released --throwback-event "..."
       Generate/post a throwback thread for that stats date instead of normal daily posts.
@@ -627,7 +697,7 @@ Usage:
 
 Notes:
   - Normal mode writes official updates and can post/export/push.
-    - --no-post keeps processing/export/commit but skips Twitter posts.
+    - --no-post keeps processing/export/commit but skips Twitter posts and post images.
   - --debug-daily writes missing updates into history, but stays local/no posting.
   - --debug-total rewrites an existing date's totals in history.
   - --throwback uses the target stats date and requires --throwback-action announced|released
@@ -729,6 +799,37 @@ class BackgroundFinalWebExport:
             return
         self.wait()
         export_web_data(allow_r2=allow_r2, stats_date=stats_date)
+
+
+# Plafond des notifs « total decreased » par run : au-delà, une seule alerte
+# groupée (incident 2026-10-02 : une notif par track → centaines de notifs,
+# ntfy en 429).
+DECREASE_NOTIFY_MAX_INDIVIDUAL = 3
+_DECREASE_NOTIFY_LOCK = threading.Lock()
+_DECREASE_NOTIFY_COUNT = 0
+
+
+def _notify_total_decrease(track: dict, track_id: str, stats_date: str, last_total: int, total: int) -> None:
+    global _DECREASE_NOTIFY_COUNT
+    with _DECREASE_NOTIFY_LOCK:
+        _DECREASE_NOTIFY_COUNT += 1
+        count = _DECREASE_NOTIFY_COUNT
+    if count <= DECREASE_NOTIFY_MAX_INDIVIDUAL:
+        notify(
+            NTFY_TOPIC,
+            f"{track['title']} ({track_id}) decreased on {stats_date}: {last_total:,} -> {total:,}",
+            title="Taylor Swift - Stream total decreased",
+            tags="warning,chart_increasing",
+        )
+    elif count == DECREASE_NOTIFY_MAX_INDIVIDUAL + 1:
+        notify(
+            NTFY_TOPIC,
+            f"More than {DECREASE_NOTIFY_MAX_INDIVIDUAL} tracks decreased on {stats_date} — "
+            "probably a Spotify snapshot problem, not real drops. Further alerts muted for this run; check the log.",
+            title="Taylor Swift - MANY stream totals decreased",
+            tags="rotating_light,warning",
+            priority="high",
+        )
 
 
 def try_apply_track_update(
@@ -839,6 +940,14 @@ def try_apply_track_update(
             # hasn't caught up to that figure yet, this isn't a real regression.
             reason = "missing_previous_day_total"
             real_update = False
+        elif history_index is not None and history_index.total_seen_before_date(
+            track_id, total, history_index.get_last_total_date(track_id) or stats_date
+        ):
+            # Spotify ressert un ancien snapshot (flap entre deux edges) : le
+            # total retombe pile sur une valeur déjà enregistrée un jour plus
+            # tôt. Ce n'est pas une baisse réelle → pending, on re-essaie.
+            reason = "stale_previous_snapshot"
+            real_update = False
         else:
             # A real Spotify-side total drop is accepted as-is and recorded
             # with a negative daily_streams (shown in red on generated images).
@@ -937,12 +1046,7 @@ def try_apply_track_update(
         status = "updated"
 
         if reason == "lower_than_previous" and not dry_run_mode:
-            notify(
-                NTFY_TOPIC,
-                f"{track['title']} ({track_id}) decreased on {stats_date}: {last_total:,} -> {total:,}",
-                title="Taylor Swift - Stream total decreased",
-                tags="warning,chart_increasing",
-            )
+            _notify_total_decrease(track, track_id, stats_date, last_total, total)
 
         if write_history and not _UPDATE_SIGNAL_SENT.is_set():
             _UPDATE_SIGNAL_SENT.set()
@@ -2468,6 +2572,11 @@ def main():
     global ADMIN_OVERRIDE_MODE
     ADMIN_OVERRIDE_MODE = admin_override_mode
 
+    # --no-post explicite sur un vrai run : pas de post ni d'image (early
+    # watchers + finalize). --test / --local-test gardent la génération des
+    # images pour prévisualiser.
+    global SKIP_POST_IMAGES
+    SKIP_POST_IMAGES = no_post_mode and not test_mode and not local_test_mode
     if test_mode:
         no_post_mode = True
     if local_test_mode:
@@ -2649,6 +2758,12 @@ def main():
             print('--throwback requires --throwback-event "what Taylor Swift announced/released"')
             sys.exit(1)
 
+    writes_history_mode = reset_last_date_mode or bool(reset_date_override) or not any(
+        (dry_run_mode, local_test_mode, test_mode, throwback_mode, post_only_mode)
+    )
+    if writes_history_mode:
+        acquire_run_lock(stats_date_override or get_stats_date_str())
+
     if reset_last_date_mode:
         last_date = get_last_stats_date_in_history()
         if not last_date:
@@ -2730,6 +2845,7 @@ def main():
                 "not_found_this_run": 0,
             },
             no_post_mode=no_post_mode,
+            skip_post_images=SKIP_POST_IMAGES,
             debug_daily_mode=False,
             local_test_mode=False,
             post_spacing_seconds=POST_BETWEEN_STREAMS_POSTS_SECONDS,
@@ -2806,6 +2922,7 @@ def main():
                 "not_found_this_run": 0,
             },
             no_post_mode=no_post_mode,
+            skip_post_images=SKIP_POST_IMAGES,
             debug_daily_mode=False,
             local_test_mode=False,
             post_spacing_seconds=POST_BETWEEN_STREAMS_POSTS_SECONDS,
@@ -2996,6 +3113,7 @@ def main():
                 stats_date=stats_date,
                 summary=summary,
                 no_post_mode=no_post_mode,
+                skip_post_images=SKIP_POST_IMAGES,
                 debug_daily_mode=False,
                 local_test_mode=False,
                 post_spacing_seconds=POST_BETWEEN_STREAMS_POSTS_SECONDS,
@@ -3151,6 +3269,7 @@ def main():
             stats_date=stats_date,
             summary=summary,
             no_post_mode=no_post_mode,
+            skip_post_images=SKIP_POST_IMAGES,
             debug_daily_mode=False,
             local_test_mode=False,
             post_spacing_seconds=POST_BETWEEN_STREAMS_POSTS_SECONDS,
@@ -3461,7 +3580,7 @@ def main():
         load_history_track_ids_for_date=load_history_track_ids_for_date,
         spacing_seconds=POST_BETWEEN_STREAMS_POSTS_SECONDS,
         log_mode=LOG_MODE,
-        enabled="debut" not in SKIP_STEPS,
+        enabled="debut" not in SKIP_STEPS and not SKIP_POST_IMAGES,
         no_post_mode=no_post_mode,
         script_dir=_SCRIPT_DIR,
     )
@@ -3470,7 +3589,9 @@ def main():
     # Encore week (decision 2026-09-25): the Showgirl album card must be the
     # run's first post, so no early best-day-since / era recap posts during
     # collection — they all go out in finalize, after Showgirl.
-    early_best_day_off = BEST_DAY_LAST_MODE or "best-day-since" in SKIP_STEPS or in_encore_week(stats_date)
+    early_best_day_off = (
+        BEST_DAY_LAST_MODE or "best-day-since" in SKIP_STEPS or in_encore_week(stats_date) or SKIP_POST_IMAGES
+    )
 
     era_recap_poster = ReadyEraRecapPoster(
         script_dir=_SCRIPT_DIR,
@@ -4114,6 +4235,7 @@ def main():
         stats_date=stats_date,
         summary=summary,
         no_post_mode=no_post_mode,
+        skip_post_images=SKIP_POST_IMAGES,
         debug_daily_mode=debug_daily_mode,
         local_test_mode=local_test_mode,
         post_spacing_seconds=POST_BETWEEN_STREAMS_POSTS_SECONDS,

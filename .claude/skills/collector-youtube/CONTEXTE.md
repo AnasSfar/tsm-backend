@@ -251,6 +251,44 @@ Colonnes importantes:
 - `YOUTUBE_API_KEY`: requis.
 - `NTFY_TOPIC_YOUTUBE`: topic ntfy, defaut `taylormuseum-youtube`.
 
+## Posts "first week" — vues quotidiennes d'un clip, Day 2..Day 7 (2026-10-01)
+
+Code : `core/first_week.py` (appelé par `update_youtube.py`). Rendu : card du
+jour = `comp/youtube_card.render_youtube_card` (badge `DAY N`, label
+`Day N · 24h – 48h`), Day 7 = `render_youtube_week_chart` (7 barres, 1000 px).
+Simulation isolée : `python previews_and_sims/youtube-first-week/simulate.py`
+(record réel de Patient Zero, Days 2-7 FAUX, scénario B = marque +96h manquée).
+
+Décisions Anas (2026-10-01) :
+- **Périmètre** : uniquement les « Official Music Video » de la chaîne
+  principale (`upload_kind == "Music Video"`) dont le post first-day est parti
+  (release `posted`, membre `included`). Pas de lyric videos, visualizers ni
+  audios Topic. **Seulement la première semaine** : rien après Day 7.
+- **Fenêtres ancrées sur la sortie**, pas sur le jour de collecte NY ni le jour
+  YouTube : Day N = `viewCount(published_at + N×24h) − viewCount(+(N−1)×24h)`.
+  Day 1 = la capture exacte du first-day (déjà postée, pas re-postée).
+- **Un post par vidéo et par jour** (4 clips le même soir = 4 posts/jour) :
+  texte `🎥 | <emoji album> "<Titre>" music video daily views on YouTube:` puis
+  `DAY 1 - X` / `DAY N - X (+y.y%)` (variation vs le jour précédent), + card du
+  jour. Day 7 ajoute `First week: <cumul +168h> views` et remplace la card par
+  le graphique en barres.
+
+Mécanique :
+1. **Inscription** (`sync`, après chaque tick first-day et en fin de run
+   quotidien) : lit `first_day/releases/*.json` → `tools/json/first_week/<id>.json`
+   (`marks` = vues cumulées par marque, `posts` = statut par jour).
+2. **Capture** : tâche one-off `TSM_YouTube_FirstWeek_<id>` (un seul nom,
+   ré-enregistrée pour la marque suivante), lancée `CAPTURE_LEAD` (3 min) avant
+   la marque, attend la seconde exacte (`--first-week-tick <id>`) ; ou une ligne
+   du run quotidien dans `CAPTURE_TOLERANCE` (15 min). Hors fenêtre →
+   `{"missed": true}` : Day N et Day N+1 = `n/a`, jamais estimés.
+3. **Post** juste après la capture. Un jour à chiffre inconnu n'est pas posté ;
+   un post en échec est retenté au passage suivant tant qu'il a < 12 h
+   (`POST_MAX_DELAY`), sinon `skipped` (jamais de rattrapage en rafale). Verrou
+   `first_week/<id>.posting`. Après Day 7 : `status: done`, tâche supprimée.
+
+Premier clip suivi : Patient Zero (`mw3kSNIxjqo`), inscrit le 2026-10-01.
+
 ## Posts "first 24 hours" — une release = un post (refonte 2026-09-27)
 
 Code : `core/first_day.py` (appelé par `update_youtube.py`). Rendu :

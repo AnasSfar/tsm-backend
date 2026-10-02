@@ -478,6 +478,19 @@ que le wrapper pose deja). Ces 31 codes vivent dans
 `backfill_spotify_charts_history.py::DISCONTINUED_REGIONS` (+ cutoff
 `DISCONTINUED_REGION_CUTOFF`), auto-exclus au-dela du cutoff.
 
+**Re-audit 2026-10-02.** `global`/`us`/`uk` : complets (chaque titre a son
+jour 1 dans `charts_history_global.csv`, aucun trou detecte par `streak`).
+Les trous restants sont regionaux (~7 700 lignes manquantes prouvees par le
+`streak` Spotify, surtout 2019-2021 et 2025 ; vn/ph/sg/my/hk/ie/au/tw/ca en
+tete). **Les 31 `DISCONTINUED_REGIONS` ne sont PAS mortes** : ar/es/it/mx/cl/
+th/za/vn... ont des centaines de dates 2020-2026 -> pour un rattrapage complet,
+toujours `--include-discontinued-regions`. Detecteur fiable d'un jour manquant :
+une ligne avec `streak = s` implique que les `s-1` jours precedents existent
+(`streak`/`total_days` = `consecutiveAppearancesOnChart`/`appearancesOnChart`
+bruts Spotify). Sweep complet 2017-01-01 -> J-3 = ~183 000 fetches (~50 h a
+1 req/s). Le probleme "Nth biggest debut" n'est PAS un trou de data mais de
+logique (`movement` RE/vide sur de vrais jours 1, lignes doublons nom/track_id).
+
 ### Workflow recommande pour un gros rattrapage worldwide
 
 **Methode par defaut : `--per-region-sweep`** (une region a la fois, une
@@ -1633,7 +1646,7 @@ pour les charts artistes). Fil configure dans `notifiers/discord/config.json`
 1553414825353289840. `reentry_text` (multi-pays, `--post-song-updates`) reste dans le salon.
 Bot (2026-09-26) : fils us/gb/fr/worldwide/artists crees par `setup-threads`, un role pays par
 fil (`setup-country-roles`), fil desarchive avant post. Double envoi : salon principal = feed
-« Overall » (tous les posts, roles d'importance + role Overall), + copie dans le fil du pays
+« Overall » (tous les posts, role Overall seul — roles d'importance supprimes le 2026-10-02 car doublons), + copie dans le fil du pays
 (role du pays seulement).
 Detail : `notifiers/discord/README.md`.
 **Liens retires sur Discord (proprietaire 2026-09-26)** : `notifiers/discord/sender.py::strip_links`
