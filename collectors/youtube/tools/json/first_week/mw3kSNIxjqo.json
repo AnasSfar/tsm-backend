@@ -1,0 +1,50 @@
+{
+  "video_id": "mw3kSNIxjqo",
+  "title": "Taylor Swift - Patient Zero (Official Music Video)",
+  "song_title": "Patient Zero",
+  "album": "The Life of a Showgirl: The Encore",
+  "published_at": "2026-09-29T22:00:19+00:00",
+  "thumbnail_url": "https://i.ytimg.com/vi/mw3kSNIxjqo/maxresdefault.jpg",
+  "status": "active",
+  "marks": {
+    "1": {
+      "video_id": "mw3kSNIxjqo",
+      "views": 4497126,
+      "captured_at": "2026-09-30T22:00:19+00:00",
+      "due_at": "2026-09-30T22:00:19+00:00",
+      "offset_seconds": 0,
+      "source": "scheduled_task"
+    },
+    "2": {
+      "views": 7778469,
+      "captured_at": "2026-10-01T22:00:19+00:00",
+      "due_at": "2026-10-01T22:00:19+00:00",
+      "offset_seconds": 0,
+      "source": "scheduled_task"
+    },
+    "3": {
+      "views": 9899022,
+      "captured_at": "2026-10-02T22:00:19+00:00",
+      "due_at": "2026-10-02T22:00:19+00:00",
+      "offset_seconds": 0,
+      "source": "scheduled_task"
+    }
+  },
+  "posts": {
+    "1": {
+      "status": "first_day_post"
+    },
+    "2": {
+      "status": "posted",
+      "tweet": "🎥 | ❤️‍🔥 \"Patient Zero\" music video daily views on YouTube:\n\nDAY 1 - 4,497,126\nDAY 2 - 3,281,343 (-27.0%)",
+      "image": "snapshots/youtube/videos/2026/10/2026-10-01/first_week_patient_zero_mw3kSNIxjqo_day2.png",
+      "at": "2026-10-01T22:00:19+00:00"
+    },
+    "3": {
+      "status": "posted",
+      "tweet": "🎥 | ❤️‍🔥 \"Patient Zero\" music video daily views on YouTube:\n\nDAY 1 - 4,497,126\nDAY 2 - 3,281,343 (-27.0%)\nDAY 3 - 2,120,553 (-35.4%)",
+      "image": "snapshots/youtube/videos/2026/10/2026-10-02/first_week_patient_zero_mw3kSNIxjqo_day3.png",
+      "at": "2026-10-02T22:00:19+00:00"
+    }
+  }
+}
