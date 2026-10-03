@@ -778,14 +778,21 @@ def generate(
     out_dir: Path,
     album: tuple[str, set[str]] | None = None,
     show_out: bool = False,
+    expect_scraped_at: str | None = None,
 ) -> Path:
     """show_out: last row "OUT <songs that left since the previous snapshot>"
-    (the new-release posts, 2026-09-27)."""
+    (the new-release posts, 2026-09-27). expect_scraped_at: the snapshot the
+    caller's caption describes; the card is never rendered from another one
+    (2026-10-02: an 18:00 caption went out with a 00:00 card read mid-write)."""
     from collectors.comp.discography import display_title_for_album
     from collectors.comp.tables_image import build_table_html, render_html_to_png
 
     album_name, album_keys = album if album else (None, None)
     rows, scraped_at = get_region_rows(chart_date, region, genre)
+    if expect_scraped_at and scraped_at != expect_scraped_at:
+        raise RuntimeError(
+            f"{region} {genre or ''} card: latest snapshot is {scraped_at}, caption is for {expect_scraped_at}"
+        )
     chart_rows = rows
     rows = _filter_album(rows, album_keys)
     prev_rank_fn, previous_scraped_at = make_prev_rank_resolver(

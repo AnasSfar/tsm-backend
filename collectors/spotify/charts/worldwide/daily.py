@@ -28,6 +28,7 @@ import re
 import subprocess
 import sys
 import threading
+from concurrent.futures import ThreadPoolExecutor
 import time
 import unicodedata
 from datetime import date, datetime, timedelta
@@ -65,7 +66,8 @@ from core.data_paths import (
     spotify_chart_dir,
 )
 from core.git_ops import git_commit_and_push
-from core.twitter import post_thread, post_with_image, split_tweets
+from core.twitter import TWITTER_TEXT_LIMIT, post_thread, post_with_image, split_tweets
+from core.chart_comment import HIGHLIGHT_PREFIX, HIGHLIGHT_PRIORITY, spotify_ts_highlight
 from core.discord_notify import discord_send
 from collectors.twitter.albums import album_emoji as _shared_album_emoji
 from collectors.twitter.text import full_charts_update_line  # noqa: E402
@@ -105,6 +107,15 @@ _BEARER_CACHE_FILES = [
 ]
 SINGLE_SESSION_TOKEN_POOL = os.getenv("SPOTIFY_CHARTS_SINGLE_SESSION", "").strip().lower() in {"1", "true", "yes", "on"}
 _BEARER_TOKEN_TTL   = 50 * 60
+# Multi-date loops (--dates-file): state kept from one date to the next. Without
+# it every date restarted with a fresh pacer (a 1-request-per-date sweep then
+# bursts ~3 req/s and eats a ~2 min Spotify block every ~40 requests), a fresh
+# token pool (back on token 1 while it is still rate-limited) and a fresh
+# Playwright launch per extra session file (2026-10-02).
+_PACER_NEXT_AT = 0.0      # time.monotonic() of the next allowed request
+_TOKEN_POOL_IDX = 0       # token to start the next date with
+_EXTRA_TOKEN_CACHE: dict[str, tuple[str, float]] = {}
+_EXTRA_TOKEN_TTL = 40 * 60
 OUTPUT_PATH     = WEB_EXPORT_DATA_DIR / "charts_worldwide.json"
 HISTORY_ROOT    = ROOT / "snapshots" / "spotify_charts"
 TOTAL_DAYS_PATH = ROOT / "collectors" / "spotify" / "charts" / "worldwide" / "tools" / "json" / "total_days.json"
@@ -784,7 +795,9 @@ class TokenPool:
 
     def __init__(self, tokens: list[str]) -> None:
         self._tokens = tokens
-        self._idx = 0
+        # Start on the token the previous date ended on (not token 1 again,
+        # which may still be rate-limited).
+        self._idx = _TOKEN_POOL_IDX % len(tokens) if tokens else 0
         self._exhausted = 0
 
     @property
@@ -796,6 +809,8 @@ class TokenPool:
         if self._exhausted >= len(self._tokens):
             return False
         self._idx = (self._idx + 1) % len(self._tokens)
+        global _TOKEN_POOL_IDX
+        _TOKEN_POOL_IDX = self._idx
         print(f"  [token ] rotation → token {self._idx + 1}/{len(self._tokens)}", flush=True)
         return True
 
@@ -850,6 +865,23 @@ def _parse_ts_entries(data: dict) -> list[dict]:
             "_track_id_uri": track_id_from_uri,
         })
     return rows
+
+
+# Spotify's own per-chart "highlights" (4 types: ARTIST_WITH_MOST_ENTRIES,
+# HIGHEST_NEW_ENTRY, GREATEST_GAINER, LONGEST_STREAK), official wording, one set
+# per (region, date) in the same response as the entries. Only those about
+# Taylor Swift are kept, in the worldwide snapshot under "ts_highlights" ->
+# read by core/chart_comment.py for the routine chart posts (2026-10-02).
+_TS_HIGHLIGHTS: dict[tuple[str, str], list[dict]] = {}
+
+
+def _parse_ts_highlights(data: dict) -> list[dict]:
+    out: list[dict] = []
+    for h in data.get("highlights") or []:
+        text = str(h.get("text") or "").strip()
+        if text and TS_NAME.lower() in text.lower():
+            out.append({"type": str(h.get("type") or ""), "text": text})
+    return out
 
 
 def _find_first_date(value) -> str | None:
@@ -950,15 +982,18 @@ class RequestPacer:
         self._next_at = 0.0
 
     async def wait(self) -> None:
+        global _PACER_NEXT_AT
         if self._interval <= 0:
             return
         async with self._lock:
-            loop = asyncio.get_running_loop()
-            now = loop.time()
-            if now < self._next_at:
-                await asyncio.sleep(self._next_at - now)
-                now = loop.time()
+            # Shared across dates of the same process (see _PACER_NEXT_AT).
+            next_at = max(self._next_at, _PACER_NEXT_AT)
+            now = time.monotonic()
+            if now < next_at:
+                await asyncio.sleep(next_at - now)
+                now = time.monotonic()
             self._next_at = now + self._interval
+            _PACER_NEXT_AT = self._next_at
 
 
 async def _fetch_region(
@@ -999,6 +1034,7 @@ async def _fetch_region(
                     if resp.status == 200:
                         data = await resp.json(content_type=None)
                         rows = _parse_ts_entries(data)
+                        _TS_HIGHLIGHTS[(chart_date, region)] = _parse_ts_highlights(data)
                         _note_region_ok(region)
                         print(f"  [{region:>6}] {len(rows)} TS entries ({chart_date})")
                         return region, rows
@@ -1018,6 +1054,7 @@ async def _fetch_region(
                                 latest_date = _find_first_date(latest_data)
                                 if latest_date == chart_date:
                                     rows = _parse_ts_entries(latest_data)
+                                    _TS_HIGHLIGHTS[(chart_date, region)] = _parse_ts_highlights(latest_data)
                                     print(f"  [{region:>6}] {len(rows)} TS entries ({chart_date}, via latest)")
                                     return region, rows
                                 is_global = region == "global"
@@ -1214,6 +1251,7 @@ def _run_async_with_token_refresh(
         print(f"[WARN] Bearer token refuse par Spotify ({exc}); refresh et retry date {chart_date}.", flush=True)
         new_token, _all_regions = _get_bearer_token_and_regions(force_refresh=True)
         tokens = [new_token] + tokens[1:]
+        _EXTRA_TOKEN_CACHE.clear()  # an extra token may be the expired one: reload next date
         return tokens, regions, _run_regions_sync(
             chart_date, tokens, regions,
             immediate_reentry_ctx=immediate_reentry_ctx,
@@ -1407,13 +1445,35 @@ def _build_multi_song_region_tweet(chart_date: str, region: str, region_name: st
                 f'"{title}" re-entered at #{row.get("rank")}. '
                 f"The last time it charted in {region_name} was {gap:,} days ago."
             )
+    highlight = _ts_highlight_line(chart_date, region)
+    if highlight:
+        lines.extend(["", highlight])
     if long_absence_lines:
         lines.extend(["", *long_absence_lines[:2]])
     lines.extend([
         "",
         full_charts_update_line(region=region),
     ])
-    return "\n".join(lines)
+    text = "\n".join(lines)
+    if highlight and len(text) > TWITTER_TEXT_LIMIT:  # never block the post for it
+        text = text.replace(f"\n\n{highlight}", "", 1)
+    return text
+
+
+def _ts_highlight_line(chart_date: str, region: str) -> str | None:
+    """Spotify's own highlight about Taylor for this chart (2026-10-02), from
+    this run's fetch, else from the snapshot already on disk."""
+    items = _TS_HIGHLIGHTS.get((chart_date, region))
+    if items:
+        best = min(items, key=lambda h: HIGHLIGHT_PRIORITY.get(str(h.get("type")), 99))
+        text = str(best.get("text") or "").replace("“", '"').replace("”", '"').replace("’", "'").strip()
+        if text:
+            return f"{HIGHLIGHT_PREFIX} {text if text[-1] in '.!?' else text + '.'}"
+        return None
+    try:
+        return spotify_ts_highlight(region, datetime.strptime(chart_date, "%Y-%m-%d").date())
+    except Exception:
+        return None
 
 
 def _generate_multi_song_region_image(chart_date: str, region: str, region_name: str) -> Path | None:
@@ -1589,21 +1649,98 @@ def _post_multi_song_regions(
         if lock_path.exists() and not force:
             print(f"[SKIP] regional post {region} already done for {chart_date}", flush=True)
             continue
-        region_name = regions.get(region, region.upper())
+        region_name = _region_display_name(region, regions)
         tweet = _build_multi_song_region_tweet(chart_date, region, region_name, rows)
         image_path = _generate_multi_song_region_image(chart_date, region, region_name)
         if not image_path:
             print(f"[WARN] Regional Spotify post skipped for {region}: image unavailable", flush=True)
             continue
         print(f"[regional-post] {region}: {tweet}", flush=True)
+        # same key as _post_region_charts_discord: one chart image per region/day on Discord
         discord_send("spotify-charts", [(tweet, image_path)], kind="regional_multi_song",
-                     key=f"regional_multi_song_{chart_date}_{region}", thread=region)
+                     key=_region_chart_discord_key(chart_date, region), thread=region)
         if post_with_image(tweet, image_path, TWITTER_SESSION, skip_if=lambda lp=lock_path: lp.exists() and not force):
             lock_path.parent.mkdir(parents=True, exist_ok=True)
             lock_path.touch()
             print(f"[INFO] Posted regional Spotify update: {region}", flush=True)
         else:
             print(f"[WARN] Regional Spotify post failed: {region}", flush=True)
+
+
+# ── Discord : chart image of EVERY region in its thread (owner 2026-10-02) ──────
+#
+# Discord-only (never X). After the worldwide sync, every region where Taylor
+# charts gets its chart image (generate_chart_image.py --region, same image as
+# the scored X post) in its Discord thread. Global / US / UK are skipped: their
+# own daily.py already posts their chart there. Same Discord key as the scored
+# regional post, so a region picked for X is not sent twice.
+REGION_CHART_DISCORD_SKIP = {"global", "us", "gb", "uk"}
+REGION_CHART_DISCORD_WORKERS = max(1, int(os.getenv("SPOTIFY_REGION_CHART_DISCORD_WORKERS", "4")))
+
+
+# Display names that differ from Spotify's readableName (repo convention:
+# il = "Occupied Palestine", as in generate_card_images / card_theme).
+REGION_DISPLAY_NAMES = {"il": "Occupied Palestine"}
+
+
+def _region_display_name(region: str, regions: dict[str, str]) -> str:
+    return REGION_DISPLAY_NAMES.get(region) or regions.get(region) or region.upper()
+
+
+def _region_chart_discord_key(chart_date: str, region: str) -> str:
+    return f"region_chart_{chart_date}_{region}"
+
+
+def _build_region_chart_discord_text(chart_date: str, region_name: str, rows: list[dict]) -> str:
+    date_fmt = datetime.strptime(chart_date, "%Y-%m-%d").strftime("%A, %B %d, %Y")
+    count = len(rows)
+    lines = [with_prefix(f"Taylor Swift on Spotify {region_name} Charts on {date_fmt} :", SPOTIFY_CHART_PREFIX)]
+    lines.extend(["", f"{count} song{'s' if count != 1 else ''} charting in {region_name}."])
+    return "\n".join(lines)
+
+
+def _post_region_charts_discord(
+    chart_date: str,
+    regions: dict[str, str],
+    by_region: dict[str, list[dict]],
+    manual_lookup: dict[str, str],
+    track_lookup: dict[str, str],
+) -> None:
+    if not _debut_posting_allowed(chart_date):
+        print("[BLOCK] [DEBUT] charts regionaux Discord non publies: phase DEBUT non faite", flush=True)
+        return
+    targets = {
+        region: rows
+        for region, rows in by_region.items()
+        if rows and region not in REGION_CHART_DISCORD_SKIP
+    }
+    if not targets:
+        print("[INFO] Discord region charts: aucune region", flush=True)
+        return
+    for region, rows in targets.items():
+        _write_regional_ts_chart(chart_date, region, rows, manual_lookup, track_lookup)
+
+    def _image(region: str) -> Path | None:
+        path = _multi_song_region_chart_image_path(chart_date, region)
+        chart_json = spotify_chart_dir(region, chart_date) / f"ts_chart_{chart_date}.json"
+        if path.exists() and chart_json.exists() and path.stat().st_mtime >= chart_json.stat().st_mtime:
+            return path  # already rendered from this data (e.g. scored X post)
+        return _generate_multi_song_region_image(chart_date, region, _region_display_name(region, regions))
+
+    # rendering is the slow part (one Playwright run per region): parallel
+    with ThreadPoolExecutor(max_workers=REGION_CHART_DISCORD_WORKERS) as pool:
+        images = dict(zip(targets, pool.map(_image, targets)))
+    sent = 0
+    for region, rows in sorted(targets.items()):
+        image_path = images.get(region)
+        if not image_path:
+            print(f"[WARN] Discord region chart {region}: image indisponible", flush=True)
+            continue
+        text = _build_region_chart_discord_text(chart_date, _region_display_name(region, regions), rows)
+        if discord_send("spotify-charts", [(text, image_path)], kind="region_chart",
+                        key=_region_chart_discord_key(chart_date, region), thread=region):
+            sent += 1
+    print(f"[INFO] Discord region charts: {sent}/{len(targets)} region(s)", flush=True)
 
 
 # ── Immediate re-entry posting (per-country, during collection) ────────────────
@@ -2287,6 +2424,7 @@ def _post_multi_song_regions_from_snapshot(
         all_regions_rows=by_region,
         force=force,
     )
+    _post_region_charts_discord(chart_date, regions, by_region, manual_lookup, track_lookup)
     return 0
 
 
@@ -2481,8 +2619,13 @@ def main() -> int:
         for sf in sorted(SESSION_FILE.parent.glob("spotify_session*.json")):
             if sf == SESSION_FILE:
                 continue
+            cached = _EXTRA_TOKEN_CACHE.get(str(sf))
+            if cached and time.time() - cached[1] < _EXTRA_TOKEN_TTL:
+                tokens.append(cached[0])
+                continue
             t = _get_bearer_from_cookies(sf)
             if t:
+                _EXTRA_TOKEN_CACHE[str(sf)] = (t, time.time())
                 tokens.append(t)
                 print(f"[INFO] Token supplémentaire chargé depuis {sf.name}")
     if args.regions:
@@ -2518,6 +2661,7 @@ def main() -> int:
     already_done: set[str] = set()
     existing_by_track: dict[str, list[dict]] = {}
     existing_skipped_regions: list[str] = []
+    existing_ts_highlights: dict[str, list[dict]] = {}
     if region_filter_active:
         existing_path = _worldwide_history_path(chart_date)
         if not existing_path.exists():
@@ -2531,6 +2675,7 @@ def main() -> int:
             if data.get("date") == chart_date and "by_track" in data:
                 existing_by_track = data["by_track"]
                 existing_skipped_regions = list(data.get("skipped_regions") or [])
+                existing_ts_highlights = dict(data.get("ts_highlights") or {})
                 for entries in data["by_track"].values():
                     for entry in entries:
                         if "country" in entry:
@@ -2927,6 +3072,15 @@ def main() -> int:
     output = {"date": chart_date, "by_track": by_track}
     if effective_skipped:
         output["skipped_regions"] = sorted(effective_skipped)
+    # Taylor highlights: regions fetched this run replace their previous value,
+    # untouched regions keep the one already in the snapshot.
+    ts_highlights = {r: h for r, h in existing_ts_highlights.items() if r not in by_region}
+    for region in by_region:
+        fresh = _TS_HIGHLIGHTS.get((chart_date, region))
+        if fresh:
+            ts_highlights[region] = fresh
+    if ts_highlights:
+        output["ts_highlights"] = dict(sorted(ts_highlights.items()))
 
     per_date_path = _worldwide_history_path(chart_date)
     per_date_path.parent.mkdir(parents=True, exist_ok=True)

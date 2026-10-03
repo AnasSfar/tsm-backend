@@ -2,6 +2,8 @@
 from __future__ import annotations
 
 import json
+import socket
+import time
 import urllib.error
 import urllib.parse
 import urllib.request
@@ -9,10 +11,30 @@ from typing import Iterator
 
 from .config import API_BASE, BATCH_SIZE
 
+# Backoff court : les captures first-week (+N×24h à la seconde) passent aussi
+# par _get. Sans retry, un seul timeout sur les ~60 appels d'un run tuait toute
+# la collecte (run du 2026-10-02 sorti en 0x1, jour 2026-10-01 perdu).
+_RETRY_DELAYS = (2, 5, 10)
+
+
+def _is_transient(exc: Exception) -> bool:
+    if isinstance(exc, urllib.error.HTTPError):
+        return exc.code == 429 or exc.code >= 500  # 4xx (quota, clé) = définitif
+    return isinstance(exc, (urllib.error.URLError, socket.timeout, TimeoutError, ConnectionError))
+
 
 def _get(url: str) -> dict:
-    with urllib.request.urlopen(url, timeout=15) as resp:
-        return json.loads(resp.read().decode("utf-8"))
+    for attempt in range(len(_RETRY_DELAYS) + 1):
+        try:
+            with urllib.request.urlopen(url, timeout=15) as resp:
+                return json.loads(resp.read().decode("utf-8"))
+        except Exception as exc:
+            if attempt >= len(_RETRY_DELAYS) or not _is_transient(exc):
+                raise
+            delay = _RETRY_DELAYS[attempt]
+            print(f"[api] {type(exc).__name__}: {exc} - retry {attempt + 1}/{len(_RETRY_DELAYS)} dans {delay}s")
+            time.sleep(delay)
+    raise AssertionError("unreachable")
 
 
 def fetch_uploads_page(api_key: str, playlist_id: str, page_token: str | None = None) -> dict:

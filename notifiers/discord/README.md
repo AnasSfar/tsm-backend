@@ -90,9 +90,17 @@ Normal/Urgent`, la question « Spotify Charts Notifications? » de « Salons & r
 du pays sur la copie dans son fil (Global, US, UK, France, Worldwide, Artists). Les `kinds`
 restent (niveau journalise). Le systeme de niveaux reste dispo pour les autres salons.
 
+**Plus de copie systematique dans Overall (meme jour)** : `channels.spotify-charts.overall_levels =
+["urgent"]`. Un post dont la region a un fil part SEULEMENT dans ce fil (role du pays) ; seuls les
+posts `urgent` (album debut, new releases, Global escalade en urgent) vont dans le salon principal
+(role Overall) ET dans le fil. Region sans fil (CA, DE...) ou post sans region (reentry_text) ->
+salon principal. `overall_levels` absent = ancien comportement (tout dans le salon principal).
+Succes renvoye a l'appelant = 1re cible (salon principal, ou le fil seul).
+
 ## Branchés
 
-- `spotify-charts` (2026-09-25) : 15 posts, voir `kinds` dans `config.json`.
+- `spotify-charts` (2026-09-25) : 15 posts, voir `kinds` dans `config.json`. + `region_chart`
+  (2026-10-02) : image chart de chaque region dans son fil, Discord seulement (`worldwide/daily.py`).
 - Autres salons : webhooks + nom/logo prêts, collectors pas encore branchés.
   iTunes ne poste pas sur X : il faudra un post Discord dédié.
 
@@ -153,7 +161,7 @@ Son role doit rester AU-DESSUS des roles qu'il gere.
   (actif ou archive du meme nom = reutilise), ecrit `threads`. Idempotent.
 - `python -m notifiers.discord setup-country-roles --channel spotify-charts` : cree un role par fil,
   ecrit `thread_roles`. Idempotent (par nom).
-- **Double envoi (proprietaire 2026-09-26, remplace « role du fil en plus »)** : le salon
+- **Double envoi (proprietaire 2026-09-26 ; REMPLACE le 2026-10-02 par `overall_levels`, voir plus haut), remplace « role du fil en plus »)** : le salon
   principal reste le fil « Overall » et recoit TOUS les posts comme avant, en mentionnant les
   roles d'importance + le role Overall (`overall_role` -> `thread_roles.overall`) ; si la
   region a un fil, le post y est AUSSI publie, en mentionnant seulement le role du pays (pas de
@@ -164,7 +172,17 @@ Son role doit rester AU-DESSUS des roles qu'il gere.
 - Ajouter un pays : une entree dans `thread_specs`, puis relancer les 2 commandes.
 
 Fils spotify-charts : global, us, gb (UK), fr, worldwide (thread des cards / cards multi-pays),
-artists. Les membres choisissent leurs roles de fil dans « Salons & roles » ; le pays choisi a
+artists, + **depuis le 2026-10-02 un fil par region des charts Spotify** (liste de l'API overview
+de `worldwide/daily.py` : 75 regions -> 71 fils pays ; la region `il` = **« 🇵🇸 Occupied Palestine »** (convention du repo, cf.
+`core/card_theme.py`, proprietaire), et le pays de profil Palestine donne ce role). Nom du fil = drapeau + pays (« 🇩🇪 Germany Spotify
+Charts », emoji du role pour Global/Worldwide/Artists) ; `setup-threads` RENOMME un fil enregistre
+dont le nom differe de `thread_specs`. Ces specs portent `group` (Europe / Americas / Asia,
+Oceania & Africa) : `setup-onboarding` cree UNE question « Salons & roles » par groupe
+(`<label> — <group>`, liste deroulante au-dela de 12 choix, 50 max), la question principale
+« which charts? » garde Overall + les fils sans groupe. Le message #roles resume les pays au lieu
+de les lister (limite de taille d'un embed). Le pays de profil donne le role de son fil pour
+tout pays qui en a un (`community.json` -> `thread_roles.map`). Creation des fils :
+Discord rate-limite (~40 fils puis 429 ~4 min) -> relancer `setup-threads`, idempotent. Les membres choisissent leurs roles de fil dans « Salons & roles » ; le pays choisi a
 l'arrivee donne aussi le role de son fil s'il existe (US, UK, France).
 
 ## Onboarding par l'API (2026-09-26)

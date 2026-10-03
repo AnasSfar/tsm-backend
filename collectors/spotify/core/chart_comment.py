@@ -40,6 +40,48 @@ DAY_MILESTONES = {50, 100, 150, 200, 250, 300, 365, 400, 500, 600, 700, 730, 750
 CHART_LABELS = {"global": "Global", "us": "US", "uk": "UK", "fr": "France"}
 
 
+# Spotify's official per-chart highlights about Taylor (captured by
+# worldwide/daily.py into the worldwide snapshot, key "ts_highlights").
+# Decision 2026-10-02: one line added to the routine chart post, Spotify's own
+# wording kept verbatim (only curly quotes straightened), most notable type first.
+HIGHLIGHT_PRIORITY = {
+    "ARTIST_WITH_MOST_ENTRIES": 0,
+    "HIGHEST_NEW_ENTRY": 1,
+    "GREATEST_GAINER": 2,
+    "LONGEST_STREAK": 3,
+}
+HIGHLIGHT_PREFIX = "📌 Spotify Charts:"
+# The whole post must stay under core.twitter.TWITTER_TEXT_LIMIT (500, a longer
+# text is NOT posted): header ~75 chars + blank line + this comment budget.
+COMMENT_CHAR_BUDGET = 400
+_HIGHLIGHT_REGION = {"uk": "gb"}
+
+
+def spotify_ts_highlight(chart_name: str, d: date) -> str | None:
+    """The single most notable Spotify highlight about Taylor for this chart
+    and date, ready to post, or None."""
+    region = _HIGHLIGHT_REGION.get(chart_name, chart_name)
+    path = first_existing(
+        spotify_chart_dir("worldwide", d) / f"ts_worldwide_{d}.json",
+        legacy_spotify_chart_dir("worldwide", d) / f"ts_worldwide_{d}.json",
+    )
+    try:
+        data = json.loads(Path(path).read_text(encoding="utf-8-sig"))
+    except Exception:
+        return None
+    if str(data.get("date") or "") != str(d):
+        return None
+    items = (data.get("ts_highlights") or {}).get(region) or []
+    if not items:
+        return None
+    best = min(items, key=lambda h: HIGHLIGHT_PRIORITY.get(str(h.get("type")), 99))
+    text = str(best.get("text") or "").strip()
+    if not text:
+        return None
+    text = text.replace("“", '"').replace("”", '"').replace("’", "'")
+    return f"{HIGHLIGHT_PREFIX} {_sentence(text)}"
+
+
 def _sentence(text: str) -> str:
     text = str(text or "").strip()
     if not text:
@@ -351,21 +393,28 @@ def build_chart_comment(
     rows = _load_ts_rows(chart_name, d)
     if not rows:
         return None
+    picked: list[str] = []
+    highlight = spotify_ts_highlight(chart_name, d)
+    if highlight and len(highlight) <= COMMENT_CHAR_BUDGET:
+        picked.append(highlight)
+
     ts_history = load_ts_history(ts_history_path)
     history, chart_dates = _load_chart_history(chart_name, d)
     candidates = _candidates(chart_name, d, rows, ts_history, history, chart_dates, jump_threshold)
-    if not candidates:
-        return None
 
     random.shuffle(candidates)  # ties broken at random
     candidates.sort(key=lambda c: c[0], reverse=True)
-    picked: list[str] = []
     seen_tracks: set[str] = set()
+    n_comments = 0
     for _score, track, text in candidates:
         if track in seen_tracks:
             continue
         seen_tracks.add(track)
-        picked.append(_sentence(text))
-        if len(picked) >= MAX_COMMENTS:
+        sentence = _sentence(text)
+        if len("\n\n".join(picked + [sentence])) > COMMENT_CHAR_BUDGET:
+            continue  # never push the post past the X length limit
+        picked.append(sentence)
+        n_comments += 1
+        if n_comments >= MAX_COMMENTS:
             break
-    return "\n\n".join(picked)
+    return "\n\n".join(picked) or None

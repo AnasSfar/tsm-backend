@@ -2,7 +2,7 @@
 
 Projects the current Friday->Thursday tracking week's final total_units
 ranking from whatever days are actual so far, using day-of-week seasonality
-+ trend momentum (see live_projection.py) for the remaining days. This is a
++ damped trend / release decay (see live_projection.py) for the remaining days. This is a
 best-effort daily preview, never a substitute for swift_top_100.py's Thursday
 official run — it writes to entirely separate files (see OUTPUTS below) and
 never touches db/swift_top_100_history.csv, swift_top_100.json, or any other
@@ -107,6 +107,10 @@ LIVE_HISTORY_FIELDNAMES = [
 # module also uses it to slice CSV/history scans, not just the in-memory dict.
 HISTORY_WEEKS_BACK = 8
 
+# See _merge_combined_versions: last official chart's version stays primary
+# while within this ratio of the group's most-streamed version.
+PRIMARY_STICKY_RATIO = 0.9
+
 
 def _current_week_end(as_of: date) -> date:
     """Return the Thursday (weekday 3) ending the Fri->Thu week containing as_of."""
@@ -149,6 +153,7 @@ def _merge_combined_versions(
     daily_actual: dict[str, dict[str, int]],
     tracks: dict,
     combine: bool,
+    preferred_ids: set[str] | frozenset[str] = frozenset(),
 ) -> tuple[dict[str, int], dict[str, dict[str, int]], dict[str, list[str]]]:
     """Group same-song versions under one primary track_id (combined variant only).
 
@@ -156,6 +161,12 @@ def _merge_combined_versions(
     maps primary_track_id -> every post-historical-fold track_id that was
     rolled into it (used afterwards to pull each version's own trailing
     history for the seasonality/momentum projection).
+
+    `preferred_ids` (track ids of the last official chart): when such a
+    version is within PRIMARY_STICKY_RATIO of the group's top version, it
+    stays primary — near-tied versions (Love Story 5xPs.../6Yvq... ~0.5M/day
+    each) otherwise flip primary with every partial day, so the live entry
+    switched track_id vs the official chart (found 2026-10-03).
     """
     if not combine:
         return dict(weekly_actual), {k: dict(v) for k, v in daily_actual.items()}, {
@@ -178,6 +189,14 @@ def _merge_combined_versions(
     group_members: dict[str, list[str]] = {}
     for tids in groups.values():
         tids_sorted = sorted(tids, key=lambda t: weekly_actual.get(t, 0), reverse=True)
+        top_weekly = weekly_actual.get(tids_sorted[0], 0)
+        sticky = [
+            t for t in tids_sorted
+            if t in preferred_ids and weekly_actual.get(t, 0) >= PRIMARY_STICKY_RATIO * top_weekly
+        ]
+        if sticky:
+            tids_sorted.remove(sticky[0])
+            tids_sorted.insert(0, sticky[0])
         primary = tids_sorted[0]
         total = 0
         day_sums: dict[str, int] = {}
@@ -356,6 +375,17 @@ def _build_live_variant(
             weekly_actual[tid] = weekly_actual.get(tid, 0) + v
             daily_actual.setdefault(tid, {})[day] = v
 
+    # Songs streamed the week before also enter with 0 actual days so far —
+    # on Friday/Saturday, before the streams collector has landed any day of
+    # the new week, nothing used to be ranked at all ("0 songs ranked", write
+    # skipped, the site kept showing LAST week's projection — found
+    # 2026-10-03). Their whole week is then projected from history.
+    prior_week_days = [top100._format_date(week_start - timedelta(days=i)) for i in range(1, 8)]
+    for tid, points in daily_by_track.items():
+        if tid not in weekly_actual and sum(points.get(day) or 0 for day in prior_week_days) > 0:
+            weekly_actual[tid] = 0
+            daily_actual[tid] = {}
+
     _merge_historical_ids(weekly_actual=weekly_actual, daily_actual=daily_actual, tracks=tracks)
 
     # Real latest Spotify data date (may be behind as_of) — using `as_of`
@@ -366,7 +396,12 @@ def _build_live_variant(
     # duplicate chart entry (found 2026-09-23).
     spotify_data_as_of = max((d for d in day_list_full if counts_by_date.get(d, 0) > 0), default=None)
     try:
-        merge_check_date = date.fromisoformat(spotify_data_as_of) if spotify_data_as_of else as_of
+        # No day of this week yet -> the latest Spotify day overall (still
+        # has rows to detect merges from), never the empty as_of.
+        merge_check_str = spotify_data_as_of or max(
+            (d for d, n in counts_by_date.items() if n > 0 and d <= top100._format_date(as_of)), default=None
+        )
+        merge_check_date = date.fromisoformat(merge_check_str) if merge_check_str else as_of
         merged_losers = top100._currently_merged_track_ids(chart_date=merge_check_date, tracks=tracks, logger=logger)
     except Exception as exc:
         logger.log(f"  merge_dedup    : skipped — {exc}")
@@ -376,7 +411,8 @@ def _build_live_variant(
         daily_actual.pop(tid, None)
 
     merged_weekly, merged_daily, group_members = _merge_combined_versions(
-        weekly_actual=weekly_actual, daily_actual=daily_actual, tracks=tracks, combine=combine
+        weekly_actual=weekly_actual, daily_actual=daily_actual, tracks=tracks, combine=combine,
+        preferred_ids=set(prev_ranks),
     )
 
     spotify_missing_dates = [
@@ -485,7 +521,7 @@ def _build_live_variant(
     entries = []
     eff_tid_by_primary: dict[str, str] = {}
     for primary, wk_actual in merged_weekly.items():
-        if wk_actual <= 0:
+        if wk_actual <= 0 and not spotify_missing_dates:
             continue
         meta = tracks.get(primary)
         if meta is None:
@@ -536,15 +572,18 @@ def _build_live_variant(
             daily_by_track=daily_by_track, tids=tids_in_group, tracks=tracks, before_date_str=week_start_str
         )
         spotify_projected_by_day = live_projection.project_remaining_days(
-            merged_daily.get(primary, {}), spotify_missing_dates, spotify_history
+            merged_daily.get(primary, {}), spotify_missing_dates, spotify_history,
+            release_curve=live_projection.RELEASE_CURVE,
         )
         spotify_projected_total = round(sum(spotify_projected_by_day.values()))
         wk_final = wk_actual + spotify_projected_total
 
-        def _project_sum(actual_daily_by_key, history_by_key, remaining_dates):
+        def _project_sum(actual_daily_by_key, history_by_key, remaining_dates, release_curve=None):
             actual_daily = actual_daily_by_key.get(key, {})
             history = history_by_key.get(key, {})
-            projected = live_projection.project_remaining_days(actual_daily, remaining_dates, history)
+            projected = live_projection.project_remaining_days(
+                actual_daily, remaining_dates, history, release_curve=release_curve
+            )
             return sum(projected.values())
 
         am_ts_projected_sum = _project_sum(am_ts_daily_actual, am_ts_hist, am_remaining_dates) if eligible else 0.0
@@ -553,8 +592,12 @@ def _build_live_variant(
             _project_sum(am_country_daily_actual, am_country_hist, am_remaining_dates)
             + _project_sum(am_genre_daily_actual, am_genre_hist, am_remaining_dates)
         ) if eligible else 0.0
-        itunes_projected_sum = _project_sum(itunes_daily_actual, itunes_hist, itunes_remaining_dates) if eligible else 0.0
-        yt_projected_sum = _project_sum(youtube_daily_actual, youtube_hist, youtube_remaining_dates)
+        itunes_projected_sum = _project_sum(
+            itunes_daily_actual, itunes_hist, itunes_remaining_dates, live_projection.ITUNES_RELEASE_CURVE
+        ) if eligible else 0.0
+        yt_projected_sum = _project_sum(
+            youtube_daily_actual, youtube_hist, youtube_remaining_dates, live_projection.YOUTUBE_RELEASE_CURVE
+        )
         charts_actual_daily = charts_daily_for_split.get(key, {})
         split_actual_dates = {d for d in day_list_full if charts_split_data_as_of and d <= charts_split_data_as_of}
         spotify_surplus_actual_daily = _spotify_surplus_daily(
@@ -566,7 +609,8 @@ def _build_live_variant(
         )
         spotify_surplus_projected_sum = sum(
             live_projection.project_remaining_days(
-                spotify_surplus_actual_daily, charts_remaining_dates, spotify_surplus_history
+                spotify_surplus_actual_daily, charts_remaining_dates, spotify_surplus_history,
+                release_curve=live_projection.RELEASE_CURVE,
             ).values()
         )
 
@@ -590,6 +634,8 @@ def _build_live_variant(
             weekly_youtube_views=round(yt_final),
             itunes_raw=itunes_raw_final,
         )
+        if wk_final <= 0:
+            continue  # no streams this week nor projected (dead history)
 
         # Sub-unit breakdown for the table's AM TS/Overall and Spotify
         # Charts/Streams columns — same weighted-display formula as the

@@ -12,6 +12,8 @@ API :
   "Urgent" ne recoit que l'urgent). Mentions seulement sur le 1er message.
   Un salon sans `roles` (spotify-charts depuis 2026-10-02) ne pingue que ses
   roles de region (Overall + fil du pays).
+- Fils par region : un post dont la region a un fil part SEULEMENT dans le fil,
+  sauf si son niveau est dans `overall_levels` (alors salon principal + fil).
 - `key` = anti-doublon inter-process (lock atomique sous
   runtime/social/discord/sent/<salon>/). Deja envoye => rien. Echec => lock
   retire pour permettre un retry.
@@ -674,20 +676,24 @@ def send(
                 return True
         already = _sent_positions(channel, key) if key else set()
 
-        # Main channel = the "Overall" feed (owner 2026-09-26): EVERY post, as
-        # before, mentioning the Overall role (+ the importance roles if the
-        # channel still has some: spotify-charts dropped them 2026-10-02, they
-        # double-pinged). When the region has a thread, the post is ALSO
-        # published there, mentioning only that region's role.
+        # Main channel = the "Overall" feed, mentioning the Overall role (+ the
+        # importance roles if the channel still has some). A post whose region
+        # has a thread goes ONLY to that thread (owner 2026-10-02: the copy in
+        # the main channel double-notified), mentioning that region's role,
+        # unless its level is in `overall_levels` (priority posts): then it
+        # goes to the main channel AND the thread. No thread => main channel.
         main_roles = mention_role_ids(config, channel, level)
         overall = str((chan.get("thread_roles") or {}).get("overall") or "").strip()
         if overall and overall not in main_roles:
             main_roles.append(overall)
-        targets: list[tuple[str | None, list[str]]] = [(None, main_roles)]
+        targets: list[tuple[str | None, list[str]]] = []
+        overall_levels = chan.get("overall_levels")
+        if not thread_id or overall_levels is None or level in overall_levels:
+            targets.append((None, main_roles))
         if thread_id:
             targets.append((thread_id, thread_role_ids(config, channel, thread)))
 
-        main_ok = False
+        main_ok = False  # = the FIRST target (main channel, or the thread alone)
         all_ok = True
         for target_thread, role_ids in targets:
             if target_thread:
@@ -732,7 +738,7 @@ def send(
             else:
                 all_ok = False
                 _log(f"#{channel}{where} [{level}] {kind or '-'}: echec d'envoi ({sent_now} envoye(s) avant)")
-            if target_thread is None:
+            if (target_thread, role_ids) == targets[0]:
                 main_ok = target_ok
                 if not main_ok:
                     break
@@ -742,7 +748,8 @@ def send(
             else:
                 # released: a rerun resumes, skipping the messages already logged
                 lock.unlink(missing_ok=True)
-        # Success for the caller = the main feed went out.
+        # Success for the caller = the first target (main feed, or the thread
+        # when the post goes there only) went out.
         return main_ok
     except Exception as exc:
         _log(f"echec (ignore): {exc}")

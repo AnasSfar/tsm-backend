@@ -162,8 +162,15 @@ def cmd_setup_threads(args) -> int:
     for key, spec in specs.items():
         name = spec["name"]
         current = threads.get(key)
-        if current and requests.get(f"{API}/channels/{current}", headers=headers, timeout=20).ok:
-            print(f"= {key}: {name} (deja enregistre: {current})")
+        found = requests.get(f"{API}/channels/{current}", headers=headers, timeout=20) if current else None
+        if found is not None and found.ok:
+            if found.json().get("name") == name:
+                print(f"= {key}: {name} (deja enregistre: {current})")
+                continue
+            # name changed in thread_specs (e.g. flags added 2026-10-02): rename
+            r = requests.patch(f"{API}/channels/{current}", headers=headers, json={"name": name}, timeout=20)
+            print(f"~ {key}: renomme en {name}" if r.ok
+                  else f"! {key}: renommage echec HTTP {r.status_code}: {r.text[:200]}")
             continue
         if name in existing:
             threads[key] = existing[name]
@@ -248,37 +255,52 @@ def cmd_setup_onboarding(args) -> int:
     current.raise_for_status()
     onboarding = current.json()
     prompts = onboarding.get("prompts", [])
-    prompt = next((p for p in prompts if p.get("title") == title), None)
-    old_options = {tuple(o.get("role_ids") or []): o for o in (prompt or {}).get("options", [])}
-    options = []
-    ordered = list(specs.items())
+    # One question per `group` of thread_specs (2026-10-02, a thread per
+    # country): a question holds 12 choices (50 as a dropdown). No group =
+    # the main « which charts? » question, Overall first.
+    grouped: dict[str, list] = {title: []}
     if chan.get("overall_role"):
-        ordered.insert(0, ("overall", {"role": chan["overall_role"], "name": f"#{args.channel} : tous les posts"}))
-    for i, (key, spec) in enumerate(ordered):
-        rid = roles.get(key)
-        if not rid:
+        grouped[title].append(("overall", {"role": chan["overall_role"], "name": f"#{args.channel} : tous les posts"}))
+    for key, spec in specs.items():
+        group_title = f"{chan['label']} — {spec['group']}" if spec.get("group") else title
+        grouped.setdefault(group_title, []).append((key, spec))
+    new_prompts = []
+    offset = 10
+    for n, (group_title, ordered) in enumerate(grouped.items()):
+        prompt = next((p for p in prompts if p.get("title") == group_title), None)
+        old_options = {tuple(o.get("role_ids") or []): o for o in (prompt or {}).get("options", [])}
+        options = []
+        for key, spec in ordered:
+            rid = roles.get(key)
+            if not rid:
+                continue
+            label = spec.get("role", key).split(" - ", 1)[-1]  # "🇺🇸 US"
+            emoji, _, name = label.partition(" ")
+            old = old_options.get((str(rid),))
+            offset += 1
+            options.append({
+                "id": old["id"] if old else _new_snowflake(offset),
+                "title": name or label,
+                "description": spec.get("name", ""),
+                "emoji_name": emoji if name else None,
+                "role_ids": [str(rid)],
+                "channel_ids": [],
+            })
+        if not options:
             continue
-        label = spec.get("role", key).split(" - ", 1)[-1]  # "🇺🇸 US"
-        emoji, _, name = label.partition(" ")
-        old = old_options.get((str(rid),))
-        options.append({
-            "id": old["id"] if old else _new_snowflake(10 + i),
-            "title": name or label,
-            "description": spec.get("name", ""),
-            "emoji_name": emoji if name else None,
-            "role_ids": [str(rid)],
-            "channel_ids": [],
+        if len(options) > DROPDOWN_MAX:
+            print(f"! « {group_title} » : {len(options)} choix, Discord en accepte {DROPDOWN_MAX} au plus")
+        new_prompts.append({
+            "id": prompt["id"] if prompt else _new_snowflake(1 + n),
+            "type": 0 if len(options) <= MULTIPLE_CHOICE_MAX else 1,
+            "title": group_title,
+            "single_select": False,
+            "required": False,
+            "in_onboarding": False,
+            "options": options,
         })
-    new_prompt = {
-        "id": prompt["id"] if prompt else _new_snowflake(1),
-        "type": 0,
-        "title": title,
-        "single_select": False,
-        "required": False,
-        "in_onboarding": False,
-        "options": options,
-    }
-    prompts = [p for p in prompts if p.get("title") != title] + [new_prompt]
+    new_titles = {p["title"] for p in new_prompts}
+    prompts = [p for p in prompts if p.get("title") not in new_titles] + new_prompts
     # Every question of this channel (title starting with its label, e.g.
     # "Spotify Charts Notifications?") stays OUT of the arrival flow: nobody
     # gets a notification by default, they are picked in « Salons & roles »
@@ -304,8 +326,9 @@ def cmd_setup_onboarding(args) -> int:
         if resp.status_code == 403:
             print("-> le bot a besoin de la permission « Gerer le serveur » (MANAGE_GUILD)")
         return 1
-    print(f"Onboarding: question « {title} » avec {len(options)} choix "
-          f"({', '.join(o['title'] for o in options)})")
+    for p in new_prompts:
+        print(f"Onboarding: question « {p['title']} » avec {len(p['options'])} choix "
+              f"({', '.join(o['title'] for o in p['options'])})")
     return 0
 
 
@@ -549,11 +572,21 @@ def cmd_setup_community(args) -> int:
     chan = config["channels"].get("spotify-charts", {})
     hook = webhook_url("spotify-charts")
     main_cid = requests.get(hook, timeout=20).json().get("channel_id") if hook else None
-    chart_roles = [f"⭐ **Overall**: every post in <#{main_cid}>" if main_cid else "⭐ **Overall**: every post"]
+    overall_text = ("priority posts (debuts, new releases) + countries without their own thread"
+                    if chan.get("overall_levels") is not None else "every post")
+    chart_roles = [f"⭐ **Overall**: {overall_text} in <#{main_cid}>" if main_cid else f"⭐ **Overall**: {overall_text}"]
+    country_groups: dict[str, int] = {}
     for key, spec in (chan.get("thread_specs") or {}).items():
+        if spec.get("group"):  # one thread per country: summarized, not listed
+            country_groups[spec["group"]] = country_groups.get(spec["group"], 0) + 1
+            continue
         label = str(spec.get("role", key)).split(" - ", 1)[-1]
         thread_id = (chan.get("threads") or {}).get(key)
         chart_roles.append(f"{label}: pings in <#{thread_id}>" if thread_id else label)
+    if country_groups:
+        chart_roles.append("🌐 **Every other country** has its own thread too ("
+                           + ", ".join(f"{g}: {n}" for g, n in country_groups.items())
+                           + "), pick yours in <id:customize>")
     messages = community.setdefault("message_ids", {})
     if rules_cid:
         messages["rules"] = _upsert_bot_message(rules_cid, messages.get("rules"), {

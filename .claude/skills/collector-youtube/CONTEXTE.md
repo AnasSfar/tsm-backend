@@ -57,6 +57,17 @@ Le `.bat` local :
 collectors/youtube/run_youtube.bat
 ```
 
+Log : `collectors/youtube/run_youtube.log` (append, gitignored, depuis le
+2026-10-03). Avant, la sortie partait dans une console cachée : le run du
+2026-10-02 est sorti en `0x1` après 84 s sans laisser de traceback (rien
+écrit, jour 2026-10-01 perdu — code identique rejoué OK ensuite, donc très
+probablement un timeout/erreur réseau sur un des ~60 appels API). D'où aussi
+le retry de `core/api.py::_get` (3 essais, 2/5/10 s, seulement
+timeouts/réseau/429/5xx ; backoff court car les captures first-week à la
+seconde passent par là). **Jour manqué : ne pas relancer `--date` après coup**
+avec les totaux actuels (faux daily) — laisser le run suivant stocker le
+gain exact sur 2 jours (`period_gain_views`).
+
 ## Options utiles
 
 ```powershell

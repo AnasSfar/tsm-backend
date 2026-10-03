@@ -13,14 +13,18 @@ skips completed dates unless --refetch-done is passed.
 from __future__ import annotations
 
 import argparse
+import atexit
 import concurrent.futures
 import json
 import os
+import re
+import shutil
 import subprocess
 import sys
 import tempfile
 import threading
 import time
+from collections import deque
 from datetime import date, datetime, timedelta
 from pathlib import Path
 
@@ -115,11 +119,399 @@ def _save_state(path: Path, payload: dict) -> None:
     path.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
 
 
-def _run(cmd: list[str], *, dry_run: bool, env: dict[str, str] | None = None) -> int:
+def _snapshot_skipped_regions(chart_date: str) -> set[str]:
+    """Regions daily.py gave up on for this date (max fetch attempts reached on
+    429/timeout). daily.py still exits 0 in that case, so a skipped region must
+    never be counted as done."""
+    try:
+        payload = json.loads(_snapshot_path(chart_date).read_text(encoding="utf-8-sig"))
+    except Exception:
+        return set()
+    if not isinstance(payload, dict):
+        return set()
+    return {str(r).lower() for r in (payload.get("skipped_regions") or [])}
+
+
+# --------------------------------------------------------------------------
+# Live log: every line (ours + daily.py's) is prefixed with the wall-clock time
+# and teed to a log file; daily.py's output is parsed to report how long each
+# date and each 429 pause took, plus a heartbeat when nothing prints.
+# --------------------------------------------------------------------------
+
+def _hms() -> str:
+    return datetime.now().strftime("%H:%M:%S")
+
+
+def _fmt_duration(seconds: float) -> str:
+    seconds = int(round(seconds))
+    if seconds < 60:
+        return f"{seconds}s"
+    if seconds < 3600:
+        return f"{seconds // 60}min{seconds % 60:02d}s"
+    if seconds < 86400:
+        return f"{seconds // 3600}h{(seconds % 3600) // 60:02d}"
+    return f"{seconds // 86400}j{(seconds % 86400) // 3600:02d}h"
+
+
+# Lines that stay visible in the console in live mode (everything else only goes
+# to the log file). Matched on the line without its [HH:MM:SS] prefix.
+_CONSOLE_PREFIXES = (
+    "[LOG]", "[SWEEP]", "[WARN]", "[ERROR]", "[FAIL]", "[PLAN]", "[QUEUE]",
+    "[GAPS]", "[STATE]", "[ OK ]", "[DONE] done=", "Traceback",
+)
+
+
+class _TimestampTee:
+    """sys.stdout replacement. Every line goes, prefixed with [HH:MM:SS], to the
+    log file. Console: everything too (--verbose / not a terminal), or in live
+    mode only the important lines + one animated status line redrawn in place."""
+
+    def __init__(self, stream, log_path: Path | None, *, live: bool = False):
+        self._stream = stream
+        self._lock = threading.Lock()
+        self._at_line_start = True
+        self._partial = ""
+        self._status_len = 0
+        self.live = live
+        self._log = None
+        if log_path is not None:
+            log_path.parent.mkdir(parents=True, exist_ok=True)
+            self._log = log_path.open("a", encoding="utf-8", buffering=1)
+
+    def _console(self, text: str) -> None:
+        try:
+            self._stream.write(text)
+        except UnicodeEncodeError:
+            self._stream.write(text.encode("ascii", "replace").decode("ascii"))
+        self._stream.flush()
+
+    def _clear_status(self) -> None:
+        if self._status_len:
+            self._console("\r" + " " * self._status_len + "\r")
+            self._status_len = 0
+
+    def write(self, text: str) -> int:
+        if not text:
+            return 0
+        with self._lock:
+            out = []
+            for piece in text.splitlines(keepends=True):
+                if self._at_line_start and piece.strip("\r\n"):
+                    out.append(f"[{_hms()}] ")
+                out.append(piece)
+                self._at_line_start = piece.endswith("\n")
+            chunk = "".join(out)
+            if self._log is not None:
+                self._log.write(chunk)
+            if not self.live:
+                self._console(chunk)
+                return len(text)
+            self._partial += chunk
+            *lines, self._partial = self._partial.split("\n")
+            shown = [ln for ln in lines if ln[11:].strip().startswith(_CONSOLE_PREFIXES)]
+            if shown:
+                self._clear_status()
+                self._console("\n".join(shown) + "\n")
+        return len(text)
+
+    def status(self, text: str) -> None:
+        """Redraw the single live status line in place."""
+        if not self.live:
+            return
+        width = max(20, shutil.get_terminal_size((120, 20)).columns - 1)
+        text = text[:width]
+        with self._lock:
+            pad = max(0, self._status_len - len(text))
+            self._console("\r" + text + " " * pad)
+            self._status_len = len(text)
+
+    def end_status(self) -> None:
+        with self._lock:
+            self._clear_status()
+
+    def flush(self) -> None:
+        try:
+            self._stream.flush()
+        except Exception:
+            pass
+
+    def __getattr__(self, name):
+        return getattr(self._stream, name)
+
+
+class _RunStats:
+    """Cumulative timings across the whole wrapper run + what the live status
+    line shows."""
+
+    def __init__(self) -> None:
+        self.lock = threading.Lock()
+        self.dates = 0
+        self.seconds = 0.0
+        self.recent: deque[float] = deque(maxlen=60)
+        self.pause_seconds = 0.0
+        self.pauses = 0
+        self.rotations = 0
+        self.token = ""
+        self.with_data = 0
+        self.timer: _ChildTimer | None = None
+        self.sweep_pos = ""              # "3/67"
+        self.sweep_left_at_region = 0    # sweep date-fetches left when the region started
+        # Called (region_code, date) once daily.py has WRITTEN the snapshot for a
+        # region it fetched (0+ entries or a clean 404) -> per-date checkpoint.
+        self.on_region_fetched = None
+
+    def avg(self) -> float | None:
+        """Rolling s/date over the last 60 dates (the cumulative average is
+        skewed by dates skipped instantly because already fetched)."""
+        with self.lock:
+            if self.recent:
+                return sum(self.recent) / len(self.recent)
+            return self.seconds / self.dates if self.dates else None
+
+
+RUN_STATS = _RunStats()
+HEARTBEAT_SECONDS = 60.0
+
+_RE_DATE = re.compile(r"\[BACKFILL\] worldwide (\d+)/(\d+): (\d{4}-\d{2}-\d{2})")
+_RE_429 = re.compile(r"\[\s*(\w+)\] 429")
+_RE_PAUSE_OK = re.compile(r"sonde OK")
+_RE_SKIP = re.compile(r"\[\s*(\w+)\] SKIP")
+_RE_ROTATION = re.compile(r"rotation .* token (\d+/\d+)")
+_RE_ENTRIES = re.compile(r"\[\s*(\w+)\] (\d+) TS entries")
+_RE_NO_CHART = re.compile(r"\[\s*(\w+)\] 404 date(?:\+latest)? - no chart")
+_RE_WRITTEN = re.compile(r"\[DONE\] Written")
+_SPINNER = "⠋⠙⠹⠸⠼⠴⠦⠧⠇⠏"
+
+
+class _ChildTimer:
+    """Parses one daily.py output stream: [TIMING] lines (log file) + the state
+    shown by the live status line."""
+
+    def __init__(self, label: str):
+        self.label = label
+        self.cur_date: str | None = None
+        self.cur_idx = 0
+        self.total = 0
+        self.date_started = 0.0
+        self.local_dates = 0
+        self.local_seconds = 0.0
+        self.pause_started: float | None = None
+        self.pause_tries = 0
+        self.last_output = time.monotonic()
+        self.fetched_regions: list[str] = []  # fetched for cur_date, snapshot not yet written
+
+    def _close_date(self, now: float) -> None:
+        if self.cur_date is None:
+            return
+        took = now - self.date_started
+        self.local_dates += 1
+        self.local_seconds += took
+        with RUN_STATS.lock:
+            RUN_STATS.dates += 1
+            RUN_STATS.seconds += took
+            RUN_STATS.recent.append(took)
+        avg = self.local_seconds / self.local_dates
+        left = max(0, self.total - self.cur_idx)
+        eta = ""
+        if left:
+            finish = datetime.now() + timedelta(seconds=avg * left)
+            eta = f" | reste {left} -> fin ~{finish.strftime('%H:%M')} ({_fmt_duration(avg * left)})"
+        print(
+            f"[TIMING] {self.label} {self.cur_date} en {took:.1f}s | moy {avg:.1f}s/date | "
+            f"{self.cur_idx}/{self.total}{eta}",
+            flush=True,
+        )
+        self.cur_date = None
+
+    def feed(self, line: str) -> None:
+        now = time.monotonic()
+        self.last_output = now
+        m = _RE_DATE.search(line)
+        if m:
+            self._close_date(now)
+            self.cur_idx, self.total, self.cur_date = int(m.group(1)), int(m.group(2)), m.group(3)
+            self.date_started = now
+            self.fetched_regions = []
+            return
+        if _RE_WRITTEN.search(line):
+            cb = RUN_STATS.on_region_fetched
+            if cb is not None and self.cur_date:
+                for region in self.fetched_regions:
+                    cb(region, self.cur_date)
+            self.fetched_regions = []
+            return
+        m = _RE_NO_CHART.search(line)
+        if m:
+            self.fetched_regions.append(m.group(1).lower())
+            return
+        m = _RE_ROTATION.search(line)
+        if m:
+            with RUN_STATS.lock:
+                RUN_STATS.rotations += 1
+                RUN_STATS.token = m.group(1)
+            return
+        m = _RE_ENTRIES.search(line)
+        if m:
+            self.fetched_regions.append(m.group(1).lower())
+            if int(m.group(2)) > 0:
+                with RUN_STATS.lock:
+                    RUN_STATS.with_data += 1
+            return
+        if _RE_429.search(line):
+            if self.pause_started is None:
+                self.pause_started = now
+                self.pause_tries = 0
+            self.pause_tries += 1
+            return
+        if _RE_PAUSE_OK.search(line) and self.pause_started is not None:
+            waited = now - self.pause_started
+            with RUN_STATS.lock:
+                RUN_STATS.pauses += 1
+                RUN_STATS.pause_seconds += waited
+                total_pause = RUN_STATS.pause_seconds
+            print(
+                f"[TIMING] {self.label} pause 429 terminee : {_fmt_duration(waited)} "
+                f"({self.pause_tries} tentative(s)) | cumul pauses du run : {_fmt_duration(total_pause)}",
+                flush=True,
+            )
+            self.pause_started = None
+            return
+        m = _RE_SKIP.search(line)
+        if m:
+            print(
+                f"[WARN] {self.label} region {m.group(1)} abandonnee pour {self.cur_date} "
+                "-> restera en attente, refetchee au prochain run",
+                flush=True,
+            )
+            self.pause_started = None
+
+    def finish(self) -> None:
+        self._close_date(time.monotonic())
+
+
+def _status_text(frame: int) -> str:
+    spin = _SPINNER[frame % len(_SPINNER)]
+    t = RUN_STATS.timer
+    head = f"{spin} {_hms()}"
+    if t is None or not t.total:
+        return f"{head}  demarrage..."
+    now = time.monotonic()
+    done = max(0, t.cur_idx - 1)
+    pct = done / t.total
+    width = 18
+    fill = int(round(pct * width))
+    bar = "█" * fill + "░" * (width - fill)
+    rate = RUN_STATS.avg() or 0.0
+    region_left = max(0, t.total - done)
+    label = t.label + (f" ({RUN_STATS.sweep_pos})" if RUN_STATS.sweep_pos else "")
+    parts = [f"{bar} {done}/{t.total} {pct * 100:3.0f}%"]
+    if t.pause_started is not None:
+        parts.append(f"⏸ pause 429 {_fmt_duration(now - t.pause_started)} (essai {t.pause_tries})")
+    elif t.cur_date:
+        running = now - t.date_started
+        parts.append(t.cur_date + (f" ({_fmt_duration(running)})" if running >= 5 else ""))
+    if rate:
+        parts.append(f"{rate:.1f}s/date")
+        region_end = datetime.now() + timedelta(seconds=rate * region_left)
+        parts.append(f"region ~{region_end:%H:%M}")
+        if RUN_STATS.sweep_left_at_region:
+            global_left = max(0, RUN_STATS.sweep_left_at_region - done)
+            global_end = datetime.now() + timedelta(seconds=rate * global_left)
+            parts.append(
+                f"total {global_left:,} restants ≈ {_fmt_duration(rate * global_left)} "
+                f"(fin {global_end:%d/%m %H:%M})".replace(",", " ")
+            )
+    extra = f"429×{RUN_STATS.pauses}"
+    if RUN_STATS.token:
+        extra += f" token {RUN_STATS.token}"
+    parts.append(extra)
+    parts.append(f"{RUN_STATS.with_data} dates avec TS")
+    return f"{head}  {label}  " + " · ".join(parts)
+
+
+def _start_status_animation(tee: _TimestampTee) -> threading.Event:
+    stop = threading.Event()
+
+    def _loop() -> None:
+        frame = 0
+        while not stop.wait(0.15):
+            try:
+                tee.status(_status_text(frame))
+            except Exception:
+                pass
+            frame += 1
+        tee.end_status()
+
+    threading.Thread(target=_loop, name="live-status", daemon=True).start()
+    return stop
+
+
+def _run(
+    cmd: list[str],
+    *,
+    dry_run: bool,
+    env: dict[str, str] | None = None,
+    label: str | None = None,
+) -> int:
     print("[RUN] " + " ".join(cmd), flush=True)
     if dry_run:
         return 0
-    return subprocess.run(cmd, cwd=ROOT, env=env).returncode
+    child_env = dict(env if env is not None else os.environ)
+    child_env["PYTHONUNBUFFERED"] = "1"
+    child_env["PYTHONIOENCODING"] = "utf-8"
+    timer = _ChildTimer(label or (Path(cmd[1]).stem if len(cmd) > 1 else "run"))
+    RUN_STATS.timer = timer
+    started = time.monotonic()
+    proc = subprocess.Popen(
+        cmd,
+        cwd=ROOT,
+        env=child_env,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.STDOUT,
+        text=True,
+        encoding="utf-8",
+        errors="replace",
+        bufsize=1,
+    )
+    stop = threading.Event()
+
+    def _heartbeat() -> None:
+        while not stop.wait(HEARTBEAT_SECONDS / 2):
+            silent = time.monotonic() - timer.last_output
+            if silent < HEARTBEAT_SECONDS:
+                continue
+            where = (
+                f"date {timer.cur_date} en cours depuis {_fmt_duration(time.monotonic() - timer.date_started)}"
+                if timer.cur_date else "demarrage / sync"
+            )
+            pausing = (
+                f", en pause 429 depuis {_fmt_duration(time.monotonic() - timer.pause_started)}"
+                if timer.pause_started is not None else ""
+            )
+            print(
+                f"[HEARTBEAT] {timer.label} : aucune sortie depuis {_fmt_duration(silent)} "
+                f"({where}{pausing}) | process lance depuis {_fmt_duration(time.monotonic() - started)}",
+                flush=True,
+            )
+            timer.last_output = time.monotonic()  # one heartbeat per silent period
+
+    hb = threading.Thread(target=_heartbeat, name="heartbeat", daemon=True)
+    hb.start()
+    try:
+        assert proc.stdout is not None
+        for raw in proc.stdout:
+            line = raw.rstrip("\r\n")
+            print(line, flush=True)
+            timer.feed(line)
+        rc = proc.wait()
+    finally:
+        stop.set()
+    timer.finish()
+    print(
+        f"[TIMING] {timer.label} process termine (rc={rc}) en {_fmt_duration(time.monotonic() - started)}",
+        flush=True,
+    )
+    return rc
 
 
 def _mark_existing_snapshots(state: dict, dates: list[str]) -> int:
@@ -157,6 +549,76 @@ def _csv_dates_present(region: str) -> set[str]:
             if len(cell) == 10 and cell[4] == "-" and cell[7] == "-":
                 out.add(cell)
     return out
+
+
+def _proven_gap_dates(region: str) -> tuple[set[str], set[str]]:
+    """Dates where Spotify's own counters PROVE Taylor charted in this region but
+    db/charts_history_<region>.csv has no row for that song. Two signals (both raw
+    Spotify fields: streak = consecutiveAppearancesOnChart, total_days =
+    appearancesOnChart):
+
+    - exact: a row with streak s on date D means the song charted every day
+      D-(s-1) .. D-1 -> each of those days missing for that song is proven.
+    - bounded: two consecutive rows of the same song on D1 < D2 whose total_days
+      jumps by more than 1 (e.g. 800 -> 805) mean the missing appearances sit
+      strictly between D1 and D2 -> those in-between dates are candidates.
+
+    Returns (exact, bounded). Fetching a candidate that turns out empty is
+    harmless (the full sweep would fetch it anyway); this only sets priority."""
+    import csv
+
+    path = ROOT / "db" / f"charts_history_{region}.csv"
+    if not path.exists():
+        return set(), set()
+    rows_by_track: dict[str, list[tuple[str, int | None, int | None]]] = {}
+    present_by_track: dict[str, set[str]] = {}
+    with path.open(encoding="utf-8-sig", newline="") as f:
+        for row in csv.DictReader(f):
+            day = (row.get("date") or "").strip()
+            key = (row.get("track_id") or "").strip() or (row.get("song_name") or "").strip().lower()
+            if len(day) != 10 or not key:
+                continue
+
+            def _int(v: str | None) -> int | None:
+                try:
+                    return int(float(v)) if v not in (None, "") else None
+                except ValueError:
+                    return None
+
+            rows_by_track.setdefault(key, []).append((day, _int(row.get("total_days")), _int(row.get("streak"))))
+            present_by_track.setdefault(key, set()).add(day)
+
+    exact: set[str] = set()
+    bounded: set[str] = set()
+    for key, rows in rows_by_track.items():
+        present = present_by_track[key]
+        rows.sort(key=lambda r: (r[0], r[1] or 0))
+        prev: tuple[str, int | None] | None = None
+        for day, total, streak in rows:
+            d = _parse_date(day)
+            if streak and streak > 1:
+                for k in range(1, min(streak, 4000)):
+                    back = (d - timedelta(days=k)).isoformat()
+                    if back not in present:
+                        exact.add(back)
+            if prev is not None and total is not None and prev[1] is not None:
+                p_day, p_total = prev
+                missing = total - p_total - 1
+                if missing > 0 and p_day != day:
+                    window = []
+                    cur = _parse_date(p_day) + timedelta(days=1)
+                    while cur < d:
+                        if cur.isoformat() not in present:
+                            window.append(cur.isoformat())
+                        cur += timedelta(days=1)
+                    # Only dense windows: the missing appearances cover at least
+                    # half of the absent days. A 300 -> 900 jump across a multi-year
+                    # hole would otherwise flag the whole hole (left to the sweep).
+                    if window and missing * 2 >= len(window):
+                        bounded.update(window)
+            if prev is None or prev[0] != day:
+                prev = (day, total)
+    return exact, bounded - exact
 
 
 def _snapshot_has_region(chart_date: str, region_code: str) -> bool:
@@ -270,13 +732,18 @@ def _run_chunk(
     rate_limit_max: int,
     regions: list[str] | None = None,
     exclude_regions: list[str] | None = None,
+    label: str | None = None,
+    single_session: bool = True,
 ) -> tuple[list[str], int, float, str]:
     """Fetch a whole batch of dates in a single subprocess (one process per worker,
     not one per date), so Python/import/Playwright/bearer-token/region-discovery
     startup cost is paid once per worker instead of once per date."""
     env = os.environ.copy()
     env["SPOTIFY_CHARTS_SESSION_FILE"] = str(session_file)
-    env["SPOTIFY_CHARTS_SINGLE_SESSION"] = "1"
+    # Parallel workers each own one session file. The sequential per-region sweep
+    # instead pools EVERY spotify_session*.json token in its single process: on a
+    # 429 daily.py rotates to the next account instead of pausing ~2 min.
+    env["SPOTIFY_CHARTS_SINGLE_SESSION"] = "1" if single_session else "0"
     env["SPOTIFY_CHARTS_BEARER_CACHE_FILE"] = str(session_file.with_name(f"bearer_cache_{session_file.stem}.json"))
     env["SPOTIFY_SKIP_LATEST_FALLBACK_ON_404"] = "1"
     env["SPOTIFY_WORLDWIDE_SEMAPHORE"] = str(per_worker_semaphore)
@@ -316,7 +783,7 @@ def _run_chunk(
         if exclude_regions:
             cmd += ["--exclude-regions", *exclude_regions]
         started = time.perf_counter()
-        rc = _run(cmd, dry_run=dry_run, env=env)
+        rc = _run(cmd, dry_run=dry_run, env=env, label=label or ",".join(regions or []) or session_file.stem)
         elapsed = time.perf_counter() - started
     finally:
         try:
@@ -397,6 +864,25 @@ def _run_per_region_sweep(args, sessions, all_dates, state, state_path) -> int:
     }
     if args.refetch_done:
         region_done = {}
+    # A (region, date) daily.py gave up on (max fetch attempts on 429/timeout ->
+    # listed in the snapshot's skipped_regions, yet rc 0) is NOT done: purge it so
+    # this run refetches it (fix 2026-10-02 — such dates were silently lost).
+    skipped_cache: dict[str, set[str]] = {}
+
+    def _skipped(chart_date: str) -> set[str]:
+        if chart_date not in skipped_cache:
+            skipped_cache[chart_date] = _snapshot_skipped_regions(chart_date)
+        return skipped_cache[chart_date]
+
+    purged = 0
+    for code, done_dates in region_done.items():
+        chart_code = _CSV_TO_CHART_CODE.get(code, code)
+        bad = {d for d in done_dates & set(gap_by_code.get(code, [])) if chart_code in _skipped(d)}
+        if bad:
+            done_dates -= bad
+            purged += len(bad)
+    if purged:
+        print(f"[SWEEP] {purged} (region, date) previously marked done were skipped by daily.py -> pending again")
     session_file = sessions[0]
 
     def _remaining(code: str) -> list[str]:
@@ -406,22 +892,154 @@ def _run_per_region_sweep(args, sessions, all_dates, state, state_path) -> int:
     todo = [c for c in codes if _remaining(c)]
     print(
         f"[SWEEP] {len(todo)}/{len(codes)} region(s) to do "
-        f"(range {all_dates[0]} -> {all_dates[-1]}, session {session_file.name}); "
+        f"(range {all_dates[0]} -> {all_dates[-1]}, sessions {', '.join(p.name for p in sessions)}); "
         f"total gap date-fetches = {sum(len(_remaining(c)) for c in todo)}"
     )
     touched_dates: set[str] = set()
     incomplete: dict[str, int] = {}
-    consecutive_dead = 0
 
+    # Per-date checkpoint (2026-10-02): before, region_done was only saved when a
+    # whole region finished, so a Ctrl+C mid-region re-fetched every 0-entry date
+    # of that region (they leave no trace on disk). Now each (region, date) is
+    # marked done as soon as daily.py has written its snapshot, saved every 30 s
+    # and on Ctrl+C.
+    ckpt_lock = threading.Lock()
+    ckpt_dirty = threading.Event()
+    current: dict[str, str | None] = {"code": None, "chart": None}
+
+    def _on_region_fetched(region: str, chart_date: str) -> None:
+        if args.dry_run or region != current["chart"]:
+            return
+        with ckpt_lock:
+            region_done.setdefault(current["code"], set()).add(chart_date)
+        ckpt_dirty.set()
+
+    def _checkpoint() -> None:
+        if args.dry_run:
+            return
+        with ckpt_lock:
+            state["swept_regions"] = sorted(c for c in codes if not _remaining(c))
+            state["region_done"] = {k: sorted(v) for k, v in region_done.items() if v}
+            _save_state(state_path, state)
+        ckpt_dirty.clear()
+
+    stop_ckpt = threading.Event()
+
+    def _ckpt_loop() -> None:
+        while not stop_ckpt.wait(30):
+            if ckpt_dirty.is_set():
+                try:
+                    _checkpoint()
+                except Exception as exc:
+                    print(f"[WARN] checkpoint failed: {exc!r}", flush=True)
+
+    RUN_STATS.on_region_fetched = _on_region_fetched
+    threading.Thread(target=_ckpt_loop, name="sweep-checkpoint", daemon=True).start()
+    try:
+        rc = 0
+        if args.proven_gaps_first:
+            # Phase 1 (2026-10-02): only the (region, date) pairs Spotify's own
+            # counters prove (streak) or tightly bound (total_days jump) to hold
+            # Taylor rows we don't have -> most of the recoverable data in hours.
+            # Phase 2 then sweeps every other gap date; phase-1 dates are already
+            # in region_done so nothing is fetched twice.
+            proven: dict[str, set[str]] = {}
+            n_exact = n_bounded = 0
+            for c in todo:
+                exact, bounded = _proven_gap_dates(c)
+                rem = set(_remaining(c))
+                exact &= rem
+                bounded &= rem
+                n_exact += len(exact)
+                n_bounded += len(bounded)
+                if exact or bounded:
+                    proven[c] = exact | bounded
+
+            def _remaining_proven(code: str) -> list[str]:
+                return [d for d in _remaining(code) if d in proven.get(code, ())]
+
+            todo1 = sorted(proven, key=lambda c: -len(proven[c]))
+            print(
+                f"[SWEEP] PHASE 1 trous prouves : {n_exact + n_bounded} date-fetches "
+                f"({n_exact} exactes via streak, {n_bounded} encadrees via total_days) "
+                f"sur {len(todo1)} region(s)",
+                flush=True,
+            )
+            rc = _sweep_regions(
+                args, todo1, _remaining_proven, region_done, current, touched_dates,
+                incomplete, _checkpoint, ckpt_lock, session_file, sessions, phase="P1 ",
+            )
+            if rc == 0:
+                incomplete.clear()
+                todo = [c for c in todo if _remaining(c)]
+                print(
+                    f"\n[SWEEP] PHASE 2 sweep complet : {sum(len(_remaining(c)) for c in todo)} "
+                    f"date-fetches sur {len(todo)} region(s)",
+                    flush=True,
+                )
+        if rc == 0:
+            rc = _sweep_regions(
+                args, todo, _remaining, region_done, current, touched_dates,
+                incomplete, _checkpoint, ckpt_lock, session_file, sessions,
+                phase="P2 " if args.proven_gaps_first else "",
+            )
+    except KeyboardInterrupt:
+        stop_ckpt.set()
+        _checkpoint()
+        print(
+            "\n[SWEEP] Ctrl+C - progression sauvegardee (chaque date deja ecrite est "
+            "marquee faite). Relancer la meme commande reprend ici.",
+            flush=True,
+        )
+        return 130
+    finally:
+        stop_ckpt.set()
+        RUN_STATS.on_region_fetched = None
+    if rc != 0:
+        return rc
+
+    rc = _run_sync_pass(args, touched_dates, all_dates)
+    if rc != 0:
+        return rc
+
+    print(
+        f"\n[SWEEP] done - {len(todo)} region(s) run, {len(touched_dates)} distinct date(s) with data"
+        + (f"; incomplete (re-run to finish): {incomplete}" if incomplete else "")
+    )
+    return 0 if not incomplete else 1
+
+
+def _sweep_regions(
+    args, todo, _remaining, region_done, current, touched_dates,
+    incomplete, _checkpoint, ckpt_lock, session_file, sessions, phase: str = "",
+) -> int:
+    consecutive_dead = 0
+    sweep_started = time.monotonic()
     for i, code in enumerate(todo, 1):
         chart_code = _CSV_TO_CHART_CODE.get(code, code)
+        current["code"], current["chart"] = code, chart_code
         dates = sorted(_remaining(code), reverse=True)
+        if not dates:
+            continue
         print(
-            f"\n[SWEEP] {i}/{len(todo)} {code}"
+            f"\n[SWEEP] {phase}{i}/{len(todo)} {code}"
             + (f" (chart '{chart_code}')" if chart_code != code else "")
             + f": {len(dates)} date(s) to fetch {dates[-1]} -> {dates[0]}",
             flush=True,
         )
+        left_total = sum(len(_remaining(c)) for c in todo[i - 1:])
+        RUN_STATS.sweep_pos = f"{phase}{i}/{len(todo)}"
+        RUN_STATS.sweep_left_at_region = left_total
+        avg = RUN_STATS.avg()
+        if avg:
+            finish = datetime.now() + timedelta(seconds=avg * left_total)
+            print(
+                f"[SWEEP] ETA globale : {left_total} date-fetches restantes x {avg:.1f}s "
+                f"= {_fmt_duration(avg * left_total)} -> fin ~{finish.strftime('%d/%m %H:%M')} "
+                f"| sweep lance depuis {_fmt_duration(time.monotonic() - sweep_started)}, "
+                f"pauses 429 : {RUN_STATS.pauses} ({_fmt_duration(RUN_STATS.pause_seconds)})",
+                flush=True,
+            )
         # force=False: lets daily.py's per-region already_done skip work, so a
         # resumed / re-run region only re-probes the dates it hasn't got yet.
         _, rc, elapsed, _ = _run_chunk(
@@ -435,6 +1053,8 @@ def _run_per_region_sweep(args, sessions, all_dates, state, state_path) -> int:
             rate_limit_max=int(args.rate_limit_max),
             regions=[chart_code],
             exclude_regions=None,
+            label=code,
+            single_session=len(sessions) <= 1,
         )
         got = [d for d in dates if args.dry_run or _snapshot_has_region(d, chart_code)]
         touched_dates.update(got)
@@ -443,20 +1063,28 @@ def _run_per_region_sweep(args, sessions, all_dates, state, state_path) -> int:
         # -> only the dates that now carry data are known-done; the rest stay
         # pending so the next run retries just those.
         newly_done = set(dates) if (rc == 0 or args.dry_run) else set(got)
-        region_done[code] = region_done.get(code, set()) | newly_done
+        skipped_now = {d for d in newly_done if chart_code in _snapshot_skipped_regions(d)}
+        if skipped_now and not args.dry_run:
+            newly_done -= skipped_now
+            print(
+                f"[SWEEP] {code}: {len(skipped_now)} date(s) abandoned by daily.py "
+                f"(max attempts) stay pending: {', '.join(sorted(skipped_now)[:10])}"
+                + (" ..." if len(skipped_now) > 10 else ""),
+                flush=True,
+            )
+        with ckpt_lock:
+            region_done[code] = region_done.get(code, set()) | newly_done
+            region_done[code] -= skipped_now if not args.dry_run else set()
         fully = not _remaining(code)
         if not fully:
             incomplete[code] = len(_remaining(code))
         print(
-            f"[SWEEP] {i}/{len(todo)} {code}: {len(got)}/{len(dates)} date(s) got "
+            f"[SWEEP] {phase}{i}/{len(todo)} {code}: {len(got)}/{len(dates)} date(s) got "
             f"'{chart_code}' data, {len(newly_done)} processed, {elapsed:.0f}s"
             + ("" if fully else f" — {incomplete[code]} still pending (rc={rc}), re-run to finish"),
             flush=True,
         )
-        state["swept_regions"] = sorted(c for c in codes if not _remaining(c))
-        state["region_done"] = {k: sorted(v) for k, v in region_done.items() if v}
-        if not args.dry_run:
-            _save_state(state_path, state)
+        _checkpoint()
 
         # A region run that finished non-zero AND collected nothing usually means
         # the network / WARP dropped (not that the chart is empty). Two in a row
@@ -472,16 +1100,7 @@ def _run_per_region_sweep(args, sessions, all_dates, state, state_path) -> int:
                 return 1
         else:
             consecutive_dead = 0
-
-    rc = _run_sync_pass(args, touched_dates, all_dates)
-    if rc != 0:
-        return rc
-
-    print(
-        f"\n[SWEEP] done - {len(todo)} region(s) run, {len(touched_dates)} distinct date(s) with data"
-        + (f"; incomplete (re-run to finish): {incomplete}" if incomplete else "")
-    )
-    return 0 if not incomplete else 1
+    return 0
 
 
 def main() -> int:
@@ -616,6 +1235,16 @@ def main() -> int:
             "uk is fetched as the 'gb' chart. Ignores --workers."
         ),
     )
+    parser.add_argument(
+        "--proven-gaps-first",
+        action="store_true",
+        help=(
+            "With --per-region-sweep: first fetch only the (region, date) pairs where Spotify's "
+            "own counters prove a missing Taylor row (streak = consecutive days -> exact dates; "
+            "total_days jump between two rows of a song -> dense bounded window), biggest region "
+            "first; then the normal full sweep for every other gap date."
+        ),
+    )
     parser.add_argument("--no-sync", action="store_true", help="Do not sync charts_history CSVs after collection")
     parser.add_argument(
         "--upload-r2",
@@ -627,7 +1256,57 @@ def main() -> int:
             "off by default, opt in explicitly."
         ),
     )
+    parser.add_argument(
+        "--log-file",
+        default=None,
+        help=(
+            "Live log file (every line timestamped, daily.py output included). Default: "
+            "runtime/logs/spotify_charts_backfill_<YYYYmmdd_HHMMSS>.log. 'none' disables it."
+        ),
+    )
+    parser.add_argument(
+        "--heartbeat",
+        type=float,
+        default=60.0,
+        help="Print a [HEARTBEAT] line when daily.py has been silent this many seconds (default 60).",
+    )
+    parser.add_argument(
+        "--verbose",
+        action="store_true",
+        help=(
+            "Console shows every daily.py line (old behaviour). Default in a terminal: one "
+            "animated status line + important lines only; the full detail is always in --log-file."
+        ),
+    )
     args = parser.parse_args()
+
+    global HEARTBEAT_SECONDS
+    HEARTBEAT_SECONDS = max(10.0, float(args.heartbeat))
+    if args.log_file and args.log_file.lower() == "none":
+        log_path = None
+    elif args.log_file:
+        log_path = Path(args.log_file)
+    else:
+        log_path = ROOT / "runtime" / "logs" / f"spotify_charts_backfill_{datetime.now():%Y%m%d_%H%M%S}.log"
+    try:
+        sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+    except Exception:
+        pass
+    live = not args.verbose and not args.dry_run and sys.stdout.isatty()
+    tee = _TimestampTee(sys.stdout, log_path, live=live)
+    sys.stdout = tee
+    if live:
+        stop_anim = _start_status_animation(tee)
+
+        def _stop_anim() -> None:
+            stop_anim.set()
+            tee.end_status()
+
+        atexit.register(_stop_anim)
+    print(f"[LOG] {' '.join(sys.argv)}")
+    if log_path is not None:
+        print(f"[LOG] live log -> {log_path}  (suivre : Get-Content -Wait -Tail 50 \"{log_path}\")")
+
     if args.upload_r2 and args.no_sync:
         print("[WARN] --upload-r2 ignored because --no-sync is set (snapshots were not enriched this run)")
         args.upload_r2 = False

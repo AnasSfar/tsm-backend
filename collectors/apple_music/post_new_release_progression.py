@@ -1929,7 +1929,7 @@ def _post_global_snapshot(args, today: str, state: dict, platform: str, writes: 
     print(f"[new_release_progression] TWEET ({len(tweet)} chars):\n{tweet}")
     if args.dry_run:
         return
-    rendered = snap.generate(today, "global", None, OUT_DIR, show_out=True)
+    rendered = snap.generate(today, "global", None, OUT_DIR, show_out=True, expect_scraped_at=scraped_at)
     image_path = rendered.replace(OUT_DIR / f"{_safe_slug('global_snapshot', scraped_at)}.png")
     if args.no_post:
         print(f"[new_release_progression] --no-post: card {image_path}")
@@ -2383,7 +2383,8 @@ def _post_pop_snapshot(country: str, args, today: str, state: dict, active_track
     print(f"[new_release_progression] TWEET ({len(tweet)} chars):\n{tweet}")
     if args.dry_run:
         return
-    rendered = snap.generate(today, country, genre, OUT_DIR, album=album_filter, show_out=True)
+    rendered = snap.generate(today, country, genre, OUT_DIR, album=album_filter, show_out=True,
+                             expect_scraped_at=scraped_at)
     image_path = rendered.replace(OUT_DIR / f"{_safe_slug(f'{kind}_snapshot', country, scraped_at)}.png")
     if args.no_post:
         print(f"[new_release_progression] --no-post: card {image_path}")
@@ -2472,10 +2473,11 @@ def _post_global_thread(args, today: str, state: dict, active_tracks: list[dict]
     if args.dry_run:
         return
     images = []
-    rendered = snap.generate(today, "global", None, OUT_DIR, show_out=True)
+    rendered = snap.generate(today, "global", None, OUT_DIR, show_out=True, expect_scraped_at=scraped_at)
     images.append(rendered.replace(OUT_DIR / f"{_safe_slug('global_snapshot', scraped_at)}.png"))
     for p in album_posts:
-        rendered = snap.generate(today, "global", None, OUT_DIR, album=(p["album"], p["album_keys"]), show_out=True)
+        rendered = snap.generate(today, "global", None, OUT_DIR, album=(p["album"], p["album_keys"]), show_out=True,
+                                 expect_scraped_at=p["scraped_at"])
         images.append(rendered.replace(OUT_DIR / f"{_safe_slug('album_snapshot', p['album'], p['scraped_at'])}.png"))
     if args.no_post or not writes:
         print(f"[new_release_progression] --no-post: cards {', '.join(str(i) for i in images)}")
@@ -2517,6 +2519,7 @@ def _post_album_snapshot(album: str, args, today: str, state: dict, active_track
 
     rendered = snap.generate(
         today, "global", None, OUT_DIR, album=(pending["album"], pending["album_keys"]), show_out=True,
+        expect_scraped_at=pending["scraped_at"],
     )
     # one PNG per cycle, like the per-track cards (generate() names by album only)
     image_path = rendered.replace(OUT_DIR / f"{_safe_slug('album_snapshot', pending['album'], pending['scraped_at'])}.png")

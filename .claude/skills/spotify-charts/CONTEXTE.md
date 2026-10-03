@@ -449,8 +449,10 @@ existe mais **Taylor souvent hors top 200** (2020-03-21 : 0 de Taylor), et les
 regionaux "live" n'existaient pas encore -> enormement de 404 legitimes. A
 faire en dernier, ou pas.
 
-Le store durable = `db/charts_history_<region>.csv` (suivi par git, lu par le
-site). Le dossier `snapshots/spotify_charts/` local n'est PAS commit et souvent
+Le store durable = `db/charts_history_<region>.csv` (lu par le site). **Seuls
+`global`, `fr`, `us`, `uk` sont suivis par git** ; les ~66 autres regions sont
+gitignorees (`*.csv`, `.gitignore`) et n'existent que localement + sur R2
+(`scripts/r2.py` les pousse dans `db/`) — verifie le 2026-10-02. Le dossier `snapshots/spotify_charts/` local n'est PAS commit et souvent
 tres incomplet sur une machine donnee — ne pas s'en servir pour juger de ce
 qu'on "a".
 
@@ -491,6 +493,12 @@ bruts Spotify). Sweep complet 2017-01-01 -> J-3 = ~183 000 fetches (~50 h a
 1 req/s). Le probleme "Nth biggest debut" n'est PAS un trou de data mais de
 logique (`movement` RE/vide sur de vrais jours 1, lignes doublons nom/track_id).
 
+**Highlights officiels Spotify sur Taylor (decision 2026-10-02, option a)** : chaque reponse de chart de l'API porte 4 `highlights` (`ARTIST_WITH_MOST_ENTRIES`, `HIGHEST_NEW_ENTRY`, `GREATEST_GAINER`, `LONGEST_STREAK`). `worldwide/daily.py` garde ceux qui mentionnent Taylor (`_parse_ts_highlights`, toutes regions, 0 requete en plus) dans le snapshot worldwide du jour, cle `ts_highlights: {region: [{type, text}]}` (regions refetchees remplacent, les autres sont conservees). Affichage : UNE ligne `📌 Spotify Charts: <texte Spotify verbatim, guillemets courbes -> droits>` (le plus notable : most spots > highest new entry > biggest gainer > longest streak), en tete du commentaire des posts Global/US/UK (`core/chart_comment.py::spotify_ts_highlight` dans `build_chart_comment`) et dans le post regional multi-titres (`_build_multi_song_region_tweet`). Garde-fou longueur : commentaire <= `COMMENT_CHAR_BUDGET` (400) car un texte > `TWITTER_TEXT_LIMIT` (500) n'est PAS poste ; le regional retire la ligne si ca deborde. Sim : `previews_and_sims/spotify-ts-highlights/simulate.py`.
+
+### Top 200 complet (tous artistes) — `scripts/backfill_spotify_full_charts.py` (2026-10-02)
+
+`worldwide/daily.py` recoit deja le top 200 complet a chaque fetch mais `_parse_ts_entries` jette tout sauf Taylor. Ce script autonome garde TOUT pour une region (def. `global`, depuis 2025-01-01) : reponse API brute `.json.gz`, CSV reconstruit, covers 640 px. Usage : most streamed par annee (somme des streams de chart), place de Taylor, parts de marche. Champs utiles en plus : `entryDate`/`entryRank` (date + rang du debut de chaque titre, source fiable pour un futur classement des debuts), `peakDate`, `labels`, `releaseDate`, `highlights` du jour. Limite : jour hors top 200 = streams non comptes.
+
 ### Workflow recommande pour un gros rattrapage worldwide
 
 **Methode par defaut : `--per-region-sweep`** (une region a la fois, une
@@ -522,6 +530,10 @@ Reglages :
   (nommables explicitement). `--include-discontinued-regions` pour forcer.
 - Detection auto de chart mort : une region qui 404 6x d'affilee dans un run est
   ecartee ; si `global` 404 pour une date, la date est court-circuitee.
+
+**`--proven-gaps-first`** (avec `--per-region-sweep`, 2026-10-02) : PHASE 1 = seulement les (region, date) ou les compteurs Spotify prouvent une ligne Taylor manquante (`_proven_gap_dates`) : `streak` = s -> les s-1 jours precedents (dates exactes) ; saut de `total_days` entre deux lignes d'un meme titre (ex. 800 -> 805) -> fenetre entre les deux, gardee seulement si dense (manquants >= moitie des jours absents ; un saut a travers un trou de plusieurs annees est laisse a la phase 2). ~10 600 fetches au 2026-10-02 (vs ~179 000 pour le sweep complet), plus grosse region d'abord. PHASE 2 = sweep complet du reste (les dates P1 sont deja dans `region_done`). **Checkpoint par date (2026-10-02)** : en sweep, chaque (region, date) est marque fait dans `region_done` des que `daily.py` a ecrit le snapshot (ligne `N TS entries` ou `404 ... no chart` puis `[DONE] Written`), sauvegarde toutes les 30 s et au Ctrl+C (rc 130) -> couper au milieu d'une region ne refait que la date en cours (avant : toutes les dates a 0 entree de la region etaient refetchees). **Console (2026-10-02)** : dans un terminal, UNE ligne de statut animee redessinee en place (spinner, barre region, date en cours ou pause 429 en cours, s/date glissant sur 60 dates, fin region, total restant + date de fin, nb 429, token courant, nb dates avec TS) + seules les lignes importantes ([SWEEP]/[WARN]/[ERROR]...) ; tout le detail reste dans le fichier log ; `--verbose` = ancien affichage complet. **Log live** (2026-10-02) : tout est horodate et tee dans `runtime/logs/spotify_charts_backfill_<ts>.log` (suivre : `Get-Content -Wait -Tail 50 <log>`). `[TIMING]` = duree par date / par pause 429 + ETA region, `[SWEEP] ETA globale` avant chaque region, `[HEARTBEAT]` apres 60 s de silence. Une region abandonnee par `daily.py` (max attempts -> `skipped_regions` du snapshot, rc 0) reste en attente au lieu d'etre marquee faite (avant le fix elle etait perdue silencieusement ; purge auto au lancement).
+
+**Debit du sweep (2026-10-02)** : mesure = ~40 requetes en 13 s puis Spotify bloque ~2 min (4 essais 429). Cause : `daily.py` recreait pacer + pool de tokens a chaque date -> le `--request-interval` ne s'appliquait pas entre dates (1 requete/date en sweep = rafale ~3 req/s) et chaque date repartait sur le token 1 encore bloque. Fix : `_PACER_NEXT_AT` / `_TOKEN_POOL_IDX` persistants dans le process, tokens des sessions supplementaires caches 40 min (`_EXTRA_TOKEN_CACHE`, avant = 1 lancement Playwright par date). Le sweep utilise maintenant TOUS les `spotify_session*.json` (rotation sur 429 au lieu de pause) ; les workers paralleles gardent 1 session chacun.
 
 **Reprise / progression** : le sweep checkpoint par `(region, date)` dans
 `state['region_done']` apres chaque region (`state['swept_regions']` derive,
@@ -1632,7 +1644,7 @@ le run publie (jamais en `--no-post`). Independant de X : part meme si X
 echoue ; anti-doublon par `key` (date + region/slug). La priorite (donc les
 roles mentionnes) vient du `kind` dans `notifiers/discord/config.json`.
 Points d'appel : global/us/uk `daily.py` (global_daily/us_daily/uk_daily),
-`worldwide/daily.py` (regional_multi_song, immediate_entry, reentry_text),
+`worldwide/daily.py` (regional_multi_song, immediate_entry, reentry_text, region_chart),
 `run_all_charts._post_spcharts_rank_record_card` (rank_record),
 `generate_card_images.py` (first_single_region, cards_thread),
 `post_album_debut_chart.py` (album_debut, album_debut_song),
@@ -1646,8 +1658,17 @@ pour les charts artistes). Fil configure dans `notifiers/discord/config.json`
 1553414825353289840. `reentry_text` (multi-pays, `--post-song-updates`) reste dans le salon.
 Bot (2026-09-26) : fils us/gb/fr/worldwide/artists crees par `setup-threads`, un role pays par
 fil (`setup-country-roles`), fil desarchive avant post. Double envoi : salon principal = feed
-« Overall » (tous les posts, role Overall seul — roles d'importance supprimes le 2026-10-02 car doublons), + copie dans le fil du pays
+« Overall » (role Overall seul ; depuis le 2026-10-02 seulement les posts urgent + les regions sans fil — un post avec fil part SEULEMENT dans le fil, `overall_levels`), + copie dans le fil du pays
 (role du pays seulement).
+**Chart de chaque region sur Discord (proprietaire 2026-10-02)** : l'etape « regions » de
+`run_all_charts` (`worldwide/daily.py --post-multi-song-regions-only`) appelle, apres le post score X,
+`_post_region_charts_discord` : pour CHAQUE region ou Taylor charte (sauf global/us/gb, deja postes
+par leur daily ; FR inclus — son post X est en pause), ecrit `ts_chart` regional, rend
+`chart_image.png` (`generate_chart_image.py --region`, en parallele, reutilise une image deja rendue
+depuis ces donnees) et l'envoie dans le fil Discord du pays (kind `region_chart`, Discord seulement,
+jamais X). Cle `region_chart_<date>_<region>` = meme cle que le post score X de la region => une
+seule image par region/jour. Nom affiche via `REGION_DISPLAY_NAMES` (`il` = « Occupied Palestine »,
+aussi pour le post score X). Teste sur 2026-10-01 : 48 regions en 33 s.
 Detail : `notifiers/discord/README.md`.
 **Liens retires sur Discord (proprietaire 2026-09-26)** : `notifiers/discord/sender.py::strip_links`
 supprime toute ligne contenant une URL (« 🔗 See full update here : https://... »,

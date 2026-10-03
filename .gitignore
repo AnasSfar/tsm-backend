@@ -156,3 +156,6 @@ runtime/exports/
 
 # Flag data-URI cache of the new-release cards (2026-09-25)
 collectors/apple_music/tools/cache/
+
+# Full Spotify top-200 backfill (raw API responses + covers), local data store — scripts/backfill_spotify_full_charts.py
+snapshots/spotify_charts_full/

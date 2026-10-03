@@ -14,6 +14,7 @@ from datetime import date, timedelta
 from pathlib import Path
 from typing import Iterable
 
+from collectors.apple_music.core.csv_utils import _replace_with_retry
 from collectors.apple_music.core.filters import rank_key
 from collectors.spotify.core.data_paths import (
     ARCHIVE_DB_ROOT as ARCHIVE_DB_DIR,
@@ -75,11 +76,18 @@ def read_csv_rows(
 
 
 def write_csv_rows(csv_path: Path, fieldnames: list[str], rows: Iterable[dict]) -> None:
+    """Atomic, like collectors/apple_music/core/csv_utils.py (the iTunes cards
+    read these CSVs while the collector rewrites them)."""
     csv_path.parent.mkdir(parents=True, exist_ok=True)
-    with csv_path.open("w", newline="", encoding="utf-8") as handle:
-        writer = csv.DictWriter(handle, fieldnames=fieldnames)
-        writer.writeheader()
-        writer.writerows(rows)
+    tmp_path = csv_path.with_name(f".{csv_path.name}.{os.getpid()}.tmp")
+    try:
+        with tmp_path.open("w", newline="", encoding="utf-8") as handle:
+            writer = csv.DictWriter(handle, fieldnames=fieldnames)
+            writer.writeheader()
+            writer.writerows(rows)
+        _replace_with_retry(tmp_path, csv_path)
+    finally:
+        tmp_path.unlink(missing_ok=True)
 
 
 def rewrite_for_snapshot(

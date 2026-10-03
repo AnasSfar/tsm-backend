@@ -3,6 +3,7 @@ from __future__ import annotations
 import csv
 import os
 import re
+import time
 from datetime import date, timedelta
 from pathlib import Path
 from typing import Iterable
@@ -66,11 +67,33 @@ def read_csv_rows(
 
 
 def write_csv_rows(csv_path: Path, fieldnames: list[str], rows: Iterable[dict]) -> None:
+    """Atomic (temp file + os.replace): the posters read these CSVs while the
+    collector rewrites them. 2026-10-02 20:01: an in-place rewrite was read
+    half-written -> the GB Pop card showed the 00:00 cycle with no row, every
+    song OUT, under an 18:00 caption."""
     csv_path.parent.mkdir(parents=True, exist_ok=True)
-    with csv_path.open("w", newline="", encoding="utf-8") as handle:
-        writer = csv.DictWriter(handle, fieldnames=fieldnames)
-        writer.writeheader()
-        writer.writerows(rows)
+    tmp_path = csv_path.with_name(f".{csv_path.name}.{os.getpid()}.tmp")
+    try:
+        with tmp_path.open("w", newline="", encoding="utf-8") as handle:
+            writer = csv.DictWriter(handle, fieldnames=fieldnames)
+            writer.writeheader()
+            writer.writerows(rows)
+        _replace_with_retry(tmp_path, csv_path)
+    finally:
+        tmp_path.unlink(missing_ok=True)
+
+
+def _replace_with_retry(src: Path, dst: Path, attempts: int = 50, delay: float = 0.2) -> None:
+    # Windows refuses to replace a file another process has open (a reader):
+    # readers hold it for well under a second, so wait instead of failing.
+    for attempt in range(attempts):
+        try:
+            os.replace(src, dst)
+            return
+        except PermissionError:
+            if attempt == attempts - 1:
+                raise
+            time.sleep(delay)
 
 
 

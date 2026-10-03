@@ -1009,6 +1009,17 @@ collectors/apple_music/tools/json/apple_music_token.json
 - `previous_rank` doit venir du dernier snapshot d'un jour distinct precedent,
   pas d'un rerun du meme jour.
 - `rewrite_for_snapshot` doit rester idempotent par `scraped_at`.
+- Ecriture CSV ATOMIQUE (2026-10-02) : `write_csv_rows` (apple_music + itunes)
+  ecrit un `.<nom>.<pid>.tmp` puis `os.replace` (retry ~10 s si un lecteur
+  Windows tient le fichier). Ne jamais revenir a un `open("w")` en place :
+  le 02/10 a 20:01, le poster a relu le CSV genre pendant que le collecteur
+  de 20:00 le reecrivait -> card GB Pop rendue sur le debut du cycle 00:00
+  (aucune ligne GB, toutes les chansons « OUT ») sous une legende 18:00
+  (« CANCELLED! re-enters at #198 »). Garde-fou en plus :
+  `generate_snapshot_images.generate(..., expect_scraped_at=)` leve une
+  erreur si le dernier snapshot lu n'est pas celui de la legende ; les 5
+  appels de `post_new_release_progression.py` le passent (post saute,
+  retente au cycle suivant).
 - `scraped_at` (depuis 2026-08-30) est timezone-aware : `2026-08-30T14:00:00+02:00`
   (`build_scraped_at()` dans `run_apple_music.py`). L'offset vient de
   `APPLE_MUSIC_SNAPSHOT_TZ` (Europe/Paris). Ne pas revenir à une heure murale
@@ -1303,3 +1314,7 @@ ici. Seuils/decisions produit → skill `data-rules` § "Home highlights".
   de succes complet (scripts + export + upload R2 OK). Best-effort, jamais
   bloquant. Voir `collector-billboard/CONTEXTE.md` § "Live projection" pour
   le detail du declenchement multi-collecteurs.
+
+## Stockage local des snapshots (2026-10-02)
+
+Les dossiers jour `snapshots/apple_music_charts/AAAA/MM/AAAA-MM-JJ/` de plus de 2 jours sont compressés en LZX (compression transparente Windows, `collectors/spotify/core/retention.py::compress_snapshot_days`, lancée en fin de run streams/charts) : ~7x sur les CSV intra-journée, lecture inchangée pour tous les scripts. Les PNG (`snapshot_images/`, `country_cards/`) des jours < J-1 sont supprimés (`cleanup_snapshot_images`). Ne PAS utiliser `prune_apple_music_snapshots.py --apply` pour gagner de la place : il supprime les snapshots intra-journée (perte de data) — la compression suffit.
