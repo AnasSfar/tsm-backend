@@ -2,6 +2,8 @@ from __future__ import annotations
 
 import time
 
+import live_log
+
 from run_logs import (
     save_failed_rows,
     save_last_successful_updates_json,
@@ -48,6 +50,17 @@ class ProgressLogger:
         self.done += 1
         if status in self.counts:
             self.counts[status] += 1
+        try:
+            live_log.set_progress(self.done, total)
+            c = self.counts
+            live_log.set_detail(
+                f"maj {c['updated']} · pending {c['pending']}"
+                + (f" · nf {c['not_found']}" if c["not_found"] else "")
+                + (f" · timeout {c['timeout']}" if c["timeout"] else "")
+                + (f" · err {c['error']}" if c["error"] else "")
+            )
+        except Exception:
+            pass
 
         eta = self._eta(total)
         prefix = f"[{self.done}/{total}]"

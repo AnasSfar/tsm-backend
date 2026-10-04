@@ -1655,7 +1655,12 @@ def main() -> None:
         stash = [{k: v for k, v in row.items() if k != "_post_track"} for row in rows]
         stash_path = day_dir / "best_day_since_batch_candidates.json"
         stash_path.write_text(json.dumps(stash), encoding="utf-8")
-        print("BATCH_CANDIDATES_JSON: " + json.dumps({"track_ids": [row["track_id"] for row in rows]}))
+        print("BATCH_CANDIDATES_JSON: " + json.dumps({
+            "track_ids": [row["track_id"] for row in rows],
+            # Biggest day of the year / gap >= 3 months: finalize posts these in
+            # its urgent phase, before top eras / top songs (2026-10-04).
+            "urgent_track_ids": [row["track_id"] for row in rows if _is_priority_best_day_since(row)],
+        }))
         return
 
     if args.post_batch_track:

@@ -8,7 +8,7 @@ import re
 import tempfile
 import time
 from contextlib import contextmanager
-from datetime import datetime
+from datetime import datetime, timedelta
 from pathlib import Path
 from playwright.sync_api import sync_playwright, TimeoutError as PlaywrightTimeout
 
@@ -54,6 +54,19 @@ TWITTER_SLOT_SPACING_LEAD_SECONDS = int(os.getenv("TWITTER_SLOT_SPACING_LEAD_SEC
 _SLOT_SPACING_S: dict[str, int] = {}
 
 LAST_POST_ERROR = ""
+
+# Native X scheduling driven by the caller (decision 2026-10-04, streams
+# finalize "paced" phase): when the env TWITTER_SCHEDULE_AT holds a local ISO
+# datetime, post_with_image PROGRAMS the post on X for that time instead of
+# publishing it now (no account spacing wait: X publishes it later). Threads
+# can't be scheduled on X -> post_image_thread / post_thread ignore it and post
+# live. A schedule time closer than TWITTER_SCHEDULE_MIN_LEAD_SECONDS falls back
+# to a live post.
+TWITTER_SCHEDULE_MIN_LEAD_SECONDS = int(os.getenv("TWITTER_SCHEDULE_MIN_LEAD_SECONDS", "90"))
+# A process that programs several posts with the same TWITTER_SCHEDULE_AT
+# (overtakes / milestones post one image per group) spaces them by this gap.
+TWITTER_SCHEDULE_GAP_SECONDS = int(os.getenv("TWITTER_SCHEDULE_GAP_SECONDS", "120"))
+_LAST_SCHEDULED_IN_PROCESS: datetime | None = None
 
 
 def get_last_post_error() -> str:
@@ -226,6 +239,41 @@ def _mark_account_posted(account_key: str) -> None:
     _last_post_path(account_key).write_text(str(time.time()), encoding="ascii")
 
 
+def _last_schedule_path(account_key: str) -> Path:
+    return TWITTER_COORD_DIR / f"last_schedule_{account_key}.txt"
+
+
+def _mark_account_scheduled(account_key: str, scheduled_at: datetime) -> None:
+    """Records the publish time of the post just programmed on X (callers such
+    as streams finalize read it to know a step scheduled something)."""
+    TWITTER_COORD_DIR.mkdir(parents=True, exist_ok=True)
+    _last_schedule_path(account_key).write_text(
+        json.dumps({"scheduled_at": scheduled_at.isoformat(timespec="minutes"), "at": time.time()}),
+        encoding="utf-8",
+    )
+
+
+def _env_schedule_at() -> datetime | None:
+    """TWITTER_SCHEDULE_AT as a local datetime, or None (unset / invalid /
+    too close: post live)."""
+    raw = os.getenv("TWITTER_SCHEDULE_AT", "").strip()
+    if not raw:
+        return None
+    try:
+        scheduled = _coerce_schedule_datetime(raw)
+    except ValueError as exc:
+        print(f"X: TWITTER_SCHEDULE_AT invalide ({exc}) — post direct")
+        return None
+    if _LAST_SCHEDULED_IN_PROCESS is not None:
+        bumped = _LAST_SCHEDULED_IN_PROCESS + timedelta(seconds=max(60, TWITTER_SCHEDULE_GAP_SECONDS))
+        scheduled = max(scheduled, bumped.replace(second=0, microsecond=0))
+    lead = (scheduled - datetime.now()).total_seconds()
+    if lead < TWITTER_SCHEDULE_MIN_LEAD_SECONDS:
+        print(f"X: programmation {scheduled:%H:%M} trop proche ({int(lead)}s) — post direct")
+        return None
+    return scheduled
+
+
 def _resolve_post_priority(priority: int | None) -> int:
     """Priorite du post courant : argument explicite > env TWITTER_POST_PRIORITY > defaut."""
     if priority is not None:
@@ -348,6 +396,7 @@ def _twitter_account_slot(
     timeout: int = TWITTER_POST_LOCK_TIMEOUT,
     *,
     priority: int | None = None,
+    spacing_override: int | None = None,
 ):
     """Serialize one X account, allow up to two accounts to post at once.
 
@@ -361,7 +410,8 @@ def _twitter_account_slot(
     account_lock = TWITTER_COORD_DIR / f"account_{account_key}.lock"
     stale_after = max(60, TWITTER_LOCK_STALE_SECONDS)
     prio = _resolve_post_priority(priority)
-    spacing_s = _draw_account_spacing()
+    # spacing_override=0: scheduling a post on X, nothing goes out now.
+    spacing_s = _draw_account_spacing() if spacing_override is None else max(0, spacing_override)
     waiter_path, waiter_ts = _register_waiter(account_key, prio, spacing_s)
     account_fd = None
     active_marker = None
@@ -1545,9 +1595,15 @@ def post_with_image(
         print(f"X image introuvable: {image_path}")
         return False
 
+    scheduled_at = _env_schedule_at()
+    if scheduled_at is not None:
+        print(f"X: post PROGRAMME sur X pour {scheduled_at:%Y-%m-%d %H:%M} (pas d'attente d'espacement)", flush=True)
     print("X: attente du slot de post (verrou compte)...", flush=True)
     with _twitter_account_slot(
-        session_file, slot_timeout or TWITTER_POST_LOCK_TIMEOUT, priority=priority
+        session_file,
+        slot_timeout or TWITTER_POST_LOCK_TIMEOUT,
+        priority=priority,
+        spacing_override=0 if scheduled_at is not None else None,
     ) as account_key:
         if skip_if is not None:
             try:
@@ -1586,7 +1642,8 @@ def post_with_image(
                     page.goto("https://x.com/home", wait_until="domcontentloaded")
                     time.sleep(2)
 
-                _wait_account_spacing(account_key)
+                if scheduled_at is None:
+                    _wait_account_spacing(account_key)
                 page.goto("https://x.com/compose/post", wait_until="domcontentloaded")
 
                 editor = _open_compose_and_wait_editor(page, session_file, 0)
@@ -1595,6 +1652,28 @@ def post_with_image(
                 attach_scope = _attach_image_to_composer(page, editor, image_path, 0)
                 if _attached_image_count(attach_scope) < 1:
                     raise RuntimeError("image absente du composer juste avant le post — abandon")
+
+                if scheduled_at is not None:
+                    _set_schedule_dialog(page, scheduled_at)
+                    # Re-check after the schedule modal: never program a post without its image.
+                    if _attached_image_count(attach_scope) < 1:
+                        raise RuntimeError("image absente du composer apres la modale de programmation — abandon")
+                    _click_tweet_button(page, editor)
+                    if not _wait_post_scheduled(page, tweet):
+                        # Clicked but not confirmed: it may well be programmed.
+                        # Never retried (a duplicate public post is worse than a
+                        # missing one, same rule as the new-release posts) ->
+                        # counted as scheduled, loud warning to check X.
+                        _set_last_post_error("programmation non confirmee apres clic")
+                        print(
+                            "[WARN] X: programmation NON CONFIRMEE apres clic — comptee comme faite, "
+                            "verifie les posts programmes sur X (x.com/compose/post/unsent/scheduled)."
+                        )
+                    _mark_account_scheduled(account_key, scheduled_at)
+                    global _LAST_SCHEDULED_IN_PROCESS
+                    _LAST_SCHEDULED_IN_PROCESS = scheduled_at
+                    print(f"OK Tweet avec image programme pour {scheduled_at:%Y-%m-%d %H:%M}")
+                    return True
 
                 _click_tweet_button(page, editor)
                 if not _wait_post_submitted(page, tweet):
@@ -1722,6 +1801,8 @@ def post_image_thread(posts: list[tuple[str, Path | list[Path] | tuple[Path, ...
     if not posts:
         print("Aucun post image a publier.")
         return False
+    if os.getenv("TWITTER_SCHEDULE_AT", "").strip():
+        print("X: un thread ne peut pas etre programme sur X — post direct.")
     if not _validate_tweet_lengths([text for text, _ in posts], label="thread image"):
         return False
     missing = [image_path for _, image_paths in posts for image_path in image_paths if not image_path.exists()]

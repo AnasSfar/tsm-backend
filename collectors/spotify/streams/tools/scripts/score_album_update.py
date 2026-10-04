@@ -4,8 +4,10 @@
 Mirrors ``score_best_day_since.py``: the same subscore shape (age, daily
 absolute gain, daily % gain, weekly % gain, rarity, grower) plus record
 bonuses, aggregated to album level from per-track history. Read-only. Used
-only to ORDER the album update cards, never to gate which albums post — every
-non-Misc album still gets its card every weekday.
+to ORDER the album update cards, and (since 2026-10-04) to flag
+``drop_blocked`` albums — daily down more than DAILY_DROP_TOLERANCE_PCT with
+no track records / big jumps / strong weekly to rescue it — which
+finalize_update skips on weekdays.
 
 Examples:
   python tools/scripts/score_album_update.py
@@ -46,7 +48,30 @@ BOTTOM_ALBUMS_SKIPPED = 2
 # absolute-gain cap up accordingly.
 ALBUM_DAILY_ABS_GAIN_CAP = 5_000_000
 MAJORITY_POSITIVE_BONUS_MAX = 6.0
-NEGATIVE_MOMENTUM_PENALTY_MAX = 7.0
+# Daily-drop handling (decision 2026-10-04): an album card going out with a
+# negative daily reads badly, so a drop is now penalised on its own (it used to
+# be penalised only when daily AND weekly were both negative, max 7 points —
+# TTPD/Midnights/evermore at -5% d/d still scored 43-48 on 2026-09-29).
+# - Up to DAILY_DROP_TOLERANCE_PCT down is noise ("-1/-2%"): small penalty only,
+#   and the album stays postable.
+# - Past it the penalty climbs to DAILY_DROP_PENALTY_MAX at
+#   DAILY_DROP_FULL_PENALTY_PCT down, and the album is not postable that day
+#   unless it is "rescued" (see `_daily_drop_rescue`).
+DAILY_DROP_TOLERANCE_PCT = 2.0
+DAILY_DROP_FULL_PENALTY_PCT = 8.0
+DAILY_DROP_SOFT_PENALTY_MAX = 3.0
+DAILY_DROP_PENALTY_MAX = 25.0
+# A track "big jump": up >= this % day-over-day AND by at least this many streams
+# (the floor keeps a 2k -> 2.5k deep cut from counting as a jump).
+TRACK_JUMP_MIN_PCT = 15.0
+TRACK_JUMP_MIN_GAIN = 10_000
+# Rescue: what makes a dropping album still worth a card.
+RESCUE_MIN_TRACK_RECORDS = 2
+RESCUE_MIN_TRACK_JUMPS = 3
+RESCUE_MIN_WEEKLY_PCT = 10.0
+# Rescue support needed to cancel the drop penalty entirely (records count 1,
+# jumps 0.5 — a record is a stronger story than a jump).
+RESCUE_FULL_SUPPORT = 3.0
 # Doubled 2026-09-04 (owner call): several tracks clearing a best-day record
 # on the same day is a strong "this album deserves the spotlight" signal and
 # was underweighted next to the album's own record_bonus (up to 26).
@@ -138,13 +163,15 @@ def _album_points_by_day(track_ids: list[str], history: dict[str, list[best_day_
     return result
 
 
-def _majority_positive_ratio(
+def _track_moves(
     track_ids: list[str],
     history: dict[str, list[best_day_since.Point]],
     target: date,
-) -> tuple[int, int]:
+) -> tuple[int, int, int]:
+    """(tracks up day-over-day, tracks with both days known, big jumps)."""
     counted = 0
     positive = 0
+    jumps = 0
     for track_id in track_ids:
         by_day = sbd._point_by_day(history.get(track_id) or [])
         today = sbd._daily_on(by_day, target)
@@ -154,7 +181,13 @@ def _majority_positive_ratio(
         counted += 1
         if today > yesterday:
             positive += 1
-    return positive, counted
+        if (
+            yesterday > 0
+            and today - yesterday >= TRACK_JUMP_MIN_GAIN
+            and (today - yesterday) * 100.0 / yesterday >= TRACK_JUMP_MIN_PCT
+        ):
+            jumps += 1
+    return positive, counted, jumps
 
 
 def _album_surprise_impact_bonus(metrics: dict) -> float:
@@ -251,17 +284,57 @@ def _track_records_bonus(record_rows: list[dict]) -> tuple[float, float]:
     return bonus, weighted_hits
 
 
-def _negative_momentum_penalty(
+def _daily_drop_rescue(
+    *,
+    track_record_hits: int,
+    track_jumps: int,
+    weekly_pct_gain: float,
+    has_album_record: bool,
+) -> list[str]:
+    """Reasons a dropping album still deserves its card (empty = not rescued)."""
+    reasons: list[str] = []
+    if has_album_record:
+        reasons.append("album best-day record")
+    if track_record_hits >= RESCUE_MIN_TRACK_RECORDS:
+        reasons.append(f"{track_record_hits} track best-day records")
+    if track_jumps >= RESCUE_MIN_TRACK_JUMPS:
+        reasons.append(f"{track_jumps} track big jumps")
+    if weekly_pct_gain >= RESCUE_MIN_WEEKLY_PCT:
+        reasons.append(f"+{weekly_pct_gain:.1f}% vs last week")
+    return reasons
+
+
+def _daily_drop_penalty(
     daily_pct_gain: float,
     weekly_pct_gain: float,
     *,
+    track_record_weighted_hits: float,
+    track_jumps: int,
     has_album_record: bool,
 ) -> float:
-    if has_album_record or daily_pct_gain >= 0 or weekly_pct_gain >= 0:
+    """Graduated penalty for a negative album daily.
+
+    0 -> -DAILY_DROP_TOLERANCE_PCT: soft, at most DAILY_DROP_SOFT_PENALTY_MAX.
+    Beyond: climbs to DAILY_DROP_PENALTY_MAX at -DAILY_DROP_FULL_PENALTY_PCT.
+    A weekly gain softens it (the card still shows growth vs last week), and
+    track records / big jumps cancel it proportionally — an album where several
+    songs had a best day is still a story even if the total dipped."""
+    if has_album_record or daily_pct_gain >= 0:
         return 0.0
-    daily_drop = min(1.0, abs(daily_pct_gain) / 5.0)
-    weekly_drop = min(1.0, abs(weekly_pct_gain) / 10.0)
-    return NEGATIVE_MOMENTUM_PENALTY_MAX * (0.55 * daily_drop + 0.45 * weekly_drop)
+    drop = abs(daily_pct_gain)
+    if drop <= DAILY_DROP_TOLERANCE_PCT:
+        penalty = DAILY_DROP_SOFT_PENALTY_MAX * drop / DAILY_DROP_TOLERANCE_PCT
+    else:
+        frac = min(
+            1.0,
+            (drop - DAILY_DROP_TOLERANCE_PCT) / (DAILY_DROP_FULL_PENALTY_PCT - DAILY_DROP_TOLERANCE_PCT),
+        )
+        penalty = DAILY_DROP_SOFT_PENALTY_MAX + (DAILY_DROP_PENALTY_MAX - DAILY_DROP_SOFT_PENALTY_MAX) * frac
+    if weekly_pct_gain > 0:
+        penalty *= 1.0 - 0.5 * min(1.0, weekly_pct_gain / RESCUE_MIN_WEEKLY_PCT)
+    support = track_record_weighted_hits + 0.5 * track_jumps
+    penalty *= max(0.0, 1.0 - support / RESCUE_FULL_SUPPORT)
+    return penalty
 
 
 def score_album(
@@ -334,7 +407,7 @@ def score_album(
         + WEIGHTS.grower * subscores["grower"]
     ) * 100.0
 
-    positive, counted = _majority_positive_ratio(track_ids, history, target)
+    positive, counted, track_jumps = _track_moves(track_ids, history, target)
     majority_ratio = positive / counted if counted else 0.0
     majority_bonus = (
         MAJORITY_POSITIVE_BONUS_MAX * min(1.0, max(0.0, (majority_ratio - 0.5) * 2.0))
@@ -389,11 +462,22 @@ def score_album(
                 "positive_move_days_7": positive_move_days_7,
             },
         )
-    negative_momentum_penalty = _negative_momentum_penalty(
+    daily_drop_penalty = _daily_drop_penalty(
         daily_pct_gain,
         weekly_pct_gain,
+        track_record_weighted_hits=track_records_weighted_hits,
+        track_jumps=track_jumps,
         has_album_record=has_album_record,
     )
+    rescue_reasons = _daily_drop_rescue(
+        track_record_hits=album_record_hits,
+        track_jumps=track_jumps,
+        weekly_pct_gain=weekly_pct_gain,
+        has_album_record=has_album_record,
+    )
+    # Not postable: dropping past the tolerance with nothing to rescue it.
+    # finalize_update._album_post_queue skips these on weekdays.
+    drop_blocked = daily_pct_gain < -DAILY_DROP_TOLERANCE_PCT and not rescue_reasons
 
     score = (
         base_score
@@ -403,7 +487,7 @@ def score_album(
         + surprise_impact_bonus
         + stature_bonus
         + comeback_bonus
-        - negative_momentum_penalty
+        - daily_drop_penalty
     )
 
     explanations: list[str] = []
@@ -419,8 +503,14 @@ def score_album(
         explanations.append(f"{positive}/{counted} tracks up day-over-day")
     if album_record_hits:
         explanations.append(f"{album_record_hits} track best-day record(s) today")
-    if negative_momentum_penalty > 0:
-        explanations.append("negative daily and weekly momentum discounted")
+    if track_jumps:
+        explanations.append(f"{track_jumps} track big jump(s) (>= +{TRACK_JUMP_MIN_PCT:.0f}% d/d)")
+    if daily_drop_penalty > 0:
+        explanations.append(f"daily drop {daily_pct_gain:.1f}% penalised (-{daily_drop_penalty:.1f})")
+    if drop_blocked:
+        explanations.append("not postable: daily drop past tolerance, no rescue")
+    elif daily_pct_gain < -DAILY_DROP_TOLERANCE_PCT:
+        explanations.append(f"daily drop rescued: {'; '.join(rescue_reasons)}")
     if stature_bonus > 0:
         explanations.append("major album clearing a long-standing best day")
     if comeback_bonus > 0:
@@ -437,7 +527,9 @@ def score_album(
         "surprise_impact_bonus": round(surprise_impact_bonus, 3),
         "stature_bonus": round(stature_bonus, 3),
         "comeback_bonus": round(comeback_bonus, 3),
-        "negative_momentum_penalty": round(negative_momentum_penalty, 3),
+        "daily_drop_penalty": round(daily_drop_penalty, 3),
+        "drop_blocked": drop_blocked,
+        "drop_rescue_reasons": rescue_reasons,
         "subscores": {key: round(value, 3) for key, value in subscores.items()},
         "daily_streams": today,
         "daily_abs_gain": daily_abs_gain,
@@ -454,6 +546,7 @@ def score_album(
         "is_best_ever": is_best_ever,
         "positive_tracks": positive,
         "counted_tracks": counted,
+        "track_jumps": track_jumps,
         "track_record_hits": album_record_hits,
         "track_record_weighted_hits": round(track_records_weighted_hits, 3),
         "track_count": len(track_ids),
@@ -528,19 +621,23 @@ def _postable_albums_for_date(albums: list[str], target: date) -> tuple[list[str
 
 
 def _simulated_post_queue(scored: list[dict]) -> tuple[list[str], list[str], list[str]]:
-    ranked = [item["album"] for item in scored]
+    """Mirror of finalize_update._album_post_queue (weekday): daily-drop gate,
+    top 2, forced Showgirl/TTPD, rest by score minus the topped-up bottom skip."""
+    drop_blocked = [item["album"] for item in scored if item.get("drop_blocked")]
+    ranked = [item["album"] for item in scored if not item.get("drop_blocked")]
     if len(ranked) <= 2:
-        return ranked, [], []
+        return ranked, [], drop_blocked
     primary_cf = {name.casefold() for name in PRIMARY_ALBUM_UPDATE_TARGETS}
     top2 = ranked[:2]
     done_cf = {album.casefold() for album in top2}
     forced = [album for album in ranked if album.casefold() in primary_cf and album.casefold() not in done_cf]
     done_cf |= {album.casefold() for album in forced}
     tail = [album for album in ranked if album.casefold() not in done_cf]
-    dropped: list[str] = []
-    if len(tail) > BOTTOM_ALBUMS_SKIPPED:
-        dropped = tail[-BOTTOM_ALBUMS_SKIPPED:]
-        tail = tail[: -BOTTOM_ALBUMS_SKIPPED]
+    bottom_skip = max(0, BOTTOM_ALBUMS_SKIPPED - len(drop_blocked))
+    dropped: list[str] = list(drop_blocked)
+    if bottom_skip and len(tail) > bottom_skip:
+        dropped += tail[-bottom_skip:]
+        tail = tail[:-bottom_skip]
     return top2 + forced + tail, forced, dropped
 
 
@@ -558,7 +655,7 @@ def backtest_album_scores(days: int, *, end_date: date | None = None) -> dict:
         scored = score_albums(postable, target)
         scored_items = [item for item in scored if item.get("status") == "scored"]
         queue, forced, dropped = _simulated_post_queue(scored_items)
-        top2 = [item["album"] for item in scored_items[:2]]
+        top2 = queue[:2]  # what actually posts first, after the drop gate
         top2_cf = {album.casefold() for album in top2}
         top5_cf = {item["album"].casefold() for item in scored_items[:5]}
 
@@ -673,6 +770,7 @@ def main() -> None:
             f"{item.get('daily_streams') or 0:,} daily | "
             f"{(item.get('daily_pct_gain') or 0):+.1f}% d/d | "
             f"{item.get('status')}"
+            f"{' | NOT POSTABLE (drop)' if item.get('drop_blocked') else ''}"
         )
         if args.explain and item.get("explanations"):
             print(f"    why: {'; '.join(item['explanations'])}")

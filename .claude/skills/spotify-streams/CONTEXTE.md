@@ -1018,6 +1018,109 @@ proprietaire apres relecture du classement :
   (`--post-only all-albums`) et la boucle alternee de
   `run_final_update_tasks`.
 
+## Gate daily negatif + penalite de baisse graduee (2026-10-04)
+
+Constat proprietaire : poster une card album avec un daily negatif "c'est pas
+top". Il n'existait AUCUNE gate "sous la mediane" (le proprietaire le croyait) :
+seuls les 2 derniers au score etaient skippes, donc ~15/17 albums postaient
+meme a -5 % d/d. Et l'ancienne `_negative_momentum_penalty` (max 7) ne
+s'appliquait que si daily ET weekly etaient negatifs : TTPD/Midnights/evermore
+a -5 % d/d mais weekly positif scoraient 43-48 le 2026-09-29.
+
+`score_album_update.py` :
+- `_negative_momentum_penalty` remplacee par **`_daily_drop_penalty`** :
+  0 a -`DAILY_DROP_TOLERANCE_PCT` (2 %) = bruit, penalite douce max
+  `DAILY_DROP_SOFT_PENALTY_MAX` (3) ; au-dela, monte jusqu'a
+  `DAILY_DROP_PENALTY_MAX` (25) a -`DAILY_DROP_FULL_PENALTY_PCT` (8 %).
+  Weekly positif l'adoucit (jusqu'a /2 a +10 %), records de tracks (poids
+  `track_record_weighted_hits`) + big jumps (0.5 chacun) l'annulent
+  proportionnellement (`RESCUE_FULL_SUPPORT` = 3). Record album = 0 penalite.
+- **Big jump** de track = `>= TRACK_JUMP_MIN_PCT` (+15 %) d/d ET
+  `>= TRACK_JUMP_MIN_GAIN` (10k) streams de gain (`_track_moves`, remplace
+  `_majority_positive_ratio`) -> champ `track_jumps`.
+- **`drop_blocked`** = daily < -2 % ET aucun sauvetage (`_daily_drop_rescue`) :
+  record best-day album, OU >= 2 records de tracks, OU >= 3 big jumps, OU
+  weekly >= +10 %. Champs `drop_blocked`, `drop_rescue_reasons`,
+  `daily_drop_penalty` (remplace `negative_momentum_penalty`).
+
+`finalize_update._album_post_queue` (semaine uniquement ; le week-end garde sa
+logique gain daily/weekly) : `_drop_blocked_albums` retire les albums
+`drop_blocked` **avant** top 2 / forces — **Showgirl/TTPD compris** (forcer
+garantit un slot seulement s'ils sont postables). Log
+`[all-albums] skipped (daily drop past -2%, ...)`. Le skip "bottom N" n'est
+plus que le complement : `max(0, BOTTOM_ALBUMS_SKIPPED - nb bloques)`. File
+vide possible un jour ou tout baisse (assume). Backtest/CLI du scorer alignes
+(`NOT POSTABLE (drop)`).
+
+Backtest 29/09 -> 02/10 : 29/09 (tout en baisse) seuls Showgirl (+291 % w/w)
+et reputation (-0.2 %) postent ; 01/10 Midnights -2.4 % sauve par 7 records ;
+02/10 Showgirl (-3.1 %, -67 % w/w) et TTPD (-3.7 %) skippes.
+
+## Phase urgente + posting logarithmique (2026-10-04)
+
+Demande proprietaire : poster vite l'essentiel puis ralentir au fur et a
+mesure. `run_final_update_tasks` :
+- **Phase urgente** (espacement core.twitter normal 60-75 s) : recap weekend
+  -> best-day-since urgents -> card album urgente (Showgirl `_showgirl_lead_album`,
+  passe donc apres le recap, plus avant) -> top eras -> top songs (+ recap
+  fallback). Best-day urgent = `post_best_day_since_twitter._is_priority_best_day_since`
+  (biggest day of the year a volume suffisant, ou ecart >= 3 mois) ;
+  `--list-batch-candidates` renvoie `urgent_track_ids` en plus de `track_ids`,
+  `_best_day_since_candidate_tracks` retourne `(track_ids, urgent_set)`, et la
+  liste est calculee avant le recap (plus pendant la construction de
+  `other_steps`). Les urgents sont retires de l'alternance.
+- **Phase rythmee** (`pacing["active"]`) : alternance albums/autres, tables
+  gainers, best-day last. Avant chaque etape, `_PACING_SPACING_SECONDS =
+  _paced_spacing_seconds(k)` (60 x (1 + 1.2 ln(1+k)), plafond 360, jitter +15),
+  que `_subprocess_env` pose dans `TWITTER_ACCOUNT_SPACING_MIN/MAX_SECONDS` ->
+  core.twitter attend cet ecart depuis le dernier post du compte (attente hors
+  verrou, ne bloque pas les charts prio 1). k n'avance que si l'etape a
+  vraiment poste (`_account_last_post_marker`, max des `last_post_*.txt`) — une
+  etape sans rien a poster sort aussi en 0. Constantes env
+  `FINALIZE_PACING_BASE_SECONDS` / `FINALIZE_PACING_GROWTH` /
+  `FINALIZE_PACING_MAX_SECONDS`.
+- Courbe : 60, 110, 139, 160, 176, 189, 200 ... 300 s (k=27). Cumul : 10
+  posts rythmes ~28 min, 20 ~70 min, 30 ~2 h. Le commit git de fin de finalize
+  arrive d'autant plus tard (l'export web/R2 est fait avant les posts, lui).
+
+### Suite le meme jour : albums urgents generalises, programmation X, reprise, logs live
+
+- **Albums urgents** : `_showgirl_lead_album` -> `_urgent_albums` : tout album de la
+  file du jour a score >= `URGENT_ALBUM_SCORE_MIN` (70, ex-`SHOWGIRL_LEAD_SCORE_MIN`),
+  tries par score, max `URGENT_ALBUM_MAX` = 3 (60 j : 13/44 jours de semaine avaient
+  >= 3 albums au-dessus, jusqu'a 8 le 22/09). Semaine Encore : Showgirl seule.
+- **Programmation native X** (proprio : « au lieu d'attendre, schedule les » ; choix
+  explicite programmation X plutot qu'une file locale) : en phase rythmee,
+  `_guarded_post_step` calcule `_next_schedule_slot(pacing)` et `_subprocess_env`
+  passe `TWITTER_SCHEDULE_AT` (+ `TWITTER_SCHEDULE_GAP_SECONDS` = espacement courant).
+  `core.twitter.post_with_image` : si `_env_schedule_at()` renvoie une date (>= 90 s
+  dans le futur), slot compte avec `spacing_override=0`, pas de `_wait_account_spacing`,
+  `_set_schedule_dialog` (code existant depuis juin, utilise par
+  `dev/adhoc/schedule_test_tweet.py`), re-check image, `_wait_post_scheduled`,
+  `_mark_account_scheduled` (`last_schedule_<compte>.txt`, JSON `scheduled_at`/`at`).
+  N'ecrit PAS `last_post` (rien n'est parti). Plusieurs posts du meme process :
+  `_LAST_SCHEDULED_IN_PROCESS` + gap. Threads : direct (log « un thread ne peut pas
+  etre programme »). Non confirme apres clic : compte comme programme + `[WARN]`
+  (jamais retente). Echec avant envoi (SystemExit de l'etape sans marqueur
+  last_schedule/last_post) : l'etape est rejouee en direct (`[pacing] ... repli`).
+  Detection « l'etape a poste » : marqueur `last_schedule_*` (k+1, `last_slot_at`)
+  ou `last_post_*` (k+1).
+- **Reprise** : `finalize_pacing_state.json` (dossier du jour, `done` +
+  `last_slot_at`) charge au debut de `run_final_update_tasks`, sauve apres chaque
+  etape qui a poste/programme. Un finalize relance continue la courbe et chaine
+  apres le dernier creneau (sim : 4 posts, arret, reprise -> 13:06 puis 13:09...).
+- **Logs** : `tools/scripts/live_log.py` (voir REPO_CONTEXT). `finalize._run_subprocess`
+  relit la sortie des enfants ligne a ligne (Popen + print) pour qu'elle soit
+  horodatee et dans le run log ; `stdout=`/`capture_output=` gardent `subprocess.run`.
+  `StepTimer.step` -> `[PHASE] FINALIZE · <etape>`. Sonde : detail au 1er essai puis
+  tous les `PROBE_LOG_EVERY` (30) essais, erreur ChartSnapshot seulement si elle
+  change, ligne `[PROBE] Spotify a publie ... apres N essai(s)` a la sortie.
+  La ligne animee n'apparait que si stdout est un vrai terminal : la tache planifiee
+  (PowerShell `| Tee-Object`) n'en a pas, elle a les `[STATUS]` toutes les 60 s.
+- Sim : `previews_and_sims/finalize-pacing-schedule-logs/simulate.py` (aucun post,
+  coord X + dossier du jour rediriges). **Non teste en vrai : la modale de
+  programmation X** (aucun post reel lance dans la session).
+
 ## Showgirl en tete si score "wow" (2026-09-24)
 
 Decision proprietaire : la card album de Showgirl n'a pas a attendre son slot

@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import math
 import os
 import re
 import subprocess
@@ -9,7 +10,7 @@ import threading
 import time
 from contextlib import contextmanager
 from dataclasses import dataclass, field
-from datetime import date as date_cls, timedelta as _timedelta
+from datetime import date as date_cls, datetime, timedelta, timedelta as _timedelta
 from pathlib import Path
 from typing import Any, Callable
 
@@ -17,11 +18,13 @@ from core.data_paths import db_file, update_streams_dir
 from core.swift_top_gate import check_swift_top_gate, mark_swift_top_done
 from core.retention import cleanup_generated_artifacts
 from core.notify import send as notify
+from core import twitter as twitter_core
 from git_ops import git_commit_and_push
 import generate_album_update_image
 import post_best_day_since_twitter
 import score_album_update
 import history_store
+import live_log
 from config import NTFY_TOPIC
 from post_debut_releases import post_debut_releases as run_debut_release_posts
 from post_debut_releases import album_track_id_set, release_day_debut_albums
@@ -44,14 +47,18 @@ PRIMARY_ALBUM_UPDATE_TARGETS = (
 # The lowest-scoring albums (excluding the guaranteed top 2 / forced primary
 # targets) skip their card entirely for the day (decision 2026-09-04).
 BOTTOM_ALBUMS_SKIPPED = 2
-# Decision 2026-09-24: when Showgirl's album score is "wow" (>= this
-# score_album_update score), its card leads the whole finalize post order —
-# before the weekend recap / top eras / top songs — instead of waiting for its
-# slot in the alternating album queue. Below the threshold nothing changes.
-# Calibrated on 60 days (2026-07-25..09-22): Showgirl normally scores 15-55,
-# only 09-22 (11 track records, +674k) cleared it at 79.9.
+# Urgent album cards: any album whose score_album_update score is "wow"
+# (>= URGENT_ALBUM_SCORE_MIN) posts in finalize's urgent phase (after the
+# weekend recap and urgent best-day-since songs, before top eras / top songs)
+# instead of waiting for its slot in the paced album queue. Introduced
+# 2026-09-24 for Showgirl only, widened to every album on 2026-10-04 (owner).
+# Showgirl normally scores 15-55 (60 days to 09-22); 2026-09-30 had Midnights
+# 84 (9 track records), Showgirl 84, Speak Now 72 above it.
+URGENT_ALBUM_SCORE_MIN = 70.0
+# 13 of 44 weekdays (to 2026-10-02) had >= 3 albums above the bar, up to 8 —
+# only the best URGENT_ALBUM_MAX go urgent, the rest keep the head of the queue.
+URGENT_ALBUM_MAX = 3
 SHOWGIRL_LEAD_ALBUM = "The Life of a Showgirl"
-SHOWGIRL_LEAD_SCORE_MIN = 70.0
 WEEKEND_WEEKLY_ALBUM_LIMIT = 3  # 2026-09-28: top 3 only (was 4)
 FINALIZE_POST_RETRY_ATTEMPTS = max(1, int(os.getenv("FINALIZE_POST_RETRY_ATTEMPTS", "3")))
 FINALIZE_POST_RETRY_SLEEP_SECONDS = max(0, int(os.getenv("FINALIZE_POST_RETRY_SLEEP_SECONDS", "60")))
@@ -63,6 +70,118 @@ FINALIZE_POST_RETRY_SLEEP_SECONDS = max(0, int(os.getenv("FINALIZE_POST_RETRY_SL
 BEST_DAY_PRECHECK_RELOAD_SECONDS = 5.0
 
 
+# Logarithmic post pacing (decision 2026-10-04): the urgent phase (daily recap,
+# urgent best-day-since songs, urgent album card, top eras, top songs) keeps the
+# normal 60-75 s account spacing, then every following finalize post waits a
+# bit longer than the previous one: spacing = BASE * (1 + GROWTH * ln(1 + k)),
+# k = posts already made after the urgent phase, capped at MAX. With the
+# defaults: k=0 60 s, 1 110 s, 3 160 s, 7 210 s, 15 260 s, 25+ ~300 s.
+# Applied through core.twitter's own account spacing (env per post
+# subprocess), so the wait is still measured from the account's last post.
+PACING_BASE_SECONDS = int(os.getenv("FINALIZE_PACING_BASE_SECONDS", "60"))
+PACING_GROWTH = float(os.getenv("FINALIZE_PACING_GROWTH", "1.2"))
+PACING_MAX_SECONDS = int(os.getenv("FINALIZE_PACING_MAX_SECONDS", "360"))
+PACING_JITTER_SECONDS = 15
+# Current spacing for post subprocesses, set by run_final_update_tasks (None =
+# core.twitter defaults, e.g. outside finalize or in the urgent phase).
+_PACING_SPACING_SECONDS: int | None = None
+# Native X scheduling of the paced phase (owner 2026-10-04: "au lieu d'attendre,
+# schedule les"): each paced post is PROGRAMMED on X at its slot time (same
+# log curve, slots chained from the previous slot) instead of finalize sleeping.
+# Threads can't be scheduled on X and still post live. FINALIZE_SCHEDULE_POSTS=0
+# falls back to live posting with waits.
+SCHEDULE_PACED_POSTS = os.getenv("FINALIZE_SCHEDULE_POSTS", "1").strip().lower() not in {"0", "false", "no"}
+SCHEDULE_MIN_LEAD_SECONDS = int(os.getenv("FINALIZE_SCHEDULE_MIN_LEAD_SECONDS", "150"))
+# Slot time handed to post subprocesses (env TWITTER_SCHEDULE_AT), or None.
+_SCHEDULE_AT: datetime | None = None
+PACING_STATE_FILENAME = "finalize_pacing_state.json"
+
+
+def _paced_spacing_seconds(paced_posts_done: int) -> int:
+    spacing = PACING_BASE_SECONDS * (1.0 + PACING_GROWTH * math.log1p(max(0, paced_posts_done)))
+    return int(min(PACING_MAX_SECONDS, round(spacing)))
+
+
+def _load_pacing_state(stats_date: str) -> dict:
+    """Pacing progress of this stats date, persisted so an interrupted then
+    resumed finalize keeps the curve (k) and chains slots after the last one
+    already scheduled instead of restarting at 60 s."""
+    path = update_streams_dir(stats_date) / PACING_STATE_FILENAME
+    try:
+        data = json.loads(path.read_text(encoding="utf-8"))
+        return {
+            "done": max(0, int(data.get("done") or 0)),
+            "last_slot_at": data.get("last_slot_at"),
+        }
+    except (OSError, ValueError, TypeError):
+        return {"done": 0, "last_slot_at": None}
+
+
+def _save_pacing_state(stats_date: str, state: dict) -> None:
+    path = update_streams_dir(stats_date) / PACING_STATE_FILENAME
+    try:
+        path.write_text(
+            json.dumps({"done": state["done"], "last_slot_at": state.get("last_slot_at")}, indent=2),
+            encoding="utf-8",
+        )
+    except OSError as exc:
+        print(f"[pacing] could not save state ({exc})")
+
+
+def _next_schedule_slot(state: dict) -> datetime:
+    """Next X schedule time: previous slot (or now) + paced spacing(k),
+    never closer than SCHEDULE_MIN_LEAD_SECONDS, rounded up to the minute and
+    strictly after the previous slot's minute (X schedules per minute)."""
+    now = datetime.now()
+    spacing = _paced_spacing_seconds(state["done"])
+    last = None
+    if state.get("last_slot_at"):
+        try:
+            last = datetime.fromisoformat(str(state["last_slot_at"]))
+        except ValueError:
+            last = None
+    slot = (last or now) + timedelta(seconds=spacing)
+    slot = max(slot, now + timedelta(seconds=SCHEDULE_MIN_LEAD_SECONDS))
+    if slot.second or slot.microsecond:
+        slot = slot.replace(second=0, microsecond=0) + timedelta(minutes=1)
+    if last is not None and slot <= last:
+        slot = last.replace(second=0, microsecond=0) + timedelta(minutes=1)
+    return slot
+
+
+def _account_last_schedule_marker() -> tuple[float, str | None]:
+    """(write time, scheduled_at) of the latest core.twitter schedule marker."""
+    latest: tuple[float, str | None] = (0.0, None)
+    try:
+        for path in twitter_core.TWITTER_COORD_DIR.glob("last_schedule_*.txt"):
+            try:
+                data = json.loads(path.read_text(encoding="utf-8"))
+                at = float(data.get("at") or 0.0)
+                if at > latest[0]:
+                    latest = (at, data.get("scheduled_at"))
+            except (OSError, ValueError, TypeError):
+                continue
+    except OSError:
+        pass
+    return latest
+
+
+def _account_last_post_marker() -> float:
+    """Latest core.twitter last-post timestamp across accounts (0 if none):
+    a step that changed it really posted (steps that find nothing to post
+    exit 0 too, so they must not count toward the pacing)."""
+    latest = 0.0
+    try:
+        for path in twitter_core.TWITTER_COORD_DIR.glob("last_post_*.txt"):
+            try:
+                latest = max(latest, float(path.read_text(encoding="ascii").strip()))
+            except (OSError, ValueError):
+                continue
+    except OSError:
+        pass
+    return latest
+
+
 def _subprocess_env(extra: dict[str, str] | None = None) -> dict[str, str]:
     env = os.environ.copy()
     env["PYTHONUTF8"] = "1"
@@ -72,14 +191,48 @@ def _subprocess_env(extra: dict[str, str] | None = None) -> dict[str, str]:
     # les posts "priority early" pendant la collecte descendent a 0. Voir
     # core.twitter._twitter_account_slot.
     env.setdefault("TWITTER_POST_PRIORITY", "3")
+    if _SCHEDULE_AT is not None:
+        env["TWITTER_SCHEDULE_AT"] = _SCHEDULE_AT.isoformat(timespec="minutes")
+        # Several posts in one step (overtakes, milestones): spaced by the
+        # current paced spacing on X too.
+        env["TWITTER_SCHEDULE_GAP_SECONDS"] = str(_PACING_SPACING_SECONDS or PACING_BASE_SECONDS)
+    elif _PACING_SPACING_SECONDS is not None:
+        env["TWITTER_ACCOUNT_SPACING_MIN_SECONDS"] = str(_PACING_SPACING_SECONDS)
+        env["TWITTER_ACCOUNT_SPACING_MAX_SECONDS"] = str(_PACING_SPACING_SECONDS + PACING_JITTER_SECONDS)
     if extra:
         env.update(extra)
     return env
 
 
 def _run_subprocess(cmd: list[str], **kwargs):
-    env = kwargs.pop("env", None)
-    return subprocess.run(cmd, env=_subprocess_env(env), **kwargs)
+    """Run a child script. Its output is read line by line and re-printed
+    (2026-10-04) instead of going straight to the inherited console handle,
+    so every post/export line gets the live log's [HH:MM:SS] prefix and lands
+    in the per-attempt run log. Callers asking for captured output
+    (stdout=/capture_output=) keep plain subprocess.run."""
+    env = _subprocess_env(kwargs.pop("env", None))
+    if any(k in kwargs for k in ("stdout", "stderr", "capture_output")):
+        return subprocess.run(cmd, env=env, **kwargs)
+    check = bool(kwargs.pop("check", False))
+    env["PYTHONUNBUFFERED"] = "1"
+    proc = subprocess.Popen(
+        cmd,
+        env=env,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.STDOUT,
+        text=True,
+        encoding="utf-8",
+        errors="replace",
+        bufsize=1,
+        **kwargs,
+    )
+    assert proc.stdout is not None
+    for raw in proc.stdout:
+        print(raw.rstrip("\r\n"), flush=True)
+    returncode = proc.wait()
+    if check and returncode != 0:
+        raise subprocess.CalledProcessError(returncode, cmd)
+    return subprocess.CompletedProcess(cmd, returncode)
 
 
 class StepTimer:
@@ -92,6 +245,7 @@ class StepTimer:
     @contextmanager
     def step(self, name: str):
         start = time.perf_counter()
+        live_log.set_phase(f"FINALIZE · {name}")
         try:
             yield
         finally:
@@ -1321,6 +1475,25 @@ def _rank_albums_for_posting(albums: list[str], stats_date: str) -> list[str]:
     return ranked
 
 
+def _drop_blocked_albums(albums: list[str], stats_date: str) -> dict[str, float]:
+    """Weekday albums whose daily dropped past
+    ``score_album_update.DAILY_DROP_TOLERANCE_PCT`` with no rescue (several
+    track best-day records / big jumps, album record, strong weekly gain):
+    no card that day (decision 2026-10-04). Applies to Showgirl/TTPD too —
+    forcing them only guarantees a slot when they are postable. Scores are
+    cached, so this is free after ranking; a failure blocks nothing."""
+    try:
+        scored = _score_albums_for_posting(albums, stats_date)
+    except Exception as exc:
+        print(f"[all-albums] daily-drop gate failed ({exc}); no album skipped by it.")
+        return {}
+    return {
+        str(item["album"]): float(item.get("daily_pct_gain") or 0.0)
+        for item in scored
+        if item.get("status") == "scored" and item.get("drop_blocked")
+    }
+
+
 def _weekend_album_post_queue(ctx: FinalizeContext, stats_date: str) -> list[tuple[str, bool]]:
     """Weekend album cards: normal style when the album still has a positive
     daily gain vs yesterday, weekly-only style as a fallback when it doesn't
@@ -1425,6 +1598,14 @@ def _album_post_queue(
         print(f"[all-albums] skipped before ranking (already posted): {', '.join(already_posted)}")
 
     ranked = _rank_albums_for_posting(postable, stats_date)
+    drop_blocked = _drop_blocked_albums(postable, stats_date)
+    if drop_blocked:
+        ranked = [album for album in ranked if album not in drop_blocked]
+        print(
+            "[all-albums] skipped (daily drop past "
+            f"-{score_album_update.DAILY_DROP_TOLERANCE_PCT:.0f}%, no track records/jumps to rescue): "
+            + ", ".join(f"{album} {pct:+.1f}%" for album, pct in drop_blocked.items())
+        )
     if len(ranked) <= 2:
         return [(album, False) for album in ranked]
     primary_cf = {name.casefold() for name in PRIMARY_ALBUM_UPDATE_TARGETS}
@@ -1434,10 +1615,13 @@ def _album_post_queue(
     done_cf |= {album.casefold() for album in forced}
     tail = [album for album in ranked if album.casefold() not in done_cf]
 
+    # The drop gate already skips the weak end of the ranking; only top up to
+    # BOTTOM_ALBUMS_SKIPPED skipped cards with the bottom of the tail.
+    bottom_skip = max(0, BOTTOM_ALBUMS_SKIPPED - len(drop_blocked))
     dropped: list[str] = []
-    if len(tail) > BOTTOM_ALBUMS_SKIPPED:
-        dropped = tail[-BOTTOM_ALBUMS_SKIPPED:]
-        tail = tail[: -BOTTOM_ALBUMS_SKIPPED]
+    if bottom_skip and len(tail) > bottom_skip:
+        dropped = tail[-bottom_skip:]
+        tail = tail[:-bottom_skip]
 
     queue = top2 + forced + tail
     if forced:
@@ -1447,37 +1631,45 @@ def _album_post_queue(
     return [(album, False) for album in queue]
 
 
-def _showgirl_lead_album(
+def _urgent_albums(
     album_queue: list[tuple[str, bool]], stats_date: str
-) -> tuple[str, bool] | None:
-    """Showgirl's queue entry when its album score reaches
-    SHOWGIRL_LEAD_SCORE_MIN (it then posts first in finalize), else None.
-    Only an album already in the day's queue can lead — the weekend gating,
-    Holiday block and same-album-overtake removal all still apply. Scores are
-    cached by score_album_update, so this re-read is free after ranking."""
+) -> list[tuple[str, bool]]:
+    """Queue entries whose album score reaches URGENT_ALBUM_SCORE_MIN, best
+    score first — they post in finalize's urgent phase. Only albums already
+    in the day's queue qualify (weekend gating, Holiday block, daily-drop gate
+    and same-album-overtake removal all still apply). Scores are cached by
+    score_album_update, so this re-read is free after ranking."""
     lead_cf = SHOWGIRL_LEAD_ALBUM.casefold()
-    entry = next((item for item in album_queue if item[0].casefold() == lead_cf), None)
-    if entry is None:
-        return None
     if post_best_day_since_twitter.in_encore_week(stats_date):
         # Encore release week (decision 2026-09-25): Showgirl always leads,
         # whatever its score.
-        print(f"[all-albums] Encore week: {entry[0]} posts first (before any best-day-since).")
-        return entry
+        entry = next((item for item in album_queue if item[0].casefold() == lead_cf), None)
+        if entry is not None:
+            print(f"[all-albums] Encore week: {entry[0]} posts in the urgent phase.")
+            return [entry]
+        return []
     try:
-        scored = _score_albums_for_posting([entry[0]], stats_date)
+        scored = _score_albums_for_posting([album for album, _weekly in album_queue], stats_date)
     except Exception as exc:
-        print(f"[all-albums] Showgirl lead check failed ({exc}); keeping normal order.")
-        return None
-    item = scored[0] if scored else {}
-    score = float(item.get("score") or 0.0)
-    if item.get("status") != "scored" or score < SHOWGIRL_LEAD_SCORE_MIN:
-        return None
-    print(
-        f"[all-albums] {entry[0]} score {score:.0f} >= {SHOWGIRL_LEAD_SCORE_MIN:.0f}: "
-        "posting its card first."
-    )
-    return entry
+        print(f"[all-albums] urgent album check failed ({exc}); keeping normal order.")
+        return []
+    scores = {
+        str(item["album"]): float(item.get("score") or 0.0)
+        for item in scored
+        if item.get("status") == "scored"
+    }
+    urgent = [
+        entry for entry in album_queue
+        if scores.get(entry[0], 0.0) >= URGENT_ALBUM_SCORE_MIN
+    ]
+    urgent.sort(key=lambda entry: scores[entry[0]], reverse=True)
+    urgent = urgent[:URGENT_ALBUM_MAX]
+    if urgent:
+        print(
+            f"[all-albums] urgent (score >= {URGENT_ALBUM_SCORE_MIN:.0f}): "
+            + ", ".join(f"{album} {scores[album]:.0f}" for album, _weekly in urgent)
+        )
+    return urgent
 
 
 def _post_all_albums(ctx: FinalizeContext, state: dict[str, float]) -> None:
@@ -1573,12 +1765,14 @@ def _post_best_day_since_recap_fallback(ctx: FinalizeContext, state: dict[str, f
     )
 
 
-def _best_day_since_candidate_tracks(ctx: FinalizeContext) -> list[str]:
+def _best_day_since_candidate_tracks(ctx: FinalizeContext) -> tuple[list[str], set[str]]:
     """Ask post_best_day_since_twitter.py which individual song track ids the
     finalize batch would post today (same selection/caps as the old
     single-call batch), without posting anything. Used to interleave each
     song 1-for-1 with the album queue instead of posting the whole batch as
-    one alternation turn. Never blocks finalize -- returns [] on any failure."""
+    one alternation turn. Returns (ordered track ids, urgent subset — biggest
+    day of the year / gap >= 3 months, posted in the urgent phase).
+    Never blocks finalize -- returns ([], set()) on any failure."""
     best_day_script = ctx.script_dir / "tools" / "scripts" / "post_best_day_since_twitter.py"
     cmd = [sys.executable, str(best_day_script), ctx.summary["stats_date"], "--list-batch-candidates"]
     if ctx.posted_best_day_since_tracks:
@@ -1587,21 +1781,23 @@ def _best_day_since_candidate_tracks(ctx: FinalizeContext) -> list[str]:
         result = subprocess.run(cmd, capture_output=True, text=True, encoding="utf-8", errors="replace", check=False)
     except Exception as exc:
         print(f"[best-day-since] Failed to list batch candidates: {exc}")
-        return []
+        return [], set()
     for line in reversed(result.stdout.splitlines()):
         if line.startswith("BATCH_CANDIDATES_JSON:"):
             try:
                 data = json.loads(line.split(":", 1)[1].strip())
-                return [str(tid) for tid in (data.get("track_ids") or [])]
+                track_ids = [str(tid) for tid in (data.get("track_ids") or [])]
+                urgent = {str(tid) for tid in (data.get("urgent_track_ids") or [])} & set(track_ids)
+                return track_ids, urgent
             except Exception as exc:
                 print(f"[best-day-since] Failed to parse batch candidates ({exc}): {line}")
-                return []
+                return [], set()
     print("[best-day-since] No BATCH_CANDIDATES_JSON line found; skipping individual song posts.")
     if result.stdout:
         print(result.stdout[-2000:])
     if result.stderr:
         print(result.stderr[-2000:])
-    return []
+    return [], set()
 
 
 def _post_one_best_day_track(
@@ -1903,28 +2099,85 @@ def run_final_update_tasks(ctx: FinalizeContext) -> None:
         if ctx.skip_post_images:
             print("[NO-POST] Post steps and their image generation skipped.")
 
+        # Pacing (2026-10-04): False during the urgent phase, then True — each
+        # paced step's post waits _paced_spacing_seconds(paced_posts_done).
+        # Persisted per stats date: a resumed finalize continues the curve and
+        # chains its X schedule slots after the ones already programmed.
+        pacing = {"active": False, **_load_pacing_state(ctx.summary["stats_date"])}
+        if pacing["done"] or pacing.get("last_slot_at"):
+            print(
+                f"[pacing] resuming: {pacing['done']} paced post(s) already made"
+                + (f", last X slot {pacing['last_slot_at']}" if pacing.get("last_slot_at") else "")
+            )
+
         def _guarded_post_step(step_label: str, fn, key: str | None = None) -> None:
+            global _PACING_SPACING_SECONDS, _SCHEDULE_AT
             if ctx.skip_post_images:
                 return
             if key is not None and key in ctx.skip_steps:
                 print(f"[SKIP] {step_label} skipped (--skip {key}).")
                 return
+            post_before = _account_last_post_marker() if pacing["active"] else 0.0
+            schedule_before = _account_last_schedule_marker()[0] if pacing["active"] else 0.0
+            if pacing["active"]:
+                _PACING_SPACING_SECONDS = _paced_spacing_seconds(pacing["done"])
+                if SCHEDULE_PACED_POSTS and not ctx.no_post_mode:
+                    _SCHEDULE_AT = _next_schedule_slot(pacing)
+                    print(
+                        f"[pacing] {step_label}: programme sur X a {_SCHEDULE_AT:%H:%M} "
+                        f"(post rythme #{pacing['done'] + 1}, +{_PACING_SPACING_SECONDS}s)"
+                    )
+                else:
+                    print(f"[pacing] {step_label}: >= {_PACING_SPACING_SECONDS}s after the previous post")
             with timer.step(step_label):
                 try:
-                    fn()
+                    try:
+                        fn()
+                    except SystemExit as exc:
+                        nothing_out = (
+                            _account_last_schedule_marker()[0] <= schedule_before
+                            and _account_last_post_marker() <= post_before
+                        )
+                        if _SCHEDULE_AT is None or not nothing_out:
+                            raise
+                        # X scheduling failed before anything went out (modal
+                        # changed, slot refused...): post it live instead of
+                        # losing it. Already-posted items skip via their locks.
+                        print(f"[pacing] {step_label}: programmation X echouee ({exc}) — repli en post direct")
+                        _SCHEDULE_AT = None
+                        fn()
                 except SystemExit as exc:
                     print(f"{step_label} failed; continuing finalization: {exc}")
                     post_step_failures.append(f"{step_label} ({exc})")
+                finally:
+                    _PACING_SPACING_SECONDS = None
+                    _SCHEDULE_AT = None
+            if not pacing["active"]:
+                return
+            schedule_after, scheduled_at = _account_last_schedule_marker()
+            if schedule_after > schedule_before and scheduled_at:
+                pacing["done"] += 1
+                pacing["last_slot_at"] = scheduled_at
+            elif _account_last_post_marker() > post_before:
+                pacing["done"] += 1  # posted live (thread, or slot too close)
+            else:
+                return
+            _save_pacing_state(ctx.summary["stats_date"], pacing)
 
-        # Ordre de post (décision 2026-09-03) :
-        #   1. récap weekend  2. top eras  3. top songs
+        # Ordre de post (décision 2026-09-03, phase urgente revue le 2026-10-04) :
+        #   Phase urgente (espacement normal 60-75 s) :
+        #     1. récap weekend  2. best-day-since urgents (biggest day of the
+        #     year / écart >= 3 mois)  3. cards album urgentes (score >= 70)
+        #     4. top eras  5. top songs
+        #   Puis tout le reste en rythme logarithmique (pauses de plus en plus
+        #   longues, voir _paced_spacing_seconds) :
         #   4. cards album (2 meilleurs au score_album_update -> Showgirl/TTPD
         #      s'ils n'y sont pas -> reste par score) ALTERNÉES 1-pour-1 avec les
         #      autres posts (debut, best-day-since, weekend gainers, overtakes,
         #      milestones)
         #   5. tables gainers (spotlight), toujours en dernier
-        # Exception (2026-09-24) : si le score album de Showgirl est « wow »
-        # (>= SHOWGIRL_LEAD_SCORE_MIN), sa card passe AVANT tout (étape 0).
+        # Cards album urgentes (2026-09-24 Showgirl, tout album depuis le
+        # 2026-10-04) : score >= URGENT_ALBUM_SCORE_MIN -> phase urgente.
         # Semaine Encore (stats 2026-09-24 -> 09-30) : toujours, sans condition
         # de score, et best-day-since plafonné à 3 cards chanson.
         album_queue: list[tuple[str, bool]] = []
@@ -1953,23 +2206,45 @@ def run_final_update_tasks(ctx: FinalizeContext) -> None:
                     album_queue = kept
         album_img_script = ctx.script_dir / "tools" / "scripts" / "generate_album_update_image.py"
 
-        lead_album = _showgirl_lead_album(album_queue, ctx.summary["stats_date"]) if album_queue else None
-        if lead_album is not None:
-            album_queue = [item for item in album_queue if item is not lead_album]
+        best_day_script = ctx.script_dir / "tools" / "scripts" / "post_best_day_since_twitter.py"
+        best_day_tracks: list[str] = []
+        urgent_best_day_tracks: set[str] = set()
+        if not ctx.debug_daily_mode and not ctx.local_test_mode:
+            if "best-day-since" in ctx.skip_steps:
+                print("Best-day-since posts skipped (--skip best-day-since).")
+            elif ctx.best_day_last:
+                print("Best-day-since posts deferred to the end of finalize (--best-day-last).")
+            elif ctx.skip_post_images:
+                pass
+            elif ctx.summary.get("all_done"):
+                best_day_tracks, urgent_best_day_tracks = _best_day_since_candidate_tracks(ctx)
+            else:
+                print("Best-day-since posts skipped: not all tracks are done yet.")
+
+        _guarded_post_step("weekend recap card", lambda: _post_daily_recap_card(ctx, post_state), key="recap")
+
+        for track_id in [tid for tid in best_day_tracks if tid in urgent_best_day_tracks]:
             _guarded_post_step(
-                f"album update lead ({lead_album[0]})",
-                lambda: _post_one_album(
+                f"best-day-since urgent post ({track_id})",
+                lambda tid=track_id: _post_one_best_day_track(ctx, post_state, best_day_script, tid),
+            )
+
+        urgent_albums = _urgent_albums(album_queue, ctx.summary["stats_date"]) if album_queue else []
+        if urgent_albums:
+            album_queue = [item for item in album_queue if item not in urgent_albums]
+        for urgent_album, urgent_weekly_only in urgent_albums:
+            _guarded_post_step(
+                f"album update urgent ({urgent_album})",
+                lambda album=urgent_album, weekly_only=urgent_weekly_only: _post_one_album(
                     ctx,
                     post_state,
                     album_img_script,
-                    lead_album[0],
+                    album,
                     post_priority="4",
-                    weekly_only=lead_album[1],
+                    weekly_only=weekly_only,
                 ),
                 key="all-albums",
             )
-
-        _guarded_post_step("weekend recap card", lambda: _post_daily_recap_card(ctx, post_state), key="recap")
 
         if not ctx.debug_daily_mode and not ctx.local_test_mode:
             _guarded_post_step("top eras post", lambda: _post_albums_daily(ctx, post_state), key="top-eras")
@@ -1982,27 +2257,23 @@ def run_final_update_tasks(ctx: FinalizeContext) -> None:
                 key="best-day-since",
             )
 
+        # End of the urgent phase: everything below is paced.
+        pacing["active"] = True
+
         other_steps: list[tuple[str, Callable[[], None]] | tuple[str, Callable[[], None], str]] = []
         if not ctx.debug_daily_mode and not ctx.local_test_mode:
             other_steps.append(("debut posts", lambda: _post_debut_releases(ctx, post_state), "debut"))
             # Each candidate gets its own alternation turn against the album
             # queue (decision 2026-09-04), instead of the whole best-day-since
-            # batch posting back to back as a single turn.
-            if "best-day-since" in ctx.skip_steps:
-                print("Best-day-since posts skipped (--skip best-day-since).")
-            elif ctx.best_day_last:
-                print("Best-day-since posts deferred to the end of finalize (--best-day-last).")
-            elif ctx.skip_post_images:
-                pass
-            elif ctx.summary.get("all_done"):
-                best_day_script = ctx.script_dir / "tools" / "scripts" / "post_best_day_since_twitter.py"
-                for track_id in _best_day_since_candidate_tracks(ctx):
-                    other_steps.append((
-                        f"best-day-since post ({track_id})",
-                        lambda tid=track_id: _post_one_best_day_track(ctx, post_state, best_day_script, tid),
-                    ))
-            else:
-                print("Best-day-since posts skipped: not all tracks are done yet.")
+            # batch posting back to back as a single turn. Urgent ones already
+            # posted above.
+            for track_id in best_day_tracks:
+                if track_id in urgent_best_day_tracks:
+                    continue
+                other_steps.append((
+                    f"best-day-since post ({track_id})",
+                    lambda tid=track_id: _post_one_best_day_track(ctx, post_state, best_day_script, tid),
+                ))
         other_steps.append(("weekend song gainers", lambda: _post_weekend_song_gainers(ctx, post_state), "weekend-gainers"))
         other_steps.append(("song overtakes", lambda: _post_song_overtakes(ctx, post_state), "overtakes"))
         other_steps.append(("stream milestones", lambda: _post_stream_milestones(ctx, post_state), "milestones"))

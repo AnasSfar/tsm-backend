@@ -28,6 +28,10 @@
       "due_at": "2026-10-02T22:00:19+00:00",
       "offset_seconds": 0,
       "source": "scheduled_task"
+    },
+    "4": {
+      "missed": true,
+      "due_at": "2026-10-03T22:00:19+00:00"
     }
   },
   "posts": {
@@ -45,6 +49,10 @@
       "tweet": "🎥 | ❤️‍🔥 \"Patient Zero\" music video daily views on YouTube:\n\nDAY 1 - 4,497,126\nDAY 2 - 3,281,343 (-27.0%)\nDAY 3 - 2,120,553 (-35.4%)",
       "image": "snapshots/youtube/videos/2026/10/2026-10-02/first_week_patient_zero_mw3kSNIxjqo_day3.png",
       "at": "2026-10-02T22:00:19+00:00"
+    },
+    "4": {
+      "status": "skipped",
+      "reason": "day figure unknown (missed window)"
     }
   }
 }

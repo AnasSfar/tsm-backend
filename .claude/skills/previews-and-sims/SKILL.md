@@ -135,6 +135,19 @@ each child BEFORE importing `twitter`, constants are read at import). A "post" =
 1 s fake browser + `_wait_account_spacing` + `_mark_account_posted`. Reuse it for any change
 to post priority/spacing/locks.
 
+### Pattern: finalize pacing / X scheduling / live log (no browser, no post)
+
+`previews_and_sims/finalize-pacing-schedule-logs/simulate.py` imports the real
+`finalize_update`, `core.twitter`, `live_log` and `reporting`, redirects
+`finalize_update.update_streams_dir` and `core.twitter.TWITTER_COORD_DIR` into the sim
+folder, then checks the paced X-schedule slot chain across a simulated interruption
+(state reloaded from disk), the in-process schedule gap / too-close fallback of
+`_env_schedule_at`, `_run_subprocess` piping and the `[PHASE]`/`[STATUS]` log lines
+(`live_log.install(..., own_file=True, log_dir=<sim>)`, `STATUS_EVERY_SECONDS` lowered).
+Pitfall: running `update_streams.py --help` for a smoke test creates a real
+`snapshots/.../logs/*_attemptNN.txt` + rewrites `.latest.txt` (CollectorRunLog) — delete it
+and restore `.latest.txt` afterwards.
+
 ### Pitfall: headless Chrome mobile width
 
 `--window-size=390,...` is silently clamped (Chrome min window width ~500px):

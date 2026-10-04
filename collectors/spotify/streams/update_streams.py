@@ -48,6 +48,7 @@ from finalize_update import (
 from post_best_day_since_twitter import in_encore_week
 from release_targets import is_recent_release_date
 from reporting import ProgressLogger, print_remaining_details, print_summary_block, update_json_logs_from_summary
+import live_log
 import spotify_api as _spotify_api
 from stream_utils import (
     block_unneeded,
@@ -210,6 +211,9 @@ PENDING_RETRY_SLEEP_SECONDS = 20
 EXTRA_PENDING_RETRY_ROUNDS_BEFORE_ZERO = 5
 INFINITE_RETRY_PREVIOUS_DAY_TOP_N = 70
 POST_BETWEEN_STREAMS_POSTS_SECONDS = 0
+# Probe retry loop: full detail on the first attempt, then one summary every N
+# attempts (the live status line / [STATUS] heartbeat covers the rest).
+PROBE_LOG_EVERY = 30
 INCREMENTAL_PUBLISH_ON_UPDATE = False
 
 NOT_FOUND_STREAK_PATH = DATA_DIR / "not_found_streak.json"
@@ -2816,6 +2820,7 @@ def main():
     snapshot_date = stats_date_override or get_stats_date_str()
     snapshot_collected_date = get_scrape_date_str()
     stats_date = snapshot_date
+    live_log.set_stats_date(stats_date)
 
     if force_reprocess and not any((dry_run_mode, local_test_mode, debug_daily_mode, debug_total_mode, test_mode, throwback_mode)):
         removed = delete_history_rows_for_date(stats_date)
@@ -3215,6 +3220,7 @@ def main():
         print(f"Backfill detected: history has data up to {last_history_date} but {stats_date} has no data.")
         print(f"Advancing stats_date to {last_history_date} for export/post.")
         stats_date = last_history_date
+        live_log.set_stats_date(stats_date)
         stats_date_override = stats_date  # propagate to run_update() and summary
         tracks = filter_tracks_released_for_stats_date(load_tracks_from_discography(active_track_ids), stats_date)
         total_tracks = len(tracks)
@@ -3321,6 +3327,11 @@ def main():
                     f"[debut] Attempt {attempt}/{NEW_RELEASE_RETRY_ATTEMPTS}: "
                     f"scraping {len(missing_ids)} new release track(s)."
                 )
+                live_log.set_phase(
+                    "COLLECTE nouvelles sorties",
+                    total=len(missing_ids),
+                    detail=f"essai {attempt}/{NEW_RELEASE_RETRY_ATTEMPTS}",
+                )
                 priority_progress = ProgressLogger(LOG_MODE)
                 priority_summary = run_update(
                     on_progress=priority_progress,
@@ -3374,6 +3385,12 @@ def main():
 
     if should_run_probe:
         recent_probe_batches: deque[set[str]] = deque(maxlen=PROBE_RECENT_BATCH_MEMORY)
+        live_log.set_phase("SONDE Spotify", detail="attente des nouveaux totaux du jour")
+        probe_log = {"attempt": 0, "started": time.monotonic(), "last_cs": None}
+
+        def _probe_should_log() -> bool:
+            n = probe_log["attempt"]
+            return LOG_MODE == "verbose" or n <= 1 or n % PROBE_LOG_EVERY == 0
 
         def _recent_probe_track_ids() -> set[str]:
             return set().union(*recent_probe_batches) if recent_probe_batches else set()
@@ -3394,6 +3411,8 @@ def main():
             print("Probe skipped: no probe tracks found in database.")
         else:
             def _print_probe_progress(row, scanned, total):
+                if not _probe_should_log():
+                    return
                 kind = "extra" if row.get("chart_extra") else "non-extra"
                 if row["status"] == "ok":
                     print(
@@ -3411,6 +3430,13 @@ def main():
                     )
 
             def _print_probe(probe, *, print_rows: bool = False):
+                live_log.set_detail(
+                    f"essai {probe_log['attempt'] + 1} · {probe.get('updated_non_extra_probes', 0)}/"
+                    f"{PROBE_REQUIRED_UPDATED} non-extra a jour · depuis "
+                    f"{live_log.fmt_duration(time.monotonic() - probe_log['started'])}"
+                )
+                if not _probe_should_log() and not probe.get("can_start_full_run"):
+                    return
                 print(
                     f"Probe result | successful={probe['successful_probes']} | "
                     f"updated={probe['updated_probes']} | "
@@ -3434,8 +3460,13 @@ def main():
 
             def _print_chartsnapshot_probe(probe: dict):
                 if probe.get("error"):
-                    print(f"ChartSnapshot probe failed: {probe['error']}")
+                    # Same error every attempt (404 until the day exists): only
+                    # print it when it changes or on a logged attempt.
+                    if probe["error"] != probe_log["last_cs"] or _probe_should_log():
+                        print(f"ChartSnapshot probe failed: {probe['error']}")
+                    probe_log["last_cs"] = probe["error"]
                     return
+                probe_log["last_cs"] = None
                 print(
                     "ChartSnapshot probe result | source=chartsnapshot | "
                     f"rows={probe['source_rows']} | "
@@ -3465,12 +3496,21 @@ def main():
                 chartsnapshot_probe_disabled = False
                 while not api_probe["can_start_full_run"]:
                     probe_retry_count += 1
-                    print()
-                    print("Spotify playcount API does not appear to expose the next daily totals yet.")
-                    if not chartsnapshot_probe_disabled:
+                    probe_log["attempt"] = probe_retry_count
+                    if _probe_should_log():
+                        print()
                         print(
-                            f"Checking ChartSnapshot for {stats_date} before the next Spotify probe..."
+                            "Spotify playcount API does not appear to expose the next daily totals yet "
+                            f"(attempt {probe_retry_count}, waiting for "
+                            f"{live_log.fmt_duration(time.monotonic() - probe_log['started'])})."
+                            + ("" if LOG_MODE == "verbose" or probe_retry_count <= 1
+                               else f" Next summary in {PROBE_LOG_EVERY} attempts.")
                         )
+                    if not chartsnapshot_probe_disabled:
+                        if _probe_should_log():
+                            print(
+                                f"Checking ChartSnapshot for {stats_date} before the next Spotify probe..."
+                            )
                         chartsnapshot_probe = probe_chartsnapshot_update(stats_date, tracks)
                         _print_chartsnapshot_probe(chartsnapshot_probe)
                         if chartsnapshot_probe.get("blocked_reason") == "chartsnapshot_role_required":
@@ -3481,17 +3521,19 @@ def main():
                             probe_confirmed_full_run = True
                             confirmed_probe = chartsnapshot_probe
                             break
-                    print(
-                        f"Retrying probe in 2 seconds until "
-                        f"{PROBE_REQUIRED_UPDATED} non-extra track(s) update "
-                        f"(attempt {probe_retry_count})."
-                    )
+                    if _probe_should_log():
+                        print(
+                            f"Retrying probe in 2 seconds until "
+                            f"{PROBE_REQUIRED_UPDATED} non-extra track(s) update "
+                            f"(attempt {probe_retry_count})."
+                        )
                     time.sleep(2)
                     probe_tracks = _next_probe_tracks()
                     if not probe_tracks:
                         print("Probe skipped: no probe tracks found in database.")
                         break
-                    print(f"Running probe check... [API] ({len(probe_tracks)} track(s))")
+                    if _probe_should_log():
+                        print(f"Running probe check... [API] ({len(probe_tracks)} track(s))")
                     api_probe = _probe_via_api(
                         probe_tracks,
                         token_mgr,
@@ -3508,6 +3550,11 @@ def main():
                 if api_probe and api_probe.get("can_start_full_run") and not probe_confirmed_full_run:
                     probe_confirmed_full_run = True
                     confirmed_probe = api_probe
+                if probe_retry_count:
+                    print(
+                        f"[PROBE] Spotify a publie les nouveaux totaux apres {probe_retry_count} essai(s) "
+                        f"({live_log.fmt_duration(time.monotonic() - probe_log['started'])} d'attente)."
+                    )
             else:
                 print("Probe via API unavailable (no token) â€” skipping probe, starting run.")
     elif debug_daily_mode:
@@ -3748,6 +3795,7 @@ def main():
         all_updated_track_ids.add(track_id)
         return True
 
+    live_log.set_phase("COLLECTE", detail="tous les tracks du jour")
     progress = ProgressLogger(LOG_MODE)
     summary = run_update(
         on_progress=progress,
@@ -3919,9 +3967,15 @@ def main():
                 f"Waiting {PENDING_RETRY_SLEEP_SECONDS}s after HTTP 409 before retrying "
                 f"{len(pending_retry_ids)} pending unchanged-total track(s)..."
             )
+            live_log.set_phase("PAUSE 409", detail=f"{PENDING_RETRY_SLEEP_SECONDS}s avant retry")
             time.sleep(PENDING_RETRY_SLEEP_SECONDS)
 
         retry_round += 1
+        live_log.set_phase(
+            f"RETRY round {retry_round}",
+            total=len(pending_retry_ids),
+            detail=f"{len(pending_retry_ids)} track(s) pending",
+        )
 
         print()
         print(
@@ -4095,6 +4149,11 @@ def main():
             )
             tracks_list = "\n".join(f"â€¢ {title}" for title in missing_titles)
             completeness_round += 1
+            live_log.set_phase(
+                f"COMPLETUDE round {completeness_round}",
+                total=len(missing_non_extra),
+                detail=f"{len(missing_non_extra)} non-extra manquant(s) — posts bloques",
+            )
             print(
                 f"\nâ›” Completeness check round {completeness_round}: "
                 f"{len(missing_non_extra)} non-extra track(s) still missing for {stats_date}:\n{tracks_list}"
@@ -4343,6 +4402,7 @@ if __name__ == "__main__":
         get_stats_date_str(),
     )
     with CollectorRunLog("spotify_streams", "spstr", _log_date):
+        live_log.install("update_streams", _log_date)
         try:
             main()
         except KeyboardInterrupt:
