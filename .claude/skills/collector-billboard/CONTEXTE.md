@@ -83,9 +83,23 @@ score comme Spotify (volume direct x poids), pas comme Apple Music
 (power-law de rang) :
 
 - `_weekly_youtube_views()` (`swift_top_100.py`) somme `daily_views` par
-  titre normalise (`_chart_lookup_key`) sur les jours de la semaine ; lignes
-  a `daily_views` vide sautees (pas traitees comme 0 — meme regle que la
-  source, cf. `data-rules`).
+  titre normalise (`_chart_lookup_key`) sur les jours de la semaine ; une
+  ligne a `daily_views` vide n'est jamais traitee comme 0 : depuis le
+  2026-10-04 son `period_gain_views` exact compte a la place si toute sa
+  fenetre (`date - period_days + 1 .. date`) est dans la semaine — le weekly
+  n'a besoin que des snapshots de bord de semaine, pas de chaque jour. Une
+  periode qui chevauche le debut de semaine n'est pas decoupable exactement :
+  exclue + log `⚠ youtube : period gain(s) ... left out` (ex. ligne du
+  2026-10-02 = gain 01/10+02/10, a cheval sur les semaines 25/09-01/10 et
+  02/10-08/10). La serie jour par jour (`return_daily`) ne contient que les
+  vrais daily (un gain multi-jours fausserait le rythme de la projection) ;
+  le live prend `_youtube_period_dates()` en plus pour son `data_as_of`
+  YouTube, pour ne jamais re-projeter un jour deja couvert par une periode.
+  Depuis le meme jour, `collectors/youtube/core/gap_fill.py` estime les jours
+  manques directement en `daily_views` (colonne `estimated`) : ce repli
+  period gain ne sert plus que quand aucune estimation n'est possible. Les
+  semaines TayBoard deja publiees (25/09-01/10 sans le 01/10, etc.) restent
+  gelees, pas de recalcul automatique.
 - `units_youtube = weekly_youtube_views * YOUTUBE_WEIGHT` (`YOUTUBE_WEIGHT`,
   defaut `0.3`, env `TAYBOARD_YOUTUBE_WEIGHT`). Poids calibre le 2026-08-14
   (decision Anas) en comparant les volumes bruts reels sur une semaine :

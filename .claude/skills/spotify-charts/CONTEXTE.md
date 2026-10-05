@@ -31,6 +31,7 @@ comparaison requise.
 - `spotify-charts/`: skill Codex local pour ce pipeline.
 - `contexte.md`: ce fichier.
 - `artists_global/`: chart artiste global Taylor Swift.
+- `full_charts/`: top 200 complet (tous artistes, toutes regions) pour les classements annuels + filtre Taylor (voir "Top 200 complet").
 - `music_videos_global/`: Music Video Charts Global (top 50 videos quotidien).
 - `worldwide/`: collecteur central des charts par pays et snapshot mondial.
 - `global/`, `fr/`, `us/`, `uk/`: pipelines regionaux historiques, tweets,
@@ -42,6 +43,8 @@ traiter comme du code source ordinaire.
 ## Entrypoints
 
 ### Run quotidien
+
+Derniere etape (2026-10-05) : apres un run reussi avec collecte, lance en detache `full_charts/collect.py` (top 200 complet tous artistes + enrich) — voir "Top 200 complet".
 
 Commande principale:
 
@@ -495,9 +498,31 @@ logique (`movement` RE/vide sur de vrais jours 1, lignes doublons nom/track_id).
 
 **Highlights officiels Spotify sur Taylor (decision 2026-10-02, option a)** : chaque reponse de chart de l'API porte 4 `highlights` (`ARTIST_WITH_MOST_ENTRIES`, `HIGHEST_NEW_ENTRY`, `GREATEST_GAINER`, `LONGEST_STREAK`). `worldwide/daily.py` garde ceux qui mentionnent Taylor (`_parse_ts_highlights`, toutes regions, 0 requete en plus) dans le snapshot worldwide du jour, cle `ts_highlights: {region: [{type, text}]}` (regions refetchees remplacent, les autres sont conservees). Affichage : UNE ligne `📌 Spotify Charts: <texte Spotify verbatim, guillemets courbes -> droits>` (le plus notable : most spots > highest new entry > biggest gainer > longest streak), en tete du commentaire des posts Global/US/UK (`core/chart_comment.py::spotify_ts_highlight` dans `build_chart_comment`) et dans le post regional multi-titres (`_build_multi_song_region_tweet`). Garde-fou longueur : commentaire <= `COMMENT_CHAR_BUDGET` (400) car un texte > `TWITTER_TEXT_LIMIT` (500) n'est PAS poste ; le regional retire la ligne si ca deborde. Sim : `previews_and_sims/spotify-ts-highlights/simulate.py`.
 
-### Top 200 complet (tous artistes) — `scripts/backfill_spotify_full_charts.py` (2026-10-02)
+### Top 200 complet (tous artistes) — `full_charts/` (2026-10-02, dossier dedie 2026-10-05)
 
-`worldwide/daily.py` recoit deja le top 200 complet a chaque fetch mais `_parse_ts_entries` jette tout sauf Taylor. Ce script autonome garde TOUT pour une region (def. `global`, depuis 2025-01-01) : reponse API brute `.json.gz`, CSV reconstruit, covers 640 px. Usage : most streamed par annee (somme des streams de chart), place de Taylor, parts de marche. Champs utiles en plus : `entryDate`/`entryRank` (date + rang du debut de chaque titre, source fiable pour un futur classement des debuts), `peakDate`, `labels`, `releaseDate`, `highlights` du jour. Limite : jour hors top 200 = streams non comptes.
+`worldwide/daily.py` recoit deja le top 200 complet a chaque fetch mais `_parse_ts_entries` jette tout sauf Taylor. Le dossier `collectors/spotify/charts/full_charts/` garde TOUT, pour toutes les regions (decision 2026-10-05 : on commence par 2026, ~75 regions, ~20 800 requetes ≈ 10 h avec les pauses 429). Objectif produit : stats « most streamed songs / songs by female artists / albums / artists in 2026 on Spotify Charts » puis filtre Taylor pour poster sa position, format :
+
+```
+Most streamed songs in 2026 on Spotify Charts:
+
+#15 (+1) The Fate Of Ophelia
+#93 (+15) Patient Zero
+```
+
+- **Quotidien (2026-10-05)** : `run_all_charts.py` lance `collect.py --regions all --start 2026-01-01` en DERNIER, une fois le run usuel fini et reussi (avec collecte), en process detache (breakaway du job Task Scheduler) → le run quotidien n'attend pas et un rattrapage de plusieurs heures ne bloque pas la tache. ~75 requetes/jour + enrich. Verrou PID `collect.lock` : une collecte manuelle en cours → celle du soir sort sans rien faire. Off : `SPOTIFY_FULL_CHARTS_AFTER_RUN=0`. Log : `runtime/logs/spotify_full_charts_after_run_<date>.out`.
+- **Page frontend « All Artists » (2026-10-05)** : `export.py` (fin de `collect.py`, apres enrich) ecrit par region/annee l'agregat par chanson + `previous_songs` → R2 `charts-full/` (gzip) ; lu par `/api/charts/all-artists` (tsm-frontend, `pages/AllArtistsCharts.jsx`). Une region incomplete n'est jamais publiee (meme garde que stats.py). Peak/Days = all-time Spotify, streams/streak = annee. Colonne « <annee> Debut » = streams du jour d'entree (entryDate Spotify, verifie appearancesOnChart == 1) pour les titres entres au chart dans l'annee (Global 2026 : SWIM 14,6 M, Patient Zero 13,7 M #2). Filtres genre/type (Female/Male × Solo/Group) : rang recalcule dans le sous-ensemble, coupe au premier titre dont l'artiste principal n'est pas classe → plus `enrich.py` classe profond (`--classify-genders N`), plus les classements filtres vont loin (Global au 2026-10-05 : exact jusqu'au rang 566 sur 906 en total streams avec le top 300 classe).
+- `collect.py` (ex-`scripts/backfill_spotify_full_charts.py`) : appelle `enrich.run_enrich` en fin de collecte (`--no-enrich`, `--classify-genders N` def. 300) ; brut `.json.gz` intact (source de verite) + CSV par region/annee reconstruit des que la region est finie + covers 640 px. Champs utiles en plus : `entryDate`/`entryRank`, `peakDate`, `labels`, `releaseDate`, `highlights`.
+- `enrich.py` : album de chaque track_id (GraphQL getTrack ; l'API publique `/v1/tracks` repond 429 avec le token de session et il n'y a pas de client credentials dans `.env`) et genre de l'artiste principal (`db/spotify_charts_full/artist_genders.json`, seed `Artists.csv`, LLM uniquement sur demande, corriger a la main avec `source: manual`).
+- `stats.py` : classements cumules, mouvement = rang au `--as-of` vs rang a la date de chart precedente (convention `(NEW)` / `(=)` / `(+n)` / `(-n)`), rangs « competition » (ex aequo = meme rang), `--taylor` = texte du post (preview, aucun post).
+
+Definitions (decision 2026-10-05) :
+- streams = streams *de chart* : somme des jours ou le titre est dans le top 200 de la region ; jour hors top 200 = 0 (non publie). Toujours ecrire « on Spotify Charts ».
+- female = artiste PRINCIPAL (1er credite) femme SOLO — meme convention que le filtre `female` du chart artistes (un groupe, meme 100 % feminin, n'est pas « female »). `--female-groups` ajoute les groupes feminins : `artist_genders.json` garde le vrai genre des groupes (`F`/`GROUP` pour KATSEYE, BLACKPINK, aespa, ILLIT, LE SSERAFIM, TLC, t.A.T.u., Hearts2Hearts, HUNTR/X — `Artists.csv` les a en `NF`, convention « groupe = NF »).
+- albums = somme des titres dont l'album Spotify du track_id est cet album ; titres dont l'album est un `single` exclus (sauf `--include-singles`). Deluxe / editions = albums distincts tant qu'ils ne sont pas fusionnes dans `album_merges.json`. GraphQL getTrack ne donne pas les artistes de l'album : le 1er artiste du titre en tient lieu (filtre Taylor des albums).
+- artists = somme des titres ou l'artiste est principal.
+- Taylor = son artist_id present dans les credits (feat. inclus).
+
+**Identite de chart (2026-10-05)** : quand Spotify change le track_id d'un titre (single → version album, re-upload), le chart REPORTE l'entree : meme `entry_date`, `days_on_chart` = +1, et le lendemain `previous_rank` = rang de l'ancien id (ex. WHERE IS MY HUSBAND! 189 j → 190 j le 2026-03-27, prev_rank 27). `stats.py::chart_identity_links` fusionne SEULEMENT sur cette preuve (+ meme artiste principal, jamais les 2 ids le meme jour ; re-entree apres absence = previous_rank -1 + meme titre). 71 groupes candidats → 1 restant sur Global 2026 (NORMAL de BTS : NEW_ENTRY distincte cote Spotify, pas fusionnee). Piege : `entry_date` + jours seuls ne suffisent PAS (toutes les pistes d'un album debutent le meme jour : BTS 2026-03-20 avait fait absorber 1,2 Md a SWIM). Piege 2 : Spotify sert parfois une entree reportee avec metadonnees effacees (titre vide, « Various Artists » : Self Aware - Temper City, 2026-07-13..18) → lien autorise si l'un des ids est vide. Les albums gardent chaque track_id a part (les jours de la version single restent au single). Au-dela : jamais de fusion automatique (meme titre + meme artiste ≠ meme enregistrement : remix, sped up, live) — `stats.py --audit-duplicates` liste ce qui reste, la fusion va dans `track_merges.json` apres verification. Showgirl / The Encore = 2 albums Spotify distincts, FUSIONNES dans `db/spotify_charts_full/album_merges.json` (les fichiers de fusion vivent sous db/ : `*.json` est gitignore ailleurs) (decision utilisateur 2026-10-05 : Encore → Showgirl, #5 Global au 2026-10-03). Genres : le LLM se trompe sur les groupes feminins (BLACKPINK, TLC, t.A.T.u., HUNTR/X classes NF) — relire chaque lot, corriger en `source: manual`. Classement bloque si une date de chart manque entre le 1er janvier et `--as-of`, si un titre sans genre peut entrer dans la fenetre (female), si un seul titre n'a pas d'album (albums). Pas de post automatique : tout passage en post doit suivre `song-posting` + `data-rules`.
 
 ### Workflow recommande pour un gros rattrapage worldwide
 

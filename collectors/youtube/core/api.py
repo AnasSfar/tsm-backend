@@ -15,6 +15,18 @@ from .config import API_BASE, BATCH_SIZE
 # par _get. Sans retry, un seul timeout sur les ~60 appels d'un run tuait toute
 # la collecte (run du 2026-10-02 sorti en 0x1, jour 2026-10-01 perdu).
 _RETRY_DELAYS = (2, 5, 10)
+# Run quotidien : patience un peu plus longue (~3 min). Le 2026-10-04 à
+# 06:01-06:05 le DNS local ne répondait plus et (2, 5, 10) abandonnait après
+# 17 s -> jour perdu. Plafonné pour que snapshot_at reste dans
+# DAILY_WINDOW_TOLERANCE (update_youtube.py) : au-delà, le gain n'est plus un
+# daily exact et part en period gain.
+_DAILY_RETRY_DELAYS = (5, 10, 20, 40, 60, 60)
+
+
+def use_daily_retries() -> None:
+    """Switch _get to the long backoff (daily collection only)."""
+    global _RETRY_DELAYS
+    _RETRY_DELAYS = _DAILY_RETRY_DELAYS
 
 
 def _is_transient(exc: Exception) -> bool:

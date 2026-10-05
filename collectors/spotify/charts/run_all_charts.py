@@ -1182,6 +1182,45 @@ def _trigger_live_projection_after_charts() -> None:
     trigger_live_projection(log=lambda message: print(f"[Swift Top Live] {message}"))
 
 
+def _launch_full_charts_collect(env: dict[str, str], target_date: date) -> None:
+    """Full top 200 (every artist, every region) + enrich, AFTER the usual run.
+
+    Detached so run_all ends normally (a catch-up can take hours); one instance
+    at a time thanks to full_charts/collect.py's own lock. Off with
+    SPOTIFY_FULL_CHARTS_AFTER_RUN=0. See CONTEXTE.md "Top 200 complet"."""
+    if os.getenv("SPOTIFY_FULL_CHARTS_AFTER_RUN", "1").strip().lower() in {"0", "false", "no", "off"}:
+        print("[FULL CHARTS] desactive (SPOTIFY_FULL_CHARTS_AFTER_RUN=0)")
+        return
+    script = CHARTS_ROOT / "full_charts" / "collect.py"
+    log_dir = REPO_ROOT / "runtime" / "logs"
+    log_dir.mkdir(parents=True, exist_ok=True)
+    out_path = log_dir / f"spotify_full_charts_after_run_{target_date.isoformat()}.out"
+    cmd = [sys.executable, str(script), "--regions", "all", "--start", "2026-01-01", "--verbose"]
+    kwargs: dict = {"cwd": str(REPO_ROOT), "env": env, "stdin": subprocess.DEVNULL, "close_fds": True}
+    flag_sets: list[int] = [0]
+    if os.name == "nt":
+        base = subprocess.DETACHED_PROCESS | subprocess.CREATE_NEW_PROCESS_GROUP | subprocess.CREATE_NO_WINDOW
+        # Break away from the Task Scheduler job so ending the task does not kill it;
+        # fall back when the job forbids breakaway.
+        flag_sets = [base | 0x01000000, base]  # CREATE_BREAKAWAY_FROM_JOB
+    else:
+        kwargs["start_new_session"] = True
+    out = out_path.open("a", encoding="utf-8")
+    try:
+        for flags in flag_sets:
+            try:
+                proc = subprocess.Popen(cmd, stdout=out, stderr=subprocess.STDOUT,
+                                        **({"creationflags": flags} if os.name == "nt" else {}), **kwargs)
+            except OSError as exc:
+                last_exc = exc
+                continue
+            print(f"[FULL CHARTS] collecte top 200 complet + enrich lancee en arriere-plan (pid {proc.pid}) -> {out_path}")
+            return
+        print(f"[FULL CHARTS] lancement impossible: {last_exc!r}")
+    finally:
+        out.close()
+
+
 def _run_parallel(
     runners: list[tuple[str, Path, list[str]]],
     *,
@@ -3210,6 +3249,10 @@ def main() -> int:
             title="Spotify Charts - script finished",
             tags="spotify,white_check_mark",
         )
+    if not args.dry_run and ran_collect:
+        # Last step on purpose: the usual run (posts, export, git, Swift Top,
+        # notification) is fully over before the full top 200 collection starts.
+        _launch_full_charts_collect(env, target_date)
     return 0
 
 

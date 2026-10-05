@@ -335,6 +335,11 @@ def build_title_rows(
                 "comment_count": _sum_optional_int(rows, "comment_count"),
                 "video_ids": json.dumps([row.get("video_id", "") for row in rows], ensure_ascii=False),
                 "video_titles": json.dumps([row.get("title", "") for row in rows], ensure_ascii=False),
+                # core/gap_fill.py: "total" if any member total is estimated,
+                # "daily" if only some member's previous day was.
+                "estimated": next(
+                    (flag for flag in ("total", "daily") if any(r.get("estimated") == flag for r in rows)), ""
+                ),
             }
         )
 

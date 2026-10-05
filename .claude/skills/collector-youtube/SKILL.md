@@ -11,9 +11,14 @@ Read `CONTEXTE.md` before changing or running anything under
 Use `data-rules` for exact-data decisions and `pipeline-ops` for scheduled local
 runs.
 
-Core rule: `daily_views` is an exact one-calendar-day delta. If a previous
-calendar snapshot is missing, keep the one-day value blank and store the exact
-multi-day gain as period data.
+Core rule: `daily_views` of day D = total at boundary(D) − total at
+boundary(D−1), boundary = NY midnight of D+1 + 5 min 40 s (on-time run). A
+missed day or a run more than 5 min off its boundary is ESTIMATED since
+2026-10-04 (owner: YouTube figures differ between trackers anyway, a filled
+day beats a hole): `core/gap_fill.py` + `core/estimate.py`, run at the end of
+every daily run (last 14 days) or `--fill-gaps [SINCE]`; flagged in the
+`estimated` column ("total"/"daily"), counted on the site and in TayBoard like
+real days. Period gain only remains when no estimate is possible.
 
 Page sections (`source` column of `youtube_title_history.csv`): `all`
 (TayBoard, never filter it), `videos`, `audios`, `extras`, and `songs` =
@@ -35,8 +40,11 @@ only with a view count captured within ±15 min of `published_at + 24h`.
 between +(N-1)×24h and +N×24h from `published_at` (never the NY collection
 day), each mark read at the exact second by task `TSM_YouTube_FirstWeek_<id>`.
 One post per video per day, Day 2..Day 7 only: text `DAY 1 - X / DAY 2 - X (+%)`
-+ that day's video card; Day 7 = first-week bar chart. A missed mark = Day N
-and N+1 shown n/a, never estimated, nothing posted for an unknown day.
++ that day's video card; Day 7 = first-week bar chart. A missed mark is
+ESTIMATED (owner's choice 2026-10-04, `core/estimate.py`) once a real reading
+exists after it: Day N and N+1 posted to the unit like real figures (no public
+marker), trace kept in the state (`estimate`), frozen once posted. Before that:
+n/a, nothing posted.
 Status: `--first-week-status`.
 
 A video published between NY midnight and the ~00:05 ET run gets no row for

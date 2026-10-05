@@ -1,0 +1,2450 @@
+{
+ "00FQb4jTyendYWaN8pK0wa": {
+  "gender": "F",
+  "name": "Lana Del Rey",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "00x1fYSGhdqScXBRpSj3DW": {
+  "gender": "F",
+  "name": "Olivia Dean",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "02gSuSAWEdWa5UOvqzjX6v": {
+  "gender": "F",
+  "name": "SIENNA SPIRO",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "04gDigrS5kc9YWfZHwBETP": {
+  "gender": "NF",
+  "name": "Maroon 5",
+  "source": "Artists.csv",
+  "type": "GROUP"
+ },
+ "06HL4z0CvFAxyc27GXpf02": {
+  "gender": "F",
+  "name": "Taylor Swift",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "08GQAI4eElDnROBrJRGE0X": {
+  "gender": "NF",
+  "name": "Fleetwood Mac",
+  "source": "Artists.csv",
+  "type": "GROUP"
+ },
+ "09UmIX92EUH9hAK4bxvHx6": {
+  "gender": "NF",
+  "name": "Mithoon",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "0BJ2EjOqcfgFvlZXNKrNbE": {
+  "gender": "NF",
+  "name": "Saja Boys",
+  "source": "llm:gemini",
+  "type": "GROUP"
+ },
+ "0C0XlULifJtAgn6ZNCW2eu": {
+  "gender": "NF",
+  "name": "The Killers",
+  "source": "llm:gemini",
+  "type": "GROUP"
+ },
+ "0EmeFodog0BfCgMzAIvKQp": {
+  "gender": "F",
+  "name": "Shakira",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "0EyhkwP3UnwGFBy6xwKjSy": {
+  "gender": "NF",
+  "name": "EsDeeKid",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
+ "0F3maSKfGGVtfATaAyeyPG": {
+  "gender": "NF",
+  "name": "Chris Grey",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
+ "0GM7qgcRCORpGnfcN2tCiB": {
+  "gender": "NF",
+  "name": "Tainy",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
+ "0L8ExT028jH3ddEcZwqJJ5": {
+  "gender": "NF",
+  "name": "Red Hot Chili Peppers",
+  "source": "Artists.csv",
+  "type": "GROUP"
+ },
+ "0LcJLqbBmaGUft1e9Mm8HV": {
+  "gender": "NF",
+  "name": "ABBA",
+  "source": "Artists.csv",
+  "type": "GROUP"
+ },
+ "0PFtn5NtBbbUNbU9EAmIWF": {
+  "gender": "NF",
+  "name": "TOTO",
+  "source": "llm:gemini",
+  "type": "GROUP"
+ },
+ "0Q8NcsJwoCbZOHHW63su5S": {
+  "gender": "NF",
+  "name": "Mora",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "0QntOArZgiNHoemAzwJPu5": {
+  "gender": "NF",
+  "name": "Gur Sidhu",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "0SD4eZCN4Kr0wQk56hCdh2": {
+  "gender": "F",
+  "name": "Bonnie Tyler",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "0TImkz4nPqjegtVSMZnMRq": {
+  "gender": "F",
+  "name": "TLC",
+  "source": "manual",
+  "type": "GROUP"
+ },
+ "0TnOYISbd1XYRBk9myaseg": {
+  "gender": "NF",
+  "name": "Pitbull",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "0Uo0W0Vfq9ZOLCFngwxOLm": {
+  "gender": "NF",
+  "name": "pupsies",
+  "source": "llm:gemini",
+  "type": "GROUP"
+ },
+ "0X2BH1fck6amBIoJhDVmmJ": {
+  "gender": "F",
+  "name": "Ellie Goulding",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "0XeEobZplHxzM9QzFQWLiR": {
+  "gender": "NF",
+  "name": "Eslabon Armado",
+  "source": "Artists.csv",
+  "type": "GROUP"
+ },
+ "0Y3agQaa6g2r0YmHPOO9rh": {
+  "gender": "NF",
+  "name": "Davido",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "0Y5tJX1MQlPlqiwlOH1tJY": {
+  "gender": "NF",
+  "name": "Travis Scott",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "0Y6dVaC9DZtPNH4591M42W": {
+  "gender": "NF",
+  "name": "TV Girl",
+  "source": "Artists.csv",
+  "type": "GROUP"
+ },
+ "0agUNq8PH1QSgm88EuhM1u": {
+  "gender": "NF",
+  "name": "eńau",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
+ "0cGUm45nv7Z6M6qdXYQGTX": {
+  "gender": "F",
+  "name": "Kehlani",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
+ "0du5cEVh5yTK9QJze8zA0C": {
+  "gender": "NF",
+  "name": "Bruno Mars",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "0elWFr7TW8piilVRYJUe4P": {
+  "gender": "NF",
+  "name": "Natanael Cano",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "0epOFNiUfyON9EYx7Tpr6V": {
+  "gender": "NF",
+  "name": "The Strokes",
+  "source": "Artists.csv",
+  "type": "GROUP"
+ },
+ "0fTSzq9jAh4c36UVb4V7CB": {
+  "gender": "NF",
+  "name": "Alex Warren",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "0g0ZYLiNYI4kMg8MX76bkN": {
+  "gender": "NF",
+  "name": "mikeeysmind",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
+ "0gmx7cndNJbFM0DAO7fT0s": {
+  "gender": "NF",
+  "name": "F3miii",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
+ "0hCNtLu0JehylgoiP8L4Gh": {
+  "gender": "F",
+  "name": "Nicki Minaj",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "0iEtIxbK0KxaSlF7G42ZOp": {
+  "gender": "NF",
+  "name": "Metro Boomin",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "0jnsk9HBra6NMjO2oANoPY": {
+  "gender": "NF",
+  "name": "Flo Rida",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "0lJlKQvuM2Sd9DPPyUXcHg": {
+  "gender": "NF",
+  "name": "Sixpence None The Richer",
+  "source": "llm:gemini",
+  "type": "GROUP"
+ },
+ "0oAZhL6hFrM3YRr6QzjlOf": {
+  "gender": "NF",
+  "name": "MJ Records",
+  "source": "Artists.csv",
+  "type": "GROUP"
+ },
+ "0oOet2f43PA68X5RxKobEy": {
+  "gender": "F",
+  "name": "Shreya Ghoshal",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "0ocHleb3SllGNQQcDH35Xz": {
+  "gender": "NF",
+  "name": "Herencia De Grandes",
+  "source": "llm:gemini",
+  "type": "GROUP"
+ },
+ "0pePYDrJGk8gqMRbXrLJC8": {
+  "gender": "NF",
+  "name": "Luis R Conriquez",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "0rUu2qzqezBrCddX1RuUyJ": {
+  "gender": "NF",
+  "name": "Omar Camacho",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
+ "0rvjqX7ttXeg3mTy8Xscbt": {
+  "gender": "NF",
+  "name": "Journey",
+  "source": "llm:gemini",
+  "type": "GROUP"
+ },
+ "0tmwSHipWxN12fsoLcFU3B": {
+  "gender": "NF",
+  "name": "Manuel Turizo",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "0ys2OFYzWYB5hRDLCsBqxt": {
+  "gender": "NF",
+  "name": "Fuerza Regida",
+  "source": "Artists.csv",
+  "type": "GROUP"
+ },
+ "10exVja0key0uqUkk6LJRT": {
+  "gender": "NF",
+  "name": "Vance Joy",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
+ "12Chz98pHFMPJEknJQMWvI": {
+  "gender": "NF",
+  "name": "Muse",
+  "source": "Artists.csv",
+  "type": "GROUP"
+ },
+ "12GqGscKJx3aE4t07u7eVZ": {
+  "gender": "NF",
+  "name": "Peso Pluma",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "12vb80Km0Ew53ABfJOepVz": {
+  "gender": "NF",
+  "name": "Ñengo Flow",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "13ubrt8QOOCPljQ2FL1Kca": {
+  "gender": "NF",
+  "name": "A$AP Rocky",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "15UsOTVnJzReFVN1VCnxy4": {
+  "gender": "NF",
+  "name": "XXXTENTACION",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "19HM5j0ULGSmEoRcrSe5x3": {
+  "gender": "NF",
+  "name": "Milo j",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "1CbQrKvCpEnekM3QMGJtXK": {
+  "gender": "NF",
+  "name": "MC Meno K",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "1Cs0zKBU1kc0i8ypK3B9ai": {
+  "gender": "NF",
+  "name": "David Guetta",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "1DhiWyne1hHwVHTti49o40": {
+  "gender": "NF",
+  "name": "The Long Faces",
+  "source": "llm:gemini",
+  "type": "GROUP"
+ },
+ "1Ffb6ejR6Fe5IamqA5oRUF": {
+  "gender": "NF",
+  "name": "Bring Me The Horizon",
+  "source": "Artists.csv",
+  "type": "GROUP"
+ },
+ "1GMwSpFzrLd12jUX15bHB6": {
+  "gender": "NF",
+  "name": "BLOK3",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "1HY2Jd0NmPuamShAr6KMms": {
+  "gender": "F",
+  "name": "Lady Gaga",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "1HxJeLhIuegM3KgvPn8sTa": {
+  "gender": "NF",
+  "name": "Jack Ü",
+  "source": "llm:gemini",
+  "type": "GROUP"
+ },
+ "1KCSPY1glIKqW2TotWuXOR": {
+  "gender": "F",
+  "name": "P!nk",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
+ "1LZEQNv7sE11VDY3SdxQeN": {
+  "gender": "NF",
+  "name": "Bee Gees",
+  "source": "llm:gemini",
+  "type": "GROUP"
+ },
+ "1McMsnEElThX1knmY4oliG": {
+  "gender": "F",
+  "name": "Olivia Rodrigo",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "1NjxFrpEGZTV2Ny0OJxeWu": {
+  "gender": "NF",
+  "name": "Sal Priadi",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
+ "1QAJqy2dA3ihHBFIHRphZj": {
+  "gender": "NF",
+  "name": "Cigarettes After Sex",
+  "source": "Artists.csv",
+  "type": "GROUP"
+ },
+ "1RyvyyTE3xzB2ZywiAwp0i": {
+  "gender": "NF",
+  "name": "Future",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "1SupJlEpv7RS2tPNRaHViT": {
+  "gender": "NF",
+  "name": "Nicky Jam",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "1TA5sGRlKUJXBN4ZyJuDIX": {
+  "gender": "NF",
+  "name": "Blessd",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "1U1el3k54VvEUzo3ybLPlM": {
+  "gender": "F",
+  "name": "Kali Uchis",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "1URnnhqYAYcrqrcwql10ft": {
+  "gender": "NF",
+  "name": "21 Savage",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "1VPmR4DJC1PlOtd0IADAO0": {
+  "gender": "NF",
+  "name": "$uicideboy$",
+  "source": "Artists.csv",
+  "type": "GROUP"
+ },
+ "1XYuC1vxinTjHCNd5clB8C": {
+  "gender": "NF",
+  "name": "ARASHI",
+  "source": "Artists.csv",
+  "type": "GROUP"
+ },
+ "1Xylc3o4UrD53lo9CvFvVg": {
+  "gender": "F",
+  "name": "Zara Larsson",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "1Xyo4u8uXC1ZmMpatF05PJ": {
+  "gender": "NF",
+  "name": "The Weeknd",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "1Yj5Xey7kTwvZla8sqdsdE": {
+  "gender": "NF",
+  "name": "Cris MJ",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "1ZLU77nRzQIaP23mVSYpCQ": {
+  "gender": "F",
+  "name": "Hearts2Hearts",
+  "source": "manual",
+  "type": "GROUP"
+ },
+ "1aSxMhuvixZ8h9dK9jIDwL": {
+  "gender": "F",
+  "name": "Kate Bush",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
+ "1bfl0AU8SqmLkElptOprhC": {
+  "gender": "NF",
+  "name": "Julión Álvarez y su Norteño Banda",
+  "source": "Artists.csv",
+  "type": "GROUP"
+ },
+ "1bpnl8qbR9GxmiNlkEufW6": {
+  "gender": "NF",
+  "name": "DJ Japa NK",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "1dKdetem2xEmjgvyymzytS": {
+  "gender": "NF",
+  "name": "Grupo Firme",
+  "source": "Artists.csv",
+  "type": "GROUP"
+ },
+ "1dfeR4HaWDbWqFHLkxsg1d": {
+  "gender": "NF",
+  "name": "Queen",
+  "source": "Artists.csv",
+  "type": "GROUP"
+ },
+ "1ebt9HnXdyYA6KgLXr1n4P": {
+  "gender": "NF",
+  "name": "CORTIS",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "1elUiq4X7pxej6FRlrEzjM": {
+  "gender": "NF",
+  "name": "Jorge & Mateus",
+  "source": "Artists.csv",
+  "type": "GROUP"
+ },
+ "1g1yxsNVPhMUl9GrMjEb2o": {
+  "gender": "NF",
+  "name": "Plain White T's",
+  "source": "llm:gemini",
+  "type": "GROUP"
+ },
+ "1i8SpTcr7yvPOmcqrbnVXY": {
+  "gender": "NF",
+  "name": "Ozuna",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "1iCnM8foFssWlPRLfAbIwo": {
+  "gender": "F",
+  "name": "Gigi Perez",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
+ "1mBydYMVBECdDmMfE2sEUO": {
+  "gender": "NF",
+  "name": "Sachin-Jigar",
+  "source": "Artists.csv",
+  "type": "GROUP"
+ },
+ "1mV9h1AwhRXSjBFcYpajgY": {
+  "gender": "NF",
+  "name": "Mc Lele JP",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "1mYsTxnqsietFxj1OgoGbG": {
+  "gender": "NF",
+  "name": "A.R. Rahman",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "1mcTU81TzQhprhouKaTkpq": {
+  "gender": "NF",
+  "name": "Rauw Alejandro",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "1noWnd8QFQD9VLxWEeo4Zf": {
+  "gender": "NF",
+  "name": "Don Miguelo",
+  "source": "manual",
+  "type": "solo"
+ },
+ "1oSPZhvZMIrWW5I41kPkkY": {
+  "gender": "NF",
+  "name": "Jimin",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
+ "1qto4hHid1P71emI6Fd8xi": {
+  "gender": "NF",
+  "name": "Aventura",
+  "source": "Artists.csv",
+  "type": "GROUP"
+ },
+ "1r1uxoy19fzMxunt3ONAkG": {
+  "gender": "F",
+  "name": "Phoebe Bridgers",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "1r4hJ1h58CWwUQe3MxPuau": {
+  "gender": "NF",
+  "name": "Maluma",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "1uNFoZAHBGtllmzznpCI3s": {
+  "gender": "NF",
+  "name": "Justin Bieber",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "1vCWHaC5f2uS3yhpwWbIA6": {
+  "gender": "NF",
+  "name": "Avicii",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "1vyhD5VmyZ7KMfW5gqLgo5": {
+  "gender": "NF",
+  "name": "J Balvin",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "1wRPtKGflJrBx9BmLsSwlU": {
+  "gender": "NF",
+  "name": "Pritam",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "1wZtkThiXbVNtj6hee6dz9": {
+  "gender": "NF",
+  "name": "Wisin & Yandel",
+  "source": "Artists.csv",
+  "type": "GROUP"
+ },
+ "1yxSLGMDHlW21z4YXirZDS": {
+  "gender": "NF",
+  "name": "Black Eyed Peas",
+  "source": "Artists.csv",
+  "type": "GROUP"
+ },
+ "1zxDewzd2j1ZdSBGaYcr0y": {
+  "gender": "NF",
+  "name": "The Outfield",
+  "source": "llm:gemini",
+  "type": "GROUP"
+ },
+ "20wkVLutqVOYrc0kxFs7rA": {
+  "gender": "NF",
+  "name": "Daniel Caesar",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "21E3waRsmPlU7jZsS13rcj": {
+  "gender": "NF",
+  "name": "Ne-Yo",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "22bE4uQ6baNwSHPVcDxLCe": {
+  "gender": "NF",
+  "name": "The Rolling Stones",
+  "source": "Artists.csv",
+  "type": "GROUP"
+ },
+ "22wbnEMDvgVIAGdFeek6ET": {
+  "gender": "NF",
+  "name": "Benson Boone",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "23fqKkggKUBHNkbKtXEls4": {
+  "gender": "NF",
+  "name": "Kygo",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "23zg3TcAtWQy7J6upgbUnj": {
+  "gender": "NF",
+  "name": "USHER",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "246dkjvS1zLTtiykXe5h60": {
+  "gender": "NF",
+  "name": "Post Malone",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "250b0Wlc5Vk0CoUsaCY84M": {
+  "gender": "F",
+  "name": "JENNIE",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "25uiPmTg16RbhZWAqwLBy5": {
+  "gender": "F",
+  "name": "Charli xcx",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "26VFTg2z8YR0cCuwLzESi2": {
+  "gender": "F",
+  "name": "Halsey",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "26dSoYclwsYLMAKD3tpOr4": {
+  "gender": "F",
+  "name": "Britney Spears",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "2AsusXITU8P25dlRNhcAbG": {
+  "gender": "NF",
+  "name": "Gotye",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
+ "2C6i0I5RiGzDKN9IAF8reh": {
+  "gender": "NF",
+  "name": "Banda MS de Sergio Lizárraga",
+  "source": "Artists.csv",
+  "type": "GROUP"
+ },
+ "2CmaKO2zEGJ1NWpS1yfVGz": {
+  "gender": "NF",
+  "name": "Falling In Reverse",
+  "source": "llm:gemini",
+  "type": "GROUP"
+ },
+ "2DaxqgrOhkeH0fpeiQq2f4": {
+  "gender": "NF",
+  "name": "Oasis",
+  "source": "Artists.csv",
+  "type": "GROUP"
+ },
+ "2DlGxzQSjYe5N6G9nkYghR": {
+  "gender": "F",
+  "name": "Jennifer Lopez",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "2FXC3k01G6Gw61bmprjgqS": {
+  "gender": "NF",
+  "name": "Hozier",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "2HPaUgqeutzr3jx5a9WyDV": {
+  "gender": "NF",
+  "name": "PARTYNEXTDOOR",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "2IMZYfNi21MGqxopj9fWx8": {
+  "gender": "NF",
+  "name": "Rels B",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "2LRoIwlKmHjgvigdNGBHNo": {
+  "gender": "NF",
+  "name": "Feid",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "2Q3eZMfDQgT8MhPowKFXYO": {
+  "gender": "F",
+  "name": "t.A.T.u.",
+  "source": "manual",
+  "type": "GROUP"
+ },
+ "2QsynagSdAqZj3U9HgDzjD": {
+  "gender": "NF",
+  "name": "Bob Marley & The Wailers",
+  "source": "Artists.csv",
+  "type": "GROUP"
+ },
+ "2R21vXR83lH98kGeO99Y66": {
+  "gender": "NF",
+  "name": "Anuel AA",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "2RQXRUsr4IW1f3mKyKsy4B": {
+  "gender": "NF",
+  "name": "Noah Kahan",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "2WjzL05RyqIk5n53sZc9nf": {
+  "gender": "NF",
+  "name": "manifest",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "2YZyLoL8N0Wb9xBt1NhZWg": {
+  "gender": "NF",
+  "name": "Kendrick Lamar",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "2ae6PxICSOZHvjqiCcgon8": {
+  "gender": "NF",
+  "name": "S. P. Balasubrahmanyam",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "2bA6fzP0lMAQ4kz6CF61w8": {
+  "gender": "NF",
+  "name": "Toby Keith",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "2cPqdH7XMvwaBJEVjheH8g": {
+  "gender": "NF",
+  "name": "Jay Wheeler",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "2dIgFjalVxs4ThymZ67YCE": {
+  "gender": "NF",
+  "name": "Stray Kids",
+  "source": "Artists.csv",
+  "type": "GROUP"
+ },
+ "2fMqTqiTxUDlmcOEPaQSsx": {
+  "gender": "NF",
+  "name": "Amitabh Bhattacharya",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "2h93pZq0e7k5yf4dywlkpM": {
+  "gender": "NF",
+  "name": "Frank Ocean",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "2hlmm7s2ICUX0LVIhVFlZQ": {
+  "gender": "NF",
+  "name": "Gunna",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "2iDVt6mFbtbDEZG5ax0dTi": {
+  "gender": "NF",
+  "name": "Tulus",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "2iE18Oxc8YSumAU232n4rW": {
+  "gender": "NF",
+  "name": "The Jackson 5",
+  "source": "manual",
+  "type": "GROUP"
+ },
+ "2jSGzJw0ebJLu7OLVSOcBP": {
+  "gender": "NF",
+  "name": "Plan B",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
+ "2jku7tDXc6XoB6MO2hFuqg": {
+  "gender": "NF",
+  "name": "Tory Lanez",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "2jw70GZXlAI8QzWeY2bgRc": {
+  "gender": "F",
+  "name": "Nelly Furtado",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
+ "2jzc5TC5TVFLXQlBNiIUzE": {
+  "gender": "NF",
+  "name": "a-ha",
+  "source": "llm:gemini",
+  "type": "GROUP"
+ },
+ "2kCcBybjl3SAtIcwdWpUe3": {
+  "gender": "NF",
+  "name": "Lil Peep",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "2kRfqPViCqYdSGhYSM9R0Q": {
+  "gender": "F",
+  "name": "Madison Beer",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
+ "2nszmSgqreHSdJA3zWPyrW": {
+  "gender": "NF",
+  "name": "Luis Miguel",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "2oSONSC9zQ4UonDKnLqksx": {
+  "gender": "NF",
+  "name": "Atif Aslam",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "2orBKFyc84jo9AZH5jarhI": {
+  "gender": "F",
+  "name": "Sidney Gish",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
+ "2pGRniGOJSOvYoK3dGaBb8": {
+  "gender": "NF",
+  "name": "Sayeed Quadri",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "2q9wk5fkeU2C9CgCKdh4AN": {
+  "gender": "NF",
+  "name": "Mc IG",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "2qanRMyA5bNuTvz1dK45OP": {
+  "gender": "F",
+  "name": "ADÉLA",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
+ "2qk9voo8llSGYcZ6xrBzKx": {
+  "gender": "NF",
+  "name": "Kings of Leon",
+  "source": "llm:gemini",
+  "type": "GROUP"
+ },
+ "2sSGPbdZJkaSE2AbcGOACx": {
+  "gender": "NF",
+  "name": "The Marías",
+  "source": "Artists.csv",
+  "type": "GROUP"
+ },
+ "2sil8z5kiy4r76CRTXxBCA": {
+  "gender": "NF",
+  "name": "The Goo Goo Dolls",
+  "source": "llm:gemini",
+  "type": "GROUP"
+ },
+ "2tIP7SsRs7vjIcLrU85W8J": {
+  "gender": "NF",
+  "name": "The Kid LAROI",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "2txHhyCwHjUEpJjWrEyqyX": {
+  "gender": "NF",
+  "name": "Tom Odell",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
+ "2vbWy0ntJGJ2H1erLJFMZZ": {
+  "gender": "NF",
+  "name": "Ifan Seventeen",
+  "source": "manual",
+  "type": "GROUP"
+ },
+ "2wY79sveU1sp5g7SokKOiI": {
+  "gender": "NF",
+  "name": "Sam Smith",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "2yNNYQBChuox9A5Ka93BIn": {
+  "gender": "F",
+  "name": "HUNTR/X",
+  "source": "manual",
+  "type": "GROUP"
+ },
+ "2ye2Wgw4gimLv2eAKyk1NB": {
+  "gender": "NF",
+  "name": "Metallica",
+  "source": "Artists.csv",
+  "type": "GROUP"
+ },
+ "31TPClRtHm23RisEBtV3X7": {
+  "gender": "NF",
+  "name": "Justin Timberlake",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "329e4yvIujISKGKz1BZZbO": {
+  "gender": "NF",
+  "name": "Farruko",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "32vWCbZh0xZ4o9gkz4PsEU": {
+  "gender": "F",
+  "name": "Dolly Parton",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
+ "33ScadVnbm2X8kkUqOkC6Z": {
+  "gender": "NF",
+  "name": "Don Omar",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "33qOK5uJ8AR2xuQQAhHump": {
+  "gender": "NF",
+  "name": "Teddy Swims",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "35WVTyRnKAoaGExqgktVyb": {
+  "gender": "NF",
+  "name": "Hotel Ugly",
+  "source": "llm:gemini",
+  "type": "GROUP"
+ },
+ "360IAlyVv4PCEVjgyMZrxK": {
+  "gender": "NF",
+  "name": "Miguel",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
+ "36cgvBn0aadzOijnjjwqMN": {
+  "gender": "F",
+  "name": "ILLIT",
+  "source": "manual",
+  "type": "GROUP"
+ },
+ "37w38cCSGgKLdayTRjna4W": {
+  "gender": "NF",
+  "name": "Mazzy Star",
+  "source": "llm:gemini",
+  "type": "GROUP"
+ },
+ "3AA28KZvwAUcZuOKwyblJQ": {
+  "gender": "NF",
+  "name": "Gorillaz",
+  "source": "Artists.csv",
+  "type": "GROUP"
+ },
+ "3AQRLZ9PuTAozP28Skbq8V": {
+  "gender": "NF",
+  "name": "The Script",
+  "source": "manual",
+  "type": "GROUP"
+ },
+ "3CIRif6ZAedT7kZSPvj2A4": {
+  "gender": "NF",
+  "name": "She & Him",
+  "source": "llm:gemini",
+  "type": "GROUP"
+ },
+ "3E12tRURRvPfHz0hAMCFYc": {
+  "gender": "NF",
+  "name": "Omar Courtz",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "3EumQuYai5g1235jIBaPhA": {
+  "gender": "NF",
+  "name": "Ya Ice Dilan",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
+ "3GdSQUH1BRtl9UrrtuwJlP": {
+  "gender": "NF",
+  "name": "Irshad Kamil",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "3IW7ScrzXmPvZhB27hmfgy": {
+  "gender": "NF",
+  "name": "Jul",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "3IYUhFvPQItj6xySrBmZkd": {
+  "gender": "NF",
+  "name": "Creedence Clearwater Revival",
+  "source": "Artists.csv",
+  "type": "GROUP"
+ },
+ "3Isy6kedDrgPYoTS1dazA9": {
+  "gender": "NF",
+  "name": "Sean Paul",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "3JhNCzhSMTxs9WLGJJxWOY": {
+  "gender": "NF",
+  "name": "Macklemore",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
+ "3JsHnjpbhX4SnySpvpa9DK": {
+  "gender": "NF",
+  "name": "V",
+  "source": "manual",
+  "type": "solo"
+ },
+ "3MZsBdqDrRTJihTHQrO6Dq": {
+  "gender": "NF",
+  "name": "Joji",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "3NlsBPwqJuDgtXZ2rv5Dmq": {
+  "gender": "NF",
+  "name": "Ye",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "3Nrfpe0tUJi4K4DXYWgMUX": {
+  "gender": "NF",
+  "name": "BTS",
+  "source": "Artists.csv",
+  "type": "GROUP"
+ },
+ "3PhoLpVuITZKcymswpck5b": {
+  "gender": "NF",
+  "name": "Elton John",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "3RGLhK1IP9jnYFH4BRFJBS": {
+  "gender": "NF",
+  "name": "The Clash",
+  "source": "llm:gemini",
+  "type": "GROUP"
+ },
+ "3S9Hg7sRKhmtWunFZ2yAYP": {
+  "gender": "NF",
+  "name": "El Bogueto",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
+ "3SozjO3Lat463tQICI9LcE": {
+  "gender": "F",
+  "name": "Tyla",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "3TVXtAsR1Inumwj472S9r4": {
+  "gender": "NF",
+  "name": "Drake",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "3WrFJ7ztbogyGnTHbHJFl2": {
+  "gender": "NF",
+  "name": "The Beatles",
+  "source": "Artists.csv",
+  "type": "GROUP"
+ },
+ "3Y4ODN6kIBNpQj6eWNT9xw": {
+  "gender": "NF",
+  "name": "DJ Gu",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
+ "3YQKmKGau1PzlVlkL1iodx": {
+  "gender": "NF",
+  "name": "Twenty One Pilots",
+  "source": "Artists.csv",
+  "type": "GROUP"
+ },
+ "3a1tBryiczPAZpgoZN9Rzg": {
+  "gender": "NF",
+  "name": "Asake",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "3c0gDdb9lhnHGFtP4prQpn": {
+  "gender": "F",
+  "name": "KATSEYE",
+  "source": "manual",
+  "type": "GROUP"
+ },
+ "3eVa5w3URK5duf6eyVDbu9": {
+  "gender": "F",
+  "name": "ROSÉ",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
+ "3eqjTLE0HfPfh78zjh6TqT": {
+  "gender": "NF",
+  "name": "Bruce Springsteen",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "3fMbdgg4jU18AjLCKBhRSm": {
+  "gender": "NF",
+  "name": "Michael Jackson",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "3gBKY0y3dFFVRqicLnVZYz": {
+  "gender": "F",
+  "name": "Alka Yagnik",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "3gBZUcNeVumkeeJ19CY2sX": {
+  "gender": "NF",
+  "name": "Ken Carson",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "3hTffafUYLLgO4yuPAxb5U": {
+  "gender": "NF",
+  "name": "Lenin Ramírez",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
+ "3hv9jJF3adDNsBSIQDqcjp": {
+  "gender": "NF",
+  "name": "Mark Ronson",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
+ "3l9G1G9MxH6DaRhwLklaf5": {
+  "gender": "NF",
+  "name": "Oscar Maydon",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "3m49WVMU4zCkaVEKb8kFW7": {
+  "gender": "NF",
+  "name": "Ilaiyaraaja",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "3m5qlPf2OkihLz3dRYnkPA": {
+  "gender": "NF",
+  "name": "Ovy On The Drums",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "3mIj9lX2MWuHmhNCA7LSCW": {
+  "gender": "NF",
+  "name": "The 1975",
+  "source": "llm:gemini",
+  "type": "GROUP"
+ },
+ "3nFkdlSjzX9mRTtwJOzDYB": {
+  "gender": "NF",
+  "name": "JAŸ-Z",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "3ozYqVCLohfpXIhalkhM8D": {
+  "gender": "NF",
+  "name": "Aditya Rikhari",
+  "source": "manual",
+  "type": "solo"
+ },
+ "3p7PcrEHaaKLJnPUGOtRlT": {
+  "gender": "NF",
+  "name": "Henrique & Juliano",
+  "source": "Artists.csv",
+  "type": "GROUP"
+ },
+ "3q7HBObVc0L8jNeTe5Gofh": {
+  "gender": "NF",
+  "name": "50 Cent",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "3qWCWW0lyHpnj6E1cYwtKV": {
+  "gender": "NF",
+  "name": "Mitta Ror",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
+ "3qm84nBOXUEQ2vnTfUTTFC": {
+  "gender": "NF",
+  "name": "Guns N' Roses",
+  "source": "Artists.csv",
+  "type": "GROUP"
+ },
+ "3tWAXoP37qDPvpAOnj7Zmr": {
+  "gender": "NF",
+  "name": "fitterkarma",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
+ "3tlXnStJ1fFhdScmQeLpuG": {
+  "gender": "NF",
+  "name": "Brent Faiyaz",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "3uwAm6vQy7kWPS2bciKWx9": {
+  "gender": "F",
+  "name": "girl in red",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
+ "3wcj11K77LjEY1PkEazffa": {
+  "gender": "NF",
+  "name": "Burna Boy",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "3xvaSlT4xsyk6lY1ESOspO": {
+  "gender": "NF",
+  "name": "Disney",
+  "source": "llm:gemini",
+  "type": "GROUP"
+ },
+ "3y24n3XhZ96wgwRXjvS17T": {
+  "gender": "NF",
+  "name": "Coolio",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
+ "40ZNYROS4zLfyyBSs2PGe2": {
+  "gender": "NF",
+  "name": "Zach Bryan",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "41MozSoPIsD1dJM0CLPjZF": {
+  "gender": "F",
+  "name": "BLACKPINK",
+  "source": "manual",
+  "type": "GROUP"
+ },
+ "45dkTj5sMRSjrmBSBeiHym": {
+  "gender": "F",
+  "name": "Tate McRae",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "465OXuCU8YZNmVG1leLwQ9": {
+  "gender": "NF",
+  "name": "Shashwat Sachdev",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "46SHBwWsqBkxI7EeeBEQG7": {
+  "gender": "NF",
+  "name": "Kodak Black",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "487N2T9nIPEHrlTZLL3SQs": {
+  "gender": "NF",
+  "name": "Zé Neto & Cristiano",
+  "source": "Artists.csv",
+  "type": "GROUP"
+ },
+ "4AK6F7OLvEQ5QYCBNiQWHq": {
+  "gender": "NF",
+  "name": "One Direction",
+  "source": "Artists.csv",
+  "type": "GROUP"
+ },
+ "4G9NDjRyZFDlJKMRL8hx3S": {
+  "gender": "NF",
+  "name": "sombr",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "4Gso3d4CscCijv0lmajZWs": {
+  "gender": "NF",
+  "name": "Don Toliver",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "4KWTAlx2RvbpseOGMEmROg": {
+  "gender": "NF",
+  "name": "R.E.M.",
+  "source": "llm:gemini",
+  "type": "GROUP"
+ },
+ "4LLpKhyESsyAXpc4laK94U": {
+  "gender": "NF",
+  "name": "Mac Miller",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "4MCBfE4596Uoi2O4DtmEMz": {
+  "gender": "NF",
+  "name": "Juice WRLD",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "4NHQUGzhtTLFvgF5SZesLK": {
+  "gender": "F",
+  "name": "Tove Lo",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
+ "4O15NlyKLIASxsJ0PrXPfz": {
+  "gender": "NF",
+  "name": "Lil Uzi Vert",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "4PPoI9LuYeFX8V674Z1R6l": {
+  "gender": "NF",
+  "name": "Vicente Fernández",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "4QQgXkCYTt3BlENzhyNETg": {
+  "gender": "NF",
+  "name": "Earth, Wind & Fire",
+  "source": "llm:gemini",
+  "type": "GROUP"
+ },
+ "4SpbR6yFEvexJuaBpgAU5p": {
+  "gender": "F",
+  "name": "LE SSERAFIM",
+  "source": "manual",
+  "type": "GROUP"
+ },
+ "4SsVbpTthjScTS7U2hmr1X": {
+  "gender": "NF",
+  "name": "Arcángel",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "4V8LLVI7PbaPR0K2TGSxFF": {
+  "gender": "NF",
+  "name": "Tyler, The Creator",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "4VMYDCV2IEDYJArk749S6m": {
+  "gender": "NF",
+  "name": "Daddy Yankee",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "4YLtscXsxbVgi031ovDDdh": {
+  "gender": "NF",
+  "name": "Chris Stapleton",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "4YRxDV8wJFPHPTeXepOstw": {
+  "gender": "NF",
+  "name": "Arijit Singh",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "4Z8MrrKMBHMPa8d04Ivur8": {
+  "gender": "F",
+  "name": "Bella Kay",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
+ "4Z8W4fKeB5YxbusRsdQVPb": {
+  "gender": "NF",
+  "name": "Radiohead",
+  "source": "Artists.csv",
+  "type": "GROUP"
+ },
+ "4aXXDj9aZnlshx7mzj3W1N": {
+  "gender": "NF",
+  "name": "Lin-Manuel Miranda",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "4boI7bJtmB1L3b1cuL75Zr": {
+  "gender": "F",
+  "name": "Mon Laferte",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "4bthk9UfsYUYdcFyqxmSUU": {
+  "gender": "NF",
+  "name": "Tears For Fears",
+  "source": "llm:gemini",
+  "type": "GROUP"
+ },
+ "4dpARuHxo51G3z768sgnrY": {
+  "gender": "F",
+  "name": "Adele",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "4eZer1QvRM8Pna0rLToV1K": {
+  "gender": "F",
+  "name": "Alyssa Grace",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
+ "4f7KfxeHq9BiylGmyXepGt": {
+  "gender": "NF",
+  "name": "Tanishk Bagchi",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "4gdMJYnopf2nEUcanAwstx": {
+  "gender": "NF",
+  "name": "Anuv Jain",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
+ "4gvjmrtzydbMpyJaXUtwvP": {
+  "gender": "F",
+  "name": "Addison Rae",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
+ "4gwpcMTbLWtBUlOijbVpuu": {
+  "gender": "NF",
+  "name": "Capital Cities",
+  "source": "llm:gemini",
+  "type": "GROUP"
+ },
+ "4gzpq5DPGxSnKTe4SA8HAU": {
+  "gender": "NF",
+  "name": "Coldplay",
+  "source": "Artists.csv",
+  "type": "GROUP"
+ },
+ "4kYSro6naA4h99UJvo89HB": {
+  "gender": "F",
+  "name": "Cardi B",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
+ "4nDoRrQiYLoBzwC5BhVJzF": {
+  "gender": "F",
+  "name": "Camila Cabello",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "4oLeXFyACqeem2VImYeBFe": {
+  "gender": "NF",
+  "name": "Fred again..",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "4oUHIQIBe0LHzYfvXNW4QM": {
+  "gender": "NF",
+  "name": "Morgan Wallen",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "4p5WgeiPSPpqPDs7T6OkWf": {
+  "gender": "NF",
+  "name": "ANOTR",
+  "source": "llm:gemini",
+  "type": "GROUP"
+ },
+ "4q3ewBCX7sLwd24euuV69X": {
+  "gender": "NF",
+  "name": "Bad Bunny",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "4tuJ0bMpJh08umKkEXKUI5": {
+  "gender": "F",
+  "name": "Gracie Abrams",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "4yvcSjfu4PC0CYQyLy4wSq": {
+  "gender": "NF",
+  "name": "Glass Animals",
+  "source": "llm:gemini",
+  "type": "GROUP"
+ },
+ "4zCH9qm4R2DADamUHMCa6O": {
+  "gender": "NF",
+  "name": "Anirudh Ravichander",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "50co4Is1HCEo8bhOyUWKpn": {
+  "gender": "NF",
+  "name": "Young Thug",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "51OKuyM4BiiYxFm8Mi6fa9": {
+  "gender": "NF",
+  "name": "Mauvais djo",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
+ "51kyrUsAVqUBcoDEMFkX12": {
+  "gender": "NF",
+  "name": "Hindia",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "52iwsT98xCoGgiGntTiR7K": {
+  "gender": "NF",
+  "name": "Quevedo",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "53A0W3U0s8diEn9RhXQhVz": {
+  "gender": "NF",
+  "name": "Keane",
+  "source": "manual",
+  "type": "GROUP"
+ },
+ "53XhwfbYqKCa1cC15pYq2q": {
+  "gender": "NF",
+  "name": "Imagine Dragons",
+  "source": "Artists.csv",
+  "type": "GROUP"
+ },
+ "540vIaP2JwjQb9dm3aArA4": {
+  "gender": "NF",
+  "name": "DJ Snake",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
+ "55Aa2cqylxrFIXC767Z865": {
+  "gender": "NF",
+  "name": "Lil Wayne",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "55Wn8tf8dBvfl1HRsD7Kze": {
+  "gender": "NF",
+  "name": "Continental",
+  "source": "Artists.csv",
+  "type": "GROUP"
+ },
+ "57vWImR43h4CaDao012Ofp": {
+  "gender": "NF",
+  "name": "Steve Lacy",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "58lV9VcRSjABbAbfWS6skp": {
+  "gender": "NF",
+  "name": "Bon Jovi",
+  "source": "llm:gemini",
+  "type": "GROUP"
+ },
+ "59FrDXDVJz0EKqYg39dnT2": {
+  "gender": "NF",
+  "name": "Jão",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "5H1nN1SzW0qNeUEZvuXjAj": {
+  "gender": "NF",
+  "name": "Danny Ocean",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "5INjqkS1o8h1imAzPqGZBb": {
+  "gender": "NF",
+  "name": "Tame Impala",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "5J7rXWjtn5HzUkJ4Jet8Fr": {
+  "gender": "NF",
+  "name": "Alvaro Diaz",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "5K4W6rqBFWDnAN6FQUkS6x": {
+  "gender": "NF",
+  "name": "Kanye West",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "5KKpBU5eC2tJDzf0wmlRp2": {
+  "gender": "F",
+  "name": "RAYE",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "5Kmr0b3ip8g9P2i0dLTC3Z": {
+  "gender": "NF",
+  "name": "Disco Lines",
+  "source": "manual",
+  "type": "solo"
+ },
+ "5L1lO4eRHmJ7a0Q6csE5cT": {
+  "gender": "F",
+  "name": "LISA",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
+ "5LcNPa8f8bRmZqELgoRFkN": {
+  "gender": "NF",
+  "name": "Raim Laode",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "5NGO30tJxFlKixkPSgXcFE": {
+  "gender": "NF",
+  "name": "The Police",
+  "source": "llm:gemini",
+  "type": "GROUP"
+ },
+ "5PlfkPxwCpRRWQJBxCa0By": {
+  "gender": "NF",
+  "name": "HUGEL",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "5Pwc4xIPtQLFEnJriah9YJ": {
+  "gender": "NF",
+  "name": "OneRepublic",
+  "source": "Artists.csv",
+  "type": "GROUP"
+ },
+ "5RTLRtXjbXI2lSXc6jxlAz": {
+  "gender": "F",
+  "name": "Ravyn Lenae",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
+ "5WUlDfRSoLAfcVSX1WnrxN": {
+  "gender": "F",
+  "name": "Sia",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "5YGY8feqx7naU7z4HrwZM6": {
+  "gender": "F",
+  "name": "Miley Cyrus",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "5YqI7p8zYsOpKJtjxYdOce": {
+  "gender": "NF",
+  "name": "Victor Mendivil",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "5a2EaR3hamoenG9rDuVn8j": {
+  "gender": "NF",
+  "name": "Prince",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
+ "5bSfBBCxY8QAk4Pifveisz": {
+  "gender": "NF",
+  "name": "La Arrolladora Banda El Limón De Rene Camacho",
+  "source": "Artists.csv",
+  "type": "GROUP"
+ },
+ "5bv5RplEOwdCvhq0EILh9E": {
+  "gender": "NF",
+  "name": "Lucenzo",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
+ "5cj0lLjcoR7YOSnhnX0Po5": {
+  "gender": "F",
+  "name": "Doja Cat",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "5eAWCfyUhZtHHtBdNk56l1": {
+  "gender": "NF",
+  "name": "System Of A Down",
+  "source": "Artists.csv",
+  "type": "GROUP"
+ },
+ "5eumcnUkdmGvkvcsx1WFNG": {
+  "gender": "NF",
+  "name": "Tito Double P",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "5f7VJjfbwm532GiveGC0ZK": {
+  "gender": "NF",
+  "name": "Lil Baby",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "5j2JTk8JqepIgv1zxYOuIi": {
+  "gender": "NF",
+  "name": "ARJN",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
+ "5jTtGLk1mGFMY5lQOvJYUj": {
+  "gender": "NF",
+  "name": "bôa",
+  "source": "manual",
+  "type": "GROUP"
+ },
+ "5lwmRuXgjX8xIwlnauTZIP": {
+  "gender": "NF",
+  "name": "Romeo Santos",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "5mHUmlJWkcoOk1NbjfrXWz": {
+  "gender": "NF",
+  "name": "Temper City",
+  "source": "llm:gemini",
+  "type": "GROUP"
+ },
+ "5nGIFgo0shDenQYSE0Sn7c": {
+  "gender": "NF",
+  "name": "Evanescence",
+  "source": "llm:gemini",
+  "type": "GROUP"
+ },
+ "5ndkK3dpZLKtBklKjxNQwT": {
+  "gender": "NF",
+  "name": "B.o.B",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
+ "5p9HO3XC5P3BLxJs5Mtrhm": {
+  "gender": "NF",
+  "name": "Djo",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
+ "5pKCCKE2ajJHZ9KAiaK11H": {
+  "gender": "F",
+  "name": "Rihanna",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "5qIpstBGrGteJZg1xIvbiz": {
+  "gender": "NF",
+  "name": "Panda",
+  "source": "Artists.csv",
+  "type": "GROUP"
+ },
+ "5t5FqBwTcgKTaWmfEbwQY9": {
+  "gender": "NF",
+  "name": "ENHYPEN",
+  "source": "Artists.csv",
+  "type": "GROUP"
+ },
+ "5tHiL8SKSaZGMBUPIiSmX4": {
+  "gender": "NF",
+  "name": "KITSCHKRIEG",
+  "source": "llm:gemini",
+  "type": "GROUP"
+ },
+ "5tIkxADHN80ca0K6HCpWIt": {
+  "gender": "NF",
+  "name": "ZXKAI",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
+ "5uwa6tAMMfNbBFIHiI6NV4": {
+  "gender": "NF",
+  "name": "W Sound",
+  "source": "llm:gemini",
+  "type": "GROUP"
+ },
+ "5vV3bFXnN6D6N3Nj4xRvaV": {
+  "gender": "NF",
+  "name": "Jin",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
+ "5wbf52LA6kcaboHSN6NEF1": {
+  "gender": "NF",
+  "name": "PEDRO SAMPAIO",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
+ "5zAYPlhV1TirCul0R4NKGM": {
+  "gender": "NF",
+  "name": "Piche Kota",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
+ "64KEffDW9EtZ1y2vBYgq8T": {
+  "gender": "NF",
+  "name": "Marshmello",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "66CXWjxzNUsdJxJ2JdwvnR": {
+  "gender": "F",
+  "name": "Ariana Grande",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "66ihevNkSYNzRAl44dx6jJ": {
+  "gender": "NF",
+  "name": "Carín León",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "67FB4n52MgexGQIG8s0yUH": {
+  "gender": "F",
+  "name": "Lola Young",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
+ "67hb7towEyKvt5Z8Bx306c": {
+  "gender": "NF",
+  "name": "Empire Of The Sun",
+  "source": "Artists.csv",
+  "type": "GROUP"
+ },
+ "687cZJR45JO7jhk1LHIbgq": {
+  "gender": "F",
+  "name": "Tems",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "699OTQXzgjhIYAHMy9RyPD": {
+  "gender": "NF",
+  "name": "Playboi Carti",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "69GGBxA162lTqCwzJG5jLp": {
+  "gender": "NF",
+  "name": "The Chainsmokers",
+  "source": "Artists.csv",
+  "type": "GROUP"
+ },
+ "6BRxQ8cD3eqnrVj6WKDok8": {
+  "gender": "F",
+  "name": "Ella Langley",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "6DARBhWbfcS9E4yJzcliqQ": {
+  "gender": "NF",
+  "name": "Karan Aujla",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "6Ghvu1VvMGScGpOUJBAHNH": {
+  "gender": "NF",
+  "name": "Deftones",
+  "source": "Artists.csv",
+  "type": "GROUP"
+ },
+ "6HaGTQPmzraVmaVxvz6EUc": {
+  "gender": "NF",
+  "name": "Jung Kook",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
+ "6Ip8FS7vWT1uKkJSweANQK": {
+  "gender": "NF",
+  "name": "Dave",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
+ "6KImCVD70vtIoJWnq6nGn3": {
+  "gender": "NF",
+  "name": "Harry Styles",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "6LRccuxVVYoqRQif85sG9j": {
+  "gender": "NF",
+  "name": "El De Las R's",
+  "source": "manual",
+  "type": "solo"
+ },
+ "6LqNN22kT3074XbTVUrhzX": {
+  "gender": "F",
+  "name": "Kesha",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "6LuN9FCkKOj5PcnpouEgny": {
+  "gender": "NF",
+  "name": "Khalid",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "6M2wZ9GZgrQXHCFfjv46we": {
+  "gender": "F",
+  "name": "Dua Lipa",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "6MV2UXdX8Pqy25rI7dl6os": {
+  "gender": "NF",
+  "name": "Jeninho",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
+ "6Mv8GjQa7LKUGCAqa9qqdb": {
+  "gender": "NF",
+  "name": "Vishal-Shekhar",
+  "source": "Artists.csv",
+  "type": "GROUP"
+ },
+ "6P5NO5hzJbuOqSdyPB7SJM": {
+  "gender": "F",
+  "name": "Ashe",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
+ "6PXS4YHDkKvl1wkIl4V8DL": {
+  "gender": "NF",
+  "name": "Fetty Wap",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
+ "6S0dmVVn4udvppDhZIWxCr": {
+  "gender": "NF",
+  "name": "Sean Kingston",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
+ "6Sbl0NT50roqWvy746MfVf": {
+  "gender": "NF",
+  "name": "Gabito Ballesteros",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "6TKygPpVT29oGUogu4J9Ec": {
+  "gender": "NF",
+  "name": "Yan Block",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "6TLwD7HPWuiOzvXEa3oCNe": {
+  "gender": "NF",
+  "name": "Oliver Tree",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "6USv9qhCn6zfxlBQIYJ9qs": {
+  "gender": "NF",
+  "name": "Dominic Fike",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "6UgERnTHmjk3qXM9x5vzyO": {
+  "gender": "NF",
+  "name": "Nadhif Basalamah",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
+ "6VuMaDnrHyPL1p4EHjYLi7": {
+  "gender": "NF",
+  "name": "Charlie Puth",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "6WRl7KUrzOq7GpY97KrYxi": {
+  "gender": "F",
+  "name": "DARA",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
+ "6Wlvsn3IPHiZwAv02lB5eC": {
+  "gender": "NF",
+  "name": "Ícaro e Gilmar",
+  "source": "Artists.csv",
+  "type": "GROUP"
+ },
+ "6XTGKOV9jceQ6f67lnhpbF": {
+  "gender": "NF",
+  "name": "LATIN MAFIA",
+  "source": "Artists.csv",
+  "type": "GROUP"
+ },
+ "6Xgp2XMz1fhVYe7i6yNAax": {
+  "gender": "NF",
+  "name": "Trippie Redd",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "6XkjpgcEsYab502Vr1bBeW": {
+  "gender": "NF",
+  "name": "Grupo Frontera",
+  "source": "Artists.csv",
+  "type": "GROUP"
+ },
+ "6XyY86QOPPrYVGvF9ch6wz": {
+  "gender": "NF",
+  "name": "Linkin Park",
+  "source": "Artists.csv",
+  "type": "GROUP"
+ },
+ "6YVMFz59CuY7ngCxTxjpxE": {
+  "gender": "F",
+  "name": "aespa",
+  "source": "manual",
+  "type": "GROUP"
+ },
+ "6bemHySK6oqDAPZZzt61ov": {
+  "gender": "NF",
+  "name": "Fat Papi",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
+ "6byQKddO1b34lXC2ZEjehQ": {
+  "gender": "NF",
+  "name": "Patricio Rey y sus Redonditos de Ricota",
+  "source": "Artists.csv",
+  "type": "GROUP"
+ },
+ "6dLuQ5qXxIuWc5urxfIiZR": {
+  "gender": "NF",
+  "name": "Calle 24",
+  "source": "Artists.csv",
+  "type": "GROUP"
+ },
+ "6deZN1bslXzeGvOLaLMOIF": {
+  "gender": "NF",
+  "name": "Nickelback",
+  "source": "llm:gemini",
+  "type": "GROUP"
+ },
+ "6eUKZXaKkcviH0Ku9w2n3V": {
+  "gender": "NF",
+  "name": "Ed Sheeran",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "6hp2uD84OrQ3u3ukmTjLz2": {
+  "gender": "NF",
+  "name": "STELLA LEFTY",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
+ "6jJ0s89eD6GaHleKKya26X": {
+  "gender": "F",
+  "name": "Katy Perry",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "6l3HvQ5sa6mXTsMTB19rO5": {
+  "gender": "NF",
+  "name": "J. Cole",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "6ltzsmQQbmdoHHbLZ4ZN25": {
+  "gender": "NF",
+  "name": "Lord Huron",
+  "source": "llm:gemini",
+  "type": "GROUP"
+ },
+ "6nVcHLIgY5pE2YCl8ubca1": {
+  "gender": "NF",
+  "name": "JHAYCO",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "6olE6TJLqED3rqDCT0FyPh": {
+  "gender": "NF",
+  "name": "Nirvana",
+  "source": "Artists.csv",
+  "type": "GROUP"
+ },
+ "6pV5zH2LzjOUHaAvENdMMa": {
+  "gender": "NF",
+  "name": "Neton Vega",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "6qqNVTkY8uBg9cP3Jd7DAH": {
+  "gender": "F",
+  "name": "Billie Eilish",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "6sFIWsNpZYqfjUpaCgueju": {
+  "gender": "F",
+  "name": "Carly Rae Jepsen",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
+ "6sW5k31iA8sTy0i2goUKF9": {
+  "gender": "NF",
+  "name": "Oldilla",
+  "source": "llm:gemini",
+  "type": "GROUP"
+ },
+ "6sbrrDwFdWvTLiq8NUykqm": {
+  "gender": "NF",
+  "name": "Régulo Molina",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
+ "6tbjWDEIzxoDsBA1FuhfPW": {
+  "gender": "F",
+  "name": "Madonna",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "6vTqEFbTtTRJsuIpzZgjxi": {
+  "gender": "NF",
+  "name": "Grupo Menos É Mais",
+  "source": "Artists.csv",
+  "type": "GROUP"
+ },
+ "6vWDO969PvNqNYHIOW5v0m": {
+  "gender": "F",
+  "name": "Beyoncé",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "6vXTefBL93Dj5IqAWq6OTv": {
+  "gender": "NF",
+  "name": "French Montana",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
+ "6xerOqBLmelL3xZNZkVbGl": {
+  "gender": "NF",
+  "name": "João Gustavo e Murilo",
+  "source": "manual",
+  "type": "GROUP"
+ },
+ "6zlR5ttMfMNmwf2lecU9Cc": {
+  "gender": "NF",
+  "name": "Sam Fender",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
+ "70B80Lwx2sxti0M1Ng9e8K": {
+  "gender": "NF",
+  "name": "Udit Narayan",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "711MCceyCBcFnzjGY4Q7Un": {
+  "gender": "NF",
+  "name": "AC/DC",
+  "source": "Artists.csv",
+  "type": "GROUP"
+ },
+ "718COspgdWOnwOFpJHRZHS": {
+  "gender": "NF",
+  "name": "Luke Combs",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "7290H8m1Dwt8G7jm1y9CQx": {
+  "gender": "NF",
+  "name": "Chris Isaak",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
+ "72sOBVpZpUwHq7i0vb26lT": {
+  "gender": "NF",
+  "name": "Dexter and The Moonrocks",
+  "source": "llm:gemini",
+  "type": "GROUP"
+ },
+ "738wLrAtLtCtFOLvQBXOXp": {
+  "gender": "NF",
+  "name": "Major Lazer",
+  "source": "llm:gemini",
+  "type": "GROUP"
+ },
+ "74KM79TiuVKeVCqs8QtB0B": {
+  "gender": "F",
+  "name": "Sabrina Carpenter",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "74XFHRwlV6OrjEM0A2NCMF": {
+  "gender": "NF",
+  "name": "Paramore",
+  "source": "Artists.csv",
+  "type": "GROUP"
+ },
+ "75i9GaW2MJUgt4BkdUnuUY": {
+  "gender": "NF",
+  "name": "MC Ryan SP",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "77SW9BnxLY8rJ0RciFqkHh": {
+  "gender": "NF",
+  "name": "The Neighbourhood",
+  "source": "Artists.csv",
+  "type": "GROUP"
+ },
+ "77Zc5MMUIMJriEDAcaDspi": {
+  "gender": "NF",
+  "name": "LOS DOS DE TAMAULIPAS",
+  "source": "llm:gemini",
+  "type": "GROUP"
+ },
+ "78rUTD7y6Cy67W1RVzYs7t": {
+  "gender": "F",
+  "name": "PinkPantheress",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "790FomKkXshlbRYZFtlgla": {
+  "gender": "F",
+  "name": "KAROL G",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "7CajNmpbOovFoOoasH2HaY": {
+  "gender": "NF",
+  "name": "Calvin Harris",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "7FBcuc1gsnv6Y1nwFtNRCb": {
+  "gender": "NF",
+  "name": "My Chemical Romance",
+  "source": "Artists.csv",
+  "type": "GROUP"
+ },
+ "7FNnA9vBm6EKceENgCGRMb": {
+  "gender": "F",
+  "name": "Anitta",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "7Gi6gjaWy3DxyilpF1a8Is": {
+  "gender": "NF",
+  "name": "Junior H",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "7GlBOeep6PqTfFi59PTUUN": {
+  "gender": "F",
+  "name": "Chappell Roan",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
+ "7IbxsPdlYelceWNyHAor55": {
+  "gender": "NF",
+  "name": "Banjaare",
+  "source": "llm:gemini",
+  "type": "GROUP"
+ },
+ "7Ln80lUS6He07XvHI8qqHH": {
+  "gender": "NF",
+  "name": "Arctic Monkeys",
+  "source": "Artists.csv",
+  "type": "GROUP"
+ },
+ "7a0XAaPaK2aDSqa8p3QnC7": {
+  "gender": "NF",
+  "name": "Beéle",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "7bXgB6jMjp9ATFy66eO08Z": {
+  "gender": "NF",
+  "name": "Chris Brown",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "7bu3H8JO7d0UbMoVzbo70s": {
+  "gender": "NF",
+  "name": "The Cure",
+  "source": "llm:gemini",
+  "type": "GROUP"
+ },
+ "7d86ERlvO5UG44j7Va0Y0C": {
+  "gender": "NF",
+  "name": "Pamungkas",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
+ "7dGJo4pcD2V6oG8kP0tJRR": {
+  "gender": "NF",
+  "name": "Eminem",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "7eKkW1zo5uzW8kUntiiBvz": {
+  "gender": "NF",
+  "name": "Malcolm Todd",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "7eLcDZDYHXZCebtQmVFL25": {
+  "gender": "F",
+  "name": "Aitana",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
+ "7gW0r5CkdEUMm42w9XpyZO": {
+  "gender": "F",
+  "name": "Laufey",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "7hDt3OE2ubsKzO9rMYPXox": {
+  "gender": "NF",
+  "name": "Emmanuel Cortes",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
+ "7iK8PXO48WeuP03g8YR51W": {
+  "gender": "NF",
+  "name": "Myke Towers",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "7j6DKwmjbxvpQO8h914uEz": {
+  "gender": "NF",
+  "name": "Ryan Castro",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "7ltDVBr6mKbRvohxheJ9h1": {
+  "gender": "F",
+  "name": "ROSALÍA",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
+ "7mW7Tv7NvywKKXqafZo0Lc": {
+  "gender": "NF",
+  "name": "KPop Demon Hunters Cast",
+  "source": "Artists.csv",
+  "type": "GROUP"
+ },
+ "7n2wHs1TKAczGzO7Dd2rGr": {
+  "gender": "NF",
+  "name": "Shawn Mendes",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "7o95ZoZt5ZYn31e9z1Hc0a": {
+  "gender": "F",
+  "name": "Natasha Bedingfield",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
+ "7oPftvlwr6VrsViSDV7fJY": {
+  "gender": "NF",
+  "name": "Green Day",
+  "source": "Artists.csv",
+  "type": "GROUP"
+ },
+ "7okwEbXzyT2VffBmyQBWLz": {
+  "gender": "NF",
+  "name": "Maná",
+  "source": "Artists.csv",
+  "type": "GROUP"
+ },
+ "7ouEqUl1PCVPlNninecdcz": {
+  "gender": "NF",
+  "name": "HAVEN.",
+  "source": "llm:gemini",
+  "type": "GROUP"
+ },
+ "7pFWMC2E7h8eL3SZyHRsRq": {
+  "gender": "F",
+  "name": "Idgitaf",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
+ "7t0rwkOPGlDPEhaOcVtOt9": {
+  "gender": "NF",
+  "name": "The Cranberries",
+  "source": "llm:gemini",
+  "type": "GROUP"
+ },
+ "7tYKF4w9nC0nq9CsPZTHyP": {
+  "gender": "F",
+  "name": "SZA",
+  "source": "Artists.csv",
+  "type": "solo"
+ },
+ "7wlFDEWiM5OoIAt8RSli8b": {
+  "gender": "NF",
+  "name": "YoungBoy Never Broke Again",
+  "source": "Artists.csv",
+  "type": "solo"
+ }
+}

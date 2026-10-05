@@ -11,9 +11,12 @@ on YouTube's own day or our NY-midnight collection day.
 Each mark is read by the one-off task ``TSM_YouTube_FirstWeek_<id>`` (started
 CAPTURE_LEAD early, waits in-process for the exact second — same mechanism as
 the +24h capture), or by a daily-run row whose snapshot lands within
-CAPTURE_TOLERANCE. A missed window leaves that mark empty: Day N and Day N+1
-are then unknown, shown "n/a", never estimated, and nothing is posted for a
-day whose figure is unknown.
+CAPTURE_TOLERANCE. A missed window leaves that mark without a reading; since
+2026-10-04 (owner's choice: close enough beats n/a) it gets an estimate from
+core/estimate.py once a real reading exists after it — Day N and Day N+1 are
+then posted like any other figure, to the unit, no public marker (owner: YouTube
+figures differ between trackers anyway); `estimated_days()` keeps the trace in
+the state. Until then they stay "n/a" and nothing is posted for an unknown day.
 
 Day N is posted right after its capture (text + that day's video card); Day 7
 posts the first-week bar chart instead. State:
@@ -27,6 +30,7 @@ from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Callable
 
+from . import estimate
 from .first_day import (
     CAPTURE_LEAD,
     CAPTURE_TOLERANCE,
@@ -87,12 +91,16 @@ def next_open_mark(state: dict) -> int | None:
     return next((n for n in range(2, DAYS + 1) if str(n) not in marks), None)
 
 
-def daily_views(state: dict) -> list[int | None]:
-    """Views of day 1..7; None when a bounding mark is missing/not yet read."""
+def daily_views(state: dict, *, estimates: bool = False) -> list[int | None]:
+    """Views of day 1..7; None when a bounding mark is missing/not yet read.
+    estimates=True uses a missed mark's estimate (see estimated_days)."""
     marks = state.get("marks") or {}
 
     def views(n: int) -> int | None:
-        return _int((marks.get(str(n)) or {}).get("views"))
+        mark = marks.get(str(n)) or {}
+        if "views" in mark:
+            return _int(mark["views"])
+        return _int((mark.get("estimate") or {}).get("views")) if estimates else None
 
     out: list[int | None] = []
     for n in range(1, DAYS + 1):
@@ -103,6 +111,41 @@ def daily_views(state: dict) -> list[int | None]:
             previous = views(n - 1)
             out.append(current - previous if current is not None and previous is not None else None)
     return out
+
+
+def estimated_days(state: dict) -> set[int]:
+    """Days (1-based) whose estimates=True figure relies on an estimated mark."""
+    marks = state.get("marks") or {}
+    est = {n for n in range(1, DAYS + 1) if "estimate" in (marks.get(str(n)) or {})}
+    return {n for n in range(1, DAYS + 1) if n in est or (n - 1) in est}
+
+
+def fill_estimates(state: dict) -> None:
+    """(Re)estimate every missed mark from all real readings of the video:
+    the other marks + the daily-run snapshots. Recomputed each call (a later
+    reading tightens it) until a post has shown it: then frozen, so the same
+    "~X" is repeated in every later post. Absent until a reading exists after
+    the mark."""
+    marks = state.get("marks") or {}
+    missed = [n for n in range(2, DAYS + 1) if (marks.get(str(n)) or {}).get("missed")]
+    if not missed:
+        return
+    published = parse_utc(state["published_at"])
+    # Real readings: daily-run snapshots + first-day/first-week captures on
+    # disk + this state's own marks (in memory, may be newer than the file).
+    anchors = estimate.csv_anchors(state["video_id"]) + estimate.registry_anchors().get(state["video_id"], [])
+    for m in marks.values():
+        at, views = parse_utc(m.get("captured_at")), _int(m.get("views"))
+        if at is not None and views is not None:
+            anchors.append((at, views))
+    for n in missed:
+        if (marks[str(n)].get("estimate") or {}).get("frozen"):
+            continue
+        result = estimate.estimate_views_at(mark_due(state, n), anchors, published)
+        if result is None:
+            marks[str(n)].pop("estimate", None)
+        else:
+            marks[str(n)]["estimate"] = result
 
 
 # ---------------------------------------------------------------------------
@@ -176,7 +219,8 @@ def _resolve_missed(state: dict, now: datetime, log: Callable[[str], None]) -> N
     for n in range(2, DAYS + 1):
         if str(n) not in marks and now > mark_due(state, n) + CAPTURE_TOLERANCE:
             marks[str(n)] = {"missed": True, "due_at": _iso(mark_due(state, n))}
-            log(f"[first_week] {state['video_id']}: fenêtre +{n * 24}h manquée — Day {n} restera n/a.")
+            log(f"[first_week] {state['video_id']}: fenêtre +{n * 24}h manquée — Day {n} sera estimé "
+                "dès qu'une lecture réelle existe après (n/a d'ici là).")
 
 
 def capture_from_daily_rows(rows: list[dict], snapshot_at: datetime) -> list[str]:
@@ -206,7 +250,7 @@ def build_tweet(state: dict, n: int) -> str:
 
     emoji = album_emoji(state.get("album"), fallback="") if state.get("album") else ""
     prefix = "\U0001f3a5 | " + (f"{emoji} " if emoji else "")
-    daily = daily_views(state)
+    daily = daily_views(state, estimates=True)
     lines: list[str] = []
     for day in range(1, n + 1):
         value, previous = daily[day - 1], daily[day - 2] if day > 1 else None
@@ -243,7 +287,7 @@ def render_day(state: dict, n: int, out_root: Path = SNAPSHOTS_DIR, *, keep_html
         html_text = render_youtube_week_chart(
             title=state["song_title"],
             subtitle="Official Music Video · daily views from release",
-            daily=daily_views(state),
+            daily=daily_views(state, estimates=True),
             total_text=f"{total:,} views" if total is not None else "n/a",
             cover_url=state.get("thumbnail_url"),
             handle=HANDLE,
@@ -252,7 +296,7 @@ def render_day(state: dict, n: int, out_root: Path = SNAPSHOTS_DIR, *, keep_html
         return render_html_to_png(
             html_text, out_dir / f"{base}.png", out_dir / f"{base}.html", width=1000, keep_html=keep_html,
         )
-    views = daily_views(state)[n - 1]
+    views = daily_views(state, estimates=True)[n - 1]
     html_text = render_youtube_card(
         title=state["title"],
         stat_label=f"Day {n} · {(n - 1) * 24}h – {n * 24}h",
@@ -286,10 +330,12 @@ def post_ready(
     out_root: Path = SNAPSHOTS_DIR,
     log: Callable[[str], None] = print,
 ) -> str | None:
-    """Posts the latest captured day whose figure is exact; older unposted
-    days are skipped (one post per day, never a backlog). Returns the status."""
+    """Posts the latest settled day whose figure is known (exact, or estimated
+    around a missed mark); older unposted days are skipped (one post per day,
+    never a backlog). Returns the status."""
     posts = state.setdefault("posts", {})
-    daily = daily_views(state)
+    fill_estimates(state)
+    daily = daily_views(state, estimates=True)
     # Marks hold either a capture or {"missed": True}: both settle that day.
     todo = [n for n in range(2, DAYS + 1) if str(n) not in posts and str(n) in state["marks"]]
     if not todo:
@@ -297,7 +343,9 @@ def post_ready(
     for n in todo:
         mark = state["marks"].get(str(n)) or {}
         latest = n == todo[-1]
-        if mark.get("missed") or daily[n - 1] is None:
+        if daily[n - 1] is None:
+            if mark.get("missed") and "estimate" not in mark and latest:
+                continue  # no reading after the mark yet: decided once one exists
             posts[str(n)] = {"status": "skipped", "reason": "day figure unknown (missed window)"}
         elif not latest or now - mark_due(state, n) > POST_MAX_DELAY:
             posts[str(n)] = {"status": "skipped", "reason": "stale"}
@@ -305,6 +353,8 @@ def post_ready(
     n = todo[-1]
     if str(n) in posts:
         return posts[str(n)]["status"]
+    if daily[n - 1] is None:
+        return None  # missed mark still waiting for a later reading to estimate it
     lock = _acquire_lock(state["video_id"])
     if lock is None:
         log(f"[first_week] {state['video_id']}: post déjà en cours ailleurs.")
@@ -315,6 +365,9 @@ def post_ready(
         log(f"[first_week] Day {n}:\n{tweet}\n[first_week] Image: {image}")
         if (poster or _default_poster)([(tweet, image)]):
             posts[str(n)] = {"status": "posted", "tweet": tweet, "image": _repo_path(image), "at": _iso(now)}
+            for mark in state["marks"].values():
+                if "estimate" in mark:
+                    mark["estimate"]["frozen"] = True
             _save(state)
             return "posted"
         log(f"[first_week] {state['video_id']}: échec du post Day {n} — nouvel essai au prochain passage.")
@@ -410,16 +463,21 @@ def status_lines(now: datetime) -> list[str]:
     lines: list[str] = []
     for state in states:
         lines.append(f"{state['video_id']} {state['song_title']} — publié {state['published_at']}")
-        daily = daily_views(state)
+        fill_estimates(state)
+        daily = daily_views(state, estimates=True)
+        est_days = estimated_days(state)
         for n in range(1, DAYS + 1):
             mark = state["marks"].get(str(n)) or {}
             post = (state.get("posts") or {}).get(str(n), {}).get("status", "")
             if "views" in mark:
                 value = daily[n - 1]
-                lines.append(f"  Day {n}: {value:,} ({mark['views']:,} cumulées) {post}" if value is not None
-                             else f"  Day {n}: n/a {post}")
+                shown = "n/a" if value is None else f"{value:,}" + (" (estimé)" if n in est_days else "")
+                lines.append(f"  Day {n}: {shown} ({mark['views']:,} cumulées) {post}")
+            elif mark.get("estimate"):
+                lines.append(f"  Day {n}: manqué — estimé {mark['estimate']['views']:,} cumulées "
+                             f"(entre {mark['estimate']['low']:,} et {mark['estimate']['high']:,}) {post}")
             elif mark.get("missed"):
-                lines.append(f"  Day {n}: manqué")
+                lines.append(f"  Day {n}: manqué {post}")
             else:
                 lines.append(f"  Day {n}: prévu {_iso(mark_due(state, n))}")
     return lines

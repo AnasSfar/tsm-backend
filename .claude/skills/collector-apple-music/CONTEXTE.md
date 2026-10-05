@@ -27,7 +27,10 @@ Scheduler : prod tourne **en local via le Planificateur de taches Windows**
 `run_apple_music_hidden.vbs` -> `run_apple_music.bat`, repeat **toutes les
 2 h (PT2H, heures paires)** — horaire du 2026-09-24 au 2026-09-26 pour The Encore, remis a 2h
 le 2026-09-26 soir (proprio : « retourner a notre run normal de chaque 2 heures », iTunes
-pareil, meme tache). Ni GitHub Actions ni VPS.
+pareil, meme tache). **Depuis le 2026-10-05 : toutes les 4 h (PT4H, depart 02:00 -> 02/06/10/14/18/22)**,
+10h garde car c'est le refresh quotidien du Global (proprio : « chaque 4 heure pas 2 heures en gardant 10h comme run
+constant pour avoir le global ») ; `.env` `APPLE_MUSIC_SNAPSHOT_HOURS` / `ITUNES_SNAPSHOT_HOURS` = `2,6,10,14,18,22`
+(les deux DOIVENT suivre la tache, cf. piege d'arrondi ci-dessous). Ni GitHub Actions ni VPS.
 **`build_scraped_at()` arrondit toujours au dernier creneau de
 `APPLE_MUSIC_SNAPSHOT_HOURS` (defaut code = heures paires seulement)** — le
 simple changement de cadence du Planificateur ne suffisait pas : sans
@@ -209,6 +212,11 @@ entre Global — vs hier — et pays/iTunes — vs le cycle precedent) :
       Global filtree album — `APPLE_MUSIC_DEBUT_GLOBAL_ALBUM_CARD=1` la remet en reponse) a CHAQUE
       changement du Global vs le dernier Global poste ; un reordonnancement des nouvelles chansons
       (top 10) ne change que la caption (`🌍 | "X" passes "Y" and ... on the Global Apple Music chart.`).
+      **Depuis le 2026-10-05 (proprio : « on doit poster global apple music charts chaque jour pas
+      seulement les debuts »)** : la card Global part aussi HORS fenetre de sortie (`_post_global_daily`,
+      appele meme sans candidat / sans titre actif ; `active_tracks=[]` -> caption simple). Meme regle :
+      un post a chaque changement du Global vs le dernier Global poste (`global_snapshot|global`), donc
+      ~1/jour apres le refresh Apple de ~10h Paris. `APPLE_MUSIC_DEBUT_GLOBAL_THREAD=0` coupe tout.
       Replay 26-27/09 : 2 posts (09-26 10:00 debuts, 09-27 10:00). `new_songs_order_change(cur, prev)` ({titre: rang} des titres en
       fenetre, meilleure edition, `_new_song_ranks`) : poste si l'ordre relatif des nouvelles
       chansons presentes aux 2 moments a change (« X passes Y ») OU si l'une d'elles entre / revient

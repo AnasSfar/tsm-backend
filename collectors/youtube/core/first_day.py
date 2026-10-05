@@ -974,7 +974,7 @@ def _register_one_off_task(task_name: str, when_utc: datetime, arguments: str, *
         f"$action = New-ScheduledTaskAction -Execute '{sys.executable}' "
         f"-Argument '{arguments}' -WorkingDirectory '{REPO_ROOT}'; "
         f"$trigger = New-ScheduledTaskTrigger -Once -At (Get-Date -Date '{at_str}'); "
-        f"$settings = New-ScheduledTaskSettingsSet -StartWhenAvailable -DontStopOnIdleEnd "
+        f"$settings = New-ScheduledTaskSettingsSet -StartWhenAvailable -WakeToRun -DontStopOnIdleEnd "
         f"-ExecutionTimeLimit (New-TimeSpan -Minutes 20); "
         f"Register-ScheduledTask -TaskName '{task_name}' -Action $action -Trigger $trigger "
         f"-Settings $settings -Force | Out-Null"

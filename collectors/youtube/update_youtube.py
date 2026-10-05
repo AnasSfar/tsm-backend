@@ -44,8 +44,10 @@ for _stream in (sys.stdout, sys.stderr):
     except Exception:
         pass
 
-from .core import first_day, first_week, new_releases
-from .core.api import chunked, fetch_video_stats
+import csv
+
+from .core import estimate, first_day, first_week, gap_fill, new_releases
+from .core.api import chunked, fetch_video_stats, use_daily_retries
 from .core.channel import (
     discover_new_videos,
     discover_new_videos_short_circuit,
@@ -213,6 +215,18 @@ def parse_args() -> argparse.Namespace:
         action="store_true",
         help="Affiche les clips en suivi première semaine (marques +N×24h, posts).",
     )
+    p.add_argument(
+        "--fill-gaps",
+        nargs="?",
+        const="all",
+        default=None,
+        metavar="SINCE",
+        help=(
+            "Estime les jours manquants / snapshots hors fenêtre (core/gap_fill.py) depuis SINCE "
+            "(AAAA-MM-JJ, défaut : tout l'historique horodaté) et réécrit les 2 CSV. "
+            "Avec --dry-run : affiche seulement. Lancé aussi en fin de run quotidien (14 derniers jours)."
+        ),
+    )
     return p.parse_args()
 
 
@@ -249,6 +263,24 @@ def _latest_rows_before(rows: list[dict], target_date: str) -> list[dict]:
 def _latest_date_before(rows: list[dict], target_date: str) -> str:
     dates = sorted({row.get("date", "") for row in rows if row.get("date", "") < target_date})
     return dates[-1] if dates else ""
+
+
+# Écart max entre la fenêtre réelle de deux snapshots et 24 h pour compter
+# un daily. Les runs à l'heure tombent tous à 04:05-04:07 UTC (±1 min).
+DAILY_WINDOW_TOLERANCE = timedelta(minutes=5)
+
+
+def _elapsed_since_snapshot(rows: list[dict], previous_date: str, snapshot_at: str) -> timedelta | None:
+    """Time between the previous date's snapshot_at and this one (None if unknown)."""
+    if not previous_date:
+        return None
+    for row in rows:
+        if row.get("date") == previous_date and row.get("snapshot_at"):
+            try:
+                return datetime.fromisoformat(snapshot_at) - datetime.fromisoformat(row["snapshot_at"])
+            except ValueError:
+                return None
+    return None
 
 
 def _days_between(previous_date: str, target_date: str) -> int | None:
@@ -331,6 +363,72 @@ def enrich_chart_rows(
         row["daily_change_pct"] = _pct_change(daily, previous_daily)
 
     return sorted(rows, key=lambda row: _int_or_none(row.get("rank")) or 999999)
+
+
+def _title_rows_for_date(day: str, video_rows: list[dict], existing_title_rows: list[dict]) -> list[dict]:
+    """Every per-song variant (`source` column) of one day, ranked against the
+    previous day of the same source."""
+    sources = video_rows_by_source(
+        video_rows,
+        songs_path=DISCOGRAPHY_SONGS_PATH,
+        manual_groups_path=VIDEO_GROUPS_PATH,
+        categories_path=VIDEO_CATEGORIES_PATH,
+    )
+    combined: list[dict] = []
+    for source_tag, source_video_rows in sources.items():
+        variant_rows = build_title_rows(
+            date=day,
+            video_rows=source_video_rows,
+            songs_path=DISCOGRAPHY_SONGS_PATH,
+            manual_groups_path=VIDEO_GROUPS_PATH,
+        )
+        for r in variant_rows:
+            r["source"] = source_tag
+        variant_existing = [r for r in existing_title_rows if (r.get("source") or "all") == source_tag]
+        combined.extend(enrich_chart_rows(
+            variant_rows, existing_rows=variant_existing, target_date=day, key_field="title_key",
+        ))
+    return combined
+
+
+def _rewrite_csv(path: Path, rows: list[dict], fieldnames: list[str]) -> None:
+    rows = sorted(rows, key=lambda r: r.get("date") or "")  # stable: keeps each day's order
+    tmp = path.with_suffix(path.suffix + ".tmp")
+    with tmp.open("w", newline="", encoding="utf-8") as f:
+        writer = csv.DictWriter(f, fieldnames=fieldnames, extrasaction="ignore")
+        writer.writeheader()
+        writer.writerows(rows)
+    os.replace(tmp, path)
+
+
+def run_gap_fill(since: str | None, *, dry_run: bool = False) -> list[str]:
+    """Estimate missed / late days (core/gap_fill.py) and rewrite both CSVs
+    (video rows, then the per-song rows of every changed day). Returns the
+    changed days."""
+    rows = read_csv_rows(CSV_PATH)
+    factors = estimate.weekday_factors(rows)
+    rows, changed = gap_fill.fill(rows, since=since, factors=factors, extra_anchors=estimate.registry_anchors())
+    if not changed:
+        return []
+    for day in changed:
+        day_rows = [r for r in rows if r.get("date") == day]
+        enrich_chart_rows(day_rows, existing_rows=rows, target_date=day, key_field="video_id")
+    if dry_run:
+        for day in changed:
+            top = sorted((r for r in rows if r.get("date") == day and r.get("daily_views") not in ("", None)),
+                         key=lambda r: -int(r["daily_views"]))[:3]
+            print(f"[gap_fill] {day} top : " + " | ".join(
+                f"{r['title'][:30]} +{int(r['daily_views']):,} ({r.get('estimated') or 'exact'})" for r in top))
+        print("[gap_fill] DRY-RUN : rien d'écrit.")
+        return changed
+    title_rows = read_csv_rows(TITLE_HISTORY_PATH)
+    for day in changed:
+        title_rows = [r for r in title_rows if r.get("date") != day]
+        title_rows.extend(_title_rows_for_date(day, [r for r in rows if r.get("date") == day], title_rows))
+    _rewrite_csv(CSV_PATH, rows, CSV_FIELDNAMES)
+    _rewrite_csv(TITLE_HISTORY_PATH, title_rows, TITLE_CSV_FIELDNAMES)
+    print(f"[gap_fill] CSV vidéos + titres réécrits ({len(changed)} jour(s)).")
+    return changed
 
 
 def maybe_upload_youtube_to_r2(today: str) -> None:
@@ -430,6 +528,19 @@ def main() -> int:
         print("\n".join(first_week.status_lines(now_utc)))
         return 0
 
+    if args.fill_gaps:
+        since = None if args.fill_gaps == "all" else args.fill_gaps
+        changed = run_gap_fill(since, dry_run=args.dry_run)
+        if changed and not args.dry_run:
+            maybe_upload_youtube_to_r2(changed[-1])
+            if args.commit:
+                git_commit_and_push(REPO_ROOT, message="youtube views: estimated missed days")
+            sys.path.insert(0, str(REPO_ROOT / "collectors" / "billboard"))
+            from live_trigger import trigger_live_projection
+
+            trigger_live_projection(log=print)
+        return 0
+
     if args.first_week_tick:
         if not YOUTUBE_API_KEY:
             print("[first_week] YOUTUBE_API_KEY manquant.")
@@ -452,6 +563,8 @@ def main() -> int:
     print(f"\n{'='*60}")
     print(f"  YouTube Views Collector — {activity_date}  (run {run_date})")
     print(f"{'='*60}\n")
+
+    use_daily_retries()
 
     if not YOUTUBE_API_KEY:
         print("[ERROR] YOUTUBE_API_KEY manquant. Définir dans .env ou variable d'environnement.")
@@ -539,12 +652,25 @@ def main() -> int:
     previous_csv_date = _latest_date_before(existing_video_rows, activity_date)
     period_days = _days_between(previous_csv_date, activity_date)
     is_daily_snapshot = period_days == 1
+    window_label = ""
+    if is_daily_snapshot:
+        # Un daily = 24 h de vues, pas « la date d'après ». Run en retard
+        # (retry réseau, PC réveillé tard) ou précédent snapshot hors heure
+        # -> fenêtre réelle != 24 h -> period gain, jamais un faux daily.
+        elapsed = _elapsed_since_snapshot(existing_video_rows, previous_csv_date, snapshot_at)
+        if elapsed is not None and abs(elapsed - timedelta(hours=24)) > DAILY_WINDOW_TOLERANCE:
+            is_daily_snapshot = False
+            minutes = round(elapsed.total_seconds() / 60)
+            window_label = f"{minutes // 60}h{minutes % 60:02d} gain"
+            print(f"[WARN] Fenêtre réelle depuis le snapshot du {previous_csv_date} : {window_label[:-5]} "
+                  f"(tolérance ±{int(DAILY_WINDOW_TOLERANCE.total_seconds() // 60)} min autour de 24 h) "
+                  f"-> {activity_date} marqué en period gain, pas en daily.")
     csv_prev_views = _last_total_views_from_csv(CSV_PATH, activity_date) if has_prior_csv_day else {}
     if csv_prev_views:
         prev_views = {**prev_views, **csv_prev_views}
     if not has_prior_csv_day:
         print("[INFO] Aucune date précédente dans le CSV — daily_views restera vide.")
-    elif not is_daily_snapshot:
+    elif not is_daily_snapshot and not window_label:
         label = f"{period_days}-day gain" if period_days else "period gain"
         print(f"[WARN] Date précédente: {previous_csv_date}; {activity_date} sera marqué en {label}, pas en daily.")
     new_views: dict[str, int] = {}
@@ -588,6 +714,8 @@ def main() -> int:
         period_label = ""
         if gain is not None and period_days and period_days > 1:
             period_label = f"{period_days}-day gain"
+        elif gain is not None and window_label:
+            period_label = window_label
         new_views[vid_id] = total
 
         rows.append(
@@ -698,32 +826,7 @@ def main() -> int:
     # pipeline (build_title_rows + enrich_chart_rows), juste des video_rows
     # filtrés en entrée — TayBoard (source=all) est donc inchangé.
     existing_title_rows = read_csv_rows(TITLE_HISTORY_PATH)
-    sources = video_rows_by_source(
-        all_rows,
-        songs_path=DISCOGRAPHY_SONGS_PATH,
-        manual_groups_path=VIDEO_GROUPS_PATH,
-        categories_path=VIDEO_CATEGORIES_PATH,
-    )
-    combined_title_rows: list[dict] = []
-    for source_tag, source_video_rows in sources.items():
-        variant_rows = build_title_rows(
-            date=activity_date,
-            video_rows=source_video_rows,
-            songs_path=DISCOGRAPHY_SONGS_PATH,
-            manual_groups_path=VIDEO_GROUPS_PATH,
-        )
-        for r in variant_rows:
-            r["source"] = source_tag
-        variant_existing = [
-            r for r in existing_title_rows if (r.get("source") or "all") == source_tag
-        ]
-        variant_rows = enrich_chart_rows(
-            variant_rows,
-            existing_rows=variant_existing,
-            target_date=activity_date,
-            key_field="title_key",
-        )
-        combined_title_rows.extend(variant_rows)
+    combined_title_rows = _title_rows_for_date(activity_date, all_rows, existing_title_rows)
 
     write_title_history(
         TITLE_HISTORY_PATH,
@@ -732,6 +835,13 @@ def main() -> int:
         date=activity_date,
     )
     print(f"[INFO] CSV titres mis à jour : {TITLE_HISTORY_PATH}")
+
+    # Jour manqué / run hors fenêtre dans les 14 derniers jours -> totaux
+    # estimés à la frontière exacte du jour (core/gap_fill.py), daily rempli.
+    try:
+        run_gap_fill((date.fromisoformat(activity_date) - timedelta(days=14)).isoformat())
+    except Exception as e:
+        print(f"[gap_fill] Échec (non bloquant) : {e}")
 
     save_last_views(HISTORY_PATH, new_views)
     print(f"[INFO] State delta mis à jour : {HISTORY_PATH}")

@@ -21,8 +21,9 @@ cycle) and `--platform apple_music` at the end of run_apple_music.bat
 other. Each platform has its own state file so the two processes never
 overwrite each other's state; the shared X account slot (post_with_image)
 serializes the actual posts. Safe to run every cycle even outside a release
-window: it's a no-op when no catalog track's release_date falls inside
-APPLE_MUSIC_DEBUT_WINDOW_HOURS.
+window: outside one it only posts the Global card (every day, owner
+2026-10-05, see _post_global_daily) — every other post needs a catalog track
+whose release_date falls inside APPLE_MUSIC_DEBUT_WINDOW_HOURS.
 """
 from __future__ import annotations
 
@@ -592,6 +593,9 @@ GLOBAL_CARDS = os.getenv("APPLE_MUSIC_DEBUT_GLOBAL_CARDS", "0") == "1"
 # Global + Global album cards come back, as one thread (_post_global_thread).
 # 2026-09-27: only the Global card, one post at every Global update
 # (GLOBAL_ALBUM_CARD=1 puts the album card back as the thread's reply).
+# 2026-10-05 (owner: "on doit poster global apple music charts chaque jour pas
+# seulement les debuts"): the Global card no longer needs a release window —
+# posted at every Global update (Apple refreshes it once a day, ~10:00 Paris).
 GLOBAL_THREAD = os.getenv("APPLE_MUSIC_DEBUT_GLOBAL_THREAD", "1") == "1"
 GLOBAL_ALBUM_CARD = os.getenv("APPLE_MUSIC_DEBUT_GLOBAL_ALBUM_CARD", "0") == "1"
 
@@ -1646,7 +1650,9 @@ def run_platform(
     writes = not args.dry_run and not args.no_post
     candidates = candidate_tracks(now, args.window_hours)
     if not candidates:
-        print(f"[new_release_progression] [{label}] No release candidate — nothing to do.")
+        print(f"[new_release_progression] [{label}] No release candidate.")
+        if platform == "apple_music" and not express:
+            _post_global_daily(args, today, load_state(platform), [], platform, writes)
         return
 
     state = load_state(platform)
@@ -1668,7 +1674,9 @@ def run_platform(
     if waiting:
         print(f"[new_release_progression] [{label}] Not out yet: " + ", ".join(waiting))
     if not active_tracks:
-        print(f"[new_release_progression] [{label}] No track inside its debut window — nothing to post.")
+        print(f"[new_release_progression] [{label}] No track inside its debut window.")
+        if platform == "apple_music" and not express:
+            _post_global_daily(args, today, state, [], platform, writes)
         return
     print(f"[new_release_progression] [{label}] {len(active_tracks)} track(s) in window: "
           + ", ".join(t["title"] for t in active_tracks))
@@ -1830,13 +1838,7 @@ def run_platform(
     # Global cards = Apple Music data, so they belong to the Apple Music run:
     # the normal Taylor Global card first, then the album-filtered one.
     if platform == "apple_music" and GLOBAL_THREAD:
-        try:
-            _post_global_thread(args, today, state, active_tracks, platform, writes)
-        except Exception as exc:
-            import traceback
-
-            traceback.print_exc()
-            alert(f"Global thread crashed: {type(exc).__name__}: {exc}")
+        _post_global_daily(args, today, state, active_tracks, platform, writes)
     elif platform == "apple_music" and GLOBAL_CARDS:
         try:
             _post_global_snapshot(args, today, state, platform, writes)
@@ -1875,6 +1877,20 @@ def run_platform(
 
             traceback.print_exc()
             alert(f"Album card crashed ({album}): {type(exc).__name__}: {exc}")
+
+
+def _post_global_daily(args, today: str, state: dict, active_tracks: list[dict], platform: str, writes: bool) -> None:
+    """Global card at every Global update, release window or not (owner
+    2026-10-05). Outside a window active_tracks is [] -> plain caption."""
+    if not GLOBAL_THREAD:
+        return
+    try:
+        _post_global_thread(args, today, state, active_tracks, platform, writes)
+    except Exception as exc:
+        import traceback
+
+        traceback.print_exc()
+        alert(f"Global thread crashed: {type(exc).__name__}: {exc}")
 
 
 def _previous_global_signature(today: str, scraped_at: str) -> dict[str, int] | None:

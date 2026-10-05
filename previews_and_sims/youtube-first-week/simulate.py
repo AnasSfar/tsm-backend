@@ -5,7 +5,11 @@ copied into a temp registry; Days 2..7 use FAKE cumulative view counts.
 Nothing is posted, no Scheduled Task is created, real tools/json is untouched.
 
 Scenario A: every mark captured on time.
-Scenario B: the +96h mark is missed (PC asleep) -> Day 4 and Day 5 are n/a.
+Scenario B: the +96h mark is missed (PC asleep) -> since 2026-10-04 Day 4 and
+  Day 5 are estimated (core/estimate.py) between the real marks and posted "~X (est.)".
+Scenario C (2026-10-04, "ce soir"): REAL current Patient Zero state (marks 1-3
+  real, +96h really missed) + REAL daily-run snapshots as anchors; only the
+  +120h reading is FAKE (12,780,000).
 Outputs: previews_and_sims/youtube-first-week/out/<scenario>/
 """
 import shutil
@@ -30,6 +34,9 @@ def run(scenario: str, missed: set[int]) -> None:
     shutil.copy(REAL_RELEASE, tmp / "releases" / REAL_RELEASE.name)
     fw.RELEASES_DIR, fw.FIRST_WEEK_DIR = tmp / "releases", tmp / "first_week"
     tasks = []
+    # Fake marks must not be mixed with the REAL daily-run snapshots.
+    fw.estimate.csv_anchors = lambda *a, **k: []
+    fw.estimate.registry_anchors = lambda *a, **k: {}
     fw._register_one_off_task = lambda name, when, args, log=print: tasks.append((name, when)) or True
     fw.unregister_task = lambda name: None
     out_root = OUT / scenario
@@ -56,5 +63,37 @@ def run(scenario: str, missed: set[int]) -> None:
         print("-----\n" + tweet + "\n->", image)
 
 
+def run_tonight() -> None:
+    import json
+    real_anchors = _real_csv_anchors
+    tmp = Path(tempfile.mkdtemp())
+    (tmp / "first_week").mkdir()
+    shutil.copy(ROOT / "collectors/youtube/tools/json/first_week/mw3kSNIxjqo.json", tmp / "first_week")
+    fw.FIRST_WEEK_DIR = tmp / "first_week"
+    fw.estimate.csv_anchors = real_anchors
+    fw.estimate.registry_anchors = _real_registry
+    fw._register_one_off_task = lambda name, when, args, log=print: print("next task:", name, when) or True
+    fw.unregister_task = lambda name: None
+    posted = []
+    state = fw.load_state("mw3kSNIxjqo")
+    due = fw.mark_due(state, 5)
+    fetch = lambda ids: {"mw3kSNIxjqo": {"viewCount": "12780000"}}  # FAKE +120h reading
+    print("\n######## Scenario C_tonight")
+    fw.capture_and_post("mw3kSNIxjqo", due, fetch, poster=lambda p: posted.extend(p) or True,
+                        out_root=OUT / "C_tonight")
+    print("\n".join(fw.status_lines(due)))
+    for tweet, image in posted:
+        print("-----\n" + tweet + "\n->", image)
+    # Day 7 chart preview with the estimated days (marks 6-7 FAKE).
+    state = fw.load_state("mw3kSNIxjqo")
+    fw._record_mark(state, 6, 13_900_000, fw.mark_due(state, 6), "sim")
+    fw._record_mark(state, 7, 14_950_000, fw.mark_due(state, 7), "sim")
+    print("week chart:", fw.render_day(state, 7, OUT / "C_tonight"))
+
+
+_real_csv_anchors = fw.estimate.csv_anchors
+_real_registry = fw.estimate.registry_anchors
 run("A_all_on_time", set())
 run("B_missed_96h", {4})
+fw.estimate.csv_anchors = _real_csv_anchors
+run_tonight()

@@ -1425,6 +1425,42 @@ def _weekly_itunes_points(
 _YOUTUBE_FEAT_SUFFIX_RE = re.compile(r"\s+(?:ft\.?|feat\.?|featuring)\s+.+$", re.IGNORECASE)
 
 
+def _youtube_period_window(row: dict, day: str) -> list[str] | None:
+    """Calendar dates covered by a period-gain row (None if unparsable)."""
+    try:
+        days = int(float((row.get("period_days") or "").strip()))
+        end = date.fromisoformat(day)
+    except ValueError:
+        return None
+    if days < 1:
+        return None
+    return [(end - timedelta(days=i)).isoformat() for i in range(days)]
+
+
+def _youtube_period_in_week(row: dict, day: str, week_dates: set[str]) -> bool:
+    window = _youtube_period_window(row, day)
+    return bool(window) and all(d in week_dates for d in window)
+
+
+def _youtube_period_dates(*, week_dates: set[str]) -> set[str]:
+    """Dates of week_dates already covered by an in-week YouTube period gain
+    (counted in _weekly_youtube_views totals, absent from its daily series)."""
+    covered: set[str] = set()
+    if not YOUTUBE_TITLE_HISTORY_CSV.exists():
+        return covered
+    with YOUTUBE_TITLE_HISTORY_CSV.open("r", newline="", encoding="utf-8-sig") as f:
+        for row in csv.DictReader(f):
+            day = (row.get("date") or "").strip()
+            if day not in week_dates or day in covered or (row.get("source") or "all") != "all":
+                continue
+            if (row.get("daily_views") or "").strip() or not (row.get("period_gain_views") or "").strip():
+                continue
+            window = _youtube_period_window(row, day)
+            if window and all(d in week_dates for d in window):
+                covered.update(window)
+    return covered
+
+
 def _weekly_youtube_views(
     *, week_dates: set[str], logger: Logger, return_daily: bool = False
 ) -> dict[str, int] | tuple[dict[str, int], dict[str, dict[str, int]]]:
@@ -1435,7 +1471,14 @@ def _weekly_youtube_views(
     already merges official/lyric/audio/visualizer videos, and TV/original
     versions, under one title) — so this is summed like Spotify's raw streams,
     not scored via the AM power-law curve. Blank daily_views (gap days, per
-    collector-youtube's exact-delta rule) are skipped rather than treated as 0.
+    collector-youtube's exact-delta rule) are never treated as 0: the row's
+    exact period_gain_views counts instead when its whole window (date -
+    period_days + 1 .. date) lies inside the week — the weekly needs the
+    week's boundary snapshots, not every day (2026-10-04). A period straddling
+    the week start can't be split exactly and is left out (logged).
+    The daily series (return_daily) only ever holds true one-day values: a
+    multi-day gain on one date would skew the live projection's pace. Use
+    _youtube_period_dates() for the dates those period gains cover.
     The trailing "ft X" suffix some grouped titles carry is stripped first
     (see _YOUTUBE_FEAT_SUFFIX_RE) so those groups merge with their
     plain-titled counterpart instead of scoring separately/missing entirely.
@@ -1460,6 +1503,8 @@ def _weekly_youtube_views(
             return None
 
     matched_rows = 0
+    period_rows = 0
+    straddling: set[str] = set()
     daily: dict[str, dict[str, int]] = {}
     with YOUTUBE_TITLE_HISTORY_CSV.open("r", newline="", encoding="utf-8-sig") as f:
         reader = csv.DictReader(f)
@@ -1475,6 +1520,12 @@ def _weekly_youtube_views(
                 continue
             title = (row.get("title") or "").strip()
             views = _to_int(row.get("daily_views"))
+            is_daily = views is not None
+            if views is None:
+                views = _to_int(row.get("period_gain_views"))
+                if views is not None and not _youtube_period_in_week(row, day, week_dates):
+                    straddling.add(day)
+                    continue
             if not title or views is None or views < 0:
                 continue
             title = _YOUTUBE_FEAT_SUFFIX_RE.sub("", title).strip()
@@ -1482,11 +1533,20 @@ def _weekly_youtube_views(
             if not key:
                 continue
             totals[key] = totals.get(key, 0) + views
-            if return_daily:
+            if return_daily and is_daily:
                 daily.setdefault(key, {})[day] = daily.get(key, {}).get(day, 0) + views
+            if not is_daily:
+                period_rows += 1
             matched_rows += 1
 
-    logger.log(f"  youtube        : {matched_rows} rows, weight={YOUTUBE_WEIGHT:g}")
+    logger.log(
+        f"  youtube        : {matched_rows} rows ({period_rows} period gains), weight={YOUTUBE_WEIGHT:g}"
+    )
+    if straddling:
+        logger.log(
+            f"⚠ youtube        : period gain(s) dated {', '.join(sorted(straddling))} start before "
+            "the week — left out (not splittable exactly)"
+        )
     if return_daily:
         return totals, daily
     return totals

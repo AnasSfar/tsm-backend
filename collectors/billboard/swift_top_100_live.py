@@ -462,7 +462,13 @@ def _build_live_variant(
         am_ts_daily_actual, am_global_daily_actual, am_country_daily_actual, am_genre_daily_actual
     )
     itunes_data_as_of = _max_date_across(itunes_daily_actual)
-    youtube_data_as_of = _max_date_across(youtube_daily_actual)
+    # Days covered only by an exact multi-day period gain are already in
+    # youtube_actual (not in the daily series) -> never project them again.
+    youtube_data_as_of = max(
+        filter(None, [_max_date_across(youtube_daily_actual),
+                      *top100._youtube_period_dates(week_dates=week_set_full)]),
+        default=None,
+    )
     charts_data_as_of = _max_date_across(charts_daily_actual)
     charts_split_data_as_of = min(charts_data_as_of, spotify_data_as_of) if charts_data_as_of and spotify_data_as_of else None
     if charts_data_as_of and charts_split_data_as_of != charts_data_as_of:

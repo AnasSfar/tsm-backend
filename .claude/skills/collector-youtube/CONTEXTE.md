@@ -64,9 +64,54 @@ Log : `collectors/youtube/run_youtube.log` (append, gitignored, depuis le
 probablement un timeout/erreur réseau sur un des ~60 appels API). D'où aussi
 le retry de `core/api.py::_get` (3 essais, 2/5/10 s, seulement
 timeouts/réseau/429/5xx ; backoff court car les captures first-week à la
-seconde passent par là). **Jour manqué : ne pas relancer `--date` après coup**
-avec les totaux actuels (faux daily) — laisser le run suivant stocker le
-gain exact sur 2 jours (`period_gain_views`).
+seconde passent par là). **Run quotidien = backoff un peu plus long** depuis le
+2026-10-04 (`api.use_daily_retries()` appelé dans `main()` : 5/10/20/40/60/60 s
+≈ 3 min) : ce matin-là le DNS local ne répondait plus de ~06:01 à après 06:05,
+les 3 retries courts ont tout épuisé en 17 s → jour 2026-10-03 perdu. Plafonné
+volontairement : voir la garde fenêtre 24 h ci-dessous, un run plus tard
+n'aurait de toute façon plus de daily. Les captures first-day/first-week
+gardent le backoff court.
+- **Garde fenêtre 24 h (2026-10-04)** : un daily n'est validé tel quel que si
+  le temps réel entre le `snapshot_at` précédent et celui du run est à ±5 min
+  de 24 h (`DAILY_WINDOW_TOLERANCE`) ; sinon la ligne part d'abord en period
+  gain (`period_label` « 24h14 gain »)… puis le remplissage ci-dessous la
+  convertit dans la foulée.
+- **Remplissage des trous (2026-10-04, décision Anas : « estime au chiffre
+  près… exporte vers le CSV et le TayBoard »)** — `core/gap_fill.py` :
+  frontière du jour D = minuit NY de D+1 + 5 min 40 s (`BOUNDARY_OFFSET`,
+  heure d'un run à l'heure). Jour manquant → lignes créées avec le total
+  estimé à la frontière ; snapshot à plus de ±5 min de sa frontière → total
+  remplacé par l'estimation à la frontière (snapshot_at = frontière). Puis
+  `daily_views` recalculé (= total(D) − total(D−1)) à partir du premier jour
+  touché, period gain effacé, rangs/`daily_change` refaits
+  (`enrich_chart_rows`) et `youtube_title_history.csv` reconstruit pour ces
+  jours (`_title_rows_for_date`). Colonne **`estimated`** (2 CSV) : `total` =
+  total estimé (donc daily aussi), `daily` = total réel mais veille estimée,
+  vide = exact. Les lignes `total` ne servent jamais d'ancrage. Estimation
+  (`core/estimate.py`) : ancrages = vraies lectures (snapshots non `total`,
+  captures first-day, marques first-week via `estimate.registry_anchors()`),
+  rythme `exp(-k·âge) × facteur jour de semaine NY` (facteurs = médiane des
+  ratios jour/moyenne centrée 7 j sur 8 semaines de vrais daily), gain exact
+  entre les 2 lectures encadrantes réparti selon la courbe ; pas d'estimation
+  si ces 2 lectures sont à plus de 8 jours (`MAX_BRACKET`). Backtest réel
+  (`previews_and_sims/youtube-missed-mark-estimate/backtest.py`) : snapshot
+  caché, erreur médiane 2,7 % (clips > 10 j), 8,4 % (clips < 10 j). Lancé en
+  fin de run quotidien sur les 14 derniers jours (non bloquant), ou
+  `--fill-gaps [SINCE]` (+ `--dry-run`, + `--commit`) qui ré-uploade R2 et
+  relance le TayBoard live. Le 1er jour horodaté (2026-08-29, run en retard,
+  aucune lecture horodatée avant) n'est jamais touché → le 2026-08-30 garde
+  son daily sur 18,6 h. Appliqué le 2026-10-04 : 31/08, 04/09, 01/10
+  (manquants) et 05/09 (run à 12:31 UTC) estimés, 01/09, 06/09, 02/10
+  passés en `daily` (sauvegardes `db/*.csv.pre-gapfill-20261004.bak`).
+- Tâches one-off first-day/first-week créées avec `-WakeToRun` (2026-10-04) :
+  Day 4 de Patient Zero manqué car PC en veille à 23:57. **Mais** le plan
+  d'alimentation du PC est en « Important Wake Timers Only » (secteur), donc
+  aucune tâche TSM n'a jamais réveillé le PC (journal Power-Troubleshooter :
+  que des réveils « Power Button »), même celles déjà en WakeToRun : il faut
+  que le minuteur de réveil soit sur « Enable » pour que ça serve.
+**Jour manqué : ne pas relancer `--date` après coup** avec les totaux actuels
+(ce serait le total d'aujourd'hui daté d'hier) — le run suivant voit le trou et
+`gap_fill` l'estime à la bonne frontière.
 
 ## Options utiles
 
@@ -292,7 +337,17 @@ Mécanique :
    ré-enregistrée pour la marque suivante), lancée `CAPTURE_LEAD` (3 min) avant
    la marque, attend la seconde exacte (`--first-week-tick <id>`) ; ou une ligne
    du run quotidien dans `CAPTURE_TOLERANCE` (15 min). Hors fenêtre →
-   `{"missed": true}` : Day N et Day N+1 = `n/a`, jamais estimés.
+   `{"missed": true}`. **Estimation (décision Anas 2026-10-04)** :
+   `fill_estimates()` ajoute `mark["estimate"]` (`core/estimate.py`, sans
+   facteurs jour de semaine : en semaine de sortie ils dégradaient le
+   backtest Patient Zero) dès qu'une lecture réelle existe APRÈS la marque.
+   Ancrages : snapshots CSV réels, captures first-day/first-week, marques du
+   state. Backtest : Day 2/3 de Patient Zero cachés −0,3 % / −1,3 %
+   (lectures à 6 h), −2 % / +3 % en fenêtre 48–68 h. Posté **au chiffre près,
+   sans marqueur public** (décision Anas : chiffres YouTube différents selon
+   les trackers de toute façon) ; trace dans le state + `--first-week-status`
+   (« estimé »). Recalculé jusqu'au premier post qui l'affiche, puis `frozen`.
+   Premier cas réel : Day 4 de Patient Zero (PC en veille le 03/10 à 23:57).
 3. **Post** juste après la capture. Un jour à chiffre inconnu n'est pas posté ;
    un post en échec est retenté au passage suivant tant qu'il a < 12 h
    (`POST_MAX_DELAY`), sinon `skipped` (jamais de rattrapage en rafale). Verrou

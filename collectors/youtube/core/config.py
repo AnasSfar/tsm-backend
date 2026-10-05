@@ -102,6 +102,7 @@ CSV_FIELDNAMES = [
     "privacy_status",
     "upload_status",
     "tags",
+    "estimated",
 ]
 
 TITLE_CSV_FIELDNAMES = [
@@ -130,4 +131,5 @@ TITLE_CSV_FIELDNAMES = [
     "comment_count",
     "video_ids",
     "video_titles",
+    "estimated",
 ]

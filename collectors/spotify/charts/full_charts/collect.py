@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
-"""Backfill the FULL Spotify daily chart (all 200 entries, every artist) for one
+"""Collect the FULL Spotify daily chart (all 200 entries, every artist) for one
 or more regions — not just Taylor Swift rows like worldwide/daily.py keeps.
+(Moved from scripts/backfill_spotify_full_charts.py on 2026-10-05.)
 
 One API request = one (region, date) = the whole top 200, so a year of Global
 is ~365 requests. Two outputs per date:
@@ -11,14 +12,18 @@ is ~365 requests. Two outputs per date:
 - table : db/spotify_charts_full/<region>_<YYYY>.csv, rebuilt from the raw
           files at the end of the run (one row per chart entry).
 
+Then runs enrich.py (albums of new tracks + missing genders, --no-enrich to
+skip) and export.py (All Artists page data + R2, --no-export to skip). One instance at a time (snapshots/spotify_charts_full/collect.lock):
+run_all_charts.py launches it detached once its daily run is over.
+
 Resumable: a date whose raw file exists is skipped (unless --force), so Ctrl+C
 and re-running the same command is free. Tokens: every spotify_session*.json
 account (same bearer cache/Playwright logic as worldwide/daily.py), round-robin
 rotation on 429, global wait only when all accounts are rate-limited.
 
-    python scripts/backfill_spotify_full_charts.py                      # global, 2025-01-01 -> latest
-    python scripts/backfill_spotify_full_charts.py --start 2026-01-01 --regions global us
-    python scripts/backfill_spotify_full_charts.py --rebuild-csv-only    # no network
+    python collectors/spotify/charts/full_charts/collect.py                       # every region, 2026-01-01 -> latest, then enrich
+    python collectors/spotify/charts/full_charts/collect.py --regions global us gb
+    python collectors/spotify/charts/full_charts/collect.py --rebuild-csv-only     # no network
 """
 from __future__ import annotations
 
@@ -35,22 +40,18 @@ import time
 from datetime import date, datetime, timedelta
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from common import (  # noqa: E402
+    COVERS_DIR, CSV_FIELDS, CSV_ROOT, RAW_ROOT, ROOT, STATE_PATH, entries_to_rows, load_state, raw_path,
+    raw_regions,
+)
+
 WORLDWIDE_DAILY = ROOT / "collectors" / "spotify" / "charts" / "worldwide" / "daily.py"
 SESSION_DIR = ROOT / "collectors" / "spotify" / "charts" / "global" / "tools" / "json"
-RAW_ROOT = ROOT / "snapshots" / "spotify_charts_full"
-CSV_ROOT = ROOT / "db" / "spotify_charts_full"
-STATE_PATH = RAW_ROOT / "state.json"
-COVERS_DIR = RAW_ROOT / "covers"
 # Spotify image ids = 16-char size prefix + 24-char hash; same hash, other sizes.
 COVER_640_PREFIX = "ab67616d0000b273"
 LOG_DIR = ROOT / "runtime" / "logs"
 
-CSV_FIELDS = [
-    "date", "rank", "previous_rank", "peak_rank", "peak_date", "entry_rank", "entry_date",
-    "days_on_chart", "streak", "streams", "entry_status", "track_id", "track_name",
-    "artists", "artist_ids", "labels", "release_date", "image_url",
-]
 SPINNER = "⠋⠙⠹⠸⠼⠴⠦⠧⠇⠏"
 
 
@@ -167,10 +168,6 @@ class Tokens:
 
 # ── storage ──────────────────────────────────────────────────────────────────
 
-def raw_path(region: str, day: str) -> Path:
-    return RAW_ROOT / region / day[:4] / f"{day}.json.gz"
-
-
 def write_raw(region: str, day: str, payload: dict) -> None:
     path = raw_path(region, day)
     path.parent.mkdir(parents=True, exist_ok=True)
@@ -180,53 +177,9 @@ def write_raw(region: str, day: str, payload: dict) -> None:
     os.replace(tmp, path)
 
 
-def load_state() -> dict:
-    try:
-        return json.loads(STATE_PATH.read_text(encoding="utf-8"))
-    except Exception:
-        return {"not_published": {}}
-
-
 def save_state(state: dict) -> None:
     STATE_PATH.parent.mkdir(parents=True, exist_ok=True)
     STATE_PATH.write_text(json.dumps(state, indent=1, sort_keys=True), encoding="utf-8")
-
-
-def _int(v) -> int | str:
-    try:
-        return int(v)
-    except (TypeError, ValueError):
-        return ""
-
-
-def entries_to_rows(day: str, payload: dict) -> list[dict]:
-    rows = []
-    for entry in payload.get("entries") or []:
-        ced = entry.get("chartEntryData") or {}
-        meta = entry.get("trackMetadata") or {}
-        uri = meta.get("trackUri") or ""
-        artists = meta.get("artists") or []
-        rows.append({
-            "date": day,
-            "rank": _int(ced.get("currentRank")),
-            "previous_rank": _int(ced.get("previousRank")),
-            "peak_rank": _int(ced.get("peakRank")),
-            "peak_date": ced.get("peakDate") or "",
-            "entry_rank": _int(ced.get("entryRank")),
-            "entry_date": ced.get("entryDate") or "",
-            "days_on_chart": _int(ced.get("appearancesOnChart")),
-            "streak": _int(ced.get("consecutiveAppearancesOnChart")),
-            "streams": _int((ced.get("rankingMetric") or {}).get("value")),
-            "entry_status": ced.get("entryStatus") or "",
-            "track_id": uri.split(":")[-1] if uri.startswith("spotify:track:") else "",
-            "track_name": (meta.get("trackName") or "").strip(),
-            "artists": " | ".join(a.get("name", "") for a in artists),
-            "artist_ids": " | ".join((a.get("spotifyUri") or "").split(":")[-1] for a in artists),
-            "labels": " | ".join(l.get("name", "") for l in meta.get("labels") or []),
-            "release_date": meta.get("releaseDate") or "",
-            "image_url": meta.get("displayImageUri") or "",
-        })
-    return rows
 
 
 def rebuild_csv(region: str, year: str, log: Live) -> int:
@@ -323,6 +276,16 @@ def _fmt(seconds: float) -> str:
     return f"{s // 3600}h{(s % 3600) // 60:02d}"
 
 
+# Region-major order (a region is complete before the next starts, so its
+# yearly stats are usable early): global + biggest markets first, then A-Z.
+FIRST_REGIONS = ("global", "us", "gb", "br", "mx", "de", "fr", "ca", "au", "jp", "es", "it", "ph", "id", "kr")
+
+
+def order_regions(region_map: dict[str, str]) -> list[str]:
+    codes = {c.lower() for c in region_map}
+    return [c for c in FIRST_REGIONS if c in codes] + sorted(codes - set(FIRST_REGIONS))
+
+
 def run(args) -> int:
     import requests
 
@@ -334,6 +297,15 @@ def run(args) -> int:
         if log_path:
             log.event(f"[LOG] detail -> {log_path}")
         regions = [r.lower() for r in args.regions]
+        daily = None
+        if "all" in regions:
+            if args.rebuild_csv_only or args.covers_from_raw:
+                regions = raw_regions()
+            else:
+                daily = _load_daily_module()
+                _token, region_map = daily._get_bearer_token_and_regions()
+                regions = order_regions(region_map)
+            log.event(f"[REGIONS] all -> {len(regions)} region(s)")
         start = datetime.strptime(args.start, "%Y-%m-%d").date()
         end = datetime.strptime(args.end, "%Y-%m-%d").date() if args.end else date.today() - timedelta(days=1)
         days = []
@@ -367,7 +339,7 @@ def run(args) -> int:
                     rebuild_csv(r, y, log)
             return 0
 
-        daily = _load_daily_module()
+        daily = daily or _load_daily_module()
         tokens = Tokens(daily, log)
         session = requests.Session()
         headers = {"Accept": "application/json", "Referer": "https://charts.spotify.com/", "User-Agent": daily._UA}
@@ -376,7 +348,19 @@ def run(args) -> int:
         done = 0
         pauses = 0
         recent: list[float] = []
+        built: set[tuple[str, str]] = set()
+
+        def flush_region(r: str) -> None:
+            # Region finished (todo is region-major): its tables are usable now, not after ~10 h.
+            for key in sorted(k for k in touched if k[0] == r and k not in built):
+                rebuild_csv(key[0], key[1], log)
+                built.add(key)
+
+        prev_region = None
         for region, day in todo:
+            if prev_region is not None and region != prev_region:
+                flush_region(prev_region)
+            prev_region = region
             chart_id = "regional-global-daily" if region == "global" else f"regional-{region}-daily"
             url = f"{daily._API_BASE}/{chart_id}/{day}"
             t0 = time.monotonic()
@@ -449,7 +433,7 @@ def run(args) -> int:
         log.event(f"[DONE] {done} requete(s) en {_fmt(time.monotonic() - started)}, {pauses} 429")
         covers.close()
         years_by_region: dict[str, set[str]] = {}
-        for r, y in touched:
+        for r, y in touched - built:
             years_by_region.setdefault(r, set()).add(y)
         for r, years in sorted(years_by_region.items()):
             for y in sorted(years):
@@ -463,12 +447,95 @@ def run(args) -> int:
         live.close()
 
 
+# ── single instance (manual catch-up + the run after run_all_charts) ─────────
+
+LOCK_PATH = RAW_ROOT / "collect.lock"
+
+
+def _pid_alive(pid: int) -> bool:
+    if pid <= 0:
+        return False
+    if os.name == "nt":
+        import ctypes
+
+        handle = ctypes.windll.kernel32.OpenProcess(0x1000, False, pid)  # PROCESS_QUERY_LIMITED_INFORMATION
+        if not handle:
+            return False
+        code = ctypes.c_ulong()
+        ok = ctypes.windll.kernel32.GetExitCodeProcess(handle, ctypes.byref(code))
+        ctypes.windll.kernel32.CloseHandle(handle)
+        return bool(ok) and code.value == 259  # STILL_ACTIVE
+    try:
+        os.kill(pid, 0)
+    except OSError:
+        return False
+    return True
+
+
+def acquire_lock() -> bool:
+    LOCK_PATH.parent.mkdir(parents=True, exist_ok=True)
+    try:
+        pid = int(LOCK_PATH.read_text(encoding="utf-8").strip() or 0)
+    except (FileNotFoundError, ValueError):
+        pid = 0
+    if pid and pid != os.getpid() and _pid_alive(pid):
+        print(f"[LOCK] une collecte full charts tourne deja (pid {pid}) - rien a faire")
+        return False
+    LOCK_PATH.write_text(str(os.getpid()), encoding="utf-8")
+    return True
+
+
+def release_lock() -> None:
+    try:
+        if LOCK_PATH.read_text(encoding="utf-8").strip() == str(os.getpid()):
+            LOCK_PATH.unlink()
+    except FileNotFoundError:
+        pass
+
+
+def enrich_after_collect(args) -> int:
+    """Albums of the new tracks + missing lead-artist genders (LLM, top N per region)."""
+    from enrich import run_enrich
+
+    start_year = int(args.start[:4])
+    end_year = int((args.end or (date.today() - timedelta(days=1)).isoformat())[:4])
+    regions = None if [r.lower() for r in args.regions] == ["all"] else [r.lower() for r in args.regions]
+    rc = 0
+    for year in range(start_year, end_year + 1):
+        print(f"\n[ENRICH] {year} : albums + genres (top {args.classify_genders} par region)")
+        try:
+            run_enrich(regions, str(year), classify_top=args.classify_genders, list_top=100)
+        except (Exception, SystemExit) as exc:  # data already collected: never lose the run for this
+            print(f"[ENRICH] echec {year}: {exc!r} - relancer enrich.py")
+            rc = 1
+    return rc
+
+
+def export_after_collect(args) -> int:
+    """All Artists page data (export.py) for every year touched, + R2 upload."""
+    from export import run_export
+
+    start_year = int(args.start[:4])
+    end_year = int((args.end or (date.today() - timedelta(days=1)).isoformat())[:4])
+    regions = None if [r.lower() for r in args.regions] == ["all"] else [r.lower() for r in args.regions]
+    rc = 0
+    for year in range(start_year, end_year + 1):
+        print(f"\n[EXPORT] {year} : page All Artists (+ R2)")
+        try:
+            rc = max(rc, run_export(regions, str(year)))
+        except Exception as exc:
+            print(f"[EXPORT] echec {year}: {exc!r} - relancer export.py")
+            rc = 1
+    return rc
+
+
 def main() -> int:
     if hasattr(sys.stdout, "reconfigure"):
         sys.stdout.reconfigure(encoding="utf-8", errors="replace")
-    p = argparse.ArgumentParser(description="Backfill the full Spotify daily top 200 (all artists).")
-    p.add_argument("--regions", nargs="+", default=["global"], help="Chart regions (default: global). e.g. global us gb")
-    p.add_argument("--start", default="2025-01-01", help="First chart date (default 2025-01-01)")
+    p = argparse.ArgumentParser(description="Collect the full Spotify daily top 200 (all artists).")
+    p.add_argument("--regions", nargs="+", default=["all"],
+                   help="Chart regions, or 'all' = every Spotify Charts region (default). e.g. global us gb")
+    p.add_argument("--start", default="2026-01-01", help="First chart date (default 2026-01-01)")
     p.add_argument("--end", default=None, help="Last chart date (default: yesterday)")
     p.add_argument("--request-interval", type=float, default=1.5, help="Seconds between requests (default 1.5)")
     p.add_argument("--force", action="store_true", help="Re-fetch dates whose raw file already exists")
@@ -478,7 +545,25 @@ def main() -> int:
     p.add_argument("--covers-from-raw", action="store_true", help="Only download missing covers referenced by raw files already on disk (no charts API call)")
     p.add_argument("--log-file", default=None, help="Log file (default runtime/logs/spotify_full_charts_<ts>.log, 'none' = off)")
     p.add_argument("--verbose", action="store_true", help="Print every event on the console instead of the live line")
-    return run(p.parse_args())
+    p.add_argument("--no-enrich", action="store_true", help="Do not run enrich.py (albums + genders) after the collection")
+    p.add_argument("--no-export", action="store_true", help="Do not run export.py (All Artists page data + R2) at the end")
+    p.add_argument("--classify-genders", type=int, default=300, metavar="N",
+                   help="Enrich: LLM-classify missing lead-artist genders of each region's top N songs (default 300, 0 = list only)")
+    args = p.parse_args()
+    offline = args.rebuild_csv_only or args.covers_from_raw
+    if not offline and not acquire_lock():
+        return 0
+    try:
+        rc = run(args)
+        if rc == 0 and not offline and not args.no_enrich:
+            rc = enrich_after_collect(args)
+        if rc in (0, 1) and not offline and not args.no_export:
+            # An enrich failure (rc 1) does not block the page: albums are display-only there.
+            rc = max(rc, export_after_collect(args))
+        return rc
+    finally:
+        if not offline:
+            release_lock()
 
 
 if __name__ == "__main__":

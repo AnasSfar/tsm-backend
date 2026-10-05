@@ -428,7 +428,7 @@ def object_has_same_hash(client, bucket: str, key: str, body_hash: str) -> bool:
 # Stored gzipped (ContentEncoding: gzip), same as scripts/upload_ap_r2.py
 # does for them — otherwise whichever uploader ran last would flip the format.
 # Readers: tsm-frontend api/data/loader.py::_r2_json gunzips on magic bytes.
-_GZIP_KEY_PREFIXES = (f"{r2_keys.APPLE_MUSIC_HISTORY_BY_DATE_PREFIX}/",)
+_GZIP_KEY_PREFIXES = (f"{r2_keys.APPLE_MUSIC_HISTORY_BY_DATE_PREFIX}/", f"{r2_keys.CHARTS_FULL_PREFIX}/")
 
 
 def _should_gzip(key: str) -> bool:
