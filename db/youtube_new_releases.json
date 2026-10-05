@@ -1,7 +1,25 @@
 {
-  "generated_at": "2026-10-03T04:06:03+00:00",
+  "generated_at": "2026-10-05T04:06:48+00:00",
   "window_days": 7,
   "releases": [
+    {
+      "anchor": "j8pR1tyoRFc",
+      "published_at": "2026-10-05T04:00:36+00:00",
+      "videos": [
+        {
+          "video_id": "j8pR1tyoRFc",
+          "title": "Taylor Swift - Patient Zero (Expanded Video)",
+          "channel": "main",
+          "kind": "Video",
+          "thumbnail_url": "https://i.ytimg.com/vi/j8pR1tyoRFc/maxresdefault.jpg",
+          "published_at": "2026-10-05T04:00:36+00:00",
+          "due_at": "2026-10-06T04:00:36+00:00",
+          "state": "waiting",
+          "views_24h": null,
+          "captured_at": null
+        }
+      ]
+    },
     {
       "anchor": "mw3kSNIxjqo",
       "published_at": "2026-09-29T22:00:19+00:00",
