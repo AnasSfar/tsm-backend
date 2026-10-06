@@ -14,7 +14,11 @@ is ~365 requests. Two outputs per date:
 
 Then runs enrich.py (albums of new tracks + missing genders, --no-enrich to
 skip) and export.py (All Artists page data + R2, --no-export to skip). One instance at a time (snapshots/spotify_charts_full/collect.lock):
-run_all_charts.py launches it detached once its daily run is over.
+run_all_charts.py launches it detached once its daily run is over. If a
+collection (e.g. a long backfill) already holds the lock, the new launch leaves
+a request file (collect.pending) instead of doing nothing: the running instance
+sees it at its next region change, collects the latest days of every region
+first, exports the page, then resumes its backfill with a fresh end date.
 
 Resumable: a date whose raw file exists is skipped (unless --force), so Ctrl+C
 and re-running the same command is free. Tokens: every spotify_session*.json
@@ -286,7 +290,10 @@ def order_regions(region_map: dict[str, str]) -> list[str]:
     return [c for c in FIRST_REGIONS if c in codes] + sorted(codes - set(FIRST_REGIONS))
 
 
-def run(args) -> int:
+RESTART = 75  # run() stopped early: a newer chart day was requested (collect.pending)
+
+
+def run(args, *, watch_pending: bool = False) -> int:
     import requests
 
     log_path = None if args.log_file == "none" else Path(args.log_file or LOG_DIR / f"spotify_full_charts_{datetime.now():%Y%m%d_%H%M%S}.log")
@@ -357,9 +364,15 @@ def run(args) -> int:
                 built.add(key)
 
         prev_region = None
+        interrupted = False
         for region, day in todo:
             if prev_region is not None and region != prev_region:
                 flush_region(prev_region)
+                if watch_pending and PENDING_PATH.exists():
+                    log.event(f"[PENDING] nouvelle journee demandee - pause de la collecte avant {region}, "
+                              "derniers jours d'abord")
+                    interrupted = True
+                    break
             prev_region = region
             chart_id = "regional-global-daily" if region == "global" else f"regional-{region}-daily"
             url = f"{daily._API_BASE}/{chart_id}/{day}"
@@ -438,7 +451,7 @@ def run(args) -> int:
         for r, years in sorted(years_by_region.items()):
             for y in sorted(years):
                 rebuild_csv(r, y, log)
-        return 0
+        return RESTART if interrupted else 0
     except KeyboardInterrupt:
         live.event("[STOP] Ctrl+C - les dates deja ecrites sont gardees ; relancer la meme commande reprend. "
                    "CSV : --rebuild-csv-only pour le regenerer maintenant.")
@@ -450,6 +463,8 @@ def run(args) -> int:
 # ── single instance (manual catch-up + the run after run_all_charts) ─────────
 
 LOCK_PATH = RAW_ROOT / "collect.lock"
+# Written by a launch that found the lock held; consumed by the running instance.
+PENDING_PATH = RAW_ROOT / "collect.pending"
 
 
 def _pid_alive(pid: int) -> bool:
@@ -479,7 +494,9 @@ def acquire_lock() -> bool:
     except (FileNotFoundError, ValueError):
         pid = 0
     if pid and pid != os.getpid() and _pid_alive(pid):
-        print(f"[LOCK] une collecte full charts tourne deja (pid {pid}) - rien a faire")
+        PENDING_PATH.write_text(datetime.now().isoformat(timespec="seconds"), encoding="utf-8")
+        print(f"[LOCK] une collecte full charts tourne deja (pid {pid}) - demande enregistree "
+              f"({PENDING_PATH.name}) : elle collectera et exportera les derniers jours a son prochain changement de region")
         return False
     LOCK_PATH.write_text(str(os.getpid()), encoding="utf-8")
     return True
@@ -529,6 +546,28 @@ def export_after_collect(args) -> int:
     return rc
 
 
+def consume_pending() -> bool:
+    try:
+        PENDING_PATH.unlink()
+        return True
+    except FileNotFoundError:
+        return False
+
+
+def latest_days_pass(args) -> int:
+    """Requested while a backfill runs: the last few days of every region
+    (only the missing ones are fetched), then the page export - no enrich, the
+    final enrich/export of the main run completes albums/genders."""
+    quick = argparse.Namespace(**vars(args))
+    quick.end = None
+    quick.start = max(args.start, (date.today() - timedelta(days=4)).isoformat())
+    print(f"\n[PENDING] passe prioritaire {quick.start} -> hier, toutes les regions demandees")
+    rc = run(quick)
+    if rc == 0 and not args.no_export:
+        rc = export_after_collect(quick)
+    return rc
+
+
 def main() -> int:
     if hasattr(sys.stdout, "reconfigure"):
         sys.stdout.reconfigure(encoding="utf-8", errors="replace")
@@ -554,13 +593,27 @@ def main() -> int:
     if not offline and not acquire_lock():
         return 0
     try:
-        rc = run(args)
-        if rc == 0 and not offline and not args.no_enrich:
-            rc = enrich_after_collect(args)
-        if rc in (0, 1) and not offline and not args.no_export:
-            # An enrich failure (rc 1) does not block the page: albums are display-only there.
-            rc = max(rc, export_after_collect(args))
-        return rc
+        if offline:
+            return run(args)
+        consume_pending()  # a request older than this run is covered by it
+        while True:
+            # args.end None = "yesterday", recomputed by each run(): a resumed pass also
+            # picks up a day published since this process started.
+            rc = run(args, watch_pending=True)
+            if rc == RESTART:
+                consume_pending()
+                if latest_days_pass(args) == 130:
+                    return 130
+                continue
+            if rc == 0 and not args.no_enrich:
+                rc = enrich_after_collect(args)
+            if rc in (0, 1) and not args.no_export:
+                # An enrich failure (rc 1) does not block the page: albums are display-only there.
+                rc = max(rc, export_after_collect(args))
+            if rc in (0, 1) and consume_pending():
+                print("\n[PENDING] nouvelle journee demandee pendant enrich/export - nouvelle passe")
+                continue
+            return rc
     finally:
         if not offline:
             release_lock()

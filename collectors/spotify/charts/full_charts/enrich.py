@@ -2,8 +2,9 @@
 """Metadata needed by stats.py for the albums / female rankings.
 
 1. Albums: Spotify album of every distinct charting track_id, via the web-player
-   GraphQL getTrack (same TokenManager as the streams pipeline; the public Web
-   API /v1/tracks answers 429 with our session token). Cached in
+   GraphQL getTrack (the public Web API /v1/tracks answers 429 with our session
+   token). Tokens: web_tokens.TokenPool = anonymous token + charts accounts
+   except the streams one, never the streams TokenManager/cache. Cached in
    snapshots/spotify_charts_full/meta/tracks.json — a track is fetched once.
 2. Lead-artist gender (F / NF) in db/spotify_charts_full/artist_genders.json,
    {artist_id: {name, gender, type, source}}. Seeded from the curated
@@ -58,57 +59,55 @@ def fetch_albums(track_ids: list[str], workers: int, interval: float) -> None:
     for p in (STREAMS_SCRIPTS, STREAMS_SCRIPTS.parents[2], STREAMS_SCRIPTS.parents[3]):
         if str(p) not in sys.path:
             sys.path.append(str(p))
-    import spotify_api as sa  # type: ignore
+    import requests
+    import spotify_api as sa  # type: ignore  # GraphQL URL + getTrack hash only
+    from web_tokens import TokenPool
 
     meta = read_json(TRACKS_META_PATH, {})
     todo = [t for t in track_ids if t not in meta]
     print(f"[ALBUMS] {len(track_ids)} titre(s) distinct(s), {len(todo)} a resoudre")
     if not todo:
         return
-    tm = sa.TokenManager()
-    if not tm.capture():
-        raise SystemExit("[ALBUMS] capture des tokens Spotify impossible")
+    pool_tokens = TokenPool(interval)
     lock = threading.Lock()
-    pace = threading.Lock()
-    state = {"next": 0.0, "done": 0, "fail": 0}
-    session = sa._requests.Session()
+    state = {"done": 0, "fail": 0, "started": time.monotonic()}
+    local = threading.local()
 
     def one(tid: str) -> None:
+        if not hasattr(local, "session"):
+            local.session = requests.Session()
         body = {"variables": {"uri": f"spotify:track:{tid}"}, "operationName": "getTrack",
                 "extensions": {"persistedQuery": {"version": 1, "sha256Hash": sa.GETTRACK_HASH}}}
-        for attempt in range(6):
-            with pace:
-                wait = state["next"] - time.monotonic()
-                if wait > 0:
-                    time.sleep(wait)
-                state["next"] = time.monotonic() + interval
-            tok = tm.get()
+        for attempt in range(8):
+            i, tok = pool_tokens.acquire()
             headers = {"Authorization": f"Bearer {tok['bearer']}", "client-token": tok["client_token"],
-                       "spotify-app-version": sa.APP_VERSION, "app-platform": "WebPlayer",
+                       "spotify-app-version": tok.get("app_version") or sa.APP_VERSION, "app-platform": "WebPlayer",
                        "Accept": "application/json", "Content-Type": "application/json;charset=UTF-8",
                        "Origin": "https://open.spotify.com", "Referer": "https://open.spotify.com/", "User-Agent": UA}
             try:
-                r = session.post(sa.GRAPHQL_URL, json=body, headers=headers, timeout=(5, 20))
+                r = local.session.post(sa.GRAPHQL_URL, json=body, headers=headers, timeout=(5, 20))
             except Exception:
                 time.sleep(3)
                 continue
             if r.status_code == 200:
+                pool_tokens.mark_ok(i)
                 tu = ((r.json() or {}).get("data") or {}).get("trackUnion") or {}
                 if tu.get("albumOfTrack"):
                     with lock:
                         meta[tid] = _album_from_track_union(tu)
                         state["done"] += 1
-                        if state["done"] % 200 == 0:
+                        if state["done"] % 500 == 0:
                             write_json(TRACKS_META_PATH, meta, indent=None)
-                            print(f"[ALBUMS] {state['done']}/{len(todo)}")
+                            rate = state["done"] / max(1.0, time.monotonic() - state["started"])
+                            print(f"[ALBUMS] {state['done']}/{len(todo)} ({rate:.1f}/s, "
+                                  f"reste ~{(len(todo) - state['done']) / max(rate, 0.1) / 60:.0f} min)")
                     return
                 break  # track not found / unavailable: leave unresolved (stats blocks on it)
             if r.status_code == 401:
-                tm.mark_expired()
-                tm.capture(force_refresh=True)
+                pool_tokens.refresh(i, tok["bearer"])
                 continue
             if r.status_code == 429:
-                time.sleep(float(r.headers.get("Retry-After") or 0) or 10 * (attempt + 1))
+                pool_tokens.mark_429(i, float(r.headers.get("Retry-After") or 0) or 10 * (attempt + 1))
                 continue
             time.sleep(5)
         with lock:
@@ -175,8 +174,8 @@ def classify_genders(genders: dict, wanted: dict[str, str], do_llm: bool) -> Non
             write_json(ARTIST_GENDERS_PATH, genders)
 
 
-def run_enrich(regions: list[str] | None, year: str, *, tracks: bool = True, workers: int = 3,
-               interval: float = 0.25, classify_top: int = 0, list_top: int = 100) -> int:
+def run_enrich(regions: list[str] | None, year: str, *, tracks: bool = True, workers: int = 8,
+               interval: float = 0.15, classify_top: int = 0, list_top: int = 100) -> int:
     """regions=None -> every region with raw data. Also called by collect.py at the end of a run."""
     regions = raw_regions() if not regions else regions
     regions = [r for r in regions if (ROOT / "db" / "spotify_charts_full" / f"{r}_{year}.csv").exists()]
@@ -209,8 +208,9 @@ def main() -> int:
     p.add_argument("--regions", nargs="+", default=["all"], help="Regions (default: every region with raw data)")
     p.add_argument("--year", default=str(date.today().year))
     p.add_argument("--no-tracks", action="store_true", help="Skip album resolution")
-    p.add_argument("--workers", type=int, default=3)
-    p.add_argument("--interval", type=float, default=0.25, help="Min seconds between GraphQL requests (all workers)")
+    p.add_argument("--workers", type=int, default=8)
+    p.add_argument("--interval", type=float, default=0.15,
+                   help="Min seconds between GraphQL requests PER TOKEN (default 0.15; x1.5 per token on each 429)")
     p.add_argument("--classify-genders", type=int, default=0, metavar="N",
                    help="LLM-classify the lead artists of each region's top N songs (default 0 = only list missing)")
     p.add_argument("--list-genders", type=int, default=100, metavar="N",
