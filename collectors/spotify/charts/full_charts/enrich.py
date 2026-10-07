@@ -138,9 +138,12 @@ def seed_genders(genders: dict) -> int:
     return added
 
 
-def lead_artists_of_top(regions: list[str], year: str, top: int) -> dict[str, str]:
-    """{lead_artist_id: name} for the top `top` songs (year-to-date chart streams) of each region."""
+def lead_artists_of_top(regions: list[str], year: str, top: int | None) -> dict[str, str]:
+    """{lead_artist_id: name} for the top `top` songs (year-to-date chart streams) of each region
+    (top=None: every song, i.e. everything the All Artists page shows). Most-streamed artists
+    first, so an LLM run that stops early has done the most visible ones."""
     out: dict[str, str] = {}
+    best: dict[str, int] = {}
     for region in regions:
         totals: dict[str, int] = {}
         lead: dict[str, tuple[str, str]] = {}
@@ -152,12 +155,77 @@ def lead_artists_of_top(regions: list[str], year: str, top: int) -> dict[str, st
         for tid in sorted(totals, key=lambda t: -totals[t])[:top]:
             aid, name = lead[tid]
             out.setdefault(aid, name)
+            best[aid] = max(best.get(aid, 0), totals[tid])
+    return {aid: out[aid] for aid in sorted(out, key=lambda a: -best[a])}
+
+
+LLM_MAX_CONSECUTIVE_FAILURES = 15  # provider down / rate-limited: stop instead of hammering it for hours
+
+
+def save_genders(genders: dict, before: set[str]) -> None:
+    """Write only the entries added by this run, merged into the file as it is NOW:
+    a manual edit or a merge made while this run was going is never overwritten."""
+    on_disk = read_json(ARTIST_GENDERS_PATH, {})
+    for aid in set(genders) - before:
+        on_disk.setdefault(aid, genders[aid])
+    write_json(ARTIST_GENDERS_PATH, on_disk)
+
+
+WIKIDATA_SPARQL = "https://query.wikidata.org/sparql"
+WIKIDATA_UA = "tsm-backend full_charts/enrich.py (Spotify charts metadata; github.com/AnasSfar/tsm-backend)"
+# P21 (sex or gender) -> our gender. Anything else (non-binary, ...) stays blank.
+WD_GENDER = {"Q6581072": "F", "Q1052281": "F", "Q6581097": "NF", "Q2449503": "NF"}  # female, trans woman, male, trans man
+WD_HUMAN, WD_GIRL_GROUP, WD_BOY_BAND = "Q5", "Q641066", "Q216337"
+
+
+def wikidata_genders(artist_ids: list[str], batch: int = 200) -> dict[str, tuple[str, str]]:
+    """{spotify_artist_id: (gender, type)} from Wikidata (P1902 = Spotify artist ID): people
+    with an unambiguous P21, girl groups (F GROUP) and boy bands (NF GROUP). Other groups and
+    anything ambiguous are left out (blank beats wrong). Network errors -> partial result."""
+    import requests
+
+    out: dict[str, tuple[str, str]] = {}
+    for start in range(0, len(artist_ids), batch):
+        chunk = artist_ids[start:start + batch]
+        query = ("SELECT ?sid ?gender ?inst WHERE { VALUES ?sid { %s } ?item wdt:P1902 ?sid . "
+                 "OPTIONAL { ?item wdt:P21 ?gender } OPTIONAL { ?item wdt:P31 ?inst } }"
+                 % " ".join(f'"{a}"' for a in chunk))
+        try:
+            r = requests.post(WIKIDATA_SPARQL, data={"query": query, "format": "json"},
+                              headers={"User-Agent": WIKIDATA_UA, "Accept": "application/sparql-results+json"}, timeout=90)
+            r.raise_for_status()
+            bindings = r.json()["results"]["bindings"]
+        except Exception as exc:
+            print(f"[WIKIDATA] echec lot {start // batch + 1}: {exc!r} - ignore")
+            continue
+        facts: dict[str, dict[str, set[str]]] = {}
+        for b in bindings:
+            f = facts.setdefault(b["sid"]["value"], {"gender": set(), "inst": set()})
+            for key in ("gender", "inst"):
+                if key in b:
+                    f[key].add(b[key]["value"].rsplit("/", 1)[-1])
+        for sid, f in facts.items():
+            if WD_HUMAN in f["inst"]:
+                mapped = {WD_GENDER.get(q) for q in f["gender"]}
+                if len(mapped) == 1 and None not in mapped:
+                    out[sid] = (mapped.pop(), "solo")
+            elif f["inst"] & {WD_GIRL_GROUP, WD_BOY_BAND} and not (WD_GIRL_GROUP in f["inst"] and WD_BOY_BAND in f["inst"]):
+                out[sid] = ("F" if WD_GIRL_GROUP in f["inst"] else "NF", "GROUP")
+        time.sleep(1)  # be gentle with the public endpoint
     return out
 
 
-def classify_genders(genders: dict, wanted: dict[str, str], do_llm: bool) -> None:
+def classify_genders(genders: dict, wanted: dict[str, str], do_llm: bool, save=lambda: None) -> None:
     missing = {aid: n for aid, n in wanted.items() if aid not in genders}
     print(f"[GENRES] {len(wanted)} artiste(s) principal(aux) concerne(s), {len(missing)} sans genre")
+    if missing:
+        # Sourced data first (Wikidata), the LLM only for what is left.
+        found = wikidata_genders(list(missing))
+        for aid, (g, t) in found.items():
+            genders[aid] = {"name": missing.pop(aid), "gender": g, "type": t, "source": "wikidata"}
+        print(f"[WIKIDATA] {len(found)} artiste(s) classe(s), {len(missing)} restant(s)")
+        if found:
+            save()
     if not missing or not do_llm:
         for aid, n in list(missing.items())[:40]:
             print(f"  - {n} ({aid})")
@@ -165,13 +233,19 @@ def classify_genders(genders: dict, wanted: dict[str, str], do_llm: bool) -> Non
     sys.path.insert(0, str(ARTISTS_GLOBAL))
     from artist_gender_llm import classify_artist_gender  # type: ignore
 
+    failures = 0
     for i, (aid, name) in enumerate(missing.items(), 1):
         g, t, provider = classify_artist_gender(name)
         if g:
             genders[aid] = {"name": name, "gender": g, "type": t, "source": f"llm:{provider}"}
+        failures = 0 if provider else failures + 1  # provider "" = no LLM answered (down / 429)
         print(f"[GENRES] {i}/{len(missing)} {name}: {g or '?'} {t}")
         if i % 25 == 0:
-            write_json(ARTIST_GENDERS_PATH, genders)
+            save()
+        if failures >= LLM_MAX_CONSECUTIVE_FAILURES:
+            print(f"[GENRES] LLM indisponible ({failures} echecs d'affilee) - arret ; "
+                  f"{len(missing) - i} artiste(s) restent sans genre (masques dans les filtres F/M), nouvel essai au prochain run")
+            break
 
 
 def run_enrich(regions: list[str] | None, year: str, *, tracks: bool = True, workers: int = 8,
@@ -190,14 +264,17 @@ def run_enrich(regions: list[str] | None, year: str, *, tracks: bool = True, wor
         fetch_albums(sorted(ids), workers, interval)
 
     genders = read_json(ARTIST_GENDERS_PATH, {})
+    before = set(genders)
     seeded = seed_genders(genders)
     if seeded:
         print(f"[GENRES] {seeded} artiste(s) repris de Artists.csv")
-    top = classify_top or list_top
+    # classify_top < 0 = every song on the page (default of the daily run), > 0 = top N, 0 = list only.
+    top = None if classify_top < 0 else (classify_top or list_top)
     try:
-        classify_genders(genders, lead_artists_of_top(regions, year, top), do_llm=bool(classify_top))
+        classify_genders(genders, lead_artists_of_top(regions, year, top), do_llm=bool(classify_top),
+                         save=lambda: save_genders(genders, before))
     finally:
-        write_json(ARTIST_GENDERS_PATH, genders)
+        save_genders(genders, before)
     return 0
 
 
@@ -212,7 +289,7 @@ def main() -> int:
     p.add_argument("--interval", type=float, default=0.15,
                    help="Min seconds between GraphQL requests PER TOKEN (default 0.15; x1.5 per token on each 429)")
     p.add_argument("--classify-genders", type=int, default=0, metavar="N",
-                   help="LLM-classify the lead artists of each region's top N songs (default 0 = only list missing)")
+                   help="LLM-classify the lead artists of each region's top N songs (-1 = every song; default 0 = only list missing)")
     p.add_argument("--list-genders", type=int, default=100, metavar="N",
                    help="Without --classify-genders: list missing genders for each region's top N (default 100)")
     args = p.parse_args()

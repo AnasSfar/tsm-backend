@@ -519,7 +519,8 @@ def enrich_after_collect(args) -> int:
     regions = None if [r.lower() for r in args.regions] == ["all"] else [r.lower() for r in args.regions]
     rc = 0
     for year in range(start_year, end_year + 1):
-        print(f"\n[ENRICH] {year} : albums + genres (top {args.classify_genders} par region)")
+        scope = "tous les titres" if args.classify_genders < 0 else f"top {args.classify_genders} par region"
+        print(f"\n[ENRICH] {year} : albums + genres ({scope})")
         try:
             run_enrich(regions, str(year), classify_top=args.classify_genders, list_top=100)
         except (Exception, SystemExit) as exc:  # data already collected: never lose the run for this
@@ -586,8 +587,9 @@ def main() -> int:
     p.add_argument("--verbose", action="store_true", help="Print every event on the console instead of the live line")
     p.add_argument("--no-enrich", action="store_true", help="Do not run enrich.py (albums + genders) after the collection")
     p.add_argument("--no-export", action="store_true", help="Do not run export.py (All Artists page data + R2) at the end")
-    p.add_argument("--classify-genders", type=int, default=300, metavar="N",
-                   help="Enrich: LLM-classify missing lead-artist genders of each region's top N songs (default 300, 0 = list only)")
+    p.add_argument("--classify-genders", type=int, default=-1, metavar="N",
+                   help="Enrich: LLM-classify missing lead-artist genders of each region's top N songs "
+                        "(default -1 = every song shown by the All Artists page, 0 = list only)")
     args = p.parse_args()
     offline = args.rebuild_csv_only or args.covers_from_raw
     if not offline and not acquire_lock():

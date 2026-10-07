@@ -10,7 +10,7 @@ import threading
 import time
 from contextlib import contextmanager
 from dataclasses import dataclass, field
-from datetime import date as date_cls, datetime, timedelta, timedelta as _timedelta
+from datetime import date as date_cls, datetime, timedelta as _timedelta
 from pathlib import Path
 from typing import Any, Callable
 
@@ -25,6 +25,7 @@ import post_best_day_since_twitter
 import score_album_update
 import history_store
 import live_log
+import post_pacing
 from config import NTFY_TOPIC
 from post_debut_releases import post_debut_releases as run_debut_release_posts
 from post_debut_releases import album_track_id_set, release_day_debut_albums
@@ -86,15 +87,32 @@ PACING_JITTER_SECONDS = 15
 # core.twitter defaults, e.g. outside finalize or in the urgent phase).
 _PACING_SPACING_SECONDS: int | None = None
 # Native X scheduling of the paced phase (owner 2026-10-04: "au lieu d'attendre,
-# schedule les"): each paced post is PROGRAMMED on X at its slot time (same
-# log curve, slots chained from the previous slot) instead of finalize sleeping.
+# schedule les"): each paced post is PROGRAMMED on X at its slot time instead of
+# finalize sleeping. Since 2026-10-07 the slots come from post_pacing.plan_slots
+# (log curve in audience time from the X active-times heatmap, fitted to the
+# posts left and the window, collision-free with other updates). The curve
+# above (_paced_spacing_seconds) only drives the live fallback mode.
 # Threads can't be scheduled on X and still post live. FINALIZE_SCHEDULE_POSTS=0
 # falls back to live posting with waits.
 SCHEDULE_PACED_POSTS = os.getenv("FINALIZE_SCHEDULE_POSTS", "1").strip().lower() not in {"0", "false", "no"}
-SCHEDULE_MIN_LEAD_SECONDS = int(os.getenv("FINALIZE_SCHEDULE_MIN_LEAD_SECONDS", "150"))
-# Slot time handed to post subprocesses (env TWITTER_SCHEDULE_AT), or None.
-_SCHEDULE_AT: datetime | None = None
+# Planned slots handed to the post subprocess (env TWITTER_SCHEDULE_SLOTS: the
+# step's n-th programmed post takes the n-th slot), empty = post live.
+_SCHEDULE_SLOTS: list[datetime] = []
+# Tag of this update's programmed posts in core.twitter's schedule registry.
+_SCHEDULE_SOURCE = ""
 PACING_STATE_FILENAME = "finalize_pacing_state.json"
+# Expected number of posts per paced step, to fit the remaining plan into the
+# window (an estimate: the plan is recomputed after every step anyway).
+PACED_EXPECTED_POSTS = {
+    "album": 1,
+    "best-day": 1,
+    "debut": 0,
+    "weekend-gainers": 1,
+    "overtakes": 2,
+    "milestones": 1,
+    "gainers": 2,
+    "best-day-last": 3,
+}
 
 
 def _paced_spacing_seconds(paced_posts_done: int) -> int:
@@ -112,41 +130,74 @@ def _load_pacing_state(stats_date: str) -> dict:
         return {
             "done": max(0, int(data.get("done") or 0)),
             "last_slot_at": data.get("last_slot_at"),
+            "deadline": data.get("deadline"),
         }
     except (OSError, ValueError, TypeError):
-        return {"done": 0, "last_slot_at": None}
+        return {"done": 0, "last_slot_at": None, "deadline": None}
 
 
 def _save_pacing_state(stats_date: str, state: dict) -> None:
     path = update_streams_dir(stats_date) / PACING_STATE_FILENAME
     try:
         path.write_text(
-            json.dumps({"done": state["done"], "last_slot_at": state.get("last_slot_at")}, indent=2),
+            json.dumps(
+                {
+                    "done": state["done"],
+                    "last_slot_at": state.get("last_slot_at"),
+                    "deadline": state.get("deadline"),
+                },
+                indent=2,
+            ),
             encoding="utf-8",
         )
     except OSError as exc:
         print(f"[pacing] could not save state ({exc})")
 
 
-def _next_schedule_slot(state: dict) -> datetime:
-    """Next X schedule time: previous slot (or now) + paced spacing(k),
-    never closer than SCHEDULE_MIN_LEAD_SECONDS, rounded up to the minute and
-    strictly after the previous slot's minute (X schedules per minute)."""
+def _parse_local_dt(value) -> datetime | None:
+    try:
+        return datetime.fromisoformat(str(value)) if value else None
+    except ValueError:
+        return None
+
+
+def _my_scheduled_keys() -> set[tuple[datetime, float]]:
+    """(slot, created) of the posts this update programmed on X (registry)."""
+    try:
+        return {
+            (entry["at"], entry["created"])
+            for entry in twitter_core.scheduled_entries()
+            if entry["source"] == _SCHEDULE_SOURCE
+        }
+    except Exception as exc:
+        print(f"[pacing] schedule registry unreadable ({exc})")
+        return set()
+
+
+def _plan_paced_slots(state: dict, remaining_posts: float) -> tuple[list[datetime], float, datetime]:
+    """X slots for the posts left in the paced phase (post_pacing.plan_slots),
+    chained after the last slot already programmed by this update. The window
+    deadline is fixed at the first paced post and persisted (resume keeps it)."""
     now = datetime.now()
-    spacing = _paced_spacing_seconds(state["done"])
-    last = None
-    if state.get("last_slot_at"):
-        try:
-            last = datetime.fromisoformat(str(state["last_slot_at"]))
-        except ValueError:
-            last = None
-    slot = (last or now) + timedelta(seconds=spacing)
-    slot = max(slot, now + timedelta(seconds=SCHEDULE_MIN_LEAD_SECONDS))
-    if slot.second or slot.microsecond:
-        slot = slot.replace(second=0, microsecond=0) + timedelta(minutes=1)
-    if last is not None and slot <= last:
-        slot = last.replace(second=0, microsecond=0) + timedelta(minutes=1)
-    return slot
+    deadline = _parse_local_dt(state.get("deadline"))
+    if deadline is None:
+        deadline = post_pacing.window_deadline(now)
+        state["deadline"] = deadline.isoformat(timespec="minutes")
+    last = _parse_local_dt(state.get("last_slot_at"))
+    try:
+        busy = [entry["at"] for entry in twitter_core.scheduled_entries()]
+    except Exception as exc:
+        print(f"[pacing] schedule registry unreadable ({exc}); planning without it")
+        busy = []
+    slots, scale = post_pacing.plan_slots(
+        start=max(last, now) if last else now,
+        first_index=state["done"],
+        count=max(1, math.ceil(remaining_posts)),
+        deadline=deadline,
+        busy=busy,
+        now=now,
+    )
+    return slots, scale, deadline
 
 
 def _account_last_schedule_marker() -> tuple[float, str | None]:
@@ -191,11 +242,13 @@ def _subprocess_env(extra: dict[str, str] | None = None) -> dict[str, str]:
     # les posts "priority early" pendant la collecte descendent a 0. Voir
     # core.twitter._twitter_account_slot.
     env.setdefault("TWITTER_POST_PRIORITY", "3")
-    if _SCHEDULE_AT is not None:
-        env["TWITTER_SCHEDULE_AT"] = _SCHEDULE_AT.isoformat(timespec="minutes")
-        # Several posts in one step (overtakes, milestones): spaced by the
-        # current paced spacing on X too.
-        env["TWITTER_SCHEDULE_GAP_SECONDS"] = str(_PACING_SPACING_SECONDS or PACING_BASE_SECONDS)
+    if _SCHEDULE_SLOTS:
+        env["TWITTER_SCHEDULE_AT"] = _SCHEDULE_SLOTS[0].isoformat(timespec="minutes")
+        # Several posts in one step (overtakes, milestones, gainers tables):
+        # each takes the next planned slot, so the curve advances per post.
+        env["TWITTER_SCHEDULE_SLOTS"] = ",".join(slot.isoformat(timespec="minutes") for slot in _SCHEDULE_SLOTS)
+        env["TWITTER_SCHEDULE_GAP_SECONDS"] = str(post_pacing.MIN_GAP_SECONDS)
+        env["TWITTER_SCHEDULE_SOURCE"] = _SCHEDULE_SOURCE
     elif _PACING_SPACING_SECONDS is not None:
         env["TWITTER_ACCOUNT_SPACING_MIN_SECONDS"] = str(_PACING_SPACING_SECONDS)
         env["TWITTER_ACCOUNT_SPACING_MAX_SECONDS"] = str(_PACING_SPACING_SECONDS + PACING_JITTER_SECONDS)
@@ -2110,8 +2163,16 @@ def run_final_update_tasks(ctx: FinalizeContext) -> None:
                 + (f", last X slot {pacing['last_slot_at']}" if pacing.get("last_slot_at") else "")
             )
 
-        def _guarded_post_step(step_label: str, fn, key: str | None = None) -> None:
-            global _PACING_SPACING_SECONDS, _SCHEDULE_AT
+        global _SCHEDULE_SOURCE
+        _SCHEDULE_SOURCE = f"streams-finalize:{ctx.summary['stats_date']}"
+
+        def _guarded_post_step(
+            step_label: str,
+            fn,
+            key: str | None = None,
+            remaining_posts: float = 1.0,
+        ) -> None:
+            global _PACING_SPACING_SECONDS, _SCHEDULE_SLOTS
             if ctx.skip_post_images:
                 return
             if key is not None and key in ctx.skip_steps:
@@ -2119,15 +2180,19 @@ def run_final_update_tasks(ctx: FinalizeContext) -> None:
                 return
             post_before = _account_last_post_marker() if pacing["active"] else 0.0
             schedule_before = _account_last_schedule_marker()[0] if pacing["active"] else 0.0
+            registry_before = _my_scheduled_keys() if pacing["active"] else set()
             if pacing["active"]:
-                _PACING_SPACING_SECONDS = _paced_spacing_seconds(pacing["done"])
                 if SCHEDULE_PACED_POSTS and not ctx.no_post_mode:
-                    _SCHEDULE_AT = _next_schedule_slot(pacing)
+                    _SCHEDULE_SLOTS, scale, deadline = _plan_paced_slots(pacing, remaining_posts)
                     print(
-                        f"[pacing] {step_label}: programme sur X a {_SCHEDULE_AT:%H:%M} "
-                        f"(post rythme #{pacing['done'] + 1}, +{_PACING_SPACING_SECONDS}s)"
+                        f"[pacing] {step_label}: programme sur X a {_SCHEDULE_SLOTS[0]:%H:%M} "
+                        f"(post rythme #{pacing['done'] + 1}; ~{len(_SCHEDULE_SLOTS)} post(s) restants, "
+                        f"dernier prevu {_SCHEDULE_SLOTS[-1]:%H:%M}, fenetre jusqu'a {deadline:%H:%M}"
+                        + (f", ecarts compresses x{scale:.2f}" if scale < 1 else "")
+                        + ")"
                     )
                 else:
+                    _PACING_SPACING_SECONDS = _paced_spacing_seconds(pacing["done"])
                     print(f"[pacing] {step_label}: >= {_PACING_SPACING_SECONDS}s after the previous post")
             with timer.step(step_label):
                 try:
@@ -2138,24 +2203,30 @@ def run_final_update_tasks(ctx: FinalizeContext) -> None:
                             _account_last_schedule_marker()[0] <= schedule_before
                             and _account_last_post_marker() <= post_before
                         )
-                        if _SCHEDULE_AT is None or not nothing_out:
+                        if not _SCHEDULE_SLOTS or not nothing_out:
                             raise
                         # X scheduling failed before anything went out (modal
                         # changed, slot refused...): post it live instead of
                         # losing it. Already-posted items skip via their locks.
                         print(f"[pacing] {step_label}: programmation X echouee ({exc}) — repli en post direct")
-                        _SCHEDULE_AT = None
+                        _SCHEDULE_SLOTS = []
                         fn()
                 except SystemExit as exc:
                     print(f"{step_label} failed; continuing finalization: {exc}")
                     post_step_failures.append(f"{step_label} ({exc})")
                 finally:
                     _PACING_SPACING_SECONDS = None
-                    _SCHEDULE_AT = None
+                    _SCHEDULE_SLOTS = []
             if not pacing["active"]:
                 return
+            # Every post this step programmed (one per overtake/milestone/table)
+            # advances the curve, read back from core.twitter's registry.
+            new_slots = sorted(slot for slot, _created in _my_scheduled_keys() - registry_before)
             schedule_after, scheduled_at = _account_last_schedule_marker()
-            if schedule_after > schedule_before and scheduled_at:
+            if new_slots:
+                pacing["done"] += len(new_slots)
+                pacing["last_slot_at"] = new_slots[-1].isoformat(timespec="minutes")
+            elif schedule_after > schedule_before and scheduled_at:
                 pacing["done"] += 1
                 pacing["last_slot_at"] = scheduled_at
             elif _account_last_post_marker() > post_before:
@@ -2260,9 +2331,13 @@ def run_final_update_tasks(ctx: FinalizeContext) -> None:
         # End of the urgent phase: everything below is paced.
         pacing["active"] = True
 
-        other_steps: list[tuple[str, Callable[[], None]] | tuple[str, Callable[[], None], str]] = []
+        # (label, fn, skip key, expected posts) — expected counts let the X
+        # schedule plan fit what's left into the window (post_pacing).
+        other_steps: list[tuple[str, Callable[[], None], str | None, float]] = []
         if not ctx.debug_daily_mode and not ctx.local_test_mode:
-            other_steps.append(("debut posts", lambda: _post_debut_releases(ctx, post_state), "debut"))
+            other_steps.append((
+                "debut posts", lambda: _post_debut_releases(ctx, post_state), "debut", PACED_EXPECTED_POSTS["debut"],
+            ))
             # Each candidate gets its own alternation turn against the album
             # queue (decision 2026-09-04), instead of the whole best-day-since
             # batch posting back to back as a single turn. Urgent ones already
@@ -2273,51 +2348,68 @@ def run_final_update_tasks(ctx: FinalizeContext) -> None:
                 other_steps.append((
                     f"best-day-since post ({track_id})",
                     lambda tid=track_id: _post_one_best_day_track(ctx, post_state, best_day_script, tid),
+                    None,
+                    PACED_EXPECTED_POSTS["best-day"],
                 ))
-        other_steps.append(("weekend song gainers", lambda: _post_weekend_song_gainers(ctx, post_state), "weekend-gainers"))
-        other_steps.append(("song overtakes", lambda: _post_song_overtakes(ctx, post_state), "overtakes"))
-        other_steps.append(("stream milestones", lambda: _post_stream_milestones(ctx, post_state), "milestones"))
+        weekend = _is_weekend_stats_date(ctx.summary["stats_date"])
+        other_steps.append((
+            "weekend song gainers", lambda: _post_weekend_song_gainers(ctx, post_state), "weekend-gainers",
+            PACED_EXPECTED_POSTS["weekend-gainers"] if weekend else 0,
+        ))
+        other_steps.append((
+            "song overtakes", lambda: _post_song_overtakes(ctx, post_state), "overtakes", PACED_EXPECTED_POSTS["overtakes"],
+        ))
+        other_steps.append((
+            "stream milestones", lambda: _post_stream_milestones(ctx, post_state), "milestones",
+            PACED_EXPECTED_POSTS["milestones"],
+        ))
 
-        album_iter = iter(album_queue)
-        other_iter = iter(other_steps)
-        album_done = other_done = False
-        while not (album_done and other_done):
-            if not album_done:
-                item = next(album_iter, None)
-                if item is None:
-                    album_done = True
-                else:
-                    album, weekly_only = item
-                    _guarded_post_step(
-                        f"album update ({album})",
-                        lambda album=album, weekly_only=weekly_only: _post_one_album(
-                            ctx,
-                            post_state,
-                            album_img_script,
-                            album,
-                            post_priority="4",
-                            weekly_only=weekly_only,
-                        ),
-                        key="all-albums",
-                    )
-            if not other_done:
-                step = next(other_iter, None)
-                if step is None:
-                    other_done = True
-                else:
-                    _guarded_post_step(step[0], step[1], step[2] if len(step) > 2 else None)
+        album_steps = [
+            (
+                f"album update ({album})",
+                lambda album=album, weekly_only=weekly_only: _post_one_album(
+                    ctx,
+                    post_state,
+                    album_img_script,
+                    album,
+                    post_priority="4",
+                    weekly_only=weekly_only,
+                ),
+                "all-albums",
+                PACED_EXPECTED_POSTS["album"],
+            )
+            for album, weekly_only in album_queue
+        ]
+        # Albums alternate 1-for-1 with the other posts.
+        paced_steps: list[tuple[str, Callable[[], None], str | None, float]] = []
+        for index in range(max(len(album_steps), len(other_steps))):
+            if index < len(album_steps):
+                paced_steps.append(album_steps[index])
+            if index < len(other_steps):
+                paced_steps.append(other_steps[index])
+        if not ctx.debug_daily_mode and not ctx.local_test_mode:
+            # Always last: biggest daily/weekly gainers should not delay the
+            # core daily posts.
+            paced_steps.append((
+                "stream highlights tables", lambda: _post_spotlight_gainers(ctx, post_state), "gainers",
+                PACED_EXPECTED_POSTS["gainers"],
+            ))
+            if ctx.best_day_last:
+                # --best-day-last : tout le best-day-since (chansons, recaps d'ère,
+                # recap global) après tous les autres posts.
+                paced_steps.append((
+                    "best-day-since (last)", lambda: _post_best_day_since(ctx, post_state), "best-day-since",
+                    PACED_EXPECTED_POSTS["best-day-last"],
+                ))
+
+        for index, (label, fn, key, _expected) in enumerate(paced_steps):
+            remaining = sum(
+                step[3] for step in paced_steps[index:] if step[2] is None or step[2] not in ctx.skip_steps
+            )
+            _guarded_post_step(label, fn, key, remaining_posts=max(1.0, remaining))
 
         if ctx.debug_daily_mode or ctx.local_test_mode:
             return
-
-        # Always last: biggest daily/weekly gainers should not delay the core
-        # daily posts.
-        _guarded_post_step("stream highlights tables", lambda: _post_spotlight_gainers(ctx, post_state), key="gainers")
-
-        if ctx.best_day_last:
-            # --best-day-last : tout le best-day-since (chansons, recaps d'ère,
-            # recap global) après tous les autres posts.
-            _guarded_post_step("best-day-since (last)", lambda: _post_best_day_since(ctx, post_state), key="best-day-since")
 
         _join_background_task(forecast_thread, "forecast/image refresh", timer)
 

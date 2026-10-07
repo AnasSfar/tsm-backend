@@ -67,6 +67,23 @@ TWITTER_SCHEDULE_MIN_LEAD_SECONDS = int(os.getenv("TWITTER_SCHEDULE_MIN_LEAD_SEC
 # (overtakes / milestones post one image per group) spaces them by this gap.
 TWITTER_SCHEDULE_GAP_SECONDS = int(os.getenv("TWITTER_SCHEDULE_GAP_SECONDS", "120"))
 _LAST_SCHEDULED_IN_PROCESS: datetime | None = None
+# Planned slots for every post of the process (2026-10-07): TWITTER_SCHEDULE_SLOTS
+# = comma-separated local ISO datetimes, the n-th programmed post of the process
+# takes the n-th slot (multi-post steps follow the caller's pacing curve instead
+# of a flat gap). Past the list: previous slot + TWITTER_SCHEDULE_GAP_SECONDS.
+_SCHEDULED_IN_PROCESS = 0
+# Account schedule registry (2026-10-07, owner: posts of two different updates
+# must never collide): every post programmed on X is recorded in
+# scheduled_<account>.json with its source (TWITTER_SCHEDULE_SOURCE, e.g.
+# "streams-finalize:2026-10-05"). A new programmed post is pushed to the next
+# minute at least TWITTER_SCHEDULE_COLLISION_SECONDS away from any recorded one,
+# and a live post waits until it is TWITTER_SCHEDULE_LIVE_GUARD_SECONDS clear of
+# a programmed post about to go out (charts, a second streams update...).
+TWITTER_SCHEDULE_COLLISION_SECONDS = int(os.getenv("TWITTER_SCHEDULE_COLLISION_SECONDS", "180"))
+TWITTER_SCHEDULE_LIVE_GUARD_SECONDS = int(os.getenv("TWITTER_SCHEDULE_LIVE_GUARD_SECONDS", "60"))
+# X publishes a programmed post a few seconds after its minute starts.
+_SCHEDULE_PUBLISH_DRIFT_SECONDS = 30
+_SCHEDULE_REGISTRY_KEEP_SECONDS = 3600
 
 
 def get_last_post_error() -> str:
@@ -223,14 +240,118 @@ def _spacing_remaining(spacing_s: float, last_post_at: float | None) -> float:
 
 def _wait_account_spacing(account_key: str) -> None:
     last_post_at = _last_post_at(account_key)
-    if last_post_at is None:
+    if last_post_at is not None:
+        spacing_s = _SLOT_SPACING_S.get(account_key)
+        if spacing_s is None:
+            spacing_s = _draw_account_spacing()
+        wait_s = spacing_s - (time.time() - last_post_at)
+        if wait_s > 0:
+            print(f"Waiting {int(wait_s)}s before next X post for this account...")
+            time.sleep(wait_s)
+    _wait_scheduled_collision(account_key)
+
+
+def _schedule_registry_path(account_key: str) -> Path:
+    return TWITTER_COORD_DIR / f"scheduled_{account_key}.json"
+
+
+def _read_schedule_registry(path: Path) -> list[dict]:
+    try:
+        data = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return []
+    return [entry for entry in data if isinstance(entry, dict)] if isinstance(data, list) else []
+
+
+def scheduled_entries(account_key: str | None = None) -> list[dict]:
+    """Posts programmed on X that are still upcoming (or went out < 1 h ago),
+    as {"at": datetime, "source": str, "created": float}, sorted by time.
+    account_key=None reads every account's registry."""
+    paths = (
+        [_schedule_registry_path(account_key)]
+        if account_key
+        else list(TWITTER_COORD_DIR.glob("scheduled_*.json")) if TWITTER_COORD_DIR.exists() else []
+    )
+    cutoff = datetime.now() - timedelta(seconds=_SCHEDULE_REGISTRY_KEEP_SECONDS)
+    out: list[dict] = []
+    for path in paths:
+        for entry in _read_schedule_registry(path):
+            try:
+                at = datetime.fromisoformat(str(entry.get("at")))
+            except ValueError:
+                continue
+            if at >= cutoff:
+                out.append({
+                    "at": at,
+                    "source": str(entry.get("source") or ""),
+                    "created": float(entry.get("created") or 0.0),
+                })
+    return sorted(out, key=lambda entry: entry["at"])
+
+
+def _register_scheduled(account_key: str, scheduled_at: datetime, source: str) -> None:
+    """Called while holding the account slot, so one writer per account."""
+    TWITTER_COORD_DIR.mkdir(parents=True, exist_ok=True)
+    path = _schedule_registry_path(account_key)
+    cutoff = datetime.now() - timedelta(seconds=_SCHEDULE_REGISTRY_KEEP_SECONDS)
+    kept = []
+    for entry in _read_schedule_registry(path):
+        try:
+            if datetime.fromisoformat(str(entry.get("at"))) >= cutoff:
+                kept.append(entry)
+        except ValueError:
+            continue
+    kept.append({"at": scheduled_at.isoformat(timespec="minutes"), "source": source, "created": time.time()})
+    tmp = path.with_name(path.name + f".{os.getpid()}.tmp")
+    tmp.write_text(json.dumps(kept, indent=1), encoding="utf-8")
+    os.replace(tmp, path)
+
+
+def _schedule_source() -> str:
+    return os.getenv("TWITTER_SCHEDULE_SOURCE", "").strip() or f"pid:{os.getpid()}"
+
+
+def free_schedule_slot(wanted: datetime, busy: list[datetime], *, min_gap_seconds: int | None = None) -> datetime:
+    """First whole minute >= wanted that is at least min_gap_seconds away from
+    every time in busy."""
+    gap = TWITTER_SCHEDULE_COLLISION_SECONDS if min_gap_seconds is None else min_gap_seconds
+    slot = wanted
+    if slot.second or slot.microsecond:
+        slot = slot.replace(second=0, microsecond=0) + timedelta(minutes=1)
+    for _ in range(24 * 60):
+        if all(abs((slot - other).total_seconds()) >= gap for other in busy):
+            return slot
+        slot += timedelta(minutes=1)
+    return slot
+
+
+def _wait_scheduled_collision(account_key: str) -> None:
+    """Live post about to go out: wait while a programmed post of this account
+    publishes within TWITTER_SCHEDULE_LIVE_GUARD_SECONDS of it."""
+    guard = TWITTER_SCHEDULE_LIVE_GUARD_SECONDS
+    if guard <= 0:
         return
-    spacing_s = _SLOT_SPACING_S.get(account_key)
-    if spacing_s is None:
-        spacing_s = _draw_account_spacing()
-    wait_s = spacing_s - (time.time() - last_post_at)
-    if wait_s > 0:
-        print(f"Waiting {int(wait_s)}s before next X post for this account...")
+    for _ in range(20):
+        try:
+            slots = [entry["at"] for entry in scheduled_entries(account_key)]
+        except Exception:
+            return  # fail-open: never block a post on the registry
+        # The live post goes out ~20 s after this point (compose + attach).
+        publish_eta = datetime.now() + timedelta(seconds=20)
+        hits = [
+            at for at in slots
+            if at - timedelta(seconds=guard) <= publish_eta
+            < at + timedelta(seconds=_SCHEDULE_PUBLISH_DRIFT_SECONDS + guard)
+        ]
+        if not hits:
+            return
+        clear_at = max(hits) + timedelta(seconds=_SCHEDULE_PUBLISH_DRIFT_SECONDS + guard - 20)
+        wait_s = max(1.0, (clear_at - datetime.now()).total_seconds())
+        print(
+            f"X: un post programme part a {max(hits):%H:%M} sur ce compte — "
+            f"attente {int(wait_s)}s pour ne pas publier en meme temps",
+            flush=True,
+        )
         time.sleep(wait_s)
 
 
@@ -254,19 +375,35 @@ def _mark_account_scheduled(account_key: str, scheduled_at: datetime) -> None:
 
 
 def _env_schedule_at() -> datetime | None:
-    """TWITTER_SCHEDULE_AT as a local datetime, or None (unset / invalid /
+    """Programming time of this process's next post (TWITTER_SCHEDULE_SLOTS,
+    else TWITTER_SCHEDULE_AT) as a local datetime, or None (unset / invalid /
     too close: post live)."""
+    slots: list[datetime] = []
+    for item in os.getenv("TWITTER_SCHEDULE_SLOTS", "").split(","):
+        if item.strip():
+            try:
+                slots.append(_coerce_schedule_datetime(item.strip()))
+            except ValueError:
+                continue
     raw = os.getenv("TWITTER_SCHEDULE_AT", "").strip()
-    if not raw:
-        return None
-    try:
-        scheduled = _coerce_schedule_datetime(raw)
-    except ValueError as exc:
-        print(f"X: TWITTER_SCHEDULE_AT invalide ({exc}) — post direct")
+    if _SCHEDULED_IN_PROCESS < len(slots):
+        scheduled = slots[_SCHEDULED_IN_PROCESS]
+    elif slots:
+        scheduled = slots[-1]
+    elif raw:
+        try:
+            scheduled = _coerce_schedule_datetime(raw)
+        except ValueError as exc:
+            print(f"X: TWITTER_SCHEDULE_AT invalide ({exc}) — post direct")
+            return None
+    else:
         return None
     if _LAST_SCHEDULED_IN_PROCESS is not None:
         bumped = _LAST_SCHEDULED_IN_PROCESS + timedelta(seconds=max(60, TWITTER_SCHEDULE_GAP_SECONDS))
-        scheduled = max(scheduled, bumped.replace(second=0, microsecond=0))
+        if bumped.second or bumped.microsecond:
+            # Round UP: flooring turned a 160 s gap into 2 min flat (2026-10-07).
+            bumped = bumped.replace(second=0, microsecond=0) + timedelta(minutes=1)
+        scheduled = max(scheduled, bumped)
     lead = (scheduled - datetime.now()).total_seconds()
     if lead < TWITTER_SCHEDULE_MIN_LEAD_SECONDS:
         print(f"X: programmation {scheduled:%H:%M} trop proche ({int(lead)}s) — post direct")
@@ -612,12 +749,16 @@ def _wait_post_scheduled(page, expected_text: str = "", timeout_ms: int = 45_000
                 _visible_text(page.locator("[role='alert']")),
                 _visible_text(page.locator("[aria-live='assertive']")),
                 _visible_text(page.locator("[aria-live='polite']")),
-                _visible_text(page.locator("body")),
             ]
             if text
         ).lower()
+        # Success may show anywhere on the page; error words are only trusted in
+        # X's feedback regions — the whole page text (timeline, our own post
+        # text...) made a successful programming look failed (2026-10-07,
+        # "to view keyboard shortcuts..." + an unrelated "error" on the page).
+        page_text = (feedback + "\n" + _visible_text(page.locator("body")).lower())
 
-        if any(marker in feedback for marker in [
+        if any(marker in page_text for marker in [
             "post scheduled",
             "tweet scheduled",
             "your post was scheduled",
@@ -1654,6 +1795,17 @@ def post_with_image(
                     raise RuntimeError("image absente du composer juste avant le post — abandon")
 
                 if scheduled_at is not None:
+                    # Anti-collision (2026-10-07): never the same time as a post
+                    # already programmed on this account by another update/run.
+                    free_at = free_schedule_slot(
+                        scheduled_at, [entry["at"] for entry in scheduled_entries(account_key)]
+                    )
+                    if free_at != scheduled_at:
+                        print(
+                            f"X: {scheduled_at:%H:%M} trop proche d'un post deja programme "
+                            f"— decale a {free_at:%H:%M}"
+                        )
+                        scheduled_at = free_at
                     _set_schedule_dialog(page, scheduled_at)
                     # Re-check after the schedule modal: never program a post without its image.
                     if _attached_image_count(attach_scope) < 1:
@@ -1669,9 +1821,11 @@ def post_with_image(
                             "[WARN] X: programmation NON CONFIRMEE apres clic — comptee comme faite, "
                             "verifie les posts programmes sur X (x.com/compose/post/unsent/scheduled)."
                         )
+                    _register_scheduled(account_key, scheduled_at, _schedule_source())
                     _mark_account_scheduled(account_key, scheduled_at)
-                    global _LAST_SCHEDULED_IN_PROCESS
+                    global _LAST_SCHEDULED_IN_PROCESS, _SCHEDULED_IN_PROCESS
                     _LAST_SCHEDULED_IN_PROCESS = scheduled_at
+                    _SCHEDULED_IN_PROCESS += 1
                     print(f"OK Tweet avec image programme pour {scheduled_at:%Y-%m-%d %H:%M}")
                     return True
 
@@ -1769,6 +1923,7 @@ def schedule_post(
                 if not _wait_post_scheduled(page, tweet):
                     return False
 
+                _register_scheduled(account_key, scheduled_dt, _schedule_source())
                 _mark_account_posted(account_key)
                 print(f"OK Post programme pour {scheduled_dt:%Y-%m-%d %H:%M}")
                 return True

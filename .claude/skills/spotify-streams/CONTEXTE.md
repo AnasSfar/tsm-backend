@@ -1058,6 +1058,10 @@ et reputation (-0.2 %) postent ; 01/10 Midnights -2.4 % sauve par 7 records ;
 
 ## Phase urgente + posting logarithmique (2026-10-04)
 
+> Courbe et `_next_schedule_slot` ci-dessous **remplaces le 2026-10-07** par le plan
+> `post_pacing` (voir « Plan selon l'audience + anti-collision » plus bas). La
+> phase urgente, la reprise et les logs restent valables.
+
 Demande proprietaire : poster vite l'essentiel puis ralentir au fur et a
 mesure. `run_final_update_tasks` :
 - **Phase urgente** (espacement core.twitter normal 60-75 s) : recap weekend
@@ -1120,6 +1124,68 @@ mesure. `run_final_update_tasks` :
 - Sim : `previews_and_sims/finalize-pacing-schedule-logs/simulate.py` (aucun post,
   coord X + dossier du jour rediriges). **Non teste en vrai : la modale de
   programmation X** (aucun post reel lance dans la session).
+
+### Plan selon l'audience + anti-collision (2026-10-07, remplace la courbe 60 s -> 6 min)
+
+Constat du proprio sur le run 10-05 (poste dans la nuit du 07/10) : « tous postes
+avec 2 minutes de difference ». La programmation marchait, mais la courbe
+60x(1+1.2 ln(1+k)) s plafonnee a 6 min etait trop plate (2,3 -> 3,8 min du 3e au
+10e post), les 4 overtakes d'une meme etape partaient a ecart fixe (k n'avancait
+qu'une fois par etape) et `_env_schedule_at` arrondissait a la minute INFERIEURE
+(160 s -> 2 min pile : 00:54/56/58/01:00). Demande : etalement selon l'heure de
+dispo des streams + l'activite X (heatmap « Active times »), selon le nombre de
+posts, et garde-fous pour que deux updates ne se percutent jamais.
+
+- **`post_pacing.plan_slots`** (nouveau module, appele par
+  `finalize_update._plan_paced_slots` avant CHAQUE etape rythmee) : ecart du post
+  de rang k = 180 x (1 + 1.5 ln(1+k)) s en **temps d'audience** — consomme a la
+  vitesse de `core.x_active_times.engagement_weight` (heatmap transcrite (constante `LEVELS`, pas de .json : gitignore) dans
+  `core/x_active_times.py`, niveaux 1-5 -> poids 0.5/0.75/1/1.15/1.3 par jour x
+  heure, heure de Paris). Donc plus serre vers 16h / le soir, etire de 3h a 10h.
+  Ecart reel borne [3 min, 45 min], minute entiere, >= 150 s dans le futur.
+- **Nombre de posts** : la liste des etapes rythmees est construite d'avance
+  (`paced_steps`, alternance albums/autres inchangee, tables gainers en dernier)
+  avec un nombre de posts attendu par etape (`PACED_EXPECTED_POSTS` : album 1,
+  best-day 1, overtakes 2, milestones 1, tables 2, weekend gainers 1 le week-end,
+  debut 0). Si le plan restant finit apres la **fenetre** (dispo + 8 h, fixee au
+  1er post rythme, persistee dans `finalize_pacing_state.json` cle `deadline`),
+  tous les ecarts sont compresses (jamais sous 3 min ; si ca ne tient toujours
+  pas, on depasse — on ne supprime jamais un post).
+- **Multi-posts** : finalize passe `TWITTER_SCHEDULE_SLOTS` (tout le plan
+  restant) ; le n-ieme post programme du process prend le n-ieme creneau
+  (`core.twitter._SCHEDULED_IN_PROCESS`). Apres l'etape, finalize compte les
+  nouvelles entrees du registre a sa source -> `done += n`, `last_slot_at` = la
+  derniere. Le repli `last + TWITTER_SCHEDULE_GAP_SECONDS` arrondit maintenant a
+  la minute superieure.
+- **Anti-collision entre updates** : `core.twitter` tient un registre par compte
+  (`TWITTER_COORD_DIR/scheduled_<compte>.json`, source `streams-finalize:<date>`
+  via `TWITTER_SCHEDULE_SOURCE`, purge > 1 h passe). (1) le plan evite tout creneau
+  deja programme a < `TWITTER_SCHEDULE_COLLISION_SECONDS` (180) ; (2)
+  `post_with_image` re-verifie au moment de programmer (sous le verrou compte) et
+  decale a la minute libre suivante (`free_schedule_slot`, log « decale a ») ;
+  (3) un post EN DIRECT (charts, phase urgente de l'update suivante, threads)
+  attend dans `_wait_account_spacing` qu'aucun post programme ne parte a
+  +/- `TWITTER_SCHEDULE_LIVE_GUARD_SECONDS` (60 s, +30 s de derive X). Cas reel
+  vise : jours de rattrapage ou deux finalize tombent a 1 h d'ecart (09-19 19:11
+  puis 20:20).
+- **Faux `[WARN] programmation NON CONFIRMEE`** (00:54 le 07/10) :
+  `_wait_post_scheduled` cherchait les mots d'erreur dans tout le texte de la
+  page (`body`) -> n'importe quel « error »/« try again » visible = echec. Les
+  erreurs ne sont plus lues que dans toast/alert/aria-live ; le succes reste
+  cherche partout.
+- Sim (memes scenarios a rejouer apres tout reglage) :
+  `previews_and_sims/finalize-pacing-schedule-logs/simulate.py`. Resultats
+  2026-10-07, ~20 posts de semaine : dispo mer. 00:36 -> 00:39 ... 06:47 (ecarts
+  7 -> 33 min, la nuit etire) ; mar. 18:00 -> 18:03 ... 22:35 (7 -> 20 min) ;
+  jeu. 22:30 -> 02:51 ; samedi 16:30, 6 posts -> 16:33 ... 17:11 ; rattrapage
+  30 posts a 03:30 -> compresse dans la fenetre (11:30) ; deux updates a 40 min
+  d'ecart -> jamais < 180 s entre leurs posts, et un post direct a 30 s d'un
+  creneau attend 100 s.
+- Reglages env : `FINALIZE_SCHEDULE_BASE_SECONDS` / `_GROWTH` / `_MIN_GAP_SECONDS`
+  / `_MAX_GAP_SECONDS` / `_WINDOW_HOURS` / `_MIN_LEAD_SECONDS`. Les anciens
+  `FINALIZE_PACING_*` ne pilotent plus que le mode direct
+  (`FINALIZE_SCHEDULE_POSTS=0`). Mettre a jour `core/x_active_times.py` depuis
+  une nouvelle capture X analytics quand l'audience change.
 
 ## Showgirl en tete si score "wow" (2026-09-24)
 

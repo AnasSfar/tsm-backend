@@ -98,3 +98,24 @@ Selon le helper:
   Un screenshot/HTML debug est aussi ecrit des que le fallback file-input est
   utilise (`_write_upload_debug_artifacts`), pour diagnostiquer pourquoi le
   chooser natif ne se declenche pas.
+
+## Posts programmes sur X : registre anti-collision (2026-10-07)
+
+`core/twitter.py` tient `TWITTER_COORD_DIR/scheduled_<compte>.json` : chaque post
+programme (`post_with_image` avec `TWITTER_SCHEDULE_SLOTS`/`_AT`, `schedule_post`)
+y est inscrit avec sa source (`TWITTER_SCHEDULE_SOURCE`, ex.
+`streams-finalize:2026-10-05`). Lecture : `scheduled_entries(account_key=None)`
+(None = tous les comptes, purge > 1 h passe). Garde-fous :
+- programmation : `free_schedule_slot` decale a la minute libre suivante si un post
+  deja programme est a < `TWITTER_SCHEDULE_COLLISION_SECONDS` (180) ;
+- post en direct : `_wait_account_spacing` -> `_wait_scheduled_collision` attend
+  qu'aucun post programme du compte ne parte a +/- `TWITTER_SCHEDULE_LIVE_GUARD_SECONDS`
+  (60 s, +30 s de derive X). Concerne TOUS les chemins directs (charts compris) ;
+  fail-open si le registre est illisible.
+- `_env_schedule_at` : n-ieme post programme du process = n-ieme creneau de
+  `TWITTER_SCHEDULE_SLOTS` ; repli `dernier + TWITTER_SCHEDULE_GAP_SECONDS` arrondi a
+  la minute SUPERIEURE.
+- `_wait_post_scheduled` : mots d'erreur lus seulement dans toast/alert/aria-live
+  (plus dans tout le `body`, faux « non confirme » le 2026-10-07).
+Planificateur cote streams : `streams/tools/scripts/post_pacing.py` + heatmap
+`core/x_active_times.py` (voir `spotify-streams/CONTEXTE.md`).

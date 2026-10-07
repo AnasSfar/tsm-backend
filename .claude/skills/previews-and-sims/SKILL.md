@@ -144,6 +144,13 @@ folder, then checks the paced X-schedule slot chain across a simulated interrupt
 (state reloaded from disk), the in-process schedule gap / too-close fallback of
 `_env_schedule_at`, `_run_subprocess` piping and the `[PHASE]`/`[STATUS]` log lines
 (`live_log.install(..., own_file=True, log_dir=<sim>)`, `STATUS_EVERY_SECONDS` lowered).
+Since 2026-10-07 it also prints the `post_pacing` plans for realistic days (availability
+hour x post count), checks multi-post steps advance the curve, and runs two updates 40 min
+apart against the schedule registry (no slot < 180 s apart, live-post guard wait).
+Pitfalls: fake "now" must be in the FUTURE (registry pruning uses the real clock) —
+patch `finalize_update.datetime` with a `datetime` subclass whose `now()` returns it;
+give each fake stats date its own `update_streams_dir` folder or the second update
+"resumes" the first one's pacing state.
 Pitfall: running `update_streams.py --help` for a smoke test creates a real
 `snapshots/.../logs/*_attemptNN.txt` + rewrites `.latest.txt` (CollectorRunLog) — delete it
 and restore `.latest.txt` afterwards.
