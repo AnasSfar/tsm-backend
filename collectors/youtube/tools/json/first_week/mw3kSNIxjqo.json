@@ -5,7 +5,7 @@
   "album": "The Life of a Showgirl: The Encore",
   "published_at": "2026-09-29T22:00:19+00:00",
   "thumbnail_url": "https://i.ytimg.com/vi/mw3kSNIxjqo/maxresdefault.jpg",
-  "status": "active",
+  "status": "done",
   "marks": {
     "1": {
       "video_id": "mw3kSNIxjqo",
@@ -57,6 +57,13 @@
       "due_at": "2026-10-05T22:00:19+00:00",
       "offset_seconds": 0,
       "source": "scheduled_task"
+    },
+    "7": {
+      "views": 14574731,
+      "captured_at": "2026-10-06T22:00:19+00:00",
+      "due_at": "2026-10-06T22:00:19+00:00",
+      "offset_seconds": 0,
+      "source": "scheduled_task"
     }
   },
   "posts": {
@@ -90,6 +97,12 @@
       "tweet": "🎥 | ❤️‍🔥 \"Patient Zero\" music video daily views on YouTube:\n\nDAY 1 - 4,497,126\nDAY 2 - 3,281,343 (-27.0%)\nDAY 3 - 2,120,553 (-35.4%)\nDAY 4 - 1,516,123 (-28.5%)\nDAY 5 - 1,110,242 (-26.8%)\nDAY 6 - 1,062,054 (-4.3%)",
       "image": "snapshots/youtube/videos/2026/10/2026-10-05/first_week_patient_zero_mw3kSNIxjqo_day6.png",
       "at": "2026-10-05T22:00:19+00:00"
+    },
+    "7": {
+      "status": "posted",
+      "tweet": "🎥 | ❤️‍🔥 \"Patient Zero\" music video daily views on YouTube:\n\nDAY 1 - 4,497,126\nDAY 2 - 3,281,343 (-27.0%)\nDAY 3 - 2,120,553 (-35.4%)\nDAY 4 - 1,516,123 (-28.5%)\nDAY 5 - 1,110,242 (-26.8%)\nDAY 6 - 1,062,054 (-4.3%)\nDAY 7 - 987,290 (-7.0%)\n\nFirst week: 14,574,731 views",
+      "image": "snapshots/youtube/videos/2026/10/2026-10-06/first_week_patient_zero_mw3kSNIxjqo_day7.png",
+      "at": "2026-10-07T04:07:07+00:00"
     }
   }
 }

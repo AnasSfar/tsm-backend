@@ -1,0 +1,43 @@
+{
+  "anchor": "j8pR1tyoRFc",
+  "status": "posted",
+  "reason": "",
+  "resolved_at": "2026-10-06T04:15:36+00:00",
+  "posts": [
+    {
+      "group": "video",
+      "album": "The Life of a Showgirl: The Encore",
+      "tweet": "🎥 | ❤️‍🔥 \"Taylor Swift - Patient Zero (Expanded Video)\" debuts with 1,581,030 views in its first 24 hours on YouTube.",
+      "image": "snapshots/youtube/videos/2026/10/2026-10-05/first_day_taylor_swift_patient_zero_expanded_video_j8pR1tyoRFc.png",
+      "rows": [
+        {
+          "title": "Patient Zero",
+          "views": 1581030,
+          "uploads": [
+            "j8pR1tyoRFc"
+          ]
+        }
+      ]
+    }
+  ],
+  "members": [
+    {
+      "video_id": "j8pR1tyoRFc",
+      "title": "Taylor Swift - Patient Zero (Expanded Video)",
+      "channel": "main",
+      "published_at": "2026-10-05T04:00:36+00:00",
+      "due_at": "2026-10-06T04:00:36+00:00",
+      "thumbnail_url": "https://i.ytimg.com/vi/j8pR1tyoRFc/maxresdefault.jpg",
+      "tags": [],
+      "capture": {
+        "video_id": "j8pR1tyoRFc",
+        "views": 1581030,
+        "captured_at": "2026-10-06T04:00:36+00:00",
+        "due_at": "2026-10-06T04:00:36+00:00",
+        "offset_seconds": 0,
+        "source": "scheduled_task"
+      },
+      "result": "included"
+    }
+  ]
+}

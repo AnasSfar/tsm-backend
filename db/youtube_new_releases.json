@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-06T04:16:03+00:00",
+  "generated_at": "2026-10-07T04:06:17+00:00",
   "window_days": 7,
   "releases": [
     {
@@ -17,24 +17,6 @@
           "state": "captured",
           "views_24h": 1581030,
           "captured_at": "2026-10-06T04:00:36+00:00"
-        }
-      ]
-    },
-    {
-      "anchor": "mw3kSNIxjqo",
-      "published_at": "2026-09-29T22:00:19+00:00",
-      "videos": [
-        {
-          "video_id": "mw3kSNIxjqo",
-          "title": "Taylor Swift - Patient Zero (Official Music Video)",
-          "channel": "main",
-          "kind": "Music Video",
-          "thumbnail_url": "https://i.ytimg.com/vi/mw3kSNIxjqo/maxresdefault.jpg",
-          "published_at": "2026-09-29T22:00:19+00:00",
-          "due_at": "2026-09-30T22:00:19+00:00",
-          "state": "captured",
-          "views_24h": 4497126,
-          "captured_at": "2026-09-30T22:00:19+00:00"
         }
       ]
     }
