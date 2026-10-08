@@ -47,6 +47,12 @@
   "source": "llm:gemini",
   "type": "solo"
  },
+ "00edlcHg3ILdHtrYL54bxX": {
+  "gender": "NF",
+  "name": "Le Crime",
+  "source": "llm:gemini",
+  "type": "GROUP"
+ },
  "00ekfPE5ZS3NwF8H8o8GBk": {
   "gender": "NF",
   "name": "Mig",
@@ -94,6 +100,12 @@
   "name": "Nikos Apergis",
   "source": "llm:claude",
   "type": "solo"
+ },
+ "01C18y2QWahmooYkwKs0UP": {
+  "gender": "NF",
+  "name": "Jennifer e Stephany",
+  "source": "llm:gemini",
+  "type": "GROUP"
  },
  "01FFlOpQoTLXIBTp0p9MEc": {
   "gender": "NF",
@@ -155,6 +167,12 @@
   "source": "llm:claude",
   "type": "solo"
  },
+ "01yGyVB1FyqBdpe7usXZ9o": {
+  "gender": "NF",
+  "name": "Jh4y",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
  "01yb19FhQ8C9zgSOusKSrt": {
   "gender": "F",
   "name": "Andrea Bredesen Holm",
@@ -177,6 +195,12 @@
   "gender": "NF",
   "name": "Dubioza kolektiv",
   "source": "llm:claude",
+  "type": "GROUP"
+ },
+ "02QBz6b5fpeADDbuTE1C59": {
+  "gender": "NF",
+  "name": "RAPROJECT SIX",
+  "source": "llm:gemini",
   "type": "GROUP"
  },
  "02Tq76MwpeoRu3BHIAiaio": {
@@ -220,6 +244,18 @@
   "name": "Ida Laurberg",
   "source": "llm:claude",
   "type": "solo"
+ },
+ "03PnQHlbH5nDDVX3hNg628": {
+  "gender": "NF",
+  "name": "Dj GM",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
+ "03SBMfoHX3EUENFwFoLN5i": {
+  "gender": "NF",
+  "name": "Soppgirobygget",
+  "source": "llm:gemini",
+  "type": "GROUP"
  },
  "03SZmfKAgYRQKUwy0EoJUa": {
   "gender": "NF",
@@ -269,6 +305,12 @@
   "source": "llm:claude",
   "type": "GROUP"
  },
+ "041DA9FPVMgbwaE8XuAM8m": {
+  "gender": "NF",
+  "name": "NHONHO",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
  "048LktY5zMnakWq7PTtFrz": {
   "gender": "NF",
   "name": "CKay",
@@ -310,6 +352,12 @@
   "name": "Portion Boys",
   "source": "llm:claude",
   "type": "GROUP"
+ },
+ "04YRKHV66wdlYt3hQ92HRZ": {
+  "gender": "NF",
+  "name": "SIHAYO",
+  "source": "llm:gemini",
+  "type": "solo"
  },
  "04gDigrS5kc9YWfZHwBETP": {
   "gender": "NF",
@@ -437,6 +485,12 @@
   "source": "llm:claude",
   "type": "GROUP"
  },
+ "05tsGKo76eTXi0yrK4e4rZ": {
+  "gender": "NF",
+  "name": "Katinka",
+  "source": "llm:gemini",
+  "type": "GROUP"
+ },
  "05xlOZ63adQrS2Y84Ojo6U": {
   "gender": "NF",
   "name": "auratoshi",
@@ -479,6 +533,12 @@
   "source": "llm:claude",
   "type": "solo"
  },
+ "06zZhrjGip0peNfom4XCYI": {
+  "gender": "NF",
+  "name": "Najm",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
  "070tdNOiP3pIsGlqNfVkG3": {
   "gender": "NF",
   "name": "Bonus RPK",
@@ -496,6 +556,12 @@
   "name": "Cartel De Santa",
   "source": "llm:claude",
   "type": "GROUP"
+ },
+ "07RSJfIHVWCe4SnFciwbmv": {
+  "gender": "NF",
+  "name": "白浩贤BlueC",
+  "source": "llm:gemini",
+  "type": "solo"
  },
  "07SFzTMeYf5P8Rd32a9Zzw": {
   "gender": "NF",
@@ -659,6 +725,12 @@
   "source": "llm:claude",
   "type": "solo"
  },
+ "09E5z6upwkmwTKX8LGQgMo": {
+  "gender": "NF",
+  "name": "Yaro",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
  "09QRMWYyLUALbOUjP5rhUP": {
   "gender": "NF",
   "name": "Epolets",
@@ -719,6 +791,12 @@
   "source": "llm:claude",
   "type": "GROUP"
  },
+ "0Amnqd5gvxgxmuRx1cPzAO": {
+  "gender": "NF",
+  "name": "BisiManuel",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
  "0Aoou2kIWXrzTOfhFzmNqa": {
   "gender": "NF",
   "name": "Halil Sezai",
@@ -743,6 +821,12 @@
   "source": "llm:claude",
   "type": "GROUP"
  },
+ "0Awqm7GXGiBp8fJNGvywra": {
+  "gender": "NF",
+  "name": "Bestards",
+  "source": "llm:gemini",
+  "type": "GROUP"
+ },
  "0B1ce3uNrzkdm76NXI4mhX": {
   "gender": "NF",
   "name": "Tani Yuuki",
@@ -753,6 +837,18 @@
   "gender": "NF",
   "name": "Jey One",
   "source": "llm:claude",
+  "type": "solo"
+ },
+ "0B8MhbUZz93I65AJSnVEUZ": {
+  "gender": "NF",
+  "name": "Boy Muller",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
+ "0BFood0cmj86LkpdOArhNs": {
+  "gender": "F",
+  "name": "Langa",
+  "source": "llm:gemini",
   "type": "solo"
  },
  "0BHm7qbh3ENxvXzkQAG7MP": {
@@ -838,6 +934,12 @@
   "name": "Rafaga",
   "source": "llm:claude",
   "type": "GROUP"
+ },
+ "0CDWgLYffiti8zx9sc6c8t": {
+  "gender": "NF",
+  "name": "Zekeriya Ünlü",
+  "source": "llm:gemini",
+  "type": "solo"
  },
  "0CEw36eWG0dYKCXOX8eUoO": {
   "gender": "F",
@@ -983,6 +1085,18 @@
   "source": "llm:gemini",
   "type": "solo"
  },
+ "0DdKmEBoSQuTWY9Mo2EQm2": {
+  "gender": "NF",
+  "name": "DEABDIL",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
+ "0DiYoKuXAI3xAA5JiU5UFX": {
+  "gender": "NF",
+  "name": "Ezzy R",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
  "0DjAjUeZwSixK0dRwplBXb": {
   "gender": "NF",
   "name": "Alta Consigna",
@@ -1000,6 +1114,12 @@
   "name": "Yeng Constantino",
   "source": "llm:claude",
   "type": "solo"
+ },
+ "0DpLoyGVbhOHNR3ht2oO9y": {
+  "gender": "NF",
+  "name": "Calein",
+  "source": "llm:gemini",
+  "type": "GROUP"
  },
  "0Dvx6p8JDyzeOPGmaCIH1L": {
   "gender": "NF",
@@ -1145,10 +1265,28 @@
   "source": "llm:claude",
   "type": "GROUP"
  },
+ "0FK1hXdXst70HD11n5J26z": {
+  "gender": "NF",
+  "name": "FOLA",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
+ "0FMBXfGasuAjdpsCs7zgju": {
+  "gender": "NF",
+  "name": "Traia Véia",
+  "source": "llm:gemini",
+  "type": "GROUP"
+ },
  "0FRUZvZNPzM3YJMABJxf2K": {
   "gender": "F",
   "name": "WENDY",
   "source": "llm:claude",
+  "type": "solo"
+ },
+ "0FbbF0rKiD7zN90OMJqCn7": {
+  "gender": "NF",
+  "name": "G-Jealous",
+  "source": "llm:gemini",
   "type": "solo"
  },
  "0FgPkjSOY3FoLQRXeNbkhL": {
@@ -1162,6 +1300,12 @@
   "name": "Victoria Niro",
   "source": "llm:claude",
   "type": "solo"
+ },
+ "0FvRr7kKHIwQJxpRwf5OCw": {
+  "gender": "NF",
+  "name": "Reality",
+  "source": "llm:gemini",
+  "type": "GROUP"
  },
  "0FwnPHExlRRxEZPLAi5tmG": {
   "gender": "NF",
@@ -1247,6 +1391,12 @@
   "source": "llm:claude",
   "type": "GROUP"
  },
+ "0GuaoBVOFuVXuhbrmSD1je": {
+  "gender": "F",
+  "name": "Jolianne",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
  "0H1InhXaXQPL1aj0mvHemU": {
   "gender": "NF",
   "name": "Gianluca Grignani",
@@ -1281,6 +1431,12 @@
   "gender": "NF",
   "name": "Mats Paulson",
   "source": "llm:claude",
+  "type": "solo"
+ },
+ "0HX88eTlictNvgUjBLn03r": {
+  "gender": "NF",
+  "name": "Ba Bethe Gashoazen",
+  "source": "llm:gemini",
   "type": "solo"
  },
  "0HXSR2BeI0nXqc6Nlr65eq": {
@@ -1353,6 +1509,12 @@
   "gender": "NF",
   "name": "Rafi Sudirman",
   "source": "llm:claude",
+  "type": "solo"
+ },
+ "0IaSf2VeRVlexFtNBrDhLF": {
+  "gender": "NF",
+  "name": "AZKA SLIDE",
+  "source": "llm:gemini",
   "type": "solo"
  },
  "0IdAjS2LRieBR3gzoazdAw": {
@@ -1631,6 +1793,12 @@
   "source": "Artists.csv",
   "type": "GROUP"
  },
+ "0Le0xLw8bmlimx2cMVtVbr": {
+  "gender": "NF",
+  "name": "Adamson",
+  "source": "llm:gemini",
+  "type": "GROUP"
+ },
  "0LhcuiQeUsLcTuIza3swg6": {
   "gender": "F",
   "name": "Глюк'oZa",
@@ -1683,6 +1851,12 @@
   "gender": "NF",
   "name": "Mata",
   "source": "llm:claude",
+  "type": "solo"
+ },
+ "0MSYpagcvnSP2o91Ji2OCw": {
+  "gender": "NF",
+  "name": "KM",
+  "source": "llm:gemini",
   "type": "solo"
  },
  "0MU0Hxwaz1daT4FVqx3Smz": {
@@ -1841,6 +2015,12 @@
   "source": "llm:claude",
   "type": "solo"
  },
+ "0OPeZ6oxm2MldHasnoBTpM": {
+  "gender": "NF",
+  "name": "Khuthuza",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
  "0OTHm6AFLxgeTm0gHNOuWi": {
   "gender": "NF",
   "name": "De Parranda",
@@ -1911,6 +2091,12 @@
   "gender": "NF",
   "name": "Ramses II",
   "source": "llm:claude",
+  "type": "solo"
+ },
+ "0PN0H94fqF9G9FiJrw1R3Q": {
+  "gender": "NF",
+  "name": "Hellfield",
+  "source": "llm:gemini",
   "type": "solo"
  },
  "0PN0fbe41KbuzlRYnoajNm": {
@@ -2049,6 +2235,12 @@
   "gender": "NF",
   "name": "Fred De Palma",
   "source": "llm:claude",
+  "type": "solo"
+ },
+ "0QxCgzdTynqgvj1OWRllYt": {
+  "gender": "NF",
+  "name": "K6Y",
+  "source": "llm:gemini",
   "type": "solo"
  },
  "0RENwV6Phsp2y8nnFJ54UC": {
@@ -2237,6 +2429,12 @@
   "source": "Artists.csv",
   "type": "solo"
  },
+ "0Tp9c5DcGoHSU4V8bt4Q1U": {
+  "gender": "NF",
+  "name": "JayJayy",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
  "0TtVGvZ6bN7aQTTAixMFYU": {
   "gender": "F",
   "name": "Mavis Hee",
@@ -2273,6 +2471,12 @@
   "source": "llm:claude",
   "type": "GROUP"
  },
+ "0U8sdaBYsYld98xOIX1nYB": {
+  "gender": "NF",
+  "name": "Ahiyan",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
  "0UACE2nWl5uUyJRo1kIYQO": {
   "gender": "NF",
   "name": "Donkeyboy",
@@ -2296,6 +2500,12 @@
   "name": "Pyx Lax",
   "source": "llm:claude",
   "type": "GROUP"
+ },
+ "0UNMefaj94QBreUWdpwl25": {
+  "gender": "NF",
+  "name": "Oğuz Ünal",
+  "source": "llm:gemini",
+  "type": "solo"
  },
  "0UPJKLFhLR0GuiBZBLNAsd": {
   "gender": "NF",
@@ -2516,6 +2726,12 @@
  "0WyJfrWjsny9mSxops8ksX": {
   "gender": "NF",
   "name": "LENNSKO",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
+ "0X1sGf1y8XCupQFDUkiPmB": {
+  "gender": "NF",
+  "name": "SAMAD",
   "source": "llm:gemini",
   "type": "solo"
  },
@@ -2747,17 +2963,35 @@
   "source": "llm:claude",
   "type": "solo"
  },
+ "0ZbitUHy4wYrvbCiRPS1qA": {
+  "gender": "NF",
+  "name": "Payaso x Ley",
+  "source": "llm:gemini",
+  "type": "GROUP"
+ },
  "0ZcJXldoq09BRIMl0Qh1Vm": {
   "gender": "NF",
   "name": "Dave Koz",
   "source": "llm:claude",
   "type": "solo"
  },
+ "0ZkNSRvBK767bNOCdXKeYK": {
+  "gender": "NF",
+  "name": "Overnight",
+  "source": "llm:gemini",
+  "type": "GROUP"
+ },
  "0Zncosr79q01riJYbSBNA1": {
   "gender": "NF",
   "name": "Turf",
   "source": "llm:gemini",
   "type": "GROUP"
+ },
+ "0ZoXxojOUsWG4lcvYcIDCV": {
+  "gender": "NF",
+  "name": "DJ WG DO MIRIAMBI O PORRADEIRO",
+  "source": "llm:gemini",
+  "type": "solo"
  },
  "0ZqNAlpzFTJI4tyK4UwJE2": {
   "gender": "NF",
@@ -2775,6 +3009,12 @@
   "gender": "NF",
   "name": "Manolo Escobar",
   "source": "llm:claude",
+  "type": "solo"
+ },
+ "0Zuy8Df6xyPDVxstUOsHQO": {
+  "gender": "F",
+  "name": "Duda Bertelli",
+  "source": "llm:gemini",
   "type": "solo"
  },
  "0ZvsEkINadmEV4qzS4ollh": {
@@ -2891,6 +3131,12 @@
   "source": "llm:claude",
   "type": "solo"
  },
+ "0bmPz6WAJMsuDLY5QtSYtg": {
+  "gender": "NF",
+  "name": "IvanBi",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
  "0c3dDCJfxcT4lYNugbKvJt": {
   "gender": "F",
   "name": "Cheba Warda",
@@ -2914,6 +3160,12 @@
   "name": "Kehlani",
   "source": "llm:gemini",
   "type": "solo"
+ },
+ "0cGfitvwmFr2sSywioWYNM": {
+  "gender": "NF",
+  "name": "Whatcharawalee",
+  "source": "llm:gemini",
+  "type": "GROUP"
  },
  "0cHeelq87RR6yX2ttH6MTg": {
   "gender": "NF",
@@ -2951,6 +3203,12 @@
   "source": "llm:claude",
   "type": "GROUP"
  },
+ "0cf0oidLIQoNhGTp0SHzhU": {
+  "gender": "NF",
+  "name": "Việt Anh",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
  "0ciLF0bOuu2BhqzCEZgHoB": {
   "gender": "NF",
   "name": "Pixote",
@@ -2987,6 +3245,12 @@
   "source": "llm:claude",
   "type": "GROUP"
  },
+ "0d43Fqs68Oboh6XXo4ztgn": {
+  "gender": "NF",
+  "name": "Asil Gök",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
  "0d71FlLkqZzdpEQifcngQq": {
   "gender": "F",
   "name": "Julliany Souza",
@@ -3017,6 +3281,12 @@
   "source": "llm:claude",
   "type": "solo"
  },
+ "0dIJRlr9m4hUwdBYmKUTjW": {
+  "gender": "NF",
+  "name": "Akbar Chalay",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
  "0dJJpF4ULA7xCU5xwHbCB3": {
   "gender": "NF",
   "name": "Gabrielius Vagelis",
@@ -3034,6 +3304,12 @@
   "name": "Quest Pistols Show",
   "source": "llm:claude",
   "type": "GROUP"
+ },
+ "0dUHzfa2msKEpMevzsdwqG": {
+  "gender": "F",
+  "name": "Babalwa M",
+  "source": "llm:gemini",
+  "type": "solo"
  },
  "0dXoF2Q2WnVrhRT26SJNvs": {
   "gender": "F",
@@ -3098,6 +3374,12 @@
  "0eHQ9o50hj6ZDNBt6Ys1sD": {
   "gender": "NF",
   "name": "Yandel",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
+ "0eKqmbA0GNAKxYXr5mLIPd": {
+  "gender": "NF",
+  "name": "JODAI",
   "source": "llm:gemini",
   "type": "solo"
  },
@@ -3371,6 +3653,12 @@
   "source": "llm:claude",
   "type": "solo"
  },
+ "0hkBz0U3f8R7BUbQcROEmR": {
+  "gender": "NF",
+  "name": "Faza",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
  "0hwjSlN7w3WWQY3mLdogAC": {
   "gender": "NF",
   "name": "Dawid Kwiatkowski",
@@ -3453,6 +3741,12 @@
   "gender": "NF",
   "name": "Yuuri",
   "source": "llm:claude",
+  "type": "solo"
+ },
+ "0iy6SpAZnBvSYpBw2bFoUQ": {
+  "gender": "NF",
+  "name": "PLG Chanty",
+  "source": "llm:gemini",
   "type": "solo"
  },
  "0j1HQ4RWuFbJPx2LnIITmH": {
@@ -3653,6 +3947,12 @@
   "source": "wikidata",
   "type": "solo"
  },
+ "0lZe1qbPTyYFXebsbkznIh": {
+  "gender": "NF",
+  "name": "K2_sp",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
  "0le01dl1WllSHhjEXRl4in": {
   "gender": "F",
   "name": "Tamia",
@@ -3701,6 +4001,12 @@
   "source": "llm:gemini",
   "type": "GROUP"
  },
+ "0mIwHAnTvHsfd3055G7gaQ": {
+  "gender": "NF",
+  "name": "Cherpen",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
  "0mJDQBWytBhOh5JB1DOQ1c": {
   "gender": "F",
   "name": "Jasmine Sandlas",
@@ -3731,6 +4037,18 @@
   "source": "llm:gemini",
   "type": "solo"
  },
+ "0mpZpEH8VcL0tYoGLhR8sd": {
+  "gender": "F",
+  "name": "Miimii KDS",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
+ "0n4a5imdLBN24fIrBWoqrv": {
+  "gender": "NF",
+  "name": "Because",
+  "source": "llm:gemini",
+  "type": "GROUP"
+ },
  "0nFdWpwl7h6fp3ADRyG14L": {
   "gender": "F",
   "name": "Marina Sena",
@@ -3755,10 +4073,22 @@
   "source": "llm:claude",
   "type": "solo"
  },
+ "0nnp7oJpY2J6yZOqtdKaWq": {
+  "gender": "NF",
+  "name": "Duelo",
+  "source": "llm:gemini",
+  "type": "GROUP"
+ },
  "0nzvKMw8qlFzWIUq7aNhPL": {
   "gender": "NF",
   "name": "Qasim Alsultan",
   "source": "llm:claude",
+  "type": "solo"
+ },
+ "0o370GMjPTWUz6gv8lasfs": {
+  "gender": "NF",
+  "name": "Zeki Arkun",
+  "source": "llm:gemini",
   "type": "solo"
  },
  "0oAHxVBwb9WKz52MCCz6YP": {
@@ -3783,6 +4113,24 @@
   "gender": "NF",
   "name": "YARMAK",
   "source": "llm:claude",
+  "type": "solo"
+ },
+ "0oI0Dm98K3jmtSbfTLiChX": {
+  "gender": "NF",
+  "name": "Mor",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
+ "0oJULFUhjiY2mboBp96NcA": {
+  "gender": "NF",
+  "name": "Sadece Celal",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
+ "0oNxxM5U3ySoqWW1NUhyPC": {
+  "gender": "F",
+  "name": "Gülden Esen",
+  "source": "llm:gemini",
   "type": "solo"
  },
  "0oOet2f43PA68X5RxKobEy": {
@@ -4091,6 +4439,12 @@
   "source": "llm:claude",
   "type": "solo"
  },
+ "0s2MtYt7PZx0kP8CqLt38t": {
+  "gender": "NF",
+  "name": "Alpha",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
  "0sAQ6ln7fHovbG6Tk2Phrf": {
   "gender": "F",
   "name": "Anna-Maria Zimmermann",
@@ -4138,6 +4492,12 @@
   "name": "Los Chalchaleros",
   "source": "llm:claude",
   "type": "GROUP"
+ },
+ "0tB33cNAVw1H2enMHpgFiP": {
+  "gender": "NF",
+  "name": "Arvian Dwi",
+  "source": "llm:gemini",
+  "type": "solo"
  },
  "0tBmmwc8j8zbJxISwdsvjA": {
   "gender": "NF",
@@ -4234,6 +4594,18 @@
   "name": "Spice Girls",
   "source": "llm:claude",
   "type": "GROUP"
+ },
+ "0uu4cmaCJaaVOiUHQUG2ZC": {
+  "gender": "NF",
+  "name": "SEA.",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
+ "0v1axjG0KwIz3aciZffFMu": {
+  "gender": "NF",
+  "name": "Toton Caribo",
+  "source": "llm:gemini",
+  "type": "solo"
  },
  "0v4CvkMzWBQ1wZIMl2BqQW": {
   "gender": "NF",
@@ -4341,6 +4713,12 @@
   "gender": "F",
   "name": "Nanne",
   "source": "llm:claude",
+  "type": "solo"
+ },
+ "0wuB9WlzVMNvwRJHope3ge": {
+  "gender": "NF",
+  "name": "Jan Roberts",
+  "source": "llm:gemini",
   "type": "solo"
  },
  "0x3PXj1WnuW7YsBxQK57xM": {
@@ -4493,6 +4871,12 @@
   "source": "Artists.csv",
   "type": "GROUP"
  },
+ "0ysbLY7TUvj3AKV2W7ZCFY": {
+  "gender": "NF",
+  "name": "LIMIT NALA",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
  "0yuzd9F7msg9MS8MTzQOmy": {
   "gender": "F",
   "name": "הגר יפת",
@@ -4510,6 +4894,12 @@
   "name": "Akon",
   "source": "llm:gemini",
   "type": "solo"
+ },
+ "0zGc2BHElHRQMgE5HapAJQ": {
+  "gender": "NF",
+  "name": "Mjabulisi no Mnotho",
+  "source": "llm:gemini",
+  "type": "GROUP"
  },
  "0zGt5wXkvlORfIk5tnFxAD": {
   "gender": "NF",
@@ -4691,6 +5081,12 @@
   "source": "llm:claude",
   "type": "solo"
  },
+ "11k3Y6uyixbyGfgPl8qZTZ": {
+  "gender": "F",
+  "name": "raissa anggiani",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
  "11kt6ggsdxvI8MhyeSMKom": {
   "gender": "NF",
   "name": "CYRIL",
@@ -4810,6 +5206,12 @@
   "name": "Greczula",
   "source": "wikidata",
   "type": "solo"
+ },
+ "13VRqzYJxIUpx67aASZADe": {
+  "gender": "NF",
+  "name": "Soapdish",
+  "source": "llm:gemini",
+  "type": "GROUP"
  },
  "13ZEDW6vyBF12HYcZRr4EV": {
   "gender": "NF",
@@ -4931,6 +5333,12 @@
   "source": "llm:claude",
   "type": "solo"
  },
+ "14gZaHftLlMMdID7Bdl0Wt": {
+  "gender": "NF",
+  "name": "Barış Yüksekkaya",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
  "14hRjnPyJXRdg38ghjQA9H": {
   "gender": "NF",
   "name": "Nasyo Chernia",
@@ -4991,6 +5399,12 @@
   "source": "Artists.csv",
   "type": "solo"
  },
+ "15Z5mFdFBkUbtTZhI0DDVP": {
+  "gender": "NF",
+  "name": "Dw",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
  "15gjdkbTAdGepZQ6URumfU": {
   "gender": "NF",
   "name": "Fatboy",
@@ -5027,6 +5441,12 @@
   "source": "llm:claude",
   "type": "GROUP"
  },
+ "16B3ICSQCPu4C6L5TEHXQe": {
+  "gender": "NF",
+  "name": "Rio Clappy",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
  "16GyR4WfCnIT2XST4ZLl2B": {
   "gender": "F",
   "name": "Melike Şahin",
@@ -5057,6 +5477,12 @@
   "source": "llm:claude",
   "type": "GROUP"
  },
+ "16Sxr5Kd5KJIUXTUVtmVOV": {
+  "gender": "NF",
+  "name": "Mshinwemali",
+  "source": "llm:gemini",
+  "type": "GROUP"
+ },
  "16TsNPlesuA1R9kPLS6nta": {
   "gender": "NF",
   "name": "Favst",
@@ -5068,6 +5494,12 @@
   "name": "Arik Einstein",
   "source": "llm:claude",
   "type": "solo"
+ },
+ "16e88U4wWhHSnsLZbjEgS8": {
+  "gender": "NF",
+  "name": "BROKIES",
+  "source": "llm:gemini",
+  "type": "GROUP"
  },
  "16kOCiqZ1auY4sokSeZuKf": {
   "gender": "NF",
@@ -5087,6 +5519,18 @@
   "source": "llm:claude",
   "type": "GROUP"
  },
+ "16xTQXyj7LORVb9kupiE1y": {
+  "gender": "NF",
+  "name": "La Obsesion",
+  "source": "llm:gemini",
+  "type": "GROUP"
+ },
+ "176F6CdFEVWYNwqM6HEXU2": {
+  "gender": "NF",
+  "name": "ريفو شو",
+  "source": "llm:gemini",
+  "type": "GROUP"
+ },
  "177ZOBPSU9yqO6IdomgK3T": {
   "gender": "F",
   "name": "Linda Lampenius",
@@ -5097,6 +5541,12 @@
   "gender": "F",
   "name": "Ning Baizura",
   "source": "llm:claude",
+  "type": "solo"
+ },
+ "17EAWIoXAMU9Vo9xRrdZQ0": {
+  "gender": "NF",
+  "name": "AKDO",
+  "source": "llm:gemini",
   "type": "solo"
  },
  "17LOJRoDtwnUqJzspDoFSy": {
@@ -5165,6 +5615,12 @@
   "source": "llm:claude",
   "type": "solo"
  },
+ "18Nf0Zf2Qu2tGRAfg8aqLI": {
+  "gender": "NF",
+  "name": "Kwestia 07",
+  "source": "llm:gemini",
+  "type": "GROUP"
+ },
  "18SuKvcITcf0mACwhitMeM": {
   "gender": "NF",
   "name": "Ankara Echoes",
@@ -5189,6 +5645,12 @@
   "source": "llm:claude",
   "type": "GROUP"
  },
+ "18o7UrZPvSitJxti0OodSj": {
+  "gender": "NF",
+  "name": "Hotkeed",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
  "18zO6eeR1PG505akCHt9yB": {
   "gender": "NF",
   "name": "Glenmark Eriksson Strömstedt",
@@ -5211,6 +5673,12 @@
   "gender": "NF",
   "name": "Oli",
   "source": "llm:claude",
+  "type": "solo"
+ },
+ "19CxlXaWOlZh2pqZrJlHxN": {
+  "gender": "NF",
+  "name": "Frsh",
+  "source": "llm:gemini",
   "type": "solo"
  },
  "19HFRWmRCl27kTk6LeqAO8": {
@@ -5375,6 +5843,18 @@
   "source": "llm:gemini",
   "type": "solo"
  },
+ "1AhjOkOLkbHUfcHDSErXQs": {
+  "gender": "NF",
+  "name": "88rising",
+  "source": "llm:gemini",
+  "type": "GROUP"
+ },
+ "1AldIZRmNccuXCk2uoYcpv": {
+  "gender": "NF",
+  "name": "BellyJay",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
  "1B03KdvD2TCVUEeaDbP5qf": {
   "gender": "NF",
   "name": "Mesut Kurtis",
@@ -5433,6 +5913,12 @@
   "gender": "NF",
   "name": "Pop Pongkool",
   "source": "llm:claude",
+  "type": "solo"
+ },
+ "1C6rax3ggPHc9xFvkTpASu": {
+  "gender": "NF",
+  "name": "AJE",
+  "source": "llm:gemini",
   "type": "solo"
  },
  "1CAwYkYC5rs1sABF6bF34h": {
@@ -5560,6 +6046,12 @@
   "name": "Adie",
   "source": "llm:claude",
   "type": "solo"
+ },
+ "1Dlwdk88pCDKkHvThkSdqc": {
+  "gender": "NF",
+  "name": "PDL",
+  "source": "llm:gemini",
+  "type": "GROUP"
  },
  "1DnmGMN1A57wUR0KhxOnnu": {
   "gender": "F",
@@ -5729,6 +6221,18 @@
   "source": "llm:claude",
   "type": "solo"
  },
+ "1FIsnQiSPsuqA38z48irJC": {
+  "gender": "NF",
+  "name": "T.I BLAZE",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
+ "1FOb2ztsneNb8Ka0f817t1": {
+  "gender": "NF",
+  "name": "Rea Gopane",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
  "1FXdfOOisB3d3hfZOjhjID": {
   "gender": "F",
   "name": "Esther Graf",
@@ -5745,6 +6249,12 @@
   "gender": "NF",
   "name": "Zeamsone",
   "source": "wikidata",
+  "type": "solo"
+ },
+ "1FfPeHlceaZLaDaN7SMxdZ": {
+  "gender": "NF",
+  "name": "MINUISKI",
+  "source": "llm:gemini",
   "type": "solo"
  },
  "1Ffb6ejR6Fe5IamqA5oRUF": {
@@ -5765,6 +6275,12 @@
   "source": "llm:gemini",
   "type": "solo"
  },
+ "1FtJZKdjpUUSXffDbKrDVm": {
+  "gender": "F",
+  "name": "Eda Doğanay",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
  "1FvIWbYLm8dBezbdjucrZb": {
   "gender": "F",
   "name": "GDRN",
@@ -5780,6 +6296,12 @@
  "1G0YV9WooUBjrwDq0Q7EFK": {
   "gender": "F",
   "name": "Charlotte Cardin",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
+ "1G1mO2mSe2pO8yIfIX7kEx": {
+  "gender": "NF",
+  "name": "La Mave",
   "source": "llm:gemini",
   "type": "solo"
  },
@@ -5889,6 +6411,12 @@
   "gender": "NF",
   "name": "Michael Bublé",
   "source": "llm:claude",
+  "type": "solo"
+ },
+ "1GyfNm3xj64IZR4rKnzNti": {
+  "gender": "NF",
+  "name": "Şam",
+  "source": "llm:gemini",
   "type": "solo"
  },
  "1H0rJYjO99jtsKOtaXmYTY": {
@@ -6023,6 +6551,12 @@
   "source": "llm:claude",
   "type": "solo"
  },
+ "1Ils6k71OZSgIuDPdgZwsg": {
+  "gender": "NF",
+  "name": "Lukão Mec",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
  "1Iq14y98EVmnXUah4ldJnl": {
   "gender": "NF",
   "name": "Babasha",
@@ -6038,6 +6572,12 @@
  "1Ixc8hKrbw01MHtuP6SNUH": {
   "gender": "F",
   "name": "Neha S. Nair",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
+ "1J1pGfTqp5ReVIX8Z1Wzsg": {
+  "gender": "NF",
+  "name": "BabyChiefDoit",
   "source": "llm:gemini",
   "type": "solo"
  },
@@ -6119,6 +6659,12 @@
   "source": "llm:claude",
   "type": "solo"
  },
+ "1Kj6Km5IuLGKt2cxuhSgLm": {
+  "gender": "NF",
+  "name": "GOLF",
+  "source": "llm:gemini",
+  "type": "GROUP"
+ },
  "1Kjs5u8GQf6zCFdTj6SI9E": {
   "gender": "NF",
   "name": "Malik Montana",
@@ -6153,6 +6699,12 @@
   "gender": "NF",
   "name": "Đen",
   "source": "llm:claude",
+  "type": "solo"
+ },
+ "1LH0Swx879SQnNyP3n1ZX4": {
+  "gender": "F",
+  "name": "M4IA",
+  "source": "llm:gemini",
   "type": "solo"
  },
  "1LIuN7ov1IBQDdLsU83ojl": {
@@ -6220,6 +6772,12 @@
   "name": "BLANCO",
   "source": "llm:claude",
   "type": "solo"
+ },
+ "1MSTGFMPxpZD05uY1EnD5w": {
+  "gender": "NF",
+  "name": "Mahostela 97",
+  "source": "llm:gemini",
+  "type": "GROUP"
  },
  "1McMsnEElThX1knmY4oliG": {
   "gender": "F",
@@ -6291,6 +6849,12 @@
   "gender": "NF",
   "name": "Yng Lvcas",
   "source": "wikidata",
+  "type": "solo"
+ },
+ "1NQ1cA17XLd3Rh7PFzadL2": {
+  "gender": "NF",
+  "name": "Dajczman",
+  "source": "llm:gemini",
   "type": "solo"
  },
  "1NVwSzuIbuPJEGWhUQRlnv": {
@@ -6419,6 +6983,12 @@
   "source": "llm:gemini",
   "type": "solo"
  },
+ "1PoCttTLXvpmlzQBpVnli7": {
+  "gender": "NF",
+  "name": "NHLOSO KHWELA",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
  "1PwOU6fFbmaGkK3wkbb8fU": {
   "gender": "NF",
   "name": "Cazuza",
@@ -6539,6 +7109,12 @@
   "source": "llm:claude",
   "type": "GROUP"
  },
+ "1RqOmrtivmvKrfBO81j1ou": {
+  "gender": "NF",
+  "name": "Kidd",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
  "1RyvyyTE3xzB2ZywiAwp0i": {
   "gender": "NF",
   "name": "Future",
@@ -6641,6 +7217,12 @@
   "source": "llm:claude",
   "type": "solo"
  },
+ "1T4ZmeiZPhtjCJsMs7yUC9": {
+  "gender": "NF",
+  "name": "Maero",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
  "1TA5sGRlKUJXBN4ZyJuDIX": {
   "gender": "NF",
   "name": "Blessd",
@@ -6688,6 +7270,12 @@
   "name": "Hussain Aljassmi",
   "source": "llm:claude",
   "type": "solo"
+ },
+ "1TdOWV3JFAGmZ1466aKbg5": {
+  "gender": "NF",
+  "name": "Tax Free",
+  "source": "llm:gemini",
+  "type": "GROUP"
  },
  "1ThoqLcyIYvZn7iWbj8fsj": {
   "gender": "NF",
@@ -6773,6 +7361,12 @@
   "source": "llm:claude",
   "type": "solo"
  },
+ "1UdbiTrv73Dp7F0s3OHmn2": {
+  "gender": "NF",
+  "name": "Light",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
  "1Ulwacsns9Me7dz4OVwkiQ": {
   "gender": "NF",
   "name": "SEREBRO",
@@ -6783,6 +7377,12 @@
   "gender": "NF",
   "name": "Tamir Bar",
   "source": "wikidata",
+  "type": "solo"
+ },
+ "1UwTwoC4T1i6vzwsQgIWB0": {
+  "gender": "F",
+  "name": "Feza",
+  "source": "llm:gemini",
   "type": "solo"
  },
  "1Uz4WPsI4VylKT6lhJiDO5": {
@@ -6803,11 +7403,23 @@
   "source": "llm:claude",
   "type": "solo"
  },
+ "1V6Bl7Ny5loHozQUalAd6M": {
+  "gender": "NF",
+  "name": "马也_Crabbit",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
  "1VBflYyxBhnDc9uVib98rw": {
   "gender": "NF",
   "name": "Icona Pop",
   "source": "llm:gemini",
   "type": "GROUP"
+ },
+ "1VBjib1ykqXxss9Tw5YuR9": {
+  "gender": "NF",
+  "name": "Mavo",
+  "source": "llm:gemini",
+  "type": "solo"
  },
  "1VBweZIUq8SNikHhrT4Ixp": {
   "gender": "NF",
@@ -6861,6 +7473,12 @@
   "gender": "NF",
   "name": "Gianni Togni",
   "source": "llm:claude",
+  "type": "solo"
+ },
+ "1Vh77WpgUBG9bYi1X0kMQZ": {
+  "gender": "NF",
+  "name": "KEDDE",
+  "source": "llm:gemini",
   "type": "solo"
  },
  "1VhSPdvcgxUfhdZ9Txv26v": {
@@ -7211,6 +7829,12 @@
   "source": "llm:claude",
   "type": "GROUP"
  },
+ "1ZaYY3Ad5D5KYahXT594BX": {
+  "gender": "NF",
+  "name": "Wijaya 80",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
  "1Zj4GtouAnxHq4qw7ooLfm": {
   "gender": "NF",
   "name": "Mert Demir",
@@ -7252,6 +7876,12 @@
   "name": "K.Maro",
   "source": "llm:claude",
   "type": "solo"
+ },
+ "1aA5OGASCVhznQYm71BMYg": {
+  "gender": "NF",
+  "name": "Babblarna",
+  "source": "llm:gemini",
+  "type": "GROUP"
  },
  "1aCvTvFylQbGlKetfucVJY": {
   "gender": "NF",
@@ -7305,6 +7935,12 @@
   "gender": "NF",
   "name": "Juan Magán",
   "source": "llm:claude",
+  "type": "solo"
+ },
+ "1anYjqWlOJQsVlJOr9VlVg": {
+  "gender": "NF",
+  "name": "โชเล่ย์ ชคัทพล",
+  "source": "llm:gemini",
   "type": "solo"
  },
  "1arCVYXeStgCY2UazBNBLK": {
@@ -7409,6 +8045,12 @@
   "source": "llm:claude",
   "type": "solo"
  },
+ "1bu3a0AAJbZazQJV0tbywD": {
+  "gender": "NF",
+  "name": "NO11",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
  "1bwsprbGyKx2vBbPAwVebl": {
   "gender": "NF",
   "name": "Noche de Brujas",
@@ -7463,6 +8105,12 @@
   "source": "llm:claude",
   "type": "GROUP"
  },
+ "1ccVv6sg5vGPpJ77qAt6yI": {
+  "gender": "NF",
+  "name": "Issa sisdoh",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
  "1cg0bYpP5e2DNG0RgK2CMN": {
   "gender": "NF",
   "name": "Joker Xue",
@@ -7473,6 +8121,12 @@
   "gender": "NF",
   "name": "Dionela",
   "source": "llm:claude",
+  "type": "solo"
+ },
+ "1dFRlDO2Z2gjAARxHlovAS": {
+  "gender": "NF",
+  "name": "Lo ki",
+  "source": "llm:gemini",
   "type": "solo"
  },
  "1dKdetem2xEmjgvyymzytS": {
@@ -7835,6 +8489,12 @@
   "source": "llm:claude",
   "type": "GROUP"
  },
+ "1g6DVpTS6w8meqwY8QGy1L": {
+  "gender": "F",
+  "name": "Thatohatsi",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
  "1g9nyCbUH0kbNgXAsw7tUB": {
   "gender": "NF",
   "name": "Bankzitters",
@@ -8099,6 +8759,12 @@
   "source": "llm:claude",
   "type": "solo"
  },
+ "1jd75hi1uo8CqDnDtVJcnz": {
+  "gender": "NF",
+  "name": "Nikbinler",
+  "source": "llm:gemini",
+  "type": "GROUP"
+ },
  "1jqsyMgs51gXrxH1MuMaVY": {
   "gender": "F",
   "name": "RUBY",
@@ -8249,6 +8915,12 @@
   "source": "Artists.csv",
   "type": "GROUP"
  },
+ "1mDF3XPBpyv3pBiqLbhhVX": {
+  "gender": "NF",
+  "name": "MRD",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
  "1mFX1QlezK1lNPKQJkhwWb": {
   "gender": "NF",
   "name": "New Edition",
@@ -8381,6 +9053,12 @@
   "source": "llm:gemini",
   "type": "solo"
  },
+ "1nX1HVIUo1Zfs3e2v3lFb9": {
+  "gender": "NF",
+  "name": "Changg",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
  "1nYKikHu8WWMKYVTcNyyzs": {
   "gender": "NF",
   "name": "Sven-Ingvars",
@@ -8441,11 +9119,23 @@
   "source": "llm:claude",
   "type": "solo"
  },
+ "1nxfzZDDm0a0msuLz0W4lx": {
+  "gender": "NF",
+  "name": "Mojo",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
  "1nzId6SLDDTUTRV7lNbgxp": {
   "gender": "NF",
   "name": "King & Prince",
   "source": "llm:claude",
   "type": "GROUP"
+ },
+ "1o1YHZFva6RI2Ve7kjgRzn": {
+  "gender": "NF",
+  "name": "Dj Gustomares",
+  "source": "llm:gemini",
+  "type": "solo"
  },
  "1oD9fKbb7qQ2nhn9JJC24F": {
   "gender": "NF",
@@ -8687,6 +9377,12 @@
   "source": "Artists.csv",
   "type": "GROUP"
  },
+ "1qveov8f3HXFhDIWtFO5tG": {
+  "gender": "NF",
+  "name": "guncharlie",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
  "1qyadEaAHlRgdtf5F2YA4F": {
   "gender": "NF",
   "name": "Sidney Polak",
@@ -8825,6 +9521,12 @@
   "source": "llm:claude",
   "type": "solo"
  },
+ "1slHyPE5gIYlHAKLiLv9PU": {
+  "gender": "NF",
+  "name": "Netto Brito",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
  "1snhtMLeb2DYoMOcVbb8iB": {
   "gender": "NF",
   "name": "Kenshi Yonezu",
@@ -8871,6 +9573,12 @@
   "gender": "NF",
   "name": "Macaroni Empitsu",
   "source": "llm:claude",
+  "type": "GROUP"
+ },
+ "1t1GIb4bb1lARAXwWEekUN": {
+  "gender": "NF",
+  "name": "芒果醬 Mango Jump",
+  "source": "llm:gemini",
   "type": "GROUP"
  },
  "1tHLv9kMiqAZhpMEGZ4rFw": {
@@ -8920,6 +9628,12 @@
   "name": "Fito y Fitipaldis",
   "source": "llm:claude",
   "type": "GROUP"
+ },
+ "1tlK89N9NdqIWVXRSyClAw": {
+  "gender": "NF",
+  "name": "Falabo",
+  "source": "llm:gemini",
+  "type": "solo"
  },
  "1tqysapcCh1lWEAc9dIFpa": {
   "gender": "NF",
@@ -9185,6 +9899,12 @@
   "source": "llm:claude",
   "type": "solo"
  },
+ "1wyY1DhksbNimjRRgm84d8": {
+  "gender": "NF",
+  "name": "The Seal Voices",
+  "source": "llm:gemini",
+  "type": "GROUP"
+ },
  "1wyjMJTy6WbOvYBSDL9fMR": {
   "gender": "NF",
   "name": "La Combo Tortuga",
@@ -9353,6 +10073,12 @@
   "source": "llm:claude",
   "type": "GROUP"
  },
+ "1zQGq31aajlt5qvmHyrwQn": {
+  "gender": "NF",
+  "name": "Luis Carrillo",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
  "1zSv9qZANOWB4HRE8sxeTL": {
   "gender": "NF",
   "name": "RPT MCK",
@@ -9370,6 +10096,12 @@
   "name": "Aaron Y Su Grupo Ilusion",
   "source": "llm:claude",
   "type": "GROUP"
+ },
+ "1zeAbUJAbLOWeYpgRVnYmu": {
+  "gender": "NF",
+  "name": "FLY LO",
+  "source": "llm:gemini",
+  "type": "solo"
  },
  "1zng9JZpblpk48IPceRWs8": {
   "gender": "NF",
@@ -9485,6 +10217,12 @@
   "source": "llm:gemini",
   "type": "GROUP"
  },
+ "216arN9tLMMn2ltwEAxmF5": {
+  "gender": "NF",
+  "name": "SG",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
  "21E3waRsmPlU7jZsS13rcj": {
   "gender": "NF",
   "name": "Ne-Yo",
@@ -9569,6 +10307,12 @@
   "source": "llm:claude",
   "type": "solo"
  },
+ "22XDOoz1O9YU6Ekq5FEcK1": {
+  "gender": "NF",
+  "name": "Shaw",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
  "22Zqu1yyebVnbve8FxbJ2g": {
   "gender": "NF",
   "name": "Rednex",
@@ -9647,6 +10391,12 @@
   "source": "llm:claude",
   "type": "solo"
  },
+ "23l5vFzRRC5iUKVCH2eb4T": {
+  "gender": "NF",
+  "name": "Lazy Ed",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
  "23nWkdjjAlopi1pF5KwrD6": {
   "gender": "NF",
   "name": "Fernando Burbano",
@@ -9670,6 +10420,12 @@
   "name": "BossMan Dlow",
   "source": "llm:claude",
   "type": "solo"
+ },
+ "23xJQJM7peht77DF6YNEoq": {
+  "gender": "NF",
+  "name": "Model",
+  "source": "llm:gemini",
+  "type": "GROUP"
  },
  "23xqmJEN3oVxwzqtNIyR5m": {
   "gender": "NF",
@@ -9719,6 +10475,12 @@
   "source": "llm:claude",
   "type": "solo"
  },
+ "24OGdBr3r58ksMLJkMXZZY": {
+  "gender": "NF",
+  "name": "KAVAK",
+  "source": "llm:gemini",
+  "type": "GROUP"
+ },
  "24Vjp1gvnNuNSWJ0vFMZ6G": {
   "gender": "NF",
   "name": "SANTOS BRAVOS",
@@ -9743,6 +10505,12 @@
   "source": "llm:claude",
   "type": "GROUP"
  },
+ "250LLR8V4fFq1XFzAB1ZN5": {
+  "gender": "NF",
+  "name": "Poizi",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
  "250b0Wlc5Vk0CoUsaCY84M": {
   "gender": "F",
   "name": "JENNIE",
@@ -9755,10 +10523,22 @@
   "source": "llm:claude",
   "type": "solo"
  },
+ "252fChrCEm5fhuaMTnowg9": {
+  "gender": "F",
+  "name": "Nothando Hlophe",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
  "25FdziPY37yQIRXSk7ZUmS": {
   "gender": "NF",
   "name": "Allame",
   "source": "wikidata",
+  "type": "solo"
+ },
+ "25JtC3l1STnE2GptoHKXdD": {
+  "gender": "NF",
+  "name": "Alex Crichton",
+  "source": "llm:gemini",
   "type": "solo"
  },
  "25KexOOkjeW9KBFu2jorUD": {
@@ -9773,6 +10553,12 @@
   "source": "llm:claude",
   "type": "solo"
  },
+ "25P1GMgHepq6rkzRwg2DcB": {
+  "gender": "NF",
+  "name": "Eslam Kabonga",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
  "25ZVvmN0Tm9Os5K42swK8b": {
   "gender": "F",
   "name": "no na",
@@ -9783,6 +10569,18 @@
   "gender": "NF",
   "name": "Stuðmenn",
   "source": "llm:claude",
+  "type": "GROUP"
+ },
+ "25gzpFRLdteuie1gW4a4hK": {
+  "gender": "NF",
+  "name": "Sakiler",
+  "source": "llm:gemini",
+  "type": "GROUP"
+ },
+ "25j9xL1MTyuycuB2xy2Q9g": {
+  "gender": "NF",
+  "name": "TxC",
+  "source": "llm:gemini",
   "type": "GROUP"
  },
  "25u1DN0MwQVSav4XoJS7hl": {
@@ -9857,6 +10655,12 @@
   "source": "llm:claude",
   "type": "GROUP"
  },
+ "26ZKmgHKJWQdnSKUZCVEKa": {
+  "gender": "NF",
+  "name": "TKS 2G",
+  "source": "llm:gemini",
+  "type": "GROUP"
+ },
  "26bcq2nyj5GB7uRr558iQg": {
   "gender": "NF",
   "name": "Survivor",
@@ -9881,6 +10685,12 @@
   "source": "llm:gemini",
   "type": "GROUP"
  },
+ "26toJml6wSdf58ZgNG0ci9": {
+  "gender": "NF",
+  "name": "Dipinto",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
  "26zgIfFyTCImkHAp5gwKW8": {
   "gender": "NF",
   "name": "Joé Dwèt Filé",
@@ -9898,6 +10708,12 @@
   "name": "Geolier",
   "source": "llm:claude",
   "type": "solo"
+ },
+ "27N70iRV4BrxqvFnR6CT28": {
+  "gender": "NF",
+  "name": "WTSOUNDS",
+  "source": "llm:gemini",
+  "type": "GROUP"
  },
  "27Q56LhVd6dJrgZ99TMWxW": {
   "gender": "NF",
@@ -10079,6 +10895,12 @@
   "source": "llm:claude",
   "type": "GROUP"
  },
+ "29fcEFHRcOhfTYXvS8POPV": {
+  "gender": "NF",
+  "name": "Bayriton",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
  "29kkCKKGXheHuoO829FxWK": {
   "gender": "NF",
   "name": "Boston",
@@ -10139,6 +10961,12 @@
   "source": "llm:gemini",
   "type": "GROUP"
  },
+ "2AcrkelR47hApTQirQhv6F": {
+  "gender": "NF",
+  "name": "Tothapi",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
  "2AfmfGFbe0A0WsTYm0SDTx": {
   "gender": "F",
   "name": "i-dle",
@@ -10187,6 +11015,12 @@
   "source": "llm:claude",
   "type": "solo"
  },
+ "2BFFFDU8cOaMWt7i2BHLtX": {
+  "gender": "NF",
+  "name": "Contec",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
  "2BJWqrBKEqtZUKWtzmpPDj": {
   "gender": "NF",
   "name": "Tobal Mj",
@@ -10216,6 +11050,12 @@
   "name": "Pariisin Kevät",
   "source": "llm:claude",
   "type": "GROUP"
+ },
+ "2BoU3GzyaG397l5ci1twa9": {
+  "gender": "NF",
+  "name": "Shartnuss",
+  "source": "llm:gemini",
+  "type": "solo"
  },
  "2Bwp23pD4UVsSkchHDZw4F": {
   "gender": "NF",
@@ -10265,10 +11105,22 @@
   "source": "llm:claude",
   "type": "solo"
  },
+ "2CTggmdbEpr6nyI8zHzGla": {
+  "gender": "NF",
+  "name": "Melih Görgün",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
  "2CU1lH3DaaajH9Cm2S2tPk": {
   "gender": "NF",
   "name": "Freddy Moreira",
   "source": "wikidata",
+  "type": "solo"
+ },
+ "2Ci1Tt7bCEU3OTByr1nc0y": {
+  "gender": "NF",
+  "name": "Kew",
+  "source": "llm:gemini",
   "type": "solo"
  },
  "2Cm8tSkHw7BtdoKutKez8J": {
@@ -10359,6 +11211,12 @@
   "gender": "NF",
   "name": "Season Five",
   "source": "llm:claude",
+  "type": "GROUP"
+ },
+ "2DaMrZndfGgM3yd9ivadRC": {
+  "gender": "NF",
+  "name": "Lipta",
+  "source": "llm:gemini",
   "type": "GROUP"
  },
  "2DaxqgrOhkeH0fpeiQq2f4": {
@@ -10553,6 +11411,12 @@
   "source": "llm:claude",
   "type": "solo"
  },
+ "2FQg4JX9rAIDnakUJb8hgj": {
+  "gender": "NF",
+  "name": "Heitor Santos",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
  "2FTua3TeIGnmQQrN80DinP": {
   "gender": "F",
   "name": "Anastasia",
@@ -10588,6 +11452,12 @@
   "name": "Big Fat Snake",
   "source": "llm:claude",
   "type": "GROUP"
+ },
+ "2FkaZzzDTwnz1l1mK9DoT6": {
+  "gender": "F",
+  "name": "TUANA",
+  "source": "llm:gemini",
+  "type": "solo"
  },
  "2FkgKcXTqukAQ9GuXFzgN3": {
   "gender": "NF",
@@ -10635,6 +11505,12 @@
   "gender": "NF",
   "name": "Al James",
   "source": "llm:claude",
+  "type": "solo"
+ },
+ "2GGL93jyTZ4X7uidHSJhIr": {
+  "gender": "NF",
+  "name": "Kundo",
+  "source": "llm:gemini",
   "type": "solo"
  },
  "2GJMSZ7M3D0KyyKRhYgWju": {
@@ -10769,9 +11645,21 @@
   "source": "llm:claude",
   "type": "solo"
  },
+ "2IK559MuWjlwxUj6zuikU7": {
+  "gender": "NF",
+  "name": "ÁTOA",
+  "source": "llm:gemini",
+  "type": "GROUP"
+ },
  "2IKfr1JgPRXmXKAWwrABc6": {
   "gender": "NF",
   "name": "Kushagra",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
+ "2ILIlhH5IJbgrq6dZa7wei": {
+  "gender": "NF",
+  "name": "DJ BRIZY",
   "source": "llm:gemini",
   "type": "solo"
  },
@@ -10827,6 +11715,12 @@
   "gender": "NF",
   "name": "Ritter Lean",
   "source": "wikidata",
+  "type": "solo"
+ },
+ "2Invsp3HSrAeJy4u7Retry": {
+  "gender": "NF",
+  "name": "Kolter",
+  "source": "llm:gemini",
   "type": "solo"
  },
  "2IprcYDAYTYzCl4AJH3AuT": {
@@ -10899,6 +11793,12 @@
   "gender": "NF",
   "name": "ECKO",
   "source": "wikidata",
+  "type": "solo"
+ },
+ "2Jfsm2UQsgIpyfnksNNIzj": {
+  "gender": "F",
+  "name": "Ida",
+  "source": "llm:gemini",
   "type": "solo"
  },
  "2JwyRtuXf2l6sTnSnGVIa1": {
@@ -11037,6 +11937,18 @@
   "gender": "NF",
   "name": "Osher Cohen",
   "source": "llm:claude",
+  "type": "solo"
+ },
+ "2LX2SKJhvZjyH4Z7XMptjd": {
+  "gender": "NF",
+  "name": "Quang Đăng Trần",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
+ "2LiTVEYDOEckioqrkD83jL": {
+  "gender": "NF",
+  "name": "Rey Vaqueiro",
+  "source": "llm:gemini",
   "type": "solo"
  },
  "2LiqbH7OhqP0yuaG8VL1wJ": {
@@ -11399,6 +12311,12 @@
   "source": "llm:claude",
   "type": "solo"
  },
+ "2OykwFvrdokATKdUQPGAFA": {
+  "gender": "NF",
+  "name": "Prod Gomes",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
  "2P87oRX5tCFl1PYQRbPCPD": {
   "gender": "NF",
   "name": "Admiral P",
@@ -11457,6 +12375,12 @@
   "gender": "NF",
   "name": "Hady Mirza",
   "source": "llm:claude",
+  "type": "solo"
+ },
+ "2Q2uIXpaRSH3Or0oT5nFXR": {
+  "gender": "NF",
+  "name": "DENȲ",
+  "source": "llm:gemini",
   "type": "solo"
  },
  "2Q3eZMfDQgT8MhPowKFXYO": {
@@ -11675,6 +12599,18 @@
   "source": "llm:claude",
   "type": "solo"
  },
+ "2SA48aCaiOpXDVgoLQNWX8": {
+  "gender": "NF",
+  "name": "The 38 Years Ago",
+  "source": "llm:gemini",
+  "type": "GROUP"
+ },
+ "2SKZZzdGrOcdb8q3IguugV": {
+  "gender": "NF",
+  "name": "Le John",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
  "2ST5XwWB4uXGKk2NXP8DUI": {
   "gender": "NF",
   "name": "Los Cafres",
@@ -11831,6 +12767,12 @@
   "source": "llm:claude",
   "type": "solo"
  },
+ "2UCPMrvFm42t3w5duYfQHl": {
+  "gender": "NF",
+  "name": "Nguyễn Trọng Tài",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
  "2UFqwY8A3PLcx8pAkg9g5P": {
   "gender": "NF",
   "name": "Diego Verdaguer",
@@ -11927,6 +12869,18 @@
   "source": "llm:claude",
   "type": "solo"
  },
+ "2VoapN0ypWEZg88RQkgWuE": {
+  "gender": "F",
+  "name": "Selcan",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
+ "2W0Thu5zSRJV1cW2R50UPU": {
+  "gender": "NF",
+  "name": "Credo V Daniels",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
  "2W0dQPsEPd0tz7cj95gUse": {
   "gender": "NF",
   "name": "Shlomo Artzi",
@@ -12017,6 +12971,12 @@
   "source": "llm:claude",
   "type": "solo"
  },
+ "2WzWSpOB41g3gb78Raj6RK": {
+  "gender": "NF",
+  "name": "gins&melodies",
+  "source": "llm:gemini",
+  "type": "GROUP"
+ },
  "2WzaAvm2bBCf4pEhyuDgCY": {
   "gender": "F",
   "name": "Ruth B.",
@@ -12041,10 +13001,22 @@
   "source": "llm:gemini",
   "type": "solo"
  },
+ "2XiaPu2j4nBMhF8pIlt6Bk": {
+  "gender": "NF",
+  "name": "AYLA's",
+  "source": "llm:gemini",
+  "type": "GROUP"
+ },
  "2XjqKvB2Xz9IdyjWPIHaXi": {
   "gender": "F",
   "name": "Sheena Ringo",
   "source": "llm:claude",
+  "type": "solo"
+ },
+ "2XoNHBh5o3I1Niqsr5uA3P": {
+  "gender": "NF",
+  "name": "Anyme023",
+  "source": "llm:gemini",
   "type": "solo"
  },
  "2XsHanVw1onfSpTECII15X": {
@@ -12227,6 +13199,12 @@
   "source": "llm:claude",
   "type": "solo"
  },
+ "2aZlYOswKNlrwqpuTsckKd": {
+  "gender": "NF",
+  "name": "Madrigal",
+  "source": "llm:gemini",
+  "type": "GROUP"
+ },
  "2aZtzjAzD8fq3OhZ9egqda": {
   "gender": "NF",
   "name": "Alacranes Musical",
@@ -12305,11 +13283,23 @@
   "source": "llm:gemini",
   "type": "solo"
  },
+ "2bl9NxlK21JgGjP5HkNi5o": {
+  "gender": "NF",
+  "name": "Vintergatan",
+  "source": "llm:gemini",
+  "type": "GROUP"
+ },
  "2bqjifJKTLK1AS9AnGbX0L": {
   "gender": "NF",
   "name": "G&G Sindikatas",
   "source": "llm:claude",
   "type": "GROUP"
+ },
+ "2bucjueNUx2aVTUA7zj6w7": {
+  "gender": "NF",
+  "name": "APON",
+  "source": "llm:gemini",
+  "type": "solo"
  },
  "2bxxlINUlcMQQb39K7IopR": {
   "gender": "NF",
@@ -12395,6 +13385,12 @@
   "source": "llm:claude",
   "type": "GROUP"
  },
+ "2cvAWNKeSNVAfSZqAQIIS3": {
+  "gender": "NF",
+  "name": "Mzukulu",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
  "2cy1zPcrFcXAJTP0APWewL": {
   "gender": "NF",
   "name": "Gente De Zona",
@@ -12418,6 +13414,12 @@
   "name": "Chaimae Abdelaziz",
   "source": "llm:claude",
   "type": "solo"
+ },
+ "2dC1IBU9NOD9xsQJ5RE7j7": {
+  "gender": "NF",
+  "name": "Puppy",
+  "source": "llm:gemini",
+  "type": "GROUP"
  },
  "2dFtLleECB8O3QgW40cuuY": {
   "gender": "NF",
@@ -12443,10 +13445,22 @@
   "source": "Artists.csv",
   "type": "GROUP"
  },
+ "2dLayz7AThHVFmsIbsvTKh": {
+  "gender": "NF",
+  "name": "TINH HÀ \"SAY HI\"",
+  "source": "llm:gemini",
+  "type": "GROUP"
+ },
  "2dLhpezBEgAELn73fiMEak": {
   "gender": "NF",
   "name": "Jonatan",
   "source": "llm:claude",
+  "type": "solo"
+ },
+ "2dPLkqesvPXpIlP65JoLrf": {
+  "gender": "NF",
+  "name": "Silva Bumpa",
+  "source": "llm:gemini",
   "type": "solo"
  },
  "2dd5mrQZvg6SmahdgVKDzh": {
@@ -12531,6 +13545,12 @@
   "gender": "NF",
   "name": "Bleachers",
   "source": "llm:claude",
+  "type": "GROUP"
+ },
+ "2ebfwnFBy7LnU8m14ZfHvU": {
+  "gender": "NF",
+  "name": "Grupo Disparo",
+  "source": "llm:gemini",
   "type": "GROUP"
  },
  "2eh8cEKZk4VeruUrGq748D": {
@@ -12629,6 +13649,12 @@
   "source": "llm:claude",
   "type": "solo"
  },
+ "2fpiU89XxYeTRcnPtuEBip": {
+  "gender": "NF",
+  "name": "Oljeberget",
+  "source": "llm:gemini",
+  "type": "GROUP"
+ },
  "2g0QLUYku8AuPVK2udRV7i": {
   "gender": "NF",
   "name": "Leslie Cheung",
@@ -12639,6 +13665,12 @@
   "gender": "F",
   "name": "Delta Goodrem",
   "source": "llm:claude",
+  "type": "solo"
+ },
+ "2g8Pu5gVtDpkYGsP3RLepJ": {
+  "gender": "NF",
+  "name": "Draganov",
+  "source": "llm:gemini",
   "type": "solo"
  },
  "2gAcO16AKQdceAd36Oxe18": {
@@ -12689,6 +13721,12 @@
   "source": "llm:claude",
   "type": "solo"
  },
+ "2h2oLC9oYSV4kYoAnHQHhd": {
+  "gender": "NF",
+  "name": "UMnotho",
+  "source": "llm:gemini",
+  "type": "GROUP"
+ },
  "2h5Ha0ZiMFmOQD3iYcSXsy": {
   "gender": "NF",
   "name": "KayBlack",
@@ -12719,6 +13757,12 @@
   "source": "llm:claude",
   "type": "solo"
  },
+ "2hKzSNbt10rdDMtede2Gbi": {
+  "gender": "NF",
+  "name": "Jesp7Tearz",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
  "2hRQKC0gqlZGPrmUKbcchR": {
   "gender": "NF",
   "name": "SHINee",
@@ -12735,6 +13779,12 @@
   "gender": "F",
   "name": "MOLIY",
   "source": "llm:claude",
+  "type": "solo"
+ },
+ "2hYEEgRuJ4XS4B8y7E75TO": {
+  "gender": "NF",
+  "name": "YAO",
+  "source": "llm:gemini",
   "type": "solo"
  },
  "2hZoJ9EKrV6YLfUKebCZCo": {
@@ -12760,6 +13810,12 @@
   "name": "Saif Nabeel",
   "source": "llm:claude",
   "type": "solo"
+ },
+ "2i8xdaZHfJpzLWJB0f7g28": {
+  "gender": "NF",
+  "name": "Piano City",
+  "source": "llm:gemini",
+  "type": "GROUP"
  },
  "2iB7AJhJmkWkkehY9ccB0j": {
   "gender": "NF",
@@ -12802,6 +13858,12 @@
   "name": "Mahmoud El Leithy",
   "source": "llm:claude",
   "type": "solo"
+ },
+ "2iYUs3FoNodbZXKf4mkjGM": {
+  "gender": "NF",
+  "name": "MAYDAYs",
+  "source": "llm:gemini",
+  "type": "GROUP"
  },
  "2ic3GGGmkixOZP4qnakSA8": {
   "gender": "F",
@@ -12957,6 +14019,12 @@
   "gender": "F",
   "name": "Nina Chuba",
   "source": "llm:claude",
+  "type": "solo"
+ },
+ "2kSCHFK5uErN4BO7IkTrHK": {
+  "gender": "NF",
+  "name": "Lovet",
+  "source": "llm:gemini",
   "type": "solo"
  },
  "2kWD0SD7BESkolAYHhF80J": {
@@ -13409,6 +14477,12 @@
   "source": "llm:claude",
   "type": "solo"
  },
+ "2pdregtTGt1CuXZkXzEd1r": {
+  "gender": "NF",
+  "name": "DJ MTN",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
  "2pobDPwk9fuzujz5YKKAVB": {
   "gender": "F",
   "name": "Jada",
@@ -13457,6 +14531,24 @@
   "source": "llm:claude",
   "type": "solo"
  },
+ "2qOlVNqJQOGKZd81zZ8qOC": {
+  "gender": "NF",
+  "name": "Leyla The Band",
+  "source": "llm:gemini",
+  "type": "GROUP"
+ },
+ "2qPwQcHdnoKhMYehUOt7EM": {
+  "gender": "NF",
+  "name": "I-Zax",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
+ "2qW4eDZVrF6mlcuaTBEMjh": {
+  "gender": "NF",
+  "name": "DEHA INC.",
+  "source": "llm:gemini",
+  "type": "GROUP"
+ },
  "2qanRMyA5bNuTvz1dK45OP": {
   "gender": "F",
   "name": "ADÉLA",
@@ -13493,6 +14585,12 @@
   "source": "llm:gemini",
   "type": "solo"
  },
+ "2r1WoyhX1FSc7AmcF8rkoO": {
+  "gender": "NF",
+  "name": "MASDO",
+  "source": "llm:gemini",
+  "type": "GROUP"
+ },
  "2r4agJg5M8a7lNJLIiLBNN": {
   "gender": "NF",
   "name": "Paktofonika",
@@ -13505,10 +14603,22 @@
   "source": "llm:gemini",
   "type": "solo"
  },
+ "2rKtPYcwYmevNcaqzJOwvf": {
+  "gender": "NF",
+  "name": "MANBO",
+  "source": "llm:gemini",
+  "type": "GROUP"
+ },
  "2rNgr1pkSDfxQTYhqCT45D": {
   "gender": "NF",
   "name": "Tan Taşçı",
   "source": "llm:claude",
+  "type": "solo"
+ },
+ "2rUfBClgdqQ4Svcg0A6gIl": {
+  "gender": "F",
+  "name": "noa",
+  "source": "llm:gemini",
   "type": "solo"
  },
  "2rVYwIYNEsMxtt8j5yemHb": {
@@ -13547,6 +14657,12 @@
   "source": "llm:claude",
   "type": "solo"
  },
+ "2s15DSwmxDsXglZOEoIHSn": {
+  "gender": "F",
+  "name": "Mariana Pimenta",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
  "2s187JqHC9kipPLBLWXubl": {
   "gender": "NF",
   "name": "Falz",
@@ -13575,6 +14691,12 @@
   "gender": "NF",
   "name": "Justin99",
   "source": "llm:claude",
+  "type": "solo"
+ },
+ "2sQAXdjNpwvs57LUxYzFdA": {
+  "gender": "NF",
+  "name": "ASLAR",
+  "source": "llm:gemini",
   "type": "solo"
  },
  "2sS4H2xFvWaxaixeVZC4Vu": {
@@ -13721,6 +14843,12 @@
   "source": "llm:gemini",
   "type": "solo"
  },
+ "2uPPduOPqzYiWESkxR1SpB": {
+  "gender": "NF",
+  "name": "AirBorne",
+  "source": "llm:gemini",
+  "type": "GROUP"
+ },
  "2uWcrwgWmZcQc3IPBs3tfU": {
   "gender": "F",
   "name": "Apink",
@@ -13780,6 +14908,12 @@
   "name": "Letto",
   "source": "llm:claude",
   "type": "GROUP"
+ },
+ "2vWGxqWbGgmgxVDZ5CBvBP": {
+  "gender": "NF",
+  "name": "Bielzin",
+  "source": "llm:gemini",
+  "type": "solo"
  },
  "2vbWy0ntJGJ2H1erLJFMZZ": {
   "gender": "NF",
@@ -13883,6 +15017,12 @@
   "source": "llm:claude",
   "type": "solo"
  },
+ "2wlyVkL3KJmboFNEsUP5dB": {
+  "gender": "NF",
+  "name": "Onur Atmaca",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
  "2wmdMX0w131ZumU30P5WZH": {
   "gender": "NF",
   "name": "Artur Rojek",
@@ -13943,6 +15083,12 @@
   "source": "llm:gemini",
   "type": "solo"
  },
+ "2xYE0LYxFRGK9CQxLlkE7H": {
+  "gender": "F",
+  "name": "Nontokozo Mkhize",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
  "2xfxRiKxoHl5tI0MKyvqV7": {
   "gender": "NF",
   "name": "&TEAM",
@@ -13964,6 +15110,12 @@
  "2xmhyxkjpGNBeWXVMeVWHb": {
   "gender": "NF",
   "name": "Rayo & Toby",
+  "source": "llm:gemini",
+  "type": "GROUP"
+ },
+ "2xoedC37KSMtbCYLd1PVLc": {
+  "gender": "NF",
+  "name": "BETAYOURBITCH",
   "source": "llm:gemini",
   "type": "GROUP"
  },
@@ -14279,6 +15431,12 @@
   "source": "llm:claude",
   "type": "solo"
  },
+ "31RYhg7Auitqp3eg9rTB9i": {
+  "gender": "NF",
+  "name": "Milolaathetlukken",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
  "31TJIzpuFOgX8owcV3nTrE": {
   "gender": "F",
   "name": "Linet",
@@ -14356,6 +15514,24 @@
   "name": "Skinz",
   "source": "llm:claude",
   "type": "solo"
+ },
+ "323ysKBS0xK1kqrXXK3JJS": {
+  "gender": "NF",
+  "name": "GNG",
+  "source": "llm:gemini",
+  "type": "GROUP"
+ },
+ "325C5PNmvA8luRIOYy1dmQ": {
+  "gender": "NF",
+  "name": "T!NE",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
+ "327ipGIr9bD3MkLb2eucqC": {
+  "gender": "NF",
+  "name": "Suara Kayu",
+  "source": "llm:gemini",
+  "type": "GROUP"
  },
  "329e4yvIujISKGKz1BZZbO": {
   "gender": "NF",
@@ -14519,6 +15695,12 @@
   "source": "wikidata",
   "type": "solo"
  },
+ "351dtAN3qmvZNfNrYP2gEs": {
+  "gender": "NF",
+  "name": "Danya Devs",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
  "353KPo8gVAfcZfwF7BPZDy": {
   "gender": "NF",
   "name": "Münchener Freiheit",
@@ -14675,6 +15857,12 @@
   "source": "llm:claude",
   "type": "solo"
  },
+ "37KElXv2uiEQIAyatQIPqw": {
+  "gender": "NF",
+  "name": "Black",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
  "37MCoi4pcUf9EKsPXeuCqU": {
   "gender": "NF",
   "name": "Tan Bionica",
@@ -14685,6 +15873,12 @@
   "gender": "NF",
   "name": "P9d",
   "source": "wikidata",
+  "type": "solo"
+ },
+ "37Wy0h3oMjblxPn4bLXqyv": {
+  "gender": "F",
+  "name": "Mariah Deborah",
+  "source": "llm:gemini",
   "type": "solo"
  },
  "37XdGBGVrHfJB9gP26NRoo": {
@@ -14710,6 +15904,12 @@
   "name": "Blasterjaxx",
   "source": "llm:claude",
   "type": "GROUP"
+ },
+ "37boLTfLUXAgVkSyzah72X": {
+  "gender": "NF",
+  "name": "Rybeena",
+  "source": "llm:gemini",
+  "type": "solo"
  },
  "37eYuWTOZtUG8PgFOsj9h8": {
   "gender": "NF",
@@ -14885,6 +16085,12 @@
   "source": "llm:claude",
   "type": "GROUP"
  },
+ "39VceBo0jXir85LCeAmAIs": {
+  "gender": "NF",
+  "name": "Kamisa 10",
+  "source": "llm:gemini",
+  "type": "GROUP"
+ },
  "39jFFncu6W0phhYK16Dp9g": {
   "gender": "F",
   "name": "Sarit Hadad",
@@ -14907,6 +16113,12 @@
   "gender": "NF",
   "name": "Erigga",
   "source": "llm:claude",
+  "type": "solo"
+ },
+ "3A4wpNVgD1v07jIbFQBVTr": {
+  "gender": "NF",
+  "name": "Jimmy Guzman",
+  "source": "llm:gemini",
   "type": "solo"
  },
  "3A9JThFmHOmRn2AMMifide": {
@@ -14975,6 +16187,12 @@
   "source": "llm:claude",
   "type": "solo"
  },
+ "3AmLhgSu80YTQarQMWXwna": {
+  "gender": "NF",
+  "name": "Komiat",
+  "source": "llm:gemini",
+  "type": "GROUP"
+ },
  "3AoetF4LFZLRJjfuy071mz": {
   "gender": "NF",
   "name": "Dudu Tassa",
@@ -15021,6 +16239,12 @@
   "gender": "NF",
   "name": "Frej Larsson",
   "source": "llm:claude",
+  "type": "solo"
+ },
+ "3B4P9BeoaJXid1mY7BmUvY": {
+  "gender": "NF",
+  "name": "a6el",
+  "source": "llm:gemini",
   "type": "solo"
  },
  "3B53VdSraW2MeEeLYAvEs1": {
@@ -15161,6 +16385,12 @@
   "source": "llm:gemini",
   "type": "solo"
  },
+ "3CSQfCUHVB3sZBfUfdWuph": {
+  "gender": "NF",
+  "name": "Top Barry",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
  "3Caot8EtHX6wLpNF2wRzS0": {
   "gender": "NF",
   "name": "Glen Hansard",
@@ -15195,6 +16425,12 @@
   "gender": "NF",
   "name": "Lloyiso",
   "source": "llm:claude",
+  "type": "solo"
+ },
+ "3CyKLwlqtYmQxNt4cWflKx": {
+  "gender": "NF",
+  "name": "scottyolorin",
+  "source": "llm:gemini",
   "type": "solo"
  },
  "3Cz37xnWAOtQEa5jfrTUbL": {
@@ -15377,6 +16613,12 @@
   "source": "llm:claude",
   "type": "solo"
  },
+ "3EaScgA3zh2rORlbrAL8RI": {
+  "gender": "NF",
+  "name": "Daun Jatuh",
+  "source": "llm:gemini",
+  "type": "GROUP"
+ },
  "3Ebn7mKYzD0L3DaUB1gNJZ": {
   "gender": "NF",
   "name": "Christy Moore",
@@ -15419,6 +16661,12 @@
   "source": "llm:gemini",
   "type": "solo"
  },
+ "3F76U6bJP4xJrxHqB0j8al": {
+  "gender": "NF",
+  "name": "GA Chillerong Ghetto",
+  "source": "llm:gemini",
+  "type": "GROUP"
+ },
  "3FTKP1k9VbOng3m1rgnsqx": {
   "gender": "F",
   "name": "Ilse DeLange",
@@ -15455,6 +16703,12 @@
   "source": "llm:claude",
   "type": "solo"
  },
+ "3FxGLtMGpuO4myzWo0gktr": {
+  "gender": "NF",
+  "name": "9tokyo",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
  "3GBBxBdoolb0B5YizZq9bF": {
   "gender": "NF",
   "name": "Eno",
@@ -15471,6 +16725,12 @@
   "gender": "F",
   "name": "Emma Steinbakken",
   "source": "llm:claude",
+  "type": "solo"
+ },
+ "3GMBcFbI21Tbi1POVBmCwb": {
+  "gender": "NF",
+  "name": "8belial",
+  "source": "llm:gemini",
   "type": "solo"
  },
  "3GXxRsiCLmZvM5oSeHbNdO": {
@@ -15515,6 +16775,12 @@
   "source": "llm:claude",
   "type": "solo"
  },
+ "3H6OH7RAewpltqfllptffV": {
+  "gender": "NF",
+  "name": "Canal Do Hit",
+  "source": "llm:gemini",
+  "type": "GROUP"
+ },
  "3H7Ez7cwaYw4L3ELy4v3Lc": {
   "gender": "NF",
   "name": "Håkan Hellström",
@@ -15525,6 +16791,18 @@
   "gender": "NF",
   "name": "Sayf",
   "source": "llm:claude",
+  "type": "solo"
+ },
+ "3HD3V1nGFPwepBO7064Ij0": {
+  "gender": "NF",
+  "name": "PC",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
+ "3HJq88k0us5XSJ4tD3J8RG": {
+  "gender": "NF",
+  "name": "Jorsshh",
+  "source": "llm:gemini",
   "type": "solo"
  },
  "3HOkZ1yVuMiVJeH1sFjMQL": {
@@ -15585,6 +16863,18 @@
   "gender": "NF",
   "name": "Maelo Ruiz",
   "source": "llm:claude",
+  "type": "solo"
+ },
+ "3HzmmNkD0FRr2pBSwyUBBY": {
+  "gender": "NF",
+  "name": "Lekaa Beats",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
+ "3I2EdUYrhKmG2ghjrSPojl": {
+  "gender": "NF",
+  "name": "Abefe",
+  "source": "llm:gemini",
   "type": "solo"
  },
  "3I4GcOB25cSJHa9d7Bsgji": {
@@ -15773,6 +17063,12 @@
   "source": "llm:claude",
   "type": "solo"
  },
+ "3KL9m4NwBRDjBEcybcgfyh": {
+  "gender": "NF",
+  "name": "wane",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
  "3KQylwDxYE7Vxli0BSuwaf": {
   "gender": "NF",
   "name": "$OHO BANI",
@@ -15820,6 +17116,12 @@
   "name": "Dimitris Basis",
   "source": "llm:claude",
   "type": "solo"
+ },
+ "3Kyev97NB5IuMYwMP1Ea2D": {
+  "gender": "NF",
+  "name": "Rifle",
+  "source": "llm:gemini",
+  "type": "GROUP"
  },
  "3L1jDbMK9J4Rd6XVv0KDjS": {
   "gender": "NF",
@@ -15897,6 +17199,24 @@
   "gender": "F",
   "name": "Etta",
   "source": "wikidata",
+  "type": "solo"
+ },
+ "3LcKlNE5nPPFpDtmc2wtdC": {
+  "gender": "NF",
+  "name": "Moose",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
+ "3Ld1g6LjfR2ILDB6SD8aJV": {
+  "gender": "NF",
+  "name": "BLVCKHEART",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
+ "3LiUry0ss8UpPzbBmM9bDP": {
+  "gender": "NF",
+  "name": "Esremborak",
+  "source": "llm:gemini",
   "type": "solo"
  },
  "3Lk8ifX8dLKXls1ZCZAHgc": {
@@ -16211,6 +17531,12 @@
   "source": "wikidata",
   "type": "solo"
  },
+ "3PKVcK4wKrfPi7qDz1odsV": {
+  "gender": "NF",
+  "name": "Ntencane",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
  "3PLCOySHJ9zwED5yZvDtPZ": {
   "gender": "F",
   "name": "CUTIE STREET",
@@ -16283,6 +17609,12 @@
   "source": "llm:claude",
   "type": "solo"
  },
+ "3Q10GP2eLMD5yS7sczpwju": {
+  "gender": "NF",
+  "name": "Sabaat Batin",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
  "3Q5Qep7ytrjVleNnMnntgQ": {
   "gender": "NF",
   "name": "TEN",
@@ -16317,6 +17649,12 @@
   "gender": "F",
   "name": "Ziana Zain",
   "source": "llm:claude",
+  "type": "solo"
+ },
+ "3QQWKCc48eBmxfw5wOrmgN": {
+  "gender": "NF",
+  "name": "Tuğrul Bektaş",
+  "source": "llm:gemini",
   "type": "solo"
  },
  "3QVolfxko2UyCOtexhVTli": {
@@ -16361,6 +17699,12 @@
   "source": "llm:claude",
   "type": "solo"
  },
+ "3RM6NEfGA58GBtXSUs3G5l": {
+  "gender": "NF",
+  "name": "Uncle Dags",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
  "3RNrq3jvMZxD9ZyoOZbQOD": {
   "gender": "NF",
   "name": "Korn",
@@ -16373,16 +17717,40 @@
   "source": "llm:claude",
   "type": "GROUP"
  },
+ "3RTq9uscohYNRvooYGSHfb": {
+  "gender": "NF",
+  "name": "Teefo",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
  "3RYYha3CC7js2PHbcBHewt": {
   "gender": "NF",
   "name": "ICEKIID",
   "source": "wikidata",
   "type": "solo"
  },
+ "3RnRECOTd7fAWTPgmwRYMc": {
+  "gender": "NF",
+  "name": "Lomosonic",
+  "source": "llm:gemini",
+  "type": "GROUP"
+ },
  "3RpJ6OyOnaXRFRXSirgQa6": {
   "gender": "NF",
   "name": "Jericho Rosales",
   "source": "llm:claude",
+  "type": "solo"
+ },
+ "3RqHNz7XW4CEFERRbHf8ZC": {
+  "gender": "NF",
+  "name": "Zé Vitor & Rael",
+  "source": "llm:gemini",
+  "type": "GROUP"
+ },
+ "3RryZO1NCx4BNG6TWyieTe": {
+  "gender": "NF",
+  "name": "Raphael",
+  "source": "llm:gemini",
   "type": "solo"
  },
  "3RwQ26hR2tJtA8F9p2n7jG": {
@@ -16613,6 +17981,12 @@
   "source": "llm:claude",
   "type": "solo"
  },
+ "3VVMRDGpbQR2SK9nHX3DW5": {
+  "gender": "NF",
+  "name": "yangskinny",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
  "3VgOKuwKvAYU4aT7atESfM": {
   "gender": "F",
   "name": "Nagy Bogi",
@@ -16623,6 +17997,12 @@
   "gender": "NF",
   "name": "Soufian",
   "source": "llm:claude",
+  "type": "solo"
+ },
+ "3VooEK5HkkcSc4Tv7FCBzb": {
+  "gender": "NF",
+  "name": "Yung Ouzo",
+  "source": "llm:gemini",
   "type": "solo"
  },
  "3W7YeaPmcpi1UFutTF49kx": {
@@ -16719,6 +18099,12 @@
   "gender": "NF",
   "name": "Asad Khan",
   "source": "llm:claude",
+  "type": "solo"
+ },
+ "3XpBO9TZxfQtfKXg8guWYI": {
+  "gender": "NF",
+  "name": "Kidd Carder",
+  "source": "llm:gemini",
   "type": "solo"
  },
  "3XqH4FcUOrw2gw7L3BBaDn": {
@@ -16883,6 +18269,12 @@
   "source": "llm:claude",
   "type": "GROUP"
  },
+ "3ZMiLbKwMsHFQekTHnBBdZ": {
+  "gender": "NF",
+  "name": "Coolpix",
+  "source": "llm:gemini",
+  "type": "GROUP"
+ },
  "3ZOk6bDH8ORFWZUA4qvevR": {
   "gender": "NF",
   "name": "Gio Pika",
@@ -16894,6 +18286,18 @@
   "name": "Quimby",
   "source": "llm:claude",
   "type": "GROUP"
+ },
+ "3ZUdKB3VGo26BxRSmnv5n2": {
+  "gender": "NF",
+  "name": "SPF",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
+ "3ZUkXGT2dwFiEVEV5JfD6K": {
+  "gender": "NF",
+  "name": "Sequento",
+  "source": "llm:gemini",
+  "type": "solo"
  },
  "3ZZ34mIzBjDmgfyGcU9D4r": {
   "gender": "NF",
@@ -17013,6 +18417,12 @@
   "gender": "NF",
   "name": "Bayaan",
   "source": "llm:claude",
+  "type": "GROUP"
+ },
+ "3aznFYhXZNLiZYfF2nIt6K": {
+  "gender": "NF",
+  "name": "Umafikizolo",
+  "source": "llm:gemini",
   "type": "GROUP"
  },
  "3b1ptNUGXbqu28JMv7YDBV": {
@@ -17145,6 +18555,12 @@
   "gender": "NF",
   "name": "Ali Zafar",
   "source": "llm:claude",
+  "type": "solo"
+ },
+ "3cLQoeAbsSBooswFYv8jTf": {
+  "gender": "F",
+  "name": "Shelby",
+  "source": "llm:gemini",
   "type": "solo"
  },
  "3cMEiDsx9VpGvF71hUGswS": {
@@ -17375,6 +18791,12 @@
   "source": "llm:gemini",
   "type": "solo"
  },
+ "3elCsuJ1JjDeAd8mjlRRX5": {
+  "gender": "NF",
+  "name": "Blæst",
+  "source": "llm:gemini",
+  "type": "GROUP"
+ },
  "3eqjTLE0HfPfh78zjh6TqT": {
   "gender": "NF",
   "name": "Bruce Springsteen",
@@ -17457,6 +18879,12 @@
   "gender": "NF",
   "name": "Emil Assergård",
   "source": "llm:claude",
+  "type": "solo"
+ },
+ "3frrV2obACqifLekcekrg7": {
+  "gender": "NF",
+  "name": "melo",
+  "source": "llm:gemini",
   "type": "solo"
  },
  "3frx2nsVBAA3DvbKTE9JeT": {
@@ -17627,6 +19055,12 @@
   "source": "llm:claude",
   "type": "solo"
  },
+ "3hPJRjlru1p445TrmVGdIA": {
+  "gender": "NF",
+  "name": "ALEX",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
  "3hRrb238EgRKmqP5xtXKdx": {
   "gender": "NF",
   "name": "onokami",
@@ -17759,6 +19193,12 @@
   "source": "llm:claude",
   "type": "GROUP"
  },
+ "3irECGtZGGBOARaZElSiLb": {
+  "gender": "NF",
+  "name": "Phangandawo",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
  "3jFjgKOGfVLWfXX8q5wrsg": {
   "gender": "NF",
   "name": "R.K.M & Ken-Y",
@@ -17783,6 +19223,12 @@
   "source": "llm:claude",
   "type": "GROUP"
  },
+ "3jPN2U65cMPzvozEBue5zp": {
+  "gender": "NF",
+  "name": "SIDARTA",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
  "3jQu8ynde6nploq0VwWiWt": {
   "gender": "NF",
   "name": "Кайрат Нуртас",
@@ -17793,6 +19239,12 @@
   "gender": "F",
   "name": "Panther Chan",
   "source": "llm:claude",
+  "type": "solo"
+ },
+ "3jVOOhEKCtuDzhB8w1iLkH": {
+  "gender": "NF",
+  "name": "Shiloh Yodellé",
+  "source": "llm:gemini",
   "type": "solo"
  },
  "3jayBSUIK2eqnLCWfJoWwV": {
@@ -17861,10 +19313,22 @@
   "source": "llm:claude",
   "type": "GROUP"
  },
+ "3kLH6xiJVhBa6JOqS3x7RS": {
+  "gender": "NF",
+  "name": "Bajorson",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
  "3kQ0LUzYBc3fzDVIpFhfuM": {
   "gender": "F",
   "name": "Gery-Nikol",
   "source": "llm:claude",
+  "type": "solo"
+ },
+ "3kSRqsGHRSxw2jBJ6DffE4": {
+  "gender": "F",
+  "name": "Xolly Mncwango",
+  "source": "llm:gemini",
   "type": "solo"
  },
  "3kcwSBHk3lMgHMHuxjJLNZ": {
@@ -18005,6 +19469,12 @@
   "source": "llm:claude",
   "type": "solo"
  },
+ "3mUUUQDWnVlttF1yERxmPQ": {
+  "gender": "NF",
+  "name": "Mond",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
  "3mWQ5gAWWhoPDNHyAEC5Hz": {
   "gender": "NF",
   "name": "Roy Bianco & Die Abbrunzati Boys",
@@ -18027,6 +19497,12 @@
   "gender": "NF",
   "name": "Ivo Fomins",
   "source": "llm:claude",
+  "type": "solo"
+ },
+ "3moR9d0X97NAtZRhHWOta5": {
+  "gender": "NF",
+  "name": "Saran",
+  "source": "llm:gemini",
   "type": "solo"
  },
  "3msRUQeJsvGGEmaZOfrtFh": {
@@ -18173,6 +19649,12 @@
   "source": "llm:claude",
   "type": "GROUP"
  },
+ "3oDfCf5QvkoeVhPr5ixgZb": {
+  "gender": "NF",
+  "name": "Boi Chase",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
  "3oM2douHxNqMYMbRNkT1tr": {
   "gender": "NF",
   "name": "Jonah Blacksmith",
@@ -18200,6 +19682,18 @@
  "3odIxuvJWJpYybFS0fDI4X": {
   "gender": "NF",
   "name": "Johnpaul George",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
+ "3oh5PUaDZkd57Yp1jsA6gp": {
+  "gender": "NF",
+  "name": "Ecko Show",
+  "source": "llm:gemini",
+  "type": "GROUP"
+ },
+ "3olb2kGgNI9UuUjHJpYK0o": {
+  "gender": "NF",
+  "name": "Karaf",
   "source": "llm:gemini",
   "type": "solo"
  },
@@ -18233,6 +19727,12 @@
   "source": "llm:claude",
   "type": "solo"
  },
+ "3pUdWI84GUyM40TiEKXR6Q": {
+  "gender": "NF",
+  "name": "Monaky",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
  "3pc0bOVB5whxmD50W79wwO": {
   "gender": "NF",
   "name": "keshi",
@@ -18244,6 +19744,12 @@
   "name": "Fedez",
   "source": "llm:claude",
   "type": "solo"
+ },
+ "3phiMOerdzoGRyTJ240Sxj": {
+  "gender": "NF",
+  "name": "Vizinhos",
+  "source": "llm:gemini",
+  "type": "GROUP"
  },
  "3pjq2pDV9RR6VY55wBjVnp": {
   "gender": "NF",
@@ -18345,6 +19851,12 @@
   "gender": "NF",
   "name": "Dollar Prync",
   "source": "llm:claude",
+  "type": "solo"
+ },
+ "3qsG1NIop7eqpcnbYdZpL0": {
+  "gender": "F",
+  "name": "JustmineNika",
+  "source": "llm:gemini",
   "type": "solo"
  },
  "3qsKSpcV3ncke3hw52JSMB": {
@@ -18581,6 +20093,12 @@
   "source": "llm:claude",
   "type": "solo"
  },
+ "3tkCQ0W9ITi32E2ddBdU0M": {
+  "gender": "NF",
+  "name": "Simon Aguirre",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
  "3tlXnStJ1fFhdScmQeLpuG": {
   "gender": "NF",
   "name": "Brent Faiyaz",
@@ -18609,6 +20127,12 @@
   "gender": "NF",
   "name": "Kali",
   "source": "llm:claude",
+  "type": "solo"
+ },
+ "3tzLeaebyww0SwtETRYRIm": {
+  "gender": "F",
+  "name": "Amma",
+  "source": "llm:gemini",
   "type": "solo"
  },
  "3tzacGOmngxUV8W8lU9h3Q": {
@@ -18645,6 +20169,12 @@
   "gender": "F",
   "name": "AILEE",
   "source": "llm:claude",
+  "type": "solo"
+ },
+ "3uHrAjYOHTFWu04dl0aYdo": {
+  "gender": "NF",
+  "name": "nour",
+  "source": "llm:gemini",
   "type": "solo"
  },
  "3uSnvyMAFJTm7XkZJFo0xP": {
@@ -18773,6 +20303,12 @@
   "source": "llm:claude",
   "type": "solo"
  },
+ "3vv9Y0XUMGmPUfIj8KB7Oo": {
+  "gender": "NF",
+  "name": "AURA",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
  "3vvLuXEEf7sl3izJcw0GIn": {
   "gender": "NF",
   "name": "Skryptonite",
@@ -18809,6 +20345,12 @@
   "source": "llm:claude",
   "type": "solo"
  },
+ "3wH1WgRZB3Ld4EEriSqRfU": {
+  "gender": "NF",
+  "name": "Bayadis",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
  "3wOsYKZM0zcKNasi3I7fP4": {
   "gender": "F",
   "name": "Mahalini",
@@ -18837,6 +20379,12 @@
   "gender": "NF",
   "name": "Burna Boy",
   "source": "Artists.csv",
+  "type": "solo"
+ },
+ "3whgFbrRxsOmYVrq3t4hCY": {
+  "gender": "NF",
+  "name": "Paulo Pires",
+  "source": "llm:gemini",
   "type": "solo"
  },
  "3win9vGIxFfBRag9S63wwf": {
@@ -18905,10 +20453,22 @@
   "source": "llm:claude",
   "type": "solo"
  },
+ "3xZUupcKe5ejopZ2oC0KtD": {
+  "gender": "NF",
+  "name": "APTEKARZE",
+  "source": "llm:gemini",
+  "type": "GROUP"
+ },
  "3xbpJdoJDLAfYn3ZeLlukg": {
   "gender": "NF",
   "name": "Bosx1ne",
   "source": "llm:claude",
+  "type": "solo"
+ },
+ "3xg4VREmOEjLJurhXIelW7": {
+  "gender": "NF",
+  "name": "Pousi",
+  "source": "llm:gemini",
   "type": "solo"
  },
  "3xhyJwgAUGZSE162fJXRJY": {
@@ -18917,11 +20477,23 @@
   "source": "llm:claude",
   "type": "GROUP"
  },
+ "3xiz68yzDrgtVF0ikJ3dQL": {
+  "gender": "NF",
+  "name": "kiddotin",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
  "3xl8Gk7AszFwtV0BMW0Q0J": {
   "gender": "NF",
   "name": "Los Buyer",
   "source": "llm:gemini",
   "type": "GROUP"
+ },
+ "3xlC7Dw0uiwprXDHCU9SAu": {
+  "gender": "NF",
+  "name": "PURPEECH",
+  "source": "llm:gemini",
+  "type": "solo"
  },
  "3xqrfI4xL7FnBawAoiOTxe": {
   "gender": "NF",
@@ -18950,6 +20522,12 @@
  "3y2cIKLjiOlp1Np37WiUdH": {
   "gender": "NF",
   "name": "Shaboozey",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
+ "3y6Lfjkrdn5TgkbgDxbpvM": {
+  "gender": "F",
+  "name": "marzuz",
   "source": "llm:gemini",
   "type": "solo"
  },
@@ -19169,6 +20747,12 @@
   "source": "llm:claude",
   "type": "solo"
  },
+ "40zCGXzhrnG6Lz4hQ7XK0l": {
+  "gender": "NF",
+  "name": "Tommyy",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
  "4152ZUds7gXsqYQexUonDP": {
   "gender": "NF",
   "name": "Grupo Galé",
@@ -19361,11 +20945,23 @@
   "source": "wikidata",
   "type": "solo"
  },
+ "43eXh1mPvuHJJg8xRELhYO": {
+  "gender": "NF",
+  "name": "CHEKKIS",
+  "source": "llm:gemini",
+  "type": "GROUP"
+ },
  "43i9C47bAIVm8jKgEKYPfh": {
   "gender": "NF",
   "name": "Kuba i Kuba",
   "source": "llm:claude",
   "type": "GROUP"
+ },
+ "43lVodpMDfdEkkoowuyEkr": {
+  "gender": "F",
+  "name": "Göksel İpekçi",
+  "source": "llm:gemini",
+  "type": "solo"
  },
  "43sZBwHjahUvgbx1WNIkIz": {
   "gender": "NF",
@@ -19439,6 +21035,12 @@
   "source": "llm:claude",
   "type": "GROUP"
  },
+ "44pyDZDAHZP2Tt0kcPHK1S": {
+  "gender": "NF",
+  "name": "LILCR",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
  "4525TiJDbBD4mZJ7EZArT0": {
   "gender": "F",
   "name": "Yıldız Tilbe",
@@ -19511,10 +21113,28 @@
   "source": "llm:claude",
   "type": "solo"
  },
+ "45nRZ7ZmDQ6RCuXHEcQD7Q": {
+  "gender": "NF",
+  "name": "Candemirtheater",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
+ "45pQix6T07syL9LwzOoRNg": {
+  "gender": "NF",
+  "name": "Txrbo",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
  "462yq5vpZnO172v3nK9ibv": {
   "gender": "NF",
   "name": "Paluch",
   "source": "llm:claude",
+  "type": "solo"
+ },
+ "464lu5xDniFcO7vYC5K8Ox": {
+  "gender": "NF",
+  "name": "Yıldırım Elmas",
+  "source": "llm:gemini",
   "type": "solo"
  },
  "465OXuCU8YZNmVG1leLwQ9": {
@@ -19589,6 +21209,18 @@
   "source": "llm:claude",
   "type": "solo"
  },
+ "471CLfthkGwHrnegKOcTbx": {
+  "gender": "NF",
+  "name": "LAZARO",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
+ "47FfXpy7XLVK5guGnK8NTL": {
+  "gender": "NF",
+  "name": "Pancake",
+  "source": "llm:gemini",
+  "type": "GROUP"
+ },
  "47MpMsUfWtgyIIBEFOr4FE": {
   "gender": "NF",
   "name": "Lunay",
@@ -19599,6 +21231,12 @@
   "gender": "NF",
   "name": "Sadraddin",
   "source": "llm:claude",
+  "type": "solo"
+ },
+ "47VCMoQZJ0SycPle77t12P": {
+  "gender": "NF",
+  "name": "SURIYA MQT",
+  "source": "llm:gemini",
   "type": "solo"
  },
  "47WAtpqR2af9uiq2HWwWNM": {
@@ -19709,6 +21347,12 @@
   "source": "llm:claude",
   "type": "GROUP"
  },
+ "48h12D3cJbqfn1ReVL9qbw": {
+  "gender": "NF",
+  "name": "Strat",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
  "48icBZywzELehMYCdthR3C": {
   "gender": "NF",
   "name": "Gringod",
@@ -19811,6 +21455,12 @@
   "source": "llm:claude",
   "type": "GROUP"
  },
+ "4A9u9yolcBMM1hdNEeO6uz": {
+  "gender": "NF",
+  "name": "Deep6",
+  "source": "llm:gemini",
+  "type": "GROUP"
+ },
  "4AGALQQLo0S46FUlhJ25V0": {
   "gender": "NF",
   "name": "Arena Hash",
@@ -19853,6 +21503,18 @@
   "source": "llm:gemini",
   "type": "solo"
  },
+ "4AhHkaGz7W2bKKJK90IaV2": {
+  "gender": "NF",
+  "name": "Batas Senja",
+  "source": "llm:gemini",
+  "type": "GROUP"
+ },
+ "4Amq40B1awicYgOZlACbU7": {
+  "gender": "NF",
+  "name": "Kaue Mc",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
  "4AnNB3lPD0Sv7ziKVHqI66": {
   "gender": "F",
   "name": "Nkosazana Daughter",
@@ -19869,6 +21531,12 @@
   "gender": "NF",
   "name": "MamboLosco",
   "source": "llm:claude",
+  "type": "solo"
+ },
+ "4BH1zvz8ZEu7RqwaY5ygkI": {
+  "gender": "NF",
+  "name": "MSA",
+  "source": "llm:gemini",
   "type": "solo"
  },
  "4BHU68IINW0fZNRIvSOir5": {
@@ -19912,6 +21580,12 @@
   "name": "Papa Jeison",
   "source": "llm:claude",
   "type": "solo"
+ },
+ "4Bv7LRWfDAcI13VW6SNF94": {
+  "gender": "NF",
+  "name": "JIKIJIKI",
+  "source": "llm:gemini",
+  "type": "GROUP"
  },
  "4BwiodzEp9Hwes5HeFjMVK": {
   "gender": "NF",
@@ -20001,6 +21675,18 @@
   "gender": "NF",
   "name": "León Larregui",
   "source": "llm:claude",
+  "type": "solo"
+ },
+ "4CpxOMOqIfPQmEet9UnWhe": {
+  "gender": "NF",
+  "name": "DJ JHOW BEATS",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
+ "4CuVt3p02OaWu4klQuJoDP": {
+  "gender": "NF",
+  "name": "Z9",
+  "source": "llm:gemini",
   "type": "solo"
  },
  "4D75GcNG95ebPtNvoNVXhz": {
@@ -20207,6 +21893,12 @@
   "source": "llm:claude",
   "type": "GROUP"
  },
+ "4F85cxjAmlT0r7DZKu3ABX": {
+  "gender": "F",
+  "name": "Ceren Sagu",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
  "4F8OilWxRKQzg1Lw9sJ4Pl": {
   "gender": "NF",
   "name": "Dj Jaivane",
@@ -20297,6 +21989,12 @@
   "source": "llm:claude",
   "type": "solo"
  },
+ "4G5OlxtrOm9ADmu3VZgFbG": {
+  "gender": "NF",
+  "name": "MEYOU",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
  "4G9NDjRyZFDlJKMRL8hx3S": {
   "gender": "NF",
   "name": "sombr",
@@ -20327,6 +22025,12 @@
   "source": "llm:gemini",
   "type": "solo"
  },
+ "4GP79lfzsxYXZn1HNu31Dj": {
+  "gender": "NF",
+  "name": "Los Del Roble",
+  "source": "llm:gemini",
+  "type": "GROUP"
+ },
  "4Ga1P7PMIsmqEZqhYZQgDo": {
   "gender": "NF",
   "name": "Lil Tecca",
@@ -20349,6 +22053,12 @@
   "gender": "NF",
   "name": "TWS",
   "source": "llm:claude",
+  "type": "GROUP"
+ },
+ "4GsjZQZJ3viOq4Uw8wZDbW": {
+  "gender": "NF",
+  "name": "icyball 冰球樂團",
+  "source": "llm:gemini",
   "type": "GROUP"
  },
  "4Gso3d4CscCijv0lmajZWs": {
@@ -20543,6 +22253,12 @@
   "source": "llm:gemini",
   "type": "GROUP"
  },
+ "4JBmVZET2xstezrgS5PsXw": {
+  "gender": "NF",
+  "name": "Bary",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
  "4JM1zsVj1pt38Q8mhv5teI": {
   "gender": "NF",
   "name": "Young Jonn",
@@ -20589,6 +22305,12 @@
   "gender": "F",
   "name": "Jade LeMac",
   "source": "llm:claude",
+  "type": "solo"
+ },
+ "4JzRcJk4va1UZ4FWGru1dE": {
+  "gender": "NF",
+  "name": "uMhlakazi",
+  "source": "llm:gemini",
   "type": "solo"
  },
  "4K8wRpyAE3Cwq4q5Jpgpdh": {
@@ -20723,6 +22445,12 @@
   "source": "llm:claude",
   "type": "solo"
  },
+ "4LsXG0tI52IkUbQmWJwRc1": {
+  "gender": "NF",
+  "name": "groundZERO Records",
+  "source": "llm:gemini",
+  "type": "GROUP"
+ },
  "4LwRgSkj7AJJTKLnEaHjMv": {
   "gender": "NF",
   "name": "Lucio101",
@@ -20830,6 +22558,12 @@
   "name": "Tove Lo",
   "source": "llm:gemini",
   "type": "solo"
+ },
+ "4NJA8jbfxc4daVM2wi9ybd": {
+  "gender": "NF",
+  "name": "Kaptur",
+  "source": "llm:gemini",
+  "type": "GROUP"
  },
  "4NKSnDH3KS823DGnHDDDsy": {
   "gender": "NF",
@@ -20991,6 +22725,12 @@
   "gender": "F",
   "name": "Laura",
   "source": "wikidata",
+  "type": "solo"
+ },
+ "4PNS0FIvSg8wbj2cRmMCbM": {
+  "gender": "NF",
+  "name": "Men0 K",
+  "source": "llm:gemini",
   "type": "solo"
  },
  "4POahBr8YCPNKGErIiofyx": {
@@ -21167,6 +22907,12 @@
   "source": "wikidata",
   "type": "solo"
  },
+ "4R2engiAed6QeIV63PDAz0": {
+  "gender": "NF",
+  "name": "Đức Trường",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
  "4R3mugkUqCALXgkwSptTbg": {
   "gender": "NF",
   "name": "Đạt G",
@@ -21225,6 +22971,12 @@
   "gender": "NF",
   "name": "LEE CHANHYUK",
   "source": "llm:claude",
+  "type": "solo"
+ },
+ "4Rl8onVZp4QFiYARW298WD": {
+  "gender": "NF",
+  "name": "Nabil",
+  "source": "llm:gemini",
   "type": "solo"
  },
  "4RnezwRV7VBJUCI1S0AE5u": {
@@ -21297,6 +23049,12 @@
   "gender": "NF",
   "name": "Banda XXI",
   "source": "llm:claude",
+  "type": "GROUP"
+ },
+ "4ShxxebL6hOdEveQSOVZkV": {
+  "gender": "NF",
+  "name": "figvres",
+  "source": "llm:gemini",
   "type": "GROUP"
  },
  "4SpbR6yFEvexJuaBpgAU5p": {
@@ -21413,10 +23171,28 @@
   "source": "llm:claude",
   "type": "solo"
  },
+ "4TdxMK2fOY7eOBvgtDwbVC": {
+  "gender": "NF",
+  "name": "Mares",
+  "source": "llm:gemini",
+  "type": "GROUP"
+ },
  "4TjXA854eWs8P5EBgCbQmv": {
   "gender": "NF",
   "name": "Jah Khalib",
   "source": "llm:claude",
+  "type": "solo"
+ },
+ "4TofTRvEUQsznrSPnYnHx9": {
+  "gender": "F",
+  "name": "Afra",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
+ "4TvbQDO2cOQqr9oCKHaGTM": {
+  "gender": "NF",
+  "name": "Dj Smallz",
+  "source": "llm:gemini",
   "type": "solo"
  },
  "4TwaN115hEDGfkAtJG0USo": {
@@ -21490,6 +23266,12 @@
   "name": "La Perversa",
   "source": "llm:claude",
   "type": "solo"
+ },
+ "4Ucv2hBE3WtFc1gScBt29n": {
+  "gender": "NF",
+  "name": "Som de Faculdade",
+  "source": "llm:gemini",
+  "type": "GROUP"
  },
  "4UhDECNxyqKv0Cn0sua1MC": {
   "gender": "NF",
@@ -21573,6 +23355,12 @@
   "gender": "NF",
   "name": "El Rabbanito",
   "source": "llm:claude",
+  "type": "solo"
+ },
+ "4VSXWSrQS0oRXJ5PllbNLN": {
+  "gender": "NF",
+  "name": "rash",
+  "source": "llm:gemini",
   "type": "solo"
  },
  "4VU1nemTk5QFsrclcN8VFl": {
@@ -21688,6 +23476,12 @@
   "name": "HOLLYFLAME",
   "source": "llm:gemini",
   "type": "solo"
+ },
+ "4WXkCBHyUCfIPPZrZFcP5m": {
+  "gender": "NF",
+  "name": "2Ectasy",
+  "source": "llm:gemini",
+  "type": "GROUP"
  },
  "4WZGDpNwrC0vNQyl9QzF7d": {
   "gender": "NF",
@@ -21839,6 +23633,12 @@
   "source": "wikidata",
   "type": "solo"
  },
+ "4Yk2QTFYbKN55vfo8ghH63": {
+  "gender": "NF",
+  "name": "MaxMillor",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
  "4YkqEuVf1Jf2x2XDqJ2CvC": {
   "gender": "F",
   "name": "Tóc Tiên",
@@ -21863,6 +23663,12 @@
   "source": "llm:gemini",
   "type": "solo"
  },
+ "4Ys9T6FpNzgWFDshsftmcQ": {
+  "gender": "NF",
+  "name": "Nebi Demir",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
  "4Yttlv9ndGjCDCVLqM7ACq": {
   "gender": "NF",
   "name": "Sido",
@@ -21874,6 +23680,12 @@
   "name": "Remioromen",
   "source": "llm:claude",
   "type": "GROUP"
+ },
+ "4Z3LLYwCpB9OKKaSttnapP": {
+  "gender": "NF",
+  "name": "Priesst",
+  "source": "llm:gemini",
+  "type": "solo"
  },
  "4Z8MrrKMBHMPa8d04Ivur8": {
   "gender": "F",
@@ -21969,6 +23781,12 @@
   "gender": "NF",
   "name": "Lin-Manuel Miranda",
   "source": "Artists.csv",
+  "type": "solo"
+ },
+ "4aYM8Vij7I9a2VLcAPJ6Y2": {
+  "gender": "NF",
+  "name": "Jin DC",
+  "source": "llm:gemini",
   "type": "solo"
  },
  "4aZml6ud70cnHUDhcdHIqC": {
@@ -22103,6 +23921,12 @@
   "source": "llm:claude",
   "type": "solo"
  },
+ "4bqKmu3kRUl6X7pTl1CuVs": {
+  "gender": "NF",
+  "name": "Casa Worship",
+  "source": "llm:gemini",
+  "type": "GROUP"
+ },
  "4bthk9UfsYUYdcFyqxmSUU": {
   "gender": "NF",
   "name": "Tears For Fears",
@@ -22235,6 +24059,12 @@
   "source": "llm:claude",
   "type": "solo"
  },
+ "4d6z6mxq6eHpFojPtbYIkx": {
+  "gender": "NF",
+  "name": "Leo Balbinotti",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
  "4dB2XmMpzPxsMRnt62TbF5": {
   "gender": "NF",
   "name": "Lim Changjung",
@@ -22250,6 +24080,12 @@
  "4dFsxc7SFDOmkzNLKILGUq": {
   "gender": "NF",
   "name": "Aymo",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
+ "4dH6uW4FU977FDuTcCHGUf": {
+  "gender": "NF",
+  "name": "RIO",
   "source": "llm:gemini",
   "type": "solo"
  },
@@ -22379,6 +24215,18 @@
   "source": "llm:claude",
   "type": "GROUP"
  },
+ "4eu7AyzvnafwOygTQlfAMu": {
+  "gender": "NF",
+  "name": "Baggh-e SMG",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
+ "4f0NZYGUl58wZjk2cmZJen": {
+  "gender": "NF",
+  "name": "Omar Meme",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
  "4f7KfxeHq9BiylGmyXepGt": {
   "gender": "NF",
   "name": "Tanishk Bagchi",
@@ -22432,6 +24280,18 @@
   "name": "GIVĒON",
   "source": "llm:claude",
   "type": "solo"
+ },
+ "4fxkIFo9v2qqrrPCkXjNG3": {
+  "gender": "NF",
+  "name": "$HUPE",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
+ "4gDfRB8znZzXih7iQ3pGeW": {
+  "gender": "NF",
+  "name": "Hagle",
+  "source": "llm:gemini",
+  "type": "GROUP"
  },
  "4gEMn0YPOdotLOygnk0Ng2": {
   "gender": "NF",
@@ -22535,6 +24395,12 @@
   "source": "llm:claude",
   "type": "GROUP"
  },
+ "4hV3aU0WKvFaiX5ugXP5hp": {
+  "gender": "NF",
+  "name": "MC MN",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
  "4hYxvgmTzS29XAXlo5adgM": {
   "gender": "NF",
   "name": "L2B",
@@ -22607,6 +24473,12 @@
   "source": "llm:claude",
   "type": "GROUP"
  },
+ "4iT6fJ3MKoAJGORL59NAq1": {
+  "gender": "F",
+  "name": "Bia Frazzo",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
  "4iWsyISSQEYGxdqBNVwqtA": {
   "gender": "F",
   "name": "Yuval Dayan",
@@ -22637,6 +24509,12 @@
   "source": "llm:claude",
   "type": "solo"
  },
+ "4itYEciRGKzdy6XwBQeaYl": {
+  "gender": "NF",
+  "name": "Sezer Sarıgöz",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
  "4iudEcmuPlYNdbP3e1bdn1": {
   "gender": "NF",
   "name": "Silverchair",
@@ -22648,6 +24526,12 @@
   "name": "Rotlaus",
   "source": "llm:claude",
   "type": "GROUP"
+ },
+ "4j1Usj1sKyLB9CDpSZSZ2C": {
+  "gender": "NF",
+  "name": "Tyan G",
+  "source": "llm:gemini",
+  "type": "solo"
  },
  "4j3tjX98PWp21sE1XWIBt8": {
   "gender": "F",
@@ -22665,6 +24549,12 @@
   "gender": "F",
   "name": "AleXa",
   "source": "wikidata",
+  "type": "solo"
+ },
+ "4jCnnQ6alF5PKST5XwSOz7": {
+  "gender": "F",
+  "name": "Mebrure",
+  "source": "llm:gemini",
   "type": "solo"
  },
  "4jF2P66DtNEficnixuIhKQ": {
@@ -22715,6 +24605,12 @@
   "source": "llm:claude",
   "type": "GROUP"
  },
+ "4jpoAFITrFeFHeZ7Fgv3KZ": {
+  "gender": "NF",
+  "name": "Cloud 5",
+  "source": "llm:gemini",
+  "type": "GROUP"
+ },
  "4jseSNWUg2haVIdUZS8R1a": {
   "gender": "NF",
   "name": "Anuar Zain",
@@ -22762,6 +24658,12 @@
   "name": "Katteyes",
   "source": "llm:gemini",
   "type": "GROUP"
+ },
+ "4kTOsBwxhA2Sn4PSs7PqnN": {
+  "gender": "NF",
+  "name": "Nko",
+  "source": "llm:gemini",
+  "type": "solo"
  },
  "4kTSU70JFddHShDyYIBxZN": {
   "gender": "NF",
@@ -22817,10 +24719,22 @@
   "source": "llm:claude",
   "type": "solo"
  },
+ "4kwkSF1jJalibmNlh4Z8Of": {
+  "gender": "NF",
+  "name": "Faceless",
+  "source": "llm:gemini",
+  "type": "GROUP"
+ },
  "4l0zTor5S32Yly4uw96Bto": {
   "gender": "NF",
   "name": "Petri Nygård",
   "source": "llm:claude",
+  "type": "solo"
+ },
+ "4l4laIN7oJbSKMRO1LTi2J": {
+  "gender": "NF",
+  "name": "rydawarrior",
+  "source": "llm:gemini",
   "type": "solo"
  },
  "4lDiJcOJ2GLCK6p9q5BgfK": {
@@ -22828,6 +24742,12 @@
   "name": "Kontra K",
   "source": "llm:claude",
   "type": "solo"
+ },
+ "4lMaxyOo5D7cOWzv2wiRZs": {
+  "gender": "NF",
+  "name": "Rombongan Bodonk Koplo",
+  "source": "llm:gemini",
+  "type": "GROUP"
  },
  "4lQGYXmayFYVFeZYEU8zla": {
   "gender": "NF",
@@ -23225,6 +25145,18 @@
   "source": "llm:gemini",
   "type": "solo"
  },
+ "4rKMthZmMbSiMdow1f1rBE": {
+  "gender": "NF",
+  "name": "RDN",
+  "source": "llm:gemini",
+  "type": "GROUP"
+ },
+ "4rO00pQq33bIv73QyJdivX": {
+  "gender": "NF",
+  "name": "Kabasaki",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
  "4rOaQg3fasbihPVR4Qft1M": {
   "gender": "NF",
   "name": "GCD",
@@ -23591,6 +25523,12 @@
   "source": "llm:claude",
   "type": "GROUP"
  },
+ "4v7teU7vW1QTe4GPPCSLD3": {
+  "gender": "NF",
+  "name": "Benzoo",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
  "4v8n02xVhZK4CmdUAuipHn": {
   "gender": "NF",
   "name": "Konstantin",
@@ -23656,6 +25594,12 @@
   "name": "Sexion d'Assaut",
   "source": "llm:gemini",
   "type": "GROUP"
+ },
+ "4vrdDcpIenRwBOSodtMIw9": {
+  "gender": "NF",
+  "name": "N4meX",
+  "source": "llm:gemini",
+  "type": "solo"
  },
  "4vtz0m60CCrcsQmqDunDIR": {
   "gender": "NF",
@@ -23777,6 +25721,12 @@
   "source": "llm:claude",
   "type": "solo"
  },
+ "4x4ggvlhCaj5oNqKRRwOAL": {
+  "gender": "NF",
+  "name": "Tml Vibez",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
  "4x79BOihyDga7T7R1ULYC3": {
   "gender": "NF",
   "name": "Voskresenskii",
@@ -23830,6 +25780,12 @@
   "name": "Los Huasos Quincheros",
   "source": "llm:claude",
   "type": "GROUP"
+ },
+ "4y2uMVYqHq7SlTTfBQpdsJ": {
+  "gender": "NF",
+  "name": "MADATORRICELLI",
+  "source": "llm:gemini",
+  "type": "solo"
  },
  "4y5lvMadZv6NAv8RgcCRem": {
   "gender": "NF",
@@ -23913,6 +25869,12 @@
   "gender": "F",
   "name": "Gwen Stefani",
   "source": "llm:claude",
+  "type": "solo"
+ },
+ "4ykAAPcxGHz8z6N0muxbIP": {
+  "gender": "NF",
+  "name": "PORZAX",
+  "source": "llm:gemini",
   "type": "solo"
  },
  "4ysmSq2N7badobfVT6YZ82": {
@@ -24005,10 +25967,22 @@
   "source": "llm:claude",
   "type": "solo"
  },
+ "4zg9WrDAFl1dGh2eSWLnOG": {
+  "gender": "NF",
+  "name": "Dfoxie37",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
  "4zhMand4AowXuUz4VpGiTJ": {
   "gender": "F",
   "name": "Bárbara Bandeira",
   "source": "llm:claude",
+  "type": "solo"
+ },
+ "4zlJMomtDhz5jPYQC0UNhE": {
+  "gender": "NF",
+  "name": "MJ Deli",
+  "source": "llm:gemini",
   "type": "solo"
  },
  "4zmZ8lVLzGc84S4v2B1rLx": {
@@ -24088,6 +26062,18 @@
   "name": "Young Thug",
   "source": "Artists.csv",
   "type": "solo"
+ },
+ "50m4JeiAg5aCt3kKRsKw7T": {
+  "gender": "NF",
+  "name": "Nayte",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
+ "50mdotNCJ2PcoZiAgsh8dY": {
+  "gender": "NF",
+  "name": "SFB",
+  "source": "llm:gemini",
+  "type": "GROUP"
  },
  "50vNYJ9Cj5MfsFqGqI7JXQ": {
   "gender": "NF",
@@ -24287,6 +26273,12 @@
   "source": "llm:claude",
   "type": "GROUP"
  },
+ "539RbtR2AVUYdmHQZjLL6m": {
+  "gender": "NF",
+  "name": "Salman Tin",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
  "53A0W3U0s8diEn9RhXQhVz": {
   "gender": "NF",
   "name": "Keane",
@@ -24389,6 +26381,12 @@
   "source": "llm:claude",
   "type": "GROUP"
  },
+ "54iY3a5KXHNlG9JCulzNGC": {
+  "gender": "F",
+  "name": "Kharis Sopan",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
  "54jZWpivOTllo1afYNSx5U": {
   "gender": "NF",
   "name": "Eyal Golan",
@@ -24404,6 +26402,12 @@
  "54seKvtsZauR1iauN0ptpo": {
   "gender": "NF",
   "name": "De La Rose",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
+ "5505l53fTUi5P0uWQbRT0w": {
+  "gender": "NF",
+  "name": "Indigo",
   "source": "llm:gemini",
   "type": "solo"
  },
@@ -24461,6 +26465,18 @@
   "source": "Artists.csv",
   "type": "GROUP"
  },
+ "55WpZ8ig2SFNvQpDHPUrgY": {
+  "gender": "F",
+  "name": "Mela Bedel",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
+ "55ZGFvikpNjQHvtTWS5aZF": {
+  "gender": "NF",
+  "name": "Bolaget",
+  "source": "llm:gemini",
+  "type": "GROUP"
+ },
  "55fhWPvDiMpLnE4ZzNXZyW": {
   "gender": "F",
   "name": "Noah Cyrus",
@@ -24490,6 +26506,12 @@
   "name": "Zpecial",
   "source": "llm:claude",
   "type": "GROUP"
+ },
+ "56MWTbQ5Oxy44FcfrBqQJh": {
+  "gender": "NF",
+  "name": "QINGA",
+  "source": "llm:gemini",
+  "type": "solo"
  },
  "56NKtypwi90dIOb5ZQZwHb": {
   "gender": "NF",
@@ -24569,6 +26591,12 @@
   "source": "llm:claude",
   "type": "solo"
  },
+ "5764EiAfWT26wi1CdLcnwz": {
+  "gender": "NF",
+  "name": "Shehab",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
  "57LYzLEk2LcFghVwuWbcuS": {
   "gender": "F",
   "name": "Summer Walker",
@@ -24585,6 +26613,12 @@
   "gender": "F",
   "name": "Olialia Pupytės",
   "source": "llm:claude",
+  "type": "GROUP"
+ },
+ "57UiSuUcw9m0MV4bC2DukM": {
+  "gender": "NF",
+  "name": "Molotof",
+  "source": "llm:gemini",
   "type": "GROUP"
  },
  "57ZjZU8vSOeP0Q2hbwh8wn": {
@@ -24665,6 +26699,12 @@
   "source": "wikidata",
   "type": "solo"
  },
+ "58JKLeDfIeeOYujvF1UMQS": {
+  "gender": "NF",
+  "name": "Muyeez",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
  "58JujA4l8OoYrET9qYAHbz": {
   "gender": "F",
   "name": "Наталія Бучинська",
@@ -24723,6 +26763,12 @@
   "gender": "NF",
   "name": "El Chapo De Sinaloa",
   "source": "llm:claude",
+  "type": "solo"
+ },
+ "59LngyBMq7f3sseWJKSLdl": {
+  "gender": "NF",
+  "name": "Eley Romero",
+  "source": "llm:gemini",
   "type": "solo"
  },
  "59WNMskn4tSvgnWKXHXj61": {
@@ -24795,6 +26841,18 @@
   "gender": "NF",
   "name": "Dżem",
   "source": "llm:claude",
+  "type": "GROUP"
+ },
+ "5AIqzRLM5XgtjdCjnbvJx7": {
+  "gender": "NF",
+  "name": "PIZZALI",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
+ "5ALUgNuS421MZrrrAhM9Bv": {
+  "gender": "NF",
+  "name": "Bruno X Spacc",
+  "source": "llm:gemini",
   "type": "GROUP"
  },
  "5AWtJTaoFmLLrPwDR5dLPB": {
@@ -24995,11 +27053,23 @@
   "source": "llm:claude",
   "type": "GROUP"
  },
+ "5CSaIf8OAstAYE5oqQeS15": {
+  "gender": "NF",
+  "name": "Magdy El Zahar",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
  "5CSek6ot4XS2AWiw1NFTiF": {
   "gender": "NF",
   "name": "Otto Serge",
   "source": "llm:claude",
   "type": "solo"
+ },
+ "5CUxd4pbcrPzIAplGgp8Lv": {
+  "gender": "NF",
+  "name": "Tu Corrido Mx",
+  "source": "llm:gemini",
+  "type": "GROUP"
  },
  "5CXvT1JutlWVLJN8YEOf1h": {
   "gender": "NF",
@@ -25011,6 +27081,12 @@
   "gender": "NF",
   "name": "Lil Eddie",
   "source": "llm:claude",
+  "type": "solo"
+ },
+ "5ChWT8CfHjk2PnRG70ZgWV": {
+  "gender": "NF",
+  "name": "DZWS",
+  "source": "llm:gemini",
   "type": "solo"
  },
  "5CiGnKThu5ctn9pBxv7DGa": {
@@ -25047,6 +27123,12 @@
   "gender": "NF",
   "name": "031CHOPPA",
   "source": "llm:claude",
+  "type": "solo"
+ },
+ "5CqlDzj8DSqsklkXuTYfSd": {
+  "gender": "NF",
+  "name": "Nabi",
+  "source": "llm:gemini",
   "type": "solo"
  },
  "5CqmNRrmp3UP3NGccmlKHR": {
@@ -25121,6 +27203,12 @@
   "source": "llm:claude",
   "type": "GROUP"
  },
+ "5Do9u0GoN4gFn6Nk8NGDhh": {
+  "gender": "NF",
+  "name": "Stormy",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
  "5EBnQEKoaiAk37Q7cfGrE1": {
   "gender": "NF",
   "name": "Idan Raichel",
@@ -25173,6 +27261,12 @@
   "gender": "NF",
   "name": "Pooh Shiesty",
   "source": "llm:claude",
+  "type": "solo"
+ },
+ "5F6Eu8EFrLQXOqgEj5gbhJ": {
+  "gender": "NF",
+  "name": "shirebound",
+  "source": "llm:gemini",
   "type": "solo"
  },
  "5F73ZVq8ivLhsYF2pGg4Fc": {
@@ -25271,6 +27365,12 @@
   "source": "llm:claude",
   "type": "solo"
  },
+ "5GVZ2Ewk9iIGtzQYmeHNz7": {
+  "gender": "NF",
+  "name": "Novex",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
  "5GVk1KCKa1tdHRev4bMw7V": {
   "gender": "NF",
   "name": "NOBITA",
@@ -25355,6 +27455,12 @@
   "source": "llm:claude",
   "type": "GROUP"
  },
+ "5HLrlI5LdULY9s740CsAFZ": {
+  "gender": "NF",
+  "name": "Kendis",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
  "5HQAzIHOdemXR2DoevwhjT": {
   "gender": "NF",
   "name": "KAT-TUN",
@@ -25403,10 +27509,22 @@
   "source": "wikidata",
   "type": "solo"
  },
+ "5HmfRnwYc5vNyWxRfP9U74": {
+  "gender": "NF",
+  "name": "Fido",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
  "5Ho1vKl1Uz8bJlk4vbmvmf": {
   "gender": "F",
   "name": "Amelie Lens",
   "source": "llm:claude",
+  "type": "solo"
+ },
+ "5HoKHEC3OTaMgMDnCqc00B": {
+  "gender": "NF",
+  "name": "Đặng Vĩnh Thịnh",
+  "source": "llm:gemini",
   "type": "solo"
  },
  "5Hsv8dUHHOdnn72q4XIVz7": {
@@ -25527,6 +27645,12 @@
   "gender": "NF",
   "name": "Staysman",
   "source": "llm:claude",
+  "type": "solo"
+ },
+ "5J1oH9bIdN8XDWOQuTZEIn": {
+  "gender": "NF",
+  "name": "OldyGotTheSound",
+  "source": "llm:gemini",
   "type": "solo"
  },
  "5J4acKeUuK5k6oZfx8e1rr": {
@@ -25901,6 +28025,12 @@
   "source": "llm:claude",
   "type": "GROUP"
  },
+ "5NTMa7YJCseQqw70zgF7b5": {
+  "gender": "NF",
+  "name": "Bedroom Audio",
+  "source": "llm:gemini",
+  "type": "GROUP"
+ },
  "5NUPPRjsbXHNyVDrUESYeh": {
   "gender": "NF",
   "name": "Grupo Arriesgado",
@@ -25935,6 +28065,12 @@
   "gender": "NF",
   "name": "Avi",
   "source": "llm:claude",
+  "type": "solo"
+ },
+ "5NpwJ9XcZH35RxF2PUIqs2": {
+  "gender": "F",
+  "name": "MIÜ",
+  "source": "llm:gemini",
   "type": "solo"
  },
  "5NvOktRLQaWY8N3R1VI18u": {
@@ -26003,6 +28139,12 @@
   "source": "llm:claude",
   "type": "GROUP"
  },
+ "5Otk4eRecMMbC5YR4Iliou": {
+  "gender": "NF",
+  "name": "Le-one",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
  "5OvCh1Nin8AGw7OkxYinBe": {
   "gender": "F",
   "name": "Tiên Tiên",
@@ -26051,6 +28193,18 @@
   "source": "wikidata",
   "type": "solo"
  },
+ "5PcBbqK2yMNnbp7c3hRDuX": {
+  "gender": "NF",
+  "name": "Dayarga",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
+ "5PeCMyf2BO8RlAujWP0erY": {
+  "gender": "NF",
+  "name": "HermesHermes",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
  "5PlfkPxwCpRRWQJBxCa0By": {
   "gender": "NF",
   "name": "HUGEL",
@@ -26062,6 +28216,12 @@
   "name": "Ernie Zakri",
   "source": "llm:claude",
   "type": "solo"
+ },
+ "5Ppbc55kNdjvxP8Tw2P8S9": {
+  "gender": "NF",
+  "name": "APHACA",
+  "source": "llm:gemini",
+  "type": "GROUP"
  },
  "5Ppie0uPnbnvGBYRwYmlt0": {
   "gender": "F",
@@ -26135,6 +28295,12 @@
   "source": "wikidata",
   "type": "solo"
  },
+ "5QS9kt4vpBuruMJDplhsIq": {
+  "gender": "F",
+  "name": "Kira",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
  "5QWQYxfuoNq7iJBlbIAYRS": {
   "gender": "NF",
   "name": "Eves Laurent",
@@ -26195,6 +28361,12 @@
   "source": "llm:claude",
   "type": "GROUP"
  },
+ "5R4RoARrqvWRT5GEjYHcWp": {
+  "gender": "NF",
+  "name": "Basher",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
  "5R56NYbLCC2HpOwlYBnmeN": {
   "gender": "F",
   "name": "Kelly Yu",
@@ -26218,6 +28390,12 @@
   "name": "El Canto Del Loco",
   "source": "llm:claude",
   "type": "GROUP"
+ },
+ "5RLP1KKuSvzYTWDujE3bi2": {
+  "gender": "NF",
+  "name": "SCOOP DOGG",
+  "source": "llm:gemini",
+  "type": "solo"
  },
  "5RLb16s3zfrdWdRF0l7xij": {
   "gender": "NF",
@@ -26265,6 +28443,12 @@
   "gender": "NF",
   "name": "D1MA",
   "source": "wikidata",
+  "type": "solo"
+ },
+ "5RacSDArd3wuqKnWx46sTM": {
+  "gender": "F",
+  "name": "Rosa",
+  "source": "llm:gemini",
   "type": "solo"
  },
  "5RbI1PF4n02wWKmgjk7hAE": {
@@ -26319,6 +28503,18 @@
   "gender": "NF",
   "name": "LAUD",
   "source": "wikidata",
+  "type": "solo"
+ },
+ "5SKsdtrrheAS3h6qCYZYzG": {
+  "gender": "NF",
+  "name": "6uff",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
+ "5SLXYrzObBv7IrLzo4I4S6": {
+  "gender": "NF",
+  "name": "JayQ",
+  "source": "llm:gemini",
   "type": "solo"
  },
  "5SQHuBLqaasC50vOL9s8Mz": {
@@ -26446,6 +28642,12 @@
   "name": "The Waterboys",
   "source": "llm:claude",
   "type": "GROUP"
+ },
+ "5Two5JCWeQdaAbGKUFQx8d": {
+  "gender": "F",
+  "name": "Kristina Dawn",
+  "source": "llm:gemini",
+  "type": "solo"
  },
  "5U05AU34EcZ8pfohg2dicI": {
   "gender": "NF",
@@ -26578,6 +28780,12 @@
   "name": "SANTA",
   "source": "llm:claude",
   "type": "solo"
+ },
+ "5VfC1cKlJXLcluxymeHu96": {
+  "gender": "NF",
+  "name": "The Bloomfields",
+  "source": "llm:gemini",
+  "type": "GROUP"
  },
  "5VfqJBmXcf6ZqXoGij5qTE": {
   "gender": "NF",
@@ -26741,6 +28949,12 @@
   "source": "llm:claude",
   "type": "solo"
  },
+ "5XUMgbLR3zyRPesnTQY31C": {
+  "gender": "NF",
+  "name": "MC GH do 7",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
  "5Xf9tWz0AarRXKqKKxJkNE": {
   "gender": "F",
   "name": "Anda Adam",
@@ -26825,6 +29039,12 @@
   "source": "llm:claude",
   "type": "solo"
  },
+ "5YraZzbamHOe2bz9Uxw0zE": {
+  "gender": "NF",
+  "name": "Amor Paisano",
+  "source": "llm:gemini",
+  "type": "GROUP"
+ },
  "5YuNgT5lQ7XcSjWcZHNQDx": {
   "gender": "NF",
   "name": "Akram Rahal",
@@ -26841,6 +29061,12 @@
   "gender": "NF",
   "name": "Antti Ketonen",
   "source": "llm:claude",
+  "type": "solo"
+ },
+ "5Z05MLMVXu2Vmj1WWwO97E": {
+  "gender": "NF",
+  "name": "Hugo Henrique",
+  "source": "llm:gemini",
   "type": "solo"
  },
  "5Z1CCuBsyhEHngq3U5IraY": {
@@ -26867,6 +29093,12 @@
   "source": "llm:claude",
   "type": "GROUP"
  },
+ "5Z9nWuFMEQ97O7ixur2c8l": {
+  "gender": "NF",
+  "name": "comehelpglo",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
  "5ZAR5Usb11xw4KENbEE8uZ": {
   "gender": "NF",
   "name": "Agua Marina",
@@ -26877,6 +29109,12 @@
   "gender": "NF",
   "name": "Amble",
   "source": "llm:claude",
+  "type": "GROUP"
+ },
+ "5ZEpz4ei1jHqvA4EHUeKqs": {
+  "gender": "NF",
+  "name": "Os Gemeos da Putaria",
+  "source": "llm:gemini",
   "type": "GROUP"
  },
  "5ZIzGM3sXUiF8EI6K18XQC": {
@@ -26901,6 +29139,12 @@
   "gender": "NF",
   "name": "Hamid Bouchnak",
   "source": "llm:claude",
+  "type": "solo"
+ },
+ "5ZW3jmupWrQDBKilPyUVkv": {
+  "gender": "NF",
+  "name": "Donn",
+  "source": "llm:gemini",
   "type": "solo"
  },
  "5ZY4M2aGiTaZQEP6HfqeJc": {
@@ -26957,6 +29201,12 @@
   "source": "llm:claude",
   "type": "solo"
  },
+ "5Zwlr28h134D0OzxzUfVCA": {
+  "gender": "NF",
+  "name": "BSW",
+  "source": "llm:gemini",
+  "type": "GROUP"
+ },
  "5Zy2tdfVQKbDwpqWcjXg42": {
   "gender": "NF",
   "name": "MAZZEL",
@@ -26972,6 +29222,12 @@
  "5a2EaR3hamoenG9rDuVn8j": {
   "gender": "NF",
   "name": "Prince",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
+ "5a8EJtOEbUJDF4RX3mKK02": {
+  "gender": "NF",
+  "name": "Woo",
   "source": "llm:gemini",
   "type": "solo"
  },
@@ -27023,6 +29279,12 @@
   "source": "llm:claude",
   "type": "solo"
  },
+ "5aiaFB4rhv39gS3KvwHgaF": {
+  "gender": "NF",
+  "name": "Helmetheads",
+  "source": "llm:gemini",
+  "type": "GROUP"
+ },
  "5amPFw5XVlNzP7uSKBXtai": {
   "gender": "NF",
   "name": "Galin",
@@ -27045,6 +29307,18 @@
   "gender": "F",
   "name": "Gabrielė Vilkickytė",
   "source": "llm:claude",
+  "type": "solo"
+ },
+ "5bIIzSB5LjcasuxpGykW1r": {
+  "gender": "NF",
+  "name": "Muierada",
+  "source": "llm:gemini",
+  "type": "GROUP"
+ },
+ "5bKfDewWHUg0VqXqRX1low": {
+  "gender": "NF",
+  "name": "Tefo",
+  "source": "llm:gemini",
   "type": "solo"
  },
  "5bMSTBR5SgFA7OGnGTr2eH": {
@@ -27329,6 +29603,12 @@
   "source": "llm:claude",
   "type": "solo"
  },
+ "5fO16dsHVrojWL2mPzcdpq": {
+  "gender": "NF",
+  "name": "KÖK$VL",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
  "5fS5cgws6Zjw5uqgKAd8qC": {
   "gender": "NF",
   "name": "Арман Сейтжаппар",
@@ -27449,6 +29729,12 @@
   "source": "llm:claude",
   "type": "GROUP"
  },
+ "5ghOUzxpnQmnPQDwC1thIz": {
+  "gender": "NF",
+  "name": "ASIA7",
+  "source": "llm:gemini",
+  "type": "GROUP"
+ },
  "5gqmbbfjcikQBzPB5Hv13I": {
   "gender": "NF",
   "name": "Gazo",
@@ -27472,6 +29758,12 @@
   "name": "deLillos",
   "source": "llm:claude",
   "type": "GROUP"
+ },
+ "5gw7flNXQt0oQ5taY1as73": {
+  "gender": "NF",
+  "name": "Likeboss",
+  "source": "llm:gemini",
+  "type": "solo"
  },
  "5gz8Mj85I56iRsvZgXFGgh": {
   "gender": "NF",
@@ -27549,6 +29841,12 @@
   "gender": "NF",
   "name": "Leo Gassmann",
   "source": "llm:claude",
+  "type": "solo"
+ },
+ "5iEByMj7fW1lewiS4Ik91v": {
+  "gender": "NF",
+  "name": "Trechyson Molly vx",
+  "source": "llm:gemini",
   "type": "solo"
  },
  "5iM4dDbBN6a4OqxKPuxgS6": {
@@ -27641,6 +29939,12 @@
   "source": "llm:claude",
   "type": "solo"
  },
+ "5jF4VfE2TZtAXWYQLe3F8A": {
+  "gender": "NF",
+  "name": "Smur Lee",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
  "5jFvzkcrrV8TqpRo2sMRuK": {
   "gender": "NF",
   "name": "Faisal Abdulkareem",
@@ -27688,6 +29992,12 @@
   "name": "bôa",
   "source": "manual",
   "type": "GROUP"
+ },
+ "5jaMTcg4dhAlcwLLPUVPl3": {
+  "gender": "NF",
+  "name": "Reset",
+  "source": "llm:gemini",
+  "type": "solo"
  },
  "5jcswtptZttxBwWKXbR5k5": {
   "gender": "F",
@@ -27813,6 +30123,12 @@
   "gender": "NF",
   "name": "Ace of Base",
   "source": "llm:claude",
+  "type": "GROUP"
+ },
+ "5ksYtzE6rgRhlJPw0GTvy6": {
+  "gender": "NF",
+  "name": "Dr.Fuu",
+  "source": "llm:gemini",
   "type": "GROUP"
  },
  "5kukvi4C18gvtXbDS1eKjQ": {
@@ -27947,6 +30263,18 @@
   "source": "llm:gemini",
   "type": "solo"
  },
+ "5mPOOZTRDsRf0iIXixzfgn": {
+  "gender": "NF",
+  "name": "Yung Kafa & Kücük Efendi",
+  "source": "llm:gemini",
+  "type": "GROUP"
+ },
+ "5mPRDRL2rclNaPJXOg56Jy": {
+  "gender": "NF",
+  "name": "The Wind",
+  "source": "llm:gemini",
+  "type": "GROUP"
+ },
  "5mPbBOU2KMFfStepNZ027p": {
   "gender": "NF",
   "name": "OgeNus",
@@ -27969,6 +30297,12 @@
   "gender": "NF",
   "name": "Adam Ďurica",
   "source": "llm:claude",
+  "type": "solo"
+ },
+ "5mcQQWaTilvZ99xmDg9LCU": {
+  "gender": "NF",
+  "name": "Nkeshemba",
+  "source": "llm:gemini",
   "type": "solo"
  },
  "5me0Irg2ANcsgc93uaYrpb": {
@@ -28055,11 +30389,23 @@
   "source": "llm:gemini",
   "type": "solo"
  },
+ "5nYImteGVIjH7sXrD9quLp": {
+  "gender": "NF",
+  "name": "Young J",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
  "5nZADoZFWVB90dHpk5zvXy": {
   "gender": "NF",
   "name": "villemdrillem",
   "source": "wikidata",
   "type": "solo"
+ },
+ "5naPJsWUJ6y22yKXA6dX36": {
+  "gender": "NF",
+  "name": "Silet Open Up",
+  "source": "llm:gemini",
+  "type": "GROUP"
  },
  "5nbBY85e9IUeoz6vr9EdQM": {
   "gender": "NF",
@@ -28107,6 +30453,12 @@
   "gender": "NF",
   "name": "Elefante",
   "source": "llm:claude",
+  "type": "GROUP"
+ },
+ "5ocZbmWp3jlpBeLOEgsFcc": {
+  "gender": "NF",
+  "name": "مصطفي الجن و هادي الصغير - تيم الابداع",
+  "source": "llm:gemini",
   "type": "GROUP"
  },
  "5onpuMN9bFvqIoNEbH3uyq": {
@@ -28493,6 +30845,12 @@
   "source": "llm:claude",
   "type": "solo"
  },
+ "5tlE5dBPT5muL6dpPSExWw": {
+  "gender": "NF",
+  "name": "Yüksel Baltacı",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
  "5tqSjP3EGoOTriKogeTNO2": {
   "gender": "NF",
   "name": "Leon Somov",
@@ -28619,6 +30977,12 @@
   "source": "llm:claude",
   "type": "solo"
  },
+ "5vTG3EyFrsARtIGDWZNRzu": {
+  "gender": "NF",
+  "name": "Halstage",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
  "5vV3bFXnN6D6N3Nj4xRvaV": {
   "gender": "NF",
   "name": "Jin",
@@ -28635,6 +30999,12 @@
   "gender": "NF",
   "name": "Alan Tam",
   "source": "llm:claude",
+  "type": "solo"
+ },
+ "5vZpfzIdyiutGngkSKEb8i": {
+  "gender": "NF",
+  "name": "Barsena Bestandhi",
+  "source": "llm:gemini",
   "type": "solo"
  },
  "5vgHNLPDrYD3hztA8yKoxP": {
@@ -28667,11 +31037,23 @@
   "source": "llm:claude",
   "type": "solo"
  },
+ "5vzCTzMec4uL6JCNkOFcZ2": {
+  "gender": "NF",
+  "name": "Pondering",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
  "5wCmhq5J2hPwL2r0eKurxn": {
   "gender": "NF",
   "name": "cassö",
   "source": "llm:claude",
   "type": "solo"
+ },
+ "5wCu1FMWM7PLxdGVHPiM6Y": {
+  "gender": "NF",
+  "name": "FIZZY SA",
+  "source": "llm:gemini",
+  "type": "GROUP"
  },
  "5wD0owYApRtYmjPWavWKvb": {
   "gender": "NF",
@@ -28797,6 +31179,12 @@
   "gender": "NF",
   "name": "Alfredo Olivas",
   "source": "llm:claude",
+  "type": "solo"
+ },
+ "5xhi1KB7WkPiTYb5Fm3YvS": {
+  "gender": "NF",
+  "name": "Redoor",
+  "source": "llm:gemini",
   "type": "solo"
  },
  "5xmgC1jISe31QZSp8gqKUJ": {
@@ -28955,6 +31343,12 @@
   "source": "llm:claude",
   "type": "GROUP"
  },
+ "5zBAiLz5CVwrgeA7UGQZli": {
+  "gender": "NF",
+  "name": "FREEHAND",
+  "source": "llm:gemini",
+  "type": "GROUP"
+ },
  "5zHWEsVHtXWQRxPqwJdUYD": {
   "gender": "F",
   "name": "Samira Said",
@@ -28966,6 +31360,18 @@
   "name": "A*Teens",
   "source": "llm:claude",
   "type": "GROUP"
+ },
+ "5zSQoNQ9o2dnT1LPTzDxg7": {
+  "gender": "NF",
+  "name": "Mirrr",
+  "source": "llm:gemini",
+  "type": "GROUP"
+ },
+ "5zT1Ku9mzzl6RW5y4z0hUK": {
+  "gender": "NF",
+  "name": "Minh Huy",
+  "source": "llm:gemini",
+  "type": "solo"
  },
  "5zXGVPJHUzQPUXKA7AlTi5": {
   "gender": "NF",
@@ -29309,6 +31715,12 @@
   "source": "wikidata",
   "type": "solo"
  },
+ "63RFns47gk00mnHIQ8zTR1": {
+  "gender": "NF",
+  "name": "Pilli Bebek",
+  "source": "llm:gemini",
+  "type": "GROUP"
+ },
  "63XBtGSEZINSyXylZxEUbv": {
   "gender": "F",
   "name": "Victoria Monét",
@@ -29344,6 +31756,12 @@
   "name": "Melanie Martinez",
   "source": "llm:claude",
   "type": "solo"
+ },
+ "641Pd0RfQQ81mnWu7Vlb8v": {
+  "gender": "NF",
+  "name": "Gat Putch",
+  "source": "llm:gemini",
+  "type": "GROUP"
  },
  "64BB3FFJokfd3owfpnwxb0": {
   "gender": "NF",
@@ -29429,6 +31847,12 @@
   "source": "llm:claude",
   "type": "GROUP"
  },
+ "64z5b9YLNYN0a7dAa0mQ3y": {
+  "gender": "F",
+  "name": "Lari Ferreira",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
  "651jNHJzsX4ckQvURNNAIS": {
   "gender": "NF",
   "name": "DJ YUZAK",
@@ -29477,6 +31901,12 @@
   "source": "llm:claude",
   "type": "solo"
  },
+ "65nasTOHBmMP0qoo6Xa245": {
+  "gender": "F",
+  "name": "Skyla Tylaa",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
  "65wb6r9GvL7JUySeWfDD9q": {
   "gender": "NF",
   "name": "Tony Salles",
@@ -29517,6 +31947,12 @@
   "gender": "NF",
   "name": "Ulige Numre",
   "source": "llm:claude",
+  "type": "GROUP"
+ },
+ "66LxteaHD7NvxCnkQoyw2G": {
+  "gender": "NF",
+  "name": "NOWIMYOUNG",
+  "source": "llm:gemini",
   "type": "GROUP"
  },
  "66NmU5epI0ONGmdCRbLpmW": {
@@ -30029,6 +32465,12 @@
   "source": "wikidata",
   "type": "solo"
  },
+ "6Cqtx9fpxzggIMuKn0RGCp": {
+  "gender": "NF",
+  "name": "Dream Supplier",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
  "6CwfuxIqcltXDGjfZsMd9A": {
   "gender": "F",
   "name": "MARINA",
@@ -30064,6 +32506,12 @@
   "name": "WALK THE MOON",
   "source": "llm:gemini",
   "type": "GROUP"
+ },
+ "6DPTJXd1omQ1oTiR1Vy9CZ": {
+  "gender": "NF",
+  "name": "Sabah Mahmod",
+  "source": "llm:gemini",
+  "type": "solo"
  },
  "6DdeqvIfYu3sH02gdavOu2": {
   "gender": "NF",
@@ -30165,6 +32613,12 @@
   "gender": "NF",
   "name": "JSOL",
   "source": "llm:claude",
+  "type": "solo"
+ },
+ "6Eyw578LyVy9z7fDNhxWCf": {
+  "gender": "NF",
+  "name": "Dreycruz",
+  "source": "llm:gemini",
   "type": "solo"
  },
  "6F5tPDq3TIduDv2ki6O1Oq": {
@@ -30293,6 +32747,12 @@
   "source": "llm:claude",
   "type": "solo"
  },
+ "6HEMZkIMQAPnd36iLsUlTx": {
+  "gender": "NF",
+  "name": "PUN",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
  "6HHje5tfmzWK8PsSaoJ9Xp": {
   "gender": "NF",
   "name": "SAMSONS",
@@ -30418,6 +32878,12 @@
   "name": "Selena",
   "source": "llm:claude",
   "type": "solo"
+ },
+ "6IKJyoGeFRCRDb90U6AEzp": {
+  "gender": "NF",
+  "name": "Turisti",
+  "source": "llm:gemini",
+  "type": "GROUP"
  },
  "6IKlXZEFOvk9itrP1s0knJ": {
   "gender": "NF",
@@ -30773,6 +33239,12 @@
   "source": "llm:claude",
   "type": "solo"
  },
+ "6MRNiMCUDv9mDmMcaXhjgI": {
+  "gender": "NF",
+  "name": "Tkeyz",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
  "6MV2UXdX8Pqy25rI7dl6os": {
   "gender": "NF",
   "name": "Jeninho",
@@ -30821,11 +33293,23 @@
   "source": "llm:gemini",
   "type": "solo"
  },
+ "6NDMASsBLAUDX3QsJvki3r": {
+  "gender": "NF",
+  "name": "KARM6",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
  "6NEj7qdWpQXSeiST36X7ES": {
   "gender": "NF",
   "name": "Simon Superti",
   "source": "llm:claude",
   "type": "solo"
+ },
+ "6NF9Oa4ThQWCj6mogFSrVD": {
+  "gender": "NF",
+  "name": "W/N",
+  "source": "llm:gemini",
+  "type": "GROUP"
  },
  "6NKa3iTFT9Yifg6vJnoIw1": {
   "gender": "NF",
@@ -30945,6 +33429,12 @@
   "gender": "F",
   "name": "Claire Kuo",
   "source": "llm:claude",
+  "type": "solo"
+ },
+ "6OnsnxQ7sqm2kbreJrhQjS": {
+  "gender": "NF",
+  "name": "Kaycherlow NLL",
+  "source": "llm:gemini",
   "type": "solo"
  },
  "6OwKE9Ez6ALxpTaKcT5ayv": {
@@ -31109,10 +33599,22 @@
   "source": "llm:claude",
   "type": "solo"
  },
+ "6QeYcD1n2YcWygCScfLhRE": {
+  "gender": "NF",
+  "name": "Sexski",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
  "6QfFTZJHFSe9Xyes6DkAli": {
   "gender": "NF",
   "name": "ReTo",
   "source": "llm:claude",
+  "type": "solo"
+ },
+ "6Qk2g62cWGo8Ji8hSBoriS": {
+  "gender": "NF",
+  "name": "LUMMUN",
+  "source": "llm:gemini",
   "type": "solo"
  },
  "6QoCrBHsojKnOrsGNfRcTN": {
@@ -31277,6 +33779,12 @@
   "source": "wikidata",
   "type": "solo"
  },
+ "6Ss3HQTUk6PeyD1a0IV6RB": {
+  "gender": "NF",
+  "name": "Karim Cristiano",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
  "6SsTlCsuCYleNza6xGwynu": {
   "gender": "F",
   "name": "Agnes",
@@ -31397,6 +33905,12 @@
   "source": "llm:claude",
   "type": "solo"
  },
+ "6U6qcXdFyk0B5PxHM7JYmw": {
+  "gender": "NF",
+  "name": "TUFF KING",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
  "6UE7nl9mha6s8z0wFQFIZ2": {
   "gender": "F",
   "name": "Robyn",
@@ -31445,6 +33959,12 @@
   "source": "llm:claude",
   "type": "solo"
  },
+ "6Us5Zsn5MAHBk7SHBUsG5X": {
+  "gender": "NF",
+  "name": "DJ Biel do Furduncinho",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
  "6UvQrW56NzLbUtAKIdTg8N": {
   "gender": "NF",
   "name": "Agatha Christie",
@@ -31480,6 +34000,12 @@
   "name": "Spacey Jane",
   "source": "llm:claude",
   "type": "GROUP"
+ },
+ "6VNymaTBHnYKnBfST2A5Cv": {
+  "gender": "NF",
+  "name": "EL DE LA TINTA",
+  "source": "llm:gemini",
+  "type": "solo"
  },
  "6VSZeMeJlVPGoR2nfB6UxD": {
   "gender": "NF",
@@ -31773,6 +34299,12 @@
   "gender": "NF",
   "name": "Eli Herzlich",
   "source": "wikidata",
+  "type": "solo"
+ },
+ "6YYOTK6Qyv6PuFipPxCCoe": {
+  "gender": "NF",
+  "name": "RACK",
+  "source": "llm:gemini",
   "type": "solo"
  },
  "6YZXwVnjrIIz9SlBd8l2Cg": {
@@ -32153,6 +34685,12 @@
   "source": "llm:claude",
   "type": "GROUP"
  },
+ "6daEl3JyMDgK52fKuqPelL": {
+  "gender": "NF",
+  "name": "Aftershine",
+  "source": "llm:gemini",
+  "type": "GROUP"
+ },
  "6dbdXbyAWk2qx8Qttw0knR": {
   "gender": "NF",
   "name": "Josman",
@@ -32193,6 +34731,12 @@
   "gender": "NF",
   "name": "1da Banton",
   "source": "llm:claude",
+  "type": "solo"
+ },
+ "6dmpoGpCKPEdy7R3XSEA7y": {
+  "gender": "NF",
+  "name": "Al Xapo",
+  "source": "llm:gemini",
   "type": "solo"
  },
  "6eBKQVpzyvlMoQaR7buvX8": {
@@ -32237,6 +34781,12 @@
   "source": "llm:claude",
   "type": "solo"
  },
+ "6f1tNwK04d6t8jFSOXGvrY": {
+  "gender": "NF",
+  "name": "Zeal",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
  "6f4XkbvYlXMH0QgVRzW0sM": {
   "gender": "NF",
   "name": "Waka Flocka Flame",
@@ -32260,6 +34810,12 @@
   "name": "Kalush Orchestra",
   "source": "llm:claude",
   "type": "GROUP"
+ },
+ "6fOqdhRNsMQqtwRwgo3NUv": {
+  "gender": "NF",
+  "name": "Firdhaus",
+  "source": "llm:gemini",
+  "type": "solo"
  },
  "6fh11OgZMuzObXNUf4AEOr": {
   "gender": "NF",
@@ -32458,6 +35014,12 @@
   "name": "Devi McCallion",
   "source": "wikidata",
   "type": "solo"
+ },
+ "6i392l38cR3uBPF0DbNs7S": {
+  "gender": "NF",
+  "name": "Quality Control",
+  "source": "llm:gemini",
+  "type": "GROUP"
  },
  "6iAY2AyUZLSX3PWLIAfFZY": {
   "gender": "NF",
@@ -32699,10 +35261,22 @@
   "source": "llm:claude",
   "type": "solo"
  },
+ "6lFcggGAwriultjU0Ziyny": {
+  "gender": "NF",
+  "name": "Skhanga",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
  "6lFrRAoT64zvrLiL1edMhk": {
   "gender": "NF",
   "name": "Averagekidluke",
   "source": "wikidata",
+  "type": "solo"
+ },
+ "6lY3XPzSDyMhy30hWwgSzD": {
+  "gender": "F",
+  "name": "Natiey Lepaka",
+  "source": "llm:gemini",
   "type": "solo"
  },
  "6le80R1opKnTlP4o3KvA2k": {
@@ -32775,6 +35349,12 @@
   "gender": "NF",
   "name": "Runtown",
   "source": "llm:claude",
+  "type": "solo"
+ },
+ "6mPZyiInAlfLGBJbX0echu": {
+  "gender": "NF",
+  "name": "زاد",
+  "source": "llm:gemini",
   "type": "solo"
  },
  "6mS5GeFyhea6w9OKo8PO3p": {
@@ -33113,6 +35693,12 @@
   "source": "llm:gemini",
   "type": "solo"
  },
+ "6qs7wpBhVfTFqFgfuikOEj": {
+  "gender": "F",
+  "name": "Tüdanya",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
  "6quRLJ5SiWHgcVMoE9TEJj": {
   "gender": "NF",
   "name": "Andreas Bourani",
@@ -33287,6 +35873,12 @@
   "source": "llm:gemini",
   "type": "solo"
  },
+ "6sf1OnuDZM48bgFQvPkbYm": {
+  "gender": "NF",
+  "name": "Dongker",
+  "source": "llm:gemini",
+  "type": "GROUP"
+ },
  "6sq1yF0OZEWA4xoXVKW1L9": {
   "gender": "NF",
   "name": "Alejandro Fernández",
@@ -33315,6 +35907,12 @@
   "gender": "F",
   "name": "Ofra Haza",
   "source": "llm:claude",
+  "type": "solo"
+ },
+ "6tWaQSIL7reD85PKStNk28": {
+  "gender": "NF",
+  "name": "Kha",
+  "source": "llm:gemini",
   "type": "solo"
  },
  "6tZxUxheS7w3953cQFOXkd": {
@@ -33389,6 +35987,12 @@
   "source": "llm:claude",
   "type": "solo"
  },
+ "6ugNgaIlOKz7Sy8wlEQDif": {
+  "gender": "NF",
+  "name": "Mirror Glimpse",
+  "source": "llm:gemini",
+  "type": "GROUP"
+ },
  "6uothxMWeLWIhsGeF7cyo4": {
   "gender": "F",
   "name": "Enya",
@@ -33424,6 +36028,12 @@
   "name": "Karencici",
   "source": "llm:claude",
   "type": "solo"
+ },
+ "6v7jmixV5xmTHA1l6NDpYn": {
+  "gender": "NF",
+  "name": "Yugopolis",
+  "source": "llm:gemini",
+  "type": "GROUP"
  },
  "6vAJpFtiQ7xPtkArtCnHfr": {
   "gender": "NF",
@@ -33623,6 +36233,12 @@
   "source": "llm:claude",
   "type": "solo"
  },
+ "6x0pz3N2n51qG75kjMR4uV": {
+  "gender": "NF",
+  "name": "Sicario",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
  "6x6jVrxZYv8bB6fwPsg79E": {
   "gender": "NF",
   "name": "Beats Pliz",
@@ -33758,6 +36374,12 @@
  "6ynopZPMBXcIGBI9M02Un5": {
   "gender": "NF",
   "name": "Haftbefehl",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
+ "6yqRHmT3rqFVnPLbejnWW3": {
+  "gender": "NF",
+  "name": "Lark",
   "source": "llm:gemini",
   "type": "solo"
  },
@@ -34013,6 +36635,12 @@
   "source": "llm:claude",
   "type": "solo"
  },
+ "71NQK8ufY5t7SeiMAhPB9I": {
+  "gender": "NF",
+  "name": "Prod.Nifour",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
  "71SuRO9s3mJNnwAlw7TD7l": {
   "gender": "NF",
   "name": "Da Weasel",
@@ -34187,9 +36815,21 @@
   "source": "llm:gemini",
   "type": "GROUP"
  },
+ "73AUztsJzUjgypIsi0Eiih": {
+  "gender": "NF",
+  "name": "La Bella Luz",
+  "source": "llm:gemini",
+  "type": "GROUP"
+ },
  "73DJQnHaj7nA5mduxfZ2Fz": {
   "gender": "NF",
   "name": "KlouKoma",
+  "source": "llm:gemini",
+  "type": "GROUP"
+ },
+ "73M9RjjrrKjXnf6Is6hNdg": {
+  "gender": "NF",
+  "name": "Anatomy Rabbit",
   "source": "llm:gemini",
   "type": "GROUP"
  },
@@ -34251,6 +36891,12 @@
   "gender": "NF",
   "name": "Cengiz Kurtoğlu",
   "source": "llm:claude",
+  "type": "solo"
+ },
+ "747jtvVsxwzOLCJeOOz3oT": {
+  "gender": "NF",
+  "name": "Wegh",
+  "source": "llm:gemini",
   "type": "solo"
  },
  "748f0zL5X2KNapx8K93SUq": {
@@ -34403,6 +37049,12 @@
   "source": "llm:claude",
   "type": "solo"
  },
+ "75ffkjzl2yQm2wRvP5QL4s": {
+  "gender": "F",
+  "name": "BabyDaiz",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
  "75i9GaW2MJUgt4BkdUnuUY": {
   "gender": "NF",
   "name": "MC Ryan SP",
@@ -34481,6 +37133,12 @@
   "source": "llm:claude",
   "type": "solo"
  },
+ "76gCQtIoyzxs0HDKIyQC66": {
+  "gender": "NF",
+  "name": "Keskin",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
  "76jfMJlfNPQsOBblO0ZaEA": {
   "gender": "F",
   "name": "Nora Fatehi",
@@ -34491,6 +37149,12 @@
   "gender": "NF",
   "name": "Turmion Kätilöt",
   "source": "llm:claude",
+  "type": "GROUP"
+ },
+ "76vckwsJH4ZsMH8BFJNnXY": {
+  "gender": "NF",
+  "name": "Baby Bears",
+  "source": "llm:gemini",
   "type": "GROUP"
  },
  "76wDwepIombkHCdm0kas1h": {
@@ -34546,6 +37210,12 @@
   "name": "Nu Genea",
   "source": "llm:claude",
   "type": "GROUP"
+ },
+ "77PSs92ix6empuwnNuiwot": {
+  "gender": "NF",
+  "name": "Erdal Güney",
+  "source": "llm:gemini",
+  "type": "solo"
  },
  "77SW9BnxLY8rJ0RciFqkHh": {
   "gender": "NF",
@@ -34679,6 +37349,12 @@
   "source": "llm:claude",
   "type": "solo"
  },
+ "79BK7vrzlQtgNnCHvZ7aYi": {
+  "gender": "NF",
+  "name": "Marcos Villalobos",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
  "79Pc4RR5E625J7dK543jDw": {
   "gender": "NF",
   "name": "Mikael Gabriel",
@@ -34743,6 +37419,12 @@
   "gender": "NF",
   "name": "Damiano David",
   "source": "llm:claude",
+  "type": "solo"
+ },
+ "7Ac0uxdCzBBRgjbtel2bbV": {
+  "gender": "NF",
+  "name": "VINI",
+  "source": "llm:gemini",
   "type": "solo"
  },
  "7AczdBjiNUjo4pxVVucvw1": {
@@ -34846,6 +37528,12 @@
   "name": "Sally Yeh",
   "source": "llm:claude",
   "type": "solo"
+ },
+ "7C7XI2lMHGvTDNLv8vFfpY": {
+  "gender": "NF",
+  "name": "COPACABANA",
+  "source": "llm:gemini",
+  "type": "GROUP"
  },
  "7CAtmuyGlzYum4BKfl34ij": {
   "gender": "NF",
@@ -35093,11 +37781,23 @@
   "source": "llm:claude",
   "type": "solo"
  },
+ "7F5LO6TFFBGkRhsQdCcLVm": {
+  "gender": "F",
+  "name": "Noor",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
  "7FBcuc1gsnv6Y1nwFtNRCb": {
   "gender": "NF",
   "name": "My Chemical Romance",
   "source": "Artists.csv",
   "type": "GROUP"
+ },
+ "7FHDJhs5QROL1vQr61gOiB": {
+  "gender": "NF",
+  "name": "DJ Xen",
+  "source": "llm:gemini",
+  "type": "solo"
  },
  "7FHGSpmUoIkL2hG6T0qvrJ": {
   "gender": "NF",
@@ -35435,6 +38135,12 @@
   "source": "llm:claude",
   "type": "solo"
  },
+ "7J7IAR4rkzo4FcZTDid3Jk": {
+  "gender": "NF",
+  "name": "Cash Flow",
+  "source": "llm:gemini",
+  "type": "GROUP"
+ },
  "7JGdIwHe5RyFZvLEuRdR7N": {
   "gender": "NF",
   "name": "El Americano 4KT",
@@ -35511,6 +38217,12 @@
   "gender": "NF",
   "name": "Asaad Hussain",
   "source": "llm:claude",
+  "type": "solo"
+ },
+ "7JrwW0qqL3V7LBTyHTrHIT": {
+  "gender": "NF",
+  "name": "HWZ",
+  "source": "llm:gemini",
   "type": "solo"
  },
  "7JthQ6zwNzfxRfIEjp6wUs": {
@@ -35777,6 +38489,12 @@
   "source": "wikidata",
   "type": "solo"
  },
+ "7bCWtYN5W1RwYKHsAmL7LF": {
+  "gender": "NF",
+  "name": "Rök Liza",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
  "7bLJ7Df6FLgzVjMzt9Tult": {
   "gender": "NF",
   "name": "La Sonora Dinamita",
@@ -35793,6 +38511,12 @@
   "gender": "NF",
   "name": "Patrick Watson",
   "source": "wikidata",
+  "type": "solo"
+ },
+ "7bQHemX2QBqGaERdrfraNW": {
+  "gender": "NF",
+  "name": "hamo",
+  "source": "llm:gemini",
   "type": "solo"
  },
  "7bXgB6jMjp9ATFy66eO08Z": {
@@ -35903,6 +38627,18 @@
   "source": "llm:claude",
   "type": "solo"
  },
+ "7cHTggdS9DqKE9oP1FTuZS": {
+  "gender": "NF",
+  "name": "Mjabulisi",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
+ "7cLA1cTY8dCn9Kb8r8JdKY": {
+  "gender": "NF",
+  "name": "javier",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
  "7cYEt1pqMgXJdq00hAwVpT": {
   "gender": "NF",
   "name": "Chase Atlantic",
@@ -35926,6 +38662,12 @@
   "name": "ZEROBASEONE",
   "source": "llm:claude",
   "type": "GROUP"
+ },
+ "7clhNqbmk9enpeaBH9ACiZ": {
+  "gender": "NF",
+  "name": "Highhot",
+  "source": "llm:gemini",
+  "type": "solo"
  },
  "7cmuxPnXRJxwuYDHfbD8Eu": {
   "gender": "NF",
@@ -36173,6 +38915,12 @@
   "source": "wikidata",
   "type": "solo"
  },
+ "7gIeuq2qBfYhO1budb6TSQ": {
+  "gender": "NF",
+  "name": "DG e Batidão Stronda",
+  "source": "llm:gemini",
+  "type": "GROUP"
+ },
  "7gJN8W0589FisSYJS17K54": {
   "gender": "NF",
   "name": "Filipe Ret",
@@ -36202,6 +38950,12 @@
   "name": "Laufey",
   "source": "Artists.csv",
   "type": "solo"
+ },
+ "7gXnv2nAoF9X0XJQ3AMp7d": {
+  "gender": "NF",
+  "name": "US Agroboy",
+  "source": "llm:gemini",
+  "type": "GROUP"
  },
  "7gZfnEnfiaHzxARJ2LeXrf": {
   "gender": "NF",
@@ -36273,6 +39027,12 @@
   "gender": "NF",
   "name": "Pyrex",
   "source": "llm:claude",
+  "type": "solo"
+ },
+ "7h8iVo2Z2G3H0OhlbP5PLA": {
+  "gender": "F",
+  "name": "Wendy M",
+  "source": "llm:gemini",
   "type": "solo"
  },
  "7hDt3OE2ubsKzO9rMYPXox": {
@@ -36362,6 +39122,12 @@
  "7iCQglTnIkivy8E3yP7WMd": {
   "gender": "NF",
   "name": "MBT",
+  "source": "llm:gemini",
+  "type": "GROUP"
+ },
+ "7iDnmQrHjOaihg0RLOp4RQ": {
+  "gender": "NF",
+  "name": "Samsara 304",
   "source": "llm:gemini",
   "type": "GROUP"
  },
@@ -36551,6 +39317,12 @@
   "source": "llm:claude",
   "type": "GROUP"
  },
+ "7kBsX15IDun9YxuVmKCMYJ": {
+  "gender": "NF",
+  "name": "Hngle",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
  "7kK5badbqOjd8WlT2XWMeM": {
   "gender": "NF",
   "name": "Bella Shmurda",
@@ -36567,6 +39339,12 @@
   "gender": "NF",
   "name": "Julinho Ksd",
   "source": "llm:claude",
+  "type": "solo"
+ },
+ "7kSmS2G15QIw8rllwGex9r": {
+  "gender": "NF",
+  "name": "Fishy",
+  "source": "llm:gemini",
   "type": "solo"
  },
  "7kXQtwn3ZRTBc8JYNyGwQy": {
@@ -36617,6 +39395,12 @@
   "source": "llm:claude",
   "type": "GROUP"
  },
+ "7l1AEP7z8ERNZzknXqPUFT": {
+  "gender": "NF",
+  "name": "ERAY067",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
  "7l8dcABCTyZKrkskt53Z2u": {
   "gender": "NF",
   "name": "beastboy",
@@ -36657,6 +39441,12 @@
   "gender": "F",
   "name": "Anggis Devaki",
   "source": "wikidata",
+  "type": "solo"
+ },
+ "7lbSsjYACZHn1MSDXPxNF2": {
+  "gender": "F",
+  "name": "Hikaru Utada",
+  "source": "llm:gemini",
   "type": "solo"
  },
  "7lqaPghwYv2mE9baz5XQmL": {
@@ -36743,6 +39533,12 @@
   "source": "llm:claude",
   "type": "solo"
  },
+ "7mfxvSBJMLHtKwCeo0vy6k": {
+  "gender": "NF",
+  "name": "ACIOĞLU",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
  "7mgY992t7YTx6UELsoIMRa": {
   "gender": "F",
   "name": "WOOAH",
@@ -36807,6 +39603,12 @@
   "gender": "NF",
   "name": "Нуржас Садирбаев",
   "source": "llm:claude",
+  "type": "solo"
+ },
+ "7nVA7u9N6fIcxxTXJDl4hq": {
+  "gender": "NF",
+  "name": "Yan",
+  "source": "llm:gemini",
   "type": "solo"
  },
  "7ncSeJV3xl2Q2HnWvllj4B": {
@@ -37043,6 +39845,12 @@
   "source": "llm:claude",
   "type": "solo"
  },
+ "7qgIC4hEF2z301fXmyY8UD": {
+  "gender": "NF",
+  "name": "Mvzzle",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
  "7qjoG7bwhAjSd7nJTcjgAk": {
   "gender": "NF",
   "name": "Kevin Johansen",
@@ -37054,6 +39862,12 @@
   "name": "LACAZETTE",
   "source": "llm:gemini",
   "type": "solo"
+ },
+ "7rDdcCIz0abQeshcaoFVxp": {
+  "gender": "NF",
+  "name": "Taxi",
+  "source": "llm:gemini",
+  "type": "GROUP"
  },
  "7rOlQwf8OuFLFQp4aydjBt": {
   "gender": "F",
@@ -37067,10 +39881,28 @@
   "source": "llm:claude",
   "type": "solo"
  },
+ "7rXMvXRnWHaSwnVvPeUUfw": {
+  "gender": "NF",
+  "name": "Gloria Groove",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
+ "7rbQBgqL5HYC01Ox1C00oY": {
+  "gender": "NF",
+  "name": "DJ Patrick Original",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
  "7rkW85dBwwrJtlHRDkJDAC": {
   "gender": "NF",
   "name": "NAV",
   "source": "llm:claude",
+  "type": "solo"
+ },
+ "7rpD9lGecstoaVj2vGXUex": {
+  "gender": "NF",
+  "name": "Công Dương",
+  "source": "llm:gemini",
   "type": "solo"
  },
  "7rxRHujzUzobMEbtoE297s": {
@@ -37169,6 +40001,12 @@
   "source": "llm:claude",
   "type": "solo"
  },
+ "7tKpXx21KVUOR6vvDs6xtg": {
+  "gender": "NF",
+  "name": "I Belong to the Zoo",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
  "7tLaenA4I2OWx0FUaMo5in": {
   "gender": "NF",
   "name": "Victor Kal.",
@@ -37203,6 +40041,12 @@
   "gender": "F",
   "name": "Siti Nordiana",
   "source": "llm:claude",
+  "type": "solo"
+ },
+ "7td0pZH6CpEX2f36bU1H2D": {
+  "gender": "NF",
+  "name": "黃奇斌",
+  "source": "llm:gemini",
   "type": "solo"
  },
  "7thnnayFyJnVOAJrpe5wMC": {
@@ -37277,6 +40121,12 @@
   "source": "llm:claude",
   "type": "solo"
  },
+ "7uQ1D2NNHs5cUL3CLKRbia": {
+  "gender": "NF",
+  "name": "LAGOS",
+  "source": "llm:gemini",
+  "type": "GROUP"
+ },
  "7uWyXPJ04ihdQdYGGw3xVV": {
   "gender": "NF",
   "name": "Guzior",
@@ -37328,6 +40178,12 @@
  "7vXDAI8JwjW531ouMGbfcp": {
   "gender": "F",
   "name": "TINI",
+  "source": "llm:gemini",
+  "type": "solo"
+ },
+ "7vg7wkmGzMEM7p2ZkMPHJS": {
+  "gender": "NF",
+  "name": "Figoshin",
   "source": "llm:gemini",
   "type": "solo"
  },
