@@ -12,8 +12,9 @@ is ~365 requests. Two outputs per date:
 - table : db/spotify_charts_full/<region>_<YYYY>.csv, rebuilt from the raw
           files at the end of the run (one row per chart entry).
 
-Then runs enrich.py (albums of new tracks + missing genders, --no-enrich to
-skip) and export.py (All Artists page data + R2, --no-export to skip). One instance at a time (snapshots/spotify_charts_full/collect.lock):
+Then exports the page right away (export.py: All Artists page data + R2,
+--no-export to skip), runs enrich.py (albums of new tracks + missing genders,
+can take hours, --no-enrich to skip) and re-exports with the enriched data. One instance at a time (snapshots/spotify_charts_full/collect.lock):
 run_all_charts.py launches it detached once its daily run is over. If a
 collection (e.g. a long backfill) already holds the lock, the new launch leaves
 a request file (collect.pending) instead of doing nothing: the running instance
@@ -607,11 +608,17 @@ def main() -> int:
                 if latest_days_pass(args) == 130:
                     return 130
                 continue
+            # Page first: the new day goes live right after the collection. Enrich
+            # (gender LLM pass) can take hours; genders/albums it adds are only
+            # missing (empty) in this first export, never guessed.
+            if rc == 0 and not args.no_export:
+                rc = export_after_collect(args)
             if rc == 0 and not args.no_enrich:
                 rc = enrich_after_collect(args)
-            if rc in (0, 1) and not args.no_export:
-                # An enrich failure (rc 1) does not block the page: albums are display-only there.
-                rc = max(rc, export_after_collect(args))
+                if rc in (0, 1) and not args.no_export:
+                    # An enrich failure (rc 1) does not block the page: albums are display-only there.
+                    print("\n[EXPORT] re-export avec albums/genres enrichis")
+                    rc = max(rc, export_after_collect(args))
             if rc in (0, 1) and consume_pending():
                 print("\n[PENDING] nouvelle journee demandee pendant enrich/export - nouvelle passe")
                 continue
