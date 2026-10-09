@@ -34,7 +34,7 @@ Vercel déclenche le build sur le push (ignore-command : `tasks/vercel-ignore.sh
 Donc : tester un setting en local ne prouve pas l'état prod ; les réglages admin de prod se font sur le site déployé.
 
 ## Après le deploy
-1. Ouvrir le site : la feature est visible ? (hard refresh si assets cachés — `/assets/` est immutable 1 an, mais les noms sont hashés).
+1. Ouvrir le site : la feature est visible ? (hard refresh si assets cachés — `/assets/` est immutable 1 an, mais les noms sont hashés). **Vérifier aussi en largeur téléphone** (≤600px / 375px) : la majorité des visiteurs sont sur mobile.
 2. Si changement API : tester l'endpoint concerné (ex. PATCH settings depuis /admin avec le token).
 3. Si changement de settings normalisés : vérifier qu'un GET renvoie la nouvelle shape.
 

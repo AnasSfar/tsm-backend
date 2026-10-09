@@ -50,6 +50,7 @@ Modifier ce dossier peut affecter:
 - `tables_image.py`: tableaux/images.
 - `export_frame.py`: frame d'export autour des PNG.
 - `discography.py`: helpers metadata discographie.
+- `era_symbols.py`: symbole signature par ère (écharpe/feuilles Red, mouettes 1989, serpent reputation…) + emoji pour légendes ; `era_key_for_album("Red (Taylor's Version)")` → `red`. Miroir front `frontend/src/data/eraSymbols.js`, à garder synchro.
 - `track_cover_cache.py`: cache covers.
 - `fmt.py`: formatting.
 - `preview.py`: previews.

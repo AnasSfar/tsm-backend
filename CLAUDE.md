@@ -14,6 +14,13 @@ After ANY change, update the impacted docs in the same session — stale docs ar
 - New product decision that isn't written anywhere → write it into the closest skill or context doc.
 Never end a session leaving a context file that contradicts the code.
 
+## Mobile-first audience (mandatory)
+
+Most TSM users are on their phones: both site visitors and the X/Twitter audience. Treat mobile as the main target, not an afterthought:
+- Any frontend feature, page or UI change → check it at phone width (≤600px, ideally 375px) before calling it done: no horizontal page scroll, no cut or overflowing text/images, usable touch targets, nothing missing that desktop shows. Checking desktop only is not enough.
+- Any generated image posted to X → must be readable without zooming in the mobile timeline (~310px wide). Check a downscaled version (see skill `image-gen`).
+- When reporting a finished change, say what was checked on mobile.
+
 ## Testing & simulation (mandatory)
 
 Before running ANY test, preview, or simulation that uses fake/fabricated data (new feature not live yet, dry-run of a pipeline change, "simule vendredi" type requests), load skill `previews-and-sims` first and follow it: work happens under `previews_and_sims/<slug>/` at repo root, never by writing fake data into `db/`, `snapshots/`, `runtime/`, or any real `tools/json`/`tools/locks` state file.

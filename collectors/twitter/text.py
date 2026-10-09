@@ -229,6 +229,20 @@ def stream_milestone_tweet(
     body = milestone_line if next_line is None else f"{milestone_line}\n\n{next_line}"
     return with_prefix(body, prefix)
 
+
+def album_stream_milestone_tweet(
+    *,
+    album_title: str,
+    milestone_streams: int,
+    milestone_rank: int,
+    prefix: str,
+) -> str:
+    body = (
+        f'"{album_title}" has now surpassed {int(milestone_streams):,} streams on Spotify.\n\n'
+        f"It is Taylor Swift's {ordinal(int(milestone_rank))} album to do so."
+    )
+    return with_prefix(body, prefix)
+
 def track_history_line(track_id: str) -> str:
     return f"See full track's history here : {song_url(track_id)}"
 

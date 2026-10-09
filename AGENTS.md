@@ -14,6 +14,13 @@ Do not edit:
 
 unless the user explicitly asks for `website/`, the legacy static site, `website/site/data`, `website/site/history`, or generated static data.
 
+## Mobile-first audience (mandatory)
+
+Most TSM users are on their phones: both site visitors and the X/Twitter audience. Treat mobile as the main target, not an afterthought:
+- Any frontend feature, page or UI change → check it at phone width (≤600px, ideally 375px) before calling it done: no horizontal page scroll, no cut or overflowing text/images, usable touch targets, nothing missing that desktop shows. Checking desktop only is not enough.
+- Any generated image posted to X → must be readable without zooming in the mobile timeline (~310px wide). Check a downscaled version (see skill `image-gen`).
+- When reporting a finished change, say what was checked on mobile.
+
 ## TSM Data Integrity Rules
 
 TSM stats are exact data, not estimates or vibes. When working on streams,

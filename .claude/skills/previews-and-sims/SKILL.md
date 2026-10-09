@@ -155,6 +155,26 @@ Pitfall: running `update_streams.py --help` for a smoke test creates a real
 `snapshots/.../logs/*_attemptNN.txt` + rewrites `.latest.txt` (CollectorRunLog) — delete it
 and restore `.latest.txt` afterwards.
 
+### Pattern: preview a posting script on REAL dates without touching snapshots/
+
+`--no-post` is NOT a preview mode: the script still writes its cards into the real
+`snapshots/.../<date>/` (incident 2026-10-09: milestone cards + old spotlight PNGs written
+there during a redesign, cleaned up by hand). Import the script, monkeypatch its
+`update_streams_dir` (and the post function, as a safety net), then call `main()` with
+`sys.argv` set: `previews_and_sims/milestone-cards/simulate.py real`. Same harness, `edge`
+mode = fake values rendered straight through the comp component, files prefixed `FAKE_`.
+
+### Pattern: preview a frontend worktree branch against the prod API
+
+`previews_and_sims/era-symbols/` : `vite.preview.config.mjs` (port 3030, root = worktree
+`tsm-frontend-era-symbols`) + `vite.redesign.config.mjs` (3031, worktree `tsm-frontend-redesign`),
+`/api` -> prod en lecture, `shoot.py [steps]` (`ERA_BASE=http://localhost:3031` pour le redesign).
+Worktree neuf : junction `frontend/node_modules` vers le checkout principal + copie de
+`node_modules` racine (`@dnd-kit` y vit, pas dans frontend/). Pièges : choisir le thème en
+cliquant dans le ThemePicker (un `ts-museum-store` injecté en localStorage n'est pas appliqué) ;
+le fallback `<Suspense>` des routes ne s'affiche qu'au 1er chargement d'une page (navigation
+interne = transition) → `page.route("**/src/pages/X.jsx*", lambda r: None)` puis `goto` direct.
+
 ### Pitfall: headless Chrome mobile width
 
 `--window-size=390,...` is silently clamped (Chrome min window width ~500px):

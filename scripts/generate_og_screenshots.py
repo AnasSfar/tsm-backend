@@ -31,13 +31,23 @@ tsm-frontend `api/index.py` (mirrored like scripts/r2_keys.py).
 CLI:
     python scripts/generate_og_screenshots.py
         [--base-url URL] [--only SUBSTR] [--no-upload] [--out DIR] [--headful]
+        [--force] [--workers N]
+
+Static pages (STATIC_PAGES: games, museums, about) are skipped when the
+deployed frontend build is the same as at their last capture and that capture
+is < STATIC_MAX_AGE old (state: tools/json/og_screenshots_state.json).
 """
 from __future__ import annotations
 
 import argparse
+import asyncio
+import hashlib
+import json
 import re
 import sys
 import time
+import urllib.request
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from urllib.parse import unquote
 
@@ -50,6 +60,7 @@ DEFAULT_BASE_URL = "https://thetsmuseum.app"
 VIEWPORT = {"width": 1200, "height": 630}
 DEVICE_SCALE = 2
 NAV_TIMEOUT_MS = 35_000
+DEFAULT_WORKERS = 4  # pages captured concurrently (one browser, N contexts)
 SETTLE_MS = 1_800  # after networkidle: let fonts swap + entry animations finish
 
 # Hosts whose requests get aborted before the page paints: ads, tag managers,
@@ -128,6 +139,14 @@ GAME_PAGES: list[str] = [
     "/number-ones-ranking",
     "/debut-ranking",
     "/folklore-ranking",
+    "/fearless-ranking",
+    "/speak-now-ranking",
+    "/red-ranking",
+    "/1989-ranking",
+    "/reputation-ranking",
+    "/lover-ranking",
+    "/evermore-ranking",
+    "/midnights-ranking",
     "/players",
     "/2yearsofttpd",
     "/2yearsofttpd/song",
@@ -156,6 +175,61 @@ ERA_PAGES: list[str] = [
 
 ALL_PAGES: list[str] = MAIN_PAGES + COLLECTOR_PAGES + GAME_PAGES + ERA_PAGES
 
+# Pages whose top 1200x630 only changes when the frontend is redeployed (no
+# daily data above the fold). They are re-captured only when the deployed
+# build changed since their last capture, or when that capture is older than
+# STATIC_MAX_AGE (safety net: leaderboards, copy fetched at runtime...).
+# Everything else (streams, charts, Apple Music, home, players...) is data
+# driven and captured every run. --force captures everything.
+STATIC_PAGES: frozenset[str] = frozenset(
+    [p for p in GAME_PAGES if p != "/players"]
+    + ERA_PAGES
+    + ["/games", "/eras-gallery", "/about"]
+)
+STATIC_MAX_AGE = timedelta(days=3)
+STATE_PATH = ROOT / "tools" / "json" / "og_screenshots_state.json"
+
+
+# --- Skip unchanged static pages -------------------------------------------
+
+def _build_id(base_url: str) -> str:
+    """Fingerprint of the deployed frontend = hash of the hashed /assets/ file
+    names referenced by the SPA shell (Vite renames them on any code change).
+    Empty string when it can't be read -> nothing is skipped."""
+    try:
+        req = urllib.request.Request(f"{base_url}/", headers={"User-Agent": "tsm-og-bot"})
+        with urllib.request.urlopen(req, timeout=20) as resp:
+            html = resp.read().decode("utf-8", "replace")
+    except Exception as exc:  # noqa: BLE001
+        print(f"[build-id] unreadable ({exc}) -> capturing every page")
+        return ""
+    assets = sorted(set(re.findall(r"/assets/[^\"'\s>]+\.(?:js|css)", html)))
+    if not assets:
+        return ""
+    return hashlib.sha1("\n".join(assets).encode()).hexdigest()[:16]
+
+
+def _load_state() -> dict:
+    try:
+        return json.loads(STATE_PATH.read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return {}
+
+
+def _save_state(state: dict) -> None:
+    STATE_PATH.parent.mkdir(parents=True, exist_ok=True)
+    STATE_PATH.write_text(json.dumps(state, indent=2, sort_keys=True), encoding="utf-8")
+
+
+def _is_fresh(entry: dict | None, build_id: str, now: datetime) -> bool:
+    if not entry or not build_id or entry.get("build") != build_id:
+        return False
+    try:
+        captured = datetime.fromisoformat(entry["captured_at"])
+    except (KeyError, ValueError):
+        return False
+    return now - captured < STATIC_MAX_AGE
+
 
 # --- Capture ---------------------------------------------------------------
 
@@ -170,84 +244,133 @@ def capture_all(
     out_dir: Path | None,
     upload: bool,
     headful: bool,
+    on_captured=None,
+    workers: int = DEFAULT_WORKERS,
 ) -> int:
-    from playwright.sync_api import sync_playwright
+    return asyncio.run(
+        _capture_all_async(
+            targets,
+            base_url=base_url,
+            out_dir=out_dir,
+            upload=upload,
+            headful=headful,
+            on_captured=on_captured,
+            workers=max(1, workers),
+        )
+    )
+
+
+async def _capture_one(page, url: str) -> bytes:
+    try:
+        await page.goto(url, wait_until="networkidle", timeout=NAV_TIMEOUT_MS)
+    except Exception:
+        # networkidle can time out on pages with long-poll/analytics;
+        # fall back to domcontentloaded + fixed settle.
+        await page.goto(url, wait_until="domcontentloaded", timeout=NAV_TIMEOUT_MS)
+    await page.add_style_tag(content=HIDE_CSS)
+    try:
+        await page.wait_for_selector("main, #root > *, h1", timeout=8_000)
+    except Exception:
+        pass
+    await page.wait_for_timeout(SETTLE_MS)
+    return await page.screenshot(
+        clip={"x": 0, "y": 0, "width": VIEWPORT["width"], "height": VIEWPORT["height"]}
+    )
+
+
+async def _capture_all_async(
+    targets: list[str],
+    *,
+    base_url: str,
+    out_dir: Path | None,
+    upload: bool,
+    headful: bool,
+    on_captured,
+    workers: int,
+) -> int:
+    """`workers` pages are captured concurrently, each worker in its own
+    browser context (same isolation as before: fresh state, default theme,
+    logged out). Same waits per page as the old sequential loop."""
+    from playwright.async_api import async_playwright
 
     client = r2mod.get_s3_client() if upload else None
     bucket = r2mod.get_env("R2_BUCKET") if upload else ""
-    uploaded = unchanged = failed = 0
+    counts = {"uploaded": 0, "unchanged": 0, "failed": 0}
+    queue: asyncio.Queue = asyncio.Queue()
+    for item in enumerate(targets, 1):
+        queue.put_nowait(item)
 
-    with sync_playwright() as p:
-        browser = p.chromium.launch(headless=not headful)
-        context = browser.new_context(
-            viewport=VIEWPORT,
-            device_scale_factor=DEVICE_SCALE,
-            locale="en-US",
-            timezone_id="Europe/Paris",
-            user_agent=(
-                "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
-                "(KHTML, like Gecko) Chrome/125.0 Safari/537.36 tsm-og-bot"
-            ),
+    def _upload(slug: str, png: bytes) -> bool:
+        return r2mod.upload_bytes_if_changed(
+            client=client,
+            bucket=bucket,
+            key=f"{r2_keys.OG_SCREENSHOTS_PREFIX}/{slug}.png",
+            data=png,
+            content_type="image/png",
+            dry_run=False,
+            cache_control="public, max-age=3600, s-maxage=86400",
         )
-        context.route("**/*", lambda route: route.abort() if _should_block(route.request.url) else route.continue_())
-        page = context.new_page()
 
-        for i, path in enumerate(targets, 1):
-            url = f"{base_url}{path}"
-            slug = _og_slug(path)
-            print(f"[{i}/{len(targets)}] {path}  ->  og/{slug}.png")
+    async with async_playwright() as p:
+        browser = await p.chromium.launch(headless=not headful)
+
+        async def worker() -> None:
+            context = await browser.new_context(
+                viewport=VIEWPORT,
+                device_scale_factor=DEVICE_SCALE,
+                locale="en-US",
+                timezone_id="Europe/Paris",
+                user_agent=(
+                    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
+                    "(KHTML, like Gecko) Chrome/125.0 Safari/537.36 tsm-og-bot"
+                ),
+            )
+            await context.route(
+                "**/*",
+                lambda route: route.abort() if _should_block(route.request.url) else route.continue_(),
+            )
+            page = await context.new_page()
             try:
-                try:
-                    page.goto(url, wait_until="networkidle", timeout=NAV_TIMEOUT_MS)
-                except Exception:
-                    # networkidle can time out on pages with long-poll/analytics;
-                    # fall back to domcontentloaded + fixed settle.
-                    page.goto(url, wait_until="domcontentloaded", timeout=NAV_TIMEOUT_MS)
-                page.add_style_tag(content=HIDE_CSS)
-                try:
-                    page.wait_for_selector("main, #root > *, h1", timeout=8_000)
-                except Exception:
-                    pass
-                page.wait_for_timeout(SETTLE_MS)
-                png = page.screenshot(
-                    clip={"x": 0, "y": 0, "width": VIEWPORT["width"], "height": VIEWPORT["height"]}
-                )
-            except Exception as exc:  # noqa: BLE001
-                print(f"    [fail] {exc}")
-                failed += 1
-                continue
+                while True:
+                    try:
+                        i, path = queue.get_nowait()
+                    except asyncio.QueueEmpty:
+                        return
+                    slug = _og_slug(path)
+                    try:
+                        png = await _capture_one(page, f"{base_url}{path}")
+                    except Exception as exc:  # noqa: BLE001
+                        print(f"[{i}/{len(targets)}] {path}  [fail] {exc}")
+                        counts["failed"] += 1
+                        continue
 
-            if out_dir:
-                out_dir.mkdir(parents=True, exist_ok=True)
-                (out_dir / f"{slug}.png").write_bytes(png)
+                    if out_dir:
+                        out_dir.mkdir(parents=True, exist_ok=True)
+                        (out_dir / f"{slug}.png").write_bytes(png)
 
-            if upload and client is not None:
-                try:
-                    changed = r2mod.upload_bytes_if_changed(
-                        client=client,
-                        bucket=bucket,
-                        key=f"{r2_keys.OG_SCREENSHOTS_PREFIX}/{slug}.png",
-                        data=png,
-                        content_type="image/png",
-                        dry_run=False,
-                        cache_control="public, max-age=3600, s-maxage=86400",
-                    )
-                    if changed:
-                        uploaded += 1
-                    else:
-                        unchanged += 1
-                except Exception as exc:  # noqa: BLE001
-                    print(f"    [upload fail] {exc}")
-                    failed += 1
+                    status = "captured"
+                    if upload and client is not None:
+                        try:
+                            changed = await asyncio.to_thread(_upload, slug, png)
+                            status = "uploaded" if changed else "unchanged"
+                            counts[status] += 1
+                            if on_captured is not None:
+                                on_captured(path)
+                        except Exception as exc:  # noqa: BLE001
+                            status = f"upload fail: {exc}"
+                            counts["failed"] += 1
+                    print(f"[{i}/{len(targets)}] {path}  ->  og/{slug}.png  ({status})")
+            finally:
+                await context.close()
 
-        context.close()
-        browser.close()
+        await asyncio.gather(*(worker() for _ in range(min(workers, len(targets)))))
+        await browser.close()
 
     print(
         f"\nDone: {len(targets)} targets, "
-        f"{uploaded} uploaded, {unchanged} unchanged, {failed} failed."
+        f"{counts['uploaded']} uploaded, {counts['unchanged']} unchanged, {counts['failed']} failed."
     )
-    return 1 if failed and not uploaded and not unchanged else 0
+    return 1 if counts["failed"] and not counts["uploaded"] and not counts["unchanged"] else 0
 
 
 def main() -> int:
@@ -257,6 +380,8 @@ def main() -> int:
     parser.add_argument("--no-upload", action="store_true", help="do not push to R2")
     parser.add_argument("--out", default="", help="also write PNGs into this directory")
     parser.add_argument("--headful", action="store_true", help="show the browser (debug)")
+    parser.add_argument("--workers", type=int, default=DEFAULT_WORKERS, help=f"pages captured in parallel (default {DEFAULT_WORKERS}, 1 = sequential)")
+    parser.add_argument("--force", action="store_true", help="also re-capture static pages whose build didn't change")
     args = parser.parse_args()
 
     base_url = args.base_url.rstrip("/")
@@ -264,18 +389,38 @@ def main() -> int:
     if args.only:
         needle = args.only.lower()
         targets = [t for t in targets if needle in unquote(t).lower()]
+
+    upload = not args.no_upload
+    build_id = _build_id(base_url)
+    state = _load_state()
+    pages_state = state.setdefault("pages", {})
+    if upload and not args.force:
+        now = datetime.now(timezone.utc)
+        skipped = [t for t in targets if t in STATIC_PAGES and _is_fresh(pages_state.get(t), build_id, now)]
+        if skipped:
+            print(
+                f"Skipping {len(skipped)} static page(s): build {build_id} unchanged "
+                f"and captured < {STATIC_MAX_AGE.days} d ago (--force to override)"
+            )
+        targets = [t for t in targets if t not in skipped]
     if not targets:
-        print("No targets after filtering.")
+        print("No targets to capture.")
         return 0
 
+    def _record(path: str) -> None:
+        pages_state[path] = {"build": build_id, "captured_at": datetime.now(timezone.utc).isoformat()}
+        _save_state(state)
+
     started = time.time()
-    print(f"{len(targets)} target route(s) from {base_url}\n")
+    print(f"{len(targets)} target route(s) from {base_url} (build {build_id or '?'})\n")
     code = capture_all(
         targets,
         base_url=base_url,
         out_dir=Path(args.out) if args.out else None,
-        upload=not args.no_upload,
+        upload=upload,
         headful=args.headful,
+        on_captured=_record if upload else None,
+        workers=args.workers,
     )
     print(f"({time.time() - started:.0f}s)")
     return code
