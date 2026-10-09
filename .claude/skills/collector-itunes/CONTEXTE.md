@@ -311,7 +311,7 @@ Onglet **iTunes Charts** à `/amcharts/itunes` (réutilise le préfixe
   préfixe `/amcharts/itunes` vs `/amcharts/apple-music` (checks explicites,
   iTunes AVANT le check générique apple-music).
 - `App.jsx` : route + pageClass `page-itunes`.
-- SEO : `SEO.jsx`, `sitemap.xml`, `ChartsGallery.jsx` (carte), `en.json`
+- SEO : `SEO.jsx`, `ChartsGallery.jsx` (carte), `en.json` (le `sitemap.xml` statique n'existe plus depuis 2026-10-10 : sitemap dynamique dans `api/index.py`, alimenté par `_OG_SCREENSHOT_PATHS`)
   (clés `itunes_*` / `nav_itunes` — autres langues via `i18n:translate`).
 - `useDataVersion.js` : `pcClearPrefix("itunes:")` piggyback sur le signal
   Apple Music (même cadence, `run_apple_music.bat` lance les deux).
