@@ -7,8 +7,10 @@ the site's main pages it points `og:image` at `{site}/api/og/<slug>.png`, and
 `tsm-frontend/api/routes/og_images.py` streams the PNG this script writes to R2
 under `og/<slug>.png` (falling back to `preview.png` until a capture exists).
 
-Only the site's main / section pages are captured (see MAIN_PAGES) -- NOT
-per-song or per-album pages, which keep the generic preview image.
+Captured: the site's main / section pages (MAIN_PAGES), the collectors'
+overview pages (COLLECTOR_PAGES), every game (GAME_PAGES) and every era museum
+(ERA_PAGES) -- NOT per-song or per-album pages, which reuse the home capture
+(og/home.png) as their og:image.
 
 A real screenshot needs a browser. The frontend's Vercel Python function has
 none, so this runs in tsm-backend (Playwright is already a dependency) on its
@@ -79,8 +81,8 @@ def _og_slug(path: str) -> str:
 
 
 # --- Route manifest --------------------------------------------------------
-# Only the site's main / section pages get a screenshot -- NOT per-song or
-# per-album pages (those keep the generic preview image). This list is
+# Main / section pages, games and era museums get a screenshot -- NOT per-song
+# or per-album pages (those reuse the home capture). ALL_PAGES is
 # MIRRORED in tsm-frontend api/index.py::_OG_SCREENSHOT_PATHS (the frontend
 # only points og:image at /api/og/<slug>.png for these paths). Keep in sync.
 # The `.../latest` variants are stable URLs the SPA resolves to the newest
@@ -100,6 +102,59 @@ MAIN_PAGES: list[str] = [
     "/about",
     "/journalist-department",
 ]
+
+# Collector overview pages not in MAIN_PAGES (what the nav links to) -- never
+# per-song / per-album detail pages.
+COLLECTOR_PAGES: list[str] = [
+    "/charts-gallery",
+    "/spotifystreams/streams/recap",
+    "/spotifycharts/charts/all-artists",
+    "/amcharts/itunes",
+]
+
+# Games: the hubs + every playable game linked from /games (GamesPage.jsx).
+GAME_PAGES: list[str] = [
+    "/games/eras",
+    "/games/album-arcade",
+    "/games/hall-of-fame-eras-run",
+    "/swift-day",
+    "/swift-day/swiftie-level",
+    "/swift-day/track-13-ranking",
+    "/pfp-maker",
+    "/taystory/character",
+    "/album-ranking",
+    "/track-1-ranking",
+    "/soundtrack-ranking",
+    "/number-ones-ranking",
+    "/debut-ranking",
+    "/folklore-ranking",
+    "/players",
+    "/2yearsofttpd",
+    "/2yearsofttpd/song",
+    "/2yearsofttpd/tierlist",
+    "/2yearsofttpd/lyrics",
+    "/2yearsofttpd/timer",
+    "/showgirl/song",
+    "/showgirl/ranking",
+]
+
+# Era museums linked from /eras-gallery (ErasGallery.jsx / ErasStripHeader.jsx).
+ERA_PAGES: list[str] = [
+    "/debut/museum",
+    "/fearless/museum",
+    "/speaknow/museum",
+    "/red/museum",
+    "/1989/museum",
+    "/reputation/museum",
+    "/lover/museum",
+    "/folklore/museum",
+    "/evermore/museum",
+    "/midnights/museum",
+    "/2yearsofttpd/museum",
+    "/showgirl/museum",
+]
+
+ALL_PAGES: list[str] = MAIN_PAGES + COLLECTOR_PAGES + GAME_PAGES + ERA_PAGES
 
 
 # --- Capture ---------------------------------------------------------------
@@ -205,7 +260,7 @@ def main() -> int:
     args = parser.parse_args()
 
     base_url = args.base_url.rstrip("/")
-    targets = list(MAIN_PAGES)
+    targets = list(ALL_PAGES)
     if args.only:
         needle = args.only.lower()
         targets = [t for t in targets if needle in unquote(t).lower()]
