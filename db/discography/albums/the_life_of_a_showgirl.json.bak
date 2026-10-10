@@ -1068,10 +1068,15 @@
           "catalog_category": "standard",
           "music_track": true,
           "announced": true,
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273d7812467811a7da6e6a44902",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273cf3de6b538d8b1ed73a4d5d1",
           "historical_track_ids": [
             "49JeKZqejPtqJKpK7x9Ew4"
-          ]
+          ],
+          "version_tags": [
+            "standalone"
+          ],
+          "tsm_song_id": "ot9x",
+          "tsm_album_id": "va1"
         },
         {
           "title": "Cleveland!",
@@ -1102,10 +1107,15 @@
           "catalog_category": "standard",
           "music_track": true,
           "announced": true,
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273d7812467811a7da6e6a44902",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273cf3de6b538d8b1ed73a4d5d1",
           "historical_track_ids": [
             "4S6EQ0C00EwfcFWm4Pd1mt"
-          ]
+          ],
+          "version_tags": [
+            "standard"
+          ],
+          "tsm_song_id": "ckw2",
+          "tsm_album_id": "va1"
         },
         {
           "title": "Pink Clouding",
@@ -1136,10 +1146,12 @@
           "catalog_category": "standard",
           "music_track": true,
           "announced": true,
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273d7812467811a7da6e6a44902",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273cf3de6b538d8b1ed73a4d5d1",
           "version_tags": [
             "standard"
-          ]
+          ],
+          "tsm_song_id": "hu7i",
+          "tsm_album_id": "va1"
         },
         {
           "title": "Babylon",
@@ -1170,10 +1182,12 @@
           "catalog_category": "standard",
           "music_track": true,
           "announced": true,
-          "image_url": "https://i.scdn.co/image/ab67616d0000b273d7812467811a7da6e6a44902",
+          "image_url": "https://i.scdn.co/image/ab67616d0000b273cf3de6b538d8b1ed73a4d5d1",
           "version_tags": [
             "standard"
-          ]
+          ],
+          "tsm_song_id": "zw2i",
+          "tsm_album_id": "va1"
         }
       ]
     },
