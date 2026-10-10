@@ -35,6 +35,10 @@ Also use:
   `collectors/apple_music/post_new_release_progression.py --platform itunes` right
   after the collector (new-release rank progression, 7-day window ending at midnight Paris, 72h before 2026-09-27). The chain is started
   in PARALLEL by `run_apple_music.bat` (no longer after Apple Music) — see CONTEXTE.md § Scheduler.
+  Release candidates = catalog `release_date` **or**, since 2026-10-10, any Taylor
+  track in the iTunes Top Songs CSVs that is not in `db/discography/` but has a recent
+  Apple `release_date` (surprise singles / new versions — song posts only, no album
+  thread). See `collector-apple-music` CONTEXTE § Progression horaire.
 - The legacy RSS host throttles bursts with **HTTP 403** — keep
   `ITUNES_WORKERS` low (default 3), rely on `_fetch`'s backoff retries + the
   sequential retry pass in `charts.py`. A 404 is a legitimately empty chart.

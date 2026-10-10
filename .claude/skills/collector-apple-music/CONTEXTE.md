@@ -115,6 +115,16 @@ entre Global — vs hier — et pays/iTunes — vs le cycle precedent) :
   - **Sortie detectee automatiquement** (proprio : « the debut is the first time
     they appear at the charts or are able to be bought ») : `release_date` du
     catalogue ne rend un titre que *candidat* (48 h avant -> fenetre + 48 h apres).
+    **Titres hors catalogue (2026-10-10, `feed_release_tracks`)** : un titre Taylor
+    des CSV iTunes Top Songs absent de `db/discography/` mais avec un `release_date`
+    Apple dans la meme fenetre devient aussi candidat (cas : singles « Patient Zero
+    (Acoustic Version) » / « (Piano Version) », #1/#2 US le 09/10, rien poste car
+    pas dans le catalogue). Traitement LEGER voulu par le proprio (« on va pas
+    bouger tous les collectors comme le run debut ») : rien hors de ce script ne
+    les voit, `album=""` -> pas de thread album iTunes / card album, seulement les
+    posts chanson (#1 sur un marche cle, good updates) ; l'album parent (titre sans
+    parenthese finale) ne sert qu'a l'emoji (`emoji_album`), sous-titre de card
+    « Taylor Swift · Single ». Pas de `release_date` Apple -> jamais candidat.
     La fenetre (`window_end` : 7 jours puis jusqu'a minuit (Paris) — sortie un vendredi = fin le vendredi suivant a minuit ; 72 h avant le 2026-09-27 soir, proprio : « fait le genre 7 jours, on finit a la fin du prochain vendredi » ; Encore : derniere card ven. 02/10 22:00) demarre au 1er cycle ou le lookup public iTunes
     (`itunes.apple.com/lookup?id=...&country=<pays cles>`) dit `isStreamable` ou
     donne un `trackPrice`, ou ou le titre apparait sur un chart. Memorise dans

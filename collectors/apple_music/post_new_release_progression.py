@@ -266,7 +266,61 @@ def candidate_tracks(now: datetime, window_hours: float) -> list[dict]:
                 "catalog_release": catalog_release,
             }
         )
+    candidates += feed_release_tracks(now, window_hours, seen_keys)
     return candidates
+
+
+def feed_release_tracks(now: datetime, window_hours: float, taken: set[str]) -> list[dict]:
+    """New Taylor tracks that are NOT in db/discography/, found in the iTunes
+    Top Songs CSVs with a recent Apple `release_date` (owner 2026-10-10:
+    "Patient Zero (Acoustic Version)" / "(Piano Version)" singles hit #1/#2 in
+    the US and nothing posted — the catalog had no row for them). A lighter
+    treatment than a catalog release, on purpose ("on va pas bouger tous les
+    collectors comme le run début"): nothing outside this script sees them,
+    and album = "" so no album thread / album card — only the song posts
+    (key-market #1, good updates). The parent album is kept in "emoji_album"
+    for the caption emoji only."""
+    catalog_keys: set[str] = set()
+    album_of: dict[str, str] = {}
+    for track in iter_catalog_tracks():
+        for value in (track.get("title"), track.get("base_title")):
+            for key in song_key_candidates(value):
+                catalog_keys.add(key)
+                album_of.setdefault(key, str(track.get("album") or ""))
+    found: dict[str, dict] = {}
+    days = int((window_hours + CANDIDATE_LOOKAHEAD_HOURS) // 24) + 1
+    for back in range(days + 1):
+        day = (now - timedelta(days=back)).strftime("%Y-%m-%d")
+        for row in _read_today_rows(itunes_daily_csv(day, "itunes_top_songs.csv")):
+            title = str(row.get("song_name") or "").strip()
+            if not title or "taylor swift" not in str(row.get("artist_name") or "").lower():
+                continue
+            key = song_name_key(title)
+            if key in taken or catalog_keys.intersection(song_key_candidates(title)):
+                continue
+            entry = found.setdefault(key, {"title": title, "key": key, "keys": set(song_key_candidates(title)),
+                                           "apple_ids": set(), "image_url": "", "album": "",
+                                           "subtitle": "Taylor Swift · Single", "catalog_release": None})
+            apple_id = str(row.get("apple_music_id") or "").strip()
+            if apple_id:
+                entry["apple_ids"].add(apple_id)
+            entry["image_url"] = entry["image_url"] or str(row.get("image_url") or "")
+            released = _parse_release_date(row.get("release_date"))
+            if released is not None and (entry["catalog_release"] is None or released < entry["catalog_release"]):
+                entry["catalog_release"] = released
+    out: list[dict] = []
+    for key, entry in found.items():
+        released = entry["catalog_release"]
+        if released is None:
+            continue  # no Apple release date at all: never NEW by inference
+        hours_since = (now - released).total_seconds() / 3600.0
+        if hours_since < -CANDIDATE_LOOKAHEAD_HOURS or hours_since > window_hours + CANDIDATE_LOOKAHEAD_HOURS:
+            continue
+        base = re.sub(r"\s*\([^()]*\)\s*$", "", key).strip()
+        entry["emoji_album"] = album_of.get(base, "")
+        taken.add(key)
+        out.append(entry)
+    return out
 
 
 def _apple_availability(ids: set[str], countries: list[str]) -> dict[str, bool] | None:
@@ -1285,7 +1339,7 @@ def build_update_tweet(*, track: dict, update: dict, platform: str, worldwide: d
                 lead = lead[:-1] + f" — and is back at its peak: {_peak_list(back)}."
         else:
             lead = f"{title} is back at its peak on {label}: {_peak_list(back)}."
-        tweet = "\n\n".join(x for x in (f"{album_emoji(track.get('album'))} | {lead}", world, url) if x)
+        tweet = "\n\n".join(x for x in (f"{album_emoji(track.get('emoji_album') or track.get('album'))} | {lead}", world, url) if x)
         if _tweet_weight(tweet, url) <= TEXT_BUDGET or len(kept) <= 1:
             return tweet
         kept.pop()
@@ -1362,7 +1416,7 @@ def build_tweet_text(*, track: dict, placements: list[dict], platform: str, worl
             parts.append(f"#{rank} in {where_list}")
         extras = " — also " + ", ".join(parts)
 
-    emoji = album_emoji(track.get("album"))
+    emoji = album_emoji(track.get("emoji_album") or track.get("album"))
     body = f'{emoji} | "{track["title"]}" {headline}{extras}.'
     world = worldwide_sentence(
         worldwide, platform, f"the {PLATFORMS[platform]['label']} albums chart" if is_album else "",
