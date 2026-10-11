@@ -147,6 +147,14 @@ folder, then checks the paced X-schedule slot chain across a simulated interrupt
 Since 2026-10-07 it also prints the `post_pacing` plans for realistic days (availability
 hour x post count), checks multi-post steps advance the curve, and runs two updates 40 min
 apart against the schedule registry (no slot < 180 s apart, live-post guard wait).
+Since 2026-10-10 the same folder has `pacing_compare.py` (current curve vs
+variants given as `name:base:growth:maxmin:window`, plain `plan_slots`, no state) and
+(`order_check.py` was removed with `_round_robin`/`_spread`.)
+`previews_and_sims/post-priority-order/simulate.py [dates]` replays the finalize post
+order by importance on REAL past days, read-only: posting scripts are run with
+`--force --count-units` (force = ignore the locks already written for those days,
+count = return before rendering/posting); best-day candidates are skipped because
+`--list-batch-candidates` writes its stash into the real snapshots/ day folder.
 Pitfalls: fake "now" must be in the FUTURE (registry pruning uses the real clock) —
 patch `finalize_update.datetime` with a `datetime` subclass whose `now()` returns it;
 give each fake stats date its own `update_streams_dir` folder or the second update

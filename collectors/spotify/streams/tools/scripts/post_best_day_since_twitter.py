@@ -90,6 +90,7 @@ from core.notify import send as notify  # noqa: E402
 from twitter.text import best_day_since_era_recap_tweet, best_day_since_recap_tweet, best_day_since_tweet  # noqa: E402
 import best_day_since  # noqa: E402
 import score_best_day_since  # noqa: E402
+import post_priority  # noqa: E402
 import generate_album_update_image  # noqa: E402
 from config import NTFY_TOPIC  # noqa: E402
 
@@ -1660,6 +1661,8 @@ def main() -> None:
             # Biggest day of the year / gap >= 3 months: finalize posts these in
             # its urgent phase, before top eras / top songs (2026-10-04).
             "urgent_track_ids": [row["track_id"] for row in rows if _is_priority_best_day_since(row)],
+            # Importance on finalize's shared scale (post_priority, 2026-10-10).
+            "scores": {row["track_id"]: post_priority.best_day_importance(row) for row in rows},
         }))
         return
 

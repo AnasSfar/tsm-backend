@@ -3,7 +3,9 @@
 Replaces the flat 60 s -> 6 min curve of 2026-10-04 (posts still looked ~2 min
 apart). Each paced post gets a gap that:
 - grows logarithmically with its rank k in the paced phase:
-  BASE x (1 + GROWTH x ln(1 + k)) -> 3, 6, 8, 9, 10, 11... min at reference activity;
+  BASE x (1 + GROWTH x ln(1 + k)) -> 2.5, 4, 5, 6, 6.5, 7... min at reference activity
+  (tightened 2026-10-10: was 180 s x 1.5, 45 min cap, 8 h window -> ~20 posts
+  ran 4-6 h; now ~2.5-3 h);
 - is measured in AUDIENCE time, not clock time: the gap is consumed at the
   speed of core.x_active_times.engagement_weight (X analytics heatmap), so
   posts pack closer around 16h / evenings and stretch through 3h-10h — the
@@ -27,11 +29,11 @@ from typing import Callable
 from core import twitter as twitter_core
 from core.x_active_times import engagement_weight
 
-BASE_GAP_SECONDS = float(os.getenv("FINALIZE_SCHEDULE_BASE_SECONDS", "180"))
-GROWTH = float(os.getenv("FINALIZE_SCHEDULE_GROWTH", "1.5"))
+BASE_GAP_SECONDS = float(os.getenv("FINALIZE_SCHEDULE_BASE_SECONDS", "150"))
+GROWTH = float(os.getenv("FINALIZE_SCHEDULE_GROWTH", "1.0"))
 MIN_GAP_SECONDS = int(os.getenv("FINALIZE_SCHEDULE_MIN_GAP_SECONDS", "180"))
-MAX_GAP_SECONDS = int(os.getenv("FINALIZE_SCHEDULE_MAX_GAP_SECONDS", str(45 * 60)))
-WINDOW_HOURS = float(os.getenv("FINALIZE_SCHEDULE_WINDOW_HOURS", "8"))
+MAX_GAP_SECONDS = int(os.getenv("FINALIZE_SCHEDULE_MAX_GAP_SECONDS", str(25 * 60)))
+WINDOW_HOURS = float(os.getenv("FINALIZE_SCHEDULE_WINDOW_HOURS", "5"))
 MIN_LEAD_SECONDS = int(os.getenv("FINALIZE_SCHEDULE_MIN_LEAD_SECONDS", "150"))
 
 

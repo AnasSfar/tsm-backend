@@ -1,4 +1,4 @@
-from __future__ import annotations
+﻿from __future__ import annotations
 
 import csv
 import json
@@ -63,6 +63,7 @@ from spotify_api import (
     TokenManager,
     _probe_via_api,
     _warp_connect,
+    fetch_linked_video_playcounts,
     fetch_playcount_api,
 )
 from track_cover_cache import merge_track_cover_cache
@@ -834,6 +835,68 @@ def _notify_total_decrease(track: dict, track_id: str, stats_date: str, last_tot
             tags="rotating_light,warning",
             priority="high",
         )
+
+
+# Clip desynchronise (incident Patient Zero, 2026-10-09) : une track audio et
+# son clip (track mediaType=VIDEO liee via videoAssociations) partagent
+# normalement le meme compteur. Spotify a casse ce lien pour certains titres :
+# le total de la track audio retombe (vues du clip retirees) tandis que la
+# track video garde le vrai total continu (= celui des trackers de reference).
+# Quand le total audio baisse, on prend le total du clip SI il prolonge la
+# serie de facon plausible : >= total de la veille et daily <= max(facteur x
+# daily de la veille, plancher). Un clip partage par plusieurs versions
+# (Love Story / Pop Mix / BGV...) a un compteur sans rapport et echoue ce test.
+VIDEO_SPLIT_MAX_DAILY_FACTOR = 3.0
+VIDEO_SPLIT_MIN_DAILY_CAP = 100_000
+
+
+def resolve_video_split_total(
+    track: dict,
+    total: int,
+    stats_date: str,
+    history_index: HistoryIndex | None,
+    token_mgr: TokenManager | None,
+    session,
+    api_metrics: dict | None = None,
+) -> tuple[int, str | None]:
+    """Retourne (total a utiliser, video_track_id si le total du clip a ete retenu)."""
+    if history_index is None or token_mgr is None or not token_mgr.available:
+        return total, None
+    if api_metrics is not None and api_metrics.get("video_association_count") == 0:
+        return total, None
+    track_id = track["track_id"]
+    previous_stats_date = get_previous_stats_date_str(stats_date)
+    reference_total = history_index.get_total_for_date(track_id, previous_stats_date)
+    if reference_total is None or total >= reference_total:
+        return total, None
+    previous_daily = history_index.get_daily_for_date(track_id, previous_stats_date)
+    if previous_daily is None or previous_daily <= 0:
+        return total, None
+    max_daily = max(VIDEO_SPLIT_MIN_DAILY_CAP, int(previous_daily * VIDEO_SPLIT_MAX_DAILY_FACTOR))
+    try:
+        videos = fetch_linked_video_playcounts(track_id, token_mgr, session)
+    except Exception as exc:
+        print(f"  [video-split] {track['title']} [{track_id[-6:]}]: video lookup failed ({exc})")
+        return total, None
+    candidates = [
+        (video_id, video_total)
+        for video_id, video_total in videos
+        if 0 <= video_total - reference_total <= max_daily
+    ]
+    if len(candidates) != 1:
+        if videos:
+            print(
+                f"  [video-split] {track['title']} [{track_id[-6:]}]: audio total dropped "
+                f"{reference_total:,} -> {total:,}, no usable video total {videos}"
+            )
+        return total, None
+    video_id, video_total = candidates[0]
+    print(
+        f"  [video-split] {track['title']} [{track_id[-6:]}]: audio total dropped "
+        f"{reference_total:,} -> {total:,}; using linked video {video_id} total {video_total:,} "
+        f"(daily {video_total - reference_total:,})"
+    )
+    return video_total, video_id
 
 
 def try_apply_track_update(
@@ -2121,6 +2184,13 @@ def _worker(
             else:
                 scrape_status = "error"
                 total, raw = None, ""
+
+            if scrape_status == "ok" and total is not None and not override_stream_guards:
+                total, video_id = resolve_video_split_total(
+                    track, total, stats_date, history_index, token_mgr, _api_session, api_metrics,
+                )
+                if video_id:
+                    raw = f"{total} (video {video_id})"
 
             if adaptive is not None:
                 adaptive.record(got_429=bool(api_metrics.get("had_429")))
@@ -4356,6 +4426,15 @@ def main():
                 f"partial export {stats_date} (top {INFINITE_RETRY_PREVIOUS_DAY_TOP_N} infinite retry)",
             )
         print("Infinite retry worker finished.")
+
+    if (not dry_run_mode and not debug_daily_mode and not local_test_mode
+            and not throwback_mode and not stats_date_override and summary["all_done"]):
+        from collection_streams import collect_songwriting
+        try:
+            collect_songwriting(stats_date, token_mgr)
+        except Exception as exc:
+            # A separate collection stays blocked; never alter Taylor's verified totals.
+            print(f"[collections] Songwriting collection blocked: {exc}")
 
     if not dry_run_mode and not debug_daily_mode and not local_test_mode and not throwback_mode:
         run_discography_backfill_after_streams(token_mgr, stats_date)

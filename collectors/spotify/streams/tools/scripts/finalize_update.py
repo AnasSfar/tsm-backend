@@ -22,6 +22,7 @@ from core import twitter as twitter_core
 from git_ops import git_commit_and_push
 import generate_album_update_image
 import post_best_day_since_twitter
+import post_priority
 import score_album_update
 import history_store
 import live_log
@@ -1250,7 +1251,7 @@ def _post_weekend_song_gainers(ctx: FinalizeContext, state: dict[str, float]) ->
     print("Weekend song gainers done.")
 
 
-def _post_song_overtakes(ctx: FinalizeContext, state: dict[str, float]) -> None:
+def _post_song_overtakes(ctx: FinalizeContext, state: dict[str, float], max_units: int = 0) -> None:
     if ctx.debug_daily_mode:
         print("[DEBUG-DAILY] Skip: song overtakes.")
         return
@@ -1268,6 +1269,8 @@ def _post_song_overtakes(ctx: FinalizeContext, state: dict[str, float]) -> None:
     ]
     if ctx.no_post_mode:
         cmd.append("--no-post")
+    if max_units:
+        cmd.extend(["--max-units", str(max_units)])
 
     print("Posting non-extra song overtakes...")
     _run(
@@ -1280,7 +1283,7 @@ def _post_song_overtakes(ctx: FinalizeContext, state: dict[str, float]) -> None:
     print("Song overtakes done.")
 
 
-def _post_stream_milestones(ctx: FinalizeContext, state: dict[str, float]) -> None:
+def _post_stream_milestones(ctx: FinalizeContext, state: dict[str, float], max_units: int = 0) -> None:
     if ctx.debug_daily_mode:
         print("[DEBUG-DAILY] Skip: stream milestones.")
         return
@@ -1298,6 +1301,8 @@ def _post_stream_milestones(ctx: FinalizeContext, state: dict[str, float]) -> No
     ]
     if ctx.no_post_mode:
         cmd.append("--no-post")
+    if max_units:
+        cmd.extend(["--max-units", str(max_units)])
 
     print("Posting song stream milestones...")
     _run(
@@ -1308,6 +1313,41 @@ def _post_stream_milestones(ctx: FinalizeContext, state: dict[str, float]) -> No
         state=state,
     )
     print("Stream milestones done.")
+
+
+def _count_post_units(ctx: FinalizeContext, script_name: str, label: str) -> list[float] | None:
+    """Importance (post_priority scale) of each post post_song_overtakes.py /
+    post_stream_milestones.py still has to make today, in the order the
+    script posts them with --max-units 1 (most important first). Nothing is
+    posted (--count-units). Lets finalize give each overtake / milestone its
+    own turn in the importance order (decision 2026-10-10). None on failure ->
+    caller falls back to one step."""
+    script = ctx.script_dir / "tools" / "scripts" / script_name
+    cmd = [sys.executable, str(script), ctx.summary["stats_date"], "--count-units"]
+    try:
+        result = subprocess.run(cmd, capture_output=True, text=True, encoding="utf-8", errors="replace", check=False)
+    except Exception as exc:
+        print(f"[{label}] Failed to count posts: {exc}")
+        return None
+    for line in reversed(result.stdout.splitlines()):
+        if line.startswith("UNITS_JSON:"):
+            try:
+                data = json.loads(line.split(":", 1)[1].strip())
+                units = max(0, int(data.get("units") or 0))
+                scores = [float(v) for v in (data.get("scores") or [])]
+                labels = [str(v) for v in (data.get("labels") or [])]
+                if len(scores) != units:
+                    scores = [40.0] * units
+                for name, score in zip(labels, scores):
+                    print(f"[{label}] {name}: importance {score:.0f}")
+                return scores
+            except Exception as exc:
+                print(f"[{label}] Failed to parse post count ({exc}): {line}")
+                return None
+    print(f"[{label}] No UNITS_JSON line found; posting as a single step.")
+    if result.stderr:
+        print(result.stderr[-2000:])
+    return None
 
 
 def _streams_post_ready(ctx: FinalizeContext) -> bool:
@@ -1684,6 +1724,24 @@ def _album_post_queue(
     return [(album, False) for album in queue]
 
 
+def _album_importance_scores(album_queue: list[tuple[str, bool]], stats_date: str) -> dict[str, float]:
+    """score_album_update score of each queued album = its importance in the
+    post order (post_priority scale). Cached by score_album_update; a failure
+    only falls back to the default importance."""
+    if not album_queue:
+        return {}
+    try:
+        scored = _score_albums_for_posting([album for album, _weekly in album_queue], stats_date)
+    except Exception as exc:
+        print(f"[order] album scores unavailable ({exc}); default importance.")
+        return {}
+    return {
+        str(item["album"]): float(item.get("score") or 0.0)
+        for item in scored
+        if item.get("status") == "scored"
+    }
+
+
 def _urgent_albums(
     album_queue: list[tuple[str, bool]], stats_date: str
 ) -> list[tuple[str, bool]]:
@@ -1818,14 +1876,15 @@ def _post_best_day_since_recap_fallback(ctx: FinalizeContext, state: dict[str, f
     )
 
 
-def _best_day_since_candidate_tracks(ctx: FinalizeContext) -> tuple[list[str], set[str]]:
+def _best_day_since_candidate_tracks(ctx: FinalizeContext) -> tuple[list[str], set[str], dict[str, float]]:
     """Ask post_best_day_since_twitter.py which individual song track ids the
     finalize batch would post today (same selection/caps as the old
     single-call batch), without posting anything. Used to interleave each
     song 1-for-1 with the album queue instead of posting the whole batch as
     one alternation turn. Returns (ordered track ids, urgent subset — biggest
     day of the year / gap >= 3 months, posted in the urgent phase).
-    Never blocks finalize -- returns ([], set()) on any failure."""
+    Also returns each candidate's importance (post_priority scale) for the
+    importance order. Never blocks finalize -- returns ([], set(), {}) on any failure."""
     best_day_script = ctx.script_dir / "tools" / "scripts" / "post_best_day_since_twitter.py"
     cmd = [sys.executable, str(best_day_script), ctx.summary["stats_date"], "--list-batch-candidates"]
     if ctx.posted_best_day_since_tracks:
@@ -1834,23 +1893,24 @@ def _best_day_since_candidate_tracks(ctx: FinalizeContext) -> tuple[list[str], s
         result = subprocess.run(cmd, capture_output=True, text=True, encoding="utf-8", errors="replace", check=False)
     except Exception as exc:
         print(f"[best-day-since] Failed to list batch candidates: {exc}")
-        return [], set()
+        return [], set(), {}
     for line in reversed(result.stdout.splitlines()):
         if line.startswith("BATCH_CANDIDATES_JSON:"):
             try:
                 data = json.loads(line.split(":", 1)[1].strip())
                 track_ids = [str(tid) for tid in (data.get("track_ids") or [])]
                 urgent = {str(tid) for tid in (data.get("urgent_track_ids") or [])} & set(track_ids)
-                return track_ids, urgent
+                scores = {str(tid): float(v) for tid, v in (data.get("scores") or {}).items()}
+                return track_ids, urgent, scores
             except Exception as exc:
                 print(f"[best-day-since] Failed to parse batch candidates ({exc}): {line}")
-                return [], set()
+                return [], set(), {}
     print("[best-day-since] No BATCH_CANDIDATES_JSON line found; skipping individual song posts.")
     if result.stdout:
         print(result.stdout[-2000:])
     if result.stderr:
         print(result.stderr[-2000:])
-    return [], set()
+    return [], set(), {}
 
 
 def _post_one_best_day_track(
@@ -2235,22 +2295,19 @@ def run_final_update_tasks(ctx: FinalizeContext) -> None:
                 return
             _save_pacing_state(ctx.summary["stats_date"], pacing)
 
-        # Ordre de post (décision 2026-09-03, phase urgente revue le 2026-10-04) :
-        #   Phase urgente (espacement normal 60-75 s) :
-        #     1. récap weekend  2. best-day-since urgents (biggest day of the
-        #     year / écart >= 3 mois)  3. cards album urgentes (score >= 70)
-        #     4. top eras  5. top songs
-        #   Puis tout le reste en rythme logarithmique (pauses de plus en plus
-        #   longues, voir _paced_spacing_seconds) :
-        #   4. cards album (2 meilleurs au score_album_update -> Showgirl/TTPD
-        #      s'ils n'y sont pas -> reste par score) ALTERNÉES 1-pour-1 avec les
-        #      autres posts (debut, best-day-since, weekend gainers, overtakes,
-        #      milestones)
-        #   5. tables gainers (spotlight), toujours en dernier
-        # Cards album urgentes (2026-09-24 Showgirl, tout album depuis le
-        # 2026-10-04) : score >= URGENT_ALBUM_SCORE_MIN -> phase urgente.
-        # Semaine Encore (stats 2026-09-24 -> 09-30) : toujours, sans condition
-        # de score, et best-day-since plafonné à 3 cards chanson.
+        # Ordre de post (décision 2026-10-10, ordre par importance) :
+        #   Phase urgente (espacement normal 60-75 s) : récap weekend, puis par
+        #     importance best-day-since urgents (biggest day of the year /
+        #     écart >= 3 mois), cards album urgentes (score >= 70, max 3),
+        #     milestones / overtakes >= post_priority.URGENT_UNIT_SCORE_MIN (80) ;
+        #     puis top eras, top songs.
+        #   Phase rythmée (programmée sur X, post_pacing) : albums, best-day,
+        #     milestones, overtakes, weekend gainers fusionnés par importance
+        #     (post_priority.order_by_importance : jamais 2 du même type de suite
+        #     tant qu'un autre attend ; chaque file garde son ordre interne,
+        #     file album = top 2 -> Showgirl/TTPD -> reste), tables gainers en dernier.
+        # Semaine Encore (stats 2026-09-24 -> 09-30) : Showgirl toujours urgente,
+        # best-day-since plafonné à 3 cards chanson.
         album_queue: list[tuple[str, bool]] = []
         if not ctx.debug_daily_mode and not ctx.local_test_mode and not ctx.skip_post_images:
             if _is_weekend_stats_date(ctx.summary["stats_date"]):
@@ -2280,6 +2337,7 @@ def run_final_update_tasks(ctx: FinalizeContext) -> None:
         best_day_script = ctx.script_dir / "tools" / "scripts" / "post_best_day_since_twitter.py"
         best_day_tracks: list[str] = []
         urgent_best_day_tracks: set[str] = set()
+        best_day_scores: dict[str, float] = {}
         if not ctx.debug_daily_mode and not ctx.local_test_mode:
             if "best-day-since" in ctx.skip_steps:
                 print("Best-day-since posts skipped (--skip best-day-since).")
@@ -2288,25 +2346,24 @@ def run_final_update_tasks(ctx: FinalizeContext) -> None:
             elif ctx.skip_post_images:
                 pass
             elif ctx.summary.get("all_done"):
-                best_day_tracks, urgent_best_day_tracks = _best_day_since_candidate_tracks(ctx)
+                best_day_tracks, urgent_best_day_tracks, best_day_scores = _best_day_since_candidate_tracks(ctx)
             else:
                 print("Best-day-since posts skipped: not all tracks are done yet.")
 
-        _guarded_post_step("weekend recap card", lambda: _post_daily_recap_card(ctx, post_state), key="recap")
+        # Importance order (decision 2026-10-10, replaces the fixed type order):
+        # every post after the weekend recap gets an importance score on one
+        # scale (post_priority) — album score_album_update, best-day score,
+        # milestone size/rank, overtake rank. Urgent ones (urgent best-days,
+        # urgent albums, milestones/overtakes >= URGENT_UNIT_SCORE_MIN) post
+        # live before top eras, most important first; the rest is paced, most
+        # important first, never two posts of the same type in a row while
+        # another type is waiting.
+        album_scores = _album_importance_scores(album_queue, ctx.summary["stats_date"])
 
-        for track_id in [tid for tid in best_day_tracks if tid in urgent_best_day_tracks]:
-            _guarded_post_step(
-                f"best-day-since urgent post ({track_id})",
-                lambda tid=track_id: _post_one_best_day_track(ctx, post_state, best_day_script, tid),
-            )
-
-        urgent_albums = _urgent_albums(album_queue, ctx.summary["stats_date"]) if album_queue else []
-        if urgent_albums:
-            album_queue = [item for item in album_queue if item not in urgent_albums]
-        for urgent_album, urgent_weekly_only in urgent_albums:
-            _guarded_post_step(
-                f"album update urgent ({urgent_album})",
-                lambda album=urgent_album, weekly_only=urgent_weekly_only: _post_one_album(
+        def _album_step(album: str, weekly_only: bool, label: str = "album update"):
+            return (
+                f"{label} ({album})",
+                lambda album=album, weekly_only=weekly_only: _post_one_album(
                     ctx,
                     post_state,
                     album_img_script,
@@ -2314,8 +2371,74 @@ def run_final_update_tasks(ctx: FinalizeContext) -> None:
                     post_priority="4",
                     weekly_only=weekly_only,
                 ),
-                key="all-albums",
+                "all-albums",
+                PACED_EXPECTED_POSTS["album"],
             )
+
+        def _best_day_step(track_id: str, label: str = "best-day-since post"):
+            return (
+                f"{label} ({track_id})",
+                lambda tid=track_id: _post_one_best_day_track(ctx, post_state, best_day_script, tid),
+                None,
+                PACED_EXPECTED_POSTS["best-day"],
+            )
+
+        # One step per overtake / milestone post: each call posts the most
+        # important unit left and writes its per-event locks. A failed count
+        # falls back to the old single step (default importance).
+        def _unit_steps(label, key, script_name, post_fn, expected_key, fallback_importance):
+            scores = None
+            if key not in ctx.skip_steps and not ctx.debug_daily_mode and not ctx.local_test_mode:
+                scores = _count_post_units(ctx, script_name, label)
+            if scores is None:
+                step = (label, lambda: post_fn(ctx, post_state), key, PACED_EXPECTED_POSTS[expected_key])
+                return [(step, fallback_importance)]
+            return [
+                (
+                    (f"{label} ({i}/{len(scores)})", lambda: post_fn(ctx, post_state, max_units=1), key, 1.0),
+                    score,
+                )
+                for i, score in enumerate(scores, 1)
+            ]
+
+        overtake_units = _unit_steps(
+            "song overtakes", "overtakes", "post_song_overtakes.py", _post_song_overtakes, "overtakes", 40.0,
+        )
+        milestone_units = _unit_steps(
+            "stream milestones", "milestones", "post_stream_milestones.py", _post_stream_milestones,
+            "milestones", 50.0,
+        )
+
+        def _split_urgent(units):
+            # Units come most important first: the urgent ones are a prefix.
+            n = 0
+            while n < len(units) and units[n][0][3] == 1.0 and units[n][1] >= post_priority.URGENT_UNIT_SCORE_MIN:
+                n += 1
+            return units[:n], units[n:]
+
+        urgent_overtakes, overtake_units = _split_urgent(overtake_units)
+        urgent_milestones, milestone_units = _split_urgent(milestone_units)
+
+        _guarded_post_step("weekend recap card", lambda: _post_daily_recap_card(ctx, post_state), key="recap")
+
+        urgent_albums = _urgent_albums(album_queue, ctx.summary["stats_date"]) if album_queue else []
+        if urgent_albums:
+            album_queue = [item for item in album_queue if item not in urgent_albums]
+        urgent_order = post_priority.order_by_importance({
+            "best-day": [
+                (_best_day_step(tid, "best-day-since urgent post"), best_day_scores.get(tid, 85.0))
+                for tid in best_day_tracks if tid in urgent_best_day_tracks
+            ],
+            "album": [
+                (_album_step(album, weekly_only, "album update urgent"), album_scores.get(album, 70.0))
+                for album, weekly_only in urgent_albums
+            ],
+            "milestone": urgent_milestones,
+            "overtake": urgent_overtakes,
+        })
+        for _kind, (label, fn, key, _expected), importance in urgent_order:
+            print(f"[order] urgent: {label} (importance {importance:.0f})")
+            _guarded_post_step(label, fn, key=key)
 
         if not ctx.debug_daily_mode and not ctx.local_test_mode:
             _guarded_post_step("top eras post", lambda: _post_albums_daily(ctx, post_state), key="top-eras")
@@ -2333,60 +2456,40 @@ def run_final_update_tasks(ctx: FinalizeContext) -> None:
 
         # (label, fn, skip key, expected posts) — expected counts let the X
         # schedule plan fit what's left into the window (post_pacing).
-        other_steps: list[tuple[str, Callable[[], None], str | None, float]] = []
-        if not ctx.debug_daily_mode and not ctx.local_test_mode:
-            other_steps.append((
-                "debut posts", lambda: _post_debut_releases(ctx, post_state), "debut", PACED_EXPECTED_POSTS["debut"],
-            ))
-            # Each candidate gets its own alternation turn against the album
-            # queue (decision 2026-09-04), instead of the whole best-day-since
-            # batch posting back to back as a single turn. Urgent ones already
-            # posted above.
-            for track_id in best_day_tracks:
-                if track_id in urgent_best_day_tracks:
-                    continue
-                other_steps.append((
-                    f"best-day-since post ({track_id})",
-                    lambda tid=track_id: _post_one_best_day_track(ctx, post_state, best_day_script, tid),
-                    None,
-                    PACED_EXPECTED_POSTS["best-day"],
-                ))
         weekend = _is_weekend_stats_date(ctx.summary["stats_date"])
-        other_steps.append((
+        weekend_gainers_step = (
             "weekend song gainers", lambda: _post_weekend_song_gainers(ctx, post_state), "weekend-gainers",
             PACED_EXPECTED_POSTS["weekend-gainers"] if weekend else 0,
-        ))
-        other_steps.append((
-            "song overtakes", lambda: _post_song_overtakes(ctx, post_state), "overtakes", PACED_EXPECTED_POSTS["overtakes"],
-        ))
-        other_steps.append((
-            "stream milestones", lambda: _post_stream_milestones(ctx, post_state), "milestones",
-            PACED_EXPECTED_POSTS["milestones"],
-        ))
-
-        album_steps = [
-            (
-                f"album update ({album})",
-                lambda album=album, weekly_only=weekly_only: _post_one_album(
-                    ctx,
-                    post_state,
-                    album_img_script,
-                    album,
-                    post_priority="4",
-                    weekly_only=weekly_only,
-                ),
-                "all-albums",
-                PACED_EXPECTED_POSTS["album"],
-            )
-            for album, weekly_only in album_queue
-        ]
-        # Albums alternate 1-for-1 with the other posts.
+        )
+        # Steps expected to post nothing (debut on a normal day, weekend gainers
+        # on a weekday) run first and take no turn in the order.
         paced_steps: list[tuple[str, Callable[[], None], str | None, float]] = []
-        for index in range(max(len(album_steps), len(other_steps))):
-            if index < len(album_steps):
-                paced_steps.append(album_steps[index])
-            if index < len(other_steps):
-                paced_steps.append(other_steps[index])
+        if not ctx.debug_daily_mode and not ctx.local_test_mode:
+            paced_steps.append((
+                "debut posts", lambda: _post_debut_releases(ctx, post_state), "debut", PACED_EXPECTED_POSTS["debut"],
+            ))
+        if not weekend:
+            paced_steps.append(weekend_gainers_step)
+        paced_order = post_priority.order_by_importance({
+            "album": [
+                (_album_step(album, weekly_only), album_scores.get(album, post_priority.DEFAULT_ALBUM_IMPORTANCE))
+                for album, weekly_only in album_queue
+            ],
+            "best-day": [
+                (_best_day_step(tid), best_day_scores.get(tid, 60.0))
+                for tid in best_day_tracks if tid not in urgent_best_day_tracks
+            ],
+            "milestone": milestone_units,
+            "overtake": overtake_units,
+            "weekend-gainers": (
+                [(weekend_gainers_step, post_priority.WEEKEND_GAINERS_IMPORTANCE)] if weekend else []
+            ),
+        })
+        if paced_order:
+            print("[order] paced: " + " > ".join(
+                f"{label} {importance:.0f}" for _kind, (label, _fn, _key, _exp), importance in paced_order
+            ))
+        paced_steps.extend(step for _kind, step, _importance in paced_order)
         if not ctx.debug_daily_mode and not ctx.local_test_mode:
             # Always last: biggest daily/weekly gainers should not delay the
             # core daily posts.

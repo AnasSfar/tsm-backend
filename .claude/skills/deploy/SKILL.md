@@ -25,6 +25,8 @@ git add <fichiers précis> ; git commit -m "..." ; git push
 ```
 Vercel déclenche le build sur le push (ignore-command : `tasks/vercel-ignore.sh`).
 
+**`/` passe par l'API (2026-10-11)** : le build **déplace** `public/index.html` → `api/data/spa_index.html` (il n'y a plus d'`index.html` statique). Vercel sert les fichiers statiques avant les rewrites, donc tant qu'il existait, `/` sortait le HTML brut (og:image générique `preview.png`) sans passer par `_render_spa_html`. Ne pas remettre de `public/index.html` dans le build.
+
 ## Prod vs local — piège R2
 | | Bucket R2 | Conséquence |
 |---|---|---|

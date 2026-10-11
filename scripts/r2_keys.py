@@ -88,6 +88,7 @@ REPORT_IMG_PREFIX = "report-img-"
 #     (2x/day), safe to prune. Key shape: og/<slug>.png where <slug> matches
 #     _og_slug() on both sides (mirrored like this module -- keep in sync). ---
 OG_SCREENSHOTS_PREFIX = "og"
+OG_SCREENSHOTS_VERSIONS_KEY = f"{OG_SCREENSHOTS_PREFIX}/versions.json"
 
 # Full Spotify daily top 200 (every artist, every region) aggregated per song
 # for the Spotify Charts "All Artists" page. Written by tsm-backend's

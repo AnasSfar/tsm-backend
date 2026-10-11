@@ -23,6 +23,7 @@ sys.path.insert(0, str(SCRIPT_DIR))
 import forecast_milestones  # noqa: E402
 import generate_album_update_image  # noqa: E402
 import history_store  # noqa: E402
+import post_priority  # noqa: E402
 import spotlight  # noqa: E402
 from comp import milestone_card  # noqa: E402
 from comp.discography import display_title_for_album  # noqa: E402
@@ -379,6 +380,14 @@ def main() -> int:
     parser.add_argument("--force", action="store_true")
     parser.add_argument("--no-post", action="store_true")
     parser.add_argument("--keep-html", action="store_true", help="Keep the card HTML next to the PNG (debug)")
+    parser.add_argument(
+        "--count-units", action="store_true",
+        help="Print UNITS_JSON with the number of milestone posts left to make, post nothing.",
+    )
+    parser.add_argument(
+        "--max-units", type=int, default=0,
+        help="Post at most N milestones then exit (finalize calls 1 per turn to interleave with album cards). 0 = all.",
+    )
     args = parser.parse_args()
 
     date.fromisoformat(args.date)
@@ -392,6 +401,35 @@ def main() -> int:
     all_events = find_milestone_events(args.date)
     album_events = find_album_milestone_events(args.date, history)
     pending = [e for e in album_events + all_events if args.force or _event_key(e) not in posted_keys][:limit]
+    # Ambiguous ranks (two songs/albums crossing the same step the same day)
+    # never post: drop them up front so --count-units / --max-units count real posts.
+    postable = []
+    for e in pending:
+        if str(e["track_id"]).startswith(ALBUM_EVENT_PREFIX):
+            if e.get("rank") is None:
+                continue
+            postable.append((e, post_priority.milestone_importance(e)))
+        else:
+            rank = _milestone_rank(e, all_events, history, args.date)
+            if rank is None:
+                continue
+            postable.append((e, post_priority.milestone_importance(e, rank)))
+    # Most important first (decision 2026-10-10): finalize posts one unit per
+    # turn with --max-units 1, ordered against the other post types by these
+    # same scores.
+    postable.sort(key=lambda item: -item[1])
+    pending = [e for e, _score in postable]
+    if args.count_units:
+        print("UNITS_JSON: " + json.dumps({
+            "units": len(postable),
+            "scores": [score for _e, score in postable],
+            "labels": [
+                f"{e.get('album') or e.get('title')} {int(e['milestone']):,}" for e, _score in postable
+            ],
+        }))
+        return 0
+    if args.max_units and args.max_units > 0:
+        pending = pending[: int(args.max_units)]
     if not pending:
         print(f"[stream_milestones] No new stream milestones found for {args.date}.")
         return 0

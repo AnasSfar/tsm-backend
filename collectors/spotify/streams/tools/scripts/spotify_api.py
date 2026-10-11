@@ -40,6 +40,9 @@ LOG_MODE = "normal"
 
 GRAPHQL_URL = "https://api-partner.spotify.com/pathfinder/v2/query"
 GETTRACK_HASH = "612585ae06ba435ad26369870deaae23b5c8800a256cd8a57e08eddc25a37294"
+# Hash getTrack du web player qui accepte includeVideoAssociationItems (l'ancien
+# hash ne renvoie que videoAssociations.totalCount, sans les ids des videos).
+GETTRACK_VIDEO_ASSOC_HASH = "a8ef9e9f02b836feb0da3003c31dbb30decc6f4b473ef89ca88c882386d668de"
 APP_VERSION = "1.2.87.30.gc764ebf1"
 
 class AdaptiveWorkerState:
@@ -400,28 +403,30 @@ def _extract_cover_url(track_union: dict) -> str:
     return best.get("url") or ""
 
 
-def fetch_playcount_api(
+def _fetch_track_union(
     track_id: str,
     token_mgr: TokenManager,
     session: "_requests.Session",
     metrics: dict | None = None,
-) -> int | None:
+    *,
+    sha256_hash: str = GETTRACK_HASH,
+    extra_variables: dict | None = None,
+) -> dict | None:
     """
-    Récupère le playcount via l'API GraphQL Spotify.
-    Retourne un int, ou None si la track n'est pas trouvée / erreur.
-    Sur 401, déclenche une re-capture des tokens et retente une fois.
+    Requete getTrack GraphQL. Retourne le JSON complet (dict), ou None si
+    erreur / track introuvable. Sur 401, re-capture les tokens et retente une fois.
     """
     tokens = token_mgr.get()
     if not tokens.get("bearer"):
         return None
 
     body = {
-        "variables":     {"uri": f"spotify:track:{track_id}"},
+        "variables":     {"uri": f"spotify:track:{track_id}", **(extra_variables or {})},
         "operationName": "getTrack",
         "extensions":    {
             "persistedQuery": {
                 "version":    1,
-                "sha256Hash": GETTRACK_HASH,
+                "sha256Hash": sha256_hash,
             }
         },
     }
@@ -479,19 +484,7 @@ def fetch_playcount_api(
                     data = json.loads(raw_body)
                 except Exception:
                     data = {}
-                track_union = (data.get("data") or {}).get("trackUnion") or {}
-                pc = track_union.get("playcount")
-                if metrics is not None:
-                    cover_url = _extract_cover_url(track_union)
-                    if cover_url:
-                        metrics["cover_url"] = cover_url
-                if pc is not None:
-                    try:
-                        return int(pc)
-                    except Exception:
-                        return None
-                m = re.search(r'"playcount":\s*"(\d+)"', json.dumps(data))
-                return int(m.group(1)) if m else None
+                return data if isinstance(data, dict) else {}
 
             if code == 401 and token_attempt == 0:
                 if metrics is not None:
@@ -528,6 +521,74 @@ def fetch_playcount_api(
             # Other errors are not transient.
             return None
     return None
+
+def fetch_playcount_api(
+    track_id: str,
+    token_mgr: TokenManager,
+    session: "_requests.Session",
+    metrics: dict | None = None,
+) -> int | None:
+    """
+    Récupère le playcount via l'API GraphQL Spotify.
+    Retourne un int, ou None si la track n'est pas trouvée / erreur.
+    Sur 401, déclenche une re-capture des tokens et retente une fois.
+    """
+    data = _fetch_track_union(track_id, token_mgr, session, metrics)
+    if data is None:
+        return None
+    track_union = (data.get("data") or {}).get("trackUnion") or {}
+    pc = track_union.get("playcount")
+    if metrics is not None:
+        cover_url = _extract_cover_url(track_union)
+        if cover_url:
+            metrics["cover_url"] = cover_url
+        video_assoc = ((track_union.get("associationsV3") or {}).get("videoAssociations") or {})
+        metrics["video_association_count"] = int(video_assoc.get("totalCount") or 0)
+    if pc is not None:
+        try:
+            return int(pc)
+        except Exception:
+            return None
+    m = re.search(r'"playcount":\s*"(\d+)"', json.dumps(data))
+    return int(m.group(1)) if m else None
+
+
+def fetch_linked_video_playcounts(
+    track_id: str,
+    token_mgr: TokenManager,
+    session: "_requests.Session",
+    metrics: dict | None = None,
+) -> list[tuple[str, int]]:
+    """
+    Videos (clips) liees a une track audio : [(video_track_id, playcount), ...].
+
+    Spotify expose les clips comme des tracks mediaType=VIDEO associees a la
+    track audio (associationsV3.videoAssociations). Normalement les deux
+    partagent le meme compteur ; depuis 2026-10-09 Spotify a desynchronise
+    certains titres (Patient Zero) : la track audio est retombee a un compteur
+    sans les vues du clip, le vrai total continu reste sur la track video.
+    """
+    data = _fetch_track_union(
+        track_id, token_mgr, session, metrics,
+        sha256_hash=GETTRACK_VIDEO_ASSOC_HASH,
+        extra_variables={"includeVideoAssociationItems": True},
+    )
+    if not data:
+        return []
+    track_union = (data.get("data") or {}).get("trackUnion") or {}
+    items = (((track_union.get("associationsV3") or {}).get("videoAssociations") or {}).get("items")) or []
+    video_ids: list[str] = []
+    for item in items:
+        uri = str(((item or {}).get("trackVideo") or {}).get("_uri") or "")
+        if uri.startswith("spotify:track:"):
+            video_ids.append(uri.rsplit(":", 1)[-1])
+    out: list[tuple[str, int]] = []
+    for video_id in dict.fromkeys(video_ids):
+        pc = fetch_playcount_api(video_id, token_mgr, session, metrics=None)
+        if pc is not None:
+            out.append((video_id, pc))
+    return out
+
 
 def _read_body_with_deadline(resp, deadline_s: float = 45.0) -> bytes | None:
     """Lit le corps d'une reponse stream=True avec une limite de duree totale.

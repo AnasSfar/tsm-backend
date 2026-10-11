@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+import json
 import html
 import sys
 import time
@@ -31,6 +32,7 @@ import best_day_since  # noqa: E402
 import generate_album_update_image  # noqa: E402
 import generate_streams_image  # noqa: E402
 import history_store  # noqa: E402
+import post_priority  # noqa: E402
 from post_locks import mark_posted  # noqa: E402
 
 HANDLE = ACCOUNT_HANDLE
@@ -472,12 +474,22 @@ def main() -> int:
     parser.add_argument("--post-spacing-seconds", type=int, default=0)
     parser.add_argument("--force", action="store_true")
     parser.add_argument("--no-post", action="store_true")
+    parser.add_argument(
+        "--count-units", action="store_true",
+        help="Print UNITS_JSON with the number of posts left to make (ledger groups + same-album images), post nothing.",
+    )
+    parser.add_argument(
+        "--max-units", type=int, default=0,
+        help="Post at most N units then exit (finalize calls 1 per turn to interleave with album cards). 0 = all.",
+    )
     args = parser.parse_args()
 
     date.fromisoformat(args.date)
     limit = max(0, int(args.limit))
     if limit == 0:
         print("[song_overtakes] Limit is 0, nothing to do.")
+        if args.count_units:
+            print('UNITS_JSON: {"units": 0}')
         return 0
 
     events = [
@@ -486,6 +498,8 @@ def main() -> int:
     ]
     if not events:
         print(f"[song_overtakes] No new non-extra song overtakes found for {args.date}.")
+        if args.count_units:
+            print('UNITS_JSON: {"units": 0}')
         return 0
 
     # Split: same-album overtakes -> that album's update image (flat total
@@ -506,9 +520,39 @@ def main() -> int:
         f"{len(groups)} ledger group(s), {len(same_album)} same-album album image(s)."
     )
 
+    total_units = len(groups) + len(same_album)
+    # Most important unit first (decision 2026-10-10): finalize posts one per
+    # turn with --max-units 1, ordered against the other post types by these
+    # same scores (post_priority).
+    units = [("group", group, post_priority.overtake_unit_importance(group["events"])) for group in groups]
+    units += [
+        ("album", (album, alb_events), post_priority.overtake_unit_importance(alb_events))
+        for album, alb_events in same_album.items()
+    ]
+    units.sort(key=lambda unit: -unit[2])
+    if args.count_units:
+        print("UNITS_JSON: " + json.dumps({
+            "units": total_units,
+            "scores": [score for _kind, _unit, score in units],
+            "labels": [
+                (
+                    f"{unit['events'][0]['overtaker'].get('title')} #{unit['events'][0]['overtaker'].get('rank')}"
+                    if kind == "group" else f"{unit[0]} (same-album)"
+                )
+                for kind, unit, _score in units
+            ],
+        }))
+        return 0
+    max_units = max(0, int(args.max_units))
+    if max_units and total_units > max_units:
+        units = units[:max_units]
+        print(f"[song_overtakes] --max-units {max_units}: posting {len(units)} unit(s) this call.")
+    groups = [unit for kind, unit, _score in units if kind == "group"]
+    same_album = {unit[0]: unit[1] for kind, unit, _score in units if kind == "album"}
+    total_units = len(groups) + len(same_album)
+
     newly_posted: set[str] = set()
     units_posted = 0
-    total_units = len(groups) + len(same_album)
 
     for group in groups:
         image_path = render_overtake_image(group, args.date)

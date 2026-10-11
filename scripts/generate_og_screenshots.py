@@ -23,7 +23,11 @@ What it does per target route:
      the page,
   3. wait for the SPA to finish its first data fetch,
   4. screenshot the top 1200x630,
-  5. upload to R2 `og/<slug>.png` (content-hash dedup, only changed PNGs go up).
+  5. upload to R2 `og/<slug>.png` (content-hash dedup, only changed PNGs go up),
+  6. at the end, merge each capture's short content hash into R2
+     `og/versions.json` ({slug: hash}). The site appends it to og:image as
+     `?v=<hash>`: X/Twitter caches a card per image URL, so without it a link
+     keeps showing an old capture long after the PNG was replaced.
 
 `<slug>` is `_og_slug(path)` and MUST stay identical to `_og_slug()` in
 tsm-frontend `api/index.py` (mirrored like scripts/r2_keys.py).
@@ -296,6 +300,7 @@ async def _capture_all_async(
     client = r2mod.get_s3_client() if upload else None
     bucket = r2mod.get_env("R2_BUCKET") if upload else ""
     counts = {"uploaded": 0, "unchanged": 0, "failed": 0}
+    versions: dict[str, str] = {}
     queue: asyncio.Queue = asyncio.Queue()
     for item in enumerate(targets, 1):
         queue.put_nowait(item)
@@ -354,6 +359,7 @@ async def _capture_all_async(
                             changed = await asyncio.to_thread(_upload, slug, png)
                             status = "uploaded" if changed else "unchanged"
                             counts[status] += 1
+                            versions[slug] = _png_version(png)
                             if on_captured is not None:
                                 on_captured(path)
                         except Exception as exc:  # noqa: BLE001
@@ -366,11 +372,47 @@ async def _capture_all_async(
         await asyncio.gather(*(worker() for _ in range(min(workers, len(targets)))))
         await browser.close()
 
+    if upload and client is not None and versions:
+        try:
+            _merge_versions(client, bucket, versions)
+        except Exception as exc:  # noqa: BLE001
+            print(f"[versions] {r2_keys.OG_SCREENSHOTS_VERSIONS_KEY} not updated: {exc}")
+
     print(
         f"\nDone: {len(targets)} targets, "
         f"{counts['uploaded']} uploaded, {counts['unchanged']} unchanged, {counts['failed']} failed."
     )
     return 1 if counts["failed"] and not counts["uploaded"] and not counts["unchanged"] else 0
+
+
+def _png_version(png: bytes) -> str:
+    return hashlib.sha256(png).hexdigest()[:10]
+
+
+def _merge_versions(client, bucket: str, versions: dict[str, str]) -> None:
+    """Merge this run's {slug: hash} into og/versions.json (slugs skipped this
+    run keep their previous entry). Plain put_object, never gzipped: the API
+    reads it raw with get_object."""
+    key = r2_keys.OG_SCREENSHOTS_VERSIONS_KEY
+    try:
+        current = json.loads(client.get_object(Bucket=bucket, Key=key)["Body"].read())
+        if not isinstance(current, dict):
+            current = {}
+    except client.exceptions.NoSuchKey:
+        current = {}
+    merged = {**current, **versions}
+    if merged == current:
+        print(f"[versions] {key} unchanged")
+        return
+    client.put_object(
+        Bucket=bucket,
+        Key=key,
+        Body=json.dumps(merged, sort_keys=True, separators=(",", ":")).encode("utf-8"),
+        ContentType="application/json; charset=utf-8",
+        CacheControl="public, max-age=60",
+    )
+    changed = sorted(k for k in merged if current.get(k) != merged[k])
+    print(f"[versions] {key} updated ({len(changed)} slug(s))")
 
 
 def main() -> int:

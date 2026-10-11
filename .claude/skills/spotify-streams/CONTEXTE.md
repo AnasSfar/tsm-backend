@@ -121,6 +121,44 @@ Correctifs :
   (`DECREASE_NOTIFY_MAX_INDIVIDUAL`), puis UNE alerte groupee haute priorite,
   le reste muet (voir le log).
 
+## Clip desynchronise : total audio en baisse -> total de la track video (2026-10-10)
+
+Incident 2026-10-09 : Patient Zero passe de 80 765 920 a 79 472 191 (daily
+-1 293 729). Les clips Spotify sont des tracks `mediaType=VIDEO` liees a la
+track audio (`associationsV3.videoAssociations`). Normalement les deux ont le
+MEME compteur (scan des 721 tracks le 2026-10-10 : 77 ont un clip, tous
+identiques sauf Patient Zero). Pour Patient Zero, Spotify a casse le lien : la
+track audio est retombee a un compteur sans les vues du clip, la track video
+(`5Aats2q7uoe1GDBAgNoS3L`) garde le vrai total continu : 84 059 427 = 80 765 920
++ 3 293 507, le chiffre exact des trackers de reference. Le daily negatif
+bloquait la completude (un non-extra a daily < 0 ne compte pas comme fait) :
+le run du 10-09 a tourne en boucle de 21:33 a 22:02, posts bloques. Ligne
+10-09 corrigee a la main le 2026-10-10 (vrai total Spotify, pas une estimation).
+
+Correctif automatique dans `update_streams.py` :
+
+- `fetch_playcount_api` note `video_association_count` (deja dans la reponse
+  getTrack, pas de requete en plus).
+- `resolve_video_split_total` (appele par chaque worker juste apres le fetch,
+  hors `--admin`/`--force`) : si total audio < total J-1 ET la track a un clip,
+  `spotify_api.fetch_linked_video_playcounts` (hash getTrack du web player +
+  `includeVideoAssociationItems`) lit le playcount de chaque clip lie. On
+  retient le clip seulement s'il est l'UNIQUE candidat qui prolonge la serie :
+  `0 <= total_clip - total(J-1) <= max(3 x daily(J-1), 100 000)`
+  (`VIDEO_SPLIT_MAX_DAILY_FACTOR` / `VIDEO_SPLIT_MIN_DAILY_CAP`). Sinon le total
+  audio passe tel quel (stale snapshot / lower_than_previous inchanges).
+- Garde-fou clips partages : un meme clip est lie a plusieurs versions (Love
+  Story + Pop Mix + Instrumental BGV, The Story Of Us x2, Karma + feat. Ice
+  Spice, The Best Day + BGV...) et son compteur n'a rien a voir avec la version
+  en baisse → echoue le test de plausibilite, jamais retenu (verifie : BGV
+  198k vs clip 47M refuse).
+- Log `[video-split] ... using linked video <id> total N (daily D)` ; `raw` du
+  resultat = `N (video <id>)`. Pas de marquage `estimated` : c'est un vrai
+  total Spotify.
+- Les jours suivants, la track audio reste sous le clip → la baisse se
+  re-detecte et le clip est relu chaque jour ; si Spotify resynchronise, le
+  total audio redevient >= J-1 et rien ne se declenche.
+
 ## Regle (REMPLACEE 2026-09-23) : daily negatif accepte tel quel, jamais bloque/masque — affiche en rouge
 
 Decision proprietaire 2026-09-23 : les gates/garde-fous qui bloquaient ou
@@ -1125,6 +1163,74 @@ mesure. `run_final_update_tasks` :
   coord X + dossier du jour rediriges). **Non teste en vrai : la modale de
   programmation X** (aucun post reel lance dans la session).
 
+### Courbe resserree + overtakes/milestones intercales (2026-10-10)
+
+Proprio : « la fonction de post qui suit la fonction log, serre-la un peu, ca finit
+tard » + « evite de poster les milestones a la suite ou les surpassed a la suite,
+melange avec les updates d'albums ».
+
+- **Courbe** (`post_pacing`) : BASE 180 -> 150 s, GROWTH 1.5 -> 1.0, ecart max
+  45 -> 25 min, fenetre 8 -> 5 h. ~20 posts : mer. 00:36 -> 03:46 (avant 06:47),
+  mar. 18:00 -> 20:59 (avant 22:35), jeu. 22:30 -> 01:14 (avant 02:51). Ecarts
+  5 -> 14 min (toujours croissants, pas le « tout a 2 min » du 07/10). Comparateur :
+  `previews_and_sims/finalize-pacing-schedule-logs/pacing_compare.py "nom:base:growth:maxmin:fenetre"`.
+- **Une etape par overtake / milestone** : `post_song_overtakes.py` et
+  `post_stream_milestones.py` ont `--count-units` (UNITS_JSON, rien rendu ni poste)
+  et `--max-units N`. finalize (`_count_post_units`) cree `song overtakes (i/N)` /
+  `stream milestones (i/N)`, chacun appelle le script avec `--max-units 1` ; les
+  locks par evenement (deja ecrits apres chaque post) font que l'appel suivant
+  prend l'unite suivante. Comptage rate -> ancienne etape unique (jamais bloquant).
+  `--post-only overtakes|milestones` poste toujours tout d'un coup.
+- **Ordre** : version tourniquet/repartition du meme jour REMPLACEE par l'ordre
+  par importance ci-dessous (`_round_robin` / `_spread` supprimes).
+
+### Ordre des posts par importance (2026-10-10, remplace l'ordre fixe par type)
+
+Proprio : « on devrait reprendre les ordres de post... parfois on doit poster des
+milestones au debut, parfois d'autres choses ». L'ordre ne depend plus du type
+mais de l'importance de chaque post, sur une echelle commune (`post_priority.py`) :
+
+| Post | Importance |
+|---|---|
+| card album | score `score_album_update` (souvent 30-50, urgent >= 70) |
+| best-day-since chanson | score `score_best_day_since` (gate 58, exceptionnel 90 ; 85 si inconditionnel) |
+| milestone chanson (100M) | 30 + 25 log10(palier/100M) ; +20 si multiple de 1B, +8 si de 500M ; rang top 10 +10, top 25 +6, top 50 +3 |
+| milestone album (1B) | 55 + 20 log10(milliards) ; +8 multiple de 5B ; rang top 3 +10, top 10 +5 |
+| overtake | 30 + nouveau rang all-time (top 10 +50, 25 +40, 50 +30, 100 +20, 200 +10) ; +5 si la chanson depassee a >= 1B |
+| weekend gainers | 45 |
+
+Calibrage sur les vrais evenements 2026-09-29 -> 10-09 : Cruel Summer 3,5B #1 = 87,
+folklore 12B #3 = 87, ME! 1B = 78, Ophelia 1,7B #10 = 71, Love Story 1,2B = 63,
+Opalite 900M = 57, How You Get The Girl 200M = 38 ; overtake YBWM TV -> #20 = 75,
+Opalite -> #33 = 60, Patient Zero -> #280 = 30.
+
+- **Phase urgente** (live, apres le recap weekend, avant top eras) : best-day
+  urgents + albums urgents (>= 70, max 3) + milestones/overtakes >=
+  `URGENT_UNIT_SCORE_MIN` (80), entre eux par importance. Ex. 30/09 : Cruel Summer
+  3,5B, puis Midnights 84, Showgirl 84, Speak Now 72.
+- **Phase rythmee** : `post_priority.order_by_importance` fusionne les files
+  (album, best-day, milestone, overtake, weekend gainers). Chaque file garde son
+  ordre interne (file album = top 2 -> Showgirl/TTPD -> reste ; scripts
+  overtakes/milestones tries par importance) ; la tete d'une file vaut le
+  meilleur score restant dans la file (un Showgirl force a 31 ne bloque pas un
+  album a 66 derriere lui). Jamais 2 overtakes / 2 milestones / 2 best-day de
+  suite tant qu'un autre type attend ; 2 albums de suite permis avec -8 pts
+  (`REPEATABLE_KIND_PENALTY`). Les gros evenements partent donc dans les
+  premiers creneaux (les plus serres de la courbe), les petits overtakes
+  (Patient Zero #280) en fin de file.
+- Scripts : `--count-units` renvoie `scores` + `labels` dans l'ordre ou
+  `--max-units 1` les postera (le plus important restant d'abord).
+  `post_best_day_since_twitter.py --list-batch-candidates` renvoie `scores`.
+  `_best_day_since_candidate_tracks` -> `(ids, urgent, scores)`.
+- Logs : `[song overtakes] <titre> #rang: importance N`, `[order] urgent: ...`,
+  `[order] paced: label score > label score > ...`.
+- Limite assumee : un week-end sans album avec seulement des overtakes les
+  enchaine (rien a intercaler).
+- Sim (vrais jours, lecture seule) : `previews_and_sims/post-priority-order/simulate.py
+  [dates]` (albums = vrais scores, overtakes/milestones = scripts reels
+  `--force --count-units`, best-day non reproduits car `--list-batch-candidates`
+  ecrit dans snapshots/). Assert : pas de doublon de type hors album.
+
 ### Plan selon l'audience + anti-collision (2026-10-07, remplace la courbe 60 s -> 6 min)
 
 Constat du proprio sur le run 10-05 (poste dans la nuit du 07/10) : « tous postes
@@ -1249,7 +1355,7 @@ un `_guarded_post_step` independant) :
    semaine : genere la card en `--no-post` et sort ; poste vraiment le week-end).
 2. `top eras post` (`_post_albums_daily`) — hors debug/local.
 3. `top 20 songs post` (`_post_streams_image`).
-4. **Phase alternee 1-pour-1** entre :
+4. **Phase alternee 1-pour-1** (REMPLACEE 2026-10-10 : repartition uniforme + une etape par overtake/milestone, voir « Courbe resserree + overtakes/milestones intercales ») entre :
    - la **file album** `_album_post_queue(ctx, stats_date)` : `_rank_albums_for_posting`
      (score `score_album_update`) sur **tous** les albums non-Misc, puis
      `[2 meilleurs] + [Showgirl, TTPD s'ils ne sont pas dans le top 2] + [reste par score]`.
