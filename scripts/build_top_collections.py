@@ -17,6 +17,9 @@ def track(album, title):
     data = json.loads(path.read_text(encoding='utf-8-sig'))
     sections = data['sections'] if isinstance(data, dict) else data
     matches = [t for s in sections for t in s['tracks'] if t['title'] == title]
+    # The standard Showgirl row explicitly owns this historical duplicate ID.
+    if album == 'the_life_of_a_showgirl' and title == 'The Life of a Showgirl (feat. Sabrina Carpenter)':
+        matches = [t for t in matches if re.search(r'/track/([A-Za-z0-9]{22})', t['url']).group(1) == '5eXgqtg3T8Av0m1FUaGHex']
     ids = {re.search(r'/track/([A-Za-z0-9]{22})', t['url']).group(1) for t in matches}
     if len(ids) != 1:
         raise ValueError(f'Ambiguous or missing catalog entry: {album}: {title}: {ids}')
@@ -79,6 +82,16 @@ def build():
         ids = [t['track_id'] for t in tracks]
         if len(ids) != len(set(ids)): raise ValueError(f'Duplicate membership: {slug}')
         result.append(dict(slug=slug,title=title,kind=kind,image=image,description=description,tracks=tracks))
+    from extended_top_collections import extend
+    result.extend(extend(track))
+    artwork = json.loads((ROOT / 'scripts/top_collection_memberships.json').read_text(encoding='utf-8'))['artwork']
+    if set(artwork) != {c['slug'] for c in result}:
+        raise ValueError('Artwork must explicitly cover every collection')
+    for collection in result:
+        collection.update(artwork[collection['slug']])
+    slugs = [c['slug'] for c in result]
+    if len(slugs) != len(set(slugs)):
+        raise ValueError('Duplicate collection slug')
     return result
 
 

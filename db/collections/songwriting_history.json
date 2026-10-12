@@ -1,0 +1,11 @@
+{
+  "days": {
+    "2026-10-10": {
+      "50adZYk0RNbzLz3Jj6juBT": {
+        "s": 2413237846,
+        "d": null,
+        "reason": "Missing previous-calendar-day total; baseline only"
+      }
+    }
+  }
+}

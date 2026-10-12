@@ -78,3 +78,93 @@ The statistics check uses existing exact October 8/9, 2026 snapshots.
 Mobile QA: list, detail, search, date changes, pending state and internal
 table scroll at 375px; light/dark and desktop also checked. No page-level
 horizontal scroll. No historical stream data was changed by this feature.
+
+## Expanded membership (October 11, 2026)
+
+The generator now reads `scripts/top_collection_memberships.json` through
+`scripts/extended_top_collections.py`. This versioned manifest freezes exact
+catalog titles and ordered tracklists; the generated frontend file freezes
+their Spotify IDs. No frontend membership inference is performed.
+
+There are 42 collections: the original seven, Track 1 through Track 18,
+Album Openers, Album Closers, Bonus Tracks, From the Vault, Title Tracks,
+Solo Written, Featuring Taylor, Acoustic Versions, Piano Versions,
+Holiday Songs, four older tours, the two Hot 100 collections and Taylor's Version.
+
+Taylor's Version has 103 explicit recordings from the four TV albums:
+27 Fearless, 22 Speak Now, 32 Red, and 22 1989. This includes their bonus,
+vault, acoustic/piano recordings, soundtrack rerecordings, If This Was a
+Movie and the TV Bad Blood with Kendrick Lamar; remixes are excluded.
+From the Vault remains its existing separate 27-track collection.
+
+All 42 collection artworks are explicitly assigned in the manifest, using
+existing era portraits, album covers, headers and catalog recording artwork.
+The 18 Track Number collections have 18 different image paths. Cover crop
+positions are shared by desktop rows, mobile cards and collection details.
+No page layout, CSS design or theme-specific styling was introduced.
+
+Track Numbers use the twelve original standard studio tracklists, with
+lengths 11/13/14/16/13/15/18/16/15/13/16/12, in chronological album order.
+Taylor's Version recordings replace the corresponding Fearless, Speak Now,
+Red and 1989 recordings without changing original track numbers. Thus Our
+Song, Change, Long Live and Clean remain their original album closers.
+Deluxe tracks, The Anthology, 3am tracks and The Encore are bonus membership,
+never numbered standard tracks. If This Was a Movie retains its original
+Speak Now bonus classification despite its TV recording's catalog location.
+Vault tracks are a separate collection, including You're Losing Me and
+the ten-minute All Too Well. Alternate acoustic/piano recordings are kept
+in their named version collections; remixes, karaoke and voice memos are
+not classified as additional standard/bonus songs.
+
+Tours use reference concerts, with covers and surprise slots excluded;
+Taylor-song mashup components use separate studio recordings:
+[Fearless, Jacksonville May 1, 2009](https://en.wikipedia.org/wiki/Fearless_Tour#Set_list),
+[Speak Now, Newark July 19, 2011](https://en.wikipedia.org/wiki/Speak_Now_World_Tour#Standard_set_list),
+[Red, Newark March 28, 2013](https://en.wikipedia.org/wiki/The_Red_Tour#Set_list),
+[1989, Tokyo May 5, 2015](https://en.wikipedia.org/wiki/The_1989_World_Tour#Set_list).
+The regular Fearless encore I'm Only Me When I'm With You is included.
+
+Hot 100 membership is by composition that reached the US chart threshold,
+represented by its TV recording where available. It does not claim that
+every selected TV recording independently reached that peak. Original and
+TV versions are never both summed. There are 16 #1 songs and 74 top-ten
+songs as of the October 10, 2026 chart, including the four Encore songs.
+New Romantics is excluded: neither its original nor its TV chart peak
+qualifies. Sources:
+[Billboard, Patient Zero and career counts](https://billboard.com.br/taylor-swift-patient-zero-top-100-billboard/),
+[US peak positions and linked Billboard references](https://en.wikipedia.org/wiki/Taylor_Swift_singles_discography),
+[Billboard, Opalite and earlier #1s](https://billboard.com.co/opalite-y-todos-los-no-1-de-taylor-swift-en-el-billboard-hot-100/).
+
+Solo Written uses one principal recording per composition (TV where
+available), not every alternate performance. Sources:
+[album-by-album writing credits](https://www.capitalfm.com/artists/taylor-swift/own-songs-solo-writing-credits/),
+[recording credits including Beautiful Eyes and Carolina](https://en.wikipedia.org/wiki/List_of_songs_by_Taylor_Swift).
+Featuring Taylor covers the existing studio guest/co-lead recordings,
+including I Don't Wanna Live Forever; live guest appearances are excluded.
+Holiday Songs contains the six Holiday Collection songs plus Christmas
+Tree Farm's principal recording.
+
+### Explicit unresolved identity
+
+Acoustic Versions is integrated but its aggregate remains pending.
+Teardrops On My Guitar - Acoustic Version has two catalog IDs,
+`0g5eBFfWwNP7PXFGON6SB7` and `17Kqa6MX5uZzLK7EOEeAxo`, without an explicit
+historical alias mapping. Both Spotify pages identify Taylor Swift's acoustic
+recording. Neither title equality nor a snapshot's zero total establishes
+which identity to count. The manifest records this unresolved membership
+and `collectionStats` blocks the entire aggregate, even if the other eleven
+recordings have exact data. No ID is silently selected or combined.
+
+The standard Showgirl title track uses `5eXgqtg3T8Av0m1FUaGHex`; its catalog
+row explicitly maps the other same-title ID `6EqHzZp61G5uQ12QEiibpT` as a
+historical identity. That targeted resolution changes no catalog/history row.
+
+Expanded integrity QA: all 42 memberships checked against October 8/9
+snapshots, exact sums compared, duplicate IDs/slugs rejected, and both
+Songwriting and unresolved Acoustic Versions confirmed pending. Build and
+source hygiene pass. Headless browser QA uses those same snapshots at
+375px: all 42 cards, seven filter types, Track Numbers search, track detail,
+103-song TV detail, 27-song Vault detail, 74-song Hot 100 detail, pending
+reason, light/dark, and 1440px desktop.
+Screenshots are under `runtime/top-collections/`; no horizontal page scroll
+or clipped mobile row titles. No stream histories were modified.
