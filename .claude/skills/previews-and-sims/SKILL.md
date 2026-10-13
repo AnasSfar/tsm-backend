@@ -183,6 +183,30 @@ cliquant dans le ThemePicker (un `ts-museum-store` injecté en localStorage n'es
 le fallback `<Suspense>` des routes ne s'affiche qu'au 1er chargement d'une page (navigation
 interne = transition) → `page.route("**/src/pages/X.jsx*", lambda r: None)` puis `goto` direct.
 
+### Pattern: new card design on real data (no pipeline touched)
+
+`previews_and_sims/spotify-album-page-card/simulate.py ["Album" | all] [DATE] [--weekly|--daily] [--overtake]` (2026-10-13;
+Sat/Sun dates render the weekend "vs last week" card unless `--daily`; `--overtake` = flat
+same-album overtake list, exits if the date has none; announced sections + Day N built in;
+test only): album update restyled as a Spotify album page. Reads real data read-only through
+`generate_album_update_image` loaders (`load_album_sections`, `load_history_for_album`,
+`_counts_in_album_total`) and renders its own HTML into `cards/` (+ `_phone.png`). Music-video
+badges come from `db/youtube_views_history.csv` + `collectors.youtube.core.title_groups.video_category`
+(main-channel "videos" whose title is "(Official [Music] Video)" or bare "Taylor Swift - Song").
+Facts of the day (`facts.py`, 2026-10-13): 9 exact-data facts (new billion 100, anniversary ±3 d 95/80, song passed a 100M step 90, Global chart #≤10 85 / else 55, streak ≥3 d 45+5/d, next milestone ≤7 d 60 (75 if a billion) / ≤30 d 35, #1 era 70 / era up 45 / else 20, all songs up 60 / only one up 45 / biggest gainer 30, positive vs 30-day avg 55/35, billion club 30, top song share 15); ≥70 always shown, the rest trimmed lowest-first in the browser (`TRIM_JS`) while the side column is taller than the list; wide layout = top 3 under the artist line.
+Pitfall: a harness importing `collectors.youtube...` needs the repo root on `sys.path`
+(works from repo root, `ModuleNotFoundError` from the sim folder).
+
+### Pattern: restyle proposals for the other streams images
+
+`previews_and_sims/spotify-app-cards/simulate.py [DATE] [recap|songs|eras|gainers]` (2026-10-13,
+proposals only): recap / top songs / top eras / gainers as Spotify artist / playlist / discography /
+Charts pages, built on the real loaders (`generate_streams_image.load_history` + `build_top_n`,
+`generate_albums_image.build_album_rows`, `generate_weekend_streams_image.build_totals` on
+`site_history.json`, `post_gainer_thread._pick_gainers`) and `album_page_card` helpers (header tone,
+TV/feat. title cleanup). `--theme=DATE` = real stats of DATE but the timeline theme (`day_theme.py`) of another date, files suffixed `_theme-<date>` (preview only). Pitfall: `artist.json` only holds TODAY's listeners/followers, so a past
+date shows current artist stats (prod recap does the same).
+
 ### Pitfall: headless Chrome mobile width
 
 `--window-size=390,...` is silently clamped (Chrome min window width ~500px):

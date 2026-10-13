@@ -67,6 +67,19 @@ Pièges qui ont mordu une fois, à ne pas régresser :
   Fonts — reste 100% hors-ligne-safe pour le pipeline planifié. Ne pas en
   ajouter une sans peser le compromis fiabilité.
 
+## Card album = page album Spotify (`album_page_card.py`, 2026-10-13)
+
+Décision propriétaire (13/10/2026, après une longue itération sur maquette) : la card album update postée (quotidienne, week-end, overtake même-album) est une **copie d'une page album Spotify** en paysage, rendue par `collectors/spotify/streams/tools/scripts/album_page_card.py` (appelé par `generate_album_update_image.generate()`, repli auto sur l'ancien rendu table si exception, `ALBUM_UPDATE_PAGE_STYLE=0` pour revenir). Règles de design validées une par une, à ne pas régresser :
+- En-tête **fondu** dans la page (un seul dégradé couleur → `#121212`), pas de bloc séparé. Couleur = accent de la cover ; covers N&B/mal lues forcées dans `HEADER_OVERRIDES` (folklore gris, reputation noir, debut vert, TTPD beige/taupe).
+- Aucune ligne surlignée en card quotidienne (seul l'overtake surligne overtaker vert / dépassée rouge).
+- Sous-total d'**édition après** ses titres (« Standard Edition · Disc 1 »), puis Total album, titres hors album **sur une ligne seule** (You're Losing Me, I Don't Wanna Live Forever…), « + Era extras N tracks », Total era (= TOTAL ERA prod, périmètre Top Eras).
+- Format large (≥ 21 lignes) : bandeau en haut, 2 colonnes, **bande des totaux sur toute la largeur** sous les 2 colonnes ; rendu x1.8 (4032 px, sous la limite X 4096).
+- Variation du jour en **pastilles** visibles (▼ N / ▼ x %) ; variation **hebdo seulement si positive** et seulement en format classique ; quand la colonne de gauche dépasse, le **tableau est centré** verticalement.
+- Badge clip (icône seule, devant le titre) = collector YouTube, jamais une liste manuelle.
+- ★ best day since sous le titre = **toujours la date** (jamais « of the year »).
+- Faits du jour (`album_page_facts.py`) : priorité + coupe selon la place, voir REPO_CONTEXT.
+- Pas de `_phone.png` côté prod ; la preview (`previews_and_sims/spotify-album-page-card/simulate.py`) en fait une pour vérifier. Lisibilité mobile : la card est dense (tableau ~5 px à 310 px de large) — choix assumé par le propriétaire.
+
 ## Milestone cards (`comp/milestone_card.py`, 2026-10-09)
 
 Décision propriétaire (2026-10-09, après comparaison de 3 maquettes) : les milestones ne passent plus par `spotlight.py` (où le milestone n'était qu'une petite case dorée et le gros chiffre était le daily). Trois gabarits portrait 1080×1350 (rendu ×2) :
@@ -340,7 +353,7 @@ ailleurs ; toute nouvelle card masthead doit passer
 
 Top Songs (`generate_streams_image.py`), Top Eras (`generate_albums_image.py`) et
 GAINERS (`post_stream_highlights_thread.py`) affichent `★ Titre · since <date>`
-(ou `· of the year` / `· of the month`) dans la colonne Track/Album, comme les
+(ou `· best day ever` ; jamais `of the year`/`of the month`, toujours la date depuis le 2026-10-13) dans la colonne Track/Album, comme les
 images d'album update. Helper partagé `comp.tables_image.ledger_name_with_best_day(name_html, marker_label)`
 (+ CSS `.ledger-name .best-day-star` / `.best-day-note` dans `STREAMS_TABLE_CSS`) ;
 labels via `best_day_since.best_day_marker_text` / `best_day_marker_labels`

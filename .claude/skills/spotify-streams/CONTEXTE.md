@@ -288,6 +288,18 @@ Objets R2 importants:
 - `data/best_day_since.json` (lu par `tsm-frontend` `api/routes/best_day_since.py`
   -> badge etoile "best day since X" sur la liste Top Songs / page detail chanson)
 
+## Signal extra_taylor apres la collecte de data (2026-10-13)
+
+`update_streams._signal_extra_taylor(stats_date)` est appele juste apres
+« Streams collection complete for the day » (non-extra tous avec daily +
+veille verifiee), AVANT notif grower / export web / posts. Il lance en detache
+la tache Windows « Extra Taylor Streams » (`schtasks /run`, timeout 20 s, toute
+erreur ignoree) = projet separe `C:\Users\sfara\Documents\GitHub\extra_taylor`
+(streams nominatifs d'autres artistes, images perso jamais postees). Ce projet
+ne fait que LIRE `db/streams_history.csv` (tracks temoins pour prouver la date)
+et n'ecrit rien dans tsm-backend. `EXTRA_TAYLOR_SIGNAL=0` coupe le signal.
+Jamais en `--local-test` / `--debug-daily` (meme bloc que le completeness check).
+
 ## Bug fixe : best_day_since.json jamais uploade en prod (2026-08-30)
 
 `export_for_web.py::export_best_day_since` regenere bien
@@ -906,7 +918,7 @@ signal de "chanson qui continue de grimper", donc rien de nouveau a calculer.
 ## Marqueur ★ since sur Top Songs / Top Eras / GAINERS (2026-09-03)
 
 Ces 3 cards ledger affichent le marqueur `★ Titre · since <date longue>` (ou
-`· of the year` / `· of the month`) dans la colonne Track/Album, **comme les
+`· best day ever` ; plus jamais `of the year`/`of the month` depuis le 2026-10-13) dans la colonne Track/Album, **comme les
 images d'album update**. Helper `comp.tables_image.ledger_name_with_best_day` +
 `best_day_since.best_day_marker_text(row)` / `best_day_marker_labels(track_ids,
 date)`. Top Songs / GAINERS = record **solo** par track (records combined non
@@ -1909,7 +1921,11 @@ classes `.ledger-*`) :
   `build_track_album_map` : `_event_album(event, map)` renvoie l'album quand
   overtaker ET passed y mappent, sinon `None`. Les events cross-album suivent
   le chemin ledger ci-dessus ; les events same-album sont groupes par album
-  canonique (`_canonical_album_name` via `load_album_sections`) et
+  canonique (`_canonical_album_name` via `load_album_sections`) — si l'album
+  n'a AUCUNE section rendable (pseudo-album `Standalone & Extras` de
+  songs.json/features.json, hors `albums/`), `_canonical_album_name` renvoie
+  `None` et l'event repart en card ledger (crash `Aucune section trouvée` le
+  2026-10-12, corrigé) — et
   `_post_same_album_overtake` appelle
   `generate_album_update_image.generate(album, date, flat_rank_by_total=True,
   highlight_track_ids={track_id: "overtaker"|"passed"})` :
@@ -2327,6 +2343,16 @@ ever", soit ce n'est pas affiche du tout.
   Top Eras / GAINERS, `best_day_marker_text`) n'est PAS concerne : c'est un
   badge court d'espace limite, design different, jamais une phrase complete —
   a rediscuter separement si besoin.
+  **Rediscute le 2026-10-13 (proprietaire) : on n'ecrit PLUS JAMAIS "of the
+  year" / "of the month" seul, meme en badge — toujours la date** ("since
+  <date>"). Applique dans la maquette `previews_and_sims/spotify-album-page-card/`
+  (lit `_best_day_rows_for_sections` -> `best_day_since`). **Prod migre le
+  meme jour** : `_format_best_day_marker_label` (etoile album update) = toujours
+  la date ; `best_day_marker_text` (ledgers) = date ou "best day ever", plus de
+  repli "of the month" ; branches "biggest day of the month" retirees de
+  `row_label` et `_best_day_post_label`. La phrase combinee `BIGGEST DAY of the
+  year and BEST DAY since <date>` a aussi ete retiree (proprietaire, meme jour) :
+  un record de l'annee s'ecrit juste `BEST DAY since <date>`.
 
 ## Sous-score volume dans score_best_day_since (2026-09-18)
 
@@ -2599,3 +2625,49 @@ Audit « que ca ne se reproduise pas le lendemain » (Encore J+1 = samedi
   boucle `[debut]`, `ReadyDebutReleasePoster` sans album ni card chanson,
   `post_debut_releases` vide ; gate « comparison history » OK (lignes du 25
   avec daily) ; weekend song gainers compare a J-1 (pas de faux gainer).
+
+
+## TOTAL ERA de la card album = perimetre Top Eras (2026-10-13)
+
+Decision proprietaire : le total d'ere de la card album update (`TOTAL ERA`, et la
+1re ligne « The "X" era earned its ... » du tweet) doit etre le meme chiffre que
+Top Eras (`generate_albums_image.build_album_rows`, merge_eras=True). Bug : seul
+reputation chargeait ses `chart_extra` dans `load_album_sections` (`is_reputation`),
+les autres albums n'ajoutaient que leurs titres hors album non-extra (You're Losing
+Me...) et oubliaient remixes / acoustiques / live. Fix (`generate_album_update_image.py`) :
+- tous les albums mettent leurs `chart_extra` dans une section `totals_only`
+  « Extras » (jamais de ligne chanson), filtree par `release_date` piste par piste
+  et sans doublon avec les lignes de l'album ;
+- `drop_merged_era_extras(sections, hist)` retire de cette section les perdants
+  de merge Spotify actifs (`history_store.pick_active_catalog_merge_losers`,
+  data-rules n°15), appele dans `generate()` et `_build_album_post_text` ;
+- restent sur les titres de l'album seuls : la liste du depassement
+  (`flat_rank_by_total`, + les 2 titres du depassement si l'un est un extra),
+  `finalize_update._album_daily_total` (tri de secours), le seuil Holiday
+  Collection, les milestones album (`_album_total_tracks`).
+Record d'ere : `compute_album_best_day_since` ne compare qu'aux jours ou tous les
+titres avaient deja des donnees et ne peut pas sortir `best_ever` -> un extra
+collecte tard ne cree pas de faux record (le tweet retombe sur le record album).
+Verif : `previews_and_sims/spotify-album-page-card/check_prod_era.py [DATE] [ALBUM...]`
+(totaux card vs Top Eras + rendu dans `prod_cards/`, jamais snapshots/). 09/10/2026 :
+egalite exacte pour toutes les eres simples ; Fearless / Speak Now / Red / 1989
+different par construction (Top Eras fusionne la Taylor's Version dans l'ere).
+
+
+## Card album update = design page album Spotify (2026-10-13)
+
+`generate_album_update_image.generate()` rend les cards postees (daily, week-end
+`weekly_only`, overtake meme-album `flat_rank_by_total`) avec `album_page_card.py`
+quand `style == "default"` sans header de test ni `sort_tracks_by_daily` ; tout
+echec -> `[WARN]` + ancien rendu table (le post n'est jamais perdu). Retour arriere :
+`ALBUM_UPDATE_PAGE_STYLE=0`. Texte du tweet inchange. Memes chiffres que la card
+table (memes loaders, TOTAL ERA = Top Eras). Detail design -> skill `image-gen`.
+
+## Thème du jour depuis la frise Taylor Swift (décision propriétaire 2026-10-13, en maquette)
+
+Fichier source : `taylor_swift_timeline_en_2006_2026.json` (racine du repo, fourni par le propriétaire, « pas complet mais un bon début » ; on peut y ajouter des événements `{date, type, title, description}`). Module : `tools/scripts/day_theme.py`. Pas encore branché sur les posts : seules les maquettes `previews_and_sims/spotify-app-cards/` l'utilisent.
+
+- Chaque événement donne une **image** (portrait Eras Tour de son ère, collage pour les événements Eras Tour) et un **thème** (couleur de la card album de l'ère).
+- **Anniversaire** = le mois-jour tombe sur la date du post OU sur la date des stats (« les deux ») ; si les deux tombent sur des événements différents, celui du post gagne.
+- **Jour d'événement** : le thème s'applique à toutes les images streams **sauf les cards album** (elles gardent leur couleur d'album) ; le Recap écrit l'événement sous le nom (« 14 years ago today · Release of the album Red »).
+- **Jour sans événement** : un mode au hasard parmi 3 (ère du dernier événement passé, rotation des portraits, ère n°1 du jour), graine = date du post pour qu'un re-run donne la même chose. Ces jours-là, Top Songs / Top Eras / Gainers gardent la couleur de leur n°1.

@@ -1535,6 +1535,7 @@ def _album_daily_total(album: str, stats_date: str) -> int:
     return sum(
         int(hist.get(track["track_id"], {}).get("daily") or 0)
         for section in sections
+        if not section.get("totals_only")  # album rows, not the era Extras totals
         for track in section.get("tracks", [])
     )
 

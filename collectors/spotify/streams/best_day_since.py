@@ -630,18 +630,18 @@ def era_recap_groups(
 
 
 def best_day_marker_text(row: dict | None) -> str | None:
-    """Short "since" marker for a best-day-since row, matching the album update
-    image: a long date like "November 26th, 2025" or "of the month" (no
-    "since" prefix). Biggest-day-of-the-year rows show the beaten date, not
-    "of the year", so album updates do not lose the actual callback."""
+    """Short marker for a best-day-since row, matching the album update image:
+    the beaten date like "November 26th, 2025" (rendered "since ..."), or
+    "best day ever" for an all-time record. Owner rule (2026-10-13): never
+    "of the year" / "of the month" — always the date."""
     if not row or row.get("kind") not in ("since", "best_ever"):
         return None
     value = row.get("best_day_since")
     if isinstance(value, str) and re.match(r"\d{4}-\d{2}-\d{2}$", value):
         marker_date = date.fromisoformat(value)
         return f"{marker_date.strftime('%B')} {ordinal(marker_date.day)}, {marker_date.year}"
-    if row.get("is_biggest_day_of_month"):
-        return "of the month"
+    if row.get("kind") == "best_ever":
+        return "best day ever"
     return None
 
 
@@ -981,8 +981,6 @@ def row_label(row: dict) -> str:
         label = "best day ever"
     elif row.get("kind") == "since":
         label = f"best day since {format_long_date(row['best_day_since'])}"
-    elif row.get("is_biggest_day_of_month"):
-        label = "biggest day of the month"
     else:
         label = f"best day since {format_long_date(row['best_day_since'])}"
     # A "combined" row's record is set by the summed streams of every version

@@ -559,6 +559,26 @@ def _upload_update_signal(stats_date: str) -> None:
         print(f"[signal] Upload failed (non-blocking): {e}")
 
 
+def _signal_extra_taylor(stats_date: str) -> None:
+    """Start the standalone extra_taylor project (other artists' streams,
+    C:\\Users\\sfara\\Documents\\GitHub\\extra_taylor) as soon as Taylor's DATA
+    collection is complete - before export/posts. It proves the date itself
+    (Taylor witness tracks in db/streams_history.csv, read only), so the signal
+    only says "now is a good time". Detached Task Scheduler run: never waits,
+    never fails this run. EXTRA_TAYLOR_SIGNAL=0 disables it."""
+    if os.getenv("EXTRA_TAYLOR_SIGNAL", "1").strip().lower() in ("0", "false", "no"):
+        return
+    task = os.getenv("EXTRA_TAYLOR_TASK", "Extra Taylor Streams").strip()
+    try:
+        result = subprocess.run(["schtasks", "/run", "/tn", task], capture_output=True, text=True, timeout=20)
+        if result.returncode == 0:
+            print(f"[extra_taylor] task '{task}' started for {stats_date}")
+        else:
+            print(f"[extra_taylor] task '{task}' not started: {(result.stderr or result.stdout).strip()[:200]}")
+    except Exception as exc:
+        print(f"[extra_taylor] signal failed (ignored): {exc}")
+
+
 _BEST_DAY_SINCE_R2_LOCK = threading.Lock()
 
 
@@ -4285,6 +4305,7 @@ def main():
             return
 
         print("Streams collection complete for the day; sending grower notification before posting/finalize.")
+        _signal_extra_taylor(stats_date)
         try:
             notify_daily_growers(stats_date)
         except Exception as exc:

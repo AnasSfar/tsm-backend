@@ -35,6 +35,22 @@ Scheduler:
   l'heure du run = pas de collecte ce jour-là (pas de retry auto ; rattrapage
   `--date AAAA-MM-JJ` = **jour d'activité voulu**, pas la date du run, cf.
   `manual_trusted` / [[tsm-streams-pipeline-ops]]).
+- **Extinction du PC après le run de 06:05 (2026-10-13, demande d'Anas)** :
+  l'action de la tâche pose `TSM_SHUTDOWN_AFTER=1` (et elle seule) ; à la fin
+  de `run_youtube.bat` (succès ou erreur) → `collectors/youtube/shutdown_after_run.ps1`.
+  Garde horaire : rien si le run finit après 09:00 (exécution manuelle de la
+  tâche à 16h = pas d'extinction ; lancer le `.bat` à la main non plus, pas de
+  variable). Attend que les autres tâches `TSM*` en cours finissent (Apple
+  Music 06:00, max 60 min, sinon abandon), annule si une tâche
+  `TSM_YouTube_First*` est due dans les 24 h (PC éteint = marque ratée).
+  Puis `shutdown /s /t 180` (vraie extinction, pas veille ; `/f` implicite =
+  apps non sauvegardées fermées) + fenêtre au premier plan avec compte à
+  rebours : « Annuler l'extinction » (ou fermer la fenêtre) → `shutdown /a`,
+  « Éteindre maintenant ». Trace `[shutdown]` dans `run_youtube.log`.
+  Conséquence : les runs de la matinée (Apple Music 10:00 = refresh Global,
+  OG Screenshots 10:00) ne partent qu'au rallumage (`StartWhenAvailable`).
+  Test sans risque : `powershell -File collectors\youtube\shutdown_after_run.ps1 -DryRun -WarnSeconds 10`.
+  Désactiver : retirer `$env:TSM_SHUTDOWN_AFTER='1'` de l'action (EncodedCommand).
 - **`--no-notify` (pas `--no-post`) depuis le 2026-08-30** : `--no-post`
   coupait aussi toute la logique first-day (planif + filet de sécurité), donc
   depuis l'arrivée de la feature le 2026-08-25 aucune card "first 24h views"

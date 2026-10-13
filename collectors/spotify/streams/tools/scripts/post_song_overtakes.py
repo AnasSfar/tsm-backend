@@ -322,17 +322,20 @@ def _group_slug(group: dict) -> str:
 
 # --- Same-album overtakes -> album update image (flat total ranking) ----------
 
-_CANONICAL_ALBUM_CACHE: dict[tuple[str, str], str] = {}
+_CANONICAL_ALBUM_CACHE: dict[tuple[str, str], str | None] = {}
 
 
-def _canonical_album_name(album_name: str, stats_date: str) -> str:
+def _canonical_album_name(album_name: str, stats_date: str) -> str | None:
+    """Canonical album name, or None when the album has no renderable sections
+    (pseudo-albums like "Standalone & Extras" from songs.json/features.json):
+    those overtakes fall back to the generic ledger card."""
     key = (album_name.strip().casefold(), stats_date)
     if key not in _CANONICAL_ALBUM_CACHE:
         try:
-            _sections, canonical = generate_album_update_image.load_album_sections(album_name, stats_date)
-            _CANONICAL_ALBUM_CACHE[key] = canonical or album_name
+            sections, canonical = generate_album_update_image.load_album_sections(album_name, stats_date)
+            _CANONICAL_ALBUM_CACHE[key] = (canonical or album_name) if sections else None
         except Exception:
-            _CANONICAL_ALBUM_CACHE[key] = album_name
+            _CANONICAL_ALBUM_CACHE[key] = None
     return _CANONICAL_ALBUM_CACHE[key]
 
 
@@ -355,8 +358,9 @@ def same_album_overtake_albums(stats_date: str, *, limit: int = DEFAULT_LIMIT) -
     out: set[str] = set()
     for event in find_overtakes(stats_date, limit=limit):
         album = _event_album(event, track_album_map)
-        if album:
-            out.add(_canonical_album_name(album, stats_date))
+        canonical = _canonical_album_name(album, stats_date) if album else None
+        if canonical:
+            out.add(canonical)
     return out
 
 
@@ -509,8 +513,9 @@ def main() -> int:
     cross_events: list[dict] = []
     for event in events:
         album = _event_album(event, track_album_map)
-        if album:
-            same_album.setdefault(_canonical_album_name(album, args.date), []).append(event)
+        canonical = _canonical_album_name(album, args.date) if album else None
+        if canonical:
+            same_album.setdefault(canonical, []).append(event)
         else:
             cross_events.append(event)
 

@@ -121,6 +121,7 @@ def holiday_collection_post_block_reason(album_name: str, target_date: str) -> s
     daily_total = sum(
         int(hist.get(track["track_id"], {}).get("daily") or 0)
         for section in sections
+        if not section.get("totals_only")
         for track in section.get("tracks", [])
     )
     if daily_total < HOLIDAY_COLLECTION_MIN_DAILY_STREAMS_TO_POST:
@@ -172,6 +173,10 @@ MONOCHROME_ALBUM_ACCENTS = {
 # ALBUM_DISPLAY_TITLE_OVERRIDES / display_title_for_album now live in
 # comp.discography (shared across every generator that renders an album/era
 # name) — see that module for the rationale. Imported above.
+
+# Spotify album page card (album_page_card.py) for posted album updates; set
+# ALBUM_UPDATE_PAGE_STYLE=0 to go back to the table cards.
+PAGE_STYLE = os.getenv("ALBUM_UPDATE_PAGE_STYLE", "1") != "0"
 
 TABLE_DARK_DEFAULT_ALBUMS = {
     "reputation",
@@ -522,6 +527,25 @@ def _display_total_tracks(sections: list[dict]) -> list[dict]:
     return result
 
 
+def drop_merged_era_extras(sections: list[dict], hist: dict[str, dict]) -> None:
+    """Remove from the totals-only Extras section any extra that Spotify is
+    actively merging into another track of the album (same total that day,
+    history_store merge detection): counting both would add that total twice
+    to TOTAL ERA. Only the losing side goes (data-rules n°15), never a row."""
+    totals = {
+        t["track_id"]: hist[t["track_id"]]["streams"]
+        for sec in sections for t in sec.get("tracks", [])
+        if (hist.get(t["track_id"]) or {}).get("streams") is not None
+    }
+    meta = {t["track_id"]: {"chart_extra": bool(t.get("chart_extra"))} for sec in sections for t in sec.get("tracks", [])}
+    losers = history_store.pick_active_catalog_merge_losers(totals, meta)
+    if not losers:
+        return
+    for sec in sections:
+        if sec.get("totals_only"):
+            sec["tracks"] = [t for t in sec["tracks"] if t["track_id"] not in losers]
+
+
 def load_album_sections(album_name: str, target_date: str | None = None) -> list[dict]:
     """
     Returns list of sections for the given album, each with:
@@ -595,8 +619,12 @@ def load_album_sections(album_name: str, target_date: str | None = None) -> list
 
     canonical_name = target_payload.get("album") or album_name
     sections = []
+    # chart_extra tracks (remixes, acoustic/live versions, karaoke...) never get a
+    # row, but every album now collects them into a totals-only "Extras" section,
+    # so TOTAL ERA = the whole album catalogue, the same scope as Top Eras
+    # (generate_albums_image). Before 2026-10-13 only reputation did this, so the
+    # other albums' TOTAL ERA / era tweet line silently left those extras out.
     extra_total_tracks = []
-    is_reputation = canonical_name.strip().casefold() == "reputation"
     for sec in target_payload.get("sections", []):
         tracks = []
         seen_track_ids = set()
@@ -607,8 +635,6 @@ def load_album_sections(album_name: str, target_date: str | None = None) -> list
                 continue
             track_id = m.group(1)
             chart_extra = _is_chart_extra(sec, t)
-            if chart_extra and not is_reputation:
-                continue
 
             # Some album JSONs can contain accidental duplicate rows for a section.
             # Keep distinct versions in the same song family, e.g. All Too Well
@@ -708,11 +734,15 @@ def load_album_sections(album_name: str, target_date: str | None = None) -> list
             if sec.get("announced") or not sec.get("release_date") or sec["release_date"] <= target_date
         ]
 
-    if is_reputation and extra_total_tracks:
+    if extra_total_tracks:
         deduped_extra_tracks = []
-        seen_extra_ids = set()
+        # never count a track twice: already a row of the album, or listed in 2 extra sections
+        seen_extra_ids = {t["track_id"] for sec in sections for t in sec["tracks"]}
         for track in sorted(extra_total_tracks, key=lambda x: (x["display_order"], x["title_clean"].casefold(), x["track_id"])):
             if track["track_id"] in seen_extra_ids:
+                continue
+            # an extra released after target_date is not part of the era yet (data-rules n°11)
+            if target_date and str(track.get("release_date") or "")[:10] > target_date[:10]:
                 continue
             seen_extra_ids.add(track["track_id"])
             deduped_extra_tracks.append(track)
@@ -721,7 +751,7 @@ def load_album_sections(album_name: str, target_date: str | None = None) -> list
             for t in deduped_extra_tracks
             if re.match(r"\d{4}-\d{2}-\d{2}", str(t.get("release_date") or ""))
         ]
-        if not target_date or not release_dates or min(release_dates) <= target_date:
+        if deduped_extra_tracks:
             sections.append({
                 "name": "Extras",
                 "tracks": deduped_extra_tracks,
@@ -2640,14 +2670,9 @@ def _format_best_day_since_label(value: object) -> str | None:
 
 
 def _format_best_day_marker_label(row: dict) -> str | None:
-    if row.get("is_biggest_day_of_year"):
-        return "of the year"
-    since_label = _format_best_day_since_label(row.get("best_day_since"))
-    if since_label:
-        return since_label
-    if row.get("is_biggest_day_of_month"):
-        return "of the month"
-    return None
+    # Owner rule (2026-10-13): always the beaten date, never "of the year" /
+    # "of the month" — not even in this short star marker.
+    return _format_best_day_since_label(row.get("best_day_since"))
 
 
 def _best_day_labels_for_sections(
@@ -2754,6 +2779,21 @@ def generate(
         target_date = get_latest_date()
     print(f"[album_update] Album: {album_name}  Date: {target_date}")
 
+    # Spotify album page design (owner decision 2026-10-13) for the posted cards: daily,
+    # weekend (weekly_only) and same-album overtake. Header tests / throwback keep the old
+    # table renderers below, which also stay as the fallback if the new one fails.
+    if PAGE_STYLE and style == "default" and not sort_tracks_by_daily and header_path is None and not output_suffix:
+        try:
+            import album_page_card
+            suffix = ("_overtake" if flat_rank_by_total else "") + ("_weekly" if weekly_only else "")
+            out_path = album_update_out_dir(target_date) / f"{album_update_slug(album_name)}_update{suffix}.png"
+            album_page_card.render_png(album_name, target_date, out_path, weekly=weekly_only,
+                                       overtake=flat_rank_by_total, highlight=highlight_track_ids)
+            print(f"[album_update] Image générée (page) : {out_path}")
+            return out_path
+        except Exception as exc:  # noqa: BLE001 - never lose the post over the new design
+            print(f"[album_update] [WARN] page design failed ({exc!r}); falling back to the table card.")
+
     sections, album_name = load_album_sections(album_name, target_date)
     if not sections:
         raise ValueError(f"Aucune section trouvée pour l'album: {album_name!r}")
@@ -2766,10 +2806,17 @@ def generate(
     print(f"[album_update] {sum(len(s['tracks']) for s in sections)} tracks dans {len(sections)} section(s)")
 
     hist = load_history_for_album(sections, target_date)
+    drop_merged_era_extras(sections, hist)
 
     movement_by_track: dict[str, int | None] | None = None
     if flat_rank_by_total:
-        pool = _display_total_tracks(sections)
+        # album rows only (+ the two overtake tracks if one is an extra): since
+        # every album has an Extras totals section, _display_total_tracks would
+        # list every remix/karaoke row here
+        pool = _album_total_tracks(sections)
+        pool_ids = {t["track_id"] for t in pool}
+        pool += [t for t in _display_total_tracks(sections)
+                 if t["track_id"] in (highlight_track_ids or {}) and t["track_id"] not in pool_ids]
         pool = sorted(pool, key=lambda t: -(hist.get(t["track_id"], {}).get("streams") or 0))
         movement_by_track = _flat_total_movement(pool, hist)
         sections = [{
@@ -2998,6 +3045,7 @@ def _build_album_post_text(album_name: str, target_date: str, *, weekly_only: bo
 
     display_name = display_title_for_album(canonical_name)
     hist = load_history_for_album(sections, target_date)
+    drop_merged_era_extras(sections, hist)
 
     tracks = _album_total_tracks(sections)
     total_daily, album_pct = _daily_summary_for_tracks(tracks, hist)
@@ -3163,12 +3211,9 @@ def _format_best_since_long(value: object) -> str:
 def _best_day_post_label(row: dict) -> str:
     if row.get("kind") == "best_ever":
         label = "BEST DAY ever"
-    elif row.get("is_biggest_day_of_year") and row.get("kind") == "since":
-        label = f"BIGGEST DAY of the year and BEST DAY since {_format_best_since_long(row.get('best_day_since'))}"
+    # Owner rule (2026-10-13): just the date, no "BIGGEST DAY of the year and ..."
     elif row.get("kind") == "since":
         label = f"BEST DAY since {_format_best_since_long(row.get('best_day_since'))}"
-    elif row.get("is_biggest_day_of_month"):
-        label = "BIGGEST DAY of the month"
     else:
         label = f"BEST DAY since {_format_best_since_long(row.get('best_day_since'))}"
     # Same rule as best_day_since.row_label: a combined record is set by the
