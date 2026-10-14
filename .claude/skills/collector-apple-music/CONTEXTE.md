@@ -292,8 +292,8 @@ entre Global — vs hier — et pays/iTunes — vs le cycle precedent) :
     - **Entree d'une chanson de l'album dans un gros store (proprio 2026-09-27 : « quand une chanson de showgirl
       (donc l'album sorti pas seulement la nouvelle edition) rejoint le us apple music charts alors poste, de meme
       pour les bigs stores dont on a la liste », puis « et apple music pop? » -> « oui vasy »)** : chart NORMAL Apple Music des stores
-      `ENTRY_CARD_COUNTRIES` (env `APPLE_MUSIC_DEBUT_ENTRY_CARD_COUNTRIES`, defaut `HIGHLIGHT_COUNTRIES` + `au` =
-      us,jp,gb,cn,de,fr,kr,br,ca,mx,au). Une chanson de l'album (toutes editions = exactement les lignes de la card
+      `ENTRY_CARD_COUNTRIES` (env `APPLE_MUSIC_DEBUT_ENTRY_CARD_COUNTRIES`, defaut `HIGHLIGHT_COUNTRIES` (+ `au`, deja dedans depuis 2026-10-14) =
+      us,gb,cn,de,fr,kr,br,ca,mx,au ; jp retire le 2026-10-14). Une chanson de l'album (toutes editions = exactement les lignes de la card
       filtree album, anciens titres et Track by Track compris) presente maintenant et absente du snapshot de reference
       de la card (dernier snapshot distinct, meme que fleches/OUT) -> la card filtree album du pays est postee
       (`_post_pop_snapshot`, `album_entries`). US/AU/CA : en plus du declencheur « reordonnancement » ; les autres
@@ -374,7 +374,7 @@ entre Global — vs hier — et pays/iTunes — vs le cycle precedent) :
         posts separes.
       - **Depuis le 2026-09-28 (proprio : « je veux que dans le thread on mets les 11 stores »)** : le thread porte
         les gros stores `ITUNES_ALBUM_CARD_REGIONS` (defaut `ENTRY_CARD_COUNTRIES` sans cn/kr, pas de store musique
-        iTunes -> us, jp, gb, de, fr, br, ca, mx, au = 9 posts max) ; le DECLENCHEUR reste les 5 pays cles
+        iTunes -> us, gb, de, fr, br, ca, mx, au = 8 posts max depuis le retrait de jp 2026-10-14) ; le DECLENCHEUR reste les 5 pays cles
         (`ITUNES_THREAD_TRIGGER_REGIONS`, defaut `KEY_COUNTRIES`) -> volume inchange (estimation 26-27/09 : 13 threads
         sur 24 cycles, 18 si les 9 declenchaient). Egalite dans l'ordre du thread = ordre IFPI de la liste. Artiste
         localise du flux (iTunes JP « テイラー・スウィフト ») -> « Taylor Swift » sur la card. Thread = un seul compose X
@@ -449,8 +449,11 @@ entre Global — vs hier — et pays/iTunes — vs le cycle precedent) :
       nom complet (`country_label`), jamais le code (« in DE »). Posts multi-regions (cards
       par titre) et Global (🌍) inchanges.
     - **Pays surlignes sur les cards = `HIGHLIGHT_COUNTRIES` (proprio 2026-09-26)** : top 10 IFPI des marches
-      de la musique enregistree, dans l'ordre IFPI : us, jp, gb, cn, de, fr, kr, br, ca, mx (env
+      de la musique enregistree, dans l'ordre IFPI ; **Japon remplace par l'Australie le 2026-10-14** (proprio : Taylor quasi jamais
+      dans les charts JP -> tuile « — » sur presque chaque card) = us, gb, cn, de, fr, kr, br, ca, mx, au (env
       `APPLE_MUSIC_HIGHLIGHT_COUNTRIES`). Remplace les 5 marches surlignes du 2026-09-25 (us,gb,fr,ca,au).
+      Cards iTunes : `ITUNES_HIGHLIGHT_COUNTRIES` = cette liste sans cn/kr (pas de store iTunes musique)
+      = us,gb,de,fr,br,ca,mx,au (env `ITUNES_HIGHLIGHT_COUNTRIES`).
       AFFICHAGE SEULEMENT : les declencheurs de posts, le thread iTunes et le suivi express restent sur
       `KEY_COUNTRIES` (us,gb,fr,ca,au). Cards recap : tuiles Global + ces 10 (2 lignes) ; iTunes sans
       cn/kr (`ITUNES_NO_MUSIC_STORE` : pas de store musique, flux toujours vide -> un « — » mentirait).

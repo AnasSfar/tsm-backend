@@ -78,7 +78,15 @@ Décision propriétaire (13/10/2026, après une longue itération sur maquette) 
 - Badge clip (icône seule, devant le titre) = collector YouTube, jamais une liste manuelle.
 - ★ best day since sous le titre = **toujours la date** (jamais « of the year »).
 - Faits du jour (`album_page_facts.py`) : priorité + coupe selon la place, voir REPO_CONTEXT.
+- **Piège corrigé (2026-10-13 soir)** : le CLI (`generate_album_update_image.py <album> <date> --post`, chemin réellement posté par finalize) passait toujours le header choisi automatiquement à `generate()`, or le design page n'est pris que si `header_path is None` → toutes les cards album du run du 13/10 (stats 12/10) sont parties en ancien design. Le CLI ne passe plus `header_path` que pour un `--header` explicite. Toute nouvelle condition d'entrée du design page : la tester via le CLI (comme finalize), pas seulement via `generate()`.
 - Pas de `_phone.png` côté prod ; la preview (`previews_and_sims/spotify-album-page-card/simulate.py`) en fait une pour vérifier. Lisibilité mobile : la card est dense (tableau ~5 px à 310 px de large) — choix assumé par le propriétaire.
+
+## Famille « pages Spotify » : règles communes (2026-10-13)
+
+Valables pour toutes les cards façon app Spotify : album card (`album_page_card.py`) et, **postées depuis le 2026-10-13**, récap / Top Songs / Top Eras / Gainers / Milestone Watch — « Billion Watch », « 900M Watch »… (`collectors/spotify/streams/tools/scripts/spotify_app_cards.py`, repli auto sur l'ancien rendu, `SPOTIFY_APP_CARDS=0` pour revenir). Vérif visuelle : `previews_and_sims/spotify-app-cards/simulate.py` (appelle le module de prod, sortie dans le dossier sim, jamais dans `snapshots/`). Top Eras = podium top 3 + liste compacte (le mur de 15 tuiles identiques a été rejeté : aucune hiérarchie).
+- **La date est toujours grande et visible**, jamais noyée dans une ligne de description en petit. Quand la card a une cover de chart/playlist (Gainers, Billion Watch, mosaïque Top Songs), la date est **imprimée dans la cover** (coin haut-droit pour une cover de chart, bandeau en bas de la mosaïque). Sinon, ligne dédiée en gros sous le titre (« Sunday, October 11, 2026 »).
+- Deux colonnes de hauteurs différentes : la plus courte est **centrée verticalement**.
+- Le classement des prochaines chansons à passer un palier s'appelle « Billion Watch » (1B) / « <palier> Watch » (900M, 2B…), **jamais « Road to 1B »** (nom utilisé par un autre compte).
 
 ## Milestone cards (`comp/milestone_card.py`, 2026-10-09)
 
@@ -180,6 +188,23 @@ tout misc.json ; sélection différente à chaque génération. Rendu via
 `.ledger-art-collage` (grid 2x2, `extra_css` local) dans `build_rows_html`
 quand `row["collage_covers"]` est présent. `prefetch_covers` télécharge aussi
 ces 4 URLs.
+
+## Top Eras — cover des ères combinées OG + TV (2026-10-13)
+
+Décision propriétaire : une ère qui regroupe OG + Taylor's Version (Fearless,
+Speak Now, Red, 1989 — `ERA_MAP`) n'affiche **ni l'une ni l'autre** des covers
+mais une cover **coupée verticalement au milieu : moitié gauche = OG, moitié
+droite = TV** (`ERA_SPLIT_COVER`, `split_cover_data_uri`). `build_album_rows`
+pose `split_cover_urls=[og, tv]` sur la ligne d'ère ; `prefetch_covers` compose
+l'image et la range sous la clé `row["cover_url"]` (URL TV), donc tous les
+renderers qui font `image_cache.get(row["cover_url"])` (Top Eras,
+`generate_weekend_streams_image._row_html`/`_mh_rows_html`, throwback) l'affichent
+sans modification. Si une des deux covers échoue → repli sur la cover TV
+(`ERA_COVER_PRIORITY`). Pas de collision de clé : une même liste de lignes ne
+contient jamais l'ère ET l'album TV seul. `previews_and_sims/spotify-app-cards` (qui lit
+`cover_url` sans `prefetch_covers`) compose le split lui-même via
+`split_cover_data_uri`. La couleur d'ère (`day_theme.era_color`) reste tirée de
+la cover TV.
 
 ## Section "annoncée" (édition pas encore sortie) dans l'image album update
 

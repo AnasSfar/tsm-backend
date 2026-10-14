@@ -2667,7 +2667,32 @@ table (memes loaders, TOTAL ERA = Top Eras). Detail design -> skill `image-gen`.
 
 Fichier source : `taylor_swift_timeline_en_2006_2026.json` (racine du repo, fourni par le propriétaire, « pas complet mais un bon début » ; on peut y ajouter des événements `{date, type, title, description}`). Module : `tools/scripts/day_theme.py`. Pas encore branché sur les posts : seules les maquettes `previews_and_sims/spotify-app-cards/` l'utilisent.
 
-- Chaque événement donne une **image** (portrait Eras Tour de son ère, collage pour les événements Eras Tour) et un **thème** (couleur de la card album de l'ère).
+- Chaque événement donne une **image** et un **thème** (couleur de la card album de l'ère). Image = « la bonne image » de l'événement (propriétaire : « pour un film, l'affiche du film ») tirée de `assets/timeline/` (`scripts/build_timeline_assets.py`) : film → affiche, album → pochette, single/n°1 → pochette du single, tournée → photo de concert, le reste → photo de Taylor ; portrait Eras Tour de l'ère en secours. Une affiche s'affiche entière (jamais recadrée), le nom passe dessous. Les affiches Wikipedia sont petites (~260 px) : pour une version HD, la déposer dans `assets/timeline/manual/<date>/poster_*.jpg` puis relancer le build.
 - **Anniversaire** = le mois-jour tombe sur la date du post OU sur la date des stats (« les deux ») ; si les deux tombent sur des événements différents, celui du post gagne.
 - **Jour d'événement** : le thème s'applique à toutes les images streams **sauf les cards album** (elles gardent leur couleur d'album) ; le Recap écrit l'événement sous le nom (« 14 years ago today · Release of the album Red »).
 - **Jour sans événement** : un mode au hasard parmi 3 (ère du dernier événement passé, rotation des portraits, ère n°1 du jour), graine = date du post pour qu'un re-run donne la même chose. Ces jours-là, Top Songs / Top Eras / Gainers gardent la couleur de leur n°1.
+
+## Cards streams « pages app Spotify » + Billion Watch (2026-10-13)
+
+Decision proprietaire : les images quotidiennes postees passent au design pages app Spotify
+(`tools/scripts/spotify_app_cards.py`, meme famille que `album_page_card.py`) :
+recap -> page artiste, Top Songs -> page playlist, Top Eras -> page discographie (podium top 3
++ liste), tables gainers -> page Charts. Chaque generateur garde son ancien rendu en **repli
+automatique** (exception) ; `SPOTIFY_APP_CARDS=0` remet les anciens designs partout. Memes
+fichiers de sortie qu'avant (`weekend_streams_image.png`, `streams_image*.png`,
+`albums_image.png`, `stream_highlights_{daily,weekly}_gainers_<date>.png`), memes captions.
+Les gainers rendus sont **les lignes deja choisies pour le tweet** (jamais re-selectionnees).
+
+**Milestone Watch** (`post_milestone_watch.py`, etape finalize « milestone watch » apres les
+tables gainers, cle `milestone-watch`) : 10 prochaines chansons album sous un palier par date
+attendue (modele `forecast_milestones.py` cible = palier, tendance plafonnee a 1.0). « Billion
+Watch » pour 1B, sinon « 900M Watch », « 2B Watch »... Regles de post (proprietaire), posts
+separes : (1) **une chanson franchit un palier** (evenements de `post_stream_milestones`, tous
+les 100M) -> le Watch de ce palier ; (2) **900M, 1B, 2B, 3B postent aussi quand leur liste
+change** (entree/sortie ou ordre) vs `runtime/social/milestone_watch_state.json` (ecrit
+seulement apres un post reussi ; premier passage sans reference = liste enregistree sans post,
+`--force-lists` pour lancer). Frequence mesuree et **acceptee par le proprietaire** (2026-10-13) :
+sur 7 jours les listes 900M et 1B changent presque chaque jour en bas de tableau (rangs 7-10)
+-> ~2 posts/jour ; on lui a propose de ne compter que le top 5 (~1/semaine), il a garde
+« tout changement du top 10 ». Ne pas restreindre sans lui redemander. Jamais sur un export web history qui n'a
+pas encore la date, ni avec moins de 3 chansons projetees (`MIN_ROWS`). Nom : jamais « Road to 1B » (utilise par un autre compte).

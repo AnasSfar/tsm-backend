@@ -150,6 +150,11 @@ runtime/exports/
 !/assets/eras-tour-hero/*.jpg
 !/assets/eras-tour-hero/*.png
 !/assets/eras-tour-hero/*.md
+# Taylor Swift timeline (2026-10-13): source list + built events JSON tracked;
+# its photos (assets/timeline/images, ~70 MB) stay local, rebuilt by scripts/build_timeline_assets.py
+!/taylor_swift_timeline_en_2006_2026.json
+!/assets/timeline/
+!/assets/timeline/timeline.json
 
 # Fixed best-day-since recap header (the "all eras" strip) must be versioned
 !/collectors/spotify/streams/tools/headers/best_day_recap/

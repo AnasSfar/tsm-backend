@@ -79,10 +79,11 @@ KEY_COUNTRIES = [
     if c.strip()
 ]
 # Stores HIGHLIGHTED on the cards (owner 2026-09-26: IFPI top 10 recorded-music
-# markets, in IFPI order). Display only — posting triggers stay on KEY_COUNTRIES.
+# markets, in IFPI order; Japan -> Australia 2026-10-14, Taylor is almost
+# never on the Japanese charts). Display only — posting triggers stay on KEY_COUNTRIES.
 HIGHLIGHT_COUNTRIES = [
     c.strip().lower()
-    for c in os.getenv("APPLE_MUSIC_HIGHLIGHT_COUNTRIES", "us,jp,gb,cn,de,fr,kr,br,ca,mx").split(",")
+    for c in os.getenv("APPLE_MUSIC_HIGHLIGHT_COUNTRIES", "us,gb,cn,de,fr,kr,br,ca,mx,au").split(",")
     if c.strip()
 ]
 TWITTER_SESSION = (
@@ -863,6 +864,18 @@ def _html_escape(value: object) -> str:
 # No iTunes music store there: their feed is always empty ("cn/kr: 0 song(s)"
 # every run) -> no tile, a "—" would read as "not charting".
 ITUNES_NO_MUSIC_STORE = {"cn", "kr"}
+# iTunes tiles = HIGHLIGHT_COUNTRIES minus the stores without iTunes music.
+ITUNES_HIGHLIGHT_COUNTRIES = [
+    c.strip().lower()
+    for c in os.getenv("ITUNES_HIGHLIGHT_COUNTRIES", ",".join(c for c in HIGHLIGHT_COUNTRIES if c not in ITUNES_NO_MUSIC_STORE)).split(",")
+    if c.strip()
+]
+
+
+def highlight_countries(platform: str) -> list[str]:
+    return ITUNES_HIGHLIGHT_COUNTRIES if platform == "itunes" else HIGHLIGHT_COUNTRIES
+
+
 RANK_GROUPS = [(1, 1, "#1"), (2, 2, "#2"), (3, 3, "#3"), (4, 10, "#4–10"), (11, 50, "#11–50"), (51, 10**6, "#51+")]
 
 
@@ -984,8 +997,9 @@ def rank_groups_card_html(*, title: str, subtitle: str, image_url: str, platform
                        key=lambda p: (p["rank"], _market_order(p)))
     extras = lambda p: ((_delta_html(p) if show_deltas else "")  # noqa: E731
                         + ('<span class="star">★</span>' if show_new_peaks and p.get("new_peak") else ""))
+    highlights = highlight_countries(platform)
     tiles = []
-    for region in ["global", *HIGHLIGHT_COUNTRIES]:
+    for region in ["global", *highlights]:
         if region == "global" and platform != "apple_music":
             continue  # no Global iTunes / Apple Music albums chart
         if platform == "itunes" and region in ITUNES_NO_MUSIC_STORE:
@@ -1002,7 +1016,7 @@ def rank_groups_card_html(*, title: str, subtitle: str, image_url: str, platform
         if not members:
             continue
         chips = "".join(
-            f'<div class="chip{" chip-key" if p["region"] in HIGHLIGHT_COUNTRIES else ""}">'
+            f'<div class="chip{" chip-key" if p["region"] in highlights else ""}">'
             f'{_region_flag_html(p["region"])}<span class="chip-name">{esc(p["label"])}</span>'
             + (f'<span class="chip-rank">#{p["rank"]}</span>' if lo != hi else "")
             + extras(p) + "</div>"

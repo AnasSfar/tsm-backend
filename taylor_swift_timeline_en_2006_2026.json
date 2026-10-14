@@ -1,0 +1,422 @@
+[
+  {
+    "date": "2006-10-24",
+    "type": "album_release",
+    "title": "Release of the album Taylor Swift",
+    "description": "Release of her self-titled debut studio album through Big Machine Records."
+  },
+  {
+    "date": "2008-09-12",
+    "type": "single_release",
+    "title": "Release of Love Story",
+    "description": "Breakthrough single that helped launch her international career."
+  },
+  {
+    "date": "2008-11-11",
+    "type": "album_release",
+    "title": "Release of the album Fearless",
+    "description": "Her second studio album, which later won her first Grammy for Album of the Year."
+  },
+  {
+    "date": "2009-04-23",
+    "type": "tour_start",
+    "title": "Start of the Fearless Tour",
+    "description": "Her first headlining tour begins in Evansville, Indiana."
+  },
+  {
+    "date": "2010-01-31",
+    "type": "award",
+    "title": "First Album of the Year Grammy for Fearless",
+    "description": "At the 52nd Grammy Awards, she becomes the youngest solo artist at the time to win Album of the Year."
+  },
+  {
+    "date": "2010-07-10",
+    "type": "tour_end",
+    "title": "End of the Fearless Tour",
+    "description": "The tour concludes in Cavendish, Canada."
+  },
+  {
+    "date": "2010-10-25",
+    "type": "album_release",
+    "title": "Release of the album Speak Now",
+    "description": "Her third studio album, written entirely by Swift."
+  },
+  {
+    "date": "2011-02-09",
+    "type": "tour_start",
+    "title": "Start of the Speak Now World Tour",
+    "description": "The world tour kicks off in Singapore."
+  },
+  {
+    "date": "2012-03-18",
+    "type": "tour_end",
+    "title": "End of the Speak Now World Tour",
+    "description": "The tour concludes in Auckland, New Zealand."
+  },
+  {
+    "date": "2012-10-22",
+    "type": "album_release",
+    "title": "Release of the album Red",
+    "description": "Her fourth studio album marks a gradual transition toward pop music."
+  },
+  {
+    "date": "2013-03-13",
+    "type": "tour_start",
+    "title": "Start of The Red Tour",
+    "description": "The tour opens in Omaha, Nebraska."
+  },
+  {
+    "date": "2014-06-12",
+    "type": "tour_end",
+    "title": "End of The Red Tour",
+    "description": "The tour concludes in Singapore."
+  },
+  {
+    "date": "2014-08-18",
+    "type": "album_announcement",
+    "title": "Announcement of 1989 and release of Shake It Off",
+    "description": "During a Yahoo! livestream, she announces her first fully pop studio album."
+  },
+  {
+    "date": "2014-10-27",
+    "type": "album_release",
+    "title": "Release of the album 1989",
+    "description": "Her fifth studio album becomes a major international critical and commercial success."
+  },
+  {
+    "date": "2015-05-05",
+    "type": "tour_start",
+    "title": "Start of The 1989 World Tour",
+    "description": "The tour opens at Tokyo Dome in Tokyo, Japan."
+  },
+  {
+    "date": "2015-12-12",
+    "type": "tour_end",
+    "title": "End of The 1989 World Tour",
+    "description": "The final show takes place at the Melbourne Cricket Ground in Australia."
+  },
+  {
+    "date": "2016-02-15",
+    "type": "award",
+    "title": "Second Album of the Year Grammy for 1989",
+    "description": "At the 58th Grammy Awards, she becomes the first woman to win Album of the Year twice as a lead artist."
+  },
+  {
+    "date": "2017-08-23",
+    "type": "album_announcement",
+    "title": "Announcement of reputation",
+    "description": "After wiping her social media accounts, she reveals the album title and cover."
+  },
+  {
+    "date": "2017-11-10",
+    "type": "album_release",
+    "title": "Release of the album reputation",
+    "description": "Her sixth studio album and final album released through Big Machine Records."
+  },
+  {
+    "date": "2018-05-08",
+    "type": "tour_start",
+    "title": "Start of the reputation Stadium Tour",
+    "description": "The tour opens at State Farm Stadium in Glendale, Arizona."
+  },
+  {
+    "date": "2018-11-19",
+    "type": "career_milestone",
+    "title": "Signing with Republic Records / Universal Music Group",
+    "description": "Her new global recording deal gives her ownership of the masters for her future recordings."
+  },
+  {
+    "date": "2018-11-21",
+    "type": "tour_end",
+    "title": "End of the reputation Stadium Tour",
+    "description": "The final show takes place at Tokyo Dome in Japan."
+  },
+  {
+    "date": "2019-06-13",
+    "type": "album_announcement",
+    "title": "Announcement of Lover",
+    "description": "She announces the album title and You Need to Calm Down during an Instagram livestream."
+  },
+  {
+    "date": "2019-06-30",
+    "type": "masters_dispute",
+    "title": "Sale of Big Machine Records to Scooter Braun",
+    "description": "Ithaca Holdings acquires Big Machine Label Group, including the masters of her first six albums, without her consent."
+  },
+  {
+    "date": "2019-08-21",
+    "type": "masters_dispute",
+    "title": "Announcement of plans to re-record her first six albums",
+    "description": "In television interviews, she confirms her intention to create new recordings of her early albums."
+  },
+  {
+    "date": "2019-08-23",
+    "type": "album_release",
+    "title": "Release of the album Lover",
+    "description": "Her seventh studio album and first Republic Records project for which she owns the masters."
+  },
+  {
+    "date": "2020-07-23",
+    "type": "album_announcement",
+    "title": "Surprise announcement of folklore",
+    "description": "She announces her eighth studio album less than 24 hours before release."
+  },
+  {
+    "date": "2020-07-24",
+    "type": "album_release",
+    "title": "Release of the album folklore",
+    "description": "Her eighth studio album, an indie-folk-inspired project created during the COVID-19 lockdown."
+  },
+  {
+    "date": "2020-11-16",
+    "type": "masters_dispute",
+    "title": "Resale of her original masters to Shamrock Holdings",
+    "description": "She reveals that Ithaca Holdings has sold her original recording catalog to Shamrock Holdings."
+  },
+  {
+    "date": "2020-12-10",
+    "type": "album_announcement",
+    "title": "Surprise announcement of evermore",
+    "description": "She reveals her ninth studio album, described as a sister record to folklore."
+  },
+  {
+    "date": "2020-12-11",
+    "type": "album_release",
+    "title": "Release of the album evermore",
+    "description": "Her ninth studio album."
+  },
+  {
+    "date": "2021-02-11",
+    "type": "album_announcement",
+    "title": "Announcement of Fearless (Taylor’s Version)",
+    "description": "She officially announces her first re-recorded album on Good Morning America."
+  },
+  {
+    "date": "2021-03-14",
+    "type": "award",
+    "title": "Third Album of the Year Grammy for folklore",
+    "description": "At the 63rd Grammy Awards, she becomes the first woman to win Album of the Year three times."
+  },
+  {
+    "date": "2021-04-09",
+    "type": "album_release",
+    "title": "Release of Fearless (Taylor’s Version)",
+    "description": "Her first released re-recording includes six previously unreleased From the Vault tracks."
+  },
+  {
+    "date": "2021-06-18",
+    "type": "album_announcement",
+    "title": "Announcement of Red (Taylor’s Version)",
+    "description": "She announces the re-recorded edition of Red on social media."
+  },
+  {
+    "date": "2021-11-12",
+    "type": "album_release",
+    "title": "Release of Red (Taylor’s Version)",
+    "description": "Her second re-recorded album features the full ten-minute version of All Too Well."
+  },
+  {
+    "date": "2022-08-28",
+    "type": "album_announcement",
+    "title": "Announcement of Midnights at the MTV VMAs",
+    "description": "She reveals her tenth studio album during the awards ceremony."
+  },
+  {
+    "date": "2022-10-21",
+    "type": "album_release",
+    "title": "Release of the album Midnights",
+    "description": "Her tenth studio album is followed three hours later by the 3am Edition."
+  },
+  {
+    "date": "2022-11-01",
+    "type": "tour_announcement",
+    "title": "Official announcement of The Eras Tour",
+    "description": "She announces a tour celebrating the different eras of her musical career."
+  },
+  {
+    "date": "2023-03-17",
+    "type": "tour_start",
+    "title": "Start of The Eras Tour",
+    "description": "The tour opens at State Farm Stadium in Glendale, temporarily renamed Swift City, Arizona."
+  },
+  {
+    "date": "2023-05-05",
+    "type": "album_announcement",
+    "title": "Announcement of Speak Now (Taylor’s Version)",
+    "description": "She reveals the third re-recorded album onstage in Nashville during The Eras Tour."
+  },
+  {
+    "date": "2023-07-07",
+    "type": "album_release",
+    "title": "Release of Speak Now (Taylor’s Version)",
+    "description": "Her third re-recorded album."
+  },
+  {
+    "date": "2023-08-09",
+    "type": "album_announcement",
+    "title": "Announcement of 1989 (Taylor’s Version)",
+    "description": "She makes the announcement at SoFi Stadium in Inglewood during the final show of the first US leg."
+  },
+  {
+    "date": "2023-08-31",
+    "type": "film_announcement",
+    "title": "Announcement of Taylor Swift: The Eras Tour concert film",
+    "description": "She announces the theatrical release of her concert film."
+  },
+  {
+    "date": "2023-10-13",
+    "type": "film_release",
+    "title": "Theatrical release of Taylor Swift: The Eras Tour",
+    "description": "The concert film opens internationally, following preview screenings the night before."
+  },
+  {
+    "date": "2023-10-27",
+    "type": "album_release",
+    "title": "Release of 1989 (Taylor’s Version)",
+    "description": "Her fourth re-recorded album arrives exactly nine years after the original."
+  },
+  {
+    "date": "2024-02-04",
+    "type": "award",
+    "title": "Fourth Album of the Year Grammy for Midnights",
+    "description": "At the 66th Grammy Awards, she becomes the first artist to win Album of the Year four times."
+  },
+  {
+    "date": "2024-02-04",
+    "type": "album_announcement",
+    "title": "Announcement of The Tortured Poets Department at the Grammys",
+    "description": "She announces her eleventh studio album while accepting Best Pop Vocal Album."
+  },
+  {
+    "date": "2024-04-19",
+    "type": "album_release",
+    "title": "Release of The Tortured Poets Department and The Anthology",
+    "description": "Her eleventh studio album expands into a 31-track double album with 15 additional songs released two hours later."
+  },
+  {
+    "date": "2024-12-08",
+    "type": "tour_end",
+    "title": "End of The Eras Tour",
+    "description": "The record-breaking world tour concludes at BC Place in Vancouver, Canada."
+  },
+  {
+    "date": "2025-05-30",
+    "type": "masters_dispute",
+    "title": "Purchase of her original master recordings",
+    "description": "She announces that she has acquired ownership of the original masters of her first six albums."
+  },
+  {
+    "date": "2025-08-12",
+    "type": "album_announcement",
+    "title": "Announcement of The Life of a Showgirl",
+    "description": "She reveals her twelfth studio album following an online countdown."
+  },
+  {
+    "date": "2025-08-13",
+    "type": "album_announcement",
+    "title": "The Life of a Showgirl release date and tracklist revealed",
+    "description": "During an appearance on New Heights, she discusses the album, its October 3 release date, and the Sabrina Carpenter collaboration."
+  },
+  {
+    "date": "2025-08-26",
+    "type": "personal_milestone",
+    "title": "Engagement to Travis Kelce announced",
+    "description": "Swift and NFL player Travis Kelce publicly announce their engagement."
+  },
+  {
+    "date": "2025-09-19",
+    "type": "film_announcement",
+    "title": "Announcement of The Official Release Party of a Showgirl",
+    "description": "She announces a limited theatrical event accompanying her new album, including the premiere of The Fate of Ophelia music video."
+  },
+  {
+    "date": "2025-10-03",
+    "type": "album_release",
+    "title": "Release of The Life of a Showgirl",
+    "description": "Her twelfth studio album is released, featuring 12 tracks including a collaboration with Sabrina Carpenter."
+  },
+  {
+    "date": "2025-10-03",
+    "type": "film_release",
+    "title": "Release of The Official Release Party of a Showgirl",
+    "description": "A limited-run theatrical event features music videos, commentary, and behind-the-scenes footage."
+  },
+  {
+    "date": "2025-10-13",
+    "type": "career_milestone",
+    "title": "Record-breaking debut for The Life of a Showgirl",
+    "description": "The album achieves more than four million equivalent US units in its first week, setting a new benchmark for an album debut."
+  },
+  {
+    "date": "2025-10-13",
+    "type": "film_announcement",
+    "title": "Announcement of Eras Tour documentary and final concert film",
+    "description": "Disney announces The End of an Era docuseries and The Eras Tour: The Final Show for Disney+."
+  },
+  {
+    "date": "2025-12-12",
+    "type": "film_release",
+    "title": "Disney+ release of The Eras Tour: The Final Show",
+    "description": "The complete Vancouver concert film becomes available on Disney+, including The Tortured Poets Department set."
+  },
+  {
+    "date": "2025-12-12",
+    "type": "documentary_release",
+    "title": "Premiere of The End of an Era",
+    "description": "The six-episode Disney+ documentary series about the making and impact of The Eras Tour begins streaming."
+  },
+  {
+    "date": "2026-01-21",
+    "type": "award_announcement",
+    "title": "Songwriters Hall of Fame induction announced",
+    "description": "Swift is named among the 2026 inductees to the Songwriters Hall of Fame."
+  },
+  {
+    "date": "2026-02-28",
+    "type": "chart_milestone",
+    "title": "Opalite tops the Billboard Hot 100",
+    "description": "The second single from The Life of a Showgirl reaches number one on the US singles chart."
+  },
+  {
+    "date": "2026-06-11",
+    "type": "award",
+    "title": "Induction into the Songwriters Hall of Fame",
+    "description": "She joins the 2026 class of inductees at the New York ceremony."
+  },
+  {
+    "date": "2026-07-03",
+    "type": "personal_milestone",
+    "title": "Marriage to Travis Kelce",
+    "description": "Swift and Kelce marry in New York City."
+  },
+  {
+    "date": "2026-09-23",
+    "type": "album_announcement",
+    "title": "Announcement of The Life of a Showgirl: The Encore",
+    "description": "She announces an expanded edition of her 2025 album with four new tracks."
+  },
+  {
+    "date": "2026-09-25",
+    "type": "album_release",
+    "title": "Release of The Life of a Showgirl: The Encore",
+    "description": "The expanded album arrives with four new tracks, including Patient Zero, Cleveland!, Babylon, and Pink Clouding."
+  },
+  {
+    "date": "2026-09-27",
+    "type": "music_video_release",
+    "title": "Premiere of the Patient Zero music video at the MTV VMAs",
+    "description": "The Swift-directed video featuring Dakota Johnson and Colin Farrell debuts during the awards ceremony."
+  },
+  {
+    "date": "2026-09-27",
+    "type": "award",
+    "title": "MTV VMA Artist Director Honors and Video of the Year",
+    "description": "Swift receives the inaugural Artist Director Honors and wins Video of the Year for The Fate of Ophelia."
+  },
+  {
+    "date": "2026-10-05",
+    "type": "chart_milestone",
+    "title": "Patient Zero reaches number one on the Billboard Hot 100",
+    "description": "The single tops the US chart following the release of The Life of a Showgirl: The Encore."
+  }
+]

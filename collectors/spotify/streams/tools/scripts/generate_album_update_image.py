@@ -3426,7 +3426,9 @@ def main() -> None:
         album_name,
         resolved_date,
         style=style,
-        header_path=resolve_header_arg(album_name, header_arg, header_variant),
+        # Only an explicit --header is a header test: passing the auto-picked header made
+        # generate() skip the album page design on every posted card (bug until 2026-10-13).
+        header_path=resolve_header_arg(album_name, header_arg, header_variant) if header_arg else None,
         output_suffix=f"test_{Path(header_arg).stem}" if header_arg else "",
         weekly_only=weekly_only,
     )

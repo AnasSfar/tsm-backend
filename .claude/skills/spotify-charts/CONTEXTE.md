@@ -640,9 +640,9 @@ Options importantes:
 **Posts regionaux scores — grands marches seulement (2026-10-01) :** seules
 les regions de `SCORED_REGIONAL_POST_ALLOWED_REGIONS` peuvent etre tirees =
 le meme top 10 que Apple Music/iTunes `HIGHLIGHT_COUNTRIES`
-(us,jp,gb,cn,de,fr,kr,br,ca,mx ; override env
+(us,gb,cn,de,fr,kr,br,ca,mx,au — Japon remplace par l'Australie le 2026-10-14 ; override env
 `SPOTIFY_SCORED_REGIONAL_POST_REGIONS`), moins global/fr/us (voie prioritaire)
-→ en pratique jp, gb, de, kr, br, ca, mx (pas de chart Spotify cn). Les petits
+→ en pratique gb, de, kr, br, ca, mx, au (pas de chart Spotify cn). Les petits
 marches (LU, IS, PY…) ne postent plus : un RE #33 au Luxembourg ≈ 1 000 streams.
 **Exception** : un marche mineur reste candidat s'il a un evenement
 exceptionnel (`score_region_update.minor_region_highlights`, constantes

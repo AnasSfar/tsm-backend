@@ -12,8 +12,10 @@ Usage:
   python generate_albums_image.py               # dernière date dans le CSV
   python generate_albums_image.py 2026-03-15    # date spécifique
 """
+import base64
 import concurrent.futures
 import csv
+import io
 import json
 import random
 import re
@@ -21,6 +23,7 @@ import sys
 from datetime import date as date_cls, timedelta
 from pathlib import Path
 
+from PIL import Image, ImageOps
 from playwright.sync_api import sync_playwright
 
 # ---------------------------------------------------------------------------
@@ -65,12 +68,21 @@ ERA_MAP: dict[str, str] = {
     "1989 (Taylor's Version)":     "1989",
 }
 
-# Pour la cover, on préfère la TV quand elle existe.
+# Pour la cover, on préfère la TV quand elle existe (repli si le split échoue).
 ERA_COVER_PRIORITY: dict[str, list[str]] = {
     "Fearless":  ["Fearless (Taylor's Version)", "Fearless"],
     "Speak Now": ["Speak Now (Taylor's Version)", "Speak Now"],
     "Red":       ["Red (Taylor's Version)", "Red"],
     "1989":      ["1989 (Taylor's Version)", "1989"],
+}
+
+# Cover d'une ère combinée = moitié gauche de l'OG + moitié droite de la TV
+# (coupe verticale au milieu). Voir split_cover_data_uri / prefetch_covers.
+ERA_SPLIT_COVER: dict[str, tuple[str, str]] = {
+    "Fearless":  ("Fearless", "Fearless (Taylor's Version)"),
+    "Speak Now": ("Speak Now", "Speak Now (Taylor's Version)"),
+    "Red":       ("Red", "Red (Taylor's Version)"),
+    "1989":      ("1989", "1989 (Taylor's Version)"),
 }
 
 # Albums-specific CSS overrides applied on top of the ledger table style.
@@ -510,6 +522,12 @@ def build_album_rows(
                 "week_daily":    0,
                 "cover_url":     cover_url,
             }
+            split = ERA_SPLIT_COVER.get(era_name)
+            if split:
+                og_url = covers.get(_norm(split[0]), "")
+                tv_url = covers.get(_norm(split[1]), "")
+                if og_url and tv_url:
+                    eras[era_name]["split_cover_urls"] = [og_url, tv_url]
         eras[era_name]["streams"]       += album_data["streams"]
         eras[era_name]["daily_streams"] += album_data["daily_streams"]
         if eras[era_name]["yest_daily"] is not None and album_data["yest_daily"] is not None:
@@ -555,18 +573,52 @@ def _attach_non_album_collage(rows: list[dict], track_map: dict, today: dict) ->
             row["collage_covers"] = collage
 
 
+def split_cover_data_uri(left_uri: str, right_uri: str, size: int = 640) -> str:
+    """Moitié gauche de `left_uri` + moitié droite de `right_uri` (coupe
+    verticale au milieu), en data-URI JPEG carré. "" si une image est illisible."""
+    def _open(uri: str) -> Image.Image:
+        raw = base64.b64decode(uri.split(",", 1)[1])
+        img = Image.open(io.BytesIO(raw)).convert("RGB")
+        return ImageOps.fit(img, (size, size), Image.LANCZOS)
+    try:
+        left, right = _open(left_uri), _open(right_uri)
+    except Exception as exc:
+        print(f"[albums_image] split cover unavailable ({exc})")
+        return ""
+    half = size // 2
+    out = right.copy()
+    out.paste(left.crop((0, 0, half, size)), (0, 0))
+    buf = io.BytesIO()
+    out.save(buf, format="JPEG", quality=92)
+    return "data:image/jpeg;base64," + base64.b64encode(buf.getvalue()).decode("ascii")
+
+
 def prefetch_covers(rows: list[dict]) -> dict[str, str]:
+    """{cover_url -> data-URI}. Pour une ère combinée OG + TV (`split_cover_urls`),
+    l'entrée de son `cover_url` est la cover coupée en deux (OG | TV) : tous les
+    renderers lisent image_cache[row["cover_url"]], ils l'affichent sans changement.
+    Une liste de lignes ne contient jamais à la fois l'ère et l'album TV seul
+    (merge_eras), donc pas de collision de clé."""
     urls = {r["cover_url"] for r in rows if r["cover_url"]}
     for r in rows:
         for u in r.get("collage_covers") or []:
             urls.add(u)
-    result: dict[str, str] = {}
+        for u in r.get("split_cover_urls") or []:
+            urls.add(u)
+    fetched: dict[str, str] = {}
     with concurrent.futures.ThreadPoolExecutor(max_workers=15) as ex:
         futures = {ex.submit(download_as_data_uri, u): u for u in urls}
         for fut, url in futures.items():
             data_uri = fut.result()
             if data_uri:
-                result[url] = data_uri
+                fetched[url] = data_uri
+    result = dict(fetched)
+    for r in rows:
+        split = r.get("split_cover_urls") or []
+        if len(split) == 2 and r.get("cover_url") and all(u in fetched for u in split):
+            combined = split_cover_data_uri(fetched[split[0]], fetched[split[1]])
+            if combined:
+                result[r["cover_url"]] = combined
     return result
 
 
@@ -731,6 +783,15 @@ def generate(target_date: str | None = None) -> Path:
         comparison_dates=(previous_date,),
         label="albums image",
     )
+
+    # Spotify discography page design (owner decision 2026-10-13): top 3 podium + compact list.
+    # The ledger renderer below stays as the fallback.
+    try:
+        import spotify_app_cards
+        if spotify_app_cards.ENABLED:
+            return spotify_app_cards.render_eras(target_date, update_streams_dir(target_date) / "albums_image.png")
+    except Exception as exc:  # noqa: BLE001 - never lose the post over the new design
+        print(f"[albums_image] [WARN] discography page design failed ({exc!r}); falling back to the ledger.")
 
     covers        = load_covers()
     track_map     = load_album_track_map()

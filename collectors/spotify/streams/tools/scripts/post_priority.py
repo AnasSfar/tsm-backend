@@ -10,8 +10,8 @@ importance score, comparable across types:
 - song milestone (every 100M): grows with the size of the milestone (log
   scale), + round-number bonus (every 1B, every 500M) + all-time rank bonus;
 - album milestone (every 1B): same idea on the album scale;
-- song overtake: the overtaker's new all-time rank (top 10 >> #280), + bonus
-  when the song passed is itself a billion-stream song.
+- song overtake: passed-song weight, relationship, rank threshold, daily
+  competitiveness and a seven-day repetition penalty; gated at 25, capped at two.
 
 Calibrated on the real events of 2026-09-29 -> 10-09 (see
 previews_and_sims/post-priority-order/): Cruel Summer 3.5B #1 ~ 87,
@@ -73,19 +73,48 @@ def milestone_importance(event: dict, rank: Any = None) -> float:
     return song_milestone_importance(int(event["milestone"]), rank)
 
 
+# Calibrated on Oct 3?12: 21 events / 18 grouped posts when replayed
+# with a fresh post history, then applying the seven-day repetition penalty.
+OVERTAKE_SCORE_MIN = 25.0
+OVERTAKE_DAILY_POST_LIMIT = 2
+
+
 def overtake_event_importance(event: dict) -> float:
-    overtaker = event.get("overtaker") or {}
-    passed = event.get("passed") or {}
-    score = 30.0 + _rank_bonus(
-        overtaker.get("rank"),
-        ((10, 50.0), (25, 40.0), (50, 30.0), (100, 20.0), (200, 10.0)),
-    )
-    try:
-        if int(passed.get("streams") or 0) >= 1_000_000_000:
-            score += 5.0
-    except (TypeError, ValueError):
-        pass
-    return round(min(100.0, score), 1)
+    """Editorial score; all numeric inputs must come from verified history."""
+    overtaker, passed = event["overtaker"], event["passed"]
+    previous = event["previous_overtaker"]
+    rank, old_rank = int(overtaker["rank"]), int(previous["rank"])
+    tiers = ((10, 32.0), (25, 27.0), (50, 22.0), (100, 16.0), (200, 8.0))
+    weight = max(_rank_bonus(event["previous_passed"]["rank"], tiers),
+                 min(32.0, int(passed["streams"]) / 1_000_000_000 * 25.0))
+    single_a = overtaker.get("is_single") is True
+    single_b = passed.get("is_single") is True
+    weight += 8.0 if single_b else 0.0
+    relationship = 0.0
+    family = overtaker.get("song_family")
+    tv_a = "taylor's version" in overtaker["title"].casefold()
+    tv_b = "taylor's version" in passed["title"].casefold()
+    if family and family == passed.get("song_family") and tv_a != tv_b:
+        relationship = 18.0
+    if single_a and single_b:
+        relationship = max(relationship, 12.0)
+    if overtaker.get("album") and overtaker["album"] == passed.get("album"):
+        relationship = max(relationship, 8.0)
+    # Only explicit release dates support the new-song-versus-classic story.
+    if event.get("stats_date") and overtaker.get("release_date") and passed.get("release_date"):
+        from datetime import date
+        target = date.fromisoformat(event["stats_date"])
+        age_a = (target - date.fromisoformat(overtaker["release_date"][:10])).days
+        age_b = (target - date.fromisoformat(passed["release_date"][:10])).days
+        if 0 <= age_a <= 90 and age_b >= 3650:
+            relationship = max(relationship, 12.0)
+    milestone = any(rank <= boundary < old_rank for boundary in (10, 25, 50, 100))
+    daily_a, daily_b = int(overtaker["daily_streams"]), int(passed["daily_streams"])
+    closeness = min(daily_a, daily_b) / max(daily_a, daily_b) if max(daily_a, daily_b) > 0 else 0.0
+    score = 15.0 + weight + relationship + 20.0 * closeness + (20.0 if milestone else 0.0)
+    if event.get("recent_surpass_post") and not milestone:
+        score -= 35.0
+    return round(max(0.0, min(100.0, score)), 1)
 
 
 def overtake_unit_importance(events: list[dict]) -> float:

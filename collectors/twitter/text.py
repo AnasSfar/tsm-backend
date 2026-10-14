@@ -276,6 +276,32 @@ def stream_gainers_table_tweet(*, period: str, count: int, stats_date: str) -> s
     return with_prefix(body, STREAMS_PREFIX)
 
 
+def billion_watch_tweet(*, stats_date: str, next_title: str, next_expected: str, count: int,
+                        watch_title: str = "Billion Watch", milestone_words: str = "1 billion") -> str:
+    """Watch list post when the list changed (owner 2026-10-13; never call it "Road to 1B")."""
+    body = (
+        f"{watch_title}: the next {int(count)} Taylor Swift songs expected to reach {milestone_words} "
+        f"Spotify streams, as of {date_label(stats_date)}.\n\n"
+        f'Next up: "{next_title}", expected {date_label(next_expected)}.\n\n'
+        "Dates are estimates from each song's current streaming trend."
+    )
+    return with_prefix(body, STREAMS_PREFIX)
+
+
+def milestone_watch_tweet(*, stats_date: str, watch_title: str, milestone_words: str, crossed_titles: list[str],
+                          next_title: str, next_expected: str, count: int) -> str:
+    """Milestone Watch post, triggered by a song crossing that milestone (owner 2026-10-13)."""
+    crossed = " and ".join(f'"{t}"' for t in crossed_titles)
+    verb = "crossed" if len(crossed_titles) == 1 else "both crossed"
+    body = (
+        f"{watch_title}: {crossed} {verb} {milestone_words} Spotify streams on {date_label(stats_date)}. "
+        f"Here are the next {int(count)} Taylor Swift songs expected to get there.\n\n"
+        f'Next up: "{next_title}", expected {date_label(next_expected)}.\n\n'
+        "Dates are estimates from each song's current streaming trend."
+    )
+    return with_prefix(body, STREAMS_PREFIX)
+
+
 def gainer_tweet_body(*, rank: int | None, title: str, period: str, stats_date: str, pct: str, daily_streams: str, gain: str, track_id: str) -> str:
     rank_text = f"#{rank} " if rank is not None else ""
     compare_label = "the previous day" if period == "daily" else "last week"

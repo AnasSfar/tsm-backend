@@ -652,6 +652,17 @@ def generate_thread_images(
     if pages <= 0:
         raise ValueError("pages must be > 0")
 
+    # Spotify playlist page design (owner decision 2026-10-13) for the posted single image;
+    # the old ledger renderer below stays as the fallback and for multi-page threads.
+    if pages == 1:
+        try:
+            import spotify_app_cards
+            if spotify_app_cards.ENABLED:
+                out_path = update_streams_dir(target_date) / _streams_image_filename(top_n=top_n_final, start_rank=1)
+                return [spotify_app_cards.render_songs(target_date, out_path, top_n_final)]
+        except Exception as exc:  # noqa: BLE001 - never lose the post over the new design
+            print(f"[WARN] playlist page design failed ({exc!r}); falling back to the ledger image.")
+
     song_db         = load_song_db()
     cover_map       = load_covers()
     track_album_map = load_track_album_map()

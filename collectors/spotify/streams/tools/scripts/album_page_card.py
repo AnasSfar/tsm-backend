@@ -452,11 +452,9 @@ def build(album: str, target_date: str, *, weekly: bool = False, overtake: bool 
     <div class="big">{comma(daily)}</div>
     <div class="pills {chg_cls}"><span class="pill">{arrow}{chg_txt.lstrip('+-')}</span>{pct_pill}</div>
     <div class="vs">{vs}</div>{week_html}{album_best_html}</div>"""
-    facts = [] if overtake else facts_mod.album_facts(album, target_date, hist, tracks)
-    if wide:  # little room in the top band: the 3 most important only
-        facts_html = f'<div class="facts">{"".join(f.html() for f in facts[:3])}</div>' if facts else ""
-    else:     # side column: all of them, TRIM_JS drops the low ones that don't fit
-        facts_html = f'<div class="facts">{"".join(f.html() for f in facts)}</div>' if facts else ""
+    # album_facts sorts by relevance: keep only the best two in every layout.
+    facts = [] if overtake else facts_mod.album_facts(album, target_date, hist, tracks)[:2]
+    facts_html = f'<div class="facts">{"".join(f.html() for f in facts)}</div>' if facts else ""
     foot = f'<div class="foot"><span class="logo"></span><b>@swiftiescharts</b><span class="src">{sp}</span></div>'
     if wide:
         body = (f'<div class="hero"><img class="cover" src="{cover_uri}"><div class="meta">{meta}{facts_html}</div>'

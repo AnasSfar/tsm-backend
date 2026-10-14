@@ -39,7 +39,7 @@ HANDLE = ACCOUNT_HANDLE
 
 COVERS_PATH = DB_DIR / "discography" / "covers.json"
 DISCOGRAPHY_ROOT = DB_DIR / "discography"
-DEFAULT_LIMIT = 8
+DEFAULT_LIMIT = 10000
 GROUP_RANK_PROXIMITY = 5
 
 # Masthead / ledger card (matches Top Songs / Top Eras / Gainers, 2026-09-06).
@@ -79,11 +79,15 @@ def _event_already_posted(stats_date: str, event: dict) -> bool:
     return _event_lock_path(stats_date, event).exists()
 
 
-def _ranking_for_date(tracks: list[dict], history: history_store.HistoryIndex, stats_date: str) -> list[dict]:
+def _ranking_for_date(tracks: list[dict], history: history_store.HistoryIndex, stats_date: str, *, require_complete: bool = False) -> list[dict]:
     ranked: list[dict] = []
     for track in tracks:
+        if not history_store.track_is_released_for_stats_date(track, stats_date):
+            continue
         total = history.get_total_for_date(track["track_id"], stats_date)
         if total is None:
+            if require_complete:
+                raise ValueError(f"Overtakes blocked: missing total for {track['track_id']} on {stats_date}")
             continue
         daily = history.get_daily_for_date(track["track_id"], stats_date)
         ranked.append({**track, "streams": total, "daily_streams": daily})
@@ -140,8 +144,8 @@ def find_overtakes(stats_date: str, *, limit: int = DEFAULT_LIMIT) -> list[dict]
         and (row.get("daily_streams") or "").lstrip("-").isdigit()
         and int(row["daily_streams"]) < 0
     }
-    current = _ranking_for_date(tracks, history, stats_date)
-    previous = _ranking_for_date(tracks, history, previous_date)
+    current = _ranking_for_date(tracks, history, stats_date, require_complete=True)
+    previous = _ranking_for_date(tracks, history, previous_date, require_complete=True)
     previous_by_id = {row["track_id"]: row for row in previous}
     last_week_by_id = {row["track_id"]: row for row in _ranking_for_date(tracks, history, last_week_date)}
 
@@ -179,6 +183,18 @@ def find_overtakes(stats_date: str, *, limit: int = DEFAULT_LIMIT) -> list[dict]
             break
 
     events.sort(key=lambda event: (int(event["overtaker"]["rank"]), -int(event["gap"]), str(event["overtaker"].get("title") or "").casefold()))
+    for event in events:
+        event["stats_date"] = stats_date
+        prefix = _event_slug(event).split("_over_", 1)[0] + "_over_"
+        event["recent_surpass_post"] = any(
+            any((update_streams_dir(str(date.fromisoformat(stats_date) - timedelta(days=days))) / "song_overtakes").glob(prefix + "*_posted.lock"))
+            for days in range(1, 8)
+        )
+        if any(event[role].get("daily_streams") is None or int(event[role]["daily_streams"]) < 0
+               for role in ("overtaker", "passed")):
+            raise ValueError(f"Overtakes blocked: missing/negative daily streams for {_event_key(event)} on {stats_date}")
+        event["score"] = post_priority.overtake_event_importance(event)
+    events.sort(key=lambda event: -event["score"])
     return events[:limit]
 
 
@@ -354,14 +370,31 @@ def same_album_overtake_albums(stats_date: str, *, limit: int = DEFAULT_LIMIT) -
     finalize_update drops these from the daily album-update queue — the overtake
     image is that album's update for the day (weekday) and posts anyway on
     weekends."""
+    return {unit[0] for kind, unit, _score in selected_units(stats_date, limit=limit)
+            if kind == "album"}
+
+
+def selected_units(stats_date: str, *, limit: int = DEFAULT_LIMIT) -> list[tuple]:
+    """Select before excluding posted events: retries cannot consume extra slots."""
     track_album_map = build_track_album_map(DISCOGRAPHY_ROOT)
-    out: set[str] = set()
+    same_album: dict[str, list[dict]] = {}
+    cross_events = []
     for event in find_overtakes(stats_date, limit=limit):
+        if event["score"] < post_priority.OVERTAKE_SCORE_MIN:
+            print(f"[song_overtakes] Site only: {_event_key(event)} score={event['score']}")
+            continue
         album = _event_album(event, track_album_map)
         canonical = _canonical_album_name(album, stats_date) if album else None
         if canonical:
-            out.add(canonical)
-    return out
+            same_album.setdefault(canonical, []).append(event)
+        else:
+            cross_events.append(event)
+    units = [("group", group, post_priority.overtake_unit_importance(group["events"]))
+             for group in group_close_overtakes(cross_events)]
+    units += [("album", (album, events), post_priority.overtake_unit_importance(events))
+              for album, events in same_album.items()]
+    units.sort(key=lambda unit: -unit[2])
+    return units[:post_priority.OVERTAKE_DAILY_POST_LIMIT]
 
 
 def _post_same_album_overtake(
@@ -496,45 +529,22 @@ def main() -> int:
             print('UNITS_JSON: {"units": 0}')
         return 0
 
-    events = [
-        event for event in find_overtakes(args.date, limit=limit)
-        if args.force or not _event_already_posted(args.date, event)
-    ]
-    if not events:
-        print(f"[song_overtakes] No new non-extra song overtakes found for {args.date}.")
-        if args.count_units:
-            print('UNITS_JSON: {"units": 0}')
-        return 0
-
-    # Split: same-album overtakes -> that album's update image (flat total
-    # ranking, movement markers); everything else -> the generic ledger card.
-    track_album_map = build_track_album_map(DISCOGRAPHY_ROOT)
-    same_album: dict[str, list[dict]] = {}
-    cross_events: list[dict] = []
-    for event in events:
-        album = _event_album(event, track_album_map)
-        canonical = _canonical_album_name(album, args.date) if album else None
-        if canonical:
-            same_album.setdefault(canonical, []).append(event)
-        else:
-            cross_events.append(event)
-
-    groups = group_close_overtakes(cross_events)
-    print(
-        f"[song_overtakes] {len(events)} overtake(s) for {args.date}: "
-        f"{len(groups)} ledger group(s), {len(same_album)} same-album album image(s)."
-    )
-
-    total_units = len(groups) + len(same_album)
-    # Most important unit first (decision 2026-10-10): finalize posts one per
-    # turn with --max-units 1, ordered against the other post types by these
-    # same scores (post_priority).
-    units = [("group", group, post_priority.overtake_unit_importance(group["events"])) for group in groups]
-    units += [
-        ("album", (album, alb_events), post_priority.overtake_unit_importance(alb_events))
-        for album, alb_events in same_album.items()
-    ]
-    units.sort(key=lambda unit: -unit[2])
+    units = selected_units(args.date, limit=limit)
+    units = [(kind, unit, score) for kind, unit, score in units
+             if args.force or not all(_event_already_posted(args.date, event)
+                                      for event in (unit["events"] if kind == "group" else unit[1]))]
+    if not args.force:
+        pending_units = []
+        for kind, unit, score in units:
+            events = unit["events"] if kind == "group" else unit[1]
+            pending = [event for event in events if not _event_already_posted(args.date, event)]
+            if kind == "group":
+                unit = {**unit, "events": pending}
+            else:
+                unit = (unit[0], pending)
+            pending_units.append((kind, unit, score))
+        units = pending_units
+    total_units = len(units)
     if args.count_units:
         print("UNITS_JSON: " + json.dumps({
             "units": total_units,

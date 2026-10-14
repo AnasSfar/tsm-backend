@@ -254,6 +254,15 @@ def _render_gainer_table_image(
     target_date: str,
     out_dir: Path,
 ) -> Path:
+    out_path = out_dir / f"stream_highlights_{period}_gainers_{target_date}.png"
+    # Spotify Charts page design (owner decision 2026-10-13), same rows as the tweet; the
+    # ledger table below stays as the fallback.
+    try:
+        import spotify_app_cards
+        if spotify_app_cards.ENABLED:
+            return spotify_app_cards.render_gainers(target_date, period, rows, out_path)
+    except Exception as exc:  # noqa: BLE001 - never lose the post over the new design
+        print(f"[stream_highlights] [WARN] charts page design failed ({exc!r}); falling back to the table.")
     rows = _enrich_gainer_rows(rows, target_date=target_date)
     cover_map = generate_streams_image.load_covers()
     track_album_map = generate_streams_image.load_track_album_map()

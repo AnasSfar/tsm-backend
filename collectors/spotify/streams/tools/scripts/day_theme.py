@@ -67,6 +67,7 @@ class DayTheme:
     color: str
     era: str | None = None         # era key (ERAS[i][0]) or "eras tour"
     caption: str | None = None     # recap line, event days only
+    image_kind: str = "portrait"   # timeline kind (poster, album_cover, photo...) or "portrait" (era portrait)
     event: dict | None = field(default=None)
 
     @property
@@ -138,7 +139,8 @@ def era_color(era: str | None) -> str:
             return HEADER_OVERRIDES[era]
         covers = build_cover_map(REPO / "db" / "discography" / "covers.json")
         key = re.sub(r"[^a-z0-9]+", "_", era or "").strip("_")
-        # the Taylor's Version cover when there is one: that's the one Top Eras shows (1989 = blue)
+        # colour from the Taylor's Version cover when there is one (1989 = blue); Top Eras shows
+        # an OG | TV split cover for these eras, but the colour stays the TV one
         url = covers.get(f"{key}_taylor_s_version") or covers.get(key)
         cover_bytes = _cover(url)[1] if url else b""
         if cover_bytes:
@@ -146,6 +148,21 @@ def era_color(era: str | None) -> str:
     except Exception as exc:
         print(f"[day_theme] era colour from cover unavailable ({exc})")
     return photo_tone(era_image(era))
+
+
+def image_color(path: Path, era: str | None) -> str:
+    """Event day: the background follows the accent of the picture actually shown (Eras Tour
+    poster = pink, owner 2026-10-13), not a fixed era colour. Monochrome eras keep the owner
+    override (folklore grey, reputation black...)."""
+    try:
+        from album_page_card import HEADER_OVERRIDES, header_color
+        from comp.milestone_card import milestone_palette
+        if era in HEADER_OVERRIDES:
+            return HEADER_OVERRIDES[era]
+        return header_color(milestone_palette(path.read_bytes()))
+    except Exception as exc:
+        print(f"[day_theme] image colour unavailable ({exc})")
+        return era_color(era)
 
 
 def era_from_album(album: str | None) -> str | None:
@@ -181,9 +198,9 @@ IMAGE_PREFERENCE = {
     "single_release": ["single_cover", "page_main", "photo"],
     "chart_milestone": ["single_cover", "page_main", "photo"],
     "music_video_release": ["single_cover", "page_main", "photo"],
-    "tour_start": ["photo", "page_main"],
+    "tour_start": ["photo", "poster", "page_main"],
     "tour_end": ["photo", "page_main"],
-    "tour_announcement": ["page_main", "photo"],
+    "tour_announcement": ["poster", "page_main", "photo"],
 }
 DEFAULT_PREFERENCE = ["photo", "page_main", "poster", "album_cover", "single_cover"]
 
@@ -197,6 +214,11 @@ def _assets_index() -> dict[tuple[str, str], dict]:
 
 
 def event_image(ev: dict, size: int = 1600) -> Path | None:
+    info = event_image_info(ev, size)
+    return info[0] if info else None
+
+
+def event_image_info(ev: dict, size: int = 1600) -> tuple[Path, str] | None:
     """Best real picture of the event for its type (portrait photos first among photos, they
     fill the recap's portrait column), or None when the asset folder has nothing for it."""
     entry = _assets_index().get((ev["date"], _clean(ev.get("title") or "").casefold()))
@@ -212,7 +234,7 @@ def event_image(ev: dict, size: int = 1600) -> Path | None:
     for im in sorted(entry["images"], key=score):
         f = (im.get("sizes") or {}).get(str(size), {}).get("file")
         if f and (TIMELINE_ASSETS / f).exists():
-            return TIMELINE_ASSETS / f
+            return TIMELINE_ASSETS / f, im.get("kind") or "photo"
     return None
 
 
@@ -228,7 +250,8 @@ def theme_for(stats_date: str, *, top_era_album: str | None = None, events: list
             years = day.year - int(ev["date"][:4])
             when = "today" if is_post else f"on {day.strftime('%B')} {day.day}"
             caption = f"{years} year{'s' if years > 1 else ''} ago {when} · {_clean(ev['title'])}"
-            return DayTheme("event", event_image(ev) or era_image(era), era_color(era), era, caption, ev)
+            img, kind = event_image_info(ev) or (era_image(era), "portrait")
+            return DayTheme("event", img, image_color(img, era), era, caption, event=ev, image_kind=kind)
 
     mode = random.Random(f"tsm-day-theme:{post_day.isoformat()}").choice(NO_EVENT_MODES)
     if mode == "top_era" and era_from_album(top_era_album):

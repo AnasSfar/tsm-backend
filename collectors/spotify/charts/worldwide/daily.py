@@ -223,12 +223,12 @@ MULTI_SONG_REGIONAL_WEEKLY_LOOKBACK_DAYS = 7
 PRIORITY_POST_REGIONS = ("global", "fr", "us")
 SCORED_REGIONAL_POST_EXCLUDED_REGIONS = set(PRIORITY_POST_REGIONS)
 # Scored regional posts: only the major markets (same top-10 list as the Apple
-# Music / iTunes HIGHLIGHT_COUNTRIES: us,jp,gb,cn,de,fr,kr,br,ca,mx — owner
-# 2026-10-01). Minor markets (LU, IS...) no longer post: a RE at #33 there is
+# Music / iTunes HIGHLIGHT_COUNTRIES: us,gb,cn,de,fr,kr,br,ca,mx,au — owner
+# 2026-10-01; Japan -> Australia 2026-10-14). Minor markets (LU, IS...) no longer post: a RE at #33 there is
 # ~1k streams. us/fr are posted by the priority path; Spotify has no cn chart.
 SCORED_REGIONAL_POST_ALLOWED_REGIONS = {
     c.strip().lower()
-    for c in os.getenv("SPOTIFY_SCORED_REGIONAL_POST_REGIONS", "us,jp,gb,cn,de,fr,kr,br,ca,mx").split(",")
+    for c in os.getenv("SPOTIFY_SCORED_REGIONAL_POST_REGIONS", "us,gb,cn,de,fr,kr,br,ca,mx,au").split(",")
     if c.strip()
 } - SCORED_REGIONAL_POST_EXCLUDED_REGIONS
 

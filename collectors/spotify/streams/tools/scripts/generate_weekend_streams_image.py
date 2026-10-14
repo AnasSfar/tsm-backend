@@ -785,6 +785,17 @@ def generate(
     if top_n <= 0:
         raise ValueError("top_n must be > 0")
 
+    # Spotify artist page design (owner decision 2026-10-13). --light/--dark (explicit masthead
+    # theme) and failures keep the old masthead recap below.
+    if masthead_theme is None and top_n == TOP_N:
+        try:
+            import spotify_app_cards
+            if spotify_app_cards.ENABLED:
+                out_path = generate_streams_image.update_streams_dir(target_date) / "weekend_streams_image.png"
+                return spotify_app_cards.render_recap(target_date, out_path)
+        except Exception as exc:  # noqa: BLE001 - never lose the post over the new design
+            print(f"[weekend_streams_image] [WARN] artist page design failed ({exc!r}); falling back.")
+
     theme = masthead_theme or masthead_theme_for_date(target_date)
     print(f"[weekend_streams_image] Date: {target_date} (theme: {theme})")
 

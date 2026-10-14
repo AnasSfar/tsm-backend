@@ -1324,6 +1324,9 @@ def load_tracks_from_discography(active_track_ids: set[str] | None = None) -> li
                 "image_url": image_url,
                 "primary_artist": primary_artist,
                 "release_date": track.get("release_date") or None,
+                "album": track.get("album") or section.get("album"),
+                "song_family": track.get("song_family"),
+                "is_single": track.get("is_single") is True or track.get("type") == "single",
                 "chart_extra": _is_chart_extra(section, track),
                 "on_album": _counts_in_album_total(track),
                 "chartsnapshot_only": bool(

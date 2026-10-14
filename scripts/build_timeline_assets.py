@@ -67,7 +67,7 @@ SOURCES: dict[str, dict] = {
     "2017-08-23": S(spotify=["reputation"], wiki=["Reputation (album)", "Look What You Made Me Do"], commons=["Taylor Swift in 2017"]),
     "2017-11-10": S(spotify=["reputation"], wiki=["Reputation (album)"], commons=["Taylor Swift in 2017"]),
     "2018-05-08": S(wiki=["Reputation Stadium Tour"], commons=["Reputation Stadium Tour - Levi's Stadium, Santa Clara (May 12, 2018)", "Reputation Stadium Tour - CenturyLink Field (Seattle) - 2018-05-22"]),
-    "2018-11-19": S(wiki=["Republic Records"], commons=["Taylor Swift in 2018"]),
+    "2018-11-19": S(wiki=["Taylor Swift masters dispute"], commons=["Reputation Stadium Tour - Sports Authority Field at Mile High, Denver (May 25, 2018)"]),
     "2018-11-21": S(wiki=["Reputation Stadium Tour"], commons=["Reputation Stadium Tour - MetLife Stadium, East Rutherford, NJ (July 22, 2018)", "Reputation Stadium Tour - U.S. Bank Stadium, Minneapolis (August 31, 2018)", "Reputation Stadium Tour - Raymond James Stadium, Tampa (August 14, 2018)"]),
     "2019-06-13": S(spotify=["lover"], wiki=["Lover (album)", "Me! (Taylor Swift song)"], commons=["Taylor Swift in 2019"]),
     "2019-06-30": S(wiki=["Taylor Swift masters dispute"], commons=["Taylor Swift in 2019"]),
@@ -79,7 +79,7 @@ SOURCES: dict[str, dict] = {
     "2020-12-10": S(spotify=["evermore"], wiki=["Evermore (album)"]),
     "2020-12-11": S(spotify=["evermore"], wiki=["Evermore (album)", "Willow (Taylor Swift song)"]),
     "2021-02-11": S(spotify=["fearless_taylor_s_version"], wiki=["Fearless (Taylor's Version)"]),
-    "2021-03-14": S(wiki=["63rd Annual Grammy Awards"], spotify=["folklore"]),
+    "2021-03-14": S(wiki=["63rd Annual Grammy Awards", "Folklore (Taylor Swift album)"], spotify=["folklore"]),
     "2021-04-09": S(spotify=["fearless_taylor_s_version"], wiki=["Fearless (Taylor's Version)"]),
     "2021-06-18": S(spotify=["red_taylor_s_version"], wiki=["Red (Taylor's Version)"]),
     "2021-11-12": S(spotify=["red_taylor_s_version"], wiki=["Red (Taylor's Version)", "All Too Well: The Short Film"]),
@@ -105,9 +105,9 @@ SOURCES: dict[str, dict] = {
     "2025-10-03#0": S(spotify=["the_life_of_a_showgirl"], wiki=["The Life of a Showgirl", "The Fate of Ophelia"]),
     "2025-10-03#1": S(wiki=["Taylor Swift: The Official Release Party of a Showgirl"]),
     "2025-10-13#0": S(spotify=["the_life_of_a_showgirl"], wiki=["The Life of a Showgirl"]),
-    "2025-10-13#1": S(wiki=["The End of an Era (docuseries)", "Taylor Swift: The Eras Tour"]),
+    "2025-10-13#1": S(wiki=["Taylor Swift: The End of an Era", "Taylor Swift: The Eras Tour"], commons=["The Eras Tour - New Orleans - October 26, 2024"]),
     "2025-12-12#0": S(wiki=["Taylor Swift: The Eras Tour"], commons=["The Eras Tour - New Orleans - October 26, 2024"]),
-    "2025-12-12#1": S(wiki=["The End of an Era (docuseries)"]),
+    "2025-12-12#1": S(wiki=["Taylor Swift: The End of an Era"], commons=["The Eras Tour - Gelsenkirchen - July 17, 2024"]),
     "2026-01-21": S(wiki=["Songwriters Hall of Fame"]),
     "2026-02-28": S(track=["Opalite"], wiki=["Opalite (song)"]),
     "2026-06-11": S(wiki=["Songwriters Hall of Fame"]),
@@ -176,30 +176,43 @@ def commons_category(cat: str, limit: int) -> list[dict]:
     return [dict(f, kind="photo") for f in infos[::step][:limit]]
 
 
+def wiki_main_image(title: str) -> dict | None:
+    """Page's lead image via the REST summary: it also returns NON-FREE files (film posters,
+    single covers) that prop=pageimages leaves out. Those are small (~260 px wide, fair use)."""
+    d = get("https://en.wikipedia.org/api/rest_v1/page/summary/" + urllib.parse.quote(title.replace(" ", "_"), safe=""))
+    img = (d or {}).get("originalimage")
+    if not img:
+        return None
+    url = img["source"].split("?")[0]
+    name = urllib.parse.unquote(url.rsplit("/", 1)[-1])
+    kind = "poster" if re.search(r"poster|film|docuseries", name, re.I) else "page_main"
+    return {"title": "File:" + name, "url": url, "width": img["width"], "height": img["height"], "kind": kind,
+            "wiki": (d or {}).get("title"), "license": "fair use (Wikipedia)" if "/wikipedia/en/" in url else "",
+            "low_res": max(img["width"], img["height"]) < 700}
+
+
 def wiki_page(title: str, extra: int) -> list[dict]:
-    d = wapi("en.wikipedia.org", action="query", titles=title, redirects=1, prop="pageimages|images",
-             piprop="name", imlimit=60)
+    d = wapi("en.wikipedia.org", action="query", titles=title, redirects=1, prop="images", imlimit=60)
     pages = list((d.get("query", {}).get("pages", {}) or {}).values())
     if not pages or "missing" in pages[0]:
         s = wapi("en.wikipedia.org", action="query", list="search", srsearch=title, srlimit=1)
         hits = s.get("query", {}).get("search", [])
-        if not hits:
+        if not hits or hits[0]["title"] == title:
             print(f"  [warn] no Wikipedia page for {title!r}")
             return []
-        return wiki_page(hits[0]["title"], extra) if hits[0]["title"] != title else []
+        return wiki_page(hits[0]["title"], extra)
     page = pages[0]
-    main = page.get("pageimage")
+    out = []
+    main = wiki_main_image(page["title"])
+    if main:
+        out.append(main)
     others = [im["title"] for im in page.get("images", [])
               if re.search(r"\.(jpe?g|png)$", im["title"], re.I)
-              and not re.search(r"logo|icon|symbol|signature|flag|map|wordmark|award\b|star|question", im["title"], re.I)]
-    titles = ([f"File:{main}"] if main else []) + [t for t in others if t != f"File:{main}"][:extra * 3]
-    infos = file_infos("en.wikipedia.org", titles)
-    out, extras = [], 0
-    for f in infos:
-        is_main = main and f["title"].replace(" ", "_").endswith(main.replace(" ", "_"))
-        if is_main:
-            out.insert(0, dict(f, kind="poster" if "poster" in f["title"].lower() else "page_main", wiki=page["title"]))
-        elif extras < extra and min(f["width"], f["height"]) >= 500:
+              and not re.search(r"logo|icon|symbol|signature|flag|map|wordmark|award|star|question", im["title"], re.I)
+              and (not main or im["title"].replace(" ", "_") != main["title"].replace(" ", "_"))]
+    extras = 0
+    for f in file_infos("en.wikipedia.org", others[:extra * 3]):
+        if extras < extra and min(f["width"], f["height"]) >= 500:
             out.append(dict(f, kind="photo", wiki=page["title"]))
             extras += 1
     return out
@@ -233,16 +246,43 @@ def track_cover(title: str) -> list[dict]:
     return []
 
 
+def manual_images(key: str) -> list[dict]:
+    """Owner-provided pictures (HD film posters...) in assets/timeline/manual/<date>[#n]/ ;
+    file name prefix = kind (poster_, photo_, album_cover_, single_cover_), listed first."""
+    folder = OUT / "manual" / key.replace("#", "_")
+    out = []
+    for f in sorted(folder.glob("*")) if folder.exists() else []:
+        if f.suffix.lower() in (".jpg", ".jpeg", ".png", ".webp"):
+            kind = next((k for k in ("poster", "album_cover", "single_cover", "photo") if f.stem.startswith(k)), "photo")
+            out.append({"title": f.name, "url": f.resolve().as_uri(), "kind": kind, "manual": True, "credit": "manual"})
+    return out
+
+
+def about_taylor(img: dict) -> bool:
+    """Photos / page images must name Taylor Swift in their file name: Wikipedia pages and year
+    categories also hold other people (Hal David on the Songwriters Hall page, an opening act on
+    a tour page...). Covers, posters and owner-provided files are always kept."""
+    title = img.get("title") or ""
+    if img.get("manual") or img.get("kind") in ("album_cover", "single_cover"):
+        return True
+    if img.get("kind") == "poster":  # her films only, not the ceremony's poster (2026 VMAs = Snoop Dogg)
+        return bool(re.search(r"swift|showgirl|eras|end of an era", title, re.I))
+    if re.search(r"guitar|museum|exhibit|songbook|trail|bracelet|costume|dress|wax|statue|mural|store|grove|outside|\bsign\b", title, re.I):
+        return False  # objects / places / crowds, not her
+    return bool(re.search(r"swift", title, re.I))
+
+
 # ── storage ───────────────────────────────────────────────────────────────────
 def store(img: dict, dry: bool) -> dict | None:
     iid = hashlib.sha1(img["url"].split("?")[0].encode()).hexdigest()[:12]
     files = {s: IMG_DIR / f"{iid}_{s}.jpg" for s in SIZES}
-    meta = {k: img.get(k) for k in ("kind", "title", "license", "credit", "page", "wiki") if img.get(k)}
+    meta = {k: img.get(k) for k in ("kind", "title", "license", "credit", "page", "wiki", "low_res", "manual") if img.get(k)}
     meta["id"], meta["source_url"] = iid, img["url"]
     if dry:
         return meta
     if not all(p.exists() for p in files.values()):
-        data = get(img["url"], binary=True) or (get(img["fallback"], binary=True) if img.get("fallback") else None)
+        data = (Path(urllib.request.url2pathname(img["url"][len("file:"):])).read_bytes() if img["url"].startswith("file:")
+                else get(img["url"], binary=True)) or (get(img["fallback"], binary=True) if img.get("fallback") else None)
         if not data:
             return None
         try:
@@ -266,8 +306,7 @@ def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--dry-run", action="store_true")
     args = ap.parse_args()
-    raw = SRC.read_bytes().decode("utf-8", errors="replace").replace("�", "’")
-    events = json.loads(raw)
+    events = json.loads(SRC.read_text(encoding="utf-8-sig"))
     import day_theme
     seen: dict[str, int] = {}
     out = []
@@ -277,7 +316,7 @@ def main() -> None:
         key = ev["date"] if f"{ev['date']}#0" not in SOURCES else f"{ev['date']}#{n}"
         src = SOURCES.get(key, {})
         print(f"{ev['date']} {ev['title']}")
-        cands: list[dict] = []
+        cands: list[dict] = manual_images(key)
         for k in src.get("spotify", []):
             cands += spotify_cover(k)
         for t in src.get("track", []):
@@ -289,7 +328,7 @@ def main() -> None:
             cands += commons_category(c, per_cat)
         images, urls = [], set()
         for c in cands:
-            if c["url"] in urls:
+            if c["url"] in urls or not about_taylor(c):
                 continue
             urls.add(c["url"])
             meta = store(c, args.dry_run)
@@ -301,6 +340,10 @@ def main() -> None:
     if not args.dry_run:
         OUT.mkdir(parents=True, exist_ok=True)
         (OUT / "timeline.json").write_text(json.dumps(out, ensure_ascii=False, indent=2), encoding="utf-8")
+        keep = {sz["file"] for e in out for im in e["images"] for sz in im["sizes"].values()}
+        for f in IMG_DIR.glob("*.jpg"):  # images no event uses any more (filter / source changes)
+            if f"images/{f.name}" not in keep:
+                f.unlink()
         print(f"\n{len(out)} events, {sum(len(e['images']) for e in out)} image refs, "
               f"{len(list(IMG_DIR.glob('*_1600.jpg')))} unique images -> {OUT}")
 

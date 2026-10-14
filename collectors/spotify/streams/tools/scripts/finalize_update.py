@@ -112,6 +112,7 @@ PACED_EXPECTED_POSTS = {
     "overtakes": 2,
     "milestones": 1,
     "gainers": 2,
+    "milestone-watch": 1,  # ~1 song milestone a day (+ Billion list changes)
     "best-day-last": 3,
 }
 
@@ -1974,6 +1975,21 @@ def _post_spotlight_gainers(ctx: FinalizeContext, state: dict[str, float]) -> No
     )
 
 
+def _post_milestone_watch(ctx: FinalizeContext, state: dict[str, float]) -> None:
+    """Milestone Watch cards (owner 2026-10-13): the Watch of each milestone a song crossed today,
+    plus Billion Watch when its list changed. Standalone posts."""
+    if not ctx.all_album_tracks_done(ctx.summary["stats_date"]):
+        print("Milestone Watch skipped: not all album tracks are done yet.")
+        return
+    cmd = [
+        sys.executable, str(ctx.script_dir / "tools" / "scripts" / "post_milestone_watch.py"), ctx.summary["stats_date"],
+        "--post-spacing-seconds", str(ctx.post_spacing_seconds),
+    ]
+    if ctx.no_post_mode:
+        cmd.append("--no-post")
+    _run(ctx, cmd, label="milestone watch", should_post=not ctx.no_post_mode, state=state)
+
+
 def _post_throwback_thread(ctx: FinalizeContext, state: dict[str, float]) -> None:
     if not ctx.throwback_action or not ctx.throwback_event:
         print("Throwback skipped: missing --throwback-action/--throwback-event.")
@@ -2141,6 +2157,7 @@ POST_ONLY_STEPS = {
     "best-day-since": _post_best_day_since,
     "debut": _post_debut_releases,
     "gainers": _post_spotlight_gainers,
+    "milestone-watch": _post_milestone_watch,
 }
 
 
@@ -2497,6 +2514,10 @@ def run_final_update_tasks(ctx: FinalizeContext) -> None:
             paced_steps.append((
                 "stream highlights tables", lambda: _post_spotlight_gainers(ctx, post_state), "gainers",
                 PACED_EXPECTED_POSTS["gainers"],
+            ))
+            paced_steps.append((
+                "milestone watch", lambda: _post_milestone_watch(ctx, post_state), "milestone-watch",
+                PACED_EXPECTED_POSTS["milestone-watch"],
             ))
             if ctx.best_day_last:
                 # --best-day-last : tout le best-day-since (chansons, recaps d'ère,
