@@ -41,7 +41,7 @@ EWMA_MEDIUM_ALPHA = 0.12
 EWMA_LONG_ALPHA = 0.045
 MIN_DECAY_FACTOR = 0.965
 MAX_GROWTH_FACTOR = 1.025
-SEASONALITY_STRENGTH = 0.35
+WEEKDAY_WINDOW = 84  # 12 weeks
 
 
 def format_milestone_label(value: int) -> str:
@@ -233,23 +233,29 @@ def recent_values(series: list[dict], window: int) -> list[float]:
 
 
 def estimate_weekday_factors(series: list[dict]) -> dict[int, float]:
-    recent = series[-min(len(series), LONG_WINDOW):]
-    values = [safe_float(row["daily_streams"]) for row in recent if safe_float(row["daily_streams"]) > 0]
-    baseline = median(remove_spikes(values)) or median(values) or 1.0
+    """Weekly shape of a song's streams (e.g. Sunday dip, Thursday/Friday high), mean 1.0.
+
+    Each day is compared with the average of its own centered week (3 days before, 3 after),
+    so the song's long-term rise or decline does not hide the weekly swing; median per weekday
+    over the last WEEKDAY_WINDOW days so one release/spike day does not move it. Before
+    2026-10-15 days were compared with a one-year median and only 35 % of the effect was
+    kept, which left every factor at ~1.00 although Sundays run ~10 % below the week.
+    """
+    recent = series[-min(len(series), WEEKDAY_WINDOW):]
     raw: dict[int, list[float]] = {i: [] for i in range(7)}
-    for row in recent:
-        daily = safe_float(row["daily_streams"])
-        if daily > 0:
-            raw[row["date_obj"].weekday()].append(daily / baseline)
+    for i in range(3, len(recent) - 3):
+        week = recent[i - 3:i + 4]
+        if (week[-1]["date_obj"] - week[0]["date_obj"]).days != 6:
+            continue  # gap in history: not a real week
+        dailies = [safe_float(row["daily_streams"]) for row in week]
+        if min(dailies) <= 0:
+            continue
+        raw[recent[i]["date_obj"].weekday()].append(dailies[3] / (sum(dailies) / 7.0))
 
-    factors = {}
-    for weekday, weekday_values in raw.items():
-        if len(weekday_values) < 3:
-            factors[weekday] = 1.0
-        else:
-            observed = clamp(median(remove_spikes(weekday_values)), 0.78, 1.22)
-            factors[weekday] = 1.0 + (observed - 1.0) * SEASONALITY_STRENGTH
-
+    factors = {
+        weekday: clamp(median(values), 0.75, 1.25) if len(values) >= 3 else 1.0
+        for weekday, values in raw.items()
+    }
     avg = sum(factors.values()) / 7.0
     if avg > 0:
         factors = {weekday: factor / avg for weekday, factor in factors.items()}
@@ -411,6 +417,13 @@ def estimate_future_daily_streams(series: list[dict]) -> dict:
             "backtest": {"points": 0, "mean_smape": None, "best_model": None},
         }
 
+    # Trend inputs on weekday-neutral dailies: a Sunday last day must not read as a decline
+    # (the weekly shape is put back per projected day by project_milestone_date).
+    weekday_factors = estimate_weekday_factors(series)
+    series = [
+        {**row, "daily_streams": safe_float(row["daily_streams"]) / weekday_factors.get(row["date_obj"].weekday(), 1.0)}
+        for row in series
+    ]
     candidates = candidate_next_daily_estimates(series)
     weights, backtest = backtest_candidate_weights(series)
     if not weights:
@@ -442,7 +455,7 @@ def estimate_future_daily_streams(series: list[dict]) -> dict:
             "name": "ensemble_backtested_logtrend_seasonal",
             "candidate_estimates": {name: int(round(value)) for name, value in sorted(candidates.items())},
             "selected_weights": {name: round(weight, 4) for name, weight in sorted(weights.items())},
-            "weekday_factors": {str(k): round(v, 4) for k, v in estimate_weekday_factors(series).items()},
+            "weekday_factors": {str(k): round(v, 4) for k, v in weekday_factors.items()},
             "windows": {
                 "recent_window": RECENT_WINDOW,
                 "long_window": LONG_WINDOW,

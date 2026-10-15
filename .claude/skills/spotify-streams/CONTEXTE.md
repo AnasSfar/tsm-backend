@@ -2688,7 +2688,9 @@ tables gainers, cle `milestone-watch`) : 10 prochaines chansons album sous un pa
 attendue (modele `forecast_milestones.py` cible = palier, tendance plafonnee a 1.0, **appliquee
 1 an puis daily fige, horizon 10 ans** — `WATCH_DECAY_DAYS`/`WATCH_MAX_DAYS`, 2026-10-15 : une baisse
 composee sur 5 ans plafonnait le total futur et faisait disparaitre en silence Don't Blame Me /
-exile du 2B Watch et I Can Do It With a Broken Heart du Billion Watch). « Billion
+exile du 2B Watch et I Can Do It With a Broken Heart du Billion Watch). Le profil hebdo (creux du
+dimanche, pic jeu/ven) est mesure semaine par semaine et applique a 100 % depuis le 2026-10-15
+(`estimate_weekday_factors`), tendance estimee sur dailies desaisonnalises. « Billion
 Watch » pour 1B, sinon « 900M Watch », « 2B Watch »... Regles de post (proprietaire), posts
 separes : (1) **une chanson franchit un palier** (evenements de `post_stream_milestones`, tous
 les 100M) -> le Watch de ce palier ; (2) **900M, 1B, 2B, 3B postent aussi quand leur liste
