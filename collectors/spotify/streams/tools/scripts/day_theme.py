@@ -7,11 +7,13 @@ Owner rules (2026-10-13):
   most recent year. Events from less than a year ago are not anniversaries.
 - On an event day the theme applies to every daily streams image except the album cards (they
   keep their own album colour); the recap (artist page) also writes the event under the name.
-- Day without event: one of 3 modes, picked at random but seeded by the post date (re-runs give
-  the same result): era of the most recent past event, daily portrait rotation, era #1 of the day.
+- Day without event (owner 2026-10-14): the most recent release of the timeline (album,
+  single, film, documentary), released on or before the post date. Its picture = the album /
+  single cover first, else the film poster / Eras Tour photo; same-day releases -> album first.
 
-Image = the Eras Tour portrait of the event's era (assets/eras-tour-hero/panel-01..12, album
-order); Eras Tour events (tour, concert films, documentary) use the 6x2 collage of all eras.
+Image = the event's real picture (assets/timeline, best kind for its type), else the Eras Tour
+portrait of the event's era (assets/eras-tour-hero/panel-01..12, album order); Eras Tour events
+(tour, concert films, documentary) fall back on the 6x2 collage of all eras.
 Colour = owner overrides for monochrome eras (album_page_card.HEADER_OVERRIDES), else taken from
 the portrait itself. Read-only: no state, nothing written.
 """
@@ -19,7 +21,6 @@ from __future__ import annotations
 
 import colorsys
 import json
-import random
 import re
 from dataclasses import dataclass, field
 from datetime import date, timedelta
@@ -57,12 +58,13 @@ TYPE_PRIORITY = ["album_release", "award", "film_release", "documentary_release"
                  "tour_start", "tour_end", "single_release", "music_video_release", "album_announcement",
                  "tour_announcement", "film_announcement", "career_milestone", "personal_milestone",
                  "award_announcement", "masters_dispute", "culture_event"]
-NO_EVENT_MODES = ("latest_event", "rotation", "top_era")
+# "Sortie" types for days without event; same-day ties -> this order (album first).
+RELEASE_TYPES = ["album_release", "single_release", "film_release", "documentary_release"]
 
 
 @dataclass
 class DayTheme:
-    mode: str                      # "event" | "latest_event" | "rotation" | "top_era"
+    mode: str                      # "event" | "latest_release"
     image: Path
     color: str
     era: str | None = None         # era key (ERAS[i][0]) or "eras tour"
@@ -165,26 +167,11 @@ def image_color(path: Path, era: str | None) -> str:
         return era_color(era)
 
 
-def era_from_album(album: str | None) -> str | None:
-    """Top Eras album name -> era key ("Red (Taylor's Version)" -> "red")."""
-    for key, _n, patterns, _img in reversed(ERAS):
-        if any(re.search(p, album or "", re.I) for p in patterns) or (album or "").strip().casefold() == key:
-            return key
-    return None
-
-
 def _anniversaries(events: list[dict], day: date) -> list[dict]:
     md = day.strftime("%m-%d")
     out = [e for e in events if e["date"][5:] == md and int(e["date"][:4]) < day.year]
     rank = {t: i for i, t in enumerate(TYPE_PRIORITY)}
     return sorted(out, key=lambda e: (rank.get(e.get("type"), len(rank)), -int(e["date"][:4])))
-
-
-def _latest_past_event(events: list[dict], day: date) -> dict | None:
-    """Most recent event by calendar day (month-day), looking back across the year boundary."""
-    md = day.strftime("%m-%d")
-    past = [e for e in events if e["date"][5:] < md] or events
-    return max(past, key=lambda e: (e["date"][5:], e["date"]), default=None)
 
 
 # Which picture fits which kind of event, best first (owner 2026-10-13: "use the right images",
@@ -238,7 +225,14 @@ def event_image_info(ev: dict, size: int = 1600) -> tuple[Path, str] | None:
     return None
 
 
-def theme_for(stats_date: str, *, top_era_album: str | None = None, events: list[dict] | None = None) -> DayTheme:
+def latest_release(events: list[dict], day: date) -> dict | None:
+    """Most recent release out on `day` (album > single > film > documentary on the same date)."""
+    rank = {t: i for i, t in enumerate(RELEASE_TYPES)}
+    out = [e for e in events if e.get("type") in rank and e["date"] <= day.isoformat()]
+    return max(out, key=lambda e: (e["date"], -rank[e["type"]]), default=None)
+
+
+def theme_for(stats_date: str, *, events: list[dict] | None = None) -> DayTheme:
     events = load_timeline() if events is None else events
     stats_day = date.fromisoformat(stats_date)
     post_day = stats_day + timedelta(days=1)
@@ -253,16 +247,12 @@ def theme_for(stats_date: str, *, top_era_album: str | None = None, events: list
             img, kind = event_image_info(ev) or (era_image(era), "portrait")
             return DayTheme("event", img, image_color(img, era), era, caption, event=ev, image_kind=kind)
 
-    mode = random.Random(f"tsm-day-theme:{post_day.isoformat()}").choice(NO_EVENT_MODES)
-    if mode == "top_era" and era_from_album(top_era_album):
-        era = era_from_album(top_era_album)
-        return DayTheme(mode, era_image(era), era_color(era), era)
-    if mode == "latest_event":
-        ev = _latest_past_event(events, post_day)
-        if ev:
-            era = event_era(ev, events)
-            return DayTheme(mode, era_image(era), era_color(era), era, event=ev)
-    panels = sorted(HERO_DIR.glob("panel-[0-9][0-9].jpg"))
+    ev = latest_release(events, post_day)
+    if ev:
+        era = event_era(ev, events)
+        img, kind = event_image_info(ev) or (era_image(era), "portrait")
+        return DayTheme("latest_release", img, image_color(img, era), era, event=ev, image_kind=kind)
+    panels = sorted(HERO_DIR.glob("panel-[0-9][0-9].jpg"))  # no timeline at all
     img = panels[post_day.toordinal() % len(panels)]
     return DayTheme("rotation", img, photo_tone(img))
 
@@ -271,4 +261,4 @@ if __name__ == "__main__":
     import sys
     for d in sys.argv[1:] or [str(date.today() - timedelta(days=1))]:
         t = theme_for(d)
-        print(d, t.mode, t.era, t.image.name, t.color, t.caption or "")
+        print(d, t.mode, t.era, t.image.name, t.image_kind, t.color, t.caption or (t.event or {}).get("title", ""))

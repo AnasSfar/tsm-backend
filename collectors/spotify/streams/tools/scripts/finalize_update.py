@@ -108,10 +108,10 @@ PACED_EXPECTED_POSTS = {
     "album": 1,
     "best-day": 1,
     "debut": 0,
-    "weekend-gainers": 1,
+    "weekend-gainers": 0,  # grouped in the main thread
     "overtakes": 2,
     "milestones": 1,
-    "gainers": 2,
+    "gainers": 0,  # daily and weekly tables already ride in the main thread
     "milestone-watch": 1,  # ~1 song milestone a day (+ Billion list changes)
     "best-day-last": 3,
 }
@@ -1137,120 +1137,35 @@ def _refresh_release_dates(ctx: FinalizeContext) -> bool:
 
 
 def _post_streams_image(ctx: FinalizeContext, state: dict[str, float]) -> None:
-    if ctx.debug_daily_mode:
-        print("[DEBUG-DAILY] Skip: Twitter, forecast, images, git, notify.")
-        return
-
-    post_script = ctx.script_dir / "tools" / "scripts" / "post_streams_twitter.py"
-    if ctx.no_post_mode:
-        print("Skipping Twitter post (--no-post).")
-        _run(
-            ctx,
-            [sys.executable, str(post_script), ctx.summary["stats_date"], "--no-post"],
-            label="top 20 songs image (no-post)",
-            should_post=False,
-            state=state,
-        )
-        return
-
-    if not _streams_post_ready(ctx):
-        print("Skipping Twitter post: blocking tracks are still pending.")
-        return
-
-    print("Posting top 20 songs image to Twitter...")
-    _run(
-        ctx,
-        [sys.executable, str(post_script), ctx.summary["stats_date"]]
-        + (["--no-best-day-recap"] if ctx.best_day_last or "best-day-since" in ctx.skip_steps else []),
-        label="top 20 songs image",
-        should_post=True,
-        state=state,
-    )
-    print("Twitter post done.")
-
+    # Targeted finalize invocations use the same thread, never a second root.
+    _post_daily_recap_card(ctx, state)
 
 def _post_daily_recap_card(ctx: FinalizeContext, state: dict[str, float]) -> None:
-    if ctx.debug_daily_mode:
-        print("[DEBUG-DAILY] Skip: daily recap card.")
+    if ctx.debug_daily_mode or state.get("daily_thread_attempted"):
         return
-
-    post_script = ctx.script_dir / "tools" / "scripts" / "post_weekend_streams_twitter.py"
-    cmd = [sys.executable, str(post_script), ctx.summary["stats_date"]]
-    if not _is_weekend_stats_date(ctx.summary["stats_date"]):
-        cmd.append("--force-weekday")
-
+    if not ctx.no_post_mode and not _streams_post_ready(ctx):
+        print("Daily streams thread pending: blocking tracks are still missing.")
+        return
+    cmd = [sys.executable, str(ctx.script_dir / "tools" / "scripts" / "post_daily_streams_thread.py"),
+           ctx.summary["stats_date"]]
+    skip = set(ctx.skip_steps) & {"recap", "top20", "top-eras", "best-day-since"}
+    if "gainers" in ctx.skip_steps:
+        skip.update({"daily", "weekly"})
+    if ctx.best_day_last:
+        skip.add("best-day-since")
+    if skip:
+        cmd.extend(["--skip", ",".join(sorted(skip))])
     if ctx.no_post_mode:
-        print("Generating daily recap card only (--no-post).")
-        cmd.append("--no-post")
-        _run(
-            ctx,
-            cmd,
-            label="daily recap card (no-post)",
-            should_post=False,
-            state=state,
-        )
-        return
-
-    if not _streams_post_ready(ctx):
-        print("Skipping daily recap card: blocking tracks are still pending.")
-        return
-
-    posted_lock = update_streams_dir(ctx.summary["stats_date"]) / "weekend_streams_posted.lock"
-    if posted_lock.exists() and not ctx.no_post_mode:
-        print(f"Daily recap card already posted for {ctx.summary['stats_date']}, skipping before export.")
-        return
-
-    _ensure_daily_site_history(ctx)
-
-    print("Posting daily recap card to Twitter...")
-    _run(
-        ctx,
-        cmd,
-        label="daily recap card",
-        should_post=True,
-        state=state,
-    )
-    print("Daily recap card done.")
-
+        cmd.extend(["--no-post", "--output-dir", str(ctx.repo_root / "previews_and_sims" /
+                   "streams-daily-thread" / ctx.summary["stats_date"])])
+    else:
+        _ensure_daily_site_history(ctx)
+    state["daily_thread_attempted"] = 1.0
+    _run(ctx, cmd, label="daily streams thread", should_post=not ctx.no_post_mode, state=state, attempts=1)
+    state["daily_thread_done"] = 1.0
 
 def _post_weekend_song_gainers(ctx: FinalizeContext, state: dict[str, float]) -> None:
-    if ctx.debug_daily_mode:
-        print("[DEBUG-DAILY] Skip: weekend song gainers.")
-        return
-    if not _is_weekend_stats_date(ctx.summary["stats_date"]):
-        print("Weekend song gainers skipped: stats date is not Saturday or Sunday.")
-        return
-    if not _streams_post_ready(ctx):
-        print("Weekend song gainers skipped: blocking tracks are still pending.")
-        return
-
-    post_script = ctx.script_dir / "tools" / "scripts" / "post_weekend_song_gainers.py"
-    cmd = [
-        sys.executable,
-        str(post_script),
-        ctx.summary["stats_date"],
-        "--min-pct",
-        "5",
-        "--post-spacing-seconds",
-        str(ctx.post_spacing_seconds),
-    ]
-    if ctx.posted_best_day_since_tracks:
-        # One card per song: a track already posted today as a best-day-since
-        # card doesn't also get a weekend gainer card (decision 2026-09-21).
-        cmd.extend(["--exclude-tracks", ",".join(sorted(ctx.posted_best_day_since_tracks))])
-    if ctx.no_post_mode:
-        cmd.append("--no-post")
-
-    print("Posting weekend +5% song gainers...")
-    _run(
-        ctx,
-        cmd,
-        label="weekend song gainers",
-        should_post=not ctx.no_post_mode,
-        state=state,
-    )
-    print("Weekend song gainers done.")
-
+    print("Weekend daily gainers are grouped in the daily streams thread.")
 
 def _post_song_overtakes(ctx: FinalizeContext, state: dict[str, float], max_units: int = 0) -> None:
     if ctx.debug_daily_mode:
@@ -1479,28 +1394,7 @@ def _post_one_album(
 
 
 def _post_albums_daily(ctx: FinalizeContext, state: dict[str, float]) -> None:
-    if not ctx.no_post_mode and not ctx.summary.get("all_done"):
-        print("Skipping top eras post: not all tracks are done yet.")
-        return
-
-    posted_lock = update_streams_dir(ctx.summary["stats_date"]) / "albums_posted.lock"
-    if posted_lock.exists() and not ctx.no_post_mode:
-        print(f"Top eras image already posted for {ctx.summary['stats_date']}, skipping.")
-        return
-
-    albums_post_script = ctx.script_dir / "tools" / "scripts" / "post_albums_twitter.py"
-    albums_cmd = [sys.executable, str(albums_post_script), ctx.summary["stats_date"]]
-    if ctx.no_post_mode:
-        albums_cmd.append("--no-post")
-    _run(
-        ctx,
-        albums_cmd,
-        label="top eras image",
-        should_post=not ctx.no_post_mode,
-        state=state,
-        attempts=1,
-    )
-
+    _post_daily_recap_card(ctx, state)
 
 def _is_misc_album(name: str) -> bool:
     norm = re.sub(r"[^a-z0-9]+", "_", (name or "").lower()).strip("_")
@@ -1838,6 +1732,9 @@ def _post_best_day_since(ctx: FinalizeContext, state: dict[str, float]) -> None:
         "--post-spacing-seconds",
         str(ctx.post_spacing_seconds),
     ]
+    cmd.append("--no-era-recap")
+    if not ctx.best_day_last:
+        cmd.append("--no-recap")
     if ctx.posted_best_day_since_tracks:
         cmd.extend(["--exclude-tracks", ",".join(sorted(ctx.posted_best_day_since_tracks))])
     if ctx.no_post_mode:
@@ -1854,29 +1751,9 @@ def _post_best_day_since(ctx: FinalizeContext, state: dict[str, float]) -> None:
 
 
 def _post_best_day_since_recap_fallback(ctx: FinalizeContext, state: dict[str, float]) -> None:
-    """Safety net for the best-day-since recap + era recap cards (decision
-    2026-09-04): they normally post as replies in the Top Songs thread
-    (post_streams_twitter.py -> post_best_day_since_twitter.build_recap_thread_posts).
-    ``--limit 0`` skips individual song posts and runs only the (unchanged)
-    era-recap-batch + global-recap code, which checks the same lock files the
-    thread path writes -- so this is a no-op print when the thread already
-    covered it, and a real standalone fallback if that thread post failed.
-    Must run before best-day-since candidate listing so era-recap suppression
-    is correctly in place either way."""
-    if not ctx.summary.get("all_done"):
-        return
-    best_day_script = ctx.script_dir / "tools" / "scripts" / "post_best_day_since_twitter.py"
-    cmd = [sys.executable, str(best_day_script), ctx.summary["stats_date"], "--limit", "0"]
-    if ctx.no_post_mode:
-        cmd.append("--no-post")
-    _run(
-        ctx,
-        cmd,
-        label="best-day-since recap (fallback)",
-        should_post=not ctx.no_post_mode,
-        state=state,
-    )
-
+    # Never recreate secondary records as standalone roots after a thread failure.
+    # The daily thread remains pending and is retried through its own entry point.
+    print("Secondary record recap belongs to the daily streams thread.")
 
 def _best_day_since_candidate_tracks(ctx: FinalizeContext) -> tuple[list[str], set[str], dict[str, float]]:
     """Ask post_best_day_since_twitter.py which individual song track ids the
@@ -1949,31 +1826,7 @@ def _post_one_best_day_track(
 
 
 def _post_spotlight_gainers(ctx: FinalizeContext, state: dict[str, float]) -> None:
-    if not ctx.all_album_tracks_done(ctx.summary["stats_date"]):
-        print("Stream highlights skipped: not all album tracks are done yet.")
-        return
-
-    highlights_script = ctx.script_dir / "tools" / "scripts" / "post_stream_highlights_thread.py"
-    print("Posting separate stream highlight tables (daily %, weekly %)...")
-    cmd = [
-        sys.executable,
-        str(highlights_script),
-        ctx.summary["stats_date"],
-        "--limit",
-        "10",
-        "--post-spacing-seconds",
-        str(ctx.post_spacing_seconds),
-    ]
-    if ctx.no_post_mode:
-        cmd.append("--no-post")
-    _run(
-        ctx,
-        cmd,
-        label="stream highlights tables",
-        should_post=not ctx.no_post_mode,
-        state=state,
-    )
-
+    _post_daily_recap_card(ctx, state)
 
 def _post_milestone_watch(ctx: FinalizeContext, state: dict[str, float]) -> None:
     """Milestone Watch cards (owner 2026-10-13): the Watch of each milestone a song crossed today,
@@ -2477,7 +2330,7 @@ def run_final_update_tasks(ctx: FinalizeContext) -> None:
         weekend = _is_weekend_stats_date(ctx.summary["stats_date"])
         weekend_gainers_step = (
             "weekend song gainers", lambda: _post_weekend_song_gainers(ctx, post_state), "weekend-gainers",
-            PACED_EXPECTED_POSTS["weekend-gainers"] if weekend else 0,
+            0,  # daily gainers already ride in the main thread
         )
         # Steps expected to post nothing (debut on a normal day, weekend gainers
         # on a weekday) run first and take no turn in the order.

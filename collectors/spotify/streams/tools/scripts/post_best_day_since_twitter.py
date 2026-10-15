@@ -35,7 +35,8 @@ FEATURES_JSON = DISCOGRAPHY_DIR / "features.json"
 COVERS_PATH = DISCOGRAPHY_DIR / "covers.json"
 POST_COLLECTION_BEST_DAY_MIN_DAYS = 30
 RECAP_BEST_DAY_MIN_DAYS = 30
-RECAP_ROWS_PER_IMAGE_TARGET = 20
+RECAP_ROWS_PER_IMAGE_TARGET = 12
+RECAP_MIN_ROWS_PER_IMAGE = 10
 RECAP_MAX_IMAGES = 4
 # Fixed masthead header for the best-day-since recap: the "all eras" strip built
 # from the official Eras Tour site portraits (assets/eras-tour-hero/all-eras.jpg,
@@ -53,15 +54,13 @@ ERA_RECAP_MIN_SONGS = 3  # owner decision 2026-09-18 (was 5)
 # their own lock dir, never spending the individual song early-post quota.
 EARLY_ERA_RECAP_MAX_POSTS = 2
 MAX_BEST_DAY_SONG_POSTS_PER_ALBUM = 3
-# Finalize (post-collection) batch: 3 standard slots, up to 5 total. Slots 4-5
-# are reserved for exceptional records (a >90-day gap, or a score clearing the
-# early lane's exceptional bar). A >90-day priority row and a biggest-day-of-
-# the-year row still bypass the cap entirely.
-POST_COLLECTION_STANDARD_SONG_POSTS = 3
-POST_COLLECTION_MAX_SONG_POSTS = 5
+# Only remarkable records get individual cards: year records, >=90-day gaps,
+# or score >=90. Every lane shares three individual slots; others are grouped.
+POST_COLLECTION_STANDARD_SONG_POSTS = 0  # ordinary records belong in the grouped reply
+POST_COLLECTION_MAX_SONG_POSTS = 3
 MIN_SONG_DAILY_STREAMS_TO_POST = 200_000  # mirrors best_day_since.MIN_SONG_DAILY_STREAMS_FLOOR
-EARLY_BEST_DAY_MIN_SCORE = 58.0
-BATCH_BEST_DAY_MIN_SCORE = 58.0
+EARLY_BEST_DAY_MIN_SCORE = 90.0
+BATCH_BEST_DAY_MIN_SCORE = 90.0
 EARLY_BEST_DAY_STANDARD_MAX_POSTS = 3
 EARLY_BEST_DAY_EXCEPTIONAL_MAX_POSTS = 5
 EARLY_BEST_DAY_EXCEPTIONAL_MIN_SCORE = 90.0
@@ -449,7 +448,7 @@ def _era_recap_track_ids_for_date(target_date: str) -> set[str]:
 
     for group in _era_recap_groups(target_date):
         era_key = group.get("era_key") or _album_key(group.get("album"))
-        if era_key in active_keys:
+        if era_key in active_keys or slugify(era_key) in active_keys:
             covered.update(str(track_id) for track_id in (group.get("track_ids") or []) if track_id)
     return covered
 
@@ -593,7 +592,7 @@ def _pick_rows(
     if era_recap_track_ids:
         kept: list[dict] = []
         for row in rows:
-            if row["track_id"] in era_recap_track_ids:
+            if row["track_id"] in era_recap_track_ids and not _is_unconditional_best_day(row):
                 print(
                     f"[best_day_since_post] Skipping {row['title']}: already covered "
                     f"by a dedicated era recap for {target_date}."
@@ -603,6 +602,8 @@ def _pick_rows(
         rows = kept
     if exclude_ids:
         rows = [row for row in rows if row["track_id"] not in exclude_ids]
+    grouped_ids = _grouped_track_ids_for_date(target_date)
+    rows = [row for row in rows if row["track_id"] not in grouped_ids]
     effective_min_daily_streams = (
         MIN_SONG_DAILY_STREAMS_TO_POST if min_daily_streams is None else min_daily_streams
     )
@@ -631,7 +632,7 @@ def _pick_rows(
                 f"already {max_per_album} best-day song post(s) for {row.get('album')}."
             )
             continue
-        if not is_unconditional and capped_picked >= limit:
+        if len(picked) >= limit:
             continue
         picked.append(row)
         if not is_unconditional:
@@ -656,14 +657,15 @@ def _is_unconditional_best_day(row: dict) -> bool:
 
 
 def _is_priority_best_day_since(row: dict) -> bool:
-    """A best-day-since gap over PRIORITY_BEST_DAY_SINCE_MIN_DAYS (3 months)
-    is rare and newsworthy enough that it must always get a post — it bypasses
-    the per-album cap and the daily song-post limit instead of competing with
-    same-day candidates for a capped spot. A biggest day of the year is
-    unconditional and always counts as priority too."""
+    """Remarkable year record or >=90-day gap; shares the absolute daily cap."""
     if _is_unconditional_best_day(row):
         return True
     return row.get("kind") == "since" and (row.get("days_since") or 0) >= PRIORITY_BEST_DAY_SINCE_MIN_DAYS
+
+
+def _is_remarkable_record(row: dict) -> bool:
+    score = row.get("_post_score") or row.get("_early_score") or {}
+    return _is_priority_best_day_since(row) or float(score.get("score") or 0) >= EARLY_BEST_DAY_EXCEPTIONAL_MIN_SCORE
 
 
 def _passes_song_post_gate(
@@ -706,6 +708,79 @@ def _posted_track_ids_for_date(target_date: str) -> set[str]:
     return {p.stem for p in track_locks_dir.glob("*.lock")}
 
 
+def _grouped_track_ids_for_date(target_date: str) -> set[str]:
+    path = _day_dir(target_date) / "best_day_since_grouped_tracks.json"
+    if not path.exists():
+        return set()
+    return set(json.loads(path.read_text(encoding="utf-8"))["track_ids"])
+
+
+def build_grouped_record_reply(target_date: str, *, output_dir: Path | None = None,
+                               preview: bool = False,
+                               reserved_track_ids: set[str] | None = None) -> tuple[list[tuple[str, list[Path]]], list[str]]:
+    """One reply for secondary exact records; reserve remarkable individual slots."""
+    tracks_by_id = {t["track_id"]: t for t in load_all_tracks()}
+    posted = set() if preview else _posted_track_ids_for_date(target_date)
+    if reserved_track_ids is None:
+        stash = _day_dir(target_date) / "best_day_since_batch_candidates.json"
+        # Only exclude individual records actually queued by finalize; if listing
+        # failed, do not silently lose records by assuming they will be posted.
+        queued = json.loads(stash.read_text(encoding="utf-8")) if stash.exists() else []
+        reserved_track_ids = {row["track_id"] for row in queued if _is_remarkable_record(row)}
+    exclude = posted | reserved_track_ids
+    rows = [row for row in _find_recap_rows(target_date) if row["track_id"] not in exclude]
+    rows.sort(key=_recap_sort_key)
+    if not rows:
+        return [], []
+    # Every displayed comparison must match exact history, including secondary records.
+    for row in rows:
+        track_ids = row.get("combined_track_ids") or [row["track_id"]]
+        total, previous_total, daily, previous_daily, _weekly = load_history_for_tracks(track_ids, target_date)
+        if total is None or previous_total is None or daily is None or previous_daily is None:
+            raise RuntimeError(f"Grouped records pending: incomplete history for {row['track_id']} on {target_date}.")
+        if daily != row["daily_streams"]:
+            raise RuntimeError(f"Grouped records pending: daily mismatch for {row['track_id']} on {target_date}.")
+    images = _generate_recap_images(rows=rows, target_date=target_date, tracks_by_id=tracks_by_id,
+                                    covers=load_covers(), output_dir=output_dir)
+    return [(_build_recap_tweet(rows, target_date), images)], [row["track_id"] for row in rows]
+
+
+def mark_grouped_record_reply_posted(target_date: str, track_ids: list[str]) -> None:
+    path = _day_dir(target_date) / "best_day_since_grouped_tracks.json"
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps({"date": target_date, "track_ids": track_ids}), encoding="utf-8")
+    (_day_dir(target_date) / "best_day_since_recap_posted.lock").touch()
+
+
+def build_era_record_replies(target_date: str, *, output_dir: Path | None = None,
+                             preview: bool = False) -> tuple[list[tuple[str, list[Path]]], list[dict]]:
+    """Qualifying era recaps are replies in the daily thread, never early roots."""
+    if best_day_since_skipped(target_date):
+        return [], []
+    tracks = {track["track_id"]: track for track in load_all_tracks()}
+    covers = load_covers()
+    locked = set() if preview else _posted_era_recap_keys_for_date(target_date)
+    posts, groups = [], []
+    seen = set()
+    for group in _era_recap_groups(target_date):
+        key = group.get("era_key") or _album_key(group.get("album"))
+        if not key or key in seen:
+            raise RuntimeError(f"Era recap pending: missing/duplicate era key {key!r} on {target_date}.")
+        seen.add(key)
+        if key in locked or slugify(key) in locked:
+            continue
+        rows = sorted(group.get("items") or [], key=_recap_sort_key)
+        if len(rows) < ERA_RECAP_MIN_SONGS:
+            continue
+        era = group["album"]
+        images = _generate_recap_images(rows=rows, target_date=target_date, tracks_by_id=tracks,
+                                        covers=covers, era_display=era, output_dir=output_dir)
+        posts.append((best_day_since_era_recap_tweet(era=display_title_for_album(era),
+                                                    count=len(rows), stats_date=target_date), images))
+        groups.append({**group, "era_key": key})
+    return posts, groups
+
+
 # Owner decision 2026-09-25 (Showgirl: The Encore release week): for these
 # stats dates, at most SONG_POST_HARD_CAP individual best-day-since song cards
 # per day, with NO bypass (priority >90 d / biggest day of the year included).
@@ -723,11 +798,11 @@ def in_encore_week(target_date: str) -> bool:
 
 
 def song_post_hard_cap(target_date: str) -> int | None:
-    return SONG_POST_HARD_CAP if in_encore_week(target_date) else None
+    return SONG_POST_HARD_CAP
 
 
 def song_posts_remaining(target_date: str) -> int | None:
-    """Song card slots left under the hard cap (None = no hard cap that day).
+    """Song card slots left under the shared daily hard cap.
     Counts every track lock of the date, whichever lane posted it."""
     cap = song_post_hard_cap(target_date)
     if cap is None:
@@ -766,6 +841,9 @@ def _post_single_track_early(
     data, or already posted for this track+date), or "error".
     """
     lock = _track_posted_lock_path(track_id, target_date)
+    if track_id in _grouped_track_ids_for_date(target_date) and not no_post:
+        print(f"[best_day_since_early] {track_id} already included in grouped records for {target_date}.")
+        return "skipped"
     if lock.exists() and not no_post:
         print(f"[best_day_since_early] Already posted for {track_id} on {target_date}, skipping.")
         return "skipped"
@@ -817,7 +895,7 @@ def _post_single_track_early(
 
     is_priority = _is_priority_best_day_since(row)
 
-    if _era_recap_posted_for(track.get("album"), target_date):
+    if _era_recap_posted_for(track.get("album"), target_date) and not _is_unconditional_best_day(row):
         print(
             f"[best_day_since_early] Skipping {track_id}: {track.get('album')} era recap "
             f"already posted for {target_date}."
@@ -869,9 +947,7 @@ def _post_single_track_early(
         )
         return "skipped"
 
-    needs_score = not is_unconditional and (
-        min_score is not None or len(locked_track_ids) >= EARLY_BEST_DAY_STANDARD_MAX_POSTS
-    )
+    needs_score = not is_priority
     if needs_score:
         score = score_best_day_since.score_single_best_day_candidate(
             track_id,
@@ -890,6 +966,7 @@ def _post_single_track_early(
             score,
             min_score if min_score is not None else EARLY_BEST_DAY_MIN_SCORE,
         )
+        dynamic_min_score = max(EARLY_BEST_DAY_EXCEPTIONAL_MIN_SCORE, dynamic_min_score)
         score["dynamic_early_min_score"] = dynamic_min_score
         score["threshold_adjustments"] = {
             key: round(value, 3)
@@ -1005,13 +1082,13 @@ def _validated_song_rows_for_post(
     capped_count = 0
     for row in candidate_rows:
         is_unconditional = _is_unconditional_best_day(row)
-        if not is_unconditional and capped_count >= limit:
+        if len(rows) >= limit:
             continue
 
         score_item: dict | None = None
         numeric_score = 0.0
         dynamic_min_score = BATCH_BEST_DAY_MIN_SCORE
-        if not is_unconditional:
+        if not _is_priority_best_day_since(row):
             score_item = _score_item(row["track_id"])
             if not score_item:
                 print(
@@ -1024,6 +1101,7 @@ def _validated_song_rows_for_post(
                 score_item,
                 BATCH_BEST_DAY_MIN_SCORE,
             )
+            dynamic_min_score = max(EARLY_BEST_DAY_EXCEPTIONAL_MIN_SCORE, dynamic_min_score)
             if numeric_score < dynamic_min_score:
                 print(
                     f"[best_day_since_post] Skipping {row['title']}: score "
@@ -1106,7 +1184,9 @@ def _recap_row_html(index: int, row: dict, track: dict, cover_url: str, daily: i
 def _recap_image_count(row_count: int) -> int:
     if row_count <= RECAP_ROWS_PER_IMAGE_TARGET:
         return 1
-    return min(RECAP_MAX_IMAGES, (row_count + RECAP_ROWS_PER_IMAGE_TARGET - 1) // RECAP_ROWS_PER_IMAGE_TARGET)
+    desired = (row_count + RECAP_ROWS_PER_IMAGE_TARGET - 1) // RECAP_ROWS_PER_IMAGE_TARGET
+    # Do not split 12-19 records into two half-empty pictures.
+    return min(RECAP_MAX_IMAGES, desired, max(1, row_count // RECAP_MIN_ROWS_PER_IMAGE))
 
 
 def _split_recap_rows(rows: list[dict]) -> list[list[dict]]:
@@ -1135,99 +1215,34 @@ def _generate_recap_image(
     page_index: int = 1,
     page_count: int = 1,
     era_display: str | None = None,
+    output_dir: Path | None = None,
 ) -> Path:
-    from datetime import datetime
-
     all_rows = all_rows or rows
-    date_text = datetime.strptime(target_date, "%Y-%m-%d").strftime("%B %d, %Y")
-    rows_html = []
-    for index, row in enumerate(rows, start_index):
-        track = tracks_by_id.get(row["track_id"]) or {
-            "track_id": row["track_id"],
-            "title": row.get("title") or row["track_id"],
-            "album": row.get("album") or "",
-        }
-        track_ids = row.get("combined_track_ids") or [row["track_id"]]
-        _total_today, _total_yesterday, daily_today, daily_yesterday, daily_last_week = (
-            load_history_for_tracks(track_ids, target_date)
-        )
-        if daily_today is None:
-            daily_today = row.get("daily_streams")
-        if daily_today is None:
-            print(
-                f"[best_day_since_post] Recap row skipped: missing daily streams for "
-                f"{row.get('title') or row['track_id']} on {target_date}."
-            )
-            continue
-        cover_url = url_to_data_uri(get_cover_url(track, covers))
-        daily_pct = get_pct(daily_today, daily_yesterday)
-        weekly_pct = get_pct(daily_today, daily_last_week)
-        rows_html.append(_recap_row_html(index, row, track, cover_url, daily_today, daily_pct, weekly_pct))
-    if len(rows_html) != len(rows):
-        print(
-            f"[best_day_since_post] Recap image contains {len(rows_html)}/{len(rows)} "
-            f"validated best-day row(s)."
-        )
-
-    # Global recap: fixed "all eras" strip header + "BEST DAY" masthead, no album
-    # theming (owner decision 2026-09-03). The dedicated per-era recap card
-    # (era_display set) uses that era's own header pool and title instead.
-    # Weekday posts (Mon-Fri) -> light; weekend posts (Sat/Sun) -> dark.
-    masthead_word = "BEST DAY"
-    masthead_theme = masthead_theme_for_date(target_date)
-    if era_display:
-        album_headers = generate_album_update_image.header_images_for_album(era_display)
-        headers_dir = album_headers[0].parent if album_headers else RECAP_HEADERS_DIR
-        themed_count = sum(
-            1
-            for row in all_rows
-            if _album_key((tracks_by_id.get(row["track_id"]) or {}).get("album") or row.get("album"))
-            == _album_key(era_display)
-        )
-        title = f"{display_title_for_album(era_display)} - Best Day Recap"
-        subtitle = f"{themed_count} songs from the era hit a best-day-since record - {date_text}"
-        # The per-era recap is an era-themed card: force the dark masthead every
-        # day (not the weekday light/dark rule) so the era's header photo reads
-        # through instead of washing out to white on weekday posts.
-        masthead_theme = "dark"
-        if "holiday collection" in era_display.casefold():
-            masthead_theme = "light"
-    else:
-        headers_dir = RECAP_HEADERS_DIR
-        title = "Best Day Since - Full Recap"
-        subtitle = f"Every song that hit a best-day-since record - {date_text}"
-    if page_count > 1:
-        title = f"{title} ({page_index}/{page_count})"
-        end_index = start_index + len(rows) - 1
-        subtitle = f"Songs {start_index}-{end_index} of {len(all_rows)} - {date_text}"
-
-    html_text = build_table_html(
-        title=title,
-        subtitle=subtitle,
-        col_heads=[
-            ("Pos", False),
-            ("Track", False),
-            ("Daily", True),
-            ("Vs Day", True),
-            ("Vs Week", True),
-            ("Best Since", True),
-        ],
-        grid_cols="48px minmax(200px,1fr) 100px 76px 76px 150px",
-        rows_html="\n".join(rows_html),
-        handle="@swiftiescharts",
-        date_str=date_text,
-        headers_dir=headers_dir,
-        body_width=960,
-        art_size=48,
-        masthead_word=masthead_word,
-        masthead_theme=masthead_theme,
-    )
-    out_dir = _day_dir(target_date) / "best_day_since"
+    import spotify_app_cards
+    entries = []
+    for row in rows:
+        track = tracks_by_id.get(row["track_id"])
+        if not track:
+            raise RuntimeError(f"Best Day Club pending: missing track metadata for {row['track_id']}.")
+        ids = row.get("combined_track_ids") or [row["track_id"]]
+        total, previous_total, daily, yesterday, week = load_history_for_tracks(ids, target_date)
+        if total is None or previous_total is None or daily is None or yesterday is None or daily != row.get("daily_streams"):
+            raise RuntimeError(f"Best Day Club pending: incomplete or inconsistent history for {row['track_id']} on {target_date}.")
+        entries.append({"track_id": row["track_id"], "title": track.get("title") or row["title"],
+                        "album": display_title_for_album(track.get("album") or row.get("album") or ""),
+                        "cover_url": get_cover_url(track, covers), "daily": daily,
+                        "daily_pct": get_pct(daily, yesterday), "weekly_pct": get_pct(daily, week),
+                        "label": best_day_since.row_label(row), "kind": row.get("kind"),
+                        "since_date": row.get("best_day_since")})
+    out_dir = (output_dir or _day_dir(target_date)) / "best_day_since"
     era_suffix = f"_era_{slugify(era_display)}" if era_display else ""
     part_suffix = f"_part{page_index}of{page_count}" if page_count > 1 else ""
     out_path = out_dir / f"best_day_since{'_era_recap' if era_display else '_recap'}{era_suffix}{part_suffix}_{target_date}.png"
-    tmp_path = out_dir / f"_best_day_since{'_era_recap' if era_display else '_recap'}{era_suffix}{part_suffix}_{target_date}.html"
-    return render_html_to_png(html_text, out_path, tmp_path, width=960)
+    return spotify_app_cards.render_best_day_club(target_date, entries, out_path, total_count=len(all_rows),
+                                                  start_index=start_index, page_index=page_index,
+                                                  page_count=page_count, era=era_display,
+                                                  era_cover_url=covers.get(_norm(era_display)) if era_display else None)
+
 
 
 def _generate_recap_images(
@@ -1237,6 +1252,7 @@ def _generate_recap_images(
     tracks_by_id: dict,
     covers: dict,
     era_display: str | None = None,
+    output_dir: Path | None = None,
 ) -> list[Path]:
     chunks = _split_recap_rows(rows)
     page_count = len(chunks)
@@ -1253,6 +1269,7 @@ def _generate_recap_images(
             page_index=page_index,
             page_count=page_count,
             era_display=era_display,
+            output_dir=output_dir,
         ))
         start_index += len(chunk)
     return paths
@@ -1447,6 +1464,25 @@ def _post_one_selected_row(
     _post_daily_yesterday must already be set). Writes the per-track lock on
     success. Returns True if posted (or --no-post preview), False on failure.
     Shared by the normal batch loop and --post-batch-track."""
+    if not _is_remarkable_record(row):
+        print(f"[best_day_since_post] {row['track_id']} belongs in grouped secondary records.")
+        return True
+    if not no_post and row["track_id"] in _era_recap_track_ids_for_date(target_date) and not _is_unconditional_best_day(row):
+        print(f"[best_day_since_post] {row['track_id']} is covered by its era recap for {target_date}.")
+        return True
+    lock = _track_posted_lock_path(row["track_id"], target_date)
+    if not no_post and (lock.exists() or row["track_id"] in _grouped_track_ids_for_date(target_date)):
+        print(f"[best_day_since_post] {row['track_id']} already covered for {target_date}.")
+        return True
+    if not no_post and song_posts_remaining(target_date) == 0:
+        print(f"[best_day_since_post] Individual record slots exhausted for {target_date}.")
+        return True
+    ids = row.get("combined_track_ids") or [row["track_id"]]
+    current_total, previous_total, daily, previous_daily, weekly = load_history_for_tracks(ids, target_date)
+    if (current_total is None or previous_total is None or daily is None or previous_daily is None
+            or current_total != row["_post_total_today"] or daily != row["daily_streams"]
+            or previous_daily != row["_post_daily_yesterday"] or weekly != row.get("_post_daily_last_week")):
+        raise RuntimeError(f"Individual record pending: stash/history mismatch for {row['track_id']} on {target_date}.")
     track = row["_post_track"]
     total_today = row["_post_total_today"]
     daily_yesterday = row["_post_daily_yesterday"]
@@ -1726,19 +1762,7 @@ def main() -> None:
     tracks_by_id = {track["track_id"]: track for track in load_all_tracks()}
     covers = load_covers()
 
-    # Dedicated per-era recap cards go out before the individual song cards (and
-    # before each era's album update card, which is a later finalize step). Once
-    # an era recap posts, that era's individual best-day song cards are
-    # suppressed below via _era_recap_posted_for (biggest-day-of-year excepted).
-    if not args.no_era_recap:
-        _post_era_recaps_batch(
-            target_date,
-            no_post=args.no_post,
-            tracks_by_id=tracks_by_id,
-            covers=covers,
-            exclude_era_keys=set(_posted_era_recap_keys_for_date(target_date)),
-        )
-
+    # Secondary records are grouped in the daily thread, not per-era roots.
     exclude_ids = {t.strip() for t in args.exclude_tracks.split(",") if t.strip()}
     exclude_ids.update(_posted_track_ids_for_date(target_date))
     album_post_counts = _track_album_counts(exclude_ids, tracks_by_id)
@@ -1791,43 +1815,16 @@ def main() -> None:
     if rows:
         print(f"[best_day_since_post] Posted {posted_count} song(s) for {target_date}.")
 
-    # Full recap table: every song that hit a best-day-since record today
-    # (not just the ones with individual posts), oldest record first.
-    if recap_locked:
-        print(f"[best_day_since_post] Recap already posted for {target_date}, skipping.")
-    elif args.no_recap:
-        pass
-    else:
-        recap_rows = _find_recap_rows(target_date)
-        recap_rows.sort(key=_recap_sort_key)
-        if len(recap_rows) <= 1:
-            print(
-                f"[best_day_since_post] Recap skipped for {target_date}: "
-                f"{len(recap_rows)} best-day-since song(s)."
-            )
-        else:
-            image_paths = _generate_recap_images(
-                rows=recap_rows,
-                target_date=target_date,
-                tracks_by_id=tracks_by_id,
-                covers=covers,
-            )
-            tweet = _build_recap_tweet(recap_rows, target_date)
-            print(f"[best_day_since_post] Recap tweet ({len(tweet)} chars):\n{tweet}")
-            print(f"[best_day_since_post] Recap images ({len(image_paths)}):")
-            for image_path in image_paths:
-                print(f"[best_day_since_post] - {image_path}")
-
-            if not args.no_post:
-                if len(image_paths) == 1:
-                    posted = post_with_image(tweet, image_paths[0], TWITTER_SESSION)
-                else:
-                    posted = post_image_thread([(tweet, image_paths)], TWITTER_SESSION)
-                if not posted:
-                    print("[best_day_since_post] Failed to post recap.")
-                    sys.exit(1)
-                recap_lock.touch()
-                print(f"[best_day_since_post] Posted recap for {target_date}.")
+    # Explicit --best-day-last/direct runs can still publish one grouped recap.
+    if not recap_locked and not args.no_recap:
+        grouped_posts, grouped_ids = build_grouped_record_reply(target_date)
+        for tweet, images in grouped_posts:
+            print(f"[best_day_since_post] Grouped secondary records: {tweet}")
+            print(f"[best_day_since_post] Images: {images}")
+        if grouped_posts and not args.no_post:
+            if not post_image_thread(grouped_posts, TWITTER_SESSION):
+                raise SystemExit("Failed to post grouped secondary records; locks remain pending.")
+            mark_grouped_record_reply_posted(target_date, grouped_ids)
 
     if args.no_post:
         print("[best_day_since_post] Twitter posts skipped (--no-post).")

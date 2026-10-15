@@ -3,6 +3,7 @@ from __future__ import annotations
 import os
 import sys
 from datetime import date
+from decimal import Decimal, ROUND_HALF_UP
 
 from .links import chart_song_url, charts_url, song_url, streams_latest_url
 from .prefixes import BEST_DAY_PREFIX, MOST_STREAMED_SONGS_TITLE, OVERTAKE_PREFIX, STREAMS_PREFIX, THREAD_PREFIX, SPOTIFY_CHART_PREFIX, with_prefix
@@ -10,6 +11,35 @@ from .prefixes import BEST_DAY_PREFIX, MOST_STREAMED_SONGS_TITLE, OVERTAKE_PREFI
 # X Premium: same cap as core.twitter.TWITTER_TEXT_LIMIT (500, env override).
 # Fallbacks below only kick in past it, never at the legacy 280.
 TWEET_TEXT_LIMIT = int(os.getenv("TWITTER_TEXT_LIMIT", "500"))
+
+
+def compact_streams(value: int) -> str:
+    """Display an exact counter rounded to one decimal, without changing data."""
+    if not isinstance(value, int) or isinstance(value, bool) or value < 0:
+        raise ValueError("Stream counters must be nonnegative integers")
+    for divisor, suffix in ((1_000_000_000, "B"), (1_000_000, "M"), (1_000, "k")):
+        # Promote at a rounding boundary: 999,950 displays as 1M, not 1000k.
+        if value >= divisor or (divisor > 1_000 and value >= divisor - divisor // 20_000):
+            rounded = (Decimal(value) / divisor).quantize(Decimal("0.1"), rounding=ROUND_HALF_UP)
+            return f"{format(rounded, 'f').rstrip('0').rstrip('.')}{suffix}"
+    return str(value)
+
+
+def top2026_taylor_ranks_tweet(rows: list[dict], *, scope: str = 'overall') -> str:
+    """Copy for ntfy, ready for the user's Taylor-only Top2026 post."""
+    if scope not in ('overall', 'female'):
+        raise ValueError(f'Unknown Top2026 scope: {scope}')
+    scope_label = ' [Female]' if scope == 'female' else ''
+    lines = [f"Most streamed songs of 2026 (Taylor's Version){scope_label}* :",
+             "*only songs that charted at least one day on the global spotify charts.", ""]
+    for row in rows:
+        if row["move"] is None or row["daily_streams"] is None:
+            raise ValueError("Top2026 tweet requires exact movement and daily streams")
+        lines.append(
+            f'#{row["rank"]} ({row["move"]:+d}) {row["title"]}--'
+            f'{compact_streams(row["streams"])} streams (+{compact_streams(row["daily_streams"])})'
+        )
+    return "\n".join(lines)
 
 
 def ordinal(n: int) -> str:
@@ -167,14 +197,14 @@ def spotify_chart_filtered_streams_record_tweet(
 
 def best_day_since_recap_tweet(*, count: int, stats_date: str) -> str:
     plural = "s" if int(count) != 1 else ""
-    body = f"{int(count)} song{plural} hit a best day since record on {date_label(stats_date)}. Full recap below."
+    body = f"The Best Day Club: {int(count)} song{plural} hit a best day since record on {date_label(stats_date)}. Full recap below."
     return with_prefix(body, BEST_DAY_PREFIX)
 
 
 def best_day_since_era_recap_tweet(*, era: str, count: int, stats_date: str) -> str:
     plural = "s" if int(count) != 1 else ""
     body = (
-        f"{int(count)} {era} song{plural} hit a best day since record on "
+        f"The Best Day Club — {era}: {int(count)} song{plural} hit a best day since record on "
         f"{date_label(stats_date)}. Full {era} recap below."
     )
     return with_prefix(body, BEST_DAY_PREFIX)
@@ -259,6 +289,14 @@ def weekend_streams_tweet(*, stats_date: str) -> str:
     when = date_label(stats_date, include_weekday=True)
     body = f"Taylor Swift's albums and songs on the Spotify counter {when}.\n{full_streams_update_line()}"
     return with_prefix(body, STREAMS_PREFIX)
+
+
+def daily_streams_thread_tweet(*, stats_date: str, daily_gainers: int = 0) -> str:
+    body = f"Taylor Swift's daily Spotify streams update for {date_label(stats_date, include_weekday=True)}."
+    if daily_gainers:
+        body += f"\nIncluding the top {int(daily_gainers)} daily gainers by %."
+    body += f"\n\n{full_streams_update_line()}"
+    return with_prefix(body, THREAD_PREFIX)
 
 
 def stream_highlights_combined_tweet(*, stats_date: str) -> str:

@@ -24,7 +24,8 @@ def _sanitize_dead_local_proxy_env() -> list[str]:
     return removed
 
 
-def send(topic: str, message: str, title: str = "", tags: str = "", priority: str = "default"):
+def send(topic: str, message: str, title: str = "", tags: str = "", priority: str = "default",
+         filename: str = "", message_preview: str = "") -> bool:
     """
     Envoie une notification via ntfy.sh.
 
@@ -36,7 +37,7 @@ def send(topic: str, message: str, title: str = "", tags: str = "", priority: st
         priority: 'low', 'default', 'high', 'urgent'
     """
     if not topic:
-        return
+        return False
 
     try:
         removed_proxy_vars = _sanitize_dead_local_proxy_env()
@@ -56,6 +57,10 @@ def send(topic: str, message: str, title: str = "", tags: str = "", priority: st
             req.add_header("Title", title)
         if tags:
             req.add_header("Tags", tags)
+        if filename:
+            req.add_header("Filename", filename)
+        if message_preview:
+            req.add_header("Message", message_preview)
         if priority and priority != "default":
             req.add_header("Priority", priority)
 
@@ -66,6 +71,8 @@ def send(topic: str, message: str, title: str = "", tags: str = "", priority: st
         else:
             with urllib.request.urlopen(req, timeout=NTFY_TIMEOUT_SECONDS):
                 pass
+        return True
 
     except Exception as e:
         print(f"[NOTIFY] Echec ntfy.sh: {e}", flush=True)
+        return False

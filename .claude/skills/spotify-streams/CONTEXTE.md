@@ -2665,12 +2665,12 @@ table (memes loaders, TOTAL ERA = Top Eras). Detail design -> skill `image-gen`.
 
 ## Thème du jour depuis la frise Taylor Swift (décision propriétaire 2026-10-13, en maquette)
 
-Fichier source : `taylor_swift_timeline_en_2006_2026.json` (racine du repo, fourni par le propriétaire, « pas complet mais un bon début » ; on peut y ajouter des événements `{date, type, title, description}`). Module : `tools/scripts/day_theme.py`. Pas encore branché sur les posts : seules les maquettes `previews_and_sims/spotify-app-cards/` l'utilisent.
+Fichier source : `taylor_swift_timeline_en_2006_2026.json` (racine du repo, fourni par le propriétaire, « pas complet mais un bon début » ; on peut y ajouter des événements `{date, type, title, description}`). Module : `tools/scripts/day_theme.py`. Branché sur les posts depuis le 2026-10-13 via `spotify_app_cards.py` (Recap + couleur des autres cards les jours d'événement) ; aperçu : `previews_and_sims/spotify-app-cards/simulate.py --theme=DATE`.
 
 - Chaque événement donne une **image** et un **thème** (couleur de la card album de l'ère). Image = « la bonne image » de l'événement (propriétaire : « pour un film, l'affiche du film ») tirée de `assets/timeline/` (`scripts/build_timeline_assets.py`) : film → affiche, album → pochette, single/n°1 → pochette du single, tournée → photo de concert, le reste → photo de Taylor ; portrait Eras Tour de l'ère en secours. Une affiche s'affiche entière (jamais recadrée), le nom passe dessous. Les affiches Wikipedia sont petites (~260 px) : pour une version HD, la déposer dans `assets/timeline/manual/<date>/poster_*.jpg` puis relancer le build.
 - **Anniversaire** = le mois-jour tombe sur la date du post OU sur la date des stats (« les deux ») ; si les deux tombent sur des événements différents, celui du post gagne.
 - **Jour d'événement** : le thème s'applique à toutes les images streams **sauf les cards album** (elles gardent leur couleur d'album) ; le Recap écrit l'événement sous le nom (« 14 years ago today · Release of the album Red »).
-- **Jour sans événement** : un mode au hasard parmi 3 (ère du dernier événement passé, rotation des portraits, ère n°1 du jour), graine = date du post pour qu'un re-run donne la même chose. Ces jours-là, Top Songs / Top Eras / Gainers gardent la couleur de leur n°1.
+- **Jour sans événement** (propriétaire 2026-10-14, remplace les 3 modes au hasard) : image de la **sortie la plus récente** de la frise (`album_release`, `single_release`, `film_release`, `documentary_release`, datée ≤ date du post) → en priorité la **pochette album/single**, sinon affiche du film / photo Eras Tour ; deux sorties le même jour → l'album gagne. Mode `latest_release`, pas de légende. Ces jours-là, Top Songs / Top Eras / Gainers gardent la couleur de leur n°1.
 
 ## Cards streams « pages app Spotify » + Billion Watch (2026-10-13)
 
@@ -2696,3 +2696,55 @@ sur 7 jours les listes 900M et 1B changent presque chaque jour en bas de tableau
 -> ~2 posts/jour ; on lui a propose de ne compter que le top 5 (~1/semaine), il a garde
 « tout changement du top 10 ». Ne pas restreindre sans lui redemander. Jamais sur un export web history qui n'a
 pas encore la date, ni avec moins de 3 chansons projetees (`MIN_ROWS`). Nom : jamais « Road to 1B » (utilise par un autre compte).
+
+## Daily ntfy cumulative song ranks (2026-10-14)
+
+User requested Taylor song ranks by cumulative streams and daily movement via
+existing ntfy. `notify_song_ranks.py` uses the active non-extra total-overtake
+scope, exact target/previous totals, shared ranks for ties, and explicit release
+metadata for NEW. Full rankings and moves are attached, not silently truncated.
+The production finalize hook runs only after all_done, including --no-post;
+never during debug/local-test/test/throwback. Existing streams topic reused.
+Once-per-date state and text/CSV live in runtime/song-rank-notifications.
+Missing/estimated/duplicate data blocks, counter drops block movement claims,
+and unconfirmed delivery waits for reviewed --retry-send. Sent reports whose
+source data changed are blocked from being silently resent.
+
+### Rank-notification scope correction (2026-10-14)
+
+User clarified: Taylor notifications are ONLY for the Top2026 recap in
+extra_taylor. The all-time 347-song finalize notification hook is removed.
+`notify_song_ranks.py` is now a compatibility bridge to
+`extra_taylor/notify_top2026_taylor.py`; it cannot send the all-time ranking.
+Daily triggering occurs in extra_taylor after the exact Top2026 rank snapshot
+is captured. Taylor artist-ID filtering happens after full-list ranking, so
+positions are among all Top2026 songs. Missing previous snapshots show
+comparison unavailable; partial/unverified previous snapshots block moves.
+The existing ntfy streams topic is reused. The former notification state is
+retained as a historical delivery record, not reused for the changed scope.
+This supersedes the earlier daily cumulative-discography notification section.
+
+### Top2026 notification Twitter copy (2026-10-14)
+
+The Taylor-only Top2026 ntfy body is now formatted by
+`collectors/twitter/text.py::top2026_taylor_ranks_tweet`: requested English
+header, signed move (+0 if unchanged), glued `Title--214.5M` separator, daily
+in parentheses. Display-only rounding uses one decimal and B/M/k, retaining
+exact counters in history and reports. extra_taylor requires consecutive-date
+verified ranks and exact daily history consistent with both snapshot totals.
+Missing comparisons/dailies block sending, superseding the earlier
+comparison-unavailable text. No automatic public post. Prior notification
+delivery state is retained unchanged.
+
+Top2026 titles now include an asterisk; the following line states
+`*only songs that charted at least one day on the global spotify charts.`
+This is a copy clarification only; eligibility, history and ranks are unchanged.
+
+### Taylor ntfy: overall and female Top2026 (2026-10-15)
+
+Two independent notifications contain only Taylor's positions, using overall
+and solo-female rank histories respectively. Female copy has `[Female]` in the
+header. extra_taylor sends one explicit pending notice per date for a blocked
+scope, with the exact reason and no unverified stats; the other ready scope
+still sends. Pending notices and later verified reports have separate delivery
+records; original overall records remain intact. No public X posting added.

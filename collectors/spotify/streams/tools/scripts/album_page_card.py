@@ -453,14 +453,30 @@ def build(album: str, target_date: str, *, weekly: bool = False, overtake: bool 
     <div class="pills {chg_cls}"><span class="pill">{arrow}{chg_txt.lstrip('+-')}</span>{pct_pill}</div>
     <div class="vs">{vs}</div>{week_html}{album_best_html}</div>"""
     # album_facts sorts by relevance: keep only the best two in every layout.
-    facts = [] if overtake else facts_mod.album_facts(album, target_date, hist, tracks)[:2]
+    # Song stat of the day: one full-width line at the bottom (not on the overtake card).
+    stat = None
+    if not overtake:
+        try:
+            stat = facts_mod.song_stat_of_day(tracks, hist, best_labels, vs,
+                                                None if weekly else f"vs last {d.strftime('%A')}",
+                                                target_date=target_date, album_best=album_best,
+                                                album_daily=daily)
+        except Exception as exc:  # decoration: never block the card
+            print(f"[album_page] song stat skipped: {exc}")
+    if stat and stat.key == "album_best" and album_best_html:  # the band says it: no ★ pill too
+        today = today.replace(album_best_html, "")
+    # Side facts never repeat the band (same stat or same song).
+    facts = [] if overtake else facts_mod.album_facts(album, target_date, hist, tracks, band=stat)[:2]
     facts_html = f'<div class="facts">{"".join(f.html() for f in facts)}</div>' if facts else ""
+    stat_html = (f'<div class="sotd"><span class="si">{stat.icon}</span><span class="st">{stat.text}</span></div>'
+                 if stat else "")
     foot = f'<div class="foot"><span class="logo"></span><b>@swiftiescharts</b><span class="src">{sp}</span></div>'
     if wide:
         body = (f'<div class="hero"><img class="cover" src="{cover_uri}"><div class="meta">{meta}{facts_html}</div>'
                 f'<div class="stat">{today}{actions}</div></div>{lists}<div class="totals">{total_row}</div>{foot}')
     else:
         body = f'<div class="side"><img class="cover" src="{cover_uri}">{meta}{actions}{today}{facts_html}{foot}</div>{lists}'
+    body += stat_html
 
     return f"""<!DOCTYPE html><html><head><meta charset="utf-8"><style>
 @font-face{{font-family:"TSM Archivo";src:url("{FONTS_DIR.as_uri()}/Archivo.ttf") format("truetype");font-weight:100 900;font-stretch:62% 125%}}
@@ -504,6 +520,11 @@ html,body{{width:{width}px;background:#121212}}
 .fact{{display:flex;gap:12px;align-items:baseline;font-size:23px;line-height:1.25;color:#d9d9d9}}
 .fact .fi{{flex:none;width:24px;text-align:center;color:#1ed760;font-weight:900}}
 .fact b{{color:#fff;font-weight:800}}
+.sotd{{grid-column:1/-1;margin-top:38px;padding-top:30px;border-top:1px solid rgba(255,255,255,.18);display:flex;gap:24px;align-items:baseline;font-size:{round(width * 0.04)}px;line-height:1.2}}
+.sotd .si{{color:#1ed760;flex:none}}
+.sotd .st{{flex:1;min-width:0;display:flex;white-space:nowrap;overflow:hidden}}
+.sotd .sn{{min-width:0;overflow:hidden;text-overflow:ellipsis}}
+.sotd .sr{{flex:none}}
 .wide .facts{{margin-top:18px;gap:8px}}
 .wide .fact{{font-size:22px}}
 .foot{{margin-top:auto;padding-top:30px;display:flex;align-items:center;gap:14px;color:#b3b3b3;font-size:24px}}
@@ -572,6 +593,20 @@ def _overtake_class(track_id: str, move: int, highlight: dict[str, str] | None) 
     return "ov-up" if move > 0 else "ov-down" if move < 0 else ""
 
 
+# Bottom band = always one line: shrink the font (down to 60%) until the whole line fits;
+# past that, only the song name is cut with "…" (the numbers never are).
+BAND_FIT_JS = """() => {
+  const band = document.querySelector('.sotd');
+  if (!band) return;
+  const st = band.querySelector('.st'), sn = band.querySelector('.sn');
+  sn.style.flex = 'none';
+  let fs = parseFloat(getComputedStyle(band).fontSize);
+  const floor = fs * 0.6;
+  while (st.scrollWidth > st.clientWidth && fs > floor) { fs -= 1; band.style.fontSize = fs + 'px'; }
+  sn.style.flex = '';
+}"""
+
+
 def render_png(album: str, target_date: str, out_path: Path, *, weekly: bool = False, overtake: bool = False,
                highlight: dict[str, str] | None = None) -> Path:
     """Write the card PNG. The temp HTML sits next to it during the render (fonts are file://)."""
@@ -589,6 +624,7 @@ def render_png(album: str, target_date: str, out_path: Path, *, weekly: bool = F
             page.goto(tmp.as_uri(), wait_until="load")
             page.evaluate("document.fonts.ready")
             page.evaluate(facts_mod.TRIM_JS)
+            page.evaluate(BAND_FIT_JS)
             page.locator(".card").screenshot(path=str(out_path))
             browser.close()
     finally:

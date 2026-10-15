@@ -5,6 +5,7 @@ the album card (album_page_card.py), one page type per image:
   songs   -> playlist page      (streams_image*.png, Top Songs)
   eras    -> discography page   (albums_image.png, Top Eras: top 3 podium + compact list)
   gainers -> Spotify Charts     (stream_highlights_{daily,weekly}_gainers_*.png)
+  bestday -> The Best Day Club  (horizontal record playlist)
   watch   -> "Billion Watch" / "900M Watch"... (next songs expected to pass a milestone, by expected
              date; never "Road to 1B")
 
@@ -277,7 +278,7 @@ def recap(d: str) -> str:
     pub = [gw.load_public_history_rows(str(x)) for x in (dd, dd - timedelta(days=1), dd - timedelta(days=7))]
     t = gw.build_totals(*pub)
     stats = gw._load_artist_stats()
-    theme = day_theme.theme_for(d, top_era_album=eras[0]["album"] if eras else None)
+    theme = day_theme.theme_for(d)
     head, top = theme.image, theme.color
     print(f"[theme] {d}: {theme.mode} · {theme.era} · {head.name} · {top} · {theme.caption or ''}")
     caption = f'<div class="evt">{esc(theme.caption)}</div>' if theme.caption else ""
@@ -775,7 +776,7 @@ def watch(d: str, picked: list[dict] | None = None, milestone: int = BILLION) ->
 
 
 # ── render ───────────────────────────────────────────────────────────────────
-def render(doc: str, out: Path, scale: float = 2) -> Path:
+def render(doc: str, out: Path, scale: float = 2, *, max_dimension: int | None = None) -> Path:
     out.parent.mkdir(parents=True, exist_ok=True)
     tmp = out.with_name(f"_{out.stem}.html")
     tmp.write_text(doc, encoding="utf-8")
@@ -785,6 +786,11 @@ def render(doc: str, out: Path, scale: float = 2) -> Path:
             pg_ = b.new_page(viewport={"width": 2240, "height": 900}, device_scale_factor=scale)
             pg_.goto(tmp.as_uri(), wait_until="load")
             pg_.evaluate("document.fonts.ready")
+            if max_dimension:
+                bounds = pg_.locator(".card").bounding_box()
+                zoom = min(1, (max_dimension - 2) / (max(bounds["width"], bounds["height"]) * scale))
+                if zoom < 1:
+                    pg_.evaluate("z => { document.querySelector('.card').style.zoom = z; }", zoom)
             pg_.locator(".card").screenshot(path=str(out))
             b.close()
     finally:
@@ -807,6 +813,94 @@ def render_eras(d: str, out: Path) -> Path:
 
 def render_gainers(d: str, period: str, picked: list[dict], out: Path) -> Path:
     return render(gainers(d, period, picked), out, SCALE["gainers"])
+
+
+def best_day_club(d: str, entries: list[dict], *, total_count: int, start_index: int = 1,
+                  page_index: int = 1, page_count: int = 1, era: str | None = None,
+                  era_cover_url: str | None = None) -> str:
+    """Horizontal Spotify Charts layout for already validated record rows."""
+    top = tone(era_cover_url or (entries[0].get("cover_url") if entries else None), era) if era else event_color(d) or "#665735"
+    arts = [cover(e.get("cover_url"))[0] for e in entries[:4]]
+    mosaic = ''.join(f'<img src="{u}">' for u in arts if u)
+    if era_cover_url:
+        mosaic = f'<img class="era-cover" src="{cover(era_cover_url)[0]}">'
+    page_label = f" · {page_index}/{page_count}" if page_count > 1 else ""
+    subtitle = f"{total_count} song{'s' if total_count != 1 else ''} · {long_date(d)}{page_label}"
+    spotify_icon = SPOTIFY_SVG.replace('class="logo"', 'width="40" height="40"')
+    hero = (f'<div class="club-side"><div class="club-art"><div class="club-poster-top">'
+            f'{spotify_icon}'
+            f'<span>{esc(short_date(d))}</span></div><h1>The<br>Best Day<br>Club</h1>'
+            f'<div class="club-mosaic">{mosaic}</div></div>'
+            f'<div class="kind">Daily record playlist</div><div class="club-date">{esc(subtitle)}</div>'
+            f'{f"<div class=club-era>{esc(era)}</div>" if era else ""}'
+            f'<div class="club-actions">{PLAY}{SHUFFLE}</div>{foot()}</div>')
+    rows = []
+    for index, e in enumerate(entries, start_index):
+        if e.get("daily") is None or not e.get("title") or not e.get("label"):
+            raise ValueError(f"Best Day Club pending: missing exact record fields for {e.get('track_id')}.")
+        art = cover(e.get("cover_url"))[0]
+        main_title, feat = song_title_parts(e["title"], e.get("album") or "")
+        vault = "From the Vault" if apc.VAULT_RE.search(e["title"]) else ""
+        album_line = " · ".join(x for x in (e.get("album") or "", feat, vault) if x)
+        def change(value):
+            return "n/a" if value is None else f"{value:+.1f}%"
+        label = f"Since {short_date(e['since_date'])}" if e.get("since_date") and e.get("kind") == "since" else e["label"]
+        rows.append(f'<div class="club-row"><span class="club-rank">{index}</span>'
+                    f'<img class="club-cover" src="{art}"><div class="club-track">'
+                    f'<div class="club-title">{esc(main_title)}</div>'
+                    f'<div class="club-album">{esc(album_line)}</div>'
+                    f'<div class="club-record">\u2605 {esc(label)}</div></div>'
+                    f'<div class="club-streams">{comma(e["daily"])}<span>streams</span>'
+                    f'<div class="club-comparisons"><span>Day {change(e.get("daily_pct"))}</span>'
+                    f'<span>Week {change(e.get("weekly_pct"))}</span></div></div></div>')
+    body = hero + '<div class="club-list"><div class="club-head"><span>#</span><span></span><span>Title / best day</span><span>Daily</span></div>' + ''.join(rows) + '</div>'
+    css = """
+.card{display:grid;grid-template-columns:400px minmax(0,1fr);gap:42px;padding:48px 48px 38px}
+.club-side{display:flex;flex-direction:column;min-width:0}
+.club-art{background:linear-gradient(135deg,#b19350,#514323);border-radius:8px;padding:28px;box-shadow:0 14px 50px #0005}
+.club-poster-top{display:flex;justify-content:space-between;align-items:center;gap:12px;font-size:28px;font-weight:800}
+.club-poster-top svg{flex:none}
+h1{font-size:92px;font-weight:900;letter-spacing:-.045em;line-height:.96;margin:36px 0 28px}
+.club-mosaic{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.club-mosaic img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:4px}
+.club-mosaic .era-cover{grid-column:1/-1;width:100%;max-height:250px;object-fit:contain}
+.kind{font-size:30px;color:#ddd;margin-top:28px}
+.club-date{font-size:32px;font-weight:700;line-height:1.35;margin-top:12px}.club-era{font-size:28px;margin-top:8px}
+.club-actions{display:flex;gap:26px;align-items:center;margin:28px 0 12px}
+.club-list{align-self:center;min-width:0}
+.club-head,.club-row{display:grid;grid-template-columns:36px 78px minmax(0,1fr) 210px;gap:20px;align-items:center}
+.club-head{font-size:28px;color:#aaa;padding:0 0 18px;border-bottom:1px solid #ffffff28}
+.club-head span:last-child{text-align:right}
+.club-row{padding:12px 0;border-bottom:1px solid #ffffff12;min-height:138px}
+.club-rank{font-size:33px;color:#aaa;text-align:center}
+.club-cover{width:78px;height:78px;border-radius:5px;object-fit:cover}
+.club-track{min-width:0}
+.club-title{font-size:46px;font-weight:800;line-height:1.1;overflow-wrap:anywhere}
+.club-album{font-size:24px;color:#aaa;margin-top:4px;line-height:1.2}
+.club-record{font-size:34px;font-weight:700;color:#f5c84c;margin-top:6px;line-height:1.2}
+.club-streams{text-align:right;font-size:50px;font-weight:900;font-variant-numeric:tabular-nums}
+.club-streams>span{display:block;font-size:27px;color:#aaa;font-weight:600;margin-top:4px}
+.club-comparisons{display:flex;flex-direction:column;align-items:flex-end;gap:4px;font-size:24px;font-weight:600;color:#b3b3b3;margin-top:8px;white-space:nowrap}
+.foot{margin-top:auto;padding-top:36px}.foot b{font-size:28px}
+.compact .club-row{padding:7px 0;min-height:104px}
+.compact .club-title{font-size:34px}
+.compact .club-album{font-size:20px;margin-top:3px}
+.compact .club-record{font-size:27px;margin-top:4px}
+.compact .club-streams{font-size:40px}
+.compact .club-streams>span{font-size:21px;margin-top:2px}
+.compact .club-comparisons{flex-direction:row;justify-content:flex-end;gap:8px;font-size:19px;margin-top:5px}
+.compact .club-head,.compact .club-row{grid-template-columns:36px 70px minmax(0,1fr) 250px;gap:18px}
+.compact .club-cover{width:70px;height:70px}
+"""
+    dense = len(entries) > 8
+    width = max(1720, 1920 + max(0, len(entries) - 12) * 140) if dense else 1720
+    if era:
+        css += f'.club-art{{background:linear-gradient(135deg,{top},color-mix(in srgb,{top} 55%,#121212));}}'
+    return page(width, top, body, css, cls="best-day-club" + (" compact" if dense else ""))
+
+
+def render_best_day_club(d: str, entries: list[dict], out: Path, **kwargs) -> Path:
+    return render(best_day_club(d, entries, **kwargs), out.resolve(), 2, max_dimension=4096)
 
 
 def render_watch(d: str, out: Path, rows: list[dict] | None = None, milestone: int = BILLION) -> Path:

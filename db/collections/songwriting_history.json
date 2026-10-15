@@ -13,6 +13,12 @@
         "d": null,
         "reason": "Missing previous-calendar-day total; baseline only"
       }
+    },
+    "2026-10-13": {
+      "50adZYk0RNbzLz3Jj6juBT": {
+        "s": 2415690117,
+        "d": 909716
+      }
     }
   }
 }

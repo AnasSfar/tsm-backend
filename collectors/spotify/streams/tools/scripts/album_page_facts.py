@@ -330,7 +330,14 @@ def select_facts(facts: list[Fact]) -> list[Fact]:
         not f.event and f.priority >= 25 for f in ranked) else []
 
 
-def album_facts(album: str, target_date: str, hist: dict, tracks: list[dict]) -> list[Fact]:
+BAND_SLOT_KEYS = ("songs_up", "top_share")  # per-song daily stats: the bottom band's job
+
+
+def album_facts(album: str, target_date: str, hist: dict, tracks: list[dict],
+                band: Fact | None = None) -> list[Fact]:
+    """band: the song stat of the day shown in the bottom band. The side facts never repeat
+    it: no per-song daily stat (songs_up, top_share: the band is that slot) and no other
+    fact about the band's song."""
     target = date.fromisoformat(target_date)
     facts: list[Fact] = []
     for build in (lambda: f_billion(tracks, hist), lambda: f_anniversary(album, target),
@@ -338,7 +345,133 @@ def album_facts(album: str, target_date: str, hist: dict, tracks: list[dict]) ->
                   lambda: f_streak_and_average(tracks, target), lambda: f_era_rank(album, target_date),
                   lambda: f_songs_up(tracks, hist, target), lambda: f_top_share(tracks, hist)):
         facts += build()
+    if band:
+        facts = [f for f in facts if f.key not in BAND_SLOT_KEYS
+                 and not (band.track_id and f.track_id == band.track_id)]
     return select_facts(facts)
+
+
+# ── song stat of the day (bottom band, 2026-10-14) ──────────────────────────
+# One line about the album's songs today, first match wins:
+#   album best day (beaten day >= 30 days back)
+#   > song best day (beaten day from an earlier year; oldest date, others keep their ★ in the table)
+#   > only song up > strong weekly gainer (vs the same weekday last week, daily card only)
+#   > biggest gainer > most stable (no gainer).
+# These best-day thresholds are band-only: the table ★ and the album pill keep their own rules.
+# No "all songs up": an all-green table already says it (owner, 2026-10-14).
+# Exact data only: a released track without an exact daily/change -> no band.
+
+WEEK_MIN_PCT = 15       # weekly gainer: at least +15% vs the same weekday last week...
+WEEK_MIN_GAIN = 5_000   # ...and +5,000 streams
+ALBUM_BAND_MIN_DAYS = 30  # album best day in the band: beaten day at least 30 days back
+
+
+def _pct_txt(change: int, daily: int) -> str:
+    prev = daily - change
+    return f" ({change / prev * 100:+.1f}%)" if prev > 0 else ""
+
+
+def song_stat_of_day(tracks: list[dict], hist: dict, best_labels: dict[str, str],
+                     vs: str = "vs yesterday", week_vs: str | None = None, *,
+                     target_date: str, album_best: dict | None = None,
+                     album_daily: int | None = None) -> Fact | None:
+    """week_vs: e.g. "vs last Monday" on the daily card; None (weekend card) = no weekly case.
+    album_best: g._album_best_day_row (same record as the ★ pill under the album daily)."""
+    target = date.fromisoformat(target_date)
+
+    # Band-only thresholds (owner, 2026-10-14); the table ★ and the album pill keep theirs.
+    def since_date(since) -> date | None:
+        return date.fromisoformat(since) if isinstance(since, str) and re.match(r"\d{4}-\d{2}-\d{2}$", since) else None
+
+    def song_record(since) -> bool:
+        """Song: the beaten day is from an earlier calendar year (2025 on a 2026 card, even in December)."""
+        d = since_date(since)
+        return d is not None and d.year < target.year
+
+    def album_record(row: dict) -> bool:
+        """Album: best ever, or a best day since at least 30 days."""
+        d = since_date(row.get("best_day_since"))
+        return row.get("kind") == "best_ever" or (d is not None and (target - d).days >= ALBUM_BAND_MIN_DAYS)
+
+    if album_best and album_record(album_best):
+        # its daily is the standard-edition scope: only printed when it is the card's own total
+        n_txt = f": <b>{album_daily:,}</b>" if album_daily is not None and album_best.get("daily_streams") == album_daily else ""
+        if album_best.get("kind") == "best_ever":
+            rest = f"biggest day ever{n_txt}"
+        else:
+            d = date.fromisoformat(album_best["best_day_since"])
+            rest = f"best day since {d.strftime('%b')} {d.day}, {d.year}{n_txt}"
+        return Fact("album_best", 95, "★",
+                    f'<span class="sn"><b>The album</b></span><span class="sr">&nbsp;· {rest}</span>', "album_day")
+    rows = []
+    for t in tracks:
+        if t.get("announced"):
+            continue
+        h = hist.get(t["track_id"]) or {}
+        if h.get("ever_seen") is False:  # out today: its whole daily is the "gain"
+            continue
+        if h.get("daily") is None or h.get("change") is None:
+            print(f"[facts] song stat pending: {t['track_id']} lacks an exact daily/change")
+            return None
+        rows.append((t, h))
+    if len(rows) < 2:
+        return None
+    # "(From The Vault)" already shows under the title in the table: keep the band short
+    name = lambda t: f"“{esc(re.sub(r'\s*[\(\[]From The Vault[\)\]]', '', clean_title(t), flags=re.I))}”"
+    n = len(rows)
+
+    def line(names: str, rest: str) -> str:
+        """One line in the band: the song name may be cut (…), the stat never is."""
+        return f'<span class="sn"><b>{names}</b></span><span class="sr">&nbsp;· {rest}</span>'
+
+    best = [(best_labels[t["track_id"]], t, h) for t, h in rows if song_record(best_labels.get(t["track_id"]))]
+    if best:
+        since, t, h = min(best, key=lambda x: x[0])
+        d = date.fromisoformat(since)
+        return Fact("best_day", 90, "★",
+                    line(name(t), f"best day since {d.strftime('%b')} {d.day}, {d.year}: <b>{h['daily']:,}</b>"),
+                    "song_day", t["track_id"])
+
+    up = [(t, h) for t, h in rows if h["change"] > 0]
+    if len(up) == 1 and n >= 3:
+        t, h = up[0]
+        return Fact("only_gainer", 65, "↗",
+                    line(name(t), f"only song up: <b>+{h['change']:,}</b>{_pct_txt(h['change'], h['daily'])} {vs}"),
+                    "song_day", t["track_id"])
+
+    weeks = [h.get("weekly_change") for _t, h in rows]
+    if week_vs and all(w is not None for w in weeks):
+        wgain = max(weeks)
+        top = [(t, h) for t, h in rows if h["weekly_change"] == wgain]
+        t, h = top[0]
+        prev = h["daily"] - wgain
+        if len(top) == 1 and wgain >= WEEK_MIN_GAIN and prev > 0 and wgain / prev * 100 >= WEEK_MIN_PCT:
+            return Fact("weekly_gainer", 62, "↗",
+                        line(name(t), f"biggest weekly gain: <b>+{wgain:,}</b> ({wgain / prev * 100:+.1f}%) {week_vs}"),
+                        "song_day", t["track_id"])
+
+    if up:
+        gain = max(h["change"] for _t, h in up)
+        top = [(t, h) for t, h in up if h["change"] == gain]
+        t, h = top[0]
+        pct = _pct_txt(gain, h["daily"]) if len(top) == 1 else ""
+        names = ", ".join(name(x) for x, _h in top)
+        joint = "joint biggest gainers" if len(top) > 1 else "biggest gainer"
+        return Fact("biggest_gainer", 60, "↗", line(names, f"{joint}: <b>+{gain:,}</b>{pct} {vs}"),
+                    "song_day", t["track_id"] if len(top) == 1 else None)
+
+    # nobody up: the song that held best (smallest relative drop)
+    def rel(x):
+        _t, h = x
+        prev = h["daily"] - h["change"]
+        return abs(h["change"]) / prev if prev > 0 else float("inf")
+    t, h = min(rows, key=rel)
+    if rel((t, h)) == float("inf"):
+        return None
+    chg = f"{h['change']:+,}" if h["change"] else "±0"
+    return Fact("most_stable", 40, "≈",
+                line(name(t), f"most stable: <b>{chg}</b>{_pct_txt(h['change'], h['daily'])} {vs}"),
+                "song_day", t["track_id"])
 
 
 # Drop the lowest-priority facts (below ALWAYS_SHOW) while the side column is taller than

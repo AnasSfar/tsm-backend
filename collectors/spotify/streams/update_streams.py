@@ -3737,7 +3737,7 @@ def main():
         album_tracks_done_for=album_tracks_done_for,
         spacing_seconds=POST_BETWEEN_STREAMS_POSTS_SECONDS,
         log_mode=LOG_MODE,
-        enabled=not early_best_day_off,
+        enabled=False,  # secondary records are grouped after complete collection
         no_post_mode=no_post_mode,
         target_albums=album_names,
         priority_ready=debut_release_poster.is_done,
