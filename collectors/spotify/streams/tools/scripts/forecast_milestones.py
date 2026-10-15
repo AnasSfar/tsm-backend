@@ -472,8 +472,12 @@ def _daily_on_projection_day(
     start_date: date,
     weekday_factors: dict[int, float] | None,
     scenario_multiplier: float = 1.0,
+    decay_days: int | None = None,
 ) -> float:
-    base = start_daily * (decay_factor ** (day_index - 1))
+    # decay_days: the trend only applies for that many days, then the daily holds flat
+    # (long-horizon Watch cards: a compounding decline would cap every song's future total).
+    steps = day_index - 1 if decay_days is None else min(day_index - 1, decay_days)
+    base = start_daily * (decay_factor ** steps)
     if weekday_factors:
         projected_date = start_date + timedelta(days=day_index)
         base *= weekday_factors.get(projected_date.weekday(), 1.0)
@@ -488,6 +492,8 @@ def project_milestone_date(
     milestone: int,
     weekday_factors: dict[int, float] | None = None,
     scenario_multiplier: float = 1.0,
+    decay_days: int | None = None,
+    max_days: int = MAX_FORECAST_DAYS,
 ) -> dict | None:
     if current_streams >= milestone:
         return None
@@ -499,7 +505,7 @@ def project_milestone_date(
     current_date = parse_iso_date(last_date)
     projected_streams = float(current_streams)
 
-    for day_index in range(1, MAX_FORECAST_DAYS + 1):
+    for day_index in range(1, max_days + 1):
         daily = _daily_on_projection_day(
             day_index,
             float(start_daily),
@@ -507,6 +513,7 @@ def project_milestone_date(
             current_date,
             weekday_factors,
             scenario_multiplier,
+            decay_days,
         )
         if daily < 1.0:
             return None

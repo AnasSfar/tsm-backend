@@ -697,13 +697,23 @@ def _song_trends(d: str) -> list[dict]:
     return out
 
 
+# Watch projections: the song's current trend applies for one year, then its daily holds flat.
+# Compounding a decline over the whole horizon capped each song's future total, so steady catalog
+# songs (Don't Blame Me → 2B, I Can Do It With a Broken Heart → 1B) silently vanished from the
+# card while slower flat-trend songs stayed (owner report 2026-10-15). Horizon 10 years (exile → 2B
+# is ~5.7 years away at a flat pace).
+WATCH_DECAY_DAYS = 365
+WATCH_MAX_DAYS = 10 * 365
+
+
 def watch_rows(d: str, milestone: int = BILLION, n: int = 10) -> list[dict]:
     import forecast_milestones as fm
     out = []
     for t in _song_trends(d):
         if t["streams"] >= milestone:
             continue
-        proj = fm.project_milestone_date(t["streams"], t["last"], t["start"], t["decay"], milestone, t["wf"])
+        proj = fm.project_milestone_date(t["streams"], t["last"], t["start"], t["decay"], milestone, t["wf"],
+                                         decay_days=WATCH_DECAY_DAYS, max_days=WATCH_MAX_DAYS)
         if proj:
             out.append({**t["song"], "streams": t["streams"], "daily": t["daily"], **proj})
     out.sort(key=lambda r: (r["expected_date"], -r["streams"]))
