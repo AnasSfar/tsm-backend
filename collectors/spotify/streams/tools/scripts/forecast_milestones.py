@@ -31,6 +31,11 @@ MAX_STATIC_MILESTONE = 5_000_000_000
 DEFAULT_MILESTONES = list(range(MILESTONE_STEP, MAX_STATIC_MILESTONE + MILESTONE_STEP, MILESTONE_STEP))
 
 MAX_FORECAST_DAYS = 5 * 365
+# Every-milestone projections (site "upcoming milestones" list + Milestone Watch cards): the trend
+# (capped at 1.0: decline allowed, never compounding growth over years) applies for one year, then
+# the daily holds flat; horizon 10 years.
+LONG_DECAY_DAYS = 365
+LONG_MAX_DAYS = 10 * 365
 RECENT_WINDOW = 120
 LONG_WINDOW = 365
 MIN_REQUIRED_HISTORY_POINTS = 7
@@ -544,6 +549,43 @@ def project_milestone_date(
     return None
 
 
+def project_all_milestones(
+    current_streams: int,
+    last_date: str,
+    start_daily: int,
+    decay_factor: float,
+    weekday_factors: dict[int, float] | None = None,
+) -> list[dict]:
+    """Expected date of every 100M milestone above the current total within LONG_MAX_DAYS
+    (same math as project_milestone_date with the long-horizon settings, in one pass)."""
+    target = next_milestone(current_streams)
+    if target is None or start_daily <= 0:
+        return []
+    decay = min(decay_factor, 1.0)
+    current_date = parse_iso_date(last_date)
+    projected = float(current_streams)
+    out = []
+    for day_index in range(1, LONG_MAX_DAYS + 1):
+        daily = _daily_on_projection_day(
+            day_index, float(start_daily), decay, current_date, weekday_factors, decay_days=LONG_DECAY_DAYS
+        )
+        if daily < 1.0:
+            break
+        projected += daily
+        while projected >= target:
+            out.append(
+                {
+                    "milestone": target,
+                    "label": format_milestone_label(target),
+                    "expected_date": (current_date + timedelta(days=day_index)).isoformat(),
+                    "days_left": day_index,
+                    "remaining": target - current_streams,
+                }
+            )
+            target += MILESTONE_STEP
+    return out
+
+
 def scenario_dates(
     current_streams: int,
     last_date: str,
@@ -677,6 +719,9 @@ def build_forecasts() -> dict:
                 "next_milestone_label": format_milestone_label(next_target),
                 "progress": progress,
                 "forecast": projection,
+                "upcoming_milestones": project_all_milestones(
+                    current_streams, last_track_date, projected_daily, decay_factor, weekday_factors
+                ),
                 "scenario_dates": scenarios,
                 "confidence": projection_inputs["confidence"],
                 "backtest": projection_inputs["backtest"],

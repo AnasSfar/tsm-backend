@@ -48,6 +48,28 @@ class ForecastMilestonesTest(unittest.TestCase):
         self.assertEqual(projected["expected_date"], "2026-01-20")
         self.assertEqual(projected["days_left"], 10)
 
+    def test_all_milestones_match_single_milestone_projection(self) -> None:
+        wf = {0: 1.0, 1: 1.04, 2: 1.05, 3: 1.06, 4: 1.04, 5: 0.95, 6: 0.86}
+        args = dict(current_streams=872_000_000, last_date="2026-10-13", start_daily=280_000, decay_factor=0.998)
+        allm = fm.project_all_milestones(weekday_factors=wf, **args)
+        self.assertEqual([m["label"] for m in allm[:3]], ["900M", "1B", "1.1B"])
+        for item in allm:
+            single = fm.project_milestone_date(
+                milestone=item["milestone"], weekday_factors=wf,
+                decay_days=fm.LONG_DECAY_DAYS, max_days=fm.LONG_MAX_DAYS, **args,
+            )
+            self.assertEqual(single["expected_date"], item["expected_date"])
+        self.assertLessEqual(allm[-1]["days_left"], fm.LONG_MAX_DAYS)
+
+    def test_weekday_factors_follow_the_weekly_shape(self) -> None:
+        shape = [1.0, 1.04, 1.05, 1.06, 1.04, 0.95, 0.86]  # Mon..Sun
+        start = date(2026, 1, 5)  # a Monday
+        dailies = [int(300_000 * (0.999 ** i) * shape[(start + timedelta(days=i)).weekday()]) for i in range(120)]
+        wf = fm.estimate_weekday_factors(make_series(start.isoformat(), dailies))
+        avg = sum(shape) / 7
+        for day in range(7):
+            self.assertAlmostEqual(wf[day], shape[day] / avg, delta=0.01)
+
     def test_advanced_estimator_reacts_to_growth_trend(self) -> None:
         dailies = [100_000 + i * 2_000 for i in range(90)]
         series = make_series("2026-01-01", dailies)
