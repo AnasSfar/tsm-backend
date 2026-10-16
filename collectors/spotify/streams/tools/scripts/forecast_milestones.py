@@ -30,11 +30,17 @@ MILESTONE_STEP = 100_000_000
 MAX_STATIC_MILESTONE = 5_000_000_000
 DEFAULT_MILESTONES = list(range(MILESTONE_STEP, MAX_STATIC_MILESTONE + MILESTONE_STEP, MILESTONE_STEP))
 
-MAX_FORECAST_DAYS = 5 * 365
-# Every-milestone projections (site "upcoming milestones" list + Milestone Watch cards): the trend
-# (capped at 1.0: decline allowed, never compounding growth over years) applies for one year, then
-# the daily holds flat; horizon 10 years.
-LONG_DECAY_DAYS = 365
+# Projection settings, shared by every date (site next milestone, upcoming_milestones, Milestone
+# Watch cards, "next song expected" lines). Chosen by backtest on the real history (2024-08 →
+# 2026-08, ~2,700 song/date pairs, dev/forecast_backtest.py, 2026-10-16):
+# - a decline only applies for LONG_DECAY_DAYS, then the daily holds flat. 45 days keeps the median
+#   error within ±4 % at 30/90/180/365 days; 365 days under-predicted a year by 18 % (songs decline
+#   less than their current trend says), a fully flat daily over-predicted it by 13 %;
+# - growth never compounds (trend capped at 1.0): songs rising when predicted were already
+#   over-predicted by ~16 % at a year without it, and letting growth count made it worse (+27 to +39 %);
+# - weekday shape removed before estimating the trend and put back per projected day (neutral on
+#   the weekly total, no bias measured either way).
+LONG_DECAY_DAYS = 45
 LONG_MAX_DAYS = 10 * 365
 RECENT_WINDOW = 120
 LONG_WINDOW = 365
@@ -464,7 +470,7 @@ def estimate_future_daily_streams(series: list[dict]) -> dict:
             "windows": {
                 "recent_window": RECENT_WINDOW,
                 "long_window": LONG_WINDOW,
-                "max_forecast_days": MAX_FORECAST_DAYS,
+                "max_forecast_days": LONG_MAX_DAYS,
             },
         },
         "confidence": confidence,
@@ -511,7 +517,7 @@ def project_milestone_date(
     weekday_factors: dict[int, float] | None = None,
     scenario_multiplier: float = 1.0,
     decay_days: int | None = None,
-    max_days: int = MAX_FORECAST_DAYS,
+    max_days: int = LONG_MAX_DAYS,
 ) -> dict | None:
     if current_streams >= milestone:
         return None

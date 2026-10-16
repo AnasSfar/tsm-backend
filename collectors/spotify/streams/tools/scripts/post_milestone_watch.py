@@ -47,7 +47,7 @@ TWITTER_SESSION = default_twitter_session(REPO_ROOT)
 STATE_PATH = RUNTIME_SOCIAL_ROOT / "milestone_watch_state.json"
 # Watches that also post when their list changes (owner 2026-10-13)
 LIST_WATCHES = (900_000_000, 1_000_000_000, 2_000_000_000, 3_000_000_000)
-MIN_ROWS = 3  # a Watch with 1-2 songs projected within 5 years is not worth a card
+MIN_ROWS = 3  # a Watch with 1-2 songs projected within 10 years is not worth a card
 
 
 def _read_json(path: Path) -> dict:
@@ -94,7 +94,7 @@ def main() -> int:
     for m in sorted(crossed, reverse=True):  # biggest milestone first
         rows = app.watch_rows(d, m)
         if len(rows) < MIN_ROWS:
-            print(f"[milestone_watch] {app.watch_title(m)}: {len(rows)} song(s) projected within 5 years; skip.")
+            print(f"[milestone_watch] {app.watch_title(m)}: {len(rows)} song(s) projected within 10 years; skip.")
             continue
         tweet = milestone_watch_tweet(
             stats_date=d, watch_title=app.watch_title(m), milestone_words=app.milestone_words(m),
@@ -117,7 +117,7 @@ def main() -> int:
                 _write_json(STATE_PATH, state)
             continue
         if len(rows) < MIN_ROWS:
-            print(f"[milestone_watch] {app.watch_title(m)}: {len(rows)} song(s) projected within 5 years; skip.")
+            print(f"[milestone_watch] {app.watch_title(m)}: {len(rows)} song(s) projected within 10 years; skip.")
             continue
         if [r["track_id"] for r in rows] == last.get("ids") and not args.force_lists:
             print(f"[milestone_watch] {app.watch_title(m)} list unchanged since {last.get('date')}.")

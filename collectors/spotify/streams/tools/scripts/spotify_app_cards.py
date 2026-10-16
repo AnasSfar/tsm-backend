@@ -662,37 +662,39 @@ def watch_title(m: int) -> str:
 
 
 def _song_trends(d: str) -> list[dict]:
-    """Per album song (same set as the milestone posts: non-extra catalog tracks): current total
-    + trend inputs of the site's forecast model (forecast_milestones.py), computed once per date.
-    Long horizon: the trend factor is capped at 1.0 (decline allowed, never compounding growth
-    over years, which would put a karaoke version at 1B)."""
+    """Every site song (songs.json: album tracks, versions, remixes, features) at 100M+ streams —
+    owner rule 2026-10-16: the Watch covers everything, smaller tracks are not worth it — with its
+    current total + trend inputs of the site's forecast model (forecast_milestones.py), computed
+    once per date. Same title twice (two ids of one version) → only the bigger one is kept."""
     if d in _TRENDS:
         return _TRENDS[d]
     import forecast_milestones as fm
-    import history_store
-    album_ids = history_store.load_album_track_ids()
     hist = fm.load_history_bundle()
     dates = [x for x in hist.get("dates", []) if x <= d]
     by_date = hist.get("by_date", {})
-    out = []
+    best: dict[str, dict] = {}
     for song in fm.load_json(fm.SONGS_PATH).get("songs", []):
         tid = song.get("track_id")
-        if not tid or tid not in album_ids:
+        if not tid:
             continue
         series = fm.get_track_history_series(tid, by_date, dates)
         if not series:
             continue
         cur = fm.safe_int(series[-1]["streams"])
-        if cur <= 0:
+        if cur < fm.MILESTONE_STEP:
+            continue
+        key = str(song.get("title") or tid).casefold().strip()
+        if key in best and best[key]["streams"] >= cur:
             continue
         if len(series) < fm.MIN_REQUIRED_HISTORY_POINTS:
             start, decay = max(fm.safe_int(series[-1]["daily_streams"]), 1), 1.0
         else:
             est = fm.estimate_future_daily_streams(series)
             start, decay = max(est["projected_next_daily"], 1), min(est["decay_factor"], 1.0)
-        out.append({"song": song, "streams": cur, "daily": fm.safe_int(series[-1]["daily_streams"]),
-                    "last": series[-1]["date"], "start": start, "decay": decay,
-                    "wf": fm.estimate_weekday_factors(series)})
+        best[key] = {"song": song, "streams": cur, "daily": fm.safe_int(series[-1]["daily_streams"]),
+                     "last": series[-1]["date"], "start": start, "decay": decay,
+                     "wf": fm.estimate_weekday_factors(series)}
+    out = list(best.values())
     _TRENDS[d] = out
     return out
 

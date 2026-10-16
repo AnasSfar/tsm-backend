@@ -2685,8 +2685,9 @@ Les gainers rendus sont **les lignes deja choisies pour le tweet** (jamais re-se
 
 **Milestone Watch** (`post_milestone_watch.py`, etape finalize « milestone watch » apres les
 tables gainers, cle `milestone-watch`) : 10 prochaines chansons album sous un palier par date
-attendue (modele `forecast_milestones.py` cible = palier, tendance plafonnee a 1.0, **appliquee
-1 an puis daily fige, horizon 10 ans** — `forecast_milestones.LONG_DECAY_DAYS`/`LONG_MAX_DAYS`, memes dates
+attendue — **toutes les chansons du site a >= 100M** (album, versions, remixes, feats ; decision
+proprio 2026-10-16) — (modele `forecast_milestones.py` cible = palier, hausse jamais composee, **baisse
+appliquee 45 j puis daily fige (backtest `dev/forecast_backtest.py`), horizon 10 ans** — `forecast_milestones.LONG_DECAY_DAYS`/`LONG_MAX_DAYS`, memes dates
 que `upcoming_milestones` (toutes les milestones de chaque chanson) sur le site ET que `forecast` (prochain palier) :
 un seul modele pour toutes les dates, 2026-10-15/16 : une baisse
 composee sur 5 ans plafonnait le total futur et faisait disparaitre en silence Don't Blame Me /
