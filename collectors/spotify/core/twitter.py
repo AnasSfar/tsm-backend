@@ -10,6 +10,7 @@ import time
 from contextlib import contextmanager
 from datetime import datetime, timedelta
 from pathlib import Path
+from typing import Callable
 from playwright.sync_api import sync_playwright, TimeoutError as PlaywrightTimeout
 
 TWITTER_COORD_DIR = Path(tempfile.gettempdir()) / "tsm_twitter_posts"
@@ -1855,6 +1856,8 @@ def schedule_post(
     image_path: Path | None = None,
     *,
     priority: int | None = None,
+    not_after: datetime | str | None = None,
+    select_slot: Callable[[datetime, list[datetime]], datetime | None] | None = None,
 ) -> bool:
     """Schedule a single native X post through the web UI."""
     session_file = Path(session_file)
@@ -1874,6 +1877,7 @@ def schedule_post(
 
     try:
         scheduled_dt = _coerce_schedule_datetime(scheduled_at)
+        deadline = _coerce_schedule_datetime(not_after) if not_after is not None else None
     except ValueError as exc:
         print(f"X date programmation invalide: {exc}")
         return False
@@ -1918,12 +1922,27 @@ def schedule_post(
                     if _attached_image_count(attach_scope) < 1:
                         raise RuntimeError("image absente du composer juste avant la programmation — abandon")
 
+                # Milestone anticipation must stay on its planned calendar day;
+                # never fall back to live posting or slip into the following day.
+                busy = [entry["at"] for entry in scheduled_entries(account_key)] if deadline is not None or select_slot is not None else []
+                if select_slot is not None:
+                    chosen = select_slot(datetime.now().astimezone(), busy)
+                    if chosen is None:
+                        raise ValueError("no eligible engagement slot remains on the target day")
+                    scheduled_dt = _coerce_schedule_datetime(chosen)
+                if deadline is not None:
+                    scheduled_dt = free_schedule_slot(
+                        scheduled_dt, busy
+                    )
+                    if scheduled_dt > deadline or scheduled_dt <= datetime.now() + timedelta(seconds=90):
+                        raise ValueError("no future milestone slot available before its deadline")
                 _set_schedule_dialog(page, scheduled_dt)
                 _click_tweet_button(page, editor)
                 if not _wait_post_scheduled(page, tweet):
                     return False
 
                 _register_scheduled(account_key, scheduled_dt, _schedule_source())
+                _mark_account_scheduled(account_key, scheduled_dt)
                 _mark_account_posted(account_key)
                 print(f"OK Post programme pour {scheduled_dt:%Y-%m-%d %H:%M}")
                 return True

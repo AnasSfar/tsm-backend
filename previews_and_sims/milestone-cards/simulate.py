@@ -14,6 +14,11 @@ Two modes, both write ONLY inside this folder:
       covers are the real catalog ones; the numbers are FAKE (files prefixed FAKE_).
 
 Every PNG also gets a *_phone.png copy at 310 px wide (X timeline on a phone).
+
+  python previews_and_sims/milestone-cards/simulate.py anticipate [DAYS]
+      Replay anticipation on the last DAYS verified snapshots (default 30),
+      audit the actual crossing dates, render one real song and album. X is
+      disabled and all artifacts/ledger paths are isolated under anticipation/.
 """
 from __future__ import annotations
 
@@ -46,12 +51,74 @@ def run_real(dates: list[str]) -> None:
         raise RuntimeError("simulate.py: posting is disabled")
 
     psm.post_with_image = no_post
+    psm.milestone_schedule.LEDGER_PATH = HERE / "isolated_schedule_ledger.json"
     for d in dates:
         sys.argv = ["post_stream_milestones.py", d, "--force", "--no-post"]
         psm.main()
         for png in sorted((out_root / d / "milestones").glob("*.png")):
             if not png.stem.endswith("_phone"):
                 phone_copy(png)
+
+
+def run_anticipation(days: int = 30) -> None:
+    """Rolling replay of exact history; isolate every write and disable X."""
+    import contextlib
+    import io
+    import json
+    import schedule_stream_milestones as planner
+
+    out = HERE / "anticipation"
+    out.mkdir(parents=True, exist_ok=True)
+    planner.posts.update_streams_dir = lambda d: out / str(d)
+    planner.model.LEDGER_PATH = out / "isolated_ledger.json"
+    def disabled(*a, **k):
+        raise RuntimeError("Preview: all X posting/scheduling is disabled")
+    planner.twitter_core.schedule_post = disabled
+    planner.posts.post_with_image = disabled
+    history = planner.posts.history_store.HistoryIndex.load()
+    latest = date.fromisoformat(max(history.ids_by_date))
+    reserved = set()
+    results = []
+    log = io.StringIO()
+    for offset in range(days - 1, -1, -1):
+        base = (latest - timedelta(days=offset)).isoformat()
+        with contextlib.redirect_stdout(log):
+            events = planner.candidates(base, history)
+        for event in events:
+            key = planner.posts._event_key(event)
+            if key in reserved:
+                continue
+            reserved.add(key)
+            ledger = {"events": {key: {**event, "status": "scheduled"}}}
+            with contextlib.redirect_stdout(log):
+                planner.reconcile(ledger, history, latest.isoformat(), persist=False)
+            result = ledger["events"][key]
+            results.append(result)
+            print(f"{base} -> {event['target_date']} {event['title']} {event['milestone']:,}: {result.get('outcome', 'pending real snapshot')}", flush=True)
+    (out / "replay.json").write_text(json.dumps(results, ensure_ascii=False, indent=2), encoding="utf-8")
+    (out / "replay.log").write_text(log.getvalue(), encoding="utf-8")
+    outcomes = {}
+    for e in results:
+        label = e.get("outcome", "pending")
+        outcomes[label] = outcomes.get(label, 0) + 1
+    print(f"Replay: {len(results)} distinct milestones; {outcomes}", flush=True)
+    render_anticipation()
+
+
+def render_anticipation() -> None:
+    """Render saved replay events without recomputing the rolling history."""
+    import json
+    import schedule_stream_milestones as planner
+    out = HERE / "anticipation"
+    planner.posts.update_streams_dir = lambda d: out / str(d)
+    results = json.loads((out / "replay.json").read_text(encoding="utf-8"))
+    # Render one real anticipated song and album, using existing cover assets.
+    for kind in ("song", "album"):
+        event = next((e for e in reversed(results) if e["kind"] == kind), None)
+        if event:
+            tweet, png = planner.render(event)
+            phone_copy(png)
+            print(f"Preview: {png}\n{tweet}", flush=True)
 
 
 def _fake_points(start: date, end: date, start_total: int, end_total: int, gap: tuple[int, int] | None = None) -> list[dict]:
@@ -115,7 +182,11 @@ def run_edge() -> None:
 
 if __name__ == "__main__":
     mode = sys.argv[1] if len(sys.argv) > 1 else "real"
-    if mode == "edge":
+    if mode == "render-anticipation":
+        render_anticipation()
+    elif mode == "anticipate":
+        run_anticipation(int(sys.argv[2]) if len(sys.argv) > 2 else 30)
+    elif mode == "edge":
         run_edge()
     else:
         run_real(sys.argv[2:] or ["2026-10-07", "2026-09-26"])

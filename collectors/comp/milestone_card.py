@@ -281,10 +281,11 @@ PLAQUE_CSS = """
 """
 
 
-def render_album_plaque(*, album: str, cover_url: str | None, milestone: int, rank: int, stats_date: str) -> str:
+def render_album_plaque(*, album: str, cover_url: str | None, milestone: int, rank: int | None, stats_date: str) -> str:
     cover_uri, cover_bytes = _cover(cover_url)
     name = display_title_for_album(album)
     big = f"{milestone:,}"
+    rank_label = f"Taylor Swift · {_ordinal(rank)} album to get here" if rank is not None else "Taylor Swift"
     cover = f'<img class="cover" src="{cover_uri}" alt="">' if cover_uri else '<div class="cover"></div>'
     body = f"""<div class="frame"></div>
 <div class="eyebrow">{_spotify_icon(38)}<span>Spotify Album Milestone</span></div>
@@ -294,7 +295,7 @@ def render_album_plaque(*, album: str, cover_url: str | None, milestone: int, ra
   <div class="unit">Streams on Spotify</div>
   <div class="rule"></div>
   <div class="ttl clamp2" style="font-size:{_title_size(name, (60, 48, 40))}px">{_esc(name)}</div>
-  <div class="meta">Taylor Swift · {_ordinal(rank)} album to get here</div>
+  <div class="meta">{rank_label}</div>
 </div>
 {_foot(stats_date)}"""
     return _page(PLAQUE_CSS, body, milestone_palette(cover_bytes))
@@ -322,8 +323,8 @@ COVER_CSS = """
 """
 
 
-def render_song_cover_story(*, title: str, cover_url: str | None, milestone: int, total: int, daily: int | None,
-                            rank: int, stats_date: str, prev_step: tuple[int, int] | None) -> str:
+def render_song_cover_story(*, title: str, cover_url: str | None, milestone: int, total: int | None, daily: int | None,
+                            rank: int | None, stats_date: str, prev_step: tuple[int, int] | None) -> str:
     cover_uri, cover_bytes = _cover(cover_url)
     palette = milestone_palette(cover_bytes)
     n, unit = _short(milestone)
@@ -334,7 +335,8 @@ def render_song_cover_story(*, title: str, cover_url: str | None, milestone: int
         middle = (f"On {_short_date(stats_date)}", f"+{daily:,}")
     else:
         middle = None
-    facts = [("Taylor's songs", f"{_ordinal(rank)} ever")] + ([middle] if middle else []) + [("Exact total", f"{total:,}")]
+    facts = ([("Taylor's songs", f"{_ordinal(rank)} ever")] if rank is not None else [("Artist", "Taylor Swift")])
+    facts += ([middle] if middle else []) + ([("Exact total", f"{total:,}")] if total is not None else [("Platform", "Spotify")])
     facts_html = "".join(f"<div><small>{_esc(a)}</small><b>{_esc(b)}</b></div>" for a, b in facts)
     cover = f'<img class="cover" src="{cover_uri}" alt="">' if cover_uri else ""
     body = f"""{cover}<div class="fade"></div>

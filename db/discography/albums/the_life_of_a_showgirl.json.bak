@@ -1193,7 +1193,7 @@
     },
     {
       "section": "acoustic_edition",
-      "track_count": 7,
+      "track_count": 9,
       "chart_extra": true,
       "tracks": [
         {
@@ -1794,6 +1794,90 @@
           "release_edition": "deluxe",
           "tags": [],
           "tsm_song_id": "6c3t",
+          "tsm_album_id": "va1"
+        },
+        {
+          "title": "Patient Zero - Acoustic Version",
+          "url": "https://open.spotify.com/track/2a5MkKmuigi8mqJNzGpRQv",
+          "type": "alternate_version",
+          "edition": "acoustic",
+          "display_section": "Acoustic Edition",
+          "display_order": 8,
+          "base_title": "Patient Zero",
+          "album": "The Life of a Showgirl",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Patient Zero - Acoustic Version",
+          "song_family": "patient_zero",
+          "version_tag": "acoustic__alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d00001e0216bc19366517944ef91c6654",
+          "release_date": "2026-10-16T00:00:00Z",
+          "historical_track_ids": [],
+          "version_tags": [
+            "acoustic"
+          ],
+          "catalog_category": "acoustic",
+          "music_track": true,
+          "filter_tags": [
+            "solo",
+            "acoustic",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "acoustic": "high:title_or_section",
+            "alternate_version": "medium:type_or_title"
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "acoustic",
+          "tags": [],
+          "tsm_song_id": "ot9x",
+          "release_edition": "",
+          "tsm_album_id": "va1"
+        },
+        {
+          "title": "Patient Zero - Piano Version",
+          "url": "https://open.spotify.com/track/021C3nvL4td0oFnURYbyCm",
+          "type": "alternate_version",
+          "edition": "acoustic",
+          "display_section": "Acoustic Edition",
+          "display_order": 9,
+          "base_title": "Patient Zero",
+          "album": "The Life of a Showgirl",
+          "primary_artist": "Taylor Swift",
+          "featured_artists": [],
+          "artists": [
+            "Taylor Swift"
+          ],
+          "title_clean": "Patient Zero - Piano Version",
+          "song_family": "patient_zero",
+          "version_tag": "piano__alternate_version",
+          "image_url": "https://i.scdn.co/image/ab67616d00001e0216bc19366517944ef91c6654",
+          "release_date": "2026-10-16T00:00:00Z",
+          "historical_track_ids": [],
+          "version_tags": [
+            "piano"
+          ],
+          "catalog_category": "piano",
+          "music_track": true,
+          "filter_tags": [
+            "solo",
+            "alternate_version"
+          ],
+          "filter_tag_sources": {
+            "solo": "high:artist_credit",
+            "alternate_version": "medium:type_or_title"
+          },
+          "on_album": true,
+          "role": "extra",
+          "extra_type": "other",
+          "tags": [],
+          "tsm_song_id": "ot9x",
+          "release_edition": "",
           "tsm_album_id": "va1"
         }
       ]

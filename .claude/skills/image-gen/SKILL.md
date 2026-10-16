@@ -89,6 +89,17 @@ Valables pour toutes les cards façon app Spotify : album card (`album_page_card
 - Deux colonnes de hauteurs différentes : la plus courte est **centrée verticalement**.
 - Le classement des prochaines chansons à passer un palier s'appelle « Billion Watch » (1B) / « <palier> Watch » (900M, 2B…), **jamais « Road to 1B »** (nom utilisé par un autre compte).
 
+## Card debut = page single Spotify (`debut_page_card.py`, 2026-10-16)
+
+Card de `post_debut_releases.py` (une par famille de chanson), meme famille visuelle que l'album
+card : fondu couleur de la cover -> `#121212`, Archivo embarquee, date en grand sous le titre.
+Version principale toujours en haut, nouvelles versions avec rail bleu `#5bbde4` (`NEW` dans +/-
+le jour 1 — pas de badge en double —, badge NEW + « Day N » ensuite), ligne « All versions »,
+bandeau une ligne (`BAND_FIT_JS` local). 1400 px x2 : chiffres principaux lisibles a 310 px.
+Titres de ligne : taille selon longueur + 2 lignes max, jamais d'ellipse en plein mot (vu sur le
+single isole « Patient Zero - Acou… », corrige). Preview :
+`previews_and_sims/patient-zero-versions-debut/simulate.py` (`_phone.png` a 310 px).
+
 ## Milestone cards (`comp/milestone_card.py`, 2026-10-09)
 
 Décision propriétaire (2026-10-09, après comparaison de 3 maquettes) : les milestones ne passent plus par `spotlight.py` (où le milestone n'était qu'une petite case dorée et le gros chiffre était le daily). Trois gabarits portrait 1080×1350 (rendu ×2) :
@@ -421,4 +432,12 @@ bloc vide.
 - Logo Apple Music dispo : `collectors/apple_music/Apple_Music_icon.svg.webp` ; logo iTunes officiel (Wikimedia) : `collectors/apple_music/itunes_logo.svg`.
 
 ## Maintenance (obligatoire)
+Milestones anticipes (2026-10-16) : reutiliser Cover Story et Plaque avec
+`total=None`, `daily=None`, `rank=None` pour ne pas inventer de statistiques
+encore inconnues. Le jour du post est le jour cible ; aucun point futur ajoute
+a une courbe. Verification isolee :
+`python previews_and_sims/milestone-cards/simulate.py anticipate 30`, copies
+310 px sous `milestone-cards/anticipation/`. Les rendus confirmes gardent
+leurs totaux, rangs et gabarit Climb habituels.
+
 Nouveau composant dans `comp/`, nouvelle famille de previews, changement de politique covers/deltas → mets cette skill à jour dans la même session.

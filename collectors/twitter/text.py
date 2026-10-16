@@ -214,7 +214,7 @@ def stream_milestone_tweet(
     *,
     title: str,
     milestone_streams: int,
-    milestone_rank: int,
+    milestone_rank: int | None,
     next_title: str | None = None,
     next_expected_date: str | None = None,
     prefix: str,
@@ -226,7 +226,9 @@ def stream_milestone_tweet(
     album_next: bool = False,
 ) -> str:
     has_album_context = bool(album_title and album_milestone_rank is not None)
-    if album_first and has_album_context:
+    if milestone_rank is None:
+        milestone_line = f'"{title}" has now surpassed {int(milestone_streams):,} streams on Spotify.'
+    elif album_first and has_album_context:
         milestone_line = (
             f'"{title}" is now the {ordinal(int(album_milestone_rank))} song '
             f"from {album_title} to surpass {int(milestone_streams):,} streams.\n\n"
@@ -264,13 +266,12 @@ def album_stream_milestone_tweet(
     *,
     album_title: str,
     milestone_streams: int,
-    milestone_rank: int,
+    milestone_rank: int | None,
     prefix: str,
 ) -> str:
-    body = (
-        f'"{album_title}" has now surpassed {int(milestone_streams):,} streams on Spotify.\n\n'
-        f"It is Taylor Swift's {ordinal(int(milestone_rank))} album to do so."
-    )
+    body = f'"{album_title}" has now surpassed {int(milestone_streams):,} streams on Spotify.'
+    if milestone_rank is not None:
+        body += f"\n\nIt is Taylor Swift's {ordinal(int(milestone_rank))} album to do so."
     return with_prefix(body, prefix)
 
 def track_history_line(track_id: str) -> str:

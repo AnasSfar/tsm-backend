@@ -23,6 +23,7 @@ sys.path.insert(0, str(SCRIPT_DIR))
 import forecast_milestones  # noqa: E402
 import generate_album_update_image  # noqa: E402
 import history_store  # noqa: E402
+import milestone_schedule  # noqa: E402
 import post_priority  # noqa: E402
 import spotlight  # noqa: E402
 from comp import milestone_card  # noqa: E402
@@ -400,7 +401,10 @@ def main() -> int:
     posted_keys = _load_posted_keys(args.date)
     all_events = find_milestone_events(args.date)
     album_events = find_album_milestone_events(args.date, history)
-    pending = [e for e in album_events + all_events if args.force or _event_key(e) not in posted_keys][:limit]
+    # A forecast schedule is an event reservation, independent of snapshot date.
+    # --force must never turn an already-scheduled milestone into a second post.
+    reserved = milestone_schedule.reserved_keys()
+    pending = [e for e in album_events + all_events if _event_key(e) not in reserved and (args.force or _event_key(e) not in posted_keys)][:limit]
     # Ambiguous ranks (two songs/albums crossing the same step the same day)
     # never post: drop them up front so --count-units / --max-units count real posts.
     postable = []

@@ -117,6 +117,24 @@ registry). Pitfall: `page.click("text=Audios")` matches any element whose text
 *contains* the word (a hint like "Music videos + audios") — use
 `get_by_role(..., name=...)`.
 
+### Pitfall: `@supabase/supabase-js` missing from local node_modules
+
+Since the accounts feature (8cbbdc48) `src/account/client.js` imports
+`@supabase/supabase-js`, which is in package.json but may not be installed
+locally → Vite dev shows a full-screen import-analysis overlay and a local
+`npx vite build` fails (Vercel installs it from frontend/package.json). Do not `npm install` in the owner's checkout for a
+preview: alias it to a stub in the preview Vite config
+(`previews_and_sims/search-console-insights/vite.preview.config.mjs` +
+`supabase-stub.js`).
+
+### Pattern: admin module + admin-only floating panel, fake API in the browser
+
+`previews_and_sims/search-console-insights/shoot.py [error]` (2026-10-15): API on :8013
+(`ADMIN_TOKEN=local-preview-token`), Vite :3010, `sessionStorage.news_admin_token` set
+by init script, every `/api/search-console/**` answered with a fabricated payload of
+the real shape (`error` = Google 502). Shoots the admin section, a page drill-down and
+the public "Google" panel at 1366px and 375px, and prints the page's horizontal overflow.
+
 ### Pitfall: `/api/apple-music` live path skips `load_apple_music`
 
 Since 2026-09-24 the page route reads the history-by-date index + day files,
@@ -206,6 +224,14 @@ Charts pages, built on the real loaders (`generate_streams_image.load_history` +
 `site_history.json`, `post_gainer_thread._pick_gainers`) and `album_page_card` helpers (header tone,
 TV/feat. title cleanup). `--theme=DATE` = real stats of DATE but the timeline theme (`day_theme.py`) of another date, files suffixed `_theme-<date>` (preview only). Pitfall: `artist.json` only holds TODAY's listeners/followers, so a past
 date shows current artist stats (prod recap does the same).
+
+### Pattern: debut card of a song family (real catalogue, fake history rows)
+
+`previews_and_sims/patient-zero-versions-debut/simulate.py [day1|day2|swap|single|all]` (2026-10-16):
+imports `post_debut_releases`, monkeypatches `_load_rows_for_date` (fake history rows per day),
+`update_streams_dir` (-> `cards/<scenario>/`) and the post functions (raise), then calls the real
+`_build_post_threads` on the real catalogue and prints each tweet. Run with `PYTHONIOENCODING=utf-8`
+(the 📈 prefix crashes a cp1252 console).
 
 ### Pitfall: headless Chrome mobile width
 

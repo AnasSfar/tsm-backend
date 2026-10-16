@@ -1199,6 +1199,21 @@ def _post_song_overtakes(ctx: FinalizeContext, state: dict[str, float], max_unit
     print("Song overtakes done.")
 
 
+def _schedule_stream_milestones(ctx: FinalizeContext, state: dict[str, float]) -> None:
+    if state.get("milestone_schedule_checked") or ctx.debug_daily_mode or ctx.local_test_mode:
+        return
+    if not _streams_post_ready(ctx):
+        print("Milestone anticipation pending: blocking tracks are still pending.")
+        return
+    cmd = [sys.executable, str(ctx.script_dir / "tools" / "scripts" / "schedule_stream_milestones.py"), ctx.summary["stats_date"]]
+    if ctx.no_post_mode:
+        cmd.append("--no-post")
+    # This script uses strict native scheduling, independent of today's paced
+    # slots. In particular, there is no live-post fallback for future events.
+    _run(ctx, cmd, label="milestone anticipation", should_post=False, state=state, attempts=1)
+    state["milestone_schedule_checked"] = 1.0
+
+
 def _post_stream_milestones(ctx: FinalizeContext, state: dict[str, float], max_units: int = 0) -> None:
     if ctx.debug_daily_mode:
         print("[DEBUG-DAILY] Skip: stream milestones.")
@@ -1206,6 +1221,8 @@ def _post_stream_milestones(ctx: FinalizeContext, state: dict[str, float], max_u
     if not _streams_post_ready(ctx):
         print("Stream milestones skipped: blocking tracks are still pending.")
         return
+
+    _schedule_stream_milestones(ctx, state)
 
     post_script = ctx.script_dir / "tools" / "scripts" / "post_stream_milestones.py"
     cmd = [
@@ -2272,6 +2289,9 @@ def run_final_update_tasks(ctx: FinalizeContext) -> None:
                 for i, score in enumerate(scores, 1)
             ]
 
+        _guarded_post_step(
+            "anticipate stream milestones", lambda: _schedule_stream_milestones(ctx, post_state), key="milestones",
+        )
         overtake_units = _unit_steps(
             "song overtakes", "overtakes", "post_song_overtakes.py", _post_song_overtakes, "overtakes", 40.0,
         )

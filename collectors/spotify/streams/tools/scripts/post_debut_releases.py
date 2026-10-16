@@ -50,6 +50,7 @@ from core.data_paths import first_existing_db_history, update_streams_dir  # noq
 from core.twitter import post_image_thread, post_with_image  # noqa: E402
 from collectors.comp import tables_image  # noqa: E402
 from collectors.comp.track_cover_cache import get_cached_cover, load_track_cover_cache  # noqa: E402
+from twitter.albums import album_emoji  # noqa: E402
 from twitter.links import streams_latest_url  # noqa: E402
 from twitter.sessions import default_twitter_session  # noqa: E402
 TWITTER_SESSION = default_twitter_session(REPO_ROOT)
@@ -57,6 +58,10 @@ TWITTER_SESSION = default_twitter_session(REPO_ROOT)
 import generate_streams_image  # noqa: E402
 import generate_weekend_streams_image  # noqa: E402
 import spotlight  # noqa: E402
+import debut_page_card  # noqa: E402
+
+# Spotify single page card (2026-10-16); 0 = back to the old light "Song Update" card.
+DEBUT_PAGE_STYLE = os.getenv("DEBUT_PAGE_STYLE", "1") != "0"
 
 HISTORY_PATH = first_existing_db_history("streams_history.csv")
 
@@ -317,6 +322,30 @@ def _remember_family(meta: dict[str, dict], track_id: str, track: dict) -> None:
         item["base_title"] = track.get("base_title")
 
 
+# Album tracks that count in the album total (not chart_extra, on the album): only these are
+# covered by the album update card. Era extras inside an album file (acoustic / remix sections,
+# e.g. "Patient Zero - Acoustic Version" 2026-10-16) keep their song family card. Filled by
+# _load_album_tracks().
+ALBUM_CORE_IDS: set[str] = set()
+
+
+def _as_flag(value) -> bool | None:
+    if isinstance(value, bool) or value is None:
+        return value
+    text = str(value).strip().casefold()
+    return True if text in {"1", "true", "yes"} else False if text in {"0", "false", "no"} else None
+
+
+def _counts_in_album_total(section: dict, track: dict) -> bool:
+    """Same rule as generate_album_update_image (track chart_extra overrides the section one)."""
+    if _as_flag(track.get("on_album")) is False:
+        return False
+    flag = _as_flag(track.get("chart_extra"))
+    if flag is None:
+        flag = _as_flag(section.get("chart_extra"))
+    return flag is not True
+
+
 def _load_album_tracks() -> tuple[dict[str, list[str]], dict[str, dict]]:
     album_tracks: dict[str, list[str]] = defaultdict(list)
     meta: dict[str, dict] = {}
@@ -344,6 +373,8 @@ def _load_album_tracks() -> tuple[dict[str, list[str]], dict[str, dict]]:
                     continue
                 if tid not in album_tracks[album]:
                     album_tracks[album].append(tid)
+                if _counts_in_album_total(section, track):
+                    ALBUM_CORE_IDS.add(tid)
                 _remember_track(
                     meta,
                     tid,
@@ -416,9 +447,10 @@ def _release_day(release_date: str | None) -> date | None:
 
 
 def album_track_id_set() -> set[str]:
-    """Every track ID listed in a catalogue album file."""
+    """Track IDs covered by an album update card: listed in a catalogue album file AND
+    counting in the album total (era extras such as acoustic versions are not)."""
     album_tracks, _meta = _load_album_tracks()
-    return {tid for ids in album_tracks.values() for tid in ids}
+    return {tid for ids in album_tracks.values() for tid in ids} & ALBUM_CORE_IDS
 
 
 def release_day_debut_albums(target_date: str) -> list[str]:
@@ -429,7 +461,8 @@ def release_day_debut_albums(target_date: str) -> list[str]:
     return sorted(
         album
         for album, ids in album_tracks.items()
-        if any(_release_day(meta.get(tid, {}).get("release_date")) == target_day for tid in ids)
+        if any(tid in ALBUM_CORE_IDS and _release_day(meta.get(tid, {}).get("release_date")) == target_day
+               for tid in ids)
     )
 
 
@@ -990,6 +1023,20 @@ def _generate_debut_image(
             stale_path.unlink()
         except OSError:
             pass
+    if versions and DEBUT_PAGE_STYLE:
+        try:
+            return debut_page_card.render_png(
+                out_path,
+                target_date,
+                title=title,
+                rows=versions,
+                cover_url=image_url,
+                daily=daily_streams,
+                change=change_streams,
+                total=total_streams,
+            )
+        except Exception as exc:  # never block the post: old card below
+            print(f"[debut_releases] Spotify page card failed ({exc}); falling back to the old card.")
     html_text = _build_debut_html(
         target_date,
         title=title,
@@ -1003,6 +1050,53 @@ def _generate_debut_image(
         show_version_details=show_version_details,
     )
     return _render_html_image(html_text, out_path, f"_{safe_slug}_debut_tmp.html")
+
+
+def _caption_date(target_date: str) -> str:
+    """song-posting rule: 'yesterday, Friday (Oct 16, 2026)' / 'on Friday (Oct 16, 2026)'."""
+    day = date.fromisoformat(target_date)
+    label = f"{day.strftime('%A')} ({day.strftime('%b')} {day.day}, {day.year})"
+    return f"yesterday, {label}" if day == date.today() - timedelta(days=1) else f"on {label}"
+
+
+def _debut_tweet_text(
+    target_date: str,
+    *,
+    title: str,
+    album: str,
+    versions: list[dict],
+    daily_streams: int,
+    change_pct: float | None,
+) -> str:
+    emoji = album_emoji(album, fallback="") if album else ""
+    prefix = f"📈 | {emoji} " if emoji else "📈 | "
+    when = _caption_date(target_date)
+    debuts = [v for v in versions if v.get("debut")]
+    mains = [v for v in versions if not v.get("debut")]
+    movement = ""
+    if change_pct is not None:
+        movement = f", up {abs(change_pct):.1f}%," if change_pct > 0 else f", down {abs(change_pct):.1f}%," if change_pct < 0 else ""
+    if len(versions) > 1:
+        lead = f'"{title}" earned {_fmt(daily_streams)} streams across its {len(versions)} versions{movement} {when}.'
+    else:
+        lead = f'"{title}" earned {_fmt(daily_streams)} streams{movement} {when}.'
+    lines = [prefix + lead]
+    if mains and debuts:
+        names = [f'{_version_name(v["title"], title)} ({_fmt(v["daily"])})' for v in debuts]
+        listed = names[0] if len(names) == 1 else ", ".join(names[:-1]) + f" and {names[-1]}"
+        new_daily = sum(v["daily"] for v in debuts)
+        day = min(v.get("day") or 1 for v in debuts)
+        new_label = "new version" if len(debuts) == 1 else "new versions"
+        if day == 1:
+            lines.append(f"The {new_label} debuted with {_fmt(new_daily)} streams: {listed}.")
+        else:
+            lines.append(f"The {new_label} added {_fmt(new_daily)} streams on day {day}: {listed}.")
+    lines.append(f"See full update here : {streams_latest_url()}")
+    return "\n\n".join(lines)
+
+
+def _version_name(title: str, base: str) -> str:
+    return debut_page_card.version_name(title, base)
 
 
 def _resolve_image_url(ids: list[str], meta: dict[str, dict], cover_cache: dict[str, dict]) -> str | None:
@@ -1063,7 +1157,7 @@ def _build_post_threads(
     }
     # Album tracks: no standalone song card, the album update card covers them.
     album_track_ids = {tid for ids in album_tracks.values() for tid in ids}
-    album_debut_ids = (debut_ids & album_track_ids) - forced_ids
+    album_debut_ids = (debut_ids & album_track_ids & ALBUM_CORE_IDS) - forced_ids
     if album_debut_ids:
         albums = sorted({meta.get(tid, {}).get("album") or "?" for tid in album_debut_ids})
         print(
@@ -1109,31 +1203,39 @@ def _build_post_threads(
         if daily_streams <= 0:
             print(f"[debut_releases] Skip {title}: daily streams is 0.")
             continue
-        image_url = _resolve_image_url(ids, meta, cover_cache)
+        group_debut_ids = [tid for tid in ids if tid in debut_ids]
+        # Cover of the new release first (not the main version's album cover).
+        image_url = _resolve_image_url(group_debut_ids + [t for t in ids if t not in group_debut_ids], meta, cover_cache)
         version_count = len(ids)
-        versions = [
-            {
-                "label": _version_label(meta.get(tid, {}).get("title") or tid, title),
-                "title": meta.get(tid, {}).get("title") or tid,
-                "streams": _daily_streams_for_row(day_rows.get(tid), previous_rows.get(tid)),
-            }
-            for tid in sorted(
-                ids,
-                key=lambda tid: (
-                    -_daily_streams_for_row(day_rows.get(tid), previous_rows.get(tid)),
-                    str(meta.get(tid, {}).get("title") or tid).casefold(),
-                ),
-            )
-        ]
-        version_note = f" across {version_count} versions" if version_count > 1 else ""
-        movement = ""
-        if change_pct is not None:
-            direction = "up" if change_streams and change_streams > 0 else "down" if change_streams and change_streams < 0 else "stable at"
-            pct_text = _fmt_pct(abs(change_pct) if direction in {"up", "down"} else change_pct)
-            if direction == "stable at":
-                movement = f", {direction} {pct_text}"
-            else:
-                movement = f", {direction} {pct_text} vs the previous day"
+        target_day = date.fromisoformat(target_date)
+
+        def _daily(tid: str) -> int:
+            return _daily_streams_for_row(day_rows.get(tid), previous_rows.get(tid))
+
+        # Main version(s) on top, the new versions below (owner 2026-10-16), each by daily.
+        ordered_ids = sorted(
+            ids,
+            key=lambda tid: (tid in debut_ids, -_daily(tid), str(meta.get(tid, {}).get("title") or tid).casefold()),
+        )
+        versions = []
+        for tid in ordered_ids:
+            item = meta.get(tid, {})
+            row_daily = _daily(tid)
+            prev_row = previous_rows.get(tid)
+            release_day = _release_day(item.get("release_date"))
+            versions.append({
+                "label": _version_label(item.get("title") or tid, title),
+                "title": item.get("title") or tid,
+                "album": item.get("album") if tid in album_track_ids else "",
+                "streams": row_daily,
+                "daily": row_daily,
+                "total": int(day_rows[tid]["streams"] or 0),
+                # no row the day before = first day: NEW, never a fake +100%
+                "new": prev_row is None,
+                "change": row_daily - _daily_streams_for_row(prev_row) if prev_row is not None else None,
+                "debut": tid in debut_ids,
+                "day": (target_day - release_day).days + 1 if tid in debut_ids and release_day else None,
+            })
         show_version_details = version_count > 1
         image_path = _generate_debut_image(
             target_date,
@@ -1149,12 +1251,11 @@ def _build_post_threads(
             version_count=version_count,
             show_version_details=show_version_details,
         )
+        album_name = next((v["album"] for v in versions if v["album"]), "")
         thread_posts: list[tuple[str, str, Path | None]] = [(
             f"song:{group_key}:details" if show_version_details else f"song:{group_key}:total",
-            (
-                f'"{title}" received {_fmt(daily_streams)} streams on the Spotify Counter{version_note}{movement} ({date_text}).\n\n'
-                f"See full update here : {streams_latest_url()}"
-            ),
+            _debut_tweet_text(target_date, title=title, album=album_name, versions=versions,
+                              daily_streams=daily_streams, change_pct=change_pct),
             image_path,
         )]
 

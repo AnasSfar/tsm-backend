@@ -1,5 +1,59 @@
 # Contexte Spotify Streams
 
+## Anticipation des milestones (decision proprietaire 2026-10-16)
+
+Le proprietaire demande de poster les milestones chanson/album le jour du
+depassement, plutot que le lendemain lors de la collecte. Exception ciblee a
+l'interdiction de prevoir des stats : **uniquement la planification du post**,
+jamais de daily/total/date prevu ecrit dans l'historique ou les exports.
+
+`schedule_stream_milestones.py` est appele en finalize, sous la cle existante
+`milestones`, apres le gate de completude et avant le comptage des posts.
+Il examine les horizons J+1 et J+2 depuis le dernier snapshot verifie, pour
+couvrir le decalage collecte/snapshot. Base perimee de plus d'un jour ou future
+= pending ; throwbacks sans nouvelle anticipation. Les cas non qualifies
+restent postes par `post_stream_milestones.py` apres confirmation.
+
+`milestone_schedule.py` : baseline par jour de semaine (28 jours), declin
+recent prolonge sans bonus de croissance, erreurs cumulatives mesurees sur
+56 a 84 previsions historiques hors echantillon. Borne basse du jour cible
+au-dessus du palier ET borne haute de la veille en-dessous. Queues 4 % de
+chaque cote, couverture nominale 92 % ; calibration historique, **pas une
+garantie de probabilite face a un changement de regime**. Historique contigu,
+totaux/daily coherents, aucun estime, doublon ou album partiel. Changement
+de membres d'un album dans la fenetre = pending.
+
+Horaire dynamique (decision proprietaire 2026-10-16) : selection de la meilleure
+minute disponible du jour cible via `core.x_active_times.best_engagement_slot`,
+heatmap X @swiftiescharts du 2026-10-07, fuseau Europe/Paris (= Madrid).
+Activite maximale d'abord, puis activite des heures voisines, milieu de l'heure
+prefere ; fenetres equivalentes departagees en faveur de la plus tardive.
+Avec la grille actuelle : generalement 16:30 ; samedi apres le premier pic,
+20:30 ; vendredi soir, 22:30. Ces horaires ne sont pas codes en dur.
+Les slots occupes du meme compte sont exclus avec l'ecart configure (180 s
+par defaut). Recalcul sous le verrou du compte X juste avant programmation,
+pour gerer les autres runs et un pic passe pendant l'ouverture du navigateur.
+Lead minimal 180 s ; si aucun slot ne reste le jour cible, pending, jamais
+de report au lendemain ni de post immediat. Heatmap incomplete = pending,
+aucun engagement invente. Source, poids prevu et poids reel ecrits au ledger.
+L'historique journalier ne prouve pas l'heure intraday
+du franchissement. Cards anticipees : palier seulement, sans total exact,
+daily, rang ordinal ni courbe prevus. Cards confirmees inchangees.
+
+Ledger persistant `runtime/social/stream_milestones_scheduled.json`, cle
+track_id + palier (independante de la date). Verrou OS pour serialiser les
+planners ; ecriture atomique avant soumission X. Succes = `scheduled` avec
+horaire du registre X ; echec ambigu/crash = `uncertain`/`submitting`, bloque
+les retries et le poster confirme jusqu'a verification manuelle de la queue X.
+`--force` ne contourne pas ce ledger. Audit au snapshot cible : `confirmed`
+ou `wrong_day`, totaux reels conserves dans le ledger, aucun repost automatique.
+
+Verification sans X ni modification de snapshots :
+`python previews_and_sims/milestone-cards/simulate.py anticipate 30`.
+Replay, PNG et copies telephone 310 px sous `milestone-cards/anticipation/`.
+Tests : `python -m unittest dev.test_milestone_schedule dev.test_forecast_milestones`.
+`--plan-only` ne genere aucune image et n'ecrit aucun lock/ledger.
+
 ## Role
 
 `collectors/spotify/streams` collecte les totals Spotify des tracks Taylor
@@ -2548,6 +2602,51 @@ Friendship once again had its BIGGEST DAY... » ni le lien) a cause du
 `TWEET_CHAR_LIMIT = 280` code en dur de ce script — corrige juste apres (voir
 ci-dessous). La card debut « Babylon » deja postee par le run 232641 reste en
 ligne (a supprimer a la main sur X si voulu).
+
+## Nouvelles versions d'une chanson existante = une card famille (2026-10-16, Patient Zero acoustic/piano)
+
+Cas : « Patient Zero - Acoustic Version » + « Patient Zero - Piano Version » sortent le 2026-10-16
+en single (original = titre de The Encore, fichier album Showgirl). Decision proprietaire : **une
+seule card**, version principale en haut, nouvelles versions dessous, total combine en bas — pas de
+post par version.
+
+- Catalogue : le backfill les range dans `songs.json` (section `kworb_extras`, comme tout single).
+  Deplacees a la main dans `albums/the_life_of_a_showgirl.json`, section **`acoustic_edition`**
+  (`chart_extra: true` de section, comme Opalite / Fate of Ophelia acoustic sortis apres l'album) :
+  schema `type: alternate_version`, `edition: acoustic`, `role: extra`, `extra_type: acoustic` /
+  `other` (piano). Un 1er essai dans `misc.json` etait faux : `misc.json` = ere « Non-Album » dans
+  Top Eras et absent des « Era extras » de la card album (qui ne lit que le fichier album).
+  `base_title: "Patient Zero"` + `song_family: patient_zero` -> `tsm_song_id` ot9x de l'original.
+- **Regle « titre d'album = card album » limitee au coeur de l'album (2026-10-16)** :
+  `post_debut_releases.ALBUM_CORE_IDS` = titres d'un fichier album qui comptent dans le total album
+  (`_counts_in_album_total`, meme regle que `generate_album_update_image`). Seuls eux suppriment la
+  card chanson (`_build_post_threads`, `album_track_id_set()` lu par
+  `finalize_update.ReadyDebutReleasePoster`) et declenchent la card album early
+  (`release_day_debut_albums`). Un extra d'album (acoustique, remix) sorti seul garde sa card
+  famille et ne declenche plus la card album complete.
+- Ou elles apparaissent : Top Songs (une ligne par titre, NEW si pas de rang la veille, top 20 ~
+  470 K le 14/10), card album Showgirl dans « Era extras » + Total era, Top Eras dans Showgirl.
+- **Piege backfill** : meme en `--recent-releases 3 --target-release-date`, le backfill a reecrit
+  la `release_date` des 12 titres standard de Showgirl en 2026-09-25 (date de l'edition Encore,
+  `release_date_duplicate_match`) + ajoute des `historical_track_ids`. Fichier Showgirl annule
+  (git checkout) : toujours lire le diff git du backfill avant de garder un fichier album.
+- Le single contient aussi un « Patient Zero » a nouvel ID (`7ahK0v0g1lkq1NqAHM43Gl`), bloque en
+  `ambiguous` par le backfill : compteur a 0 le 16/10 (comme les 2 nouvelles versions, Spotify
+  compte une fois par jour) alors que l'original/ancien single (`11hcB…`/`49JeK…`) partagent
+  98 210 224. Non ajoute en DB. A verifier quand Spotify aura compte : meme compteur que `11hcB`
+  -> rien a faire ; compteur propre -> decision proprietaire (version a part ou historical id).
+- `post_debut_releases._build_post_threads` (deja par famille `base_title`) : versions triees
+  **non-debut d'abord** puis debuts, chacune par daily ; chaque ligne porte `total`, `daily`,
+  `change` (None si pas de ligne la veille), `new`, `debut`, `day`. Cover = celle du nouveau
+  single (ids debut d'abord dans `_resolve_image_url`). Card = `debut_page_card.py` (page single
+  Spotify), repli ancienne card ; `DEBUT_PAGE_STYLE=0` pour revenir.
+- Tweet : `📈 | ❤️‍🔥 "Patient Zero" earned N streams across its 3 versions, up x%, yesterday,
+  Friday (Oct 16, 2026).` puis `The new versions debuted with N streams: Acoustic Version (a) and
+  Piano Version (b).` (jour 2+ : `added N streams on day 2: ...`) puis le lien. La variation
+  combinee compare la famille du jour au daily de la veille (original seul le jour 1) : exact.
+- La card part chaque jour de la fenetre debut (7 j), lock par jour (`debut_releases_posted.json`).
+- Preview : `previews_and_sims/patient-zero-versions-debut/simulate.py` (vrai catalogue, history
+  FAUX, sortie dans le dossier sim).
 
 ## Plafonds tweet 280 codes en dur -> 500 (2026-09-26)
 
