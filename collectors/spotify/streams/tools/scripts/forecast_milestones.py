@@ -39,16 +39,18 @@ DEFAULT_MILESTONES = list(range(MILESTONE_STEP, MAX_STATIC_MILESTONE + MILESTONE
 # - growth never compounds (trend capped at 1.0): letting it count over-predicted rising songs;
 # - long-run drift: songs keep losing streams once the current trend has faded, faster when they
 #   are young. drift = −min(DRIFT_MAX, DRIFT_BASE + DRIFT_PER_TURNOVER × turnover) per year,
-#   turnover = start daily × 365 / current total (≈ 5 %/yr for a classic, up to 40 %/yr for a new song);
+#   turnover = start daily × 365 / current total (≈ 5 %/yr for a classic, up to 35 %/yr for a new song).
+#   The drift strength balances two checks: streams gained (all songs) and milestone dates (counting
+#   milestones predicted but never reached, not only the reached ones, which favour optimistic models);
 # - weekday shape removed before estimating the trend and put back per projected day.
-# Median error on the streams gained (validation start dates): 5 % at 30 d, 7.5 % at 90 d,
-# 10 % at 180 d, 11 % at 1 yr, 16 % at 2 yrs, bias within ±3 % (previous "45 days then flat":
-# 13.5 % at 1 yr, 24 % at 2 yrs, +20 % bias). Seasonality by month, per-song year-over-year drift,
-# pulling spikes back to the usual level and other start estimates were tested: no gain.
+# Validation (start dates 2024-07 → 2026-06): median error on streams gained 7.5 % at 90 d, 11.5 % at
+# 1 yr, 17 % at 2 yrs (same model without drift: 7.4 %, 14 %, 25 % with +21 % bias); milestone dates:
+# ±23 d at 3-12 months, ±81 d beyond 1 yr, no bias (without drift: 24 d and 83 d, 44 d too early). Seasonality by month, per-song year-over-year drift, pulling
+# spikes back to the usual level and other start estimates were tested: no gain.
 TREND_DAMPING = 0.97
-DRIFT_BASE = 0.05
-DRIFT_PER_TURNOVER = 0.6
-DRIFT_MAX = 0.40
+DRIFT_BASE = 0.03
+DRIFT_PER_TURNOVER = 0.45
+DRIFT_MAX = 0.35
 LONG_MAX_DAYS = 10 * 365
 RECENT_WINDOW = 120
 LONG_WINDOW = 365

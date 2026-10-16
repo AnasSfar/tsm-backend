@@ -6,7 +6,8 @@ with what really happened:
   - streams gained over 30/90/180/365/540/730 days: median absolute error and median bias
     (+ = the model was optimistic), split into "tune" (start dates before --split) and "check"
     (after) so a setting tuned on old data is judged on data it has not seen;
-  - date error on every 100M milestone that was really reached, by how far away it was.
+  - date error on the next 12 milestones of each song, by how far away they were (a milestone
+    predicted but not reached by the end of the history counts too, as a lower bound).
 Model settings can be overridden to compare variants (--damping, --drift-base, ...).
 Read-only: never writes data.
 
@@ -73,12 +74,23 @@ def _work(args: tuple) -> list[tuple]:
             later = by_date.get((cut + timedelta(days=h)).isoformat())
             if later and later[1] - total > MIN_ACTUAL_GAIN and gains.get(h):
                 out.append(("gain", cut, h, math.log(gains[h] / (later[1] - total))))
+        # Milestone dates: the first 12 milestones above the total, whatever the model predicts.
+        # A milestone predicted before the end of the history but never reached counts too (error =
+        # at least the gap to the end), else only reached milestones are scored, which favours
+        # optimistic models.
         future = [r for r in track_rows if r[0] > cut.isoformat()]
-        for m in fm.project_all_milestones(total, cut.isoformat(), start, decay, wf):
-            real = next((r[0] for r in future if r[1] >= m["milestone"]), None)
+        end = date.fromisoformat(track_rows[-1][0])
+        preds = {m["milestone"]: date.fromisoformat(m["expected_date"])
+                 for m in fm.project_all_milestones(total, cut.isoformat(), start, decay, wf)}
+        first = fm.next_milestone(total)
+        for k in range(12):
+            target = first + k * fm.MILESTONE_STEP
+            real = next((date.fromisoformat(r[0]) for r in future if r[1] >= target), None)
+            pred = preds.get(target, cut + timedelta(days=fm.LONG_MAX_DAYS))
             if real:
-                real_days = (date.fromisoformat(real) - cut).days
-                out.append(("date", cut, real_days, (date.fromisoformat(m["expected_date"]) - date.fromisoformat(real)).days))
+                out.append(("date", cut, (real - cut).days, (pred - real).days))
+            elif pred <= end:
+                out.append(("date", cut, (pred - cut).days, -(end - pred).days))
     return out
 
 
@@ -113,12 +125,14 @@ def main() -> int:
             cells.append(f"{h}d {statistics.median(map(abs, e)) * 100:4.1f}/{statistics.median(e) * 100:+5.1f}"
                          if e else f"{h}d -")
         print(f"  {part} | " + " | ".join(cells))
-    print("\nmilestone dates (all start dates): reached in | n | median abs error | 80% within | within 7 days")
-    for lo, hi, label in DATE_BUCKETS:
-        e = sorted(abs(x) for kind, c, rd, x in res if kind == "date" and lo <= rd < hi)
-        if e:
-            print(f"  {label:12} | {len(e):5} | {statistics.median(e):4.0f} d | ±{e[int(len(e) * 0.8)]:.0f} d | "
-                  f"{sum(1 for x in e if x <= 7) / len(e) * 100:3.0f}%")
+    print("\nmilestone dates: reached (or predicted) in | n | median abs error / median bias (+ = late) | 80% within")
+    for part, cond in (("tune ", lambda c: c < split), ("check", lambda c: c >= split)):
+        for lo, hi, label in DATE_BUCKETS:
+            e = [x for kind, c, rd, x in res if kind == "date" and lo <= rd < hi and cond(c)]
+            if e:
+                a = sorted(abs(x) for x in e)
+                print(f"  {part} {label:12} | {len(e):5} | {statistics.median(a):4.0f} d / {statistics.median(e):+4.0f} d"
+                      f" | ±{a[int(len(a) * 0.8)]:.0f} d")
     return 0
 
 
