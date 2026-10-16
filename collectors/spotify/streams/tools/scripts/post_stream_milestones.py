@@ -209,17 +209,20 @@ def _album_milestone_rank(
 
 
 def _next_expected_for_milestone(event: dict, forecasts: dict) -> dict | None:
+    """Song expected to reach this milestone first. Reads every song's upcoming_milestones (same
+    dates as the Milestone Watch), not only songs whose next milestone it is: a fast song still
+    under the previous step can get there first (2026-10-16)."""
     milestone = int(event["milestone"])
     candidates = []
     for item in forecasts.get("forecasts") or []:
         if item.get("track_id") == event["track_id"]:
             continue
-        if int(item.get("next_milestone") or 0) != milestone:
-            continue
-        expected = (item.get("forecast") or {}).get("expected_date")
-        if not expected:
-            continue
-        candidates.append(item)
+        hit = next((m for m in item.get("upcoming_milestones") or [] if int(m["milestone"]) == milestone), None)
+        if hit:
+            candidates.append({**item, "forecast": {"expected_date": hit["expected_date"], "days_left": hit["days_left"]}})
+        elif "upcoming_milestones" not in item and int(item.get("next_milestone") or 0) == milestone:
+            if (item.get("forecast") or {}).get("expected_date"):
+                candidates.append(item)
     candidates.sort(
         key=lambda item: (
             (item.get("forecast") or {}).get("expected_date") or "9999-12-31",

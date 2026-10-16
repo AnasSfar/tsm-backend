@@ -611,6 +611,8 @@ def scenario_dates(
             milestone=milestone,
             weekday_factors=weekday_factors,
             scenario_multiplier=multiplier,
+            decay_days=LONG_DECAY_DAYS,
+            max_days=LONG_MAX_DAYS,
         )
         for name, multiplier in scenarios.items()
     }
@@ -677,6 +679,9 @@ def build_forecasts() -> dict:
 
         last_track_date = last_row["date"]
         weekday_factors = estimate_weekday_factors(series)
+        # One model for every date (site next milestone, upcoming_milestones, Milestone Watch,
+        # "next song expected" lines): trend capped at 1.0 for LONG_DECAY_DAYS then flat.
+        decay_factor = min(decay_factor, 1.0)
         projection = project_milestone_date(
             current_streams=current_streams,
             last_date=last_track_date,
@@ -684,6 +689,8 @@ def build_forecasts() -> dict:
             decay_factor=decay_factor,
             milestone=next_target,
             weekday_factors=weekday_factors,
+            decay_days=LONG_DECAY_DAYS,
+            max_days=LONG_MAX_DAYS,
         )
         scenarios = scenario_dates(
             current_streams=current_streams,

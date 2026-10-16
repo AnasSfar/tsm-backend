@@ -2687,7 +2687,8 @@ Les gainers rendus sont **les lignes deja choisies pour le tweet** (jamais re-se
 tables gainers, cle `milestone-watch`) : 10 prochaines chansons album sous un palier par date
 attendue (modele `forecast_milestones.py` cible = palier, tendance plafonnee a 1.0, **appliquee
 1 an puis daily fige, horizon 10 ans** — `forecast_milestones.LONG_DECAY_DAYS`/`LONG_MAX_DAYS`, memes dates
-que `upcoming_milestones` (toutes les milestones de chaque chanson) sur le site, 2026-10-15/16 : une baisse
+que `upcoming_milestones` (toutes les milestones de chaque chanson) sur le site ET que `forecast` (prochain palier) :
+un seul modele pour toutes les dates, 2026-10-15/16 : une baisse
 composee sur 5 ans plafonnait le total futur et faisait disparaitre en silence Don't Blame Me /
 exile du 2B Watch et I Can Do It With a Broken Heart du Billion Watch). Le profil hebdo (creux du
 dimanche, pic jeu/ven) est mesure semaine par semaine et applique a 100 % depuis le 2026-10-15

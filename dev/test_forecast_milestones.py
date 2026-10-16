@@ -61,6 +61,16 @@ class ForecastMilestonesTest(unittest.TestCase):
             self.assertEqual(single["expected_date"], item["expected_date"])
         self.assertLessEqual(allm[-1]["days_left"], fm.LONG_MAX_DAYS)
 
+    def test_next_milestone_forecast_is_the_first_upcoming_milestone(self) -> None:
+        for decay in (0.997, 1.0, 1.004):  # decline, flat, rising (growth capped at 1.0)
+            args = dict(current_streams=872_000_000, last_date="2026-10-13", start_daily=280_000)
+            first = fm.project_all_milestones(decay_factor=decay, **args)[0]
+            single = fm.project_milestone_date(
+                milestone=900_000_000, decay_factor=min(decay, 1.0),
+                decay_days=fm.LONG_DECAY_DAYS, max_days=fm.LONG_MAX_DAYS, **args,
+            )
+            self.assertEqual(first["expected_date"], single["expected_date"])
+
     def test_weekday_factors_follow_the_weekly_shape(self) -> None:
         shape = [1.0, 1.04, 1.05, 1.06, 1.04, 0.95, 0.86]  # Mon..Sun
         start = date(2026, 1, 5)  # a Monday
