@@ -2684,12 +2684,12 @@ fichiers de sortie qu'avant (`weekend_streams_image.png`, `streams_image*.png`,
 Les gainers rendus sont **les lignes deja choisies pour le tweet** (jamais re-selectionnees).
 
 **Milestone Watch** (`post_milestone_watch.py`, etape finalize « milestone watch » apres les
-tables gainers, cle `milestone-watch`) : 10 prochaines chansons album sous un palier par date
+tables gainers, cle `milestone-watch`) : 10 prochaines chansons sous un palier par date
 attendue — **toutes les chansons du site a >= 100M** (album, versions, remixes, feats ; decision
-proprio 2026-10-16) — (modele `forecast_milestones.py` cible = palier, hausse jamais composee, **baisse
-appliquee 45 j puis daily fige (backtest `dev/forecast_backtest.py`), horizon 10 ans** — `forecast_milestones.LONG_DECAY_DAYS`/`LONG_MAX_DAYS`, memes dates
-que `upcoming_milestones` (toutes les milestones de chaque chanson) sur le site ET que `forecast` (prochain palier) :
-un seul modele pour toutes les dates, 2026-10-15/16 : une baisse
+proprio 2026-10-16) — (modele `forecast_milestones.py` cible = palier : tendance amortie, hausse jamais composee, derive long
+terme selon l'age de la chanson, horizon 10 ans ; choisi par backtest `dev/forecast_backtest.py` le 2026-10-16,
+memes dates que `upcoming_milestones`/`forecast` sur le site : un seul modele pour toutes les dates ; precision
+interne, jamais affichee). Avant le 2026-10-15, une baisse
 composee sur 5 ans plafonnait le total futur et faisait disparaitre en silence Don't Blame Me /
 exile du 2B Watch et I Can Do It With a Broken Heart du Billion Watch). Le profil hebdo (creux du
 dimanche, pic jeu/ven) est mesure semaine par semaine et applique a 100 % depuis le 2026-10-15

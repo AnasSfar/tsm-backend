@@ -45,8 +45,10 @@ class ForecastMilestonesTest(unittest.TestCase):
             milestone=1_000_000_000,
         )
         self.assertIsNotNone(projected)
-        self.assertEqual(projected["expected_date"], "2026-01-20")
-        self.assertEqual(projected["days_left"], 10)
+        # flat trend: 10 days at 1M/day, plus 1 day for the long-run drift (young song: 1M/day on
+        # 990M = 37 %/yr turnover → about −27 %/yr). Dates count from the supplied last date.
+        self.assertEqual(projected["expected_date"], "2026-01-21")
+        self.assertEqual(projected["days_left"], 11)
 
     def test_all_milestones_match_single_milestone_projection(self) -> None:
         wf = {0: 1.0, 1: 1.04, 2: 1.05, 3: 1.06, 4: 1.04, 5: 0.95, 6: 0.86}
@@ -56,7 +58,7 @@ class ForecastMilestonesTest(unittest.TestCase):
         for item in allm:
             single = fm.project_milestone_date(
                 milestone=item["milestone"], weekday_factors=wf,
-                decay_days=fm.LONG_DECAY_DAYS, max_days=fm.LONG_MAX_DAYS, **args,
+                **args,
             )
             self.assertEqual(single["expected_date"], item["expected_date"])
         self.assertLessEqual(allm[-1]["days_left"], fm.LONG_MAX_DAYS)
@@ -67,9 +69,16 @@ class ForecastMilestonesTest(unittest.TestCase):
             first = fm.project_all_milestones(decay_factor=decay, **args)[0]
             single = fm.project_milestone_date(
                 milestone=900_000_000, decay_factor=min(decay, 1.0),
-                decay_days=fm.LONG_DECAY_DAYS, max_days=fm.LONG_MAX_DAYS, **args,
+                **args,
             )
             self.assertEqual(first["expected_date"], single["expected_date"])
+
+    def test_drift_is_stronger_for_young_songs(self) -> None:
+        classic = fm.annual_drift(current_streams=2_000_000_000, start_daily=300_000)  # ~5 %/yr turnover
+        young = fm.annual_drift(current_streams=300_000_000, start_daily=500_000)  # ~60 %/yr turnover
+        self.assertGreater(classic, young)
+        self.assertGreaterEqual(young, -fm.DRIFT_MAX)
+        self.assertLess(classic, 0)
 
     def test_weekday_factors_follow_the_weekly_shape(self) -> None:
         shape = [1.0, 1.04, 1.05, 1.06, 1.04, 0.95, 0.86]  # Mon..Sun

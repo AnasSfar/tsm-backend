@@ -699,10 +699,8 @@ def _song_trends(d: str) -> list[dict]:
     return out
 
 
-# Watch projections use the long-horizon settings of forecast_milestones (LONG_DECAY_DAYS /
-# LONG_MAX_DAYS, same as the site's "upcoming milestones" list): a decline compounding over the
-# whole horizon capped each song's future total, so steady catalog songs (Don't Blame Me → 2B,
-# I Can Do It With a Broken Heart → 1B) silently vanished from the card (owner report 2026-10-15).
+# Watch projections use forecast_milestones' projection model (damped trend + long-run drift, 10-year
+# horizon), the same dates as the site's "upcoming milestones" list.
 
 
 def watch_rows(d: str, milestone: int = BILLION, n: int = 10) -> list[dict]:
@@ -711,8 +709,7 @@ def watch_rows(d: str, milestone: int = BILLION, n: int = 10) -> list[dict]:
     for t in _song_trends(d):
         if t["streams"] >= milestone:
             continue
-        proj = fm.project_milestone_date(t["streams"], t["last"], t["start"], t["decay"], milestone, t["wf"],
-                                         decay_days=fm.LONG_DECAY_DAYS, max_days=fm.LONG_MAX_DAYS)
+        proj = fm.project_milestone_date(t["streams"], t["last"], t["start"], t["decay"], milestone, t["wf"])
         if proj:
             out.append({**t["song"], "streams": t["streams"], "daily": t["daily"], **proj})
     out.sort(key=lambda r: (r["expected_date"], -r["streams"]))
