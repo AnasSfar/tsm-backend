@@ -702,6 +702,7 @@ def upload_static_data(
         ("songs.json",               "data/songs.json"),
         ("albums.json",              "data/albums.json"),
         ("artist.json",              "data/artist.json"),
+        ("expected_milestones.json", "data/expected_milestones.json"),
         ("expected_milestones.json", "data/milestones.json"),
         ("billboard.json",           "data/billboard.json"),
         ("swift_top_100.json",       "data/swift_top_100.json"),

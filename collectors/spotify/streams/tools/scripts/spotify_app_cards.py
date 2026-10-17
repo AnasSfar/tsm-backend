@@ -663,37 +663,45 @@ def watch_title(m: int) -> str:
 
 
 def _song_trends(d: str) -> list[dict]:
-    """Per album song (same set as the milestone posts: non-extra catalog tracks): current total
-    + trend inputs of the site's forecast model (forecast_milestones.py), computed once per date.
-    Long horizon: the trend factor is capped at 1.0 (decline allowed, never compounding growth
-    over years, which would put a karaoke version at 1B)."""
+    """Exact as-of totals and the same damped trajectory used by the site forecast."""
     if d in _TRENDS:
         return _TRENDS[d]
     import forecast_milestones as fm
     import history_store
-    album_ids = history_store.load_album_track_ids()
+    album_ids = history_store.load_album_track_ids(d)
     hist = fm.load_history_bundle()
     dates = [x for x in hist.get("dates", []) if x <= d]
     by_date = hist.get("by_date", {})
+    songs = fm.load_json(fm.SONGS_PATH).get("songs", [])
+    exported_ids = [s.get("track_id") for s in songs]
+    missing_ids = album_ids - set(exported_ids)
+    duplicate_ids = {tid for tid in album_ids if exported_ids.count(tid) > 1}
+    if missing_ids or duplicate_ids:
+        raise ValueError(f"[milestone_watch] blocked catalog: missing exported IDs {sorted(missing_ids)}; "
+                         f"duplicate exported IDs {sorted(duplicate_ids)}")
     out = []
-    for song in fm.load_json(fm.SONGS_PATH).get("songs", []):
+    for song in songs:
         tid = song.get("track_id")
         if not tid or tid not in album_ids:
             continue
-        series = fm.get_track_history_series(tid, by_date, dates)
-        if not series:
-            continue
-        cur = fm.safe_int(series[-1]["streams"])
+        all_history = fm.get_track_history_series(tid, by_date, dates)
+        series, reason = fm.estimator.exact_recent_series(all_history, d)
+        if reason:
+            raise ValueError(f"[milestone_watch] blocked {tid} ({song.get('title')}): {reason}")
+        cur = series[-1]["streams"]
         if cur <= 0:
             continue
-        if len(series) < fm.MIN_REQUIRED_HISTORY_POINTS:
-            start, decay = max(fm.safe_int(series[-1]["daily_streams"]), 1), 1.0
-        else:
-            est = fm.estimate_future_daily_streams(series)
-            start, decay = max(est["projected_next_daily"], 1), min(est["decay_factor"], 1.0)
-        out.append({"song": song, "streams": cur, "daily": fm.safe_int(series[-1]["daily_streams"]),
-                    "last": series[-1]["date"], "start": start, "decay": decay,
-                    "wf": fm.estimate_weekday_factors(series)})
+        est = fm.estimate_future_daily_streams(series, track_id=tid, seasonal_history=all_history,
+                                              release_date=song.get("release_date"))
+        if est.get("pending_reason"):
+            raise ValueError(f"[milestone_watch] blocked {tid} ({song.get('title')}): {est['pending_reason']}")
+        if est["forecast_model"].get("validation_note"):
+            print(f"[milestone_watch] {tid} ({song.get('title')}): {est['forecast_model']['validation_note']}")
+        out.append({"song": song, "streams": cur, "daily": series[-1]["daily_streams"],
+                    "last": series[-1]["date"], "start": est["projected_next_daily"],
+                    "decay": est["decay_factor"], "damping": est["trend_damping"],
+                    "estimate": est, "annual": est.get("annual_seasonality"),
+                    "wf": {int(k): v for k, v in est["forecast_model"]["weekday_factors"].items()}})
     _TRENDS[d] = out
     return out
 
@@ -704,9 +712,11 @@ def watch_rows(d: str, milestone: int = BILLION, n: int = 10) -> list[dict]:
     for t in _song_trends(d):
         if t["streams"] >= milestone:
             continue
-        proj = fm.project_milestone_date(t["streams"], t["last"], t["start"], t["decay"], milestone, t["wf"])
+        proj = fm.project_milestone_date(t["streams"], t["last"], t["start"], t["decay"], milestone, t["wf"],
+                                         trend_damping=t["damping"], annual_seasonality=t.get("annual"))
         if proj:
-            out.append({**t["song"], "streams": t["streams"], "daily": t["daily"], **proj})
+            note = fm.estimator.projection_note(t.get("estimate", {}), d, proj["expected_date"])
+            out.append({**t["song"], "streams": t["streams"], "daily": t["daily"], "forecast_note": note, **proj})
     out.sort(key=lambda r: (r["expected_date"], -r["streams"]))
     return out[:n]
 
@@ -729,9 +739,11 @@ def watch(d: str, picked: list[dict] | None = None, milestone: int = BILLION) ->
         main, feat = song_title_parts(r["title"], album)
         sub = " · ".join(x for x in (esc(album), esc(feat)) if x)
         eta = date.fromisoformat(r["expected_date"])
+        note = r.get("forecast_note") or {}
+        note_html = f'<span class="s watch-note">{esc(note["text"])}</span>' if note.get("text") else ""
         pct = r["streams"] / milestone * 100
         rows.append(f"""<div class="trow"><div class="num">{i}</div><img src="{img}">
-<div class="ttl">{title_span(main)}<span class="s one">{sub}</span></div>
+<div class="ttl">{title_span(main)}<span class="s one">{sub}</span>{note_html}</div>
 <div class="prog"><span class="tot">{comma(r['streams'])}</span><span class="bar"><i style="width:{pct:.1f}%"></i></span><span class="left">{comma(milestone - r['streams'])} to go</span></div>
 <div class="day">{comma(r['daily'])}</div>
 <div class="eta"><b>{eta.strftime('%b')} {eta.day}, {eta.year}</b><small>in {comma(r['days_left'])} days</small></div></div>""")
@@ -762,6 +774,7 @@ def watch(d: str, picked: list[dict] | None = None, milestone: int = BILLION) ->
 .trow .num{font-size:32px}
 .ttl .t{font-size:33px}
 .ttl .s{font-size:23px}
+.ttl .watch-note{font-size:25px;color:#93e8af;font-weight:650;line-height:1.15;margin-top:4px;white-space:normal}
 .tot{font-size:29px}
 .day{font-size:34px}
 .prog{display:flex;flex-direction:column;align-items:flex-end;gap:7px}
@@ -788,7 +801,7 @@ def render(doc: str, out: Path, scale: float = 2, *, max_dimension: int | None =
             pg_.evaluate("document.fonts.ready")
             if max_dimension:
                 bounds = pg_.locator(".card").bounding_box()
-                zoom = min(1, (max_dimension - 2) / (max(bounds["width"], bounds["height"]) * scale))
+                zoom = min(1, (max_dimension - 8) / (max(bounds["width"], bounds["height"]) * scale))
                 if zoom < 1:
                     pg_.evaluate("z => { document.querySelector('.card').style.zoom = z; }", zoom)
             pg_.locator(".card").screenshot(path=str(out))
@@ -904,7 +917,7 @@ def render_best_day_club(d: str, entries: list[dict], out: Path, **kwargs) -> Pa
 
 
 def render_watch(d: str, out: Path, rows: list[dict] | None = None, milestone: int = BILLION) -> Path:
-    return render(watch(d, rows, milestone), out, SCALE["watch"])
+    return render(watch(d, rows, milestone), out, SCALE["watch"], max_dimension=4096)
 
 
 def render_billion(d: str, out: Path, rows: list[dict] | None = None) -> Path:

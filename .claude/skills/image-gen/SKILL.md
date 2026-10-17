@@ -5,6 +5,12 @@ description: Conventions de génération d'images backend TSM (cards Twitter, ta
 
 # Génération d'images backend (collectors)
 
+**Milestone Watch, owner decision 2026-10-17:** retain the usual landscape
+Spotify layout (cover/sidebar on the left, ranked table on the right). Add
+forecast comments as a short line beneath the song/album. The owner explicitly
+rejected a portrait redesign while requesting notes. Do not change the layout
+without an explicit design request; still inspect the 310px phone preview.
+
 ## Hors périmètre : images de partage Open Graph
 
 Les `og:image` du site (aperçu quand on partage un lien sur Twitter/Discord/…)

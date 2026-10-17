@@ -1,5 +1,67 @@
 # Contexte Spotify Streams
 
+## Correction estimateur Milestone Watch (decision proprietaire 2026-10-17)
+
+Le proprietaire demande de corriger les dates estimees apres le 2.1B Watch :
+le modele v2 extrapolait une baisse quotidienne exponentielle pendant 5 ans
+(Ophelia : 2B le 13 mai 2027 puis 2.1B le 18 janvier 2028 au snapshot du 15/10).
+Cette extrapolation n'est plus utilisee. Les projections restent separees des
+totaux/daily mesures ; cette autorisation ne permet aucune estimation de data.
+
+`milestone_estimator.py` = `weekly_damped_trend_seasonal_v4`, utilise par
+`forecast_milestones.py` ET `spotify_app_cards.watch_rows`. Niveaux observes sur
+7/28 jours, tendances sur semaines completes sur 28/56 jours, amortissement
+de la tendance (demi-vies candidates 7/14/28/56 jours). Hausse et baisse
+s'amortissent toutes les deux, sans plafonnement asymetrique Watch a 1.0,
+sans plancher de streams futur invente. Les effets de jour de semaine sont
+mesures au sein de semaines completes. Selection par erreur sur les streams
+CUMULES hors echantillon a 7/28/90/180 jours disponibles, origine glissante,
+aucune observation future utilisee pour entrainer une origine.
+
+Minimum 14 daily exacts consecutifs + total precedent. Les trous anciens
+terminent la fenetre d'entrainement ; les trous/estimations/merges/doublons/
+incoherences recents bloquent la date avec raison exacte. Zeros observes
+conserves, jamais deduits de totaux identiques. Nouvelle sortie avec deux
+semaines exactes mais pas encore de holdout : modele explicite au rythme
+7 jours observe, sans declin invente ; validation absente et bande basse
+en metadata/logs. Ce n'est pas un remplacement de donnees manquantes.
+Watch bloque si un ID album manque de l'export, est duplique, ou manque de
+donnees recentes exactes. Les paliers d'une chanson suivent une seule courbe.
+
+La ligne "At current 7-day pace" des cartes milestone reste le calcul
+explicitement demande precedemment, distinct de cette estimation de tendance.
+Les dates/scenarios/bandes ne sont pas des garanties ni des probabilites
+calibrees. Replay : `python dev/audit_milestone_estimator.py` (lecture seule,
+rapport prive ; `--baseline PATH` compare une copie locale de l'ancien code).
+Tests : `python -m unittest dev.test_milestone_estimator dev.test_forecast_milestones dev.test_milestone_schedule`.
+
+### Saisonnalite, notes et frontend (2026-10-17)
+
+`milestone_seasonality.py` applique uniquement la regle explicite du track
+august (mois 8). Saisons juillet/aout completes et exactes uniquement ;
+annees exclues conservees avec raisons. Ratio median des trois dernieres
+saisons verifiees, validation chronologique contre l'absence d'ajustement.
+Retrait du facteur avant fit puis application aux futures dates d'aout :
+jamais de double boost. La note dit "Before next August boost" si le palier
+est prevu avant le mois, "August boost included" si la projection le traverse.
+Les autres notes de la photo proviennent des observations/modeles utilises.
+
+Le frontend `tsm-frontend/frontend/src/utils/milestoneForecast.js` evalue
+les parametres exportes, sans entrainer un estimateur concurrent. Calculateur
+cible/date/overtake et albums (somme des trajectoires completes) : meme source
+que Watch. Exporter le facteur de tendance en precision complete, pas arrondi
+a 6 decimales, pour garantir les memes dates. Donnees invalides = pending,
+jamais de repli lineaire sur le dernier daily. Cache client versionne v4,
+pas de cache Python du forecast pour toute la vie du process API.
+
+Uploader `expected_milestones.json` vers LES DEUX cles R2
+`data/expected_milestones.json` (canonique) et `data/milestones.json` (alias),
+avec le meme payload. Les deux objets ont ete mis a jour/verifies au modele
+v4, snapshot 2026-10-15 ; le code calculateur frontend reste a deployer.
+Parite des 10 dates du 2.1B Watch : test Node
+`node tests/milestone-forecast.test.mjs` dans tsm-frontend. Verification UI
+375px et 1440px sans debordement horizontal, aucun redesign du frontend.
+
 ## Anticipation des milestones (decision proprietaire 2026-10-16)
 
 Le proprietaire demande de poster les milestones chanson/album le jour du
