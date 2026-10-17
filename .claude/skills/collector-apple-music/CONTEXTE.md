@@ -30,7 +30,9 @@ le 2026-09-26 soir (proprio : « retourner a notre run normal de chaque 2 heures
 pareil, meme tache). **Depuis le 2026-10-05 : toutes les 4 h (PT4H, depart 02:00 -> 02/06/10/14/18/22)**,
 10h garde car c'est le refresh quotidien du Global (proprio : « chaque 4 heure pas 2 heures en gardant 10h comme run
 constant pour avoir le global ») ; `.env` `APPLE_MUSIC_SNAPSHOT_HOURS` / `ITUNES_SNAPSHOT_HOURS` = `2,6,10,14,18,22`
-(les deux DOIVENT suivre la tache, cf. piege d'arrondi ci-dessous). Ni GitHub Actions ni VPS.
+(les deux DOIVENT suivre la tache, cf. piege d'arrondi ci-dessous). **Depuis le 2026-10-16 : toutes les heures
+(PT1H, proprio : « plutot faisons chaque 1h »)**, `.env` `APPLE_MUSIC_SNAPSHOT_HOURS` / `ITUNES_SNAPSHOT_HOURS` =
+`0,1,...,23` (le PC s'eteint toujours apres le run YouTube de 06:05 -> pas de run tant qu'il est eteint). Ni GitHub Actions ni VPS.
 **`build_scraped_at()` arrondit toujours au dernier creneau de
 `APPLE_MUSIC_SNAPSHOT_HOURS` (defaut code = heures paires seulement)** — le
 simple changement de cadence du Planificateur ne suffisait pas : sans
@@ -227,6 +229,41 @@ entre Global — vs hier — et pays/iTunes — vs le cycle precedent) :
       appele meme sans candidat / sans titre actif ; `active_tracks=[]` -> caption simple). Meme regle :
       un post a chaque changement du Global vs le dernier Global poste (`global_snapshot|global`), donc
       ~1/jour apres le refresh Apple de ~10h Paris. `APPLE_MUSIC_DEBUT_GLOBAL_THREAD=0` coupe tout.
+      **Card US « quand c'est intéressant » (proprio 2026-10-16 : « poster aussi US apple music charts quand
+      c'est intéressant [...] score minimum [...] max 2 fois par jour [...] un out c'est éliminatoire, un RE
+      c'est bien, un top 10 c'est bien »)** : `_post_score_card` (appelé à CHAQUE run Apple Music, fenêtre de
+      sortie ou pas, après les cards région/Pop) = card chart normal US complète (toutes les chansons de Taylor,
+      `snap.generate(..., show_out=True)`, la même que les cards US habituelles) postée si l'update vaut le coup.
+      Score = `core/region_update_score.py::score_update` vs le MÊME snapshot que les flèches de la card
+      (`get_previous_snapshot_ranks`, dernier snapshot distinct ; `region_update` : id swap + changement de
+      version Track by Track ↔ normal = pas une entrée/sortie, éditions clean/explicit = 1 seule) : debut (1re
+      apparition, badge Peak NEW) 80/65/55/45/40 selon la zone top 10/25/50/100/200 (seul il passe toujours) ;
+      RE 45/35/25/15/6 (un RE vers #190 = la chanson qui clignote en bas du chart, presque rien) ; #1 +50 ;
+      entrée top 10 +20 ; NEW PEAK +12 / RE-PEAK +6 ; montée = places × 3/1.5/0.8/0.4/0.2 selon la zone du nouveau
+      rang, plafond 20/chanson ; baisse = moitié, plafond −10/chanson ; **une chanson OUT = veto** (jamais posté).
+      Posté si score ≥ `APPLE_MUSIC_SCORE_CARD_MIN_SCORE` (**10**, choix proprio apres 2 passages, voir plus bas), au plus `APPLE_MUSIC_SCORE_CARD_MAX_PER_DAY` (2)
+      par jour Paris (`score_card_posts|us`) et un écart **en runs** (proprio 2026-10-16, runs horaires : « faisons l'écart selon le nombre de runs ») : ≥ `APPLE_MUSIC_SCORE_CARD_GAP_RUNS` (4) nouveaux snapshots US depuis le posté (`score_card_runs_since|us`, +1 par contenu de chart neuf, remis à 0 au post) OU `APPLE_MUSIC_SCORE_CARD_GAP_HOURS` (4 h, filet quand le PC a été éteint ; 6 h fixes avant) ;
+      contenu de chart déjà évalué jamais réévalué (`score_card_handled|us` = signature du cycle, une heure non
+      rafraîchie répète le chart) ; une update bloquée par le plafond n'est jamais postée plus tard ; snapshot
+      dont la card US de fenêtre de sortie (`region_snapshot_us_<at>.lock`) est déjà partie = pas de doublon.
+      Caption : `🇺🇸 | "X" climbs to #38 (+12) on the Apple Music chart in the US. "Y" ...` (meilleure nouvelle
+      d'abord, autres seulement si ≥ 5 pts, max 4, jamais une baisse) + `Taylor Swift songs on the Apple Music
+      chart in the US right now:` + lien. Env `APPLE_MUSIC_SCORE_CARD_COUNTRIES` (déf. `us`).
+      **Calibrage (replay de tout l'historique US 22/03 -> 16/10, 653 snapshots distincts,
+      `previews_and_sims/us-apple-music-score/replay.py`)** : le chart US a un cycle JOURNALIER — tout remonte
+      aux runs 22:00/02:00 (soirée US, moyenne +18/+22) et redescend à 10:00/14:00 (−11/−18, OUT 8 fois sur 9 à
+      14:00). Cette « remontée du soir » vaut 15-30 pts presque chaque nuit (p90 = 15, p95 = 21) -> seuil 40 =
+      au-dessus du bruit quotidien : un debut, un #1, une entrée top 10, ou une vraie poussée de plusieurs
+      chansons. Résultat : 11 posts en 170 jours (Toy Story 5 debut #26 + top 10 #6 en juin, semaine Encore,
+      10/06 02:00, 10/11 02:00) ; 30 -> 14, 50 -> 7. **REJETE par le proprio le meme jour** (« si on a un (+3)
+      et un (-1) dans le meme run on peut poster [...] 1 post par semaine c'est peu ») -> seuil **1** = toute
+      update nette positive sans OUT ; c'est le plafond 2/jour + 6 h qui limite. Replay 05-16/10 : 21 posts en
+      12 jours (1,75/jour), surtout 22:00 et 06:00 (le 6 h d'ecart fait sauter le 02:00 apres un 22:00) ;
+      seuil 10 -> 1,2/jour, 15 -> 1/jour. **Proprio : « le seuil mets le 10 »** -> defaut 10. **Attention : calibre
+      sur des runs de 4 h** ; depuis le passage aux runs horaires (meme jour), chaque card compare a 1 h avant ->
+      mouvements plus petits par snapshot, donc probablement moins de posts a seuil egal : refaire le replay
+      apres quelques jours de donnees horaires (`replay.py --from <date> --list <date>`). Le seuil 40 reste le repere « vraie news » si on veut reserrer. `live.py [--force]` = vrai `_post_score_card` sur le dernier
+      snapshot, card rendue dans le dossier sim, jamais postée. Tests : `tests/test_region_update_score.py`.
       Replay 26-27/09 : 2 posts (09-26 10:00 debuts, 09-27 10:00). `new_songs_order_change(cur, prev)` ({titre: rang} des titres en
       fenetre, meilleure edition, `_new_song_ranks`) : poste si l'ordre relatif des nouvelles
       chansons presentes aux 2 moments a change (« X passes Y ») OU si l'une d'elles entre / revient

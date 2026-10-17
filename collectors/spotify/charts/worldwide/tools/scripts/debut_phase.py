@@ -84,6 +84,10 @@ def debut_track_ids(chart_date: str) -> set[str]:
             if not isinstance(payload, dict):
                 continue
             for section in payload.get("sections") or []:
+                # chart_extra sections (versions/remixes) never make a debut
+                # (incident 2026-10-16, see post_album_debut_chart._is_debut_section).
+                if section.get("chart_extra"):
+                    continue
                 for track in section.get("tracks") or []:
                     if not isinstance(track, dict) or _parse_date(track.get("release_date")) != target:
                         continue
@@ -124,7 +128,11 @@ def release_album_tracks(chart_date: str) -> tuple[set[str], set[str]]:
                 t for section in payload.get("sections") or [] for t in section.get("tracks") or []
                 if isinstance(t, dict)
             ]
-            if not any(_parse_date(t.get("release_date")) == target for t in tracks):
+            if not any(
+                _parse_date(t.get("release_date")) == target
+                for section in payload.get("sections") or [] if not section.get("chart_extra")
+                for t in section.get("tracks") or [] if isinstance(t, dict)
+            ):
                 continue
             for t in tracks:
                 tid = str(t.get("track_id") or "").strip()

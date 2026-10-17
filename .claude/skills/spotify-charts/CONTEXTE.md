@@ -1414,7 +1414,13 @@ debut". Ordre de post :
 
 **Phase DEBUT (decision 2026-09-26, remplace l'ordre ci-dessus) — JAMAIS
 skippee, RIEN ne poste avant elle, le plus vite possible.** Un jour de
-sortie = des tracks catalogue ont `release_date == date du chart`.
+sortie = des tracks catalogue ont `release_date == date du chart`, **dans
+une section `chart_extra: false`** (standard / nouvelle edition). Les sections
+`chart_extra: true` (acoustic/piano, remixes, track-by-track) ne declenchent
+JAMAIS de jour de sortie ni de « <album> debuts with X streams » (incident
+2026-10-16 : single Patient Zero Acoustic + Piano, rien n'avait charte, post
+« The Life of a Showgirl debuts » a tort). Meme regle dans
+`post_album_debut_chart.py`, `debut_phase.py` et `worldwide/daily.py`.
 Module unique `worldwide/tools/scripts/debut_phase.py` :
 - **MAJ 2026-09-26 (fin de journee) : les tableaux « New Songs » (etapes 1+2
   ci-dessous, `--new-songs`) sont SUPPRIMES de la phase DEBUT.** `run(date)` =

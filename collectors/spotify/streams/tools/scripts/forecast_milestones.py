@@ -116,6 +116,58 @@ def next_milestone(current_streams: int, milestones: list[int] | None = None) ->
     return x
 
 
+def next_song_milestone_at_recent_pace(
+    points: list[dict], *, reached_milestone: int, as_of_date: str,
+) -> dict:
+    """Explicit 7-day-pace estimate for the next step AFTER this song's event.
+
+    Start at the last verified total, including for anticipatory cards whose
+    milestone has not yet been collected. Never seed the projection with an
+    invented milestone-day total. This is a labelled projection, not a change
+    to the damped-trend model or verified stream history.
+    """
+    end = parse_iso_date(as_of_date)
+    start = end - timedelta(days=7)
+    target = next_milestone(reached_milestone)
+    result = {"milestone": target, "expected_date": None, "basis": "current_7_day_pace", "as_of_date": as_of_date}
+    def pending(reason):
+        return {**result, "pending_reason": reason}
+    by_date = {}
+    for row in points:
+        day = str(row.get("date") or "")
+        if start.isoformat() <= day <= as_of_date:
+            if day in by_date:
+                return pending(f"duplicate history row on {day}")
+            by_date[day] = row
+    rows = []
+    for offset in range(8):
+        day = (start + timedelta(days=offset)).isoformat()
+        row = by_date.get(day)
+        if row is None:
+            return pending(f"missing exact total on {day}")
+        if row.get("estimated") or type(row.get("streams")) is not int or row["streams"] < 0:
+            return pending(f"non-exact total on {day}")
+        if rows:
+            daily = row.get("daily_streams")
+            if type(daily) is not int or daily < 0 or row["streams"] - rows[-1]["streams"] != daily:
+                return pending(f"missing, negative or inconsistent daily on {day}")
+        rows.append(row)
+    current_total = rows[-1]["streams"]
+    target = next_milestone(max(reached_milestone, current_total))
+    result["milestone"] = target
+    weekly = sum(row["daily_streams"] for row in rows[1:])
+    if weekly <= 0:
+        return pending("last seven verified dailies sum to zero")
+    # Exact integer ceiling of (remaining / (weekly / 7)).
+    numerator = (target - current_total) * 7
+    days = (numerator + weekly - 1) // weekly
+    try:
+        expected = (end + timedelta(days=days)).isoformat()
+    except OverflowError:
+        return pending("projected date exceeds supported calendar")
+    return {**result, "expected_date": expected, "days_from_snapshot": days, "verified_weekly_streams": weekly}
+
+
 def _daily_on_projection_day(
     day_index: int,
     start_daily: float,

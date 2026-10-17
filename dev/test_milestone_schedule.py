@@ -41,6 +41,61 @@ class ForecastTests(unittest.TestCase):
         total = rows[-1]["streams"]
         self.assertFalse(m.crossing_window(rows, total + 90, 1)["eligible"])
 
+    def test_5k_remaining_with_150k_daily_survives_recent_worst_day(self):
+        rows = series([150_000] * 14 + [20_000] + [150_000] * 13)
+        result = m.crossing_window(rows, rows[-1]["streams"] + 5_000, 1)
+        self.assertTrue(result["eligible"])
+        self.assertEqual(result["observed"]["last_daily"], 150_000)
+        self.assertEqual(result["observed"]["recent_worst_daily"], 20_000)
+        self.assertEqual(result["lower_gain"], 20_000)
+        self.assertTrue(all(result["scenario_passed"].values()))
+        self.assertNotIn("nominal_coverage", result)
+
+    def test_average_cannot_hide_worst_day_short_of_milestone(self):
+        rows = series([150_000] * 14 + [20_000] + [150_000] * 13)
+        result = m.crossing_window(rows, rows[-1]["streams"] + 25_000, 1)
+        self.assertFalse(result["eligible"])
+        self.assertEqual(result["assessment_reason"], "pessimistic_scenario_short_of_milestone")
+
+    def test_weekly_minus_5_percent_is_applied_to_the_daily(self):
+        rows = series([200_000] * 7 + [190_000] * 7)
+        result = m.crossing_window(rows, rows[-1]["streams"] + 180_000, 1)
+        self.assertEqual(result["observed"]["weekly_change_pct"], -5.0)
+        self.assertEqual(result["observed"]["stress_decline_factor"], 0.95)
+        self.assertEqual(result["scenario_gains"]["last_daily_weekly_decline"], 180_500)
+        self.assertTrue(result["eligible"])
+        self.assertFalse(m.crossing_window(rows, rows[-1]["streams"] + 181_000, 1)["eligible"])
+
+    def test_worst_weekly_decline_over_last_7_days_is_stressed(self):
+        rows = series([100] * 7 + [50] + [100] * 6)
+        result = m.crossing_window(rows, rows[-1]["streams"] + 30, 1)
+        self.assertEqual(result["observed"]["worst_recent_weekly_change_pct"], -50.0)
+        self.assertEqual(result["lower_gain"], 25)
+        self.assertFalse(result["eligible"])
+
+    def test_growth_never_boosts_pessimistic_gain(self):
+        rows = series([100] * 7 + [200] * 7)
+        result = m.crossing_window(rows, rows[-1]["streams"] + 101, 1)
+        self.assertEqual(result["observed"]["stress_decline_factor"], 1.0)
+        self.assertEqual(result["lower_gain"], 100)
+        self.assertFalse(result["eligible"])
+
+    def test_rational_rounding_cannot_promote_a_shortfall(self):
+        rows = series([3] * 7 + [2] * 7)
+        result = m.crossing_window(rows, rows[-1]["streams"] + 2, 1)
+        self.assertEqual(result["lower_gain"], 1)
+        self.assertFalse(result["eligible"])
+
+    def test_zero_worst_day_keeps_it_pending(self):
+        rows = series([0] + [150_000] * 27)
+        result = m.crossing_window(rows, rows[-1]["streams"] + 5_000, 1)
+        self.assertEqual(result["lower_gain"], 0)
+        self.assertFalse(result["eligible"])
+
+    def test_14_exact_days_can_qualify_without_months_of_calibration(self):
+        rows = series([150_000] * 14)
+        self.assertTrue(m.crossing_window(rows, rows[-1]["streams"] + 5_000, 1)["eligible"])
+
     def test_no_lookahead(self):
         rows = series()
         cutoff = rows[:100]
@@ -48,9 +103,9 @@ class ForecastTests(unittest.TestCase):
         rows[101]["daily_streams"] = 1_000_000
         self.assertEqual(before, m.crossing_window(rows[:100], cutoff[-1]["streams"] + 90, 1))
 
-    def test_insufficient_calibration_blocks(self):
+    def test_two_complete_weeks_required(self):
         with self.assertRaises(m.PendingForecast):
-            m.crossing_window(series()[:50], 100_000, 1)
+            m.crossing_window(series()[:13], 100_000, 1)
 
     def test_duplicate_even_equal_blocks(self):
         rows = series()
@@ -72,9 +127,9 @@ class ForecastTests(unittest.TestCase):
 
     def test_gap_is_not_filled(self):
         rows = series()
-        del rows[-20]
+        del rows[-6]
         exact = m.exact_series(SimpleNamespace(points_by_track={"a": rows}), {"a"}, rows[-1]["date"])
-        self.assertLess(len(exact), 20)
+        self.assertLess(len(exact), 6)
         with self.assertRaises(m.PendingForecast):
             m.crossing_window(exact, exact[-1]["streams"] + 90, 1)
 
@@ -107,7 +162,7 @@ class ForecastTests(unittest.TestCase):
 class ScheduleTests(unittest.TestCase):
     def setUp(self):
         self.event = {"track_id": "a", "title": "Example", "kind": "song", "milestone": 100,
-                      "target_date": "2026-10-15", "base_date": "2026-10-14"}
+                      "target_date": "2026-10-15", "base_date": "2026-10-14", "assessment": "robust_crossing"}
         self.ledger = {"events": {}}
         self.saved = []
 
@@ -156,9 +211,11 @@ class ScheduleTests(unittest.TestCase):
         self.assertGreater(chosen, now)
         self.assertEqual(chosen.date(), date(2026, 10, 15))
 
-    def test_failure_is_uncertain_never_live_fallback(self):
+    def test_failure_is_schedule_unconfirmed_never_live_fallback(self):
         self.run_planner(success=False)
-        self.assertEqual(self.saved[-1]["events"]["a__100"]["status"], "uncertain")
+        self.assertEqual(self.saved[-1]["events"]["a__100"]["status"], "schedule_unconfirmed")
+        self.assertTrue(self.saved[-1]["events"]["a__100"]["scheduling_error"])
+        self.assertEqual(self.saved[-1]["events"]["a__100"]["assessment"], "robust_crossing")
 
     def test_retry_of_reserved_event_never_submits_again(self):
         self.ledger["events"]["a__100"] = {**self.event, "status": "uncertain"}

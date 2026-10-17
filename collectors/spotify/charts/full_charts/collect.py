@@ -513,7 +513,12 @@ def release_lock() -> None:
 
 def enrich_after_collect(args) -> int:
     """Albums of the new tracks + missing lead-artist genders (LLM, top N per region)."""
-    from enrich import run_enrich
+    # Load full_charts/enrich.py by path: a bare "from enrich import" picked up scripts/enrich.py
+    # (also on sys.path at run time) -> ImportError every day from 2026-10-07 to 2026-10-16.
+    spec = importlib.util.spec_from_file_location("full_charts_enrich", Path(__file__).resolve().parent / "enrich.py")
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    run_enrich = module.run_enrich
 
     start_year = int(args.start[:4])
     end_year = int((args.end or (date.today() - timedelta(days=1)).isoformat())[:4])

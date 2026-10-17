@@ -95,6 +95,10 @@ Valables pour toutes les cards façon app Spotify : album card (`album_page_card
 - Deux colonnes de hauteurs différentes : la plus courte est **centrée verticalement**.
 - Le classement des prochaines chansons à passer un palier s'appelle « Billion Watch » (1B) / « <palier> Watch » (900M, 2B…), **jamais « Road to 1B »** (nom utilisé par un autre compte).
 
+## Classements annuels Spotify Charts (`comp/spotify_ranking_page.py`, 2026-10-17)
+
+Décision propriétaire (17/10/2026) : même design que la card album page (fondu couleur de la cover → `#121212`, bande hero en haut : cover, titre en grand sur UNE ligne via `TITLE_FIT_JS`, date en grand à droite), puis **un seul tableau pleine largeur à plusieurs colonnes** (songs : 2026 streams / Days / Peak / Best day / Debut / Now ; debuts et albums ont leurs colonnes, voir le README de la preview). Rejeté : sidebar + une fiche détaillée par entrée (4 par image), et deux colonnes côte à côte. 2240 px ×1.8, jusqu'à 15 lignes par image ; lignes Taylor surlignées (rail vert) dans les tops 15. `render()` bloque si une cellule numérique déborde. Preview : `previews_and_sims/spotify-chart-rankings/preview.py`.
+
 ## Card debut = page single Spotify (`debut_page_card.py`, 2026-10-16)
 
 Card de `post_debut_releases.py` (une par famille de chanson), meme famille visuelle que l'album
@@ -445,5 +449,15 @@ a une courbe. Verification isolee :
 `python previews_and_sims/milestone-cards/simulate.py anticipate 30`, copies
 310 px sous `milestone-cards/anticipation/`. Les rendus confirmes gardent
 leurs totaux, rangs et gabarit Climb habituels.
+Clarification 2026-10-17 : Cover Story anticipee supprime entierement la grille
+de faits inconnus (pas de cases de remplacement Artist/Platform). Garder le
+grand palier, le titre, puis l'album du catalogue via `album=...` et le footer
+date du post. Verifie a 310 px sur But Daddy I Love Him et The Moment I Knew TV.
+Ajout 2026-10-17 : les cartes chanson montrent aussi le prochain palier DE
+LA MEME CHANSON (400M -> 500M), date "Expected" et mention "At current 7-day
+pace". Source : 7 daily exacts + total precedent, depuis le dernier snapshot
+verifie ; ne pas partir d'un total fictif egal au palier anticipe. Bloc large
+sous le titre/album en anticipation, case compacte sur Cover Story/Climb
+confirmes. Si la base manque, date pending avec raison precise dans les logs.
 
 Nouveau composant dans `comp/`, nouvelle famille de previews, changement de politique covers/deltas → mets cette skill à jour dans la même session.

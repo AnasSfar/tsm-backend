@@ -1860,18 +1860,22 @@ def schedule_post(
     select_slot: Callable[[datetime, list[datetime]], datetime | None] | None = None,
 ) -> bool:
     """Schedule a single native X post through the web UI."""
+    _set_last_post_error("")
     session_file = Path(session_file)
     profile_dir = _profile_dir(session_file)
     tweet = str(tweet or "").strip()
 
     if not tweet and image_path is None:
+        _set_last_post_error("before submission: empty scheduling content")
         print("Aucun contenu a programmer.")
         return False
     if not _validate_tweet_lengths([tweet], label="post programme"):
+        _set_last_post_error("before submission: invalid scheduled post length")
         return False
 
     image_path = Path(image_path) if image_path else None
     if image_path is not None and not image_path.exists():
+        _set_last_post_error(f"before submission: scheduled image missing: {image_path}")
         print(f"X image introuvable: {image_path}")
         return False
 
@@ -1879,6 +1883,7 @@ def schedule_post(
         scheduled_dt = _coerce_schedule_datetime(scheduled_at)
         deadline = _coerce_schedule_datetime(not_after) if not_after is not None else None
     except ValueError as exc:
+        _set_last_post_error(f"before submission: invalid schedule datetime: {exc}")
         print(f"X date programmation invalide: {exc}")
         return False
 
@@ -1889,6 +1894,7 @@ def schedule_post(
 
         with sync_playwright() as p:
             context = None
+            submission_attempted = False
             try:
                 context = _launch(p, profile_dir)
                 _restore_storage_state(context, session_file)
@@ -1937,8 +1943,10 @@ def schedule_post(
                     if scheduled_dt > deadline or scheduled_dt <= datetime.now() + timedelta(seconds=90):
                         raise ValueError("no future milestone slot available before its deadline")
                 _set_schedule_dialog(page, scheduled_dt)
+                submission_attempted = True
                 _click_tweet_button(page, editor)
                 if not _wait_post_scheduled(page, tweet):
+                    _set_last_post_error("after submit attempt: X scheduling confirmation not detected")
                     return False
 
                 _register_scheduled(account_key, scheduled_dt, _schedule_source())
@@ -1948,6 +1956,8 @@ def schedule_post(
                 return True
 
             except Exception as e:
+                phase = "after submit attempt" if submission_attempted else "before submission"
+                _set_last_post_error(f"{phase}: {e}")
                 print(f"X Erreur schedule_post: {e}")
                 return False
 

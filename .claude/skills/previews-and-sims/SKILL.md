@@ -233,6 +233,16 @@ imports `post_debut_releases`, monkeypatches `_load_rows_for_date` (fake history
 `_build_post_threads` on the real catalogue and prints each tweet. Run with `PYTHONIOENCODING=utf-8`
 (the 📈 prefix crashes a cp1252 console).
 
+### Pattern: calibrate a post score on the real chart history (read-only)
+
+`previews_and_sims/us-apple-music-score/replay.py [--min 40] [--cap 2] [--gap 6] [--list DAY] [--rescore]`
+(2026-10-16): walks every distinct US Apple Music snapshot, calls the real
+`post_new_release_progression.region_update` on past `scraped_at` values, applies the production
+gate (OUT veto, threshold, daily cap, gap) and prints posts per threshold + score by run hour.
+Scores are cached in `scores.json`: pass `--rescore` after changing the weights (stale cache =
+old weights, easy to miss). `live.py [--force]` runs the real `_post_score_card` on today's
+snapshot with OUT_DIR/LOCKS_DIR in the sim folder and the post function stubbed.
+
 ### Pitfall: headless Chrome mobile width
 
 `--window-size=390,...` is silently clamped (Chrome min window width ~500px):

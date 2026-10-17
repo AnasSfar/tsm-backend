@@ -22,7 +22,8 @@ other. Each platform has its own state file so the two processes never
 overwrite each other's state; the shared X account slot (post_with_image)
 serializes the actual posts. Safe to run every cycle even outside a release
 window: outside one it only posts the Global card (every day, owner
-2026-10-05, see _post_global_daily) — every other post needs a catalog track
+2026-10-05, see _post_global_daily) and the US card when its update scores
+high enough (owner 2026-10-16, see _post_score_card) — every other post needs a catalog track
 whose release_date falls inside APPLE_MUSIC_DEBUT_WINDOW_HOURS.
 """
 from __future__ import annotations
@@ -1720,7 +1721,9 @@ def run_platform(
     if not candidates:
         print(f"[new_release_progression] [{label}] No release candidate.")
         if platform == "apple_music" and not express:
-            _post_global_daily(args, today, load_state(platform), [], platform, writes)
+            state = load_state(platform)
+            _post_global_daily(args, today, state, [], platform, writes)
+            _post_score_cards(args, today, state, platform, writes, now)
         return
 
     state = load_state(platform)
@@ -1745,6 +1748,7 @@ def run_platform(
         print(f"[new_release_progression] [{label}] No track inside its debut window.")
         if platform == "apple_music" and not express:
             _post_global_daily(args, today, state, [], platform, writes)
+            _post_score_cards(args, today, state, platform, writes, now)
         return
     print(f"[new_release_progression] [{label}] {len(active_tracks)} track(s) in window: "
           + ", ".join(t["title"] for t in active_tracks))
@@ -1927,6 +1931,7 @@ def run_platform(
 
                 traceback.print_exc()
                 alert(f"{genre or 'Region'} card crashed ({country}): {type(exc).__name__}: {exc}")
+        _post_score_cards(args, today, state, platform, writes, now)
     if platform == "itunes":
         for album in sorted({t["album"] for t in active_tracks if t["album"]}):
             try:
@@ -1959,6 +1964,204 @@ def _post_global_daily(args, today: str, state: dict, active_tracks: list[dict],
 
         traceback.print_exc()
         alert(f"Global thread crashed: {type(exc).__name__}: {exc}")
+
+
+# US Apple Music chart card, posted only when the update is interesting
+# (owner 2026-10-16: "poster aussi US apple music charts quand c'est
+# intéressant [...] avec un score minimum [...] max 2 fois par jour [...] un
+# out c'est éliminatoire, un RE c'est bien, un top 10 c'est bien"). Score =
+# core/region_update_score.py, vs the card's own reference snapshot (previous
+# distinct one). Every run, release window or not; a snapshot whose release-
+# window US card (_post_pop_snapshot) already went out is not posted twice.
+# Threshold / cap / gap calibrated
+# on the whole US history: previews_and_sims/us-apple-music-score/. Owner
+# 2026-10-16 (2nd pass, 40 = ~1 post a week): "si on a un (+3) et un (-1) dans
+# le meme run on peut poster" -> threshold 1, then 10 by the owner ("le seuil
+# mets le 10"): ~1.2 posts/day on Oct 5-16, cap + gap keep it <= 2 a day. Owner
+# 2026-10-16 (2nd pass, 40 = ~1 post a week): "si on a un (+3) et un (-1) dans
+# le meme run on peut poster" -> any net-positive update with no OUT; the
+# daily cap + gap keep it at <= 2 a day (~1.7/day on Oct 5-16).
+SCORE_CARD_COUNTRIES = [
+    c.strip().lower() for c in os.getenv("APPLE_MUSIC_SCORE_CARD_COUNTRIES", "us").split(",") if c.strip()
+]
+SCORE_CARD_MIN_SCORE = float(os.getenv("APPLE_MUSIC_SCORE_CARD_MIN_SCORE", "10"))
+SCORE_CARD_MAX_PER_DAY = int(os.getenv("APPLE_MUSIC_SCORE_CARD_MAX_PER_DAY", "2"))
+# Gap between two posts counted in RUNS (owner 2026-10-16, hourly runs since
+# that day: "faisons l'écart selon le nombre de runs"): at least GAP_RUNS new
+# US snapshots since the posted one — or GAP_HOURS elapsed, so a PC switched
+# off for the night doesn't stretch the gap over the next morning.
+SCORE_CARD_GAP_RUNS = int(os.getenv("APPLE_MUSIC_SCORE_CARD_GAP_RUNS", "4"))
+SCORE_CARD_GAP_HOURS = float(os.getenv("APPLE_MUSIC_SCORE_CARD_GAP_HOURS", "4"))
+CAPTION_MIN_POINTS = 5
+
+
+def region_update(day: str, region: str, rows: list[dict], scraped_at: str, genre: str | None = None):
+    """(UpdateScore, previous scraped_at) of one chart snapshot vs the one its
+    card's arrows compare to. `rows` = that snapshot's rows (the latest one in
+    production, any past one in the calibration replay)."""
+    import generate_snapshot_images as snap
+    from core.region_update_score import SongMove, score_update
+
+    prev_ranks, prev_at = snap.get_previous_snapshot_ranks(day, region, genre, scraped_at)
+    if not prev_at:
+        return None, None
+    prev_rank_of = snap.id_swap_prev_rank(prev_ranks, prev_at, region, genre, rows)
+    prev_titles = {_base_song_key(t) for t in snap._cycle_title_ids(prev_at, region, genre)}
+    peak_of = snap.make_peak_resolver(day, region, genre, scraped_at)
+    moves: list = []
+    seen: set[str] = set()
+    for row in sorted(rows, key=lambda r: _rank_of(r) or 10**6):
+        rank, title = _rank_of(row), str(row.get("song_name") or "").strip()
+        base = _base_song_key(title)
+        if rank is None or not title or base in seen:
+            continue  # clean + explicit editions: the best one only
+        seen.add(base)
+        prev = prev_rank_of(row)
+        if prev is None and base in prev_titles:
+            # Apple swapped the charted version (Track by Track <-> normal):
+            # the song never left — compare with that version's rank.
+            prev = min((r for t, r in _title_ranks(prev_ranks, prev_at, region, genre).items()
+                        if _base_song_key(t) == base), default=None)
+        moves.append(SongMove(
+            title=title, rank=rank, prev=prev, badge=peak_of(row, rank)[1],
+        ))
+    out = snap.dropped_songs(region, genre, prev_at, rows)
+    out = [t for t in out if _base_song_key(t) not in seen]  # version swap: not an OUT
+    return score_update(moves, out), prev_at
+
+
+def _title_ranks(ranks: dict[str, int], scraped_at: str, region: str, genre: str | None) -> dict[str, int]:
+    """{title: rank} of a snapshot from its {track key: rank} map."""
+    import generate_snapshot_images as snap
+
+    out: dict[str, int] = {}
+    for title, apple_id in snap._cycle_title_ids(scraped_at, region, genre).items():
+        rank = ranks.get(apple_id) if apple_id else ranks.get(title)
+        if rank is not None:
+            out[title] = rank
+    return out
+
+
+def score_card_allowed(state: dict, country: str, now: datetime) -> str | None:
+    """None when another score card may go out now, else why not (daily cap
+    on the Paris calendar day, minimum gap between two posts: GAP_RUNS new
+    snapshots — `score_card_runs_since|<cc>`, current one included — or
+    GAP_HOURS, whichever comes first)."""
+    posts = [datetime.fromisoformat(p) for p in (state.get(f"score_card_posts|{country}") or [])]
+    today = [p for p in posts if p.date() == now.date()]
+    if len(today) >= SCORE_CARD_MAX_PER_DAY:
+        return f"already {len(today)} post(s) today (max {SCORE_CARD_MAX_PER_DAY})"
+    runs = int(state.get(f"score_card_runs_since|{country}") or 0)
+    if posts and runs < SCORE_CARD_GAP_RUNS and (now - max(posts)).total_seconds() < SCORE_CARD_GAP_HOURS * 3600:
+        return (f"last post {max(posts):%H:%M}, {runs} run(s) since "
+                f"(gap {SCORE_CARD_GAP_RUNS} runs or {SCORE_CARD_GAP_HOURS:g}h)")
+    return None
+
+
+def score_card_caption(country: str, update, url: str) -> str:
+    """`🇺🇸 | <best news sentences>` + intro + link. Only climbs / entries /
+    #1s are said (never a drop); trimmed to TEXT_BUDGET by reorder_caption."""
+    where = MARKET_NAMES.get(country, country_label(country))
+    chart = f"Apple Music chart in {where}"
+    sentences: list[str] = []
+    news = [e for e in update.events if e["points"] > 0 and e["kind"] != "drop"]
+    # The best one always; the others only if they're worth saying.
+    for e in (news[:1] + [e for e in news[1:] if e["points"] >= CAPTION_MIN_POINTS])[:4]:
+        title, rank = f'"{e["title"]}"', e["rank"]
+        loc = f" on the {chart}" if not sentences else ""
+        if e["kind"] == "number_one":
+            s = f"{title} climbs to #1{loc}!"
+        elif e["kind"] == "debut":
+            s = f"{title} debuts at #{rank}{loc}."
+        elif e["kind"] == "reentry":
+            s = f"{title} re-enters at #{rank}{loc}." if loc else f"{title} is back at #{rank}."
+        elif e["kind"] == "top10_entry":
+            s = f"{title} enters the top 10 at #{rank} (+{e['prev'] - rank}){loc}."
+        else:
+            s = f"{title} climbs to #{rank} (+{e['prev'] - rank}){loc}."
+        sentences.append(s)
+    prefix = _flag_emoji(country) or "📈"
+    if not sentences:  # never at the threshold (a positive score has news); safety only
+        return f"{prefix} | Taylor Swift songs on the {chart} right now:\n\n{url}"
+    return reorder_caption(prefix=prefix, sentences=sentences,
+                           standing=f"Taylor Swift songs on the {chart} right now:", url=url)
+
+
+def _post_score_cards(args, today: str, state: dict, platform: str, writes: bool, now: datetime) -> None:
+    for country in SCORE_CARD_COUNTRIES:
+        try:
+            _post_score_card(country, args, today, state, platform, writes, now)
+        except Exception as exc:
+            import traceback
+
+            traceback.print_exc()
+            alert(f"Score card crashed ({country}): {type(exc).__name__}: {exc}")
+
+
+def _post_score_card(country: str, args, today: str, state: dict, platform: str, writes: bool, now: datetime) -> None:
+    """The country's normal Apple Music chart card (every Taylor song), posted
+    when its latest snapshot scores >= SCORE_CARD_MIN_SCORE with no OUT."""
+    import generate_snapshot_images as snap
+    from collectors.twitter.links import amcharts_url
+
+    rows, scraped_at = snap.get_region_rows(today, country, None)
+    if not rows or not scraped_at:
+        return
+    label = f"[new_release_progression] [Score card {country}]"
+    if snap.country_not_fetched(scraped_at, country, None):
+        return  # store not fetched this cycle: no rows != no Taylor song
+    # An hour Apple didn't refresh repeats the chart, and the moves are vs the
+    # last DIFFERENT snapshot, so they'd repeat too: chart content already
+    # scored is never scored twice (same rule as _post_pop_snapshot).
+    handled_key = f"score_card_handled|{country}"
+    signature = json.dumps(sorted((snap._day_cycles(today, country, None).get(scraped_at) or {}).items()))
+    if state.get(handled_key) == signature:
+        return
+    update, prev_at = region_update(today, country, rows, scraped_at)
+    if update is None:
+        return
+    runs_key = f"score_card_runs_since|{country}"
+    state[runs_key] = int(state.get(runs_key) or 0) + 1  # a new snapshot = one more run since the last post
+    summary = ", ".join(f'{e["title"]} {e["kind"]} {e["points"]:+g}' for e in update.events if e["points"] or e["kind"] == "out")
+    verdict = (update.veto or (f"score {update.score:g} < {SCORE_CARD_MIN_SCORE:g}"
+                               if update.score < SCORE_CARD_MIN_SCORE else None))
+    blocked = None if verdict else score_card_allowed(state, country, now)
+    print(f"{label} {scraped_at} vs {prev_at}: score {update.score:g} ({summary or 'no move'})"
+          + (f" — not posted: {verdict or blocked}" if verdict or blocked else ""))
+    if verdict or blocked:
+        # Handled either way: a capped update is never posted late (stale).
+        if writes:
+            state[handled_key] = signature
+            save_state(state, platform)
+        return
+    lock_path = LOCKS_DIR / f"{_safe_slug('score_card', country, scraped_at)}.lock"
+    if lock_path.exists():
+        return
+    if (LOCKS_DIR / f"{_safe_slug('region_snapshot', country, scraped_at)}.lock").exists():
+        print(f"{label} release-window card of this snapshot already posted — not posted twice")
+        if writes:
+            state[handled_key] = signature
+            save_state(state, platform)
+        return
+    tweet = score_card_caption(country, update, amcharts_url("applemusic"))
+    print(f"[new_release_progression] TWEET ({len(tweet)} chars):\n{tweet}")
+    if args.dry_run:
+        return
+    rendered = snap.generate(today, country, None, OUT_DIR, show_out=True, expect_scraped_at=scraped_at)
+    image_path = rendered.replace(OUT_DIR / f"{_safe_slug('score_card', country, scraped_at)}.png")
+    if args.no_post or not writes:
+        print(f"[new_release_progression] --no-post: card {image_path}")
+        return
+    LOCKS_DIR.mkdir(parents=True, exist_ok=True)
+    if post_with_retries(tweet, image_path, lock_path):
+        lock_path.write_text(datetime.utcnow().isoformat(), encoding="utf-8")
+        key = f"score_card_posts|{country}"
+        state[key] = [p for p in (state.get(key) or []) if p >= (now - timedelta(days=3)).isoformat()] + [now.isoformat()]
+        state[handled_key] = signature
+        state[runs_key] = 0
+        save_state(state, platform)
+    else:
+        alert(f"Score card post failed ({country}) — will retry next cycle.", priority="default")
 
 
 def _previous_global_signature(today: str, scraped_at: str) -> dict[str, int] | None:

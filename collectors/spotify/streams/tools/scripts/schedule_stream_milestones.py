@@ -53,8 +53,8 @@ def candidates(stats_date: str, history) -> list[dict]:
             continue
         current = sum(totals)
         milestone = (current // step + 1) * step
-        # Cheap candidate prefilter only. Qualification always uses exact,
-        # complete series and held-out errors, never this recent maximum.
+        # Cheap candidate prefilter only. Qualification uses exact history and
+        # explicit worst-day/weekly-decline scenarios, never this maximum.
         recent = []
         for i in range(14):
             day = (date.fromisoformat(stats_date) - timedelta(days=i)).isoformat()
@@ -69,13 +69,19 @@ def candidates(stats_date: str, history) -> list[dict]:
             continue
         try:
             series = model.exact_series(history, ids, stats_date)
+            checks = []
             for horizon in (1, 2):
                 window = model.crossing_window(series, milestone, horizon)
+                checks.append({"horizon": horizon, **window})
                 if window["eligible"]:
+                    print(f"[milestone_schedule] ROBUST CROSSING {entity['title']} {milestone:,}: remaining={window['remaining']:,}; worst_day={window['observed']['recent_worst_daily']:,}; weekly_change={window['observed']['weekly_change_pct']:+.2f}%; conservative_gain={window['lower_gain']:,}; target={window['target_date']}")
                     result.append({**entity, **window})
                     break
             else:
-                print(f"[milestone_schedule] PENDING {entity['title']} {milestone:,}: conservative day-of-crossing bounds do not qualify")
+                print(f"[milestone_schedule] PENDING {entity['title']} {milestone:,}: " + "; ".join(
+                    f"J+{c['horizon']} {c['assessment_reason']} (remaining={c['remaining']:,}, conservative_gain={c['lower_gain']:,}, prior_day_max_gain={c['previous_day_upper_gain']:,})"
+                    for c in checks
+                ))
         except model.PendingForecast as exc:
             print(f"[milestone_schedule] PENDING {entity['title']} {milestone:,}: {exc}")
     return result
@@ -107,7 +113,7 @@ def reconcile(ledger: dict, history, stats_date: str, *, persist: bool) -> None:
         model.save_ledger(ledger)
 
 
-def render(event: dict):
+def render(event: dict, *, history=None):
     covers = posts.spotlight.load_covers()
     milestone = event["milestone"]
     target = event["target_date"]
@@ -121,11 +127,16 @@ def render(event: dict):
             prefix=posts.spotlight_prefix(posts.album_emoji(album)),
         )
     else:
+        history = history if history is not None else posts.history_store.HistoryIndex.load()
+        next_forecast = posts.next_song_milestone_forecast(event, history, event["base_date"])
+        event["next_milestone_forecast"] = next_forecast
         tracks = {t["track_id"]: t for t in posts.spotlight.load_all_tracks()}
         track = posts._spotlight_track_for_event(event, tracks)
         html = posts.milestone_card.render_song_cover_story(
             title=event["title"], cover_url=posts.spotlight.get_cover_url(track, covers), milestone=milestone,
             total=None, daily=None, rank=None, stats_date=target, prev_step=None,
+            album=track.get("album") if posts._is_album_name(track.get("album")) else None,
+            next_milestone_forecast=next_forecast,
         )
         tweet = posts.stream_milestone_tweet(
             title=event["title"], milestone_streams=milestone, milestone_rank=None,
@@ -179,7 +190,7 @@ def run(args) -> int:
         print("PLAN_JSON: " + json.dumps({**event, "scheduled_at": wanted.isoformat(), "timing": timing}, ensure_ascii=False))
         if args.plan_only:
             continue
-        tweet, png = render(event)
+        tweet, png = render(event, history=history)
         print(f"[milestone_schedule] {wanted.isoformat()}\n{tweet}\n{png}")
         if args.no_post:
             continue
@@ -199,7 +210,11 @@ def run(args) -> int:
         )
         receipts = [e for e in twitter_core.scheduled_entries() if e["source"] == source] if ok else []
         if not ok or len(receipts) != 1:
-            ledger["events"][key]["status"] = "uncertain"
+            ledger["events"][key]["status"] = "schedule_unconfirmed"
+            ledger["events"][key]["scheduling_error"] = (
+                twitter_core.get_last_post_error() or "schedule_post returned False without a confirmed scheduling receipt"
+                if not ok else f"schedule_post returned True but found {len(receipts)} matching local receipts; expected 1"
+            )
             model.save_ledger(ledger)
             raise SystemExit(f"[milestone_schedule] BLOCKED {key}: X scheduling not confirmed; inspect scheduled posts before retrying")
         actual = receipts[0]["at"].astimezone(MADRID)

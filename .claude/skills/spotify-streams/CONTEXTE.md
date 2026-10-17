@@ -76,14 +76,25 @@ couvrir le decalage collecte/snapshot. Base perimee de plus d'un jour ou future
 = pending ; throwbacks sans nouvelle anticipation. Les cas non qualifies
 restent postes par `post_stream_milestones.py` apres confirmation.
 
-`milestone_schedule.py` : baseline par jour de semaine (28 jours), declin
-recent prolonge sans bonus de croissance, erreurs cumulatives mesurees sur
-56 a 84 previsions historiques hors echantillon. Borne basse du jour cible
-au-dessus du palier ET borne haute de la veille en-dessous. Queues 4 % de
-chaque cote, couverture nominale 92 % ; calibration historique, **pas une
-garantie de probabilite face a un changement de regime**. Historique contigu,
-totaux/daily coherents, aucun estime, doublon ou album partiel. Changement
-de membres d'un album dans la fenetre = pending.
+Clarification proprietaire 2026-10-17 : remplacer le score probabiliste par
+des scenarios concrets de baisse. `milestone_schedule.py` utilise les 28
+derniers daily exacts disponibles (minimum 14 jours consecutifs pour comparer
+deux semaines) : pire daily recent, dernier daily avec baisse weekly, moyenne
+des 7 derniers daily avec baisse weekly, et pire daily avec cette meme baisse.
+La baisse retenue est la plus forte entre : ratio somme J-6..J / somme
+J-13..J-7, pire ratio daily(J-i)/daily(J-i-7) pour i=0..6, et 1 (jamais de
+bonus de croissance). Pour J+2, appliquer le facteur de nouveau au deuxieme
+jour comme scenario de stress, pas comme un daily futur mesure.
+
+Les QUATRE scenarios doivent atteindre le palier le jour cible ; le meilleur
+daily observe repete jusqu'a la veille doit rester sous le palier, sinon le
+jour est ambigu. Arithmetique rationnelle, gain conservateur arrondi vers le
+bas : jamais de franchissement obtenu par arrondi flottant. Pas de pourcentage
+de confiance ni de "92 %". Le verdict `assessment=robust_crossing|pending`,
+sa raison, chaque scenario et les chiffres observes sont conserves au ledger
+prive et dans les logs. Jamais dans les totaux/daily de l'historique public.
+Historique contigu, totaux/daily coherents, aucun estime, doublon ou album
+partiel. Changement de membres d'un album dans la fenetre = pending.
 
 Horaire dynamique (decision proprietaire 2026-10-16) : selection de la meilleure
 minute disponible du jour cible via `core.x_active_times.best_engagement_slot`,
@@ -101,20 +112,45 @@ aucun engagement invente. Source, poids prevu et poids reel ecrits au ledger.
 L'historique journalier ne prouve pas l'heure intraday
 du franchissement. Cards anticipees : palier seulement, sans total exact,
 daily, rang ordinal ni courbe prevus. Cards confirmees inchangees.
+Cover Story anticipee : grille de stats retiree, ligne album sous le titre,
+palier en grand et date du post dans le footer ; pas de cases Artist/Platform.
+Ajout proprietaire 2026-10-17 : afficher le prochain palier de cette meme
+chanson et sa date estimee, sur les cartes anticipees et confirmees.
+`forecast_milestones.next_song_milestone_at_recent_pace` utilise les 7 derniers
+daily exacts consecutifs + leur total precedent, coupe a la date du snapshot.
+Calcul = plafond((palier suivant - dernier total verifie) * 7 / somme des 7
+daily), depuis la date du snapshot. Jamais de total suppose du jour cible.
+Mention publique "At current 7-day pace" + "Expected"/"Est." : projection a
+rythme recent constant, distincte du modele ensemble long terme du site et des
+scenarios prudents qui autorisent le post. Ce n'est pas un fallback de stats.
+Meme chanson, 100M par 100M, jamais la date d'une autre chanson. Si donnees
+manquantes/estimees/dupliquees/incoherentes, semaine a zero ou date hors
+calendrier : "Date pending", raison exacte dans les logs. Aucune date inventee.
 
 Ledger persistant `runtime/social/stream_milestones_scheduled.json`, cle
 track_id + palier (independante de la date). Verrou OS pour serialiser les
 planners ; ecriture atomique avant soumission X. Succes = `scheduled` avec
-horaire du registre X ; echec ambigu/crash = `uncertain`/`submitting`, bloque
+horaire du registre X ; echec ambigu/crash = `schedule_unconfirmed`/`submitting`, bloque
 les retries et le poster confirme jusqu'a verification manuelle de la queue X.
 `--force` ne contourne pas ce ledger. Audit au snapshot cible : `confirmed`
 ou `wrong_day`, totaux reels conserves dans le ledger, aucun repost automatique.
+Ancien statut `uncertain` encore lu sans reinitialiser les reserves existantes.
+Ces statuts sont uniquement techniques X et distincts du verdict sur le
+depassement. Les nouvelles tentatives conservent `scheduling_error`, avec
+phase avant/apres tentative de soumission quand le moteur X la connait.
+Resolution 2026-10-17 : le proprietaire confirme absents de X les deux posts
+du 16 (But Daddy I Love Him 400M, The Moment I Knew TV 100M). Reservations
+levees sous verrou, anciennes tentatives conservees dans `resolved_events`
+avec raison et date + backup prive. Aucun repost tant que le snapshot cible
+n'est pas confirme ; le poster normal pourra alors les traiter.
 
 Verification sans X ni modification de snapshots :
 `python previews_and_sims/milestone-cards/simulate.py anticipate 30`.
 Replay, PNG et copies telephone 310 px sous `milestone-cards/anticipation/`.
 Tests : `python -m unittest dev.test_milestone_schedule dev.test_forecast_milestones`.
 `--plan-only` ne genere aucune image et n'ecrit aucun lock/ledger.
+Replay sans rendre de nouvelles cartes :
+`python previews_and_sims/milestone-cards/simulate.py anticipate 30 --no-render`.
 
 ## Role
 

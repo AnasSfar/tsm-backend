@@ -1995,6 +1995,10 @@ def _debut_track_ids_for_date(chart_date: str) -> set[str]:
                 if not isinstance(payload, dict):
                     continue
                 for section in payload.get("sections") or []:
+                    # chart_extra sections (versions/remixes) never make a
+                    # release day (incident 2026-10-16, Patient Zero versions).
+                    if section.get("chart_extra"):
+                        continue
                     for track in section.get("tracks") or []:
                         if not isinstance(track, dict):
                             continue

@@ -31169,6 +31169,17 @@
   "source": "llm:claude",
   "type": "GROUP"
  },
+ "5xXSrTidFvVRJmiam2Zh1o": {
+  "gender": "NF",
+  "name": "GENER8ION",
+  "note": "GENER8ION is Surkin's solo project; official artist bio uses he. Verified 2026-10-17.",
+  "source": "manual",
+  "sources": [
+   "https://www.onassis.org/people/surkin",
+   "https://www.rambling.ne.jp/catalog/the-new-international-sound-part-ii/"
+  ],
+  "type": "solo"
+ },
  "5xY6E5PMZNtz9jDvxTRiGI": {
   "gender": "NF",
   "name": "Dangrangto",

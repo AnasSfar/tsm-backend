@@ -360,6 +360,21 @@ def _card_path(stats_date: str, name: str, milestone: int) -> tuple[Path, Path]:
     return out_dir / f"{stem}.png", out_dir / f"_{stem}.html"
 
 
+def next_song_milestone_forecast(event: dict, history: history_store.HistoryIndex, stats_date: str) -> dict:
+    forecast = forecast_milestones.next_song_milestone_at_recent_pace(
+        history.points_by_track.get(event["track_id"], []),
+        reached_milestone=int(event["milestone"]), as_of_date=stats_date,
+    )
+    display_date = event.get("target_date") or stats_date
+    if forecast.get("expected_date") and forecast["expected_date"] < display_date:
+        forecast = {**forecast, "expected_date": None, "pending_reason": "next milestone estimate predates the card's target day"}
+    if forecast.get("pending_reason"):
+        print(f"[stream_milestones] Next milestone forecast PENDING for {event['track_id']}: {forecast['pending_reason']}")
+    else:
+        print(f"[stream_milestones] Next milestone for {event['track_id']}: {forecast['milestone']:,} expected {forecast['expected_date']} at current 7-day pace (verified through {stats_date})")
+    return forecast
+
+
 def _post(tweet: str, image_path: Path, args, event: dict, posted_keys: set[str], newly_posted: set[str]) -> None:
     if not TWITTER_SESSION.exists():
         raise SystemExit(f"Twitter session not found: {TWITTER_SESSION}")
@@ -491,6 +506,7 @@ def main() -> int:
             title = str(event.get("title") or event["track_id"])
             milestone = int(event["milestone"])
             points = history.points_by_track.get(event["track_id"], [])
+            next_song_forecast = next_song_milestone_forecast(event, history, args.date)
             common = dict(
                 title=title,
                 cover_url=spotlight.get_cover_url(spot_track, covers),
@@ -499,6 +515,7 @@ def main() -> int:
                 daily=int(event["daily_streams"]),
                 rank=rank,
                 stats_date=args.date,
+                next_milestone_forecast=next_song_forecast,
             )
             # The Climb when our history covers ~the whole climb, Cover Story otherwise.
             if milestone_card.climb_eligible(points, milestone, args.date):

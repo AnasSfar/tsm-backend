@@ -314,6 +314,15 @@ COVER_CSS = """
 .num .u{font-size:40px;font-weight:800;letter-spacing:.2em;text-transform:uppercase;line-height:1.15;padding-bottom:12px;color:var(--paper)}
 .num .u span{display:block;color:var(--accent-light)}
 .ttl{padding-left:14px;font-family:var(--display);font-style:italic;font-weight:600;line-height:1.05}
+.stack.anticipated{bottom:180px}
+.stack.anticipated.has-next{bottom:330px}
+.albumline{padding-left:14px;font-size:36px;font-weight:600;line-height:1.2;color:rgba(255,255,255,.8)}
+.next-milestone{position:absolute;left:72px;right:72px;top:1070px;border-top:2px solid rgba(255,255,255,.25);padding-top:22px;display:grid;grid-template-columns:1fr 1.7fr;gap:8px 24px}
+.next-milestone div{display:flex;flex-direction:column;gap:5px;min-width:0}
+.next-milestone small{font-size:28px;font-weight:700;text-transform:uppercase;letter-spacing:.10em;color:rgba(255,255,255,.7)}
+.next-milestone b{font-size:48px;font-weight:800;line-height:1.1}
+.next-milestone .basis{grid-column:1/-1;font-size:30px;color:rgba(255,255,255,.75);margin:3px 0 0}
+.facts .next-when{font-size:28px;font-weight:700;line-height:1.2}
 .facts{position:absolute;left:72px;right:72px;top:1080px;display:grid;grid-template-columns:repeat(3,1fr);border-top:2px solid rgba(255,255,255,.25);padding-top:22px}
 .facts div{display:flex;flex-direction:column;gap:4px;padding-right:16px;min-width:0}
 .facts div+div{border-left:2px solid rgba(255,255,255,.18);padding-left:24px}
@@ -324,7 +333,8 @@ COVER_CSS = """
 
 
 def render_song_cover_story(*, title: str, cover_url: str | None, milestone: int, total: int | None, daily: int | None,
-                            rank: int | None, stats_date: str, prev_step: tuple[int, int] | None) -> str:
+                            rank: int | None, stats_date: str, prev_step: tuple[int, int] | None,
+                            album: str | None = None, next_milestone_forecast: dict | None = None) -> str:
     cover_uri, cover_bytes = _cover(cover_url)
     palette = milestone_palette(cover_bytes)
     n, unit = _short(milestone)
@@ -338,14 +348,38 @@ def render_song_cover_story(*, title: str, cover_url: str | None, milestone: int
     facts = ([("Taylor's songs", f"{_ordinal(rank)} ever")] if rank is not None else [("Artist", "Taylor Swift")])
     facts += ([middle] if middle else []) + ([("Exact total", f"{total:,}")] if total is not None else [("Platform", "Spotify")])
     facts_html = "".join(f"<div><small>{_esc(a)}</small><b>{_esc(b)}</b></div>" for a, b in facts)
+    anticipated = total is None and daily is None and rank is None
+    album_line = (f'<div class="albumline clamp2">{_esc(display_title_for_album(album))}</div>' if anticipated and album else "")
+    facts_block = "" if anticipated else f'<div class="facts" style="grid-template-columns:repeat({len(facts)},1fr)">{facts_html}</div>'
+    if next_milestone_forecast:
+        target_label, expected_label = _next_song_labels(next_milestone_forecast)
+        if anticipated:
+            facts_block = (f'<div class="next-milestone"><div><small>Next milestone</small><b>{target_label}</b></div>'
+                           f'<div><small>Expected</small><b>{expected_label}</b></div>'
+                           '<p class="basis">At current 7-day pace</p></div>')
+        else:
+            facts = [fact for fact in facts if fact[0] not in {"Exact total", "Platform"}]
+            facts_html = "".join(f"<div><small>{_esc(a)}</small><b>{_esc(b)}</b></div>" for a, b in facts)
+            facts_html += (f'<div><small>Next · 7-day pace</small><b>{target_label}</b>'
+                           f'<span class="next-when">Est. {expected_label}</span></div>')
+            facts_block = f'<div class="facts" style="grid-template-columns:repeat({len(facts) + 1},1fr)">{facts_html}</div>'
     cover = f'<img class="cover" src="{cover_uri}" alt="">' if cover_uri else ""
     body = f"""{cover}<div class="fade"></div>
 <div class="tag">{_spotify_icon(30)}<span>New milestone</span></div>
-<div class="stack"><div class="num"><div class="n" style="font-size:{n_size}px">{n}</div><div class="u">{unit}<span>Streams</span></div></div>
-<div class="ttl clamp2" style="font-size:{_title_size(title, (66, 54, 44))}px">“{_esc(title)}”</div></div>
-<div class="facts" style="grid-template-columns:repeat({len(facts)},1fr)">{facts_html}</div>
+<div class="stack{' anticipated' if anticipated else ''}{' has-next' if next_milestone_forecast else ''}"><div class="num"><div class="n" style="font-size:{n_size}px">{n}</div><div class="u">{unit}<span>Streams</span></div></div>
+<div class="ttl clamp2" style="font-size:{_title_size(title, (66, 54, 44))}px">“{_esc(title)}”</div>{album_line}</div>
+{facts_block}
 {_foot(stats_date)}"""
     return _page(COVER_CSS, body, palette)
+
+
+def _next_song_labels(forecast: dict) -> tuple[str, str]:
+    target = _esc(_short_label(int(forecast["milestone"])))
+    expected = forecast.get("expected_date")
+    if not expected:
+        return target, "Date pending"
+    day = date.fromisoformat(expected)
+    return target, f"{day.strftime('%b')} {day.day}, {day.year}"
 
 
 # ── C. The Climb (songs with ~complete history) ─────────────────────────────
@@ -449,7 +483,7 @@ def _climb_svg(points: list[tuple[date, int]], milestone: int, palette: dict) ->
 
 def render_song_climb(*, title: str, album: str | None, cover_url: str | None, milestone: int, total: int,
                       daily: int | None, rank: int, stats_date: str, history_points: list[dict],
-                      next_expected: tuple[str, str] | None = None) -> str:
+                      next_expected: tuple[str, str] | None = None, next_milestone_forecast: dict | None = None) -> str:
     cover_uri, cover_bytes = _cover(cover_url)
     palette = milestone_palette(cover_bytes)
     points = _clean_points(history_points, stats_date)
@@ -463,7 +497,11 @@ def render_song_climb(*, title: str, album: str | None, cover_url: str | None, m
         stats.append(f"<div><small>Tracked since</small><b>{first.strftime('%b')} {first.year}</b></div>")
     if daily is not None:
         stats.append(f"<div><small>On {_short_date(stats_date)}</small><b>+{daily:,}</b></div>")
-    if next_expected:
+    if next_milestone_forecast:
+        target_label, expected_label = _next_song_labels(next_milestone_forecast)
+        stats.append(f'<div><small>Next · 7-day pace</small><b>{target_label}</b>'
+                     f'<span class="when" style="font-size:28px">Est. {expected_label}</span></div>')
+    elif next_expected:
         stats.append(f'<div><small>Next expected</small><b class="sm clamp2">{_esc(next_expected[0])}</b>'
                      f'<span class="when">{_short_date(next_expected[1])}</span></div>')
     else:

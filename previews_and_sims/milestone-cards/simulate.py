@@ -19,6 +19,7 @@ Every PNG also gets a *_phone.png copy at 310 px wide (X timeline on a phone).
       Replay anticipation on the last DAYS verified snapshots (default 30),
       audit the actual crossing dates, render one real song and album. X is
       disabled and all artifacts/ledger paths are isolated under anticipation/.
+      Add --no-render to audit decisions without generating cards.
 """
 from __future__ import annotations
 
@@ -60,7 +61,7 @@ def run_real(dates: list[str]) -> None:
                 phone_copy(png)
 
 
-def run_anticipation(days: int = 30) -> None:
+def run_anticipation(days: int = 30, *, render_cards: bool = True) -> None:
     """Rolling replay of exact history; isolate every write and disable X."""
     import contextlib
     import io
@@ -102,7 +103,8 @@ def run_anticipation(days: int = 30) -> None:
         label = e.get("outcome", "pending")
         outcomes[label] = outcomes.get(label, 0) + 1
     print(f"Replay: {len(results)} distinct milestones; {outcomes}", flush=True)
-    render_anticipation()
+    if render_cards:
+        render_anticipation()
 
 
 def render_anticipation() -> None:
@@ -112,13 +114,14 @@ def render_anticipation() -> None:
     out = HERE / "anticipation"
     planner.posts.update_streams_dir = lambda d: out / str(d)
     results = json.loads((out / "replay.json").read_text(encoding="utf-8"))
-    # Render one real anticipated song and album, using existing cover assets.
-    for kind in ("song", "album"):
-        event = next((e for e in reversed(results) if e["kind"] == kind), None)
-        if event:
-            tweet, png = planner.render(event)
-            phone_copy(png)
-            print(f"Preview: {png}\n{tweet}", flush=True)
+    # Two recent songs plus one album, using the real replay events and covers.
+    selected = [e for e in reversed(results) if e["kind"] == "song"][:2]
+    selected += [e for e in reversed(results) if e["kind"] == "album"][:1]
+    history = planner.posts.history_store.HistoryIndex.load()
+    for event in selected:
+        tweet, png = planner.render(event, history=history)
+        phone_copy(png)
+        print(f"Preview: {png}\n{tweet}", flush=True)
 
 
 def _fake_points(start: date, end: date, start_total: int, end_total: int, gap: tuple[int, int] | None = None) -> list[dict]:
@@ -185,7 +188,7 @@ if __name__ == "__main__":
     if mode == "render-anticipation":
         render_anticipation()
     elif mode == "anticipate":
-        run_anticipation(int(sys.argv[2]) if len(sys.argv) > 2 else 30)
+        run_anticipation(int(sys.argv[2]) if len(sys.argv) > 2 else 30, render_cards="--no-render" not in sys.argv)
     elif mode == "edge":
         run_edge()
     else:

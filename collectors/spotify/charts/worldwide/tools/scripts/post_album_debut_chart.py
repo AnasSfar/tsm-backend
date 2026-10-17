@@ -116,6 +116,16 @@ def _fmt(value) -> str:
         return "0"
 
 
+def _is_debut_section(section: dict) -> bool:
+    """Only the album's own sections (chart_extra false: standard edition,
+    new edition) can trigger an album debut. chart_extra sections (acoustic /
+    piano versions, remixes, track-by-track) are versions of existing songs:
+    their release is NOT an album debut (incident 2026-10-16: Patient Zero
+    Acoustic + Piano single posted "The Life of a Showgirl debuts with X
+    streams"). Same rule in debut_phase.py and worldwide/daily.py."""
+    return not bool(section.get("chart_extra"))
+
+
 def find_debut_album(target_date: date) -> tuple[str, list[str]] | None:
     """Scan db/discography/albums/*.json for tracks whose release_date ==
     target_date. Returns (display_title, track_ids) for the first album with
@@ -133,6 +143,8 @@ def find_debut_album(target_date: date) -> tuple[str, list[str]] | None:
         album_name = str(payload.get("album") or path.stem)
         track_ids: list[str] = []
         for section in payload.get("sections") or []:
+            if not _is_debut_section(section):
+                continue
             for track in section.get("tracks") or []:
                 if not isinstance(track, dict):
                     continue
@@ -181,7 +193,7 @@ def find_debut_album_full(target_date: date) -> dict | None:
                 album_ids.update(str(h).strip() for h in hist if str(h).strip())
                 if track.get("title"):
                     album_titles.add(_norm_title(track.get("title")))
-                if tid and _parse_date(track.get("release_date")) == target_date:
+                if tid and _is_debut_section(section) and _parse_date(track.get("release_date")) == target_date:
                     debut_ids.add(tid)
         if debut_ids:
             album_titles.discard("")

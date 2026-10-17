@@ -57,4 +57,21 @@ Les PNG générés (cards, tableaux) ne sont pas de la data : déjà postés (X)
 - Les données finissent dans R2 (`taylor-data`) d'où l'API du frontend les lit — pas de deploy nécessaire côté backend pour que le site voie les nouvelles données.
 
 ## Maintenance (obligatoire)
+### Milestones Spotify : verdict et programmation (2026-10-17)
+
+Le verdict de depassement repose sur des scenarios concrets (pire daily sur
+28 jours, baisse des sommes weekly, pire changement du meme jour de semaine
+sur les 7 derniers jours). Tous les scenarios prudents doivent franchir le
+palier le jour cible. Minimum 14 jours exacts ; aucun score de confiance
+probabiliste. Voir `spotify-streams/CONTEXTE.md` pour les calculs.
+
+`assessment=robust_crossing|pending` juge le milestone.
+`status=schedule_unconfirmed|submitting|scheduled` concerne seulement X ; les
+anciens `uncertain` restent des reservations pour eviter les doublons, jamais
+une preuve que le milestone est douteux. Nouveau `scheduling_error` explicite
+la confirmation absente ou l'erreur moteur, avec phase avant/apres tentative
+de soumission. Ne pas effacer un ancien statut pour relancer sans verifier X.
+Replay sans X, images ni writes de production :
+`python previews_and_sims/milestone-cards/simulate.py anticipate 30 --no-render`.
+
 Nouveau script, option changée, nouvelle panne connue ou nouveau workflow de rattrapage → mets à jour cette skill ET `REPO_CONTEXT.md` dans la même session.

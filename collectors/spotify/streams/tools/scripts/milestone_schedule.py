@@ -1,24 +1,22 @@
-"""Private, conservative milestone planning; never writes predicted history.
+"""Milestone stress scenarios used only to decide when to schedule a post.
 
-Bounds use rolling, out-of-sample cumulative forecast errors. Each tail is
-4%, leaving a nominal 92% band for crossing on one calendar day (union bound).
-This is historical calibration, not a guaranteed probability under a new
-regime. The public cards must never use these forecasts as exact streams.
+Use the recent worst day and observed weekly declines, not a probability
+score. Every pessimistic scenario must reach the milestone on the target
+day; a recent-best-day scenario must not reach it the day before. Scenario
+counts never enter verified history, public cards or stream exports.
 """
 from __future__ import annotations
 
 import math
 import json
 import os
-import statistics
+from fractions import Fraction
 from datetime import date, timedelta
 from pathlib import Path
 from contextlib import contextmanager
 
-TRAIN_DAYS = 28
-CALIBRATION_DAYS = 84
-MIN_CALIBRATION = 56
-TAIL = 0.04
+HISTORY_DAYS = 28
+MIN_HISTORY_DAYS = 14
 LEDGER_PATH = Path(__file__).resolve().parents[5] / "runtime" / "social" / "stream_milestones_scheduled.json"
 
 
@@ -60,7 +58,7 @@ def load_ledger() -> dict:
         if not isinstance(payload, dict) or not isinstance(payload.get("events"), dict):
             raise ValueError("expected events object")
         for key, event in payload["events"].items():
-            if not isinstance(event, dict) or event.get("status") not in {"submitting", "scheduled", "uncertain"}:
+            if not isinstance(event, dict) or event.get("status") not in {"submitting", "scheduled", "uncertain", "schedule_unconfirmed"}:
                 raise ValueError(f"invalid event {key}")
             required = {"target_date", "milestone", "track_id", "kind"}
             if not required <= event.keys() or event["kind"] not in {"song", "album"}:
@@ -86,7 +84,7 @@ def reserved_keys() -> set[str]:
     events = load_ledger()["events"]
     for key, event in events.items():
         if event["status"] != "scheduled":
-            print(f"[milestone_schedule] BLOCKED duplicate {key}: X scheduling outcome {event['status']}; check scheduled posts before retrying")
+            print(f"[milestone_schedule] X SCHEDULING UNCONFIRMED {key} (stored status: {event['status']}); this is not the milestone assessment. Check scheduled posts before retrying")
     return set(events)
 
 
@@ -103,7 +101,7 @@ def exact_series(history, track_ids: set[str], stats_date: str) -> list[dict]:
     if not track_ids:
         raise PendingForecast("empty track membership")
     end = date.fromisoformat(stats_date)
-    start = end - timedelta(days=TRAIN_DAYS + CALIBRATION_DAYS + 2)
+    start = end - timedelta(days=HISTORY_DAYS)
     indexed = {}
     for tid in sorted(track_ids):
         rows = {}
@@ -136,65 +134,81 @@ def exact_series(history, track_ids: set[str], stats_date: str) -> list[dict]:
     return list(reversed(result))
 
 
-def _predict(rows: list[dict], horizon: int) -> float:
-    """Weekday baseline with a recent decline carried forward; no growth boost."""
-    values = [r["daily_streams"] for r in rows[-TRAIN_DAYS:]]
-    if len(values) != TRAIN_DAYS or min(values) <= 0:
-        raise PendingForecast("need 28 positive, consecutive training dailies")
-    decline = min(1.0, sum(values[-7:]) / sum(values[-14:-7]))
-    baseline = statistics.median(values[-7:])
-    overall = statistics.median(values)
-    last = date.fromisoformat(rows[-1]["date"])
-    prediction = 0.0
-    for step in range(1, horizon + 1):
-        weekday = (last + timedelta(days=step)).weekday()
-        seasonal = statistics.median([
-            r["daily_streams"] for r in rows[-TRAIN_DAYS:]
-            if date.fromisoformat(r["date"]).weekday() == weekday
-        ]) / overall
-        prediction += baseline * seasonal * decline ** step
-    return prediction
-
-
 def crossing_window(rows: list[dict], milestone: int, horizon: int) -> dict:
-    """Qualify only if the conservative interval crosses on the target day.
+    """Crossing must survive the worst recent day and observed weekly declines.
 
-    The upper bound for the preceding day must still be below the milestone,
-    preventing a likely earlier crossing being scheduled a day late.
+    Weekly trend compares the last seven days with the preceding seven. Also
+    stress with the worst same-weekday change seen in those last seven days.
+    Growth never raises a pessimistic scenario. Reapply the decline at each
+    forecast step as a stress assumption, not a measured future daily change.
     """
     if horizon not in (1, 2):
-        raise PendingForecast("only next-day/two-day horizons are calibrated")
+        raise PendingForecast("only next-day/two-day anticipation is supported")
     if not rows or rows[-1]["streams"] >= milestone:
         raise PendingForecast("milestone already reached or current total missing")
-    errors = {h: [] for h in range(1, horizon + 1)}
-    for h in errors:
-        for cut in range(max(TRAIN_DAYS, len(rows) - CALIBRATION_DAYS - h + 1), len(rows) - h + 1):
-            prediction = _predict(rows[:cut], h)
-            actual = sum(r["daily_streams"] for r in rows[cut:cut + h])
-            errors[h].append(actual / prediction)
-        if len(errors[h]) < MIN_CALIBRATION:
-            raise PendingForecast(f"insufficient exact calibration: {len(errors[h])}/{MIN_CALIBRATION} at horizon {h}")
-    def bound(h, upper=False):
-        if h == 0:
-            return 0.0
-        ratios = sorted(errors[h])
-        # Finite-sample order statistics, without interpolating tail evidence.
-        rank = math.ceil((1 - TAIL) * (len(ratios) + 1)) if upper else math.floor(TAIL * (len(ratios) + 1))
-        if not 1 <= rank <= len(ratios):
-            raise PendingForecast("not enough calibration points for tail bound")
-        return _predict(rows, h) * ratios[rank - 1]
+    recent = rows[-HISTORY_DAYS:]
+    if len(recent) < MIN_HISTORY_DAYS:
+        raise PendingForecast(f"need {MIN_HISTORY_DAYS} consecutive exact days, have {len(recent)}")
+    for index, row in enumerate(recent):
+        if row.get("estimated") or any(not isinstance(row.get(field), int) or row[field] < 0 for field in ("streams", "daily_streams")):
+            raise PendingForecast(f"non-exact or negative scenario input: {row.get('date')}")
+        if index:
+            prior = recent[index - 1]
+            if date.fromisoformat(row["date"]) - date.fromisoformat(prior["date"]) != timedelta(days=1):
+                raise PendingForecast(f"non-consecutive scenario history: {prior['date']}/{row['date']}")
+            if row["streams"] - prior["streams"] != row["daily_streams"]:
+                raise PendingForecast(f"inconsistent scenario history: {row['date']}")
+    values = [row["daily_streams"] for row in recent]
+    previous_week, latest_week = sum(values[-14:-7]), sum(values[-7:])
+    if previous_week <= 0 or any(value <= 0 for value in values[-14:-7]):
+        raise PendingForecast("weekly comparison contains zero daily; decline ratio undefined")
+    weekly_ratio = Fraction(latest_week, previous_week)
+    same_weekday_ratios = [Fraction(values[i], values[i - 7]) for i in range(len(values) - 7, len(values))]
+    worst_weekly_ratio = min(same_weekday_ratios)
+    decline = min(Fraction(1), weekly_ratio, worst_weekly_ratio)
+    worst = min(values)
+    # Use exact rational arithmetic, rounding the conservative cumulative gain
+    # down only once. No float rounding can make a just-short milestone pass.
+    scenarios = {
+        "recent_worst_day": Fraction(worst * horizon),
+        "last_daily_weekly_decline": sum(Fraction(values[-1]) * decline ** step for step in range(1, horizon + 1)),
+        "weekly_average_decline": sum(Fraction(latest_week, 7) * decline ** step for step in range(1, horizon + 1)),
+        "worst_day_weekly_decline": sum(Fraction(worst) * decline ** step for step in range(1, horizon + 1)),
+    }
+    gains = {name: math.floor(gain) for name, gain in scenarios.items()}
     gap = milestone - rows[-1]["streams"]
-    lower = bound(horizon)
-    prior_upper = bound(horizon - 1, upper=True)
+    lower = min(gains.values())
+    prior_upper = max(values) * (horizon - 1)
+    eligible = prior_upper < gap <= lower
+    reason = "all_pessimistic_scenarios_cross_on_target_day"
+    if gap > lower:
+        reason = "pessimistic_scenario_short_of_milestone"
+    elif gap <= prior_upper:
+        reason = "could_cross_before_target_day"
     return {
-        "eligible": prior_upper < gap <= lower,
+        "eligible": eligible,
+        "assessment": "robust_crossing" if eligible else "pending",
+        "assessment_reason": reason,
         "target_date": (date.fromisoformat(rows[-1]["date"]) + timedelta(days=horizon)).isoformat(),
         "base_date": rows[-1]["date"],
         "milestone": milestone,
         "remaining": gap,
         "lower_gain": lower,
         "previous_day_upper_gain": prior_upper,
-        "calibration_points": {str(h): len(e) for h, e in errors.items()},
-        "nominal_coverage": 1 - 2 * TAIL,
-        "method": "rolling_weekday_decline_cumulative_errors_v1",
+        "scenario_gains": gains,
+        "scenario_passed": {name: gain >= gap for name, gain in gains.items()},
+        "observed": {
+            "history_days": len(values),
+            "history_start": recent[0]["date"],
+            "history_end": recent[-1]["date"],
+            "recent_worst_daily": worst,
+            "recent_best_daily": max(values),
+            "last_daily": values[-1],
+            "latest_week_total": latest_week,
+            "previous_week_total": previous_week,
+            "weekly_change_pct": float((weekly_ratio - 1) * 100),
+            "worst_recent_weekly_change_pct": float((worst_weekly_ratio - 1) * 100),
+            "stress_decline_factor": float(decline),
+        },
+        "method": "recent_worst_day_and_weekly_decline_scenarios_v2",
     }
